@@ -51,16 +51,19 @@ abstract class reportcache_advanced_testcase extends advanced_testcase {
 
     /**
      *  Get report recordset
-     * @param string $shortname Report shortname
+     * @param mixed $shortname string or id
      * @param array $data Report parameters
      * @param bool $ensurecache Make assertion that result was taken from cache
      * @param array $form Search form parameters
      */
     protected function get_report_result($shortname, $data, $ensurecache = false, $form = array()) {
         global $DB, $SESSION;
-
         $SESSION->reportbuilder = array();
-        $report = reportbuilder_get_embedded_report($shortname, $data);
+        if (is_numeric($shortname)) {
+            $report = new reportbuilder($shortname);
+        } else {
+            $report = reportbuilder_get_embedded_report($shortname, $data);
+        }
         if ($form) {
             $SESSION->reportbuilder[$report->_id] = $form;
         }
@@ -191,34 +194,79 @@ class reportcache_testing_data_generator extends testing_data_generator {
     }
 
     /**
-     * Add mock program to user
+     * Get empty program assignment
      *
-     * @param int $programid Program id
-     * @param array $userid User ids array of int
+     * @param int $programid
+     * @return stdClass
      */
-    public function assign_program($programid, $userids) {
+    protected function get_empty_prog_assignment($programid) {
         $data = new stdClass();
         $data->id = $programid;
         $data->item = array(ASSIGNTYPE_INDIVIDUAL => array());
         $data->completiontime = array(ASSIGNTYPE_INDIVIDUAL => array());
         $data->completionevent = array(ASSIGNTYPE_INDIVIDUAL => array());
         $data->completioninstance = array(ASSIGNTYPE_INDIVIDUAL => array());
-
-        foreach ($userids as $userid) {
+        return $data;
+    }
+    /**
+     * Add mock program to user
+     *
+     * @param int $programid Program id
+     * @param array $userid User ids array of int
+     */
+    public function assign_program($programid, $userids) {
+        $data = $this->get_empty_prog_assignment($programid);
+        $category = new individuals_category();
+        $a = 0;
+        foreach ($userids as $key =>$userid) {
             $data->item[ASSIGNTYPE_INDIVIDUAL][$userid] = 1;
             $data->completiontime[ASSIGNTYPE_INDIVIDUAL][$userid] = -1;
             $data->completionevent[ASSIGNTYPE_INDIVIDUAL][$userid] = 0;
             $data->completioninstance[ASSIGNTYPE_INDIVIDUAL][$userid] = 0;
+            unset($userids[$key]);
+            $a++;
+            if ($a > 500) {
+                $a = 0;
+                // Write chunk.
+                $category->update_assignments($data);
+            }
         }
-
-        $category = new individuals_category();
+        // Last chunk.
         $category->update_assignments($data);
 
         $program = new program($programid);
         $assignments = $program->get_assignments();
         $assignments->init_assignments($programid);
-
         $program->update_learner_assignments();
+    }
+
+    /**
+     * Add course to program
+     *
+     * @param int $program id Program id
+     * @param array $courseids of int Course id
+     */
+    public function add_courseset_program($programid, $courseids) {
+        $rawdata = new stdClass();
+        $rawdata->id = $programid;
+        $rawdata->contentchanged = 1;
+        $rawdata->contenttype = 1;
+        $rawdata->setprefixes = '999';
+        $rawdata->{'999courses'} = implode(',', $courseids);
+        $rawdata->{'999contenttype'} = 1;
+        $rawdata->{'999id'} = 0;
+        $rawdata->{'999label'} = '';
+        $rawdata->{'999sortorder'} = 2;
+        $rawdata->{'999contenttype'} = 1;
+        $rawdata->{'999nextsetoperator'} = '';
+        $rawdata->{'999completiontype'} = 1;
+        $rawdata->{'999timeallowedperiod'} = 2;
+        $rawdata->{'999timeallowednum'} = 1;
+
+        $program = new program($programid);
+        $programcontent = $program->get_content();
+        $programcontent->setup_content($rawdata);
+        $programcontent->save_content();
     }
 
    /**

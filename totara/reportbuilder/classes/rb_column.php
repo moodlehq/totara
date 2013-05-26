@@ -348,7 +348,17 @@ class rb_column {
         // Add extrafields to the array after the main fields
         if ($returnextrafields && $extrafields !== null) {
             foreach ($extrafields as $alias => $extrafield) {
-                $fields[] = ($aliasmode == self::CACHE) ? $alias : "$extrafield AS $alias";
+                switch ($aliasmode) {
+                    case self::ALIASONLY:
+                    case self::CACHE:
+                        $fields[] = $alias;
+                        break;
+                    case self::FIELDONLY:
+                        $fields[] = $extrafield;
+                        break;
+                    default:
+                        $fields[] = "$extrafield AS $alias";
+                }
             }
         }
         return $fields;

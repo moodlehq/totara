@@ -2378,6 +2378,7 @@ class reportbuilder {
      * @return array of arrays of strings array(where, group, having, bool allgrouped)
      */
     protected function collect_restrictions($filtered, $cache = false) {
+        global $DB;
         $where = array();
         $group = array();
         $having = array();
@@ -2412,17 +2413,25 @@ class reportbuilder {
 
         if ($this->grouped) {
             $group = array();
+            // We use FIELDONLY for the GROUP BY clause because MSSQL does not allow aliases in grouping.
+            // In the same time pgsql does not allow grouping by text constants which can be fieldnames
+            $mode = rb_column::CACHE;
+            if (!$cache) {
+                $mode = rb_column::ALIASONLY;
+                if ($DB->get_dbfamily() == 'mssql') {
+                    $mode = rb_column::FIELDONLY;
+                }
+            }
+
             foreach ($this->columns as $column) {
                 if ($column->grouping == 'none') {
                     $allgrouped = false;
-                    // We use FIELDONLY for the GROUP BY clause because MSSQL does not allow aliases in grouping.
-                    $mode = $cache ? rb_column::CACHE : rb_column::FIELDONLY;
                     $group = array_merge($group, $column->get_fields($this->src, $mode, true));
                 } else {
                     // We still need to add extrafields to the GROUP BY if there is a displayfunc
                     if ($column->extrafields !== null && $column->displayfunc !== null) {
                         foreach ($column->extrafields as $alias => $field) {
-                            $gp = $cache ? $alias : $field;
+                            $gp = ($mode == rb_column::CACHE || $mode == rb_column::ALIASONLY) ? $alias : $field;
                             if (!in_array($gp, $group)) {
                                 $group[] = $gp;
                                 $allgrouped = false;

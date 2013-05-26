@@ -819,6 +819,24 @@ class columns_test extends reportcache_advanced_testcase {
         $this->prog_data->availablefrom = 123456789;
         $this->prog_data->availableuntil = 123456789;
 
+        $this->prog_courseset_data = new stdClass();
+        $this->prog_courseset_data->id = 1;
+        $this->prog_courseset_data->programid = 1;
+        $this->prog_courseset_data->sortorder = 1;
+        $this->prog_courseset_data->competencyid = 0;
+        $this->prog_courseset_data->nextsetoperator = 0;
+        $this->prog_courseset_data->completiontype = 1;
+        $this->prog_courseset_data->timeallowed = 3024000;
+        $this->prog_courseset_data->recurcreatetime = 0;
+        $this->prog_courseset_data->recurrencetime = 0;
+        $this->prog_courseset_data->contenttype = 1;
+        $this->prog_courseset_data->label = 'courseset1';
+
+        $this->prog_courseset_course_data = new stdClass();
+        $this->prog_courseset_course_data->id = 1;
+        $this->prog_courseset_course_data->coursesetid = 1;
+        $this->prog_courseset_course_data->courseid = 1;
+
         $this->prog_extension_data = new stdClass();
         $this->prog_extension_data->id = 1;
         $this->prog_extension_data->programid = 1;
@@ -1108,6 +1126,8 @@ class columns_test extends reportcache_advanced_testcase {
         $DB->insert_record('cohort', $this->cohort_data);
         $DB->insert_record('cohort_members', $this->cohort_members_data);
         $DB->insert_record('prog', $this->prog_data);
+        $DB->insert_record('prog_courseset', $this->prog_courseset_data);
+        $DB->insert_record('prog_courseset_course', $this->prog_courseset_course_data);
         $DB->insert_record('prog_extension', $this->prog_extension_data);
         $DB->insert_record('prog_completion', $this->prog_completion_data);
         $DB->insert_record('prog_completion_history', $this->prog_completion_history_data);
@@ -1176,7 +1196,7 @@ class columns_test extends reportcache_advanced_testcase {
                     }
                     $data = $rb->process_data_row($record);
                 }
-            $records->close();
+                $records->close();
                 if ($title == "User" || $title == "Courses") {
                     $this->assertEquals('2', $rb->get_full_count());
                 }
