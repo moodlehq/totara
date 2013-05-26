@@ -2717,7 +2717,7 @@ class reportbuilder {
                 if (isset($column->displayfunc)) {
                     $func = 'rb_display_'.$column->displayfunc;
                     if (method_exists($this->src, $func)) {
-                        if ($column->displayfunc == 'customfield_textarea' || $column->displayfunc == 'customfield_file') {
+                        if ($column->displayfunc == 'customfield_textarea' || $column->displayfunc == 'customfield_file' || $column->displayfunc == 'tinymce_textarea') {
                             $tabledata[] = $this->src->$func($field, $record->$field, $record, $isexport);
                         } else if (($column->displayfunc == 'nice_date' || $column->displayfunc == 'nice_datetime') && $excel) {
                             $tabledata[] = $record->$field;

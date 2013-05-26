@@ -447,6 +447,42 @@ abstract class rb_base_source {
     }
 
     /**
+     * Properly format tinymce textarea data for display
+     *
+     * @param string $field fieldname from SQL query
+     * @param integer $data contents of field from database
+     * @param object $row Object containing all other fields for this row
+     * @param boolean $isexport
+     * @return string Textarea contents
+     */
+    public function rb_display_tinymce_textarea($field = '', $data = '', $row = '', $isexport = false) {
+        if (empty($field) || empty($data) || empty($row)) {
+            return '';
+        }
+
+        if (empty($row->context) && empty($row->recordid)) {
+            $context = context_system::instance();
+        } else {
+            $rowcontext = $row->context;
+            $context = $rowcontext::instance($row->recordid);
+        }
+
+        if (!isset($row->fileid)) {
+            $row->fileid = null;
+        }
+
+        $data = file_rewrite_pluginfile_urls($data, 'pluginfile.php', $context->id, $row->component, $row->filearea, $row->fileid);
+
+        if ($isexport) {
+            $displaytext = format_text($data, FORMAT_MOODLE);
+        } else {
+            $displaytext = format_text($data, FORMAT_HTML);
+        }
+
+        return $displaytext;
+    }
+
+    /**
      * Properly format user customfield textarea data for display
      *
      * @param integer $data contents of field from database
@@ -1553,9 +1589,31 @@ abstract class rb_base_source {
                     $DB->sql_compare_text("$join.summary", 1024)) . ' END',
             array(
                 'joins' => $join,
+                'displayfunc' => 'tinymce_textarea',
+                'extrafields' => array(
+                    'filearea' => '\'summary\'',
+                    'component' => '\'course\'',
+                    'context' => '\'context_course\'',
+                    'recordid' => "$join.id"
+                )
             )
         );
-
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'summary',
+            get_string('coursesummary', 'totara_reportbuilder'),
+            $DB->sql_compare_text("$join.summary", 1024),
+            array(
+                'joins' => $join,
+                'displayfunc' => 'tinymce_textarea',
+                'extrafields' => array(
+                    'filearea' => '\'summary\'',
+                    'component' => '\'course\'',
+                    'context' => '\'context_course\'',
+                    'recordid' => "$join.id"
+                )
+            )
+        );
         $columnoptions[] = new rb_column_option(
             'course',
             'coursetypeicon',
@@ -1717,7 +1775,17 @@ abstract class rb_base_source {
             'summary',
             get_string('programsummary', 'totara_program'),
             $DB->sql_compare_text("$join.summary", 1024),
-            array('joins' => $join)
+            array(
+                'joins' => $join,
+                'displayfunc' => 'tinymce_textarea',
+                'extrafields' => array(
+                    'filearea' => '\'summary\'',
+                    'component' => '\'totara_program\'',
+                    'context' => '\'context_program\'',
+                    'recordid' => "$join.id",
+                    'fileid' => 0
+                )
+            )
         );
         $columnoptions[] = new rb_column_option(
             'prog',
