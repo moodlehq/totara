@@ -40,15 +40,9 @@ if (empty($timeslotsarray)) {
 
 // Setup / loading data
 // Get all rooms
-$sql = 'SELECT
-            r.id,
-            '.$DB->sql_concat('r.name', "', '",
-                'r.building', "', '",
-                'r.address', "', '",
-                'r.description',
-                "' (".get_string('capacity', 'facetoface').": '", 'r.capacity', "')'"
-            ).' AS fullname '.
-        "FROM
+$sql = "SELECT
+            r.*
+        FROM
             {facetoface_room} r
         WHERE
             r.custom = 0
@@ -57,7 +51,14 @@ $sql = 'SELECT
             r.building,
             r.address";
 
-if ($allrooms = $DB->get_records_sql($sql)) {
+if ($rooms = $DB->get_records_sql($sql)) {
+    $allrooms = array();
+    foreach ($rooms as $room) {
+        $roomobject = new stdClass();
+        $roomobject->id = $room->id;
+        $roomobject->fullname = get_string('predefinedroom', 'facetoface', $room);
+        $allrooms[$room->id] = $roomobject;
+    }
     $availablerooms = facetoface_get_available_rooms($timeslotsarray, 'id', array($sessionid));
     if ($unavailablerooms = array_diff(array_keys($allrooms), array_keys($availablerooms))) {
         $unavailablerooms = array_combine($unavailablerooms, $unavailablerooms);  // make array keys and values the same

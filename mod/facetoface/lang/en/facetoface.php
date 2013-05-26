@@ -388,6 +388,7 @@ $string['pluginname'] = 'Face-to-face';
 $string['points'] = 'Points';
 $string['pointsplural'] = 'Points';
 $string['potentialrecipients'] = 'Potential recipients';
+$string['predefinedroom'] = '{$a->name}, {$a->building}, {$a->address}, {$a->description} (Capacity: {$a->capacity})';
 $string['previoussessions'] = 'Previous sessions';
 $string['previoussessionslist'] = 'List of all past sessions for this Face-to-face activity';
 $string['printversionid'] = 'Print version: without name';
