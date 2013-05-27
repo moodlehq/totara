@@ -39,9 +39,10 @@ raise_memory_limit(MEMORY_HUGE);
 
 define('COHORT_HISTORY_PER_PAGE', 50);
 
-admin_externalpage_setup('cohorts');
-
 $id = required_param('id', PARAM_INT);
+
+$url = new moodle_url('/totara/cohort/learningplan.php', array('id' => $id));
+admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout'=>'report'));
 
 $cohort = $DB->get_record('cohort', array('id' => $id), '*', MUST_EXIST);
 

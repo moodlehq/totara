@@ -23,6 +23,7 @@
  */
 
 require('../config.php');
+require_once($CFG->libdir.'/adminlib.php');
 require($CFG->dirroot.'/course/lib.php');
 require($CFG->dirroot.'/cohort/lib.php');
 require($CFG->dirroot.'/cohort/edit_form.php');
@@ -37,6 +38,10 @@ $id        = optional_param('id', 0, PARAM_INT);
 $contextid = optional_param('contextid', 0, PARAM_INT);
 $delete    = optional_param('delete', 0, PARAM_BOOL);
 $confirm   = optional_param('confirm', 0, PARAM_BOOL);
+
+$url = new moodle_url('/cohort/edit.php', array('id' => $id, 'contextid' => $contextid,
+    'delete' => $delete, 'confirm' => $confirm));
+admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout'=>'report'));
 
 require_login();
 

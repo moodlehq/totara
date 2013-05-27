@@ -33,8 +33,9 @@ $confirm   = optional_param('confirm', false, PARAM_BOOL);
 $clone     = optional_param('clone', false, PARAM_BOOL);
 $cancelurl = optional_param('cancelurl', false, PARAM_LOCALURL);
 
-admin_externalpage_setup('cohorts');
-
+$url = new moodle_url('/cohort/view.php', array('id' => $id, 'delete' => $delete,
+    'confirm' => $confirm, 'clone' => $clone, 'cancelurl' => $cancelurl));
+admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout'=>'report'));
 
 $context = context_system::instance();
 require_capability('moodle/cohort:view', $context);

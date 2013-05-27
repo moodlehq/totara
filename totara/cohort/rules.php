@@ -34,8 +34,8 @@ require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 $id = required_param('id', PARAM_INT);
 $debug = optional_param('debug', false, PARAM_BOOL);
 
-$page_url = new moodle_url('/totara/cohort/rules.php', array('id' => $id, 'debug' => $debug));
-admin_externalpage_setup('cohorts', '', null, $page_url);
+$url = new moodle_url('/totara/cohort/rules.php', array('id' => $id, 'debug' => $debug));
+admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout'=>'report'));
 
 $context = context_system::instance();
 require_capability('totara/cohort:managerules', $context);
@@ -205,7 +205,7 @@ echo cohort_print_tabs('editrules', $cohort->id, $cohort->cohorttype, $cohort);
 display_approval_action_box($cohort->id,
     $style=$cohort->status == COHORT_COL_STATUS_DRAFT_CHANGED ? null : 'display:none;');
 
-echo '<div id="reportarea" />';
+echo '<div id="reportarea"></div>';
 
 // Print the generated query
 if ($debug) {
