@@ -1719,7 +1719,7 @@ function xmldb_main_upgrade($oldversion) {
         upgrade_main_savepoint(true, 2012120303.09);
     }
 
-    if ($oldversion < 2012120303.10) {
+    if ($oldversion < 2012120304.01) {
         // Add openbadges tables.
 
         // Define table 'badge' to be created
@@ -1895,10 +1895,10 @@ function xmldb_main_upgrade($oldversion) {
         }
 
         // Main savepoint reached.
-        upgrade_main_savepoint(true, 2012120303.10);
+        upgrade_main_savepoint(true, 2012120304.01);
     }
 
-    if ($oldversion < 2012120303.11) {
+    if ($oldversion < 2012120304.02) {
             // Create a new 'badge_external' table first.
         // Define table 'badge_external' to be created.
         $table = new xmldb_table('badge_external');
@@ -1936,10 +1936,10 @@ function xmldb_main_upgrade($oldversion) {
         }
 
         // Main savepoint reached.
-        upgrade_main_savepoint(true, 2012120303.11);
+        upgrade_main_savepoint(true, 2012120304.02);
     }
 
-    if ($oldversion < 2012120304.01) {
+    if ($oldversion < 2012120304.03) {
         // Create missing badgeid foreign key on badge_manual_award.
         $table = new xmldb_table('badge_manual_award');
         $key = new xmldb_key('fk_badgeid', XMLDB_KEY_FOREIGN, array('id'), 'badge', array('id'));
@@ -1948,7 +1948,7 @@ function xmldb_main_upgrade($oldversion) {
         $key->set_attributes(XMLDB_KEY_FOREIGN, array('badgeid'), 'badge', array('id'));
         $dbman->add_key($table, $key);
 
-        upgrade_main_savepoint(true, 2012120304.01);
+        upgrade_main_savepoint(true, 2012120304.03);
     }
 
     return true;
