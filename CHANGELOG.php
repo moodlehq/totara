@@ -3,6 +3,60 @@
 
 Totara LMS Changelog
 
+Release 2.4.2 (28th May 2013):
+==================================================
+
+New features:
+
+    T-10625    Add activity filters to the main calendar
+
+Improvements:
+
+    T-7702     Hide components from record of learning if they are not relevant to users
+    T-10742    Add module requirements to completion progress details page
+    T-10773    Add badges block to the course page
+    T-10764    Update jQuery and jQuery UI
+    T-10750    Add the columns manager firstname and lastname to the base source in Report Builder
+    T-10749    New date finished column in Facetoface reports
+
+Database Upgrades:
+
+    T-10782    Fixed upgrade from Moodle 2.4.4
+    T-10776    Fixed badgeid foreign key on badge_manual_award table
+
+Bug Fixes:
+
+    T-5734     Fixed undefined variable warning in Report Builder
+    T-6710     Fixed hardcoded competency language strings
+    T-10511    Fixed breadcrumbs in templates in Learning plans
+    T-10778    Fixed MSSQL distinct ntext problem in Program Management cron
+    T-10521    Stay on page when toggling blocks editing in Audience Management
+    T-10752    Fixed multilang filters issues in course, program, plan, and template names
+    T-10621    Fixed internationalisation problem with pre-defined rooms in Facetoface
+    T-10763    Allow upgrade to continue after errors when updating language packs
+    T-10679    Fixed error in types with names longer than 255 characters in hierarchies
+    T-10775    Fixed display of speech bubbles in Chat module for IE7
+    T-10771    Missing library error when cancel course restore
+    T-10774    Fixed filepicker layout in IE7
+    T-10740    Fixed deletion of program assignments from audience tab
+    T-10766    Hide positions from users without 'viewposition' capability
+    T-10415    Fixed "Clear incorrect responses" option in Quiz
+    T-10640    Added warning to messaging system
+    T-10754    Fixed ampersands breaking filenames in scorm reports
+    T-10761    Fixed hardcoded language string in program breadcrumbs
+    T-10696    Stay on course/program category page when toggling blocks editing
+    T-10629    Show user profile link when viewing course blogs
+    T-10531    Fixed undefined variable in Learning plans
+    T-10437    Fixed the message about users awaiting approval in Facetoface
+    T-10717    Remove extra addlog() when creating user in Totara Sync
+    T-10753    Fixed RTL issues on checkbox and text field combination
+    T-10760    Added enclosure for fields with spaces and commas when exporting report in CSV
+    T-10616    Make Factoface links style consistent with other links on course page
+    T-10682    Show evidence type name in Evidence Record of Learning report
+    T-10755    Remove unused code from Facetoface
+    T-10585    Fixed help text typos in Learning Plans
+    T-10538    Fixed undefined variable in Learning Plans
+
 Release 2.4.1 (14th May 2013):
 ==================================================
 
