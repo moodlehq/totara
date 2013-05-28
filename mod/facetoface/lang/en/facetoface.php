@@ -310,6 +310,7 @@ $string['normalcosthinttext'] = '';
 $string['noremindersneedtobesent'] = 'No reminders need to be sent.';
 $string['nosignedupusers'] = 'No users have signed-up for this session.';
 $string['nosignedupusersnumrequests'] = 'No users are fully booked for this session. {$a} users are awaiting approval.';
+$string['nosignedupusersonerequest'] = 'No users are fully booked for this session. 1 user is awaiting approval.';
 $string['note'] = 'Note';
 $string['notefull'] = 'Even if the Session is fully booked you can still register. You will be queued (marked in red). If someone signs out, the first student in the queue will be moved into registeres students and a notification will be sent to him/her by mail.';
 $string['notificationalreadysent'] = 'This notification has already been sent, so can no longer be edited.';
@@ -378,7 +379,6 @@ $string['placeholder:starttime'] = '[starttime]';
 $string['placeholder:finishtime'] = '[finishtime]';
 $string['placeholder:duration'] = '[duration]';
 $string['placeholder:details'] = '[details]';
-$string['placeholder:reminderperiod'] = '[reminderperiod]';
 $string['placeholder:attendeeslink'] = '[attendeeslink]';
 $string['placeholder:location'] = '[session:location]';
 $string['placeholder:venue'] = '[session:venue]';
@@ -388,6 +388,7 @@ $string['pluginname'] = 'Face-to-face';
 $string['points'] = 'Points';
 $string['pointsplural'] = 'Points';
 $string['potentialrecipients'] = 'Potential recipients';
+$string['predefinedroom'] = '{$a->name}, {$a->building}, {$a->address}, {$a->description} (Capacity: {$a->capacity})';
 $string['previoussessions'] = 'Previous sessions';
 $string['previoussessionslist'] = 'List of all past sessions for this Face-to-face activity';
 $string['printversionid'] = 'Print version: without name';
@@ -401,7 +402,6 @@ $string['registeredon'] = 'Registered On';
 $string['registrations'] = 'Registrations';
 $string['reminder'] = 'Reminder';
 $string['remindermessage'] = 'Reminder message';
-$string['reminderperiod'] = 'Days before message is sent';
 $string['removedsuccessfully'] = 'Removed successfully';
 $string['removeroominuse'] = 'This room is currently being used';
 $string['requestmessage'] = 'Request message';
@@ -518,8 +518,6 @@ To re-schedule or cancel your booking
 To re-schedule your booking you need to cancel this booking and then re-book a new session.  To cancel your booking, return to the site, then to the page for this course, and then select \'cancel\' from the booking information screen.
 
 [details]
-
-You will receive a reminder [reminderperiod] business days before this course.
 ';
 $string['setting:defaultconfirmationsubject'] = 'Default subject line for confirmation emails.';
 $string['setting:defaultconfirmationsubject_caption'] = 'Confirmation subject';
@@ -886,8 +884,6 @@ $string['reminderinstrmngr'] = '# Notice for Manager';
 $string['reminderinstrmngr_help'] = 'When **Send notice to manager** is checked, the text in the **Notice for Manager** field is sent to a learner\'s manager advising that they have signed up for a face-to-face session.';
 
 $string['remindermessage_help'] = 'This message is sent out a few days before a session\'s start date.';
-
-$string['reminderperiod_help'] = 'The reminder message will be sent this many days before the start of the session.';
 
 $string['requestmessage_help'] = 'When **Approval required** is enabled, the **Request message** section is available.
 

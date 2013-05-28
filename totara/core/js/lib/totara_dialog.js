@@ -57,7 +57,7 @@ M.totara_dialog = M.totara_dialog || {
     }
 };
 
-if ($.browser.mozilla) {
+if (navigator.userAgent.match(/mozilla/i)) {
     $('body').addClass('mozilla');
 }
 
@@ -181,11 +181,6 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         }
 
         this.load(this.default_url);
-
-        // If ie6 then hide selects while the pop-up is open
-        if($.browser.msie && parseInt($.browser.version) == 6) {
-            $('select').addClass('hidden_select_ie');
-        }
     }
 
 
@@ -371,11 +366,6 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
      * @return void
      */
     this.hide = function() {
-        // If ie6 then show selects
-        if($.browser.msie && parseInt($.browser.version) == 6) {
-            $('select').removeClass('hidden_select_ie');
-        }
-
         this.handler._loaded = false;
         this.dialog.html('');
 
@@ -663,9 +653,7 @@ totaraDialog_handler_treeview.prototype.setup_tabs = function(e, ui) {
     var containerheight = selcontainer.outerHeight() - $('div.header', selcontainer).outerHeight() - $('div#dialog-tabs', selcontainer).outerHeight();
 
     // Resize browse treeview, minus padding
-    if (!($.browser.msie && $.browser.version=="6.0")) {
-        $('div#browse-tab .treeview-wrapper', this._container).height(containerheight - $('select.simpleframeworkpicker', this._container).outerHeight() - 15);
-    }
+    $('div#browse-tab .treeview-wrapper', this._container).height(containerheight - $('select.simpleframeworkpicker', this._container).outerHeight() - 15);
 
     // Resize search container
     $('div#search-tab .treeview-wrapper', this._container).height(containerheight - $('#search-tab .mform', selcontainer).outerHeight() - $('div.search-paging', this._container).outerHeight() - 24);

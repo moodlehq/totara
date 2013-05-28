@@ -130,7 +130,7 @@ $PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'),
 if ($framework->id == 0) {
     $PAGE->navbar->add(get_string($prefix.'addnewframework', 'totara_hierarchy'));
 } else {
-    $PAGE->navbar->add(get_string('editgeneric', 'totara_hierarchy', $framework->fullname));
+    $PAGE->navbar->add(get_string('editgeneric', 'totara_hierarchy', format_string($framework->fullname)));
 }
 
 echo $OUTPUT->header();

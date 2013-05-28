@@ -2946,6 +2946,32 @@ function glossary_get_completion_requirements($cm) {
 }
 
 /**
+ * Obtains the completion progress.
+ *
+ * @param object $cm      Course-module
+ * @param int    $userid  User ID
+ * @return string The current status of completion for the user
+ */
+function glossary_get_completion_progress($cm, $userid) {
+    global $DB;
+
+    // Get glossary details.
+    if (!($glossary = $DB->get_record('glossary', array('id' => $cm->instance)))) {
+        throw new Exception("Can't find glossary " . $cm->instance);
+    }
+
+    $result = array();
+
+    if ($glossary->completionentries) {
+        $count = $DB->count_records('glossary_entries',
+                array('glossaryid' => $glossary->id, 'userid' => $userid, 'approved' => 1));
+        $result[] = get_string('completionentriescompleted', 'glossary', $count);
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this glossary based on any conditions
  * in glossary settings.
  *

@@ -178,7 +178,7 @@ class cohort_learning_plan_settings_form extends moodleform {
 
         $template_options = array();
         foreach ($templates as $template) {
-            $template_options[$template->id] = $template->fullname;
+            $template_options[$template->id] = format_string($template->fullname);
         }
 
         $mform->addElement('select', 'plantemplate', get_string('plantemplate', 'totara_plan'), $template_options);

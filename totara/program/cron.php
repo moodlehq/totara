@@ -256,11 +256,16 @@ function program_cron_switch_recurring_courses() {
                 // recurring program history via a link in their record of learning.
 
                 // Query to retrieve all the users and their completion status
-                $sql = "SELECT DISTINCT(pc.userid) AS id, pc.id AS completionid, pc.status as completionstatus, u.*
-                        FROM {prog_completion} AS pc
-                        LEFT JOIN {user} AS u ON pc.userid = u.id
-                        WHERE pc.programid = ?
-                        AND pc.coursesetid = ?";
+                $sql = "SELECT pc.id, completionid, completionstatus, u.*
+                        FROM (SELECT DISTINCT
+                                userid AS id,
+                                id AS completionid,
+                                status AS completionstatus
+                            FROM {prog_completion}
+                            WHERE programid = ?
+                            AND coursesetid = ?) AS pc
+                        JOIN {user} AS u
+                        ON pc.id = u.id";
 
                 // get all the users matching the query
                 $users = $DB->get_records_sql($sql, array($program->id, 0));
@@ -943,14 +948,21 @@ function program_cron_recurrence() {
         // Query to retrieve all the users assigned to this program (i.e. as
         // part of their required learning) who have completed the program
         // and whose completion dates are beyond the recurrence time period
-        $sql = "SELECT DISTINCT(pc.userid) AS id, pc.id AS completionid, pua.id AS userassignmentid, pua.assignmentid, u.*
+        $sql = "SELECT pcpua.id, completionid, userassignmentid, assignmentid, u.*
                 FROM {user} AS u
-                JOIN {prog_completion} AS pc ON u.id = pc.userid
-                JOIN {prog_user_assignment} AS pua ON u.id = pua.userid
-                WHERE pc.programid = ?
-                AND pc.status = ?
-                AND pc.coursesetid = ?
-                AND pc.timecompleted < ?";
+                JOIN (SELECT DISTINCT
+                        pc.userid AS id,
+                        pc.id AS completionid,
+                        pua.id AS userassignmentid,
+                        pua.assignmentid
+                    FROM {prog_completion} AS pc
+                    JOIN {prog_user_assignment} AS pua
+                    ON pc.userid = pua.userid
+                    WHERE pc.programid = ?
+                    AND pc.status = ?
+                    AND pc.coursesetid = ?
+                    AND pc.timecompleted < ?) AS pcpua
+                ON u.id = pcpua.id";
 
         // get all the users matching the query
         $users = $DB->get_records_sql($sql, array($program->id, STATUS_PROGRAM_COMPLETE, 0, $recurrencetime_comparison));

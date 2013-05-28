@@ -769,23 +769,20 @@ class lang_installer {
      * @return int return status
      */
     protected function install_language_pack($langcode) {
-
+        global $OUTPUT;
         // initialise new component installer to process this language
         $installer = new component_installer(DOWNLOAD_BASE, '/' . $this->version,
             $langcode . '.zip', 'languages.md5', 'lang');
         if (!$installer->requisitesok) {
-            throw new lang_installer_exception('installer_requisites_check_failed');
+            echo $OUTPUT->notification(get_string($installer->get_error(), 'error'), 'notifyproblem');
+            return self::RESULT_DOWNLOADERROR;
         }
 
         $status = $installer->install();
 
         if ($status == COMPONENT_ERROR) {
-            if ($installer->get_error() === 'remotedownloaderror') {
-                return self::RESULT_DOWNLOADERROR;
-            } else {
-                throw new lang_installer_exception($installer->get_error(), $langcode);
-            }
-
+            echo $OUTPUT->notification(get_string($installer->get_error(), 'error', $langcode), 'notifyproblem');
+            return self::RESULT_DOWNLOADERROR;
         } else if ($status == COMPONENT_UPTODATE) {
             return self::RESULT_UPTODATE;
 
@@ -793,7 +790,8 @@ class lang_installer {
             return self::RESULT_INSTALLED;
 
         } else {
-            throw new lang_installer_exception('unexpected_installer_result', $status);
+            echo $OUTPUT->notification(get_string('unexpected_installer_result', 'error', $status), 'notifyproblem');
+            return self::RESULT_DOWNLOADERROR;
         }
     }
 }

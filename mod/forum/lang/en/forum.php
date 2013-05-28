@@ -82,14 +82,17 @@ $string['cleanreadtime'] = 'Mark old posts as read hour';
 $string['completiondiscussions'] = 'Student must create discussions:';
 $string['completiondiscussionsgroup'] = 'Require discussions';
 $string['completiondiscussionshelp'] = 'requiring discussions to complete';
+$string['completiondiscussionscompleted'] = 'Created {$a} discussion(s)';
 $string['completiondiscussionsshort'] = 'Create {$a} discussions';
 $string['completionposts'] = 'Student must post discussions or replies:';
 $string['completionpostsgroup'] = 'Require posts';
 $string['completionpostshelp'] = 'requiring discussions or replies to complete';
+$string['completionpostscompleted'] = 'Created {$a} post(s)';
 $string['completionpostsshort'] = 'Create {$a} posts';
 $string['completionreplies'] = 'Student must post replies:';
 $string['completionrepliesgroup'] = 'Require replies';
 $string['completionreplieshelp'] = 'requiring replies to complete';
+$string['completionrepliescompleted'] = 'Posted {$a} reply(s)';
 $string['completionrepliesshort'] = 'Post {$a} replies';
 $string['configcleanreadtime'] = 'The hour of the day to clean old posts from the \'read\' table.';
 $string['configdigestmailtime'] = 'People who choose to have emails sent to them in digest form will be emailed the digest daily. This setting controls which time of day the daily mail will be sent (the next cron that runs after this hour will send it).';
@@ -390,7 +393,7 @@ $string['subscribestop'] = 'I don\'t want email copies of posts to this forum';
 $string['subscription'] = 'Subscription';
 $string['subscription_help'] = 'If you are subscribed to a forum it means you will receive email copies of forum posts. Usually you can choose whether you wish to be subscribed, though sometimes subscription is forced so that everyone receives email copies of forum posts.';
 $string['subscriptionmode'] = 'Subscription mode';
-$string['subscriptionmode_help'] = 'When a participant is subscribed to a forum it means they will receive email copies of forum posts.
+$string['subscriptionmode_help'] = 'When a participant is subscribed to a forum it means they will receive forum post notifications.
 
 There are 4 subscription mode options:
 

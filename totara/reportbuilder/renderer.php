@@ -279,7 +279,7 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
         foreach ($reports as $report) {
             $row = array();
             $reporturl = reportbuilder_get_report_url($report);
-            $row[] = html_writer::link($reporturl, $report->fullname);
+            $row[] = html_writer::link($reporturl, format_string($report->fullname));
 
             $strsettings = get_string('settings', 'totara_reportbuilder');
             $strdelete = get_string('delete', 'totara_reportbuilder');

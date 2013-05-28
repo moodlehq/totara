@@ -79,7 +79,7 @@ $report->include_js();
 // Display the page
 $strsubheading = get_string('allevidence', 'totara_plan');
 $PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/'));
-$PAGE->navbar->add($strheading, new moodle_url('/totara/plan/record/evidence/index.php'));
+$PAGE->navbar->add($strheading, new moodle_url('/totara/plan/record/index.php'));
 $PAGE->navbar->add($strsubheading);
 $PAGE->set_title($strheading);
 $PAGE->set_heading($strheading);

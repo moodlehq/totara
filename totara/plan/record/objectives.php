@@ -99,7 +99,7 @@
     /// Display the page
     ///
     $PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/'));
-    $PAGE->navbar->add($strheading, new moodle_url('/totara/plan/record/courses.php'));
+    $PAGE->navbar->add($strheading, new moodle_url('/totara/plan/record/index.php'));
     $PAGE->navbar->add($strsubheading);
     $PAGE->set_title($strheading);
     $PAGE->set_button($report->edit_button());

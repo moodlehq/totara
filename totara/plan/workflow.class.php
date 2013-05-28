@@ -130,7 +130,7 @@ abstract class dp_base_workflow {
      */
     function list_differences($templateid) {
         global $DB;
-
+        $diff = array();
         if (!$course_settings = $DB->get_record('dp_course_settings', array('templateid' => $templateid))) {
             print_error('error:missingcoursesettings', 'totara_plan');
         }

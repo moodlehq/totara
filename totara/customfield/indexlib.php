@@ -203,7 +203,7 @@ function customfield_edit_field($id, $datatype, $typeid=0, $redirect, $tablepref
         if (empty($id)) {
             $strheading = get_string('createnewfield', 'totara_customfield', $datatypes[$datatype]);
         } else {
-            $strheading = get_string('editfield', 'totara_customfield', $field->fullname);
+            $strheading = get_string('editfield', 'totara_customfield', format_string($field->fullname));
         }
 
         /// Print the page

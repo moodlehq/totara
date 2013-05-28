@@ -211,7 +211,7 @@ M.totara_message = M.totara_message || {
                                         '</a>/<a id="none">'+M.util.get_string('none', 'moodle')+'</a></div>');
         function jqCheckAll( id, name, flag ) {
            if (flag === 0) {
-              $("form#" + id + " INPUT[@name=" + name + "][type='checkbox']").attr('checked', false);
+              $("form#" + id + " INPUT[@name=" + name + "][type='checkbox']").prop('checked', false);
               if ($('form#totara_messages input[type=checkbox]:checked').length) {
                   $('#totara-dismiss').attr('disabled', false);
               } else {
@@ -219,7 +219,7 @@ M.totara_message = M.totara_message || {
               }
            }
            else {
-              $("form#" + id + " INPUT[@name=" + name + "][type='checkbox']").attr('checked', true);
+              $("form#" + id + " INPUT[@name=" + name + "][type='checkbox']").prop('checked', true);
               if ($('form#totara_messages input[type=checkbox]:checked').length) {
                   $('#totara-dismiss').attr('disabled', false);
               } else {

@@ -66,13 +66,13 @@ M.totara_reportbuildercolumns = M.totara_reportbuildercolumns || {
         var module = this;
 
         // disable the new column heading field on page load
-        $('#id_newheading').attr('disabled', true);
-        $('#id_newcustomheading').attr('disabled', true);
+        $('#id_newheading').prop('disabled', true);
+        $('#id_newcustomheading').prop('disabled', true);
 
         // disable uncustomised headers on page load
         $('input.column_custom_heading_checkbox').not(':checked').each(function() {
             var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
-            textElement.attr('disabled', true);
+            textElement.prop('disabled', true);
         });
 
         // handle changes to the column pulldowns
@@ -92,14 +92,14 @@ M.totara_reportbuildercolumns = M.totara_reportbuildercolumns || {
             var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
             if ($(this).is(':checked')) {
                 // enable the textbox when checkbox isn't checked
-                textElement.attr('disabled', false);
+                textElement.prop('disabled', false);
             } else {
                 // disable the textbox when checkbox is checked
                 // and reset text contents back to default
                 var changedSelector = $('select.column_selector', $(this).parents('tr:first')).val();
                 var newContent = module.config.rb_column_headings[changedSelector];
                 textElement.val(newContent);
-                textElement.attr('disabled', true);
+                textElement.prop('disabled', true);
             }
         });
 
@@ -112,13 +112,13 @@ M.totara_reportbuildercolumns = M.totara_reportbuildercolumns || {
             if ($(this).val() == 0) {
                 // empty and disable the new heading box if no column chosen
                 newHeadingBox.val('');
-                newHeadingBox.attr('disabled', true);
+                newHeadingBox.prop('disabled', true);
                 addbutton.remove();
                 newCheckBox.removeAttr('checked');
-                newCheckBox.attr('disabled', true);
+                newCheckBox.prop('disabled', true);
             } else {
                 // reenable it (binding above will fill the value)
-                newCheckBox.attr('disabled', false);
+                newCheckBox.prop('disabled', false);
             }
         });
 

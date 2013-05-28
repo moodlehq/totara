@@ -40,7 +40,6 @@ if (!$DB->get_record('dp_template', array('id' => $id))) {
 
 define('INSTANCES_PER_PAGE', 100);
 
-$PAGE->navbar->add(get_string("managetemplates", "totara_plan"), new moodle_url("/totara/plan/template/index.php"));
 $PAGE->navbar->add(get_string('templateinstances', 'totara_plan'));
 
 echo $OUTPUT->header();

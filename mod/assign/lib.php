@@ -1042,11 +1042,11 @@ function assign_user_outline($course, $user, $coursemodule, $assignment) {
     $gradingitem = $gradinginfo->items[0];
     $gradebookgrade = $gradingitem->grades[$user->id];
 
-    if (!$gradebookgrade) {
+    if (empty($gradebookgrade->str_long_grade)) {
         return null;
     }
     $result = new stdClass();
-    $result->info = get_string('outlinegrade', 'assign', $gradebookgrade->grade);
+    $result->info = get_string('outlinegrade', 'assign', $gradebookgrade->str_long_grade);
     $result->time = $gradebookgrade->dategraded;
 
     return $result;
@@ -1067,6 +1067,33 @@ function assign_get_completion_requirements($cm) {
 
     if ($assign->completionsubmit) {
         $result[] = get_string('submission', 'assign');
+    }
+
+    return $result;
+}
+
+/**
+ * Obtains the completion progress.
+ *
+ * @param object $cm      Course-module
+ * @param int    $userid  User ID
+ * @return string The current status of completion for the user
+ */
+function assign_get_completion_progress($cm, $userid) {
+    global $CFG, $DB;
+    require_once($CFG->dirroot . '/mod/assign/locallib.php');
+
+    $assign = new assign(null, $cm, $cm->course);
+
+    $result = array();
+
+    // If completion option is enabled, evaluate it and return true/false.
+    if ($assign->get_instance()->completionsubmit) {
+        $submission = $DB->get_record('assign_submission',
+                array('assignment' => $assign->get_instance()->id, 'userid' => $userid), '*', IGNORE_MISSING);
+        if ($submission && ($submission->status == ASSIGN_SUBMISSION_STATUS_SUBMITTED)) {
+            $result[] = get_string('submitted', 'assign');
+        }
     }
 
     return $result;

@@ -330,7 +330,7 @@ class dp_competency_component extends dp_base_component {
             if ($courses) {
                 echo $OUTPUT->box_start('generalbox', 'notice');
                 $compname = $DB->get_field_sql("SELECT comp.fullname FROM {comp} comp INNER JOIN {dp_plan_competency_assign} compasn ON comp.id = compasn.competencyid WHERE compasn.id = ?", array($delete));
-                echo $OUTPUT->heading(get_string('deletelinkedcoursesheader', 'totara_plan', s($compname)));
+                echo $OUTPUT->heading(get_string('deletelinkedcoursesheader', 'totara_plan', s(format_string($compname))));
 
                 if ($USER->id == $this->plan->userid) {
                     echo html_writer::tag('p', get_string('deletelinkedcoursesinstructionslearner', 'totara_plan'));
@@ -460,7 +460,7 @@ class dp_competency_component extends dp_base_component {
                     $name .= html_writer::empty_tag('br');
                     // @todo add code to disable unless
                     // pulldown set to approve
-                    $name .= html_writer::checkbox("linkedcourses[{$item->id}][{$course->courseid}]", "1", true) . $course->fullname . $message;
+                    $name .= html_writer::checkbox("linkedcourses[{$item->id}][{$course->courseid}]", "1", true) . format_string($course->fullname) . $message;
                 }
                 $OUTPUT->container($name, "related-courses");
             }
@@ -956,7 +956,7 @@ class dp_competency_component extends dp_base_component {
                             get_string('changedfromxtoy', 'totara_plan', (object)array('before' => dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
                             'after' => dp_get_approval_status_from_code($record->approved))).html_writer::empty_tag('br');
                         $approval->text = $text;
-                        $approval->itemname = $competency->fullname;
+                        $approval->itemname = format_string($competency->fullname);
                         $approval->before = $oldrecords[$itemid]->approved;
                         $approval->after = $record->approved;
                         $approvals[] = $approval;

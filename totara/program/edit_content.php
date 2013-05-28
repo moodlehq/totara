@@ -172,8 +172,7 @@ add_to_log(SITEID, 'program', 'view content', "edit_content.php?id={$program->id
 /// Display
 ///
 
-$heading = $program->fullname;
-$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
+$heading = format_string($program->fullname);
 
 $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
@@ -181,7 +180,7 @@ foreach ($category_breadcrumbs as $crumb) {
     $PAGE->navbar->add($crumb['name'], $crumb['link']);
 }
 
-$PAGE->navbar->add($program->shortname, new moodle_url('/totara/program/view.php', array('id' => $id)));
+$PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
 $PAGE->navbar->add(get_string('editprogramcontent', 'totara_program'));
 
 //Javascript includes

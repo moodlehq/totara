@@ -541,6 +541,29 @@ function feedback_get_completion_requirements($cm) {
 }
 
 /**
+ * Obtains the completion progress.
+ *
+ * @param object $cm      Course-module
+ * @param int    $userid  User ID
+ * @return string The current status of completion for the user
+ */
+function feedback_get_completion_progress($cm, $userid) {
+    global $DB;
+
+    // Get feedback details.
+    $feedback = $DB->get_record('feedback', array('id' => $cm->instance), '*', MUST_EXIST);
+
+    $result = array();
+
+    if ($feedback->completionsubmit &&
+            $DB->record_exists('feedback_tracking', array('userid' => $userid, 'feedback' => $feedback->id))) {
+        $result[] = get_string('submitted', 'feedback');
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this feedback based on the condition
  * in feedback settings.
  *

@@ -273,4 +273,6 @@ $string['core:undeleteuser'] = 'Undelete user';
 $string['core:appearance'] = 'Configure site appearance settings';
 
 $string['totararegistration'] = 'Totara Registration';
+
+$string['ampersand'] = 'and';
 ?>

@@ -192,7 +192,7 @@ if ($csv) {
     echo $OUTPUT->header();
 
     $PAGE->requires->js('/report/completion/textrotate.js');
-    $PAGE->requires->js('/totara/core/js/lib/jquery-1.7.2.min.js');
+    $PAGE->requires->js('/totara/core/js/lib/jquery-1.9.1.min.js');
 
     $args = array(
         'args' => json_encode(array(

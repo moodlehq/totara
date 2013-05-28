@@ -1460,7 +1460,7 @@ function xmldb_main_upgrade($oldversion) {
 
     if ($oldversion < 2012111200.01) {
         // Force the rebuild of the cache of every courses, some cached information could contain wrong icon references.
-        rebuild_course_cache();
+        $DB->execute('UPDATE {course} set modinfo = ?, sectioncache = ?', array(null, null));
 
         // Main savepoint reached.
         upgrade_main_savepoint(true, 2012111200.01);
@@ -1605,7 +1605,7 @@ function xmldb_main_upgrade($oldversion) {
         $DB->delete_records('course_sections_avail_fields', array('userfield' => 'interests'));
         $DB->delete_records('course_modules_avail_fields', array('userfield' => 'interests'));
         // Clear course cache (will be rebuilt on first visit) in case of changes to these.
-        rebuild_course_cache(0, true);
+        $DB->execute('UPDATE {course} set modinfo = ?, sectioncache = ?', array(null, null));
 
         upgrade_main_savepoint(true, 2012120301.13);
     }
@@ -1671,7 +1671,55 @@ function xmldb_main_upgrade($oldversion) {
         upgrade_main_savepoint(true, 2012120302.01);
     }
 
-    if ($oldversion < 2012120303.01) {
+    if ($oldversion < 2012120303.02) {
+        // Fixing possible wrong MIME type for MIME HTML (MHTML) files.
+        $extensions = array('%.mht', '%.mhtml');
+        $select = $DB->sql_like('filename', '?', false);
+        foreach ($extensions as $extension) {
+            $DB->set_field_select(
+                'files',
+                'mimetype',
+                'message/rfc822',
+                $select,
+                array($extension)
+            );
+        }
+        upgrade_main_savepoint(true, 2012120303.02);
+    }
+
+    if ($oldversion < 2012120303.06) {
+        // MDL-29877 Some bad restores created grade items with no category information.
+        $sql = "UPDATE {grade_items}
+                   SET categoryid = courseid
+                 WHERE itemtype <> 'course' and itemtype <> 'category'
+                       AND categoryid IS NULL";
+        $DB->execute($sql);
+        upgrade_main_savepoint(true, 2012120303.06);
+    }
+
+    if ($oldversion < 2012120303.08) {
+        require_once($CFG->dirroot.'/cache/locallib.php');
+        // The features bin needs updating.
+        cache_config_writer::update_default_config_stores();
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2012120303.08);
+    }
+
+    if ($oldversion < 2012120303.09) {
+        // Adding index to unreadmessageid field of message_working table (MDL-34933)
+        $table = new xmldb_table('message_working');
+        $index = new xmldb_index('unreadmessageid_idx', XMLDB_INDEX_NOTUNIQUE, array('unreadmessageid'));
+
+        // Conditionally launch add index unreadmessageid
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2012120303.09);
+    }
+
+    if ($oldversion < 2012120304.01) {
         // Add openbadges tables.
 
         // Define table 'badge' to be created
@@ -1814,7 +1862,7 @@ function xmldb_main_upgrade($oldversion) {
 
         // Adding keys to table 'badge_manual_award'
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->add_key('fk_badgeid', XMLDB_KEY_FOREIGN, array('id'), 'badge', array('id'));
+        $table->add_key('fk_badgeid', XMLDB_KEY_FOREIGN, array('badgeid'), 'badge', array('id'));
         $table->add_key('fk_recipientid', XMLDB_KEY_FOREIGN, array('recipientid'), 'user', array('id'));
         $table->add_key('fk_issuerid', XMLDB_KEY_FOREIGN, array('issuerid'), 'user', array('id'));
         $table->add_key('fk_issuerrole', XMLDB_KEY_FOREIGN, array('issuerrole'), 'role', array('id'));
@@ -1847,10 +1895,10 @@ function xmldb_main_upgrade($oldversion) {
         }
 
         // Main savepoint reached.
-        upgrade_main_savepoint(true, 2012120303.01);
+        upgrade_main_savepoint(true, 2012120304.01);
     }
 
-    if ($oldversion < 2012120303.02) {
+    if ($oldversion < 2012120304.02) {
             // Create a new 'badge_external' table first.
         // Define table 'badge_external' to be created.
         $table = new xmldb_table('badge_external');
@@ -1869,27 +1917,38 @@ function xmldb_main_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        // Perform user data migration.
-        $usercollections = $DB->get_records('badge_backpack');
-        foreach ($usercollections as $usercollection) {
-            $collection = new stdClass();
-            $collection->backpackid = $usercollection->id;
-            $collection->collectionid = $usercollection->backpackgid;
-            $DB->insert_record('badge_external', $collection);
-        }
-
-        // Finally, drop the column.
         // Define field backpackgid to be dropped from 'badge_backpack'.
         $table = new xmldb_table('badge_backpack');
         $field = new xmldb_field('backpackgid');
 
-        // Conditionally launch drop field backpackgid.
         if ($dbman->field_exists($table, $field)) {
+            // Perform user data migration.
+            $usercollections = $DB->get_records('badge_backpack');
+            foreach ($usercollections as $usercollection) {
+                $collection = new stdClass();
+                $collection->backpackid = $usercollection->id;
+                $collection->collectionid = $usercollection->backpackgid;
+                $DB->insert_record('badge_external', $collection);
+            }
+
+            // Launch drop field backpackgid.
             $dbman->drop_field($table, $field);
         }
 
         // Main savepoint reached.
-        upgrade_main_savepoint(true, 2012120303.02);
+        upgrade_main_savepoint(true, 2012120304.02);
+    }
+
+    if ($oldversion < 2012120304.03) {
+        // Create missing badgeid foreign key on badge_manual_award.
+        $table = new xmldb_table('badge_manual_award');
+        $key = new xmldb_key('fk_badgeid', XMLDB_KEY_FOREIGN, array('id'), 'badge', array('id'));
+
+        $dbman->drop_key($table, $key);
+        $key->set_attributes(XMLDB_KEY_FOREIGN, array('badgeid'), 'badge', array('id'));
+        $dbman->add_key($table, $key);
+
+        upgrade_main_savepoint(true, 2012120304.03);
     }
 
     return true;

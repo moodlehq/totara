@@ -64,7 +64,7 @@ if ($nojs) {
 }
 $out .= html_writer::start_tag('div', array('class' => 'selectcompetencies'));
 $out .= html_writer::tag('p', get_string('chooseevidencetype','totara_hierarchy'));
-$out .= html_writer::tag('h3', $course->fullname);
+$out .= html_writer::tag('h3', format_string($course->fullname));
 echo $out;
 comp_evitem_print_course_evitems( $course, $competency_id, "{$CFG->wwwroot}/totara/hierarchy/prefix/competency/course/save.php?competency={$competency_id}&course={$course->id}&{$nojsparams}" );
 

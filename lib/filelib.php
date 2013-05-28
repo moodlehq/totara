@@ -1493,6 +1493,8 @@ function &get_mimetypes_array() {
         'm'    => array ('type'=>'text/plain', 'icon'=>'sourcecode'),
         'mbz'  => array ('type'=>'application/vnd.moodle.backup', 'icon'=>'moodle'),
         'mdb'  => array ('type'=>'application/x-msaccess', 'icon'=>'base'),
+        'mht'  => array ('type'=>'message/rfc822', 'icon'=>'archive'),
+        'mhtml'=> array ('type'=>'message/rfc822', 'icon'=>'archive'),
         'mov'  => array ('type'=>'video/quicktime', 'icon'=>'quicktime', 'groups'=>array('video','web_video'), 'string'=>'video'),
         'movie'=> array ('type'=>'video/x-sgi-movie', 'icon'=>'quicktime', 'groups'=>array('video'), 'string'=>'video'),
         'm3u'  => array ('type'=>'audio/x-mpegurl', 'icon'=>'mp3', 'groups'=>array('audio'), 'string'=>'audio'),
@@ -3003,7 +3005,6 @@ class curl {
      */
     private function formatHeader($ch, $header)
     {
-        $this->count++;
         if (strlen($header) > 2) {
             list($key, $value) = explode(" ", rtrim($header, "\r\n"), 2);
             $key = rtrim($key, ':');

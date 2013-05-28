@@ -489,6 +489,8 @@ $string['participantscurrentpos'] = 'Participant\'s Current Position';
 
 // add manager info
 $string['usersmanagername'] = 'User\'s Manager Name';
+$string['usersmanagerfirstname'] = 'User\'s Manager\'s First Name';
+$string['usersmanagerlastname'] = 'User\'s Manager\'s Last Name';
 $string['usersmanagerid'] = 'User\'s Manager ID';
 $string['usersmanageridnumber'] = 'User\'s Manager ID Number';
 $string['managername'] = 'Manager\'s Name';

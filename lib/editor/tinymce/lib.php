@@ -152,7 +152,7 @@ class tinymce_texteditor extends texteditor {
             'apply_source_formatting' => true,
             'remove_script_host' => false,
             'entity_encoding' => "raw",
-            'plugins' => 'safari,table,style,layer,advhr,advlink,emotions,inlinepopups,' .
+            'plugins' => 'lists,table,style,layer,advhr,advlink,emotions,inlinepopups,' .
                 'searchreplace,paste,directionality,fullscreen,nonbreaking,contextmenu,' .
                 'insertdatetime,save,iespell,preview,print,noneditable,visualchars,' .
                 'xhtmlxtras,template,pagebreak',
@@ -172,16 +172,7 @@ class tinymce_texteditor extends texteditor {
         );
 
         // Should we override the default toolbar layout unconditionally?
-        if (empty($config->customtoolbar)) {
-            $config->customtoolbar = "fontselect,fontsizeselect,formatselect,|,undo,redo,|,search,replace,|,fullscreen
-
-bold,italic,underline,strikethrough,sub,sup,|,justifyleft,justifycenter,justifyright,|,cleanup,removeformat,pastetext,pasteword,|,forecolor,backcolor,|,ltr,rtl
-
-bullist,numlist,outdent,indent,|,link,unlink,|,image,nonbreaking,charmap,table,|,code";
-        }
-        $customtoolbar = self::parse_toolbar_setting($config->customtoolbar);
-
-        if ($customtoolbar) {
+        if (!empty($config->customtoolbar) and $customtoolbar = self::parse_toolbar_setting($config->customtoolbar)) {
             $i = 1;
             foreach ($customtoolbar as $line) {
                 $params['theme_advanced_buttons'.$i] = $line;

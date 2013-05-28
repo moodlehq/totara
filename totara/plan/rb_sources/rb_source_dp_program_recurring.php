@@ -170,7 +170,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
         $html = '';
 
         if ($course = $DB->get_record('course', array('id' => $courseid))) {
-            $html = $OUTPUT->action_link(new moodle_url('/course/view.php', array('id' => $course->id)), $course->fullname);
+            $html = $OUTPUT->action_link(new moodle_url('/course/view.php', array('id' => $course->id)), format_string($course->fullname));
         } else {
             $html = get_string('coursenotfound', 'totara_plan');
         }

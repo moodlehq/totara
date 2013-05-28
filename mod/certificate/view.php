@@ -143,8 +143,8 @@ if (empty($action)) { // Not displaying PDF
 } else { // Output to pdf
     // Remove full-stop at the end if it exists, to avoid "..pdf" being created and being filtered by clean_filename
     $certname = rtrim($certificate->name, '.');
-    $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certname);
-    $filename = clean_filename(strip_tags(format_string($filename, true))) . '.pdf';
+    $filename = clean_filename(str_replace(array('&amp;', '&'), get_string('ampersand', 'totara_core'),
+            format_string(strip_tags($course->shortname . '_' . $certname), true))) . '.pdf';
     if ($certificate->savecert == 1) {
         // PDF contents are now in $file_contents as a string
        $file_contents = $pdf->Output('', 'S');

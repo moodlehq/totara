@@ -129,7 +129,7 @@ $PAGE->navbar->add(format_string($template->fullname));
 echo $OUTPUT->header();
 
 if ($template) {
-    echo $OUTPUT->heading($template->fullname);
+    echo $OUTPUT->heading(format_string($template->fullname));
 } else {
     echo $OUTPUT->heading(get_string('newtemplate', 'totara_plan'));
 }

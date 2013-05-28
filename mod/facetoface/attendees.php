@@ -565,7 +565,11 @@ if ($show_table) {
 
     if (empty($rows)) {
         if ($facetoface->approvalreqd) {
-            echo $OUTPUT->notification(get_string('nosignedupusersnumrequests', 'facetoface', count($requests)));
+            if (count($requests) == 1) {
+                echo $OUTPUT->notification(get_string('nosignedupusersonerequest', 'facetoface'));
+            } else {
+                echo $OUTPUT->notification(get_string('nosignedupusersnumrequests', 'facetoface', count($requests)));
+            }
         } else {
             echo $OUTPUT->notification(get_string('nosignedupusers', 'facetoface'));
         }

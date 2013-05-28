@@ -395,57 +395,57 @@ function xmldb_totara_core_upgrade($oldversion) {
         //get available and already-installed (via langimport tool) languages
         $installer = new lang_installer();
         if (!$availablelangs = $installer->get_remote_list_of_languages()) {
-            print_error('cannotdownloadtotaralanguageupdatelist', 'tool_langimport');
-        }
-        if (!isset($CFG->langotherroot)) {
-            $CFG->langotherroot = $CFG->dataroot.'/lang';
-        }
-        $langdirs = get_list_of_plugins('', '', $CFG->langotherroot);
-        foreach ($langdirs as $lang) {
-            if (strstr($lang, '_local') !== false) {
-                continue;
-            }
-            if (strstr($lang, '_utf8') !== false) {
-                continue;
-            }
-            $string = get_string_manager()->load_component_strings('langconfig', $lang);
-            //if this installed lang is a properly configured language that also exists on the Totara lang site, add it to the update list
-            if (!empty($string['thislanguage']) && in_array($lang, $availablelangs)) {
-                $neededlangs[] = $lang;
-            }
-            unset($string);
-        }
-        make_temp_directory('');
-        make_upload_directory('lang');
-
-        // install all used language packs to moodledata/lang
-        $installer->set_queue($neededlangs);
-        $results = $installer->run();
-        $updated = false;    // any packs updated?
-        foreach ($results as $langcode => $langstatus) {
-            switch ($langstatus) {
-            case lang_installer::RESULT_DOWNLOADERROR:
-                $a       = new stdClass();
-                $a->url  = $installer->lang_pack_url($langcode);
-                $a->dest = $CFG->dataroot.'/lang';
-                echo $OUTPUT->notification(get_string('remotedownloaderror', 'error', $a), 'notifyproblem');
-                break;
-            case lang_installer::RESULT_INSTALLED:
-                $updated = true;
-                $notice_ok[] = get_string('langpackinstalled', 'tool_langimport', $langcode);
-                break;
-            case lang_installer::RESULT_UPTODATE:
-                $notice_ok[] = get_string('langpackuptodate', 'tool_langimport', $langcode);
-                break;
-            }
-        }
-
-        if ($updated) {
-            $notice_ok[] = get_string('langupdatecomplete', 'tool_langimport');
+            $notice_error[] = get_string('cannotdownloadtotaralanguageupdatelist', 'tool_langimport');
         } else {
-            $notice_ok[] = get_string('nolangupdateneeded', 'tool_langimport');
-        }
+            if (!isset($CFG->langotherroot)) {
+                $CFG->langotherroot = $CFG->dataroot.'/lang';
+            }
+            $langdirs = get_list_of_plugins('', '', $CFG->langotherroot);
+            foreach ($langdirs as $lang) {
+                if (strstr($lang, '_local') !== false) {
+                    continue;
+                }
+                if (strstr($lang, '_utf8') !== false) {
+                    continue;
+                }
+                $string = get_string_manager()->load_component_strings('langconfig', $lang);
+                //if this installed lang is a properly configured language that also exists on the Totara lang site, add it to the update list
+                if (!empty($string['thislanguage']) && in_array($lang, $availablelangs)) {
+                    $neededlangs[] = $lang;
+                }
+                unset($string);
+            }
+            make_temp_directory('');
+            make_upload_directory('lang');
 
+            // install all used language packs to moodledata/lang
+            $installer->set_queue($neededlangs);
+            $results = $installer->run();
+            $updated = false;    // any packs updated?
+            foreach ($results as $langcode => $langstatus) {
+                switch ($langstatus) {
+                case lang_installer::RESULT_DOWNLOADERROR:
+                    $a       = new stdClass();
+                    $a->url  = $installer->lang_pack_url($langcode);
+                    $a->dest = $CFG->dataroot.'/lang';
+                    $notice_error[] = get_string('remotedownloaderror', 'error', $a);
+                    break;
+                case lang_installer::RESULT_INSTALLED:
+                    $updated = true;
+                    $notice_ok[] = get_string('langpackinstalled', 'tool_langimport', $langcode);
+                    break;
+                case lang_installer::RESULT_UPTODATE:
+                    $notice_ok[] = get_string('langpackuptodate', 'tool_langimport', $langcode);
+                    break;
+                }
+            }
+
+           if ($updated) {
+                $notice_ok[] = get_string('langupdatecomplete', 'tool_langimport');
+            } else {
+                $notice_ok[] = get_string('nolangupdateneeded', 'tool_langimport');
+            }
+        }
         unset($installer);
         get_string_manager()->reset_caches();
         //display notifications

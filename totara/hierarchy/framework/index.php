@@ -110,7 +110,8 @@ if ($frameworks) {
         $row = array();
 
         $cssclass = !$framework->visible ? 'dimmed' : '';
-        $row[] = $OUTPUT->action_link(new moodle_url('/totara/hierarchy/index.php', array('prefix' => $prefix, 'frameworkid' => $framework->id)), $framework->fullname, null, array('class' => $cssclass));
+        $row[] = $OUTPUT->action_link(new moodle_url('/totara/hierarchy/index.php', array('prefix' => $prefix, 'frameworkid' => $framework->id)),
+                                      format_string($framework->fullname), null, array('class' => $cssclass));
         $row[] = html_writer::tag('span', $framework->item_count, array('class' => $cssclass));
 
         // Add edit link

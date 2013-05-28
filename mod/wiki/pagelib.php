@@ -1111,7 +1111,7 @@ class page_wiki_diff extends page_wiki {
         global $PAGE, $CFG;
 
         parent::create_navbar();
-        $PAGE->navbar->add(get_string('history', 'wiki'), $CFG->wwwroot . '/mod/wiki/history.php?pageid' . $this->page->id);
+        $PAGE->navbar->add(get_string('history', 'wiki'), $CFG->wwwroot . '/mod/wiki/history.php?pageid=' . $this->page->id);
         $PAGE->navbar->add(get_string('diff', 'wiki'));
     }
 
@@ -2066,7 +2066,7 @@ class page_wiki_save extends page_wiki_edit {
 
             //deleting old locks
             wiki_delete_locks($this->page->id, $USER->id, $this->section);
-            $url = new moodle_url('view.php', array('pageid' => $this->page->id, 'group' => $this->subwiki->groupid));
+            $url = new moodle_url('/mod/wiki/view.php', array('pageid' => $this->page->id, 'group' => $this->subwiki->groupid));
             redirect($url);
         } else {
             print_error('savingerror', 'wiki');
@@ -2108,7 +2108,7 @@ class page_wiki_viewversion extends page_wiki {
         global $PAGE, $CFG;
 
         parent::create_navbar();
-        $PAGE->navbar->add(get_string('history', 'wiki'), $CFG->wwwroot . '/mod/wiki/history.php?pageid' . $this->page->id);
+        $PAGE->navbar->add(get_string('history', 'wiki'), $CFG->wwwroot . '/mod/wiki/history.php?pageid=' . $this->page->id);
         $PAGE->navbar->add(get_string('versionnum', 'wiki', $this->version->version));
     }
 

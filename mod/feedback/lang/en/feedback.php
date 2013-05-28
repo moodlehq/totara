@@ -91,9 +91,9 @@ $string['dropdown_values'] = 'Answers';
 $string['drop_feedback'] = 'Remove from this course';
 $string['edit_item'] = 'Edit question';
 $string['edit_items'] = 'Edit questions';
-$string['email_notification'] = 'Send e-mail notifications';
+$string['email_notification'] = 'Enable notification of submissions';
 $string['emailnotification'] = 'emailnotifications';
-$string['emailnotification_help'] = 'If enabled, administrators receive email notification of feedback submissions.';
+$string['emailnotification_help'] = 'If enabled, teachers will receive notification of feedback submissions.';
 $string['emailteachermail'] = '{$a->username} has completed feedback activity : \'{$a->feedback}\'
 
 You can view it here:
@@ -270,6 +270,7 @@ $string['started'] = 'started';
 $string['stop'] = 'End';
 $string['subject'] = 'Subject';
 $string['submission'] = 'Submission';
+$string['submitted'] = 'Submitted';
 $string['switch_group'] = 'Switch group';
 $string['switch_item_to_not_required'] = 'switch to: answer not required';
 $string['switch_item_to_required'] = 'switch to: answer required';

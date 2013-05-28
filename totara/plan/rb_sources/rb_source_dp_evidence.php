@@ -190,7 +190,7 @@ class rb_source_dp_evidence extends rb_base_source {
             'evidence',
             'evidencetypeid',
             get_string('evidencetype', 'rb_source_dp_evidence'),
-            'base.evidencetypeid',
+            'base.evidencetypename',
             array(
                 'hidden' => true,
                 'selectable' => false,

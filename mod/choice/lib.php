@@ -830,6 +830,28 @@ function choice_get_completion_requirements($cm) {
 }
 
 /**
+ * Obtains the completion progress.
+ *
+ * @param object $cm      Course-module
+ * @param int    $userid  User ID
+ * @return string The current status of completion for the user
+ */
+function choice_get_completion_progress($cm, $userid) {
+    global $DB;
+
+    // Get choice details.
+    $choice = $DB->get_record('choice', array('id' => $cm->instance), '*', MUST_EXIST);
+
+    $result = array();
+
+    if ($choice->completionsubmit && $DB->record_exists('choice_answers', array('choiceid' => $choice->id, 'userid' => $userid))) {
+        $result[] = get_string('answered', 'choice');
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this choice based on any conditions
  * in forum settings.
  *

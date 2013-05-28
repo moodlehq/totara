@@ -73,7 +73,7 @@ M.totara_reportbuilder_cachenow = M.totara_reportbuilder_cachenow || {
                         buttons: buttonObj,
                         title: '<h2>' + M.util.get_string('cachenow_title', 'totara_reportbuilder') + '</h2>',
                         width: '500',
-                        height: '150',
+                        height: '200',
                         dialogClass: 'totara-dialog notifynotice'
                     },
                     url,

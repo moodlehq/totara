@@ -32,7 +32,7 @@ class edit_objective_form extends moodleform {
         // visible elements
         $mform->addElement('header', 'general', get_string('objective', 'totara_plan'));
 
-        $mform->addElement('text', 'name', get_string('name'), 'size="40"');
+        $mform->addElement('text', 'name', get_string('name'), 'size="40" maxlength="230"');
         $mform->addHelpButton('name', 'objectivescalename', 'totara_plan');
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->setType('name', PARAM_TEXT);

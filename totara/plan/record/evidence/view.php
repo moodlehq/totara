@@ -66,7 +66,7 @@ if ($USER->id != $userid) {
 }
 
 // get subheading name for display
-$indexurl = new moodle_url('/totara/plan/record/evidence/index.php', array('userid' => $userid));
+$indexurl = new moodle_url('/totara/plan/record/index.php', array('userid' => $userid));
 $PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/learning.php'));
 $PAGE->navbar->add($strheading, $indexurl);
 $PAGE->navbar->add(get_string('allevidence', 'totara_plan'));

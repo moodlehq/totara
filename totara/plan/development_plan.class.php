@@ -229,7 +229,7 @@ class development_plan {
      */
     public function get_components() {
         global $DP_AVAILABLE_COMPONENTS, $DB;
-
+        $components = array();
         list($insql, $inparams) = $DB->get_in_or_equal($DP_AVAILABLE_COMPONENTS);
         $sql = "SELECT * FROM {dp_component_settings}
             WHERE component $insql

@@ -102,8 +102,9 @@ if ($download == "ods") {
 
     // Calculate file name
     // Replace Ampersands with and, need both incase allowhtmlinheading is on
-    $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
-    $filename = clean_filename(strip_tags(format_string($filename, true))) . '.ods';
+    $certname = rtrim($certificate->name, '.');
+    $filename = clean_filename(str_replace(array('&amp;', '&'), get_string('ampersand', 'totara_core'),
+            format_string(strip_tags($course->shortname . '_' . $certname), true))) . '.ods';
     // Creating a workbook
     $workbook = new MoodleODSWorkbook("-");
     // Send HTTP headers
@@ -153,8 +154,9 @@ if ($download == "xls") {
 
     // Calculate file name
     // Replace Ampersands with and, need both incase allowhtmlinheading is on
-    $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
-    $filename = clean_filename(strip_tags(format_string($filename, true))) . '.xls';
+    $certname = rtrim($certificate->name, '.');
+    $filename = clean_filename(str_replace(array('&amp;', '&'), get_string('ampersand', 'totara_core'),
+            format_string(strip_tags($course->shortname . '_' . $certname), true))) . '.xls';
     // Creating a workbook
     $workbook = new MoodleExcelWorkbook("-");
     // Send HTTP headers
@@ -201,8 +203,9 @@ if ($download == "xls") {
 
 if ($download == "txt") {
     // Replace Ampersands with and, need both incase allowhtmlinheading is on
-    $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
-    $filename = clean_filename(strip_tags(format_string($filename, true))) . '.txt';
+    $certname = rtrim($certificate->name, '.');
+    $filename = clean_filename(str_replace(array('&amp;', '&'), get_string('ampersand', 'totara_core'),
+            format_string(strip_tags($course->shortname . '_' . $certname), true))) . '.txt';
 
     header("Content-Type: application/download\n");
     header("Content-Disposition: attachment; filename=\"$filename\"");

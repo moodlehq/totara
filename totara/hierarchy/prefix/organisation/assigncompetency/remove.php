@@ -54,11 +54,11 @@ if (!$assignment = $DB->get_record('org_competencies', array('id' => $id))) {
 // Load competency
 if ($assignment->competencyid) {
     $competency = $DB->get_record('comp', array('id' => $assignment->competencyid));
-    $fullname = $competency->fullname;
+    $fullname = format_string($competency->fullname);
 }
 else {
     $template = $DB->get_record('comp_template', array('id' => $assignment->templateid));
-    $fullname = $template->fullname;
+    $fullname = format_string($template->fullname);
 }
 
 $returnurl = $CFG->wwwroot.'/totara/hierarchy/item/view.php?prefix=organisation&amp;id='.$organisation.'&amp;framework='.$frameworkid;

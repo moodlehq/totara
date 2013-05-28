@@ -47,21 +47,20 @@ function local_js($options = array()) {
     // Include required javascript libraries
     // jQuery component and UI bundle found here: http://jqueryui.com/download
     // Core, Widget, Position, Dialog, Tabs, Datepicker, Effects Core, Effects "Fade"
-    $PAGE->requires->js('/totara/core/js/lib/jquery-1.7.2.min.js');
+    $PAGE->requires->js('/totara/core/js/lib/jquery-1.9.1.min.js');
 
 
     // If UI
     if (in_array(TOTARA_JS_UI, $options)) {
 
-        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.8.20.custom.min.js');
-        $PAGE->requires->js('/totara/core/js/lib/jquery.ui.selectable.min.js');
+        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.9.2.custom.min.js');
 
     }
 
     // If dialog
     if (in_array(TOTARA_JS_DIALOG, $options)) {
 
-        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.8.20.custom.min.js');
+        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.9.2.custom.min.js');
 
         // Load required strings into the JS global namespace in the form
         // M.str.COMPONENT.IDENTIFIER, eg; M.str.totara_core['save']. Can also
@@ -96,7 +95,7 @@ function local_js($options = array()) {
     // If datepicker enabled
     if (in_array(TOTARA_JS_DATEPICKER, $options)) {
 
-        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.8.20.custom.min.js');
+        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.9.2.custom.min.js');
 
         $PAGE->requires->strings_for_js(array('datepickerdisplayformat', 'datepickerplaceholder', 'datepickerregexjs'), 'totara_core');
         $PAGE->requires->string_for_js('thisdirection', 'langconfig');
@@ -428,7 +427,7 @@ function build_nojs_breadcrumbs($hierarchy, $parentid, $url, $urlparams, $allfws
                 } else {
                     $first = false;
                 }
-                $html .= html_writer::link($itemurl, $item->fullname) . html_writer::end_tag('li');
+                $html .= html_writer::link($itemurl, format_string($item->fullname)) . html_writer::end_tag('li');
             }
         }
     }
@@ -456,7 +455,7 @@ function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
         $out .= html_writer::start_tag('div', array('class' => 'nojsselect')) . html_writer::start_tag('ul');
         foreach ($fws as $fw) {
             $fullurl = $murl->out(false, array('frameworkid' => $fw->id));
-            $out .= html_writer::tag('li', html_writer::link($fullurl, $fw->fullname));
+            $out .= html_writer::tag('li', html_writer::link($fullurl, format_string($fw->fullname)));
         }
         $out .= html_writer::end_tag('ul') . html_writer::end_tag('div');
         return $out;
@@ -491,7 +490,7 @@ function build_nojs_positionpicker($url, $urlparams) {
         foreach ($positions as $position) {
             $fullurl = $murl->out(false, array('frameworkid' => $position->id));
             $html .= html_writer::start_tag('li');
-            $html .= html_writer::link($fullurl, $position->fullname);
+            $html .= html_writer::link($fullurl, format_string($position->fullname));
             switch ($position->type) {
             case 1:
                 $html .= ' (' . get_string('typeprimary', 'totara_hierarchy') . ')';

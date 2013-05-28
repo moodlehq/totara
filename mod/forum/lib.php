@@ -338,6 +338,45 @@ function forum_get_completion_requirements($cm) {
 }
 
 /**
+ * Obtains the completion progress.
+ *
+ * @param object $cm      Course-module
+ * @param int    $userid  User ID
+ * @return string The current status of completion for the user
+ */
+function forum_get_completion_progress($cm, $userid) {
+    global $DB;
+
+    // Get forum details.
+    if (!($forum = $DB->get_record('forum', array('id' => $cm->instance)))) {
+        print_error("Can't find forum {$cm->instance}");
+    }
+
+    $postcountparams = array('userid' => $userid, 'forum' => $forum->id);
+    $postcountsql="SELECT COUNT(1)
+                    FROM {forum_posts} fp
+                    INNER JOIN {forum_discussions} fd ON fp.discussion=fd.id
+                    WHERE fp.userid=:userid AND fd.forum=:forum";
+
+    $result = array();
+
+    if ($forum->completiondiscussions) {
+        $count = $DB->count_records('forum_discussions', $postcountparams);
+        $result[] = get_string('completiondiscussionscompleted', 'forum', $count);
+    }
+    if ($forum->completionreplies) {
+        $result[] = get_string('completionrepliescompleted', 'forum',
+                $DB->get_field_sql( $postcountsql.' AND fp.parent<>0', $postcountparams));
+    }
+    if ($forum->completionposts) {
+        $result[] = get_string('completionpostscompleted', 'forum',
+                $DB->get_field_sql($postcountsql, $postcountparams));
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this forum based on any conditions
  * in forum settings.
  *
@@ -7126,21 +7165,26 @@ function forum_get_post_actions() {
 }
 
 /**
- * @global object
- * @global object
- * @global object
- * @param object $forum
- * @param object $cm
- * @return bool
+ * Handles the situation where the user has reached the blocking or warning threshold.
+ * The function will either echo out a message, or throw an exception depending on the
+ * threshold reached (warning or blocked). If the forum passed is invalid false is
+ * returned, otherwise if no restriction is needed true is returned.
+ *
+ * @param int|stdClass $forum the forum id or the forum object
+ * @param stdClass $cm the course module
+ * @param bool $display do we want to echo out the message?
+ * @return bool returns false if $forum is invalid or true
+ *         if there is no message to show.
  */
-function forum_check_throttling($forum, $cm=null) {
+function forum_check_throttling($forum, $cm = null, $display = true) {
     global $USER, $CFG, $DB, $OUTPUT;
 
     if (is_numeric($forum)) {
         $forum = $DB->get_record('forum',array('id'=>$forum));
     }
+
     if (!is_object($forum)) {
-        return false;  // this is broken.
+        return false; // This is broken.
     }
 
     if (empty($forum->blockafter)) {
@@ -7158,18 +7202,18 @@ function forum_check_throttling($forum, $cm=null) {
     }
 
     $modcontext = context_module::instance($cm->id);
-    if(has_capability('mod/forum:postwithoutthrottling', $modcontext)) {
+    if (has_capability('mod/forum:postwithoutthrottling', $modcontext)) {
         return true;
     }
 
-    // get the number of posts in the last period we care about
+    // Get the number of posts in the last period we care about.
     $timenow = time();
     $timeafter = $timenow - $forum->blockperiod;
 
-    $numposts = $DB->count_records_sql('SELECT COUNT(p.id) FROM {forum_posts} p'
-                                      .' JOIN {forum_discussions} d'
-                                      .' ON p.discussion = d.id WHERE d.forum = ?'
-                                      .' AND p.userid = ? AND p.created > ?', array($forum->id, $USER->id, $timeafter));
+    $numposts = $DB->count_records_sql('SELECT COUNT(p.id) FROM {forum_posts} p
+                                        JOIN {forum_discussions} d
+                                        ON p.discussion = d.id WHERE d.forum = ?
+                                        AND p.userid = ? AND p.created > ?', array($forum->id, $USER->id, $timeafter));
 
     $a = new stdClass();
     $a->blockafter = $forum->blockafter;
@@ -7179,11 +7223,12 @@ function forum_check_throttling($forum, $cm=null) {
     if ($forum->blockafter <= $numposts) {
         print_error('forumblockingtoomanyposts', 'error', $CFG->wwwroot.'/mod/forum/view.php?f='.$forum->id, $a);
     }
+
     if ($forum->warnafter <= $numposts) {
-        echo $OUTPUT->notification(get_string('forumblockingalmosttoomanyposts','forum',$a));
+        if ($display) {
+            echo $OUTPUT->notification(get_string('forumblockingalmosttoomanyposts', 'forum', $a));
+        }
     }
-
-
 }
 
 

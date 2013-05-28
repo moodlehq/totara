@@ -2364,6 +2364,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table, please edit me"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="unreadmessageid_idx" UNIQUE="false" FIELDS="unreadmessageid" COMMENT="Index on unreadmessage id"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="files" COMMENT="description of files, content is stored in sha1 file pool" PREVIOUS="message_working" NEXT="files_reference">
       <FIELDS>
@@ -3040,7 +3043,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_badgeid"/>
-        <KEY NAME="fk_badgeid" TYPE="foreign" FIELDS="id" REFTABLE="badge" REFFIELDS="id" PREVIOUS="primary" NEXT="fk_recipientid"/>
+        <KEY NAME="fk_badgeid" TYPE="foreign" FIELDS="badgeid" REFTABLE="badge" REFFIELDS="id" PREVIOUS="primary" NEXT="fk_recipientid"/>
         <KEY NAME="fk_recipientid" TYPE="foreign" FIELDS="recipientid" REFTABLE="user" REFFIELDS="id" PREVIOUS="fk_badgeid" NEXT="fk_issuerid"/>
         <KEY NAME="fk_issuerid" TYPE="foreign" FIELDS="issuerid" REFTABLE="user" REFFIELDS="id" PREVIOUS="fk_recipientid" NEXT="fk_issuerrole"/>
         <KEY NAME="fk_issuerrole" TYPE="foreign" FIELDS="issuerrole" REFTABLE="role" REFFIELDS="id" PREVIOUS="fk_issuerid"/>

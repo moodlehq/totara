@@ -105,6 +105,7 @@ switch($view) {
         $pagetitle = get_string('dayviewtitle', 'calendar', userdate($time, get_string('strftimedaydate')));
     break;
     case 'month':
+        calendar_set_mod_filters();
         $PAGE->navbar->add(userdate($time, get_string('strftimemonthyear')));
         $pagetitle = get_string('detailedmonthviewtitle', 'calendar', userdate($time, get_string('strftimemonthyear')));
     break;

@@ -339,7 +339,7 @@ class rb_source_user extends rb_base_source {
         $disp = html_writer::start_tag('span', array('style' => 'white-space:nowrap;'));
 
         // Learning Records icon
-        $disp .= html_writer::start_tag('a', array('href' => $CFG->wwwroot . '/totara/plan/record/courses.php?userid='.$itemid));
+        $disp .= html_writer::start_tag('a', array('href' => $CFG->wwwroot . '/totara/plan/record/index.php?userid='.$itemid));
         $disp .= html_writer::empty_tag('img',
             array('src' => $OUTPUT->pix_url('record', 'totara_core'), 'title' => get_string('learningrecords', 'totara_core')));
         $disp .= html_writer::end_tag('a');
@@ -396,7 +396,7 @@ class rb_source_user extends rb_base_source {
         $profilestr = get_string('profile', 'rb_source_user');
         $bookingstr = get_string('bookings', 'rb_source_user');
 
-        $rol_link = html_writer::link("{$CFG->wwwroot}/totara/plan/record/courses.php?userid={$userid}",
+        $rol_link = html_writer::link("{$CFG->wwwroot}/totara/plan/record/index.php?userid={$userid}",
             $recordstr);
         $plan_link = html_writer::link("{$CFG->wwwroot}/totara/plan/index.php?userid={$userid}", $planstr);
         $profile_link = html_writer::link("{$CFG->wwwroot}/user/view.php?id={$userid}", $profilestr);

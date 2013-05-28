@@ -907,10 +907,7 @@ function clean_param($param, $type) {
         case PARAM_PLUGIN:
         case PARAM_AREA:
             // we do not want any guessing here, either the name is correct or not
-            if (!preg_match('/^[a-z][a-z0-9_]*[a-z0-9]$/', $param)) {
-                return '';
-            }
-            if (strpos($param, '__') !== false) {
+            if (!is_valid_plugin_name($param)) {
                 return '';
             }
             return $param;
@@ -4615,9 +4612,6 @@ function delete_course($courseorid, $showfeedback = true) {
         return false;
     }
 
-    // Handle course badges.
-    badges_handle_course_deletion($courseid);
-
     // make the course completely empty
     remove_course_contents($courseid, $showfeedback);
 
@@ -4659,6 +4653,7 @@ function delete_course($courseorid, $showfeedback = true) {
  */
 function remove_course_contents($courseid, $showfeedback = true, array $options = null) {
     global $CFG, $DB, $OUTPUT;
+    require_once($CFG->libdir.'/badgeslib.php');
     require_once($CFG->libdir.'/completionlib.php');
     require_once($CFG->libdir.'/questionlib.php');
     require_once($CFG->libdir.'/gradelib.php');
@@ -4666,6 +4661,9 @@ function remove_course_contents($courseid, $showfeedback = true, array $options 
     require_once($CFG->dirroot.'/tag/coursetagslib.php');
     require_once($CFG->dirroot.'/comment/lib.php');
     require_once($CFG->dirroot.'/rating/lib.php');
+
+    // Handle course badges.
+    badges_handle_course_deletion($courseid);
 
     // NOTE: these concatenated strings are suboptimal, but it is just extra info...
     $strdeleted = get_string('deleted').' - ';
@@ -6575,28 +6573,18 @@ class core_string_manager implements string_manager {
     }
 
     /**
-     * Returns dependencies of current language, en is not included.
+     * Returns list of all explicit parent languages for the given language.
      *
-     * @param string $lang
-     * @return array all parents, the lang itself is last
+     * English (en) is considered as the top implicit parent of all language packs
+     * and is not included in the returned list. The language itself is appended to the
+     * end of the list. The method is aware of circular dependency risk.
+     *
+     * @see self::populate_parent_languages()
+     * @param string $lang the code of the language
+     * @return array all explicit parent languages with the lang itself appended
      */
     public function get_language_dependencies($lang) {
-        if ($lang === 'en') {
-            return array();
-        }
-        if (!file_exists("$this->otherroot/$lang/langconfig.php")) {
-            return array();
-        }
-        $string = array();
-        include("$this->otherroot/$lang/langconfig.php");
-
-        if (empty($string['parentlanguage'])) {
-            return array($lang);
-        } else {
-            $parentlang = $string['parentlanguage'];
-            unset($string);
-            return array_merge($this->get_language_dependencies($parentlang), array($lang));
-        }
+        return $this->populate_parent_languages($lang);
     }
 
     /**
@@ -6728,10 +6716,6 @@ class core_string_manager implements string_manager {
      * @return boot true if exists
      */
     public function string_exists($identifier, $component) {
-       $identifier = clean_param($identifier, PARAM_STRINGID);
-        if (empty($identifier)) {
-            return false;
-        }
         $lang = current_language();
         $string = $this->load_component_strings($component, $lang);
         return isset($string[$identifier]);
@@ -7121,6 +7105,46 @@ class core_string_manager implements string_manager {
             return -1;
         }
     }
+
+    /// End of external API ////////////////////////////////////////////////////
+
+    /**
+     * Helper method that recursively loads all parents of the given language.
+     *
+     * @see self::get_language_dependencies()
+     * @param string $lang language code
+     * @param array $stack list of parent languages already populated in previous recursive calls
+     * @return array list of all parents of the given language with the $lang itself added as the last element
+     */
+    protected function populate_parent_languages($lang, array $stack = array()) {
+
+        // English does not have a parent language.
+        if ($lang === 'en') {
+            return $stack;
+        }
+
+        // Prevent circular dependency (and thence the infinitive recursion loop).
+        if (in_array($lang, $stack)) {
+            return $stack;
+        }
+
+        // Load language configuration and look for the explicit parent language.
+        if (!file_exists("$this->otherroot/$lang/langconfig.php")) {
+            return $stack;
+        }
+        $string = array();
+        include("$this->otherroot/$lang/langconfig.php");
+
+        if (empty($string['parentlanguage']) or $string['parentlanguage'] === 'en') {
+            unset($string);
+            return array_merge(array($lang), $stack);
+
+        } else {
+            $parentlang = $string['parentlanguage'];
+            unset($string);
+            return $this->populate_parent_languages($parentlang, array_merge(array($lang), $stack));
+        }
+    }
 }
 
 
@@ -7173,10 +7197,6 @@ class install_string_manager implements string_manager {
      * @return boot true if exists
      */
     public function string_exists($identifier, $component) {
-        $identifier = clean_param($identifier, PARAM_STRINGID);
-        if (empty($identifier)) {
-            return false;
-        }
         // simple old style hack ;)
         $str = get_string($identifier, $component);
         return (strpos($str, '[[') === false);
@@ -7434,8 +7454,7 @@ function get_string($identifier, $component = '', $a = NULL, $lazyload = false) 
         return new lang_string($identifier, $component, $a);
     }
 
-    $identifier = clean_param($identifier, PARAM_STRINGID);
-    if (empty($identifier)) {
+    if (debugging('', DEBUG_DEVELOPER) && clean_param($identifier, PARAM_STRINGID) === '') {
         throw new coding_exception('Invalid string identifier. The identifier cannot be empty. Please fix your get_string() call.');
     }
 
@@ -8155,6 +8174,15 @@ function get_plugin_types($fullpaths=true) {
 }
 
 /**
+ * This method validates a plug name. It is much faster than calling clean_param.
+ * @param string $name a string that might be a plugin name.
+ * @return bool if this string is a valid plugin name.
+ */
+function is_valid_plugin_name($name) {
+    return (bool) preg_match('/^[a-z](?:[a-z0-9_](?!__))*[a-z0-9]$/', $name);
+}
+
+/**
  * Simplified version of get_list_of_plugins()
  * @param string $plugintype type of plugin
  * @return array name=>fulllocation pairs of plugins of given type
@@ -8218,9 +8246,8 @@ function get_plugin_list($plugintype) {
             if (in_array($pluginname, $ignored)) {
                 continue;
             }
-            $pluginname = clean_param($pluginname, PARAM_PLUGIN);
-            if (empty($pluginname)) {
-                // better ignore plugins with problematic names here
+            if (!is_valid_plugin_name($pluginname)) {
+                // Better ignore plugins with problematic names here.
                 continue;
             }
             $result[$pluginname] = $fulldir.'/'.$pluginname;
@@ -9298,13 +9325,13 @@ function shorten_text($text, $ideal=30, $exact = false, $ending='...') {
 
     global $CFG;
 
-    // if the plain text is shorter than the maximum length, return the whole text
+    // If the plain text is shorter than the maximum length, return the whole text.
     if (textlib::strlen(preg_replace('/<.*?>/', '', $text)) <= $ideal) {
         return $text;
     }
 
     // Splits on HTML tags. Each open/close/empty tag will be the first thing
-    // and only tag in its 'line'
+    // and only tag in its 'line'.
     preg_match_all('/(<.+?>)?([^<>]*)/s', $text, $lines, PREG_SET_ORDER);
 
     $total_length = textlib::strlen($ending);
@@ -9313,37 +9340,43 @@ function shorten_text($text, $ideal=30, $exact = false, $ending='...') {
     // This array stores information about open and close tags and their position
     // in the truncated string. Each item in the array is an object with fields
     // ->open (true if open), ->tag (tag name in lower case), and ->pos
-    // (byte position in truncated text)
+    // (byte position in truncated text).
     $tagdetails = array();
 
     foreach ($lines as $line_matchings) {
-        // if there is any html-tag in this line, handle it and add it (uncounted) to the output
+        // If there is any html-tag in this line, handle it and add it (uncounted) to the output.
         if (!empty($line_matchings[1])) {
-            // if it's an "empty element" with or without xhtml-conform closing slash (f.e. <br/>)
+            // If it's an "empty element" with or without xhtml-conform closing slash (f.e. <br/>).
             if (preg_match('/^<(\s*.+?\/\s*|\s*(img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param)(\s.+?)?)>$/is', $line_matchings[1])) {
-                    // do nothing
-            // if tag is a closing tag (f.e. </b>)
+                    // Do nothing.
+
             } else if (preg_match('/^<\s*\/([^\s]+?)\s*>$/s', $line_matchings[1], $tag_matchings)) {
-                // record closing tag
-                $tagdetails[] = (object)array('open'=>false,
-                    'tag'=>textlib::strtolower($tag_matchings[1]), 'pos'=>textlib::strlen($truncate));
-            // if tag is an opening tag (f.e. <b>)
+                // Record closing tag.
+                $tagdetails[] = (object) array(
+                        'open' => false,
+                        'tag'  => textlib::strtolower($tag_matchings[1]),
+                        'pos'  => textlib::strlen($truncate),
+                    );
+
             } else if (preg_match('/^<\s*([^\s>!]+).*?>$/s', $line_matchings[1], $tag_matchings)) {
-                // record opening tag
-                $tagdetails[] = (object)array('open'=>true,
-                    'tag'=>textlib::strtolower($tag_matchings[1]), 'pos'=>textlib::strlen($truncate));
+                // Record opening tag.
+                $tagdetails[] = (object) array(
+                        'open' => true,
+                        'tag'  => textlib::strtolower($tag_matchings[1]),
+                        'pos'  => textlib::strlen($truncate),
+                    );
             }
-            // add html-tag to $truncate'd text
+            // Add html-tag to $truncate'd text.
             $truncate .= $line_matchings[1];
         }
 
-        // calculate the length of the plain text part of the line; handle entities as one character
+        // Calculate the length of the plain text part of the line; handle entities as one character.
         $content_length = textlib::strlen(preg_replace('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', ' ', $line_matchings[2]));
-        if ($total_length+$content_length > $ideal) {
-            // the number of characters which are left
+        if ($total_length + $content_length > $ideal) {
+            // The number of characters which are left.
             $left = $ideal - $total_length;
             $entities_length = 0;
-            // search for html entities
+            // Search for html entities.
             if (preg_match_all('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', $line_matchings[2], $entities, PREG_OFFSET_CAPTURE)) {
                 // calculate the real length of all entities in the legal range
                 foreach ($entities[0] as $entity) {
@@ -9356,7 +9389,32 @@ function shorten_text($text, $ideal=30, $exact = false, $ending='...') {
                     }
                 }
             }
-            $truncate .= textlib::substr($line_matchings[2], 0, $left+$entities_length);
+            $breakpos = $left + $entities_length;
+
+            // if the words shouldn't be cut in the middle...
+            if (!$exact) {
+                // ...search the last occurence of a space...
+                for (; $breakpos > 0; $breakpos--) {
+                    if ($char = textlib::substr($line_matchings[2], $breakpos, 1)) {
+                        if ($char === '.' or $char === ' ') {
+                            $breakpos += 1;
+                            break;
+                        } else if (strlen($char) > 2) { // Chinese/Japanese/Korean text
+                            $breakpos += 1;              // can be truncated at any UTF-8
+                            break;                       // character boundary.
+                        }
+                    }
+                }
+            }
+            if ($breakpos == 0) {
+                // This deals with the test_shorten_text_no_spaces case.
+                $breakpos = $left + $entities_length;
+            } else if ($breakpos > $left + $entities_length) {
+                // This deals with the previous for loop breaking on the first char.
+                $breakpos = $left + $entities_length;
+            }
+
+            $truncate .= textlib::substr($line_matchings[2], 0, $breakpos);
             // maximum length is reached, so get off the loop
             break;
         } else {
@@ -9364,55 +9422,31 @@ function shorten_text($text, $ideal=30, $exact = false, $ending='...') {
             $total_length += $content_length;
         }
 
-        // if the maximum length is reached, get off the loop
+        // If the maximum length is reached, get off the loop.
         if($total_length >= $ideal) {
             break;
         }
     }
 
-    // if the words shouldn't be cut in the middle...
-    if (!$exact) {
-        // ...search the last occurence of a space...
-        for ($k=textlib::strlen($truncate);$k>0;$k--) {
-            if ($char = textlib::substr($truncate, $k, 1)) {
-                if ($char === '.' or $char === ' ') {
-                    $breakpos = $k+1;
-                    break;
-                } else if (strlen($char) > 2) {  // Chinese/Japanese/Korean text
-                    $breakpos = $k+1;            // can be truncated at any UTF-8
-                    break;                       // character boundary.
-                }
-            }
-        }
-
-        if (isset($breakpos)) {
-            // ...and cut the text in this position
-            $truncate = textlib::substr($truncate, 0, $breakpos);
-        }
-    }
-
-    // add the defined ending to the text
+    // Add the defined ending to the text.
     $truncate .= $ending;
 
-    // Now calculate the list of open html tags based on the truncate position
+    // Now calculate the list of open html tags based on the truncate position.
     $open_tags = array();
     foreach ($tagdetails as $taginfo) {
-        if(isset($breakpos) && $taginfo->pos >= $breakpos) {
-            // Don't include tags after we made the break!
-            break;
-        }
-        if($taginfo->open) {
-            // add tag to the beginning of $open_tags list
+        if ($taginfo->open) {
+            // Add tag to the beginning of $open_tags list.
             array_unshift($open_tags, $taginfo->tag);
         } else {
-            $pos = array_search($taginfo->tag, array_reverse($open_tags, true)); // can have multiple exact same open tags, close the last one
+            // Can have multiple exact same open tags, close the last one.
+            $pos = array_search($taginfo->tag, array_reverse($open_tags, true));
             if ($pos !== false) {
                 unset($open_tags[$pos]);
             }
         }
     }
 
-    // close all unclosed html-tags
+    // Close all unclosed html-tags.
     foreach ($open_tags as $tag) {
         $truncate .= '</' . $tag . '>';
     }
@@ -11313,7 +11347,7 @@ class lang_string {
         // Check if we need to process the string
         if ($this->string === null) {
             // Check the quality of the identifier.
-            if (clean_param($this->identifier, PARAM_STRINGID) == '') {
+            if (debugging('', DEBUG_DEVELOPER) && clean_param($this->identifier, PARAM_STRINGID) === '') {
                 throw new coding_exception('Invalid string identifier. Most probably some illegal character is part of the string identifier. Please check your string definition');
             }
 

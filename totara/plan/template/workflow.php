@@ -151,7 +151,7 @@ if ($fromform = $mform->get_data()) {
 
     echo $OUTPUT->header();
 
-    echo $OUTPUT->heading($template->fullname);
+    echo $OUTPUT->heading(format_string($template->fullname));
 
     $currenttab = 'workflow';
     require('tabs.php');

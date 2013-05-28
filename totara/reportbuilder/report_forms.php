@@ -183,6 +183,7 @@ class report_builder_edit_filters_form extends moodleform {
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
+        $filters = array();
 
         $mform->addElement('header', 'searchoptions', get_string('searchoptions', 'totara_reportbuilder'));
 
@@ -250,7 +251,6 @@ class report_builder_edit_filters_form extends moodleform {
                 }
             } else {
                 $mform->addElement('html', html_writer::tag('p', get_string('nofiltersyet', 'totara_reportbuilder')));
-                $filters = array();
             }
 
             $mform->addElement('html', html_writer::start_tag('tr') . html_writer::start_tag('td'));
