@@ -128,6 +128,7 @@ class program {
         $this->timemodified = $program->timemodified;
         $this->usermodified = $program->usermodified;
         $this->icon = $program->icon;
+        $this->audiencevisible = $program->audiencevisible;
 
         $this->content = new prog_content($id);
         $this->assignments = new prog_assignments($id);
@@ -1316,19 +1317,43 @@ class program {
      * @return boolean
      */
     public function is_viewable($user = null) {
-        global $USER;
-
-        if ($this->visible) {
-            return true;
-        }
+        global $USER, $CFG, $DB;
+        require_once($CFG->dirroot . '/totara/cohort/lib.php');
 
         if ($user == null) {
             $user = $USER;
         }
 
-        // If this user is able to view hidden programs then let it be visible
-        if (has_capability('totara/program:viewhiddenprograms', program_get_context($this->id), $user->id)) {
-            return true;
+        if (empty($CFG->audiencevisibility)) {
+            if ($this->visible) {
+                return true;
+            }
+
+            // If this user is able to view hidden programs, then let it be visible.
+            if (has_capability('totara/program:viewhiddenprograms', program_get_context($this->id), $user->id)) {
+                return true;
+            }
+        } else {
+            if ($this->audiencevisible == COHORT_VISIBLE_ALL) {
+                return true;
+            } else if (has_capability('totara/coursecatalog:manageaudiencevisibility', context_system::instance())) {
+                return true;
+            } else {
+                $sql = "SELECT cv.instanceid
+                            FROM {cohort_visibility} cv
+                            JOIN {cohort_members} cm ON cv.cohortid = cm.cohortid
+                            JOIN {prog} p ON cv.instanceid = p.id AND p.audiencevisible > 0
+                            WHERE cv.instancetype = :instancetype
+                                  AND cm.userid = :userid
+                                  AND p.id = :progid";
+                $params = array('instancetype' => COHORT_ASSN_ITEMTYPE_PROGRAM,
+                                'userid' => $user->id,
+                                'progid' => $this->id);
+
+                if ($DB->record_exists_sql($sql, $params)) {
+                    return true;
+                }
+            }
         }
 
         return false;

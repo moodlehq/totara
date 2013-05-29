@@ -264,14 +264,16 @@ function prog_add_required_learning_base_navlinks($userid) {
  *
  */
 function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="p.*", $options = array()) {
-    global $USER, $DB;
+    global $USER, $DB, $CFG;
+    require_once($CFG->dirroot . '/totara/cohort/lib.php');
+
     $offset = !empty($options['offset']) ? $options['offset'] : 0;
     $limit = !empty($options['limit']) ? $options['limit'] : null;
 
-    $params = array(CONTEXT_PROGRAM);
+    $params = array('contextlevel' => CONTEXT_PROGRAM);
     if ($categoryid != "all" && is_numeric($categoryid)) {
-        $categoryselect = "WHERE p.category = ?";
-        $params[] = $categoryid;
+        $categoryselect = "WHERE p.category = :category";
+        $params['category'] = $categoryid;
     } else {
         $categoryselect = "";
     }
@@ -284,18 +286,31 @@ function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="
 
     $visibleprograms = array();
 
-    // pull out all programs matching the cat
-    $programs = $DB->get_records_sql("SELECT $fields,
+    $visibilitysql = '';
+    $visibilityparams = array();
+    $canmanagevisibility = has_capability('totara/coursecatalog:manageaudiencevisibility', context_system::instance());
+    if (!empty($CFG->audiencevisibility) && !$canmanagevisibility) {
+        list($visibilitysql, $visibilityparams) = totara_cohort_get_visible_learning_sql('p', 'id', COHORT_ASSN_ITEMTYPE_PROGRAM);
+    }
+
+    $params = array_merge($params, $visibilityparams);
+    // Pull out all programs matching the categoty.
+    $programs = $DB->get_records_sql("SELECT DISTINCT {$fields},
                                     ctx.id AS ctxid, ctx.path AS ctxpath,
                                     ctx.depth AS ctxdepth, ctx.contextlevel AS ctxlevel
                                     FROM {prog} p
                                     JOIN {context} ctx
                                       ON (p.id = ctx.instanceid
-                                          AND ctx.contextlevel = ?)
+                                          AND ctx.contextlevel = :contextlevel)
+                                    $visibilitysql
                                     $categoryselect
                                     $sortstatement", $params, $offset, $limit);
 
-    // loop through them
+    // If audience visibility is enabled, we just need to return records from DB query.
+    if (!empty($CFG->audiencevisibility)) {
+        return $programs;
+    }
+
     foreach ($programs as $program) {
         if (isset($program->visible) && $program->visible <= 0) {
             // for hidden programs, require visibility check
@@ -1594,4 +1609,65 @@ function prog_format_seconds($seconds) {
     $output .= html_writer::end_tag('div');
 
     return $output;
+}
+
+/**
+ * Returns list of programs current $USER is assigned to.
+ *
+ * @param int $userid ID of a user
+ * @param string|array $fields Fields to return
+ * @param string $sort
+ * @return array
+ */
+function prog_get_all_users_programs($userid, $fields = NULL, $sort = 'visible DESC,sortorder ASC') {
+    global $DB, $USER;
+
+    // Guest account does not have any programs.
+    if (isguestuser() or !isloggedin()) {
+        return(array());
+    }
+
+    $basefields = array('id', 'category', 'sortorder', 'shortname', 'fullname', 'idnumber', 'visible');
+
+    if (empty($fields)) {
+        $fields = $basefields;
+    } else if (is_string($fields)) {
+        $fields = explode(',', $fields);
+        $fields = array_map('trim', $fields);
+        $fields = array_unique(array_merge($basefields, $fields));
+    } else if (is_array($fields)) {
+        $fields = array_unique(array_merge($basefields, $fields));
+    } else {
+        throw new coding_exception('Invalid $fileds parameter in prog_get_all_users_programs()');
+    }
+    if (in_array('*', $fields)) {
+        $fields = array('*');
+    }
+
+    $orderby = "";
+    $sort = trim($sort);
+    if (!empty($sort)) {
+        $rawsorts = explode(',', $sort);
+        $sorts = array();
+        foreach ($rawsorts as $rawsort) {
+            $rawsort = trim($rawsort);
+            if (strpos($rawsort, 'p.') === 0) {
+                $rawsort = substr($rawsort, 2);
+            }
+            $sorts[] = trim($rawsort);
+        }
+        $sort = 'p.' . implode(',p.', $sorts);
+        $orderby = "ORDER BY $sort";
+    }
+
+    $progfields = 'p.' . join(',p.', $fields);
+    $sql = "SELECT $progfields
+                FROM {prog} p
+            JOIN {prog_user_assignment} pua ON p.id = pua.programid
+            WHERE pua.userid = :userid
+            $orderby";
+    $params['userid']  = $userid;
+
+    $programs = $DB->get_records_sql($sql, $params);
+    return $programs;
 }

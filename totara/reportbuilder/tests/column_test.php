@@ -258,6 +258,7 @@ class columns_test extends reportcache_advanced_testcase {
         $this->course_data->summary = 'Course Summary';
         $this->course_data->coursetype = 0;
         $this->course_data->lang = 'en';
+        $this->course_data->audiencevisible = 2;
 
         $this->feedback_data = new stdClass();
         $this->feedback_data->id = 1;
@@ -818,6 +819,7 @@ class columns_test extends reportcache_advanced_testcase {
         $this->prog_data->summary = 'summary';
         $this->prog_data->availablefrom = 123456789;
         $this->prog_data->availableuntil = 123456789;
+        $this->prog_data->audiencevisible = 2;
 
         $this->prog_courseset_data = new stdClass();
         $this->prog_courseset_data->id = 1;
@@ -1058,6 +1060,15 @@ class columns_test extends reportcache_advanced_testcase {
         $this->dummy_data->visible = 1;
         $this->dummy_data->type = 1;
 
+        $this->visible_cohort_data = new stdClass();
+        $this->visible_cohort_data->id = 1;
+        $this->visible_cohort_data->cohortid = 1;
+        $this->visible_cohort_data->instanceid = 1;
+        $this->visible_cohort_data->instancetype = 50;
+        $this->visible_cohort_data->timemodified = 1;
+        $this->visible_cohort_data->timecreated = 1;
+        $this->visible_cohort_data->usermodified = 1;
+
         $DB->insert_record('report_builder', $this->rb_data);
         $DB->insert_record('report_builder_columns', $this->rb_col_data);
         $DB->insert_record('report_builder_filters', $this->rb_filter_data);
@@ -1145,6 +1156,7 @@ class columns_test extends reportcache_advanced_testcase {
         $DB->insert_record('enrol', $this->filler_data);
         $DB->insert_record('prog_assignment', $this->filler_data);
         $DB->insert_record('totara_sync_log', $this->sync_log_data);
+        $DB->insert_record('cohort_visibility', $this->visible_cohort_data);
 
         // db version of report
         $this->rb = new reportbuilder(1);

@@ -23,23 +23,25 @@
  */
 function totara_get_category_item_count($categoryids, $countcourses = true) {
     global $CFG, $USER, $DB;
+    require_once($CFG->dirroot . '/totara/cohort/lib.php');
 
     list($insql, $params) = $DB->get_in_or_equal(is_array($categoryids) ? $categoryids : array($categoryids));
 
     if (!$categories = $DB->get_records_select('course_categories', "id $insql", $params)) {
-        // no categories
         return array();
     }
 
-    // what items are we counting, courses or programs?
+    // What items are we counting, courses or programs?
     if ($countcourses) {
         $itemcap = 'moodle/course:viewhiddencourses';
         $itemtable = "{course}";
         $itemcontext = CONTEXT_COURSE;
+        $itemalias = 'c';
     } else {
         $itemcap = 'totara/program:viewhiddenprograms';
         $itemtable = "{prog}";
         $itemcontext = CONTEXT_PROGRAM;
+        $itemalias = 'p';
     }
 
     list($insql, $inparams) = $DB->get_in_or_equal(array_keys($categories), SQL_PARAMS_NAMED);
@@ -50,28 +52,38 @@ function totara_get_category_item_count($categoryids, $countcourses = true) {
              ORDER BY depth DESC";
     $params = array('contextlvl' => CONTEXT_COURSECAT);
     $params = array_merge($params, $inparams);
-    // save the context paths of all the categories
 
     $contextpaths = $DB->get_records_sql_menu($sql, $params);
 
-    // builds a WHERE snippet that matches any items inside the sub-category
-    // this won't match the category itself (because of the trailing slash),
-    // but that's okay as we're only interested in the items inside
+    // Builds a WHERE snippet that matches any items inside the sub-category.
+    // This won't match the category itself (because of the trailing slash),
+    // But that's okay as we're only interested in the items inside.
     $contextwhere = array(); $contextparams = array();
     foreach ($contextpaths as $path) {
-        $contextwhere[] = $DB->sql_like('cx.path','?');
-        $contextparams[] = $path . '/%';
+        $paramalias = 'cxt_' . rand(1, 10000);
+        $contextwhere[] = $DB->sql_like('cx.path', ":{$paramalias}");
+        $contextparams[$paramalias] = $path . '/%';
     }
 
-    $sql = "SELECT i.id as itemid, i.visible, cx.path
-              FROM {context} cx
-              JOIN {$itemtable} i
-                ON i.id = cx.instanceid AND contextlevel = ?
-             WHERE (" . implode(' OR ', $contextwhere) . ")";
-    $params = array($itemcontext);
-    $params = array_merge($params, $contextparams);
+    // Add audience visibility setting.
+    $visibilitysql = '';
+    $visibilityparams = array();
+    $canmanagevisibility = has_capability('totara/coursecatalog:manageaudiencevisibility', context_system::instance());
+    if (!empty($CFG->audiencevisibility) && !$canmanagevisibility) {
+        list($visibilitysql, $visibilityparams) = totara_cohort_get_visible_learning_sql($itemalias, 'id', $itemcontext);
+    }
 
-    // get all items inside all the categories
+    $sql = "SELECT {$itemalias}.id as itemid, {$itemalias}.visible, {$itemalias}.audiencevisible, cx.path
+              FROM {context} cx
+              JOIN {$itemtable} {$itemalias}
+                ON {$itemalias}.id = cx.instanceid AND contextlevel = :itemcontext
+                {$visibilitysql}
+             WHERE (" . implode(' OR ', $contextwhere) . ")";
+    $params = array('itemcontext' => $itemcontext);
+    $params = array_merge($params, $contextparams);
+    $params = array_merge($params, $visibilityparams);
+
+    // Get all items inside all the categories.
     if (!$items = $DB->get_records_sql($sql, $params)) {
         // Sub-categories are all empty.
         if (is_array($categoryids)) {
@@ -82,35 +94,33 @@ function totara_get_category_item_count($categoryids, $countcourses = true) {
 
     $results = array();
     foreach ($items as $item) {
-        // check individual permission
-        //get contextobj - use a switch in case this gets even more complicated in future with a third type
-        switch ($itemcontext) {
-            case CONTEXT_COURSE:
-                $contextobj = context_course::instance($item->itemid);
-                break;
-            case CONTEXT_PROGRAM:
-                $contextobj = context_program::instance($item->itemid);
-                break;
-        }
-        if (!$item->visible && !has_capability($itemcap, $contextobj)) {
-            continue;
+        if (empty($CFG->audiencevisibility)) {
+            // Check individual permission.
+            // Get contextobj - use a switch in case this gets even more complicated in future with a third type.
+            switch ($itemcontext) {
+                case CONTEXT_COURSE:
+                    $contextobj = context_course::instance($item->itemid);
+                    break;
+                case CONTEXT_PROGRAM:
+                    $contextobj = context_program::instance($item->itemid);
+                    break;
+            }
+            if (!$item->visible && !has_capability($itemcap, $contextobj)) {
+                continue;
+            }
         }
 
-        // we need to check if programs are available to students before
-        // displaying them in search, unless the user is an admin
+        // We need to check if programs are available to students.
         if (!$countcourses && !is_siteadmin($USER->id)) {
-
             $program = new program($item->itemid);
             if (!$program->is_accessible()) {
                 continue;
             }
         }
 
-        // now we need to figure out which sub-category each item
-        // is a member of
+        // Now we need to figure out which sub-category each item is a member of.
         foreach ($contextpaths as $categoryid => $contextpath) {
-            // it's a member if the beginning of the contextpath's
-            // match
+            // It's a member if the beginning of the contextpath's match.
             if (substr($item->path, 0, strlen($contextpath.'/')) ==
                 $contextpath.'/') {
                 if (array_key_exists($categoryid, $results)) {
@@ -123,7 +133,9 @@ function totara_get_category_item_count($categoryids, $countcourses = true) {
         }
     }
 
-    if (is_array($categoryids)) {
+    if (empty($results)) {
+        return 0;
+    } else if (is_array($categoryids)) {
         return $results;
     } else {
         return current($results);
@@ -146,4 +158,56 @@ function totara_course_cmp_by_count($a, $b) {
     } else {
         return 0;
     }
+}
+
+/**
+ * Returns true or false depending on whether or not this course is visible to a user.
+ * This method does not care whether the user is enrolled or not.
+ *
+ * @param int $courseid
+ * @param int $userid
+ * @return bool
+ */
+function totara_course_is_viewable($courseid, $userid = null) {
+    global $USER, $CFG, $DB;
+    require_once($CFG->dirroot . '/totara/cohort/lib.php');
+
+    if ($userid == null) {
+        $userid = $USER->id;
+    }
+
+    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    if (empty($CFG->audiencevisibility)) {
+        if ($course->visible) {
+            return true;
+        }
+
+        // If this user is able to view hidden courses, then let it be visible.
+        if (has_capability('moodle/course:viewhiddencourses', context_course::instance($course->id), $userid)) {
+            return true;
+        }
+    } else {
+        if ($course->audiencevisible == COHORT_VISIBLE_ALL) {
+            return true;
+        } else if (has_capability('totara/coursecatalog:manageaudiencevisibility', context_system::instance())) {
+            return true;
+        } else {
+            $sql = "SELECT cv.instanceid
+                            FROM {cohort_visibility} cv
+                            JOIN {cohort_members} cm ON cv.cohortid = cm.cohortid
+                            JOIN {course} c ON cv.instanceid = c.id AND c.audiencevisible > 0
+                            WHERE cv.instancetype = :instancetype
+                                  AND cm.userid = :userid
+                                  AND c.id = :cid";
+            $params = array('instancetype' => COHORT_ASSN_ITEMTYPE_COURSE,
+                            'userid' => $userid,
+                            'cid' => $courseid);
+
+            if ($DB->record_exists_sql($sql, $params)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }

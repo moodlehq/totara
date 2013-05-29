@@ -724,7 +724,9 @@ class multi_course_set extends course_set {
     }
 
     public function display($userid=null, $previous_sets=array(), $next_sets=array(), $accessible=true, $viewinganothersprogram=false) {
-        global $USER, $OUTPUT, $DB;
+        global $USER, $OUTPUT, $DB, $CFG;
+
+        require_once($CFG->dirroot . '/totara/coursecatalog/lib.php');
 
         $out = '';
         $out .= html_writer::start_tag('fieldset');
@@ -758,6 +760,7 @@ class multi_course_set extends course_set {
             foreach ($this->courses as $course) {
                 $cells = array();
                 $coursecontext = context_course::instance($course->id);
+                $coursename = format_string($course->fullname);
 
                 if (empty($course->icon)) {
                     $course->icon = 'default';
@@ -765,14 +768,17 @@ class multi_course_set extends course_set {
 
                 $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
 
-                // TODO SCANMSG: Check new enrollment functions to make sure we are doing sufficient checks
-                // Need to figure out how to di $course->enrollable in 2.x as as all this type of functionality
-                // has been moved into individual enrollment plugins
-                if (($userid && $accessible) || ($accessible) || (is_enrolled($coursecontext, $userid)) || is_siteadmin($USER->id)) {
-                    $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), format_string($course->fullname));
+                // Site admin can access any course.
+                if (is_siteadmin($USER->id)) {
+                    $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $coursename);
+                    $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
+                } else if ((is_enrolled($coursecontext, $userid) || totara_course_is_viewable($course->id, $userid)) &&
+                           (($userid && $accessible) || $accessible)) {
+                    // Others have to be either enrolled or have it in visible learning.
+                    $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $coursename);
                     $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
                 } else {
-                    $coursedetails .= format_string($course->fullname);
+                    $coursedetails .= $coursename;
                     $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null, array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));
                 }
                 $cells[] = new html_table_cell($coursedetails);
@@ -1464,7 +1470,7 @@ class competency_course_set extends course_set {
                 $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
                 $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), format_string($course->fullname)) : format_string($course->fullname);
                 $cells[] = new html_table_cell($coursedetails);
-                if ($accessible) {
+                if ($accessible && totara_course_is_viewable($course->id, $userid)) {
                     $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
                 } else {
                     $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null, array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));
@@ -1998,7 +2004,7 @@ class recurring_course_set extends course_set {
             $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), format_string($course->fullname)) : format_string($course->fullname);
             $cells[] = new html_table_cell($coursedetails);
 
-            if ($accessible) {
+            if ($accessible && totara_course_is_viewable($course->id, $userid)) {
                 $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
             } else {
                 $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null, array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));

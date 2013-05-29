@@ -33,7 +33,7 @@ require_once($CFG->dirroot.'/cohort/lib.php');
  * A report builder source for a cohort's "learning items", which includes "enrolled items", i.e. courses & programs that
  * the cohort's members should be enrolled in
  */
-class rb_source_cohort_associations extends rb_base_source {
+class rb_source_cohort_associations_visible extends rb_base_source {
 
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
@@ -44,17 +44,7 @@ class rb_source_cohort_associations extends rb_base_source {
      * @global object $CFG
      */
     public function __construct() {
-        $this->base = "(SELECT e.id, e.customint1 AS cohortid, e.courseid AS instanceid,
-                c.fullname AS name, c.icon, " . COHORT_ASSN_ITEMTYPE_COURSE . " AS instancetype
-            FROM {enrol} e
-            JOIN {course} c ON e.courseid = c.id
-            WHERE e.enrol = 'cohort'
-            UNION ALL
-            SELECT pa.id, pa.assignmenttypeid AS cohortid, p.id AS instanceid,
-                p.fullname AS name, p.icon, " . COHORT_ASSN_ITEMTYPE_PROGRAM . " AS instancetype
-            FROM {prog_assignment} pa
-            JOIN {prog} p ON pa.programid = p.id
-            WHERE pa.assignmenttype = " . ASSIGNTYPE_COHORT . ")";
+        $this->base = '{cohort_visibility}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -63,7 +53,7 @@ class rb_source_cohort_associations extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = array();
-        $this->sourcetitle = get_string('sourcetitle', 'rb_source_cohort_associations');
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_cohort_associations_visible');
         parent::__construct();
     }
 
@@ -80,7 +70,7 @@ class rb_source_cohort_associations extends rb_base_source {
      * @return array
      */
     private function define_joinlist() {
-        global $CFG;
+        global $DB;
 
         $joinlist = array();
 
@@ -94,9 +84,17 @@ class rb_source_cohort_associations extends rb_base_source {
 
         $joinlist[] = new rb_join(
             'associations',
-            'LEFT',
-            '{cohort_visibility}',
-            'base.cohortid = associations.cohortid',
+            'INNER',
+            "(SELECT c.id, c.id AS instanceid,
+                c.fullname AS name, c.icon, " . COHORT_ASSN_ITEMTYPE_COURSE . " AS instancetype, c.audiencevisible
+            FROM {course} c
+
+            UNION
+
+            SELECT p.id, p.id AS instanceid,
+                p.fullname AS name, p.icon, " . COHORT_ASSN_ITEMTYPE_PROGRAM . " AS instancetype, p.audiencevisible
+            FROM {prog} p )",
+            'base.instancetype = associations.instancetype AND base.instanceid = associations.instanceid',
             REPORT_BUILDER_RELATION_MANY_TO_ONE
         );
 
@@ -116,26 +114,37 @@ class rb_source_cohort_associations extends rb_base_source {
             'associations',
             'name',
             get_string('associationname', 'totara_cohort'),
-            'base.name',
-            array()
+            'associations.name',
+            array('joins' => 'associations')
+        );
+        $columnoptions[] = new rb_column_option(
+            'associations',
+            'status',
+            get_string('visibility', 'totara_cohort'),
+            'associations.audiencevisible',
+            array(
+                'joins' => 'associations',
+                'displayfunc' => 'visibility_status'
+            )
         );
         $columnoptions[] = new rb_column_option(
             'associations',
             'type',
             get_string('associationtype', 'totara_cohort'),
             'base.instancetype',
-            array('displayfunc'=>'associationtype')
+            array('displayfunc' => 'associationtype')
         );
         $columnoptions[] = new rb_column_option(
             'associations',
             'nameiconlink',
             get_string('associationnameiconlink', 'totara_cohort'),
-            'base.name',
+            'associations.name',
             array(
-                'displayfunc'=>'associationnameiconlink',
-                'extrafields'=>array(
-                    'insid'=> 'base.instanceid',
-                    'icon' => 'base.icon',
+                'joins' => 'associations',
+                'displayfunc' => 'associationnameiconlink',
+                'extrafields' => array(
+                    'insid' => 'base.instanceid',
+                    'icon' => 'associations.icon',
                     'type' => 'base.instancetype'
                 )
             )
@@ -146,9 +155,10 @@ class rb_source_cohort_associations extends rb_base_source {
             get_string('associationactionsenrolled', 'totara_cohort'),
             'base.id',
             array(
-                'displayfunc'=>'associationactionsenrolled',
-                'extrafields'=>array('cohortid'=>'base.cohortid'),
-                'nosort'=>true
+                'displayfunc' => 'associationactionsenrolled',
+                'extrafields' => array('cohortid'=>'base.cohortid'),
+                'nosort' => true,
+                'noexport' => true
             )
         );
         $columnoptions[] = new rb_column_option(
@@ -157,9 +167,10 @@ class rb_source_cohort_associations extends rb_base_source {
             get_string('associationactionsvisible', 'totara_cohort'),
             'base.id',
             array(
-                'displayfunc'=>'associationactionsenrolled',
-                'extrafields'=>array('cohortid'=>'base.cohortid'),
-                'nosort'=>true
+                'displayfunc' => 'associationactionsvisible',
+                'extrafields' => array('cohortid' => 'base.cohortid'),
+                'nosort' => true,
+                'noexport' => true
             )
         );
         $columnoptions[] = new rb_column_option(
@@ -243,8 +254,12 @@ class rb_source_cohort_associations extends rb_base_source {
                 'value' => 'name',
             ),
             array(
-                'type' => 'associations',
+                'type' => 'assocations',
                 'value' => 'type',
+            ),
+            array(
+                'type' => 'assocations',
+                'value' => 'status',
             )
         );
         return $defaultcolumns;
@@ -308,6 +323,18 @@ class rb_source_cohort_associations extends rb_base_source {
     }
 
     /**
+     * Helper function to display visible learning status
+     * @param int $status
+     * @param object $row
+     * @return string
+     */
+    public function rb_display_visibility_status($status, $row) {
+        global $COHORT_VISIBILITY;
+
+        return $COHORT_VISIBILITY[$status];
+    }
+
+    /**
      * Helper function to display the learning item's name, with its icon and a link to it
      * @param str $instancename
      * @param object $row
@@ -335,9 +362,10 @@ class rb_source_cohort_associations extends rb_base_source {
             array('cohortid' => $row->cohortid,
             'type' => $row->type,
             'd' => $associationid,
+            'v' => COHORT_ASSN_VALUE_VISIBLE,
             'sesskey' => sesskey(),
             'backurl' => $backurl->out()));
-        return html_writer::link($delurl, $OUTPUT->pix_icon('t/delete', $strdelete), array('title' => $strdelete, 'class' => 'learning-delete'));
+        return $OUTPUT->action_icon($delurl, new pix_icon('t/delete', $strdelete), null, array('title' => $strdelete, 'class' => 'learning-delete'));
     }
 
     /**
@@ -359,12 +387,29 @@ class rb_source_cohort_associations extends rb_base_source {
     }
 
     /**
+     * Helper function to display the action links for the "visible learning" page
+     * @param int $associationid
+     * @param object $row
+     * @return str
+     */
+    public function rb_display_associationactionsvisible($associationid, $row) {
+        static $canedit = null;
+        if ($canedit === null) {
+            $canedit = has_capability('moodle/cohort:manage', context_system::instance());
+        }
+
+        if ($canedit) {
+            return $this->cohort_association_delete_link($associationid, $row);
+        }
+        return '';
+    }
+
+    /**
      * Helper function to display the "Set completion date" link for a program (should only be used with enrolled items)
      * @param $instanceid
      * @param $row
      */
     public function rb_display_programcompletionlink($instanceid, $row) {
-        global $DB;
 
         static $canedit = null;
         if ($canedit === null) {
@@ -377,3 +422,4 @@ class rb_source_cohort_associations extends rb_base_source {
         return get_string('na', 'totara_cohort');
     }
 }
+

@@ -91,18 +91,26 @@ if ($isadmin) {
         get_string('editprogramdetails', 'totara_program'), 'GET', array('class' => 'navbutton'));
 }
 
-// Program page content
+// Program page content.
 echo $OUTPUT->container_start('', 'view-program-content');
 
 echo $OUTPUT->heading($heading);
 
-/* if the logged in user has been assigned this program,
- * then they should always see their progress - even on
- * the searched pages */
-if ($program->user_is_assigned($USER->id)) {
-    echo $program->display($USER->id);
+// A user assigned this program should always see their progress.
+if (!empty($CFG->audiencevisibility)) {
+    if ($program->user_is_assigned($USER->id)) {
+        echo $program->display($USER->id);
+    } else if ($program->is_viewable()) {
+        echo $program->display();
+    } else {
+        echo $OUTPUT->notification(get_string('error:inaccessible', 'totara_program'));
+    }
 } else {
-    echo $program->display();
+    if ($program->user_is_assigned($USER->id)) {
+        echo $program->display($USER->id);
+    } else {
+        echo $program->display();
+    }
 }
 
 echo $OUTPUT->container_end();

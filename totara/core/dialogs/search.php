@@ -190,15 +190,30 @@ switch ($searchtype) {
         // Generate search SQL
         $keywords = totara_search_parse_keywords($query);
         $fields = array('c.fullname', 'c.shortname');
-        list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
+        list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields, SQL_PARAMS_NAMED);
 
         $search_info->id = 'c.id';
         $search_info->fullname = 'c.fullname';
 
-        $search_info->sql = "
-            FROM
+        if (empty($CFG->audiencevisibility)) {
+            $search_info->sql = "
+                FROM
+                    {course} c
+            ";
+        } else {
+            $visibilitysql = '';
+            $visibilityparams = array();
+            $canmanagevisibility = has_capability('totara/coursecatalog:manageaudiencevisibility', context_system::instance());
+            if (!$canmanagevisibility) {
+                list($visibilitysql, $visibilityparams) = totara_cohort_get_visible_learning_sql('c', 'id', COHORT_ASSN_ITEMTYPE_COURSE);
+            }
+            $search_info->sql = "
+                FROM
                 {course} c
-        ";
+                {$visibilitysql}
+            ";
+            $params = array_merge($params, $visibilityparams);
+        }
 
         if ($this->requirecompletioncriteria) {
             $search_info->sql .= "
@@ -208,17 +223,16 @@ switch ($searchtype) {
             ";
         }
 
-        $search_info->sql .= "
-            WHERE
-                {$searchsql}
-                AND c.visible = 1
-        ";
+        $search_info->sql .= " WHERE {$searchsql} ";
+        if (empty($CFG->audiencevisibility)) {
+            $search_info->sql .= " AND c.visible = 1 ";
+        }
 
         if ($this->requirecompletion || $this->requirecompletioncriteria) {
             $search_info->sql .= "
-                AND c.enablecompletion = ?
+                AND c.enablecompletion = :enablecompletion
             ";
-            $params[] = COMPLETION_ENABLED;
+            $params['enablecompletion'] = COMPLETION_ENABLED;
 
             if ($this->requirecompletioncriteria) {
                 $search_info->sql .= "
@@ -227,8 +241,8 @@ switch ($searchtype) {
             }
         }
         //always exclude site course
-        $search_info->sql .= " AND c.id <> ?";
-        $params[] = SITEID;
+        $search_info->sql .= " AND c.id <> :siteid";
+        $params['siteid'] = SITEID;
         $search_info->order = " ORDER BY c.sortorder ASC";
         $search_info->params = $params;
         break;
@@ -240,18 +254,35 @@ switch ($searchtype) {
     case 'program':
         // Generate search SQL
         $keywords = totara_search_parse_keywords($query);
-        $fields = array('fullname', 'shortname');
-        list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
+        $fields = array('p.fullname', 'p.shortname');
+        list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields, SQL_PARAMS_NAMED);
 
-        $search_info->sql = "
-            FROM
-                {prog}
-            WHERE
-                {$searchsql}
-                AND visible = 1
-        ";
+        if (empty($CFG->audiencevisibility)) {
+            $search_info->sql = "
+                FROM
+                    {prog} p
+                WHERE
+                    {$searchsql}
+                    AND visible = 1
+            ";
+        } else {
+            $visibilitysql = '';
+            $visibilityparams = array();
+            $canmanagevisibility = has_capability('totara/coursecatalog:manageaudiencevisibility', context_system::instance());
+            if (!$canmanagevisibility) {
+                list($visibilitysql, $visibilityparams) = totara_cohort_get_visible_learning_sql('p', 'id', COHORT_ASSN_ITEMTYPE_PROGRAM);
+            }
+            $search_info->sql = "
+                FROM
+                    {prog} p
+                    {$visibilitysql}
+                WHERE
+                    {$searchsql}
+            ";
+            $params = array_merge($params, $visibilityparams);
+        }
 
-        $search_info->order = " ORDER BY sortorder ASC";
+        $search_info->order = " ORDER BY p.sortorder ASC";
         $search_info->params = $params;
         break;
 

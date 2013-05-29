@@ -159,7 +159,8 @@ class reportcache_testing_data_generator extends testing_data_generator {
                          'exceptionssent' => 0,
                          'visible' => 1,
                          'summary' => '',
-                         'endnote' => ''
+                         'endnote' => '',
+                         'audiencevisible' => 2
                         );
         $properties = array_merge($default, $data);
 

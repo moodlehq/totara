@@ -5,6 +5,7 @@ $string['backtoallcourse'] = 'Back to all courses';
 $string['backtoallprogram'] = 'Back to all programs';
 $string['backtocategoryx'] = 'Back to {$a}';
 $string['backtocourselisting'] = 'Back to course listing';
+$string['coursecatalog:manageaudiencevisibility'] = 'Manage audience-based visibility';
 
 //various reminder library strings
 $string['businessdays'] = 'Business days';

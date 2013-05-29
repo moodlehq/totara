@@ -41,7 +41,6 @@ define('COHORT_COL_STATUS_OBSOLETE', 30);
 
 define('COHORT_MEMBER_SELECTOR_MAX_ROWS', 1000);
 
-
 global $COHORT_ALERT;
 $COHORT_ALERT = array(
     COHORT_ALERT_NONE => get_string('alertmembersnone', 'totara_cohort'),
@@ -57,11 +56,25 @@ $COHORT_ASSN_ITEMTYPES = array(
     COHORT_ASSN_ITEMTYPE_PROGRAM => 'program'
 );
 
-// this will be extended when we add visible learning and/or other tabs
+// This should be extended when adding other tabs.
+define ('COHORT_ASSN_VALUE_VISIBLE', 10);
 define ('COHORT_ASSN_VALUE_ENROLLED', 30);
 global $COHORT_ASSN_VALUES;
 $COHORT_ASSN_VALUES = array(
+    COHORT_ASSN_VALUE_VISIBLE => 'visible',
     COHORT_ASSN_VALUE_ENROLLED => 'enrolled'
+);
+
+// Visibility constants.
+define('COHORT_VISIBLE_NONE', 0);
+define('COHORT_VISIBLE_AUDIENCE', 1);
+define('COHORT_VISIBLE_ALL', 2);
+
+global $COHORT_VISIBILITY;
+$COHORT_VISIBILITY = array(
+    COHORT_VISIBLE_NONE => get_string('visiblenone', 'totara_cohort'),
+    COHORT_VISIBLE_AUDIENCE => get_string('visibleaudience', 'totara_cohort'),
+    COHORT_VISIBLE_ALL => get_string('visibleall', 'totara_cohort'),
 );
 
 /**
@@ -89,59 +102,77 @@ function totara_cohort_cron() {
  * @param $cohortid
  * @param $instanceid course/program id
  * @param $instancetype COHORT_ASSN_ITEMTYPE_COURSE, COHORT_ASSN_ITEMTYPE_PROGRAM, etc.
+ * @param $value COHORT_ASSN_VALUE_ENROLLED, COHORT_ASSN_VALUE_VISIBLE
  * @return boolean
  */
-function totara_cohort_add_association($cohortid, $instanceid, $instancetype) {
-    global $CFG, $DB, $COHORT_ASSN_ITEMTYPES;
+function totara_cohort_add_association($cohortid, $instanceid, $instancetype, $value=COHORT_ASSN_VALUE_ENROLLED) {
+    global $CFG, $DB, $USER, $COHORT_ASSN_ITEMTYPES, $COHORT_ASSN_VALUES;
 
     if (!array_key_exists($instancetype, $COHORT_ASSN_ITEMTYPES)) {
         return false;
     }
 
-    switch ($instancetype) {
-        case COHORT_ASSN_ITEMTYPE_COURSE:
-            $courseassociations = array_map(
-                function($assoc) {
-                    return $assoc->instanceid;
-                },
-                totara_cohort_get_associations($cohortid, COHORT_ASSN_ITEMTYPE_COURSE)
-            );
-            if (in_array($instanceid, $courseassociations)) {
-                return true;
-            }
-            if (!$course = $DB->get_record('course', array('id' => $instanceid))) {
-                return false;
-            }
-            // Add a cohort enrol instance to the course
-            $enrolplugin = enrol_get_plugin('cohort');
-            $assid = $enrolplugin->add_instance($course, array('customint1' => $cohortid, 'roleid' => $CFG->learnerroleid));
-            return $assid;
-            break;
-        case COHORT_ASSN_ITEMTYPE_PROGRAM:
-            $progassociations = array_map(
-                function($assoc) {
-                    return $assoc->instanceid;
-                },
-                totara_cohort_get_associations($cohortid, COHORT_ASSN_ITEMTYPE_PROGRAM)
-            );
-            if (in_array($instanceid, $progassociations)) {
-                return true;
-            }
-            if (!$program = $DB->get_record('prog', array('id' => $instanceid))) {
-                return false;
-            }
-            // Add program assignment
-            $todb = new stdClass;
-            $todb->programid = $instanceid;
-            $todb->assignmenttype = ASSIGNTYPE_COHORT;
-            $todb->assignmenttypeid = $cohortid;
-            $assid = $DB->insert_record('prog_assignment', $todb);
-            return $assid;
-            break;
-        default:
-            break;
+    if (!array_key_exists($value, $COHORT_ASSN_VALUES)) {
+        return false;
     }
 
+    if ($value == COHORT_ASSN_VALUE_ENROLLED) {
+        switch ($instancetype) {
+            case COHORT_ASSN_ITEMTYPE_COURSE:
+                $courseassociations = array_map(
+                    function($assoc) {
+                        return $assoc->instanceid;
+                    },
+                    totara_cohort_get_associations($cohortid, COHORT_ASSN_ITEMTYPE_COURSE)
+                );
+                if (in_array($instanceid, $courseassociations)) {
+                    return true;
+                }
+                if (!$course = $DB->get_record('course', array('id' => $instanceid))) {
+                    return false;
+                }
+                // Add a cohort enrol instance to the course
+                $enrolplugin = enrol_get_plugin('cohort');
+                $assid = $enrolplugin->add_instance($course, array('customint1' => $cohortid, 'roleid' => $CFG->learnerroleid));
+                return $assid;
+                break;
+            case COHORT_ASSN_ITEMTYPE_PROGRAM:
+                $progassociations = array_map(
+                    function($assoc) {
+                        return $assoc->instanceid;
+                    },
+                    totara_cohort_get_associations($cohortid, COHORT_ASSN_ITEMTYPE_PROGRAM)
+                );
+                if (in_array($instanceid, $progassociations)) {
+                    return true;
+                }
+                if (!$program = $DB->get_record('prog', array('id' => $instanceid))) {
+                    return false;
+                }
+                // Add program assignment
+                $todb = new stdClass;
+                $todb->programid = $instanceid;
+                $todb->assignmenttype = ASSIGNTYPE_COHORT;
+                $todb->assignmenttypeid = $cohortid;
+                $assid = $DB->insert_record('prog_assignment', $todb);
+                return $assid;
+                break;
+            default:
+                break;
+        }
+    } else { // assigning visible learning
+        if (!$DB->record_exists_sql('SELECT 1 FROM {cohort_visibility} WHERE cohortid = ? AND instanceid = ? AND '
+                . 'instancetype = ? ', array($cohortid, $instanceid, $instancetype))) {
+            $todb = new stdClass();
+            $todb->cohortid = $cohortid;
+            $todb->instanceid = $instanceid;
+            $todb->instancetype = $instancetype;
+            $todb->timemodified = time();
+            $todb->timecreated = $todb->timemodified;
+            $todb->usermodified = $USER->id;
+            return $DB->insert_record('cohort_visibility', $todb);
+        }
+    }
     return true;
 }
 
@@ -150,12 +181,18 @@ function totara_cohort_add_association($cohortid, $instanceid, $instancetype) {
  * @param $cohortid
  * @param $assid
  * @param $asstype
+ * @param $value COHORT_ASSN_VALUE_ENROLLED, COHORT_ASSN_VALUE_VISIBLE
  */
-function totara_cohort_delete_association($cohortid, $assid, $instancetype) {
+function totara_cohort_delete_association($cohortid, $assid, $instancetype, $value=COHORT_ASSN_VALUE_ENROLLED) {
     global $DB, $COHORT_ASSN_ITEMTYPES;
 
     if (!array_key_exists($instancetype, $COHORT_ASSN_ITEMTYPES)) {
         return false;
+    }
+
+    if ($value == COHORT_ASSN_VALUE_VISIBLE) {
+        // directly delete from cohort_visibility
+        return $DB->delete_records('cohort_visibility', array('id' => $assid));
     }
 
     switch ($instancetype) {
@@ -170,7 +207,6 @@ function totara_cohort_delete_association($cohortid, $assid, $instancetype) {
 
                 $transaction->allow_commit();
             }
-
             break;
         case COHORT_ASSN_ITEMTYPE_PROGRAM:
             if ($progassid = $DB->get_field('prog_assignment', 'id', array('id' => $assid))) {
@@ -194,46 +230,77 @@ function totara_cohort_delete_association($cohortid, $assid, $instancetype) {
  *
  * @param int $cohortid
  * @param int $instancetype e.g COHORT_ASSN_ITEMTYPE_COURSE, COHORT_ASSN_ITEMTYPE_PROGRAM
+ * @param int $value eg. COHORT_ASSN_VALUE_VISIBLE, COHORT_ASSN_VALUE_ENROLLED
  * @return array of db objects
  */
-function totara_cohort_get_associations($cohortid, $instancetype=null) {
+function totara_cohort_get_associations($cohortid, $instancetype=null, $value=null) {
     global $DB;
 
     switch ($instancetype) {
         case COHORT_ASSN_ITEMTYPE_COURSE:
-            // course associations
-            $sql = "SELECT e.id, c.id AS instanceid, c.fullname, 'course' AS type
-                FROM {enrol} e
-                JOIN {course} c ON e.courseid = c.id
-                WHERE enrol = 'cohort'
-                AND customint1 = ?";
-            $sqlparams = array($cohortid);
-
+            if ($value == COHORT_ASSN_VALUE_VISIBLE) {
+                $sql = "SELECT cas.id, cas.instanceid, c.fullname, 'course' AS type
+                    FROM {cohort_visibility} cas
+                    JOIN {course} c ON cas.instanceid = c.id AND cas.instancetype = ?
+                    WHERE cas.cohortid = ?";
+                $sqlparams = array(COHORT_ASSN_ITEMTYPE_COURSE, $cohortid);
+            } else {
+                // course associations
+                $sql = "SELECT e.id, c.id AS instanceid, c.fullname, 'course' AS type
+                    FROM {enrol} e
+                    JOIN {course} c ON e.courseid = c.id
+                    WHERE enrol = 'cohort'
+                    AND customint1 = ?";
+                $sqlparams = array($cohortid);
+            }
             break;
         case COHORT_ASSN_ITEMTYPE_PROGRAM:
-            $sql = "SELECT pa.id, p.id AS instanceid, p.fullname, 'program' AS type
-                FROM {prog_assignment} pa
-                JOIN {prog} p ON pa.programid = p.id
-                WHERE pa.assignmenttype = ?
-                AND pa.assignmenttypeid = ?";
-            $sqlparams = array(ASSIGNTYPE_COHORT, $cohortid);
+            if ($value == COHORT_ASSN_VALUE_VISIBLE) {
+                $sql = "SELECT cas.id, cas.instanceid, p.fullname, 'program' AS type
+                    FROM {cohort_visibility} cas
+                    JOIN {prog} p ON cas.instanceid = p.id AND cas.instancetype = ?
+                    WHERE cas.cohortid = ?";
+                $sqlparams = array(COHORT_ASSN_ITEMTYPE_PROGRAM, $cohortid);
+            } else {
+                $sql = "SELECT pa.id, p.id AS instanceid, p.fullname, 'program' AS type
+                    FROM {prog_assignment} pa
+                    JOIN {prog} p ON pa.programid = p.id
+                    WHERE pa.assignmenttype = ?
+                    AND pa.assignmenttypeid = ?";
+                $sqlparams = array(ASSIGNTYPE_COHORT, $cohortid);
+            }
             break;
         default:
             // return all associations. prefix ids to ensure uniqueness
-            $sql = "SELECT " .$DB->sql_concat("'c'", 'c.id') . " AS instanceid, c.id, c.fullname AS fullname, 'course' AS type
-                FROM {enrol} e
-                JOIN {course} c ON e.courseid = c.id
-                WHERE enrol = 'cohort'
-                AND customint1 = ?
+            if ($value == COHORT_ASSN_VALUE_VISIBLE) {
+                $sql = "SELECT cas.id, cas.instanceid, c.fullname, 'course' AS type
+                    FROM {cohort_visibility} cas
+                    JOIN {course} c ON cas.instanceid = c.id AND cas.instancetype = ?
+                    WHERE cas.cohortid = ?
 
-                UNION
+                    UNION
 
-                SELECT " . $DB->sql_concat("'p'", 'p.id') . " AS instanceid, p.id, p.fullname, 'program' AS type
-                FROM {prog_assignment} pa
-                JOIN {prog} p ON pa.programid = p.id
-                WHERE pa.assignmenttype = ?
-                AND pa.assignmenttypeid = ?";
-            $sqlparams = array($cohortid, ASSIGNTYPE_COHORT, $cohortid);
+                    SELECT cas.id, cas.instanceid, p.fullname, 'program' AS type
+                    FROM {cohort_visibility} cas
+                    JOIN {prog} p ON cas.instanceid = p.id AND cas.instancetype = ?
+                    WHERE cas.cohortid = ?";
+                $sqlparams = array(COHORT_ASSN_ITEMTYPE_COURSE, $cohortid, COHORT_ASSN_ITEMTYPE_PROGRAM, $cohortid);
+            } else {
+                $sql = "SELECT " .$DB->sql_concat("'c'", 'c.id') . " AS instanceid, c.id, c.fullname AS fullname, 'course' AS type
+                    FROM {enrol} e
+                    JOIN {course} c ON e.courseid = c.id
+                    WHERE enrol = 'cohort'
+                    AND customint1 = ?
+
+                    UNION
+
+                    SELECT " . $DB->sql_concat("'p'", 'p.id') . " AS instanceid, p.id, p.fullname, 'program' AS type
+                    FROM {prog_assignment} pa
+                    JOIN {prog} p ON pa.programid = p.id
+                    WHERE pa.assignmenttype = ?
+                    AND pa.assignmenttypeid = ?";
+                $sqlparams = array($cohortid, ASSIGNTYPE_COHORT, $cohortid);
+            }
             break;
     }
 
@@ -1097,6 +1164,101 @@ function totara_cohort_get_course_cohorts($courseid, $type=null, $fields='c.*') 
     return $DB->get_records_sql($sql, $sqlparams);
 }
 
+/**
+ * Get course/programs associated with a certain cohort's visibility settings.
+ *
+ * @param int $instanceid Course or Program id
+ * @param int $instancetype e.g COHORT_ASSN_ITEMTYPE_COURSE, COHORT_ASSN_ITEMTYPE_PROGRAM
+ * @return array List of cohorts associated with this Course or Program
+ */
+function totara_cohort_get_visible_learning($instanceid, $instancetype = COHORT_ASSN_ITEMTYPE_COURSE) {
+    global $DB;
+
+    $sql = "SELECT cas.cohortid as id, cas.instanceid, c.name as fullname, c.cohorttype, cas.id as associd
+        FROM {cohort_visibility} cas
+            JOIN {cohort} c ON cas.cohortid = c.id
+        WHERE cas.instanceid = :instanceid AND cas.instancetype = :instancetype";
+    $sqlparams = array('instancetype' => $instancetype, 'instanceid' => $instanceid);
+
+    return $DB->get_records_sql($sql, $sqlparams);
+}
+
+/**
+ * Returns SQL join string to filter course/programs based on user membership in audiences.
+ *
+ * @param $table string The alias of the table you want to join to.
+ *                      MUST be a table alias, not just the table's name.
+ * @param $field string The name of the field containing ids in the table you are joining to.
+ * @param $instancetype int COHORT_ASSN_ITEMTYPE_COURSE or COHORT_ASSN_ITEMTYPE_PROGRAM
+ * @param $userid int ID of a user (defaults to $USER)
+ *
+ * @return array  An array containing an SQL snippet and parameters.
+ */
+function totara_cohort_get_visible_learning_sql($table, $field, $instancetype = COHORT_ASSN_ITEMTYPE_COURSE, $userid = 0) {
+    global $USER, $DB;
+
+    // Generate alias for our join.
+    $valias = 'vis_' . random_string(15);
+    $params = array();
+
+    $userid = $userid ? $userid : $USER->id;
+
+    // Get programs or courses current user is enrolled in.
+    if ($instancetype == COHORT_ASSN_ITEMTYPE_COURSE) {
+        $records = enrol_get_all_users_courses($userid, false, $field);
+        $intable = 'course';
+    } else {
+        $records = prog_get_all_users_programs($userid, $field);
+        $intable = 'prog';
+    }
+    $enrolledsql = '';
+    if (!empty($records)) {
+        $ids = array_keys($records);
+        list($insql, $inparams) = $DB->get_in_or_equal($ids, SQL_PARAMS_NAMED);
+        $enrolledsql = "UNION SELECT {$field} AS recordid FROM {{$intable}} WHERE {$field} {$insql}";
+        $params = $inparams;
+    }
+
+    // User should be in the audience and added to course/program through visible learning,
+    // Or course/program audience visibility is set to COHORT_VISIBLE_ALL,
+    // Or user is enrolled in a course/assigned to a program if there are any.
+    $sql = " JOIN (
+                SELECT cv.instanceid AS recordid
+                    FROM {cohort_visibility} cv
+                JOIN {cohort_members} cm ON cv.cohortid = cm.cohortid
+                JOIN {{$intable}} {$table}
+                    ON cv.instanceid = {$table}.{$field} AND {$table}.audiencevisible > 0
+                WHERE cv.instancetype = :instancetype AND cm.userid = :userid
+
+            UNION
+
+                SELECT {$field} AS recordid FROM {{$intable}} WHERE audiencevisible = :visibleall
+
+                {$enrolledsql}
+            ) {$valias} ON {$valias}.recordid = {$table}.{$field} ";
+    $joinparams = array('instancetype' => $instancetype, 'userid' => $userid, 'visibleall' => COHORT_VISIBLE_ALL);
+
+    $params = array_merge($joinparams, $params);
+    return array($sql, $params);
+}
+
+class totara_cohort_visible_learning_cohorts extends totara_cohort_course_cohorts {
+    function build_visible_learning_table($instanceid, $instancetype, $readonly = false) {
+        $this->headers = array(
+            get_string('cohortname', 'totara_cohort'),
+            get_string('type', 'totara_cohort'),
+            get_string('numlearners', 'totara_cohort')
+        );
+
+        $items = totara_cohort_get_visible_learning($instanceid, $instancetype);
+
+        if (!empty($items)) {
+            foreach ($items as $item) {
+                $this->data[] = $this->build_row($item, $readonly);
+            }
+        }
+    }
+}
 
 class totara_cohort_course_cohorts
 {
@@ -1104,8 +1266,8 @@ class totara_cohort_course_cohorts
         $this->headers = array(
             get_string('cohortname','totara_cohort'),
             get_string('type','totara_cohort'),
+            get_string('numlearners','totara_cohort')
         );
-        $this->headers[] = get_string('numlearners','totara_cohort');
 
         // Go to the database and gets the assignments
         $items = totara_cohort_get_course_cohorts($courseid, null,
@@ -1119,7 +1281,7 @@ class totara_cohort_course_cohorts
         }
     }
 
-    function build_row($item) {
+    function build_row($item, $readonly = false) {
         global $OUTPUT;
 
         if (is_int($item)) {
@@ -1130,11 +1292,13 @@ class totara_cohort_course_cohorts
         $cohortstring = $cohorttypes[$item->cohorttype];
 
         $row = array();
+        $delete = '';
+        if (!$readonly) {
+            $delete = html_writer::link('#', $OUTPUT->pix_icon('t/delete', get_string('delete')),
+                      array('title' => get_string('delete'), 'class'=>'coursecohortdeletelink'));
+        }
         $row[] = html_writer::start_tag('div', array('id' => 'cohort-item-'.$item->id, 'class' => 'item')) .
-                 format_string($item->fullname) .
-                 html_writer::link('#', $OUTPUT->pix_icon('t/delete', get_string('delete'))
-                     , array('title' => get_string('delete'), 'class'=>'coursecohortdeletelink')) .
-                 html_writer::end_tag('div');
+                 format_string($item->fullname) . $delete . html_writer::end_tag('div');
 
         $row[] = $cohortstring;
         $row[] = $this->user_affected_count($item);
@@ -1144,7 +1308,7 @@ class totara_cohort_course_cohorts
 
     function get_item($itemid) {
         global $DB;
-        return $DB->get_record('cohort',array('id' => $itemid),'id, name as fullname, cohorttype');
+        return $DB->get_record('cohort', array('id' => $itemid), 'id, name as fullname, cohorttype');
     }
 
     function user_affected_count($item) {
@@ -1175,50 +1339,27 @@ class totara_cohort_course_cohorts
     }
 
     /**
-     * Prints out the actual html for the category, by looking at the headers
-     * and data which should have been set by sub class
+     * Prints out the actual html
      *
      * @param bool $return
+     * @param string $type Type of the table
      * @return string html
      */
-    function display($return = false) {
-
-
+    function display($return = false, $type = 'enrolled') {
         $html = '<div id="course-cohort-assignments">
-            <div id="assignment_categories" class="enrolled">
+            <div id="assignment_categories">
             <fieldset class="assignment_category cohorts">';
 
-        $html .= '<table id="course-cohorts-table-enrolled">';
-        $html .= '<tbody>';
+        $table = new html_table();
+        $table->attributes = array('class' => 'generaltable');
+        $table->id = 'course-cohorts-table-' . $type;
+        $table->head = $this->headers;
 
-        $html .= '<tr>';
-        $colcount = 0;
-
-        // Add the headers
-        foreach ($this->headers as $header) {
-            $headerclassstr = strtolower(str_replace(' ', '', $header));
-            $headerclassstr = strtolower(str_replace('#', '', $headerclassstr));
-            $html .= '<th class="'.$headerclassstr.' col'.$colcount.'">'.$header.'</th>';
-            $colcount++;
-        }
-        $html .= '</tr>';
-
-        // And the main data
-        if ( ! empty($this->data)) {
-            foreach ($this->data as $row) {
-                $html .= '<tr>';
-                $colcount = 0;
-                foreach ($row as $cell) {
-                    $html .= '<td class="col'.$colcount.'">'.$cell.'</td>';
-                    $colcount++;
-                }
-                $html .= '</tr>';
-            }
+        if (!empty($this->data)) {
+            $table->data = $this->data;
         }
 
-        $html .= '</tbody>';
-        $html .= '</table>';
-
+        $html .= html_writer::table($table);
         $html .= '</fieldset></div></div>';
 
         if ($return) {

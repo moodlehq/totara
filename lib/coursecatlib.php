@@ -827,8 +827,9 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
      *     on not visible courses
      * @return array array of stdClass objects
      */
-    protected static function get_course_records($whereclause, $params, $options, $checkvisibility = false) {
-        global $DB;
+    public static function get_course_records($whereclause, $params, $options, $checkvisibility = false) {
+        global $DB,$CFG;
+        require_once($CFG->dirroot . '/totara/cohort/lib.php');
         $ctxselect = context_helper::get_preload_record_columns_sql('ctx');
         $fields = array('c.id', 'c.category', 'c.sortorder',
                         'c.shortname', 'c.fullname', 'c.idnumber',
@@ -839,12 +840,32 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
         } else {
             $fields[] = $DB->sql_substr('c.summary', 1, 1). ' as hassummary';
         }
+
+        // Add audience visibility setting.
+        $visibilitysql = '';
+        $visibilityparams = array();
+        $canmanagevisibility = has_capability('totara/coursecatalog:manageaudiencevisibility', context_system::instance());
+        if (!empty($CFG->audiencevisibility) && !$canmanagevisibility) {
+            list($visibilitysql, $visibilityparams) = totara_cohort_get_visible_learning_sql('c', 'id', COHORT_ASSN_ITEMTYPE_COURSE);
+        }
+        $params = array_merge($params, $visibilityparams);
+
         $sql = "SELECT ". join(',', $fields). ", $ctxselect
                 FROM {course} c
                 JOIN {context} ctx ON c.id = ctx.instanceid AND ctx.contextlevel = :contextcourse
+                {$visibilitysql}
                 WHERE ". $whereclause." ORDER BY c.sortorder";
         $list = $DB->get_records_sql($sql,
                 array('contextcourse' => CONTEXT_COURSE) + $params);
+
+        // If audience visibility is enabled, we just need to return records from DB query.
+        if (!empty($CFG->audiencevisibility)) {
+            // Preload course contacts if necessary.
+            if (!empty($options['coursecontacts'])) {
+                self::preload_course_contacts($list);
+            }
+            return $list;
+        }
 
         if ($checkvisibility) {
             // Loop through all records and make sure we only return the courses accessible by user.

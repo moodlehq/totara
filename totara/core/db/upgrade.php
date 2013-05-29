@@ -773,5 +773,19 @@ function xmldb_totara_core_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2013070804, 'totara_core');
     }
 
+    // Add audiencevisible column to courses.
+    if ($oldversion < 2013091500) {
+        $table = new xmldb_table('course');
+        $field = new xmldb_field('audiencevisible', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, 2);
+
+        // Conditionally launch add field audiencevisible to course table.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Main savepoint reached.
+        totara_upgrade_mod_savepoint(true, 2013091500, 'totara_core');
+    }
+
     return true;
 }

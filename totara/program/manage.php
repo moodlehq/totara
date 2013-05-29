@@ -29,6 +29,7 @@
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir . '/coursecatlib.php');
 require_once($CFG->dirroot . '/totara/program/lib.php');
+require_once($CFG->dirroot . '/totara/cohort/lib.php');
 
 // Category id.
 $id = optional_param('categoryid', 0, PARAM_INT);
@@ -434,7 +435,7 @@ echo html_writer::table($table);
 }
 
 $programs = prog_get_programs_page($coursecat->id, 'p.sortorder ASC',
-            'p.id,p.sortorder,p.shortname,p.fullname,p.summary,p.visible',
+            'p.id,p.sortorder,p.shortname,p.fullname,p.summary,p.visible,p.audiencevisible',
                 $totalcount, $page*$perpage, $perpage);
                 $numprograms = count($programs);
                 } else {
@@ -517,13 +518,26 @@ if (!$programs) {
 
         // "Change visibility" icon.
         // Users with no capability to view hidden programs, should not be able to lock themselves out.
-        if (has_any_capability(array('totara/program:visibility', 'totara/program:viewhiddenprograms'), $programcontext)) {
-            if (!empty($aprogram->visible)) {
-                $url = new moodle_url($baseurl, array('hide' => $aprogram->id));
-                $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/hide', get_string('hide')));
-            } else {
-                $url = new moodle_url($baseurl, array('show' => $aprogram->id));
-                $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/show', get_string('show')));
+        // In case we have audience-based visibility, this icon links to a form where audiences can be managed.
+        if (!empty($CFG->audiencevisibility) && has_capability('totara/coursecatalog:manageaudiencevisibility', $context)) {
+            $url = new moodle_url('/totara/program/edit.php', array('id' => $aprogram->id, 'action' => 'edit'));
+            $url->set_anchor('id_visiblecohortshdr');
+            $icon = 'show';
+            if ($aprogram->audiencevisible == COHORT_VISIBLE_ALL) {
+                $icon = 'hide';
+            } else if ($aprogram->audiencevisible == COHORT_VISIBLE_AUDIENCE) {
+                $icon = 'cohort';
+            }
+            $icons[] = $OUTPUT->action_icon($url, new pix_icon("t/{$icon}", get_string('manageaudincevisibility', 'totara_cohort')));
+        } else {
+            if (has_any_capability(array('totara/program:visibility', 'totara/program:viewhiddenprograms'), $programcontext)) {
+                if (!empty($aprogram->visible)) {
+                    $url = new moodle_url($baseurl, array('hide' => $aprogram->id));
+                    $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/hide', get_string('hide')));
+                } else {
+                    $url = new moodle_url($baseurl, array('show' => $aprogram->id));
+                    $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/show', get_string('show')));
+                }
             }
         }
 

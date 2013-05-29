@@ -151,6 +151,7 @@ function xmldb_totara_program_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012081503, 'totara_program');
     }
 
+
     // Looks like the previous update block is missing a step, fix it and add a new one.
     if ($oldversion < 2013090900) {
         // Clean up exceptions where users are no longer assigned.
@@ -168,5 +169,20 @@ function xmldb_totara_program_upgrade($oldversion) {
         }
         totara_upgrade_mod_savepoint(true, 2013090900, 'totara_program');
     }
+
+    // Add audiencevisible column to programs.
+    if ($oldversion < 2013091000) {
+        $table = new xmldb_table('prog');
+        $field = new xmldb_field('audiencevisible', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, 2);
+
+        // Conditionally launch add field audiencevisible to program table.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Main savepoint reached.
+        totara_upgrade_mod_savepoint(true, 2013091000, 'totara_program');
+    }
+
     return true;
 }

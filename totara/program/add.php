@@ -30,6 +30,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/cohort/lib.php');
 require_once('edit_form.php');
 
 $categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
@@ -53,7 +54,8 @@ local_js(array(
     TOTARA_JS_UI,
     TOTARA_JS_DATEPICKER,
     TOTARA_JS_PLACEHOLDER,
-    TOTARA_JS_ICON_PREVIEW
+    TOTARA_JS_ICON_PREVIEW,
+    TOTARA_JS_TREEVIEW
 ));
 
 $PAGE->requires->string_for_js('chooseicon', 'totara_program');
@@ -62,10 +64,20 @@ $iconjsmodule = array(
         'fullpath' => '/totara/core/js/icon.picker.js',
         'requires' => array('json'));
 
-$iconargs = array('args' => '{"selected_icon":"default",
-                              "type":"program"}');
+$iconargs = array('args' => '{"selected_icon":"default", "type":"program"}');
 
 $PAGE->requires->js_init_call('M.totara_iconpicker.init', $iconargs, false, $iconjsmodule);
+
+// Visible audiences.
+if (!empty($CFG->audiencevisibility)) {
+    $PAGE->requires->strings_for_js(array('programcohortsvisible'), 'totara_cohort');
+    $jsmodule = array(
+                    'name' => 'totara_visiblecohort',
+                    'fullpath' => '/totara/cohort/dialog/visiblecohort.js',
+                    'requires' => array('json'));
+    $args = array('args'=>'{"visibleselected":"", "type":"program"}');
+    $PAGE->requires->js_init_call('M.totara_visiblecohort.init', $args, true, $jsmodule);
+}
 
 if ($categoryid) { // creating new program in this category
     if (!$category = $DB->get_record('course_categories', array('id' => $categoryid))) {
@@ -128,7 +140,8 @@ if ($data = $form->get_data()) {
         $program_todb->icon = $data->icon;
         $program_todb->exceptionssent = 0;
         $program_todb->visible = $data->visible;
-        //text editor fields will be updated later
+        $program_todb->audiencevisible = $data->audiencevisible;
+        // Text editor fields will be updated later.
         $program_todb->summary = '';
         $program_todb->endnote ='';
         $newid = 0;
@@ -150,6 +163,27 @@ if ($data = $form->get_data()) {
         }
         $DB->set_field('prog', 'summary', $data->summary, array('id' => $newid));
         $DB->set_field('prog', 'endnote', $data->endnote, array('id' => $newid));
+
+        // Visible audiences.
+        if (!empty($CFG->audiencevisibility)) {
+            $visiblecohorts = totara_cohort_get_visible_learning($newid, COHORT_ASSN_ITEMTYPE_PROGRAM);
+            $visiblecohorts = !empty($visiblecohorts) ? $visiblecohorts : array();
+            $newvisible = !empty($data->cohortsvisible) ? explode(',', $data->cohortsvisible) : array();
+            if ($todelete = array_diff(array_keys($visiblecohorts), $newvisible)) {
+                // Delete removed cohorts.
+                foreach ($todelete as $cohortid) {
+                    totara_cohort_delete_association($cohortid, $visiblecohorts[$cohortid]->associd,
+                                                    COHORT_ASSN_ITEMTYPE_PROGRAM, COHORT_ASSN_VALUE_VISIBLE);
+                }
+            }
+
+            if ($newvisible = array_diff($newvisible, array_keys($visiblecohorts))) {
+                // Add new cohort associations.
+                foreach ($newvisible as $cohortid) {
+                    totara_cohort_add_association($cohortid, $newid, COHORT_ASSN_ITEMTYPE_PROGRAM, COHORT_ASSN_VALUE_VISIBLE);
+                }
+            }
+        }
 
         add_to_log(SITEID, 'program', 'created', "edit.php?id={$newid}", $program->fullname);
 

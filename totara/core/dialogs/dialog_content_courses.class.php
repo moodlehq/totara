@@ -32,6 +32,7 @@ require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
 require_once($CFG->dirroot.'/course/lib.php');
 require_once($CFG->dirroot.'/totara/coursecatalog/lib.php');
 require_once($CFG->libdir.'/datalib.php');
+require_once($CFG->libdir.'/coursecatlib.php');
 
 /**
  * Class for generating single select course dialog markup
@@ -190,12 +191,13 @@ class totara_dialog_content_courses extends totara_dialog_content {
         global $DB;
         $params = array();
         if ($this->categoryid) {
+            $coursecat = coursecat::get($this->categoryid);
             if ($where === false) {
                 $where = '';
 
                 if ($this->requirecompletion || $this->requirecompletioncriteria) {
-                    $where = " enablecompletion = ? AND ";
-                    $params[] = COMPLETION_ENABLED;
+                    $where = " enablecompletion = :enablecompletion AND ";
+                    $params['enablecompletion'] = COMPLETION_ENABLED;
                     if ($this->requirecompletioncriteria) {
                         $where .= "
                             id IN (
@@ -207,21 +209,22 @@ class totara_dialog_content_courses extends totara_dialog_content {
                                     {course} c
                                  ON c.id = ccc.course
                                 WHERE
-                                    c.category = ?
+                                    c.category = :completioncat
                             )
                             AND
                         ";
-                        $params[] = $this->categoryid;
+                        $params['completioncat'] = $this->categoryid;
                     }
                 }
 
-                $where .= " category = ? AND visible = 1 ";
-                $params[] = $this->categoryid;
+                $where .= " category = :dialogcoursecat ";
+                $params['dialogcoursecat'] = $this->categoryid;
+                $this->courses = $coursecat->get_course_records($where, $params, array());
+            } else {
+                $this->courses = $coursecat->get_courses();
             }
-            $this->courses = $DB->get_records_select('course', $where, $params, 'fullname ASC', 'id, fullname, sortorder');
         }
     }
-
 
     /**
      * Generate markup, but first merge categories and courses together

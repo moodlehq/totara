@@ -75,4 +75,7 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
 
     // Report caching
     $optionalsubsystems->add(new admin_setting_configcheckbox('enablereportcaching', new lang_string('enablereportcaching','totara_reportbuilder'), new lang_string('configenablereportcaching','totara_reportbuilder'), 0));
+
+    // Audience visibility.
+    $optionalsubsystems->add(new admin_setting_configcheckbox('audiencevisibility', new lang_string('enableaudiencevisibility', 'totara_cohort'), new lang_string('configenableaudiencevisibility', 'totara_cohort'), 0));
 }

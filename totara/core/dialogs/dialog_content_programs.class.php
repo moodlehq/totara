@@ -165,7 +165,7 @@ class totara_dialog_content_programs extends totara_dialog_content {
             $progs = prog_get_programs($this->categoryid, "fullname ASC", 'p.id, p.fullname, p.sortorder, p.visible');
             foreach ($progs as $key=>$prog) {
                 $program = new program($prog->id);
-                if (!$program->is_accessible() || $program->visible == 0) {
+                if (!$program->is_accessible()) {
                     unset($progs[$key]);
                 }
             }

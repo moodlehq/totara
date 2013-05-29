@@ -12,7 +12,7 @@ class course_edit_form extends moodleform {
     protected $context;
 
     function definition() {
-        global $USER, $CFG, $DB, $PAGE, $TOTARA_COURSE_TYPES;
+        global $USER, $CFG, $DB, $PAGE, $TOTARA_COURSE_TYPES, $COHORT_VISIBILITY;
 
         $mform    = $this->_form;
         $PAGE->requires->yui_module('moodle-course-formatchooser', 'M.course.init_formatchooser',
@@ -100,18 +100,20 @@ class course_edit_form extends moodleform {
             }
         }
 
-        $choices = array();
-        $choices['0'] = get_string('hide');
-        $choices['1'] = get_string('show');
-        $mform->addElement('select', 'visible', get_string('visible'), $choices);
-        $mform->addHelpButton('visible', 'visible');
-        $mform->setDefault('visible', $courseconfig->visible);
-        if (!has_capability('moodle/course:visibility', $context)) {
-            $mform->hardFreeze('visible');
-            if (!empty($course->id)) {
-                $mform->setConstant('visible', $course->visible);
-            } else {
-                $mform->setConstant('visible', $courseconfig->visible);
+        if (empty($CFG->audiencevisibility)) {
+            $choices = array();
+            $choices['0'] = get_string('hide');
+            $choices['1'] = get_string('show');
+            $mform->addElement('select', 'visible', get_string('visible'), $choices);
+            $mform->addHelpButton('visible', 'visible');
+            $mform->setDefault('visible', $courseconfig->visible);
+            if (!has_capability('moodle/course:visibility', $context)) {
+                $mform->hardFreeze('visible');
+                if (!empty($course->id)) {
+                    $mform->setConstant('visible', $course->visible);
+                } else {
+                    $mform->setConstant('visible', $courseconfig->visible);
+                }
             }
         }
 
@@ -298,6 +300,33 @@ class course_edit_form extends moodleform {
             $mform->addElement('html', $cohortsclass->display(true));
 
             $mform->addElement('button', 'cohortsaddenrolled', get_string('cohortsaddenrolled', 'totara_cohort'));
+            $mform->setExpanded('enrolledcohortshdr');
+        }
+
+        // Only show the Audiences Visibility functionality to users with the appropriate permissions.
+        if (!empty($CFG->audiencevisibility) && has_capability('totara/coursecatalog:manageaudiencevisibility', $systemcontext)) {
+            $mform->addElement('header', 'visiblecohortshdr', get_string('audiencevisibility', 'totara_cohort'));
+            $mform->addElement('select', 'audiencevisible', get_string('visibility', 'totara_cohort'), $COHORT_VISIBILITY);
+            $mform->addHelpButton('audiencevisible', 'visiblelearning', 'totara_cohort');
+
+            if (empty($course->id)) {
+                $mform->setDefault('audiencevisible', $courseconfig->visiblelearning);
+                $cohorts = '';
+            } else {
+                $cohorts = totara_cohort_get_visible_learning($course->id);
+                $cohorts = !empty($cohorts) ? implode(',', array_keys($cohorts)) : '';
+            }
+
+            $mform->addElement('hidden', 'cohortsvisible', $cohorts);
+            $mform->setType('cohortsvisible', PARAM_SEQUENCE);
+            $cohortsclass = new totara_cohort_visible_learning_cohorts();
+            $instanceid = !empty($course->id) ? $course->id : 0;
+            $instancetype = COHORT_ASSN_ITEMTYPE_COURSE;
+            $cohortsclass->build_visible_learning_table($instanceid, $instancetype);
+            $mform->addElement('html', $cohortsclass->display(true, 'visible'));
+
+            $mform->addElement('button', 'cohortsaddvisible', get_string('cohortsaddvisible', 'totara_cohort'));
+            $mform->setExpanded('visiblecohortshdr');
         }
 
 //--------------------------------------------------------------------------------

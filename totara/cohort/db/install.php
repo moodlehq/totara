@@ -28,7 +28,7 @@
 //   * partially defaults.php
 
 function xmldb_totara_cohort_install() {
-    global $CFG, $DB;
+    global $CFG, $DB, $COHORT_ALERT;
 
     require_once($CFG->dirroot . '/totara/cohort/lib.php');
 

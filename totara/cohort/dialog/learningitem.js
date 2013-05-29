@@ -60,9 +60,12 @@ M.totara_cohortlearning = M.totara_cohortlearning || {
         }
 
         var url = M.cfg.wwwroot + '/totara/cohort/dialog/';
+        var assgnval = this.config.assign_value ? this.config.assign_value : this.config.COHORT_ASSN_VALUE_ENROLLED;
+        var assgnstring = this.config.assign_string ? this.config.assign_string : 'enrolled';
 
         // init courses dialog
-        var csaveurl = url + 'updatelearning.php?type=' + this.config.COHORT_ASSN_ITEMTYPE_COURSE + '&cohortid=' + this.config.cohortid + '&sesskey=' + M.cfg.sesskey + '&u=';
+        var csaveurl = url + 'updatelearning.php?type=' + this.config.COHORT_ASSN_ITEMTYPE_COURSE + '&cohortid=' + this.config.cohortid + '&sesskey=' + 
+            M.cfg.sesskey + '&v=' + assgnval + '&u=';
         var chandler = new totaraDialog_handler_cohortlearning();
         chandler.baseurl = url;
         var cbuttons = {};
@@ -74,14 +77,15 @@ M.totara_cohortlearning = M.totara_cohortlearning || {
             'add-course-learningitem-dialog',
             {
                 buttons: cbuttons,
-                title: '<h2>' + M.util.get_string('assignenrolledlearning', 'totara_cohort') + '</h2>'
+                title: '<h2>' + M.util.get_string('assign'+assgnstring+'learning', 'totara_cohort') + '</h2>'
             },
-            url+'browselearning.php?cohortid=' + this.config.cohortid + '&type=' + this.config.COHORT_ASSN_ITEMTYPE_COURSE,
+            url+'browselearning.php?cohortid=' + this.config.cohortid  + '&v=' + assgnval + '&type=' + this.config.COHORT_ASSN_ITEMTYPE_COURSE,
             chandler
         );
 
         // init programs dialog
-        var psaveurl = url + 'updatelearning.php?type=' + this.config.COHORT_ASSN_ITEMTYPE_PROGRAM + '&cohortid=' + this.config.cohortid + '&sesskey=' + M.cfg.sesskey + '&u=';
+        var psaveurl = url + 'updatelearning.php?type=' + this.config.COHORT_ASSN_ITEMTYPE_PROGRAM + '&cohortid=' + this.config.cohortid + '&sesskey=' +
+            M.cfg.sesskey + '&v=' + assgnval + '&u=';
         var phandler = new totaraDialog_handler_cohortlearning();
         phandler.baseurl = url;
         var pbuttons = {};
@@ -93,9 +97,9 @@ M.totara_cohortlearning = M.totara_cohortlearning || {
             'add-program-learningitem-dialog',
             {
                 buttons: pbuttons,
-                title: '<h2>' + M.util.get_string('assignenrolledlearning', 'totara_cohort') + '</h2>'
+                title: '<h2>' + M.util.get_string('assign'+assgnstring+'learning', 'totara_cohort') + '</h2>'
             },
-            url+'browselearning.php?cohortid=' + this.config.cohortid + '&type=' + this.config.COHORT_ASSN_ITEMTYPE_PROGRAM,
+            url+'browselearning.php?cohortid=' + this.config.cohortid + '&v=' + assgnval + '&type=' + this.config.COHORT_ASSN_ITEMTYPE_PROGRAM,
             phandler
         );
 
@@ -163,5 +167,9 @@ totaraDialog_handler_cohortlearning.prototype._update = function(response) {
     this._dialog.hide();
 
     //TODO: the stuff to add table rows :-P
-    location.replace(M.cfg.wwwroot + '/totara/cohort/enrolledlearning.php?id=' + M.totara_cohortlearning.config.cohortid);
+    if (M.totara_cohortlearning.config.saveurl) {
+        location.replace(M.cfg.wwwroot + M.totara_cohortlearning.config.saveurl + '?id=' + M.totara_cohortlearning.config.cohortid);
+    } else {
+        location.replace(M.cfg.wwwroot + '/totara/cohort/enrolledlearning.php?id=' + M.totara_cohortlearning.config.cohortid);
+    }
 }

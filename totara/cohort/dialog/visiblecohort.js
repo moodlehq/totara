@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @author Yuliya Bozhko <yuliya.bozhko@totaralms.com>
  * @package totara
- * @subpackage course
+ * @subpackage cohorts
  */
 
 /**
@@ -26,7 +26,7 @@
  * to a course
  */
 
-M.totara_coursecohort = M.totara_coursecohort || {
+M.totara_visiblecohort = M.totara_visiblecohort || {
 
     Y: null,
 
@@ -56,7 +56,7 @@ M.totara_coursecohort = M.totara_coursecohort || {
 
         // check jQuery dependency is available
         if (typeof $ === 'undefined') {
-            throw new Error('M.totara_cohortlearning.init()-> jQuery dependency required for this module.');
+            throw new Error('M.totara_visiblecohort.init()-> jQuery dependency required for this module.');
         }
 
         this.init_dialogs();
@@ -64,46 +64,42 @@ M.totara_coursecohort = M.totara_coursecohort || {
 
 
     init_dialogs: function() {
-
-        // init the dialogs
         var url = M.cfg.wwwroot + '/totara/cohort/dialog/';
 
-        // Enrolled cohorts
-        var ehandler = new totaraDialog_handler_coursecohorts();
+        var ehandler = new totaraDialog_handler_visiblecohorts();
         ehandler.baseurl = url;
 
         var dbuttons = {};
         dbuttons[M.util.get_string('cancel', 'moodle')] = function() { ehandler._cancel() }
         dbuttons[M.util.get_string('ok', 'moodle')] = function() { ehandler._update() }
 
-        totaraDialogs['id_cohortsaddenrolled'] = new totaraDialog(
-            'course-cohorts-enrolled-dialog',
-            'id_cohortsaddenrolled',
+        totaraDialogs['id_cohortsaddvisible'] = new totaraDialog(
+            'course-cohorts-visible-dialog',
+            'id_cohortsaddvisible',
             {
                 buttons: dbuttons,
-                title: '<h2>' + M.util.get_string('coursecohortsenrolled', 'totara_cohort') + '</h2>'
+                title: '<h2>' + M.util.get_string(this.config.type + 'cohortsvisible', 'totara_cohort') + '</h2>'
             },
-            url+'cohort.php?selected=' + this.config.enrolledselected,
+            url+'cohort.php?selected=' + this.config.visibleselected,
             ehandler
         );
-    }  // init_dialogs
+    }
 }
 
 
-// Create handler for the dialog
-totaraDialog_handler_coursecohorts = function() {
-    // Base url
+// Create handler for the dialog.
+totaraDialog_handler_visiblecohorts = function() {
     this.baseurl = '';
-    this.cohort_items = $('input:hidden[name="cohortsenrolled"]').val();
+    this.cohort_items = $('input:hidden[name="cohortsvisible"]').val();
     this.cohort_items = (this.cohort_items && this.cohort_items.length > 0) ? this.cohort_items.split(',') : [];
-    this.cohort_table = $('#course-cohorts-table-enrolled');
+    this.cohort_table = $('#course-cohorts-table-visible');
 
     this.add_cohort_delete_event_handlers();
 
     this.check_table_hidden_status();
 }
 
-totaraDialog_handler_coursecohorts.prototype = new totaraDialog_handler_treeview_multiselect();
+totaraDialog_handler_visiblecohorts.prototype = new totaraDialog_handler_treeview_multiselect();
 
 /**
  * Add a row to a table on the calling page
@@ -112,7 +108,7 @@ totaraDialog_handler_coursecohorts.prototype = new totaraDialog_handler_treeview
  * @param string    HTML response
  * @return void
  */
-totaraDialog_handler_coursecohorts.prototype._update = function(response) {
+totaraDialog_handler_visiblecohorts.prototype._update = function(response) {
 
     var self = this;
     var elements = $('.selected > div > span', this._container);
@@ -122,12 +118,12 @@ totaraDialog_handler_coursecohorts.prototype._update = function(response) {
 
     var newids = new Array();
 
-    // Loop through the selected elements
+    // Loop through the selected elements.
     elements.each(function() {
 
-        // Get id
+        // Get id.
         var itemid = $(this).attr('id').split('_');
-        itemid = itemid[itemid.length-1];  // The last item is the actual id
+        itemid = itemid[itemid.length-1];  // The last item is the actual id.
         itemid = parseInt(itemid);
 
         if (!self.cohort_item_exists(itemid)) {
@@ -157,7 +153,7 @@ totaraDialog_handler_coursecohorts.prototype._update = function(response) {
 /**
  ** Checks if the item id exists in this category
  **/
-totaraDialog_handler_coursecohorts.prototype.cohort_item_exists = function(itemid) {
+totaraDialog_handler_visiblecohorts.prototype.cohort_item_exists = function(itemid) {
     for (x in this.cohort_items) {
         if (this.cohort_items[x] == itemid) {
             return true;
@@ -166,7 +162,7 @@ totaraDialog_handler_coursecohorts.prototype.cohort_item_exists = function(itemi
     return false;
 }
 
-totaraDialog_handler_coursecohorts.prototype.check_table_hidden_status = function() {
+totaraDialog_handler_visiblecohorts.prototype.check_table_hidden_status = function() {
     if (this.cohort_items.length == 0) {
         $(this.cohort_table).hide();
     } else {
@@ -174,11 +170,11 @@ totaraDialog_handler_coursecohorts.prototype.check_table_hidden_status = functio
     }
 }
 
-totaraDialog_handler_coursecohorts.prototype.add_cohort_delete_event_handlers = function() {
-    // Remove previous click event handlers
+totaraDialog_handler_visiblecohorts.prototype.add_cohort_delete_event_handlers = function() {
+    // Remove previous click event handlers.
     $('.coursecohortdeletelink', this.cohort_table).unbind('click');
 
-    // Add fresh event handlers
+    // Add fresh event handlers.
     var self = this;
     this.cohort_table.on('click', '.coursecohortdeletelink', function(event) {
         event.preventDefault();
@@ -189,10 +185,10 @@ totaraDialog_handler_coursecohorts.prototype.add_cohort_delete_event_handlers = 
 /**
  ** Adds an item
  **/
-totaraDialog_handler_coursecohorts.prototype.add_cohort_item = function(itemid) {
+totaraDialog_handler_visiblecohorts.prototype.add_cohort_item = function(itemid) {
     this.cohort_items.push(itemid);
 
-    $('input:hidden[name="cohortsenrolled"]').val(this.cohort_items.join(','));
+    $('input:hidden[name="cohortsvisible"]').val(this.cohort_items.join(','));
 
     this.check_table_hidden_status();
 }
@@ -200,28 +196,28 @@ totaraDialog_handler_coursecohorts.prototype.add_cohort_item = function(itemid) 
 /**
  ** Creates an element and then adds it
  **/
-totaraDialog_handler_coursecohorts.prototype.create_item = function(html) {
+totaraDialog_handler_visiblecohorts.prototype.create_item = function(html) {
     var element = $(html);
 
-    // Add the item element to the table
+    // Add the item element to the table.
     this.cohort_table.append(element);
 }
 
-totaraDialog_handler_coursecohorts.prototype.remove_cohort_item = function(item) {
-    var itemid = $(item).closest('div').attr('id').match(/[\d]+$/);  // get the id part from e.g 'cohort-item-1'
+totaraDialog_handler_visiblecohorts.prototype.remove_cohort_item = function(item) {
+    var itemid = $(item).closest('div').attr('id').match(/[\d]+$/);
     var row = $(item).closest('tr');
 
-    // Remove the item from the array of items
+    // Remove the item from the array of items.
     this.cohort_items = $.grep(this.cohort_items, function (element, x) {
         return (element == itemid);
     }, true);
 
-    // Remove item from interface
+    // Remove item from interface.
     row.remove()
 
     this.check_table_hidden_status();
 
-    $('input:hidden[name="cohortsenrolled"]').val(this.cohort_items.join(','));
+    $('input:hidden[name="cohortsvisible"]').val(this.cohort_items.join(','));
 
     var url = this._dialog.default_url;
     this._dialog.default_url = url.split("?")[0] + '?selected=' + this.cohort_items.join(',');

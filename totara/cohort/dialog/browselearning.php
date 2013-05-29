@@ -34,11 +34,12 @@ require_capability('moodle/cohort:manage', $sitecontext);
 
 $cohortid = required_param('cohortid', PARAM_INT);
 $type = required_param('type', PARAM_INT);
+$value = optional_param('v', COHORT_ASSN_VALUE_ENROLLED, PARAM_INT);
 $categoryid = optional_param('parentid', 'cat0', PARAM_ALPHANUM); // Category id
 // Strip cat from begining of categoryid
 $categoryid = (int) substr($categoryid, 3);
 
-$assigned = totara_cohort_get_associations($cohortid, $type);
+$assigned = totara_cohort_get_associations($cohortid, $type, $value);
 $selected = array();
 foreach ($assigned as $item) {
     $item->id = $item->instanceid;

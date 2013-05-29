@@ -2,11 +2,11 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010-2013 Totara Learning Solutions LTD
+ * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
+ * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -24,16 +24,16 @@
 global $CFG;
 require_once($CFG->dirroot.'/cohort/lib.php');
 
-class rb_cohort_associations_enrolled_embedded extends rb_base_embedded {
+class rb_cohort_associations_visible_embedded extends rb_base_embedded {
     public $url, $source, $fullname, $filters, $columns;
     public $contentmode, $contentsettings, $embeddedparams;
     public $hidden, $accessmode, $accesssettings, $shortname;
 
     public function __construct($data) {
-        $this->url = '/totara/cohort/enrolledlearning.php';
-        $this->source = 'cohort_associations';
-        $this->shortname = 'cohort_associations_enrolled';
-        $this->fullname = get_string('cohortenrolledreportname', 'totara_cohort');
+        $this->url = '/totara/cohort/visiblelearning.php';
+        $this->source = 'cohort_associations_visible';
+        $this->shortname = 'cohort_associations_visible';
+        $this->fullname = get_string('cohortvisiblereportname', 'totara_cohort');
         $this->columns = array(
             array(
                 'type' => 'associations',
@@ -47,17 +47,16 @@ class rb_cohort_associations_enrolled_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'associations',
-                'value' => 'programcompletionlink',
-                'heading' => get_string('associationprogramcompletionlink', 'totara_cohort')
+                'value' => 'status',
+                'heading' => get_string('visibility', 'totara_cohort')
             ),
             array(
                 'type' => 'associations',
-                'value' => 'actionsenrolled',
-                'heading' => get_string('associationactionsenrolled', 'totara_cohort')
+                'value' => 'actionsvisible',
+                'heading' => get_string('associationactionsvisible', 'totara_cohort')
             ),
         );
 
-        // no filters
         $this->filters = array(
             array(
                 'type' => 'associations',
@@ -77,7 +76,6 @@ class rb_cohort_associations_enrolled_embedded extends rb_base_embedded {
         if (array_key_exists('cohortid', $data)) {
             $this->embeddedparams['cohortid'] = $data['cohortid'];
         }
-        $this->embeddedparams['value'] = COHORT_ASSN_VALUE_ENROLLED;
 
         parent::__construct();
     }

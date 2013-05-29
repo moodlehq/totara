@@ -493,5 +493,35 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2012102300, 'totara', 'cohort');
     }
 
+    if ($oldversion < 2013090100) {
+        // Define table cohort_visibility to be created.
+        $table = new xmldb_table('cohort_visibility');
+
+        // Adding fields to table cohort_visibility.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('cohortid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('instanceid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('instancetype', XMLDB_TYPE_INTEGER, '4', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table cohort_visibility.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_key('cohortid', XMLDB_KEY_FOREIGN, array('cohortid'), 'cohort', array('id'));
+        $table->add_key('usermodified', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', array('id'));
+
+        // Adding indexes to table cohort_visibility.
+        $table->add_index('uix_co_inst_type_val', XMLDB_INDEX_UNIQUE, array('cohortid', 'instanceid', 'instancetype'));
+
+        // Conditionally launch create table for cohort_visibility.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Cohort savepoint reached.
+        upgrade_plugin_savepoint(true, 2013090100, 'totara', 'cohort');
+    }
+
     return true;
 }

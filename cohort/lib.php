@@ -336,6 +336,7 @@ function cohort_get_cohorts($contextid, $page = 0, $perpage = 25, $search = '') 
  * @param $cohorttype int
  */
 function cohort_print_tabs($currenttab, $cohortid, $cohorttype, $cohort) {
+    global $CFG;
 
     if ($cohort && totara_cohort_is_active($cohort)) {
         print html_writer::tag('div', '', array('class' => 'plan_box', 'style' => 'display:none;'));
@@ -356,6 +357,7 @@ function cohort_print_tabs($currenttab, $cohortid, $cohorttype, $cohort) {
     $systemcontext = context_system::instance();
     $canmanage = has_capability('moodle/cohort:manage', $systemcontext);
     $canmanagerules = has_capability('totara/cohort:managerules', $systemcontext);
+    $canmanagevisibility = has_capability('totara/coursecatalog:manageaudiencevisibility', $systemcontext);
     $canassign = has_capability('moodle/cohort:assign', $systemcontext);
     $canview = has_capability('moodle/cohort:view', $systemcontext);
 
@@ -391,6 +393,11 @@ function cohort_print_tabs($currenttab, $cohortid, $cohorttype, $cohort) {
     if ($canview) {
         $toprow[] = new tabobject('enrolledlearning', new moodle_url('/totara/cohort/enrolledlearning.php', array('id' => $cohortid)),
             get_string('enrolledlearning', 'totara_cohort'));
+    }
+
+    if (!empty($CFG->audiencevisibility) && $canmanagevisibility) {
+        $toprow[] = new tabobject('visiblelearning', new moodle_url('/totara/cohort/visiblelearning.php', array('id' => $cohortid)),
+            get_string('visiblelearning', 'totara_cohort'));
     }
 
     if ($canmanage) {

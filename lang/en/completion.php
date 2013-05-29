@@ -178,6 +178,7 @@ $string['rpl'] = 'RPL';
 $string['save'] = 'Save';
 $string['saved'] = 'Saved';
 $string['seedetails'] = 'See details';
+$string['selectnone'] = 'Select none';
 $string['self'] = 'Self';
 $string['selfcompletion'] = 'Self completion';
 $string['showinguser'] = 'Showing user';

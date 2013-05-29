@@ -27,6 +27,7 @@
  */
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) .'/config.php');
 require_once($CFG->dirroot .'/cohort/lib.php');
+global $COHORT_ASSN_VALUES;
 
 // this could take a while
 set_time_limit(0);
@@ -40,13 +41,16 @@ $type = required_param('type', PARAM_TEXT);
 $cohortid = required_param('cohortid', PARAM_INT);
 
 $updateids = optional_param('u', 0, PARAM_SEQUENCE);
+$value = optional_param('v', COHORT_ASSN_VALUE_ENROLLED, PARAM_INT);
 if (!empty($updateids)) {
     $updateids = explode(',', $updateids);
 
     foreach ($updateids as $instanceid) {
 
-        $assnid = totara_cohort_add_association($cohortid, $instanceid, $type);
+        $assnid = totara_cohort_add_association($cohortid, $instanceid, $type, $value);
         $logaction = 'add '
+            . $COHORT_ASSN_VALUES[$value]
+            . ' '
             . (($type == COHORT_ASSN_ITEMTYPE_COURSE) ? 'course' : 'program');
         add_to_log(SITEID, 'cohort', $logaction, 'cohort/view.php?id='.$cohortid, "itemid={$instanceid};associationid={$assnid}");
     }
@@ -56,7 +60,7 @@ $delid = optional_param('d', 0, PARAM_INT);
 if (!empty($delid)) {
 
     if (!empty($type) && !empty($delid)) {
-        totara_cohort_delete_association($cohortid, $delid, $type);
+        totara_cohort_delete_association($cohortid, $delid, $type, $value);
         add_to_log(SITEID, 'cohort', 'remove learning item', "cohort/view.php?id={$cohortid}", "associationid={$delid}");
     }
 }

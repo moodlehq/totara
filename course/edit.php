@@ -88,14 +88,14 @@ local_js(array(
         TOTARA_JS_DIALOG,
         TOTARA_JS_TREEVIEW
         ));
+
+// Enrolled audiences.
 if (empty($course->id)) {
     $enrolledselected = '';
 } else {
     $enrolledselected = totara_cohort_get_course_cohorts($course->id, null, 'c.id');
     $enrolledselected = !empty($enrolledselected) ? implode(',', array_keys($enrolledselected)) : '';
 }
-
-// Course cohorts
 $PAGE->requires->strings_for_js(array('coursecohortsenrolled'), 'totara_cohort');
 $jsmodule = array(
         'name' => 'totara_cohortdialog',
@@ -104,20 +104,35 @@ $jsmodule = array(
 $args = array('args'=>'{"enrolledselected":"' . $enrolledselected . '",'.
         '"COHORT_ASSN_VALUE_ENROLLED":' . COHORT_ASSN_VALUE_ENROLLED . '}');
 $PAGE->requires->js_init_call('M.totara_coursecohort.init', $args, true, $jsmodule);
+unset($enrolledselected);
 
+// Visible audiences.
+if (!empty($CFG->audiencevisibility)) {
+    if(empty($course->id)) {
+        $visibleselected = '';
+    } else {
+        $visibleselected = totara_cohort_get_visible_learning($course->id);
+        $visibleselected = !empty($visibleselected) ? implode(',', array_keys($visibleselected)) : '';
+    }
+    $PAGE->requires->strings_for_js(array('coursecohortsvisible'), 'totara_cohort');
+    $jsmodule = array(
+                    'name' => 'totara_visiblecohort',
+                    'fullpath' => '/totara/cohort/dialog/visiblecohort.js',
+                    'requires' => array('json'));
+    $args = array('args'=>'{"visibleselected":"' . $visibleselected . '", "type":"course"}');
+    $PAGE->requires->js_init_call('M.totara_visiblecohort.init', $args, true, $jsmodule);
+    unset($visibleselected);
+}
+
+// Icon picker.
 $PAGE->requires->string_for_js('chooseicon', 'totara_program');
 $iconjsmodule = array(
-        'name' => 'totara_iconpicker',
-        'fullpath' => '/totara/core/js/icon.picker.js',
-        'requires' => array('json'));
-
+                'name' => 'totara_iconpicker',
+                'fullpath' => '/totara/core/js/icon.picker.js',
+                'requires' => array('json'));
 $currenticon = isset($course->icon) ? $course->icon : 'default';
-$iconargs = array('args' => '{"selected_icon":"' . $currenticon . '",
-                            "type":"course"}');
-
+$iconargs = array('args' => '{"selected_icon":"' . $currenticon . '","type":"course"}');
 $PAGE->requires->js_init_call('M.totara_iconpicker.init', $iconargs, false, $iconjsmodule);
-
-unset($enrolledselected);
 
 // Prepare course and the editor
 $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 'noclean'=>true);
@@ -173,7 +188,7 @@ if ($editform->is_cancelled()) {
 
 } else if ($data = $editform->get_data()) {
     // process data if submitted
-    $url = '';
+
     if (empty($course->id)) {
         // In creating the course
         $course = create_course($data, $editoroptions);
@@ -225,7 +240,7 @@ if ($editform->is_cancelled()) {
     /// Update course cohorts if user has permissions
     ///
     if (has_capability('moodle/cohort:manage', context_system::instance())) {
-        // Enrolled cohorts
+        // Enrolled audiences.
         $currentcohorts = totara_cohort_get_course_cohorts($course->id, null, 'c.id, e.id AS associd');
         $currentcohorts = !empty($currentcohorts) ? $currentcohorts : array();
         $newcohorts = !empty($data->cohortsenrolled) ? explode(',', $data->cohortsenrolled) : array();
@@ -243,6 +258,28 @@ if ($editform->is_cancelled()) {
                 totara_cohort_add_association($cohortid, $course->id, COHORT_ASSN_ITEMTYPE_COURSE);
             }
         }
+
+        // Visible audiences.
+        if (!empty($CFG->audiencevisibility) && has_capability('totara/coursecatalog:manageaudiencevisibility', context_system::instance())) {
+            $visiblecohorts = totara_cohort_get_visible_learning($course->id);
+            $visiblecohorts = !empty($visiblecohorts) ? $visiblecohorts : array();
+            $newvisible = !empty($data->cohortsvisible) ? explode(',', $data->cohortsvisible) : array();
+            if ($todelete = array_diff(array_keys($visiblecohorts), $newvisible)) {
+                // Delete removed cohorts.
+                foreach ($todelete as $cohortid) {
+                    totara_cohort_delete_association($cohortid, $visiblecohorts[$cohortid]->associd,
+                                                    COHORT_ASSN_ITEMTYPE_COURSE, COHORT_ASSN_VALUE_VISIBLE);
+                }
+            }
+
+            if ($newvisible = array_diff($newvisible, array_keys($visiblecohorts))) {
+                // Add new cohort associations.
+                foreach ($newvisible as $cohortid) {
+                    totara_cohort_add_association($cohortid, $course->id, COHORT_ASSN_ITEMTYPE_COURSE, COHORT_ASSN_VALUE_VISIBLE);
+                }
+            }
+         }
+        cache_helper::purge_by_event('changesincourse');
     }
 
     // Redirect user to newly created/updated course.

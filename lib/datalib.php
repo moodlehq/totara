@@ -743,6 +743,7 @@ function get_courses_page($categoryid="all", $sort="c.sortorder ASC", $fields="c
  */
 function get_courses_search($searchterms, $sort, $page, $recordsperpage, &$totalcount) {
     global $CFG, $DB;
+    require_once($CFG->dirroot . '/totara/cohort/lib.php');
 
     if ($DB->sql_regex_supported()) {
         $REGEXP    = $DB->sql_regex(true);
@@ -809,17 +810,27 @@ function get_courses_search($searchterms, $sort, $page, $recordsperpage, &$total
     $limitfrom = $page * $recordsperpage;
     $limitto   = $limitfrom + $recordsperpage;
 
+    // Add audience visibility setting.
+    $visibilitysql = '';
+    $visibilityparams = array();
+    $canmanagevisibility = has_capability('totara/coursecatalog:manageaudiencevisibility', context_system::instance());
+    if (!empty($CFG->audiencevisibility) && !$canmanagevisibility) {
+        list($visibilitysql, $visibilityparams) = totara_cohort_get_visible_learning_sql('c', 'id', COHORT_ASSN_ITEMTYPE_COURSE);
+    }
+    $params = array_merge($params, $visibilityparams);
+
     list($ccselect, $ccjoin) = context_instance_preload_sql('c.id', CONTEXT_COURSE, 'ctx');
     $fields = array_diff(array_keys($DB->get_columns('course')), array('modinfo', 'sectioncache'));
     $sql = "SELECT c.".join(',c.',$fields)." $ccselect
               FROM {course} c
            $ccjoin
+           {$visibilitysql}
              WHERE $searchcond AND c.id <> ".SITEID."
           ORDER BY $sort";
 
     $rs = $DB->get_recordset_sql($sql, $params);
     foreach($rs as $course) {
-        if (!$course->visible) {
+        if (empty($CFG->audiencevisibility) && !$course->visible) {
             // preload contexts only for hidden courses or courses we need to return
             context_instance_preload($course);
             $coursecontext = context_course::instance($course->id);

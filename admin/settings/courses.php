@@ -35,6 +35,10 @@ if ($hassiteconfig
     $temp->add(new admin_setting_configselect('moodlecourse/visible', new lang_string('visible'), new lang_string('visible_help'),
         1, $choices));
 
+    // Add audience visibility.
+    require_once($CFG->dirroot . '/cohort/lib.php');
+    global $COHORT_VISIBILITY;
+    $temp->add(new admin_setting_configselect('moodlecourse/visiblelearning', new lang_string('audiencevisibility', 'totara_cohort'), new lang_string('configaudiencevisibility', 'totara_cohort'), 2, $COHORT_VISIBILITY));
 
     // Course format.
     $temp->add(new admin_setting_heading('courseformathdr', new lang_string('type_format', 'plugin'), ''));

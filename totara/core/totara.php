@@ -604,6 +604,7 @@ function totara_add_icon_picker(&$mform, $action, $type, $currenticon='default',
         }
         $mform->addElement('static', 'currenticon', get_string('currenticon', 'totara_core'), $iconhtml . $buttonhtml);
     }
+    $mform->setExpanded('iconheader');
 }
 /**
 * print out the Totara My Learning nav section

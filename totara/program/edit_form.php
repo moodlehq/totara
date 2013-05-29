@@ -24,6 +24,7 @@
 
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->libdir . '/coursecatlib.php');
+require_once($CFG->dirroot . '/cohort/lib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -32,7 +33,7 @@ if (!defined('MOODLE_INTERNAL')) {
 class program_edit_form extends moodleform {
 
     function definition() {
-        global $CFG, $USER, $OUTPUT;
+        global $CFG, $USER, $OUTPUT, $COHORT_VISIBILITY;
 
         $mform =& $this->_form;
         $action = $this->_customdata['action'];
@@ -43,6 +44,7 @@ class program_edit_form extends moodleform {
 
         $systemcontext = context_system::instance();
         $categorycontext = context_coursecat::instance($category->id);
+        $config = get_config('moodlecourse');
 
         if ($program) {
             $programcontext = context_program::instance($program->id);
@@ -101,15 +103,6 @@ class program_edit_form extends moodleform {
         } else {
             $mform->addHelpButton('category', 'programcategory', 'totara_program');
             $mform->setDefault('category', $category->id);
-        }
-
-        if ($action == 'view') {
-            $mform->addElement('static', 'visibledisplay', get_string('visible', 'totara_program'), $program->visible ? get_string('yes') : get_string('no'));
-        } else {
-            $mform->addElement('advcheckbox','visible', get_string('visible', 'totara_program'), null, null, array(0,1));
-            $mform->addHelpButton('visible', 'programvisibility', 'totara_program');
-            $mform->setDefault('visible', true);
-            $mform->setType('visible', PARAM_BOOL);
         }
 
         $mform->addElement('text','fullname', get_string('fullname', 'totara_program'),'maxlength="254" size="50"');
@@ -202,6 +195,54 @@ class program_edit_form extends moodleform {
             $mform->setType('endnote_editor', PARAM_RAW);
         }
 
+        // Conditionally add "visible" setting or audience dialog for visible learning.
+        if (empty($CFG->audiencevisibility)) {
+            if ($action == 'view') {
+                $mform->addElement('static', 'visibledisplay', get_string('visible', 'totara_program'), $program->visible ? get_string('yes') : get_string('no'));
+            } else {
+                $mform->addElement('advcheckbox','visible', get_string('visible', 'totara_program'), null, null, array(0, 1));
+                $mform->addHelpButton('visible', 'programvisibility', 'totara_program');
+                $mform->setDefault('visible', $config->visible);
+                $mform->setType('visible', PARAM_BOOL);
+            }
+        } else {
+            if ($action == 'view') {
+                $mform->addElement('header', 'visiblecohortshdr', get_string('audiencevisibility', 'totara_cohort'));
+                $mform->addElement('static', 'visibledisplay', get_string('audiencevisibility', 'totara_cohort'), $COHORT_VISIBILITY[$program->audiencevisible]);
+                $cohorts = totara_cohort_get_visible_learning($program->id, COHORT_ASSN_ITEMTYPE_PROGRAM);
+                if (!empty($cohorts)) {
+                    $cohortsclass = new totara_cohort_visible_learning_cohorts();
+                    $cohortsclass->build_visible_learning_table($program->id, COHORT_ASSN_ITEMTYPE_PROGRAM, true);
+                    $mform->addElement('html', $cohortsclass->display(true, 'visible'));
+                }
+                $mform->setExpanded('visiblecohortshdr');
+            } else {
+                // Only show the Audiences Visibility functionality to users with the appropriate permissions.
+                if (has_capability('totara/coursecatalog:manageaudiencevisibility', $systemcontext)) {
+                    $mform->addElement('header', 'visiblecohortshdr', get_string('audiencevisibility', 'totara_cohort'));
+                    $mform->addElement('select', 'audiencevisible', get_string('visibility', 'totara_cohort'), $COHORT_VISIBILITY);
+                    $mform->addHelpButton('audiencevisible', 'visiblelearning', 'totara_cohort');
+
+                    if (empty($program->id)) {
+                        $mform->setDefault('audiencevisible', $config->visiblelearning);
+                        $cohorts = '';
+                    } else {
+                        $cohorts = totara_cohort_get_visible_learning($program->id, COHORT_ASSN_ITEMTYPE_PROGRAM);
+                        $cohorts = !empty($cohorts) ? implode(',', array_keys($cohorts)) : '';
+                    }
+
+                    $mform->addElement('hidden', 'cohortsvisible', $cohorts);
+                    $mform->setType('cohortsvisible', PARAM_SEQUENCE);
+                    $cohortsclass = new totara_cohort_visible_learning_cohorts();
+                    $instanceid = !empty($program->id) ? $program->id : 0;
+                    $cohortsclass->build_visible_learning_table($instanceid, COHORT_ASSN_ITEMTYPE_PROGRAM);
+                    $mform->addElement('html', $cohortsclass->display(true, 'visible'));
+
+                    $mform->addElement('button', 'cohortsaddvisible', get_string('cohortsaddvisible', 'totara_cohort'));
+                    $mform->setExpanded('visiblecohortshdr');
+                }
+            }
+        }
 
         //replacement for old totara/core/icon classes
         $programicon = ($program && !empty($program->icon)) ? $program->icon : 'default';

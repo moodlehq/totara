@@ -84,7 +84,12 @@ $jsmodule = array(
         'requires' => array('json'));
 $args = array('args'=>'{"cohortid":'.$cohort->id.','.
         '"COHORT_ASSN_ITEMTYPE_PROGRAM":' . COHORT_ASSN_ITEMTYPE_PROGRAM . ','.
-        '"COHORT_ASSN_ITEMTYPE_COURSE":' . COHORT_ASSN_ITEMTYPE_COURSE . '}');
+        '"COHORT_ASSN_ITEMTYPE_COURSE":' . COHORT_ASSN_ITEMTYPE_COURSE . ','.
+        '"COHORT_ASSN_VALUE_VISIBLE":' . COHORT_ASSN_VALUE_VISIBLE .','.
+        '"COHORT_ASSN_VALUE_ENROLLED":' . COHORT_ASSN_VALUE_ENROLLED .','.
+        '"assign_value":' . COHORT_ASSN_VALUE_ENROLLED .','.
+        '"assign_string":"' . $COHORT_ASSN_VALUES[COHORT_ASSN_VALUE_ENROLLED] .'",'.
+        '"saveurl":"/totara/cohort/enrolledlearning.php" }');
 $PAGE->requires->js_init_call('M.totara_cohortlearning.init', $args, false, $jsmodule);
 // Include cohort programcompletion js module
 $PAGE->requires->strings_for_js(array('datepickerdisplayformat', 'datepickerplaceholder', 'datepickerregexjs'), 'totara_core');

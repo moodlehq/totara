@@ -450,7 +450,7 @@ if (!empty($searchcriteria)) {
     }
 
     $courses = get_courses_page($coursecat->id, 'c.sortorder ASC',
-            'c.id,c.sortorder,c.shortname,c.fullname,c.summary,c.visible',
+            'c.id,c.sortorder,c.shortname,c.fullname,c.summary,c.visible,c.audiencevisible',
             $totalcount, $page*$perpage, $perpage);
     $numcourses = count($courses);
 } else {
@@ -534,13 +534,26 @@ if (!$courses) {
 
         // Change visibility.
         // Users with no capability to view hidden courses, should not be able to lock themselves out.
-        if (has_any_capability(array('moodle/course:visibility', 'moodle/course:viewhiddencourses'), $coursecontext)) {
-            if (!empty($acourse->visible)) {
-                $url = new moodle_url($baseurl, array('hide' => $acourse->id));
-                $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/hide', get_string('hide')));
-            } else {
-                $url = new moodle_url($baseurl, array('show' => $acourse->id));
-                $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/show', get_string('show')));
+        // In case we have audience-based visibility, this icon links to a form where audiences can be managed.
+        if (!empty($CFG->audiencevisibility) && has_capability('totara/coursecatalog:manageaudiencevisibility', $context)) {
+            $url = new moodle_url('/course/edit.php', array('id' => $acourse->id));
+            $url->set_anchor('id_visiblecohortshdr');
+            $icon = 'show';
+            if ($acourse->audiencevisible == COHORT_VISIBLE_ALL) {
+                $icon = 'hide';
+            } else if ($acourse->audiencevisible == COHORT_VISIBLE_AUDIENCE) {
+                $icon = 'cohort';
+            }
+            $icons[] = $OUTPUT->action_icon($url, new pix_icon("t/{$icon}", get_string('manageaudincevisibility', 'totara_cohort')));
+        } else {
+            if (has_any_capability(array('moodle/course:visibility', 'moodle/course:viewhiddencourses'), $coursecontext)) {
+                if (!empty($acourse->visible)) {
+                    $url = new moodle_url($baseurl, array('hide' => $acourse->id));
+                    $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/hide', get_string('hide')));
+                } else {
+                    $url = new moodle_url($baseurl, array('show' => $acourse->id));
+                    $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/show', get_string('show')));
+                }
             }
         }
 
