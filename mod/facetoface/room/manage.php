@@ -47,8 +47,8 @@ $PAGE->set_context(context_system::instance());
 require_login(0, false);
 require_capability('moodle/site:config', context_system::instance());
 
-$returnurl = "{$CFG->wwwroot}/admin/settings.php?section=modsettingfacetoface";
-$redirectto = "{$CFG->wwwroot}/mod/facetoface/room/manage.php";
+$returnurl = new moodle_url('/admin/settings.php', array('section' => 'modsettingfacetoface'));
+$redirectto = new moodle_url('/mod/facetoface/room/manage.php');
 
 // Handle actions
 if ($delete && $confirm) {
@@ -100,18 +100,12 @@ local_js(array(
     )
 );
 
-$navlinks = array();
-$navlinks[] = array('name' => get_string('administration'));
-$navlinks[] = array('name' => get_string('managemodules'));
-$navlinks[] = array('name' => get_string('activities'));
-$navlinks[] = array('name' => get_string('modulename', 'facetoface'));
-$navlinks[] = array('name' => get_string('rooms', 'facetoface'));
-$navigation = build_navigation($navlinks);
-
 $PAGE->set_title(get_string('rooms', 'facetoface'));
 $PAGE->set_heading('');
 $PAGE->set_focuscontrol('');
 $PAGE->set_cacheable(true);
+$PAGE->navbar->add(get_string('rooms', 'facetoface'));
+navigation_node::override_active_url($returnurl);
 echo $OUTPUT->header();
 
 // Print delete confirmation page

@@ -54,9 +54,7 @@ $form = new f2f_room_form(null, array('roomid' => $room->id, 'editoroptions' => 
 $form->set_data($room);
 
 if ($form->is_cancelled()) {
-
-    redirect($CFG->wwwroot . '/mod/facetoface/room/manage.php');
-
+    redirect($roomlisturl);
 } else if ($data = $form->get_data()) {
     if (isset($data->submitbutton)) {
 
@@ -97,12 +95,17 @@ if ($form->is_cancelled()) {
     }
 }
 
+$url = new moodle_url('/admin/settings.php', array('section' => 'modsettingfacetoface'));
 
 if ($id == 0) {
     $page_heading = get_string('addroom', 'facetoface');
 } else {
     $page_heading = get_string('editroom', 'facetoface');
 }
+
+$PAGE->set_title($page_heading);
+$PAGE->navbar->add(get_string('rooms', 'facetoface'))->add($page_heading);
+navigation_node::override_active_url($url);
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading($page_heading);

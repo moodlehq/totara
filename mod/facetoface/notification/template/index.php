@@ -121,18 +121,14 @@ $str_remove = get_string('delete', 'moodle');
 $str_activate = get_string('activate', 'facetoface');
 $str_deactivate = get_string('deactivate', 'facetoface');
 
-$navlinks = array();
-$navlinks[] = array('name' => get_string('administration'));
-$navlinks[] = array('name' => get_string('managemodules'));
-$navlinks[] = array('name' => get_string('activities'));
-$navlinks[] = array('name' => get_string('modulename', 'facetoface'));
-$navlinks[] = array('name' => get_string('notificationtemplates', 'facetoface'));
-$navigation = build_navigation($navlinks);
+$url = new moodle_url('/admin/settings.php', array('section' => 'modsettingfacetoface'));
 
 $PAGE->set_title(get_string('notificationtemplates', 'facetoface'));
 $PAGE->set_heading('');
 $PAGE->set_focuscontrol('');
 $PAGE->set_cacheable(true);
+$PAGE->navbar->add(get_string('notificationtemplates', 'facetoface'));
+navigation_node::override_active_url($url);
 echo $OUTPUT->header();
 
 // Print delete confirmation page

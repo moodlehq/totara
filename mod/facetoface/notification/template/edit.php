@@ -108,25 +108,23 @@ if ($form->is_cancelled()) {
     totara_set_notification(get_string('notificationtemplatesaved', 'facetoface'), $redirectto, array('class' => 'notifysuccess'));
 }
 
-$navlinks = array();
-$navlinks[] = array('name' => get_string('administration'));
-$navlinks[] = array('name' => get_string('managemodules'));
-$navlinks[] = array('name' => get_string('activities'));
-$navlinks[] = array('name' => get_string('modulename', 'facetoface'));
-$navlinks[] = array('name' => get_string('notificationtemplates', 'facetoface'));
-$navigation = build_navigation($navlinks);
+$url = new moodle_url('/admin/settings.php', array('section' => 'modsettingfacetoface'));
+
+if ($id) {
+    $heading = get_string('editnotificationtemplate', 'facetoface');
+} else {
+    $heading = get_string('addnotificationtemplate', 'facetoface');
+}
 
 $PAGE->set_title(get_string('notificationtemplates', 'facetoface'));
 $PAGE->set_heading('');
 $PAGE->set_focuscontrol('');
 $PAGE->set_cacheable(true);
+$PAGE->navbar->add(get_string('notificationtemplates', 'facetoface'))->add($heading);
+navigation_node::override_active_url($url);
 echo $OUTPUT->header();
 
-if ($id) {
-    echo $OUTPUT->heading(get_string('editnotificationtemplate', 'facetoface'));
-} else {
-    echo $OUTPUT->heading(get_string('addnotificationtemplate', 'facetoface'));
-}
+echo $OUTPUT->heading($heading);
 
 $form->display();
 
