@@ -197,6 +197,11 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
                 return;
             }
 
+            // Do not execute this code on mobile.
+            if (Y.YUI2.util.Dom.get('mymobile')) {
+                return;
+            }
+
             if (alsowidth) {
                 scorm_layout_widget.setStyle('width', '');
                 var newwidth = scorm_get_htmlelement_size('content', 'width');
@@ -204,7 +209,7 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
             // make sure that the max width of the TOC doesn't go to far
 
             var left = scorm_layout_widget.getUnitByPosition('left');
-            var maxwidth = parseInt(Y.YUI2.util.Dom.getStyle('scorm_layout', 'width'));
+            var maxwidth = parseInt(scorm_get_htmlelement_size('scorm_layout', 'width'));
             left.set('maxWidth', (maxwidth - 50));
             var cwidth = left.get('width');
             if (cwidth > (maxwidth - 1)) {
@@ -216,10 +221,11 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
             center.setStyle('height', '100%');
 
             // calculate the rough new height
-            newheight = Y.YUI2.util.Dom.getViewportHeight() -5;
-            if (newheight < 600) {
-                newheight = 600;
+            newheight = Y.YUI2.util.Dom.getViewportHeight();
+            if (Y.YUI2.util.Dom.inDocument('scormtop')) {
+                newheight -= parseInt(scorm_get_htmlelement_size('scormtop', 'height'));
             }
+
             scorm_layout_widget.set('height', newheight);
 
             scorm_layout_widget.render();
@@ -242,6 +248,11 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
         };
 
         var scorm_resize_frame = function() {
+            // Do not execute this code on mobile.
+            if (Y.YUI2.util.Dom.get('mymobile')) {
+                return;
+            }
+
             var obj = Y.YUI2.util.Dom.get('scorm_object');
             if (obj) {
                 var content = scorm_layout_widget.getUnitByPosition('center').get('wrap');
@@ -256,8 +267,8 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
                     }
                 }
                 else {
-                    obj.style.width = (content.offsetWidth)+'px';
-                    obj.style.height = (content.offsetHeight - 10)+'px';
+                    obj.style.width = (content.offsetWidth - 2) + 'px';
+                    obj.style.height = (content.offsetHeight - 2) + 'px';
                 }
             }
         };
@@ -423,7 +434,7 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
         if (scorm_disable_toc) {
             scorm_layout_widget = new Y.YUI2.widget.Layout('scorm_layout', {
                 minWidth: 255,
-                minHeight: 600,
+                minHeight: 400,
                 units: [
                     { position: 'left', body: 'scorm_toc', header: toc_title, width: 0, resize: true, gutter: '0px 0px 0px 0px', collapse: false},
                     { position: 'center', body: '<div id="scorm_content"></div>', gutter: '0px 0px 0px 0px', scroll: true}
@@ -432,7 +443,7 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
         } else {
             scorm_layout_widget = new Y.YUI2.widget.Layout('scorm_layout', {
                 minWidth: 255,
-                minHeight: 600,
+                minHeight: 400,
                 units: [
                     { position: 'left', body: 'scorm_toc', header: toc_title, width: 250, resize: true, gutter: '2px 5px 5px 2px', collapse: true, minWidth:250, maxWidth: 590},
                     { position: 'center', body: '<div id="scorm_content"></div>', gutter: '2px 5px 5px 2px', scroll: true}
@@ -508,7 +519,7 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
 
         // navigation
         if (scorm_hide_nav == false) {
-            scorm_nav_panel = new Y.YUI2.widget.Panel('scorm_navpanel', { visible:true, draggable:true, close:false, xy: [250, 450],
+            scorm_nav_panel = new Y.YUI2.widget.Panel('scorm_navpanel', { visible:true, draggable:true, close:false, xy: [25, 300],
                                                                     autofillheight: "body"} );
             scorm_nav_panel.setHeader(M.str.scorm.navigation);
 
