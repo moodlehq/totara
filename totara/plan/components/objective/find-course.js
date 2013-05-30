@@ -90,6 +90,9 @@ M.totara_plan_objective_find_course = M.totara_plan_objective_find_course || {
                 // Add new table
                 $('div#dp-objective-courses-container').prepend(new_table);
             }
+
+            // Grab remove button
+            $('input#remove-selected-course').show();
         };
         var url = M.cfg.wwwroot + '/totara/plan/components/objective/';
         var saveurl = url + 'update-course.php?planid='+this.config.plan_id+'&objectiveid='+this.config.objective_id+'&update=';

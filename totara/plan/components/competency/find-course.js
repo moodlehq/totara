@@ -91,7 +91,10 @@ M.totara_plan_competency_find_course = M.totara_plan_competency_find_course || {
                 // Add new table
                 $('div#dp-competency-courses-container').prepend(response);
             }
-        }
+
+            // Grab remove button
+            $('input#remove-selected-course').show();
+        };
 
         var url = M.cfg.wwwroot + '/totara/plan/components/competency/';
         var saveurl = url + 'update-course.php?planid='+this.config.plan_id+'&competencyid='+this.config.competency_id+'&update=';
