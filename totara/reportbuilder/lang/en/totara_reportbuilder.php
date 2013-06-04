@@ -67,7 +67,7 @@ $string['cachegenstarted'] = 'Cache generation started at {$a}. This process can
 $string['cachegenfail'] = 'The last attempt to generate cache failed. Please try again later.';
 $string['cachenow'] = 'Generate Now';
 $string['cachenow_help'] = '
-When **Generate now** is checked then report cache will be generated immediately after form submit.';
+If **Generate now** is checked, then report cache will be generated immediately after form submit.';
 $string['cachenow_title'] = 'Report cache';
 $string['choosecomp'] = 'Choose Competency...';
 $string['chooseorg'] = 'Choose Organisation...';
@@ -295,7 +295,7 @@ $string['initialdisplay'] = 'Restrict Initial Display';
 $string['initialdisplay_disabled'] = 'This setting is not available when there are no filters enabled';
 $string['initialdisplay_error'] = 'The last filter can not be deleted when initial display is restricted';
 $string['initialdisplay_heading'] = 'Filters Performance Settings';
-$string['initialdisplay_help'] = 'This setting controls the how the report is initially displayed and is recommended for larger reports where you will be filtering the results (e.g. sitelogs). It increases the speed of the report by allowing you to apply filters and displaying only the results instead of initially trying to display *all* the data.
+$string['initialdisplay_help'] = 'This setting controls how the report is initially displayed and is recommended for larger reports where you will be filtering the results (e.g. sitelogs). It increases the speed of the report by allowing you to apply filters and display only the results instead of initially trying to display *all* the data.
 
 **Disabled**: the report will display all results immediately *(default)*
 
@@ -544,7 +544,7 @@ When **Hide in My Reports** is checked the report will not appear on the \'My Re
 $string['reportbuildercache'] = 'Enable report caching';
 $string['reportbuildercache_heading'] = 'Caching Performance Settings';
 $string['reportbuildercache_help'] = '
-When **Enable report caching** is checked then a copy of this report will be generated on a set schedule, and users will see data from the stored report. This will make displaying and filtering of the report faster, but the data displayed will be from the last time the report was generated rather than "live" data. We recommend enabling this setting only if necessary (reports are taking too long to be displayed), and only for specific reports where this is a problem.';
+If **Enable report caching** is checked, then a copy of this report will be generated on a set schedule, and users will see data from the stored report. This will make displaying and filtering of the report faster, but the data displayed will be from the last time the report was generated rather than "live" data. We recommend enabling this setting only if necessary (reports are taking too long to be displayed), and only for specific reports where this is a problem.';
 $string['reportbuildercachescheduler'] = 'Cache Schedule';
 $string['reportbuildercachescheduler_help'] = 'Determines the schedule used to control how often a new version of the report is generated. The report will be generated on the cron that immediately follows the specified time.
 
