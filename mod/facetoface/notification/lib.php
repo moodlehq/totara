@@ -931,21 +931,34 @@ function facetoface_message_substitutions($msg, $facetofacename, $user, $data, $
 
     if ($data->datetimeknown) {
         // Scheduled session
-        $sessiondate = userdate($data->sessiondates[0]->timestart, get_string('strftimedate'));
-        $starttime = userdate($data->sessiondates[0]->timestart, get_string('strftimetime'));
-        $finishtime = userdate($data->sessiondates[0]->timefinish, get_string('strftimetime'));
-
         $alldates = '';
         foreach ($data->sessiondates as $date) {
             if ($alldates != '') {
                 $alldates .= "\n";
             }
-            $alldates .= userdate($date->timestart, get_string('strftimedate')).', ';
-            $alldates .= userdate($date->timestart, get_string('strftimetime')).
-                ' to '.userdate($date->timefinish, get_string('strftimetime'));
+            $startdate = userdate($date->timestart, get_string('strftimedate'), $date->sessiontimezone);
+            $finishdate = userdate($date->timefinish, get_string('strftimedate'), $date->sessiontimezone);
+            if ($startdate == $finishdate) {
+                $alldates .= $startdate . ', ';
+            } else {
+                $alldates .= $startdate . ' - ' . $finishdate . ', ';
+            }
+            $starttime = userdate($date->timestart, get_string('strftimetime'), $date->sessiontimezone);
+            $finishtime = userdate($date->timefinish, get_string('strftimetime'), $date->sessiontimezone);
+            $timestr = $starttime . ' - ' . $finishtime . ' ' . $date->sessiontimezone;
+            $alldates .= $timestr;
         }
+
+        $startdate = userdate($data->sessiondates[0]->timestart, get_string('strftimedate'), $date->sessiontimezone);
+        $finishdate = userdate($data->sessiondates[0]->timefinish, get_string('strftimedate'), $date->sessiontimezone);
+        $sessiondate = ($startdate == $finishdate) ? $startdate : $startdate . ' - ' . $finishdate;
+        $starttime = userdate($data->sessiondates[0]->timestart, get_string('strftimetime'), $date->sessiontimezone);
+        $finishtime = userdate($data->sessiondates[0]->timefinish, get_string('strftimetime'), $date->sessiontimezone);
+
     } else {
         // Wait-listed session
+        $startdate   = get_string('unknowndate', 'facetoface');
+        $finishdate  = get_string('unknowndate', 'facetoface');
         $sessiondate = get_string('unknowndate', 'facetoface');
         $alldates    = get_string('unknowndate', 'facetoface');
         $starttime   = get_string('unknowntime', 'facetoface');
@@ -958,6 +971,8 @@ function facetoface_message_substitutions($msg, $facetofacename, $user, $data, $
     $msg = str_replace(get_string('placeholder:cost', 'facetoface'), facetoface_cost($user->id, $sessionid, $data, false), $msg);
     $msg = str_replace(get_string('placeholder:alldates', 'facetoface'), $alldates, $msg);
     $msg = str_replace(get_string('placeholder:sessiondate', 'facetoface'), $sessiondate, $msg);
+    $msg = str_replace(get_string('placeholder:startdate', 'facetoface'), $startdate, $msg);
+    $msg = str_replace(get_string('placeholder:finishdate', 'facetoface'), $finishdate, $msg);
     $msg = str_replace(get_string('placeholder:starttime', 'facetoface'), $starttime, $msg);
     $msg = str_replace(get_string('placeholder:finishtime', 'facetoface'), $finishtime, $msg);
     $msg = str_replace(get_string('placeholder:duration', 'facetoface'), format_duration($data->duration), $msg);

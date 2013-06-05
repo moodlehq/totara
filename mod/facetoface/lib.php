@@ -2339,7 +2339,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     }
                     $sessiontime = $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
                     if (count($session->sessiondates) > 1) {
-                        $multiday = html_writer::start_tag('br'). '(' . get_string('multiday', 'facetoface').')';
+                        $multiday = html_writer::start_tag('br'). '(' . get_string('multidate', 'facetoface').')';
                     }
                 }
             } else {
