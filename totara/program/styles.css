@@ -13,6 +13,12 @@ img.program-warning {
     padding-left:0px;
 }
 
+.dir-rtl #programexceptions .exceptionactions div {
+    float: right;
+    padding-right: 0px;
+    padding-left: 5px;
+}
+
 #programexceptions .exceptionactions{
     float: none;
     height: 35px;
