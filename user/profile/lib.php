@@ -459,16 +459,16 @@ function profile_display_hierarchy_fields($userid) {
     $record = $DB->get_record_sql($sql, array($userid), IGNORE_MULTIPLE);
 
     if (isset($record->pos)) {
-        print_row(get_string('position', 'totara_hierarchy') . " :", $record->pos);
+        print_row(get_string('position', 'totara_hierarchy') . ":", $record->pos);
     }
 
     if (isset($record->org)) {
-        print_row(get_string('organisation', 'totara_hierarchy') . " :", $record->org);
+        print_row(get_string('organisation', 'totara_hierarchy') . ":", $record->org);
     }
 
     if (isset($record->manid)) {
         $manurl = html_writer::link(new moodle_url('/user/profile.php', array("id" => $record->manid)), $record->fullname);
-        print_row(get_string('manager', 'totara_hierarchy') . " :", $manurl);
+        print_row(get_string('manager', 'totara_hierarchy') . ":", $manurl);
     }
 }
 
