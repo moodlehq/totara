@@ -43,17 +43,15 @@ $id = required_param('id', PARAM_INT);       // course id
 
 /// basic access control checks
 if ($id) { // editing course
-
-    if($id == SITEID){
-        // don't allow editing of  'site course' using this from
+    if ($id == SITEID) {
+        // Don't allow editing of  'site course' using this form.
         print_error('cannoteditsiteform');
     }
 
-    if (!$course = $DB->get_record('course', array('id'=>$id))) {
-        print_error('invalidcourseid');
-    }
+    $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
     require_login($course);
-    require_capability('moodle/course:update', context_course::instance($course->id));
+    $coursecontext = context_course::instance($course->id);
+    require_capability('moodle/course:update', $coursecontext);
 
 } else {
     require_login();
@@ -89,13 +87,13 @@ $form->set_data($currentdata);
 
 
 // now override defaults if course already exists
-if ($form->is_cancelled()){
+if ($form->is_cancelled()) {
     redirect(new moodle_url('/course/view.php', array('id' => $course->id)));
 } else if ($data = $form->get_data()) {
 
 
 /// process criteria unlocking if requested
-    if (!empty($data->settingsunlock)) {
+    if (!empty($data->settingsunlock) && completion_can_unlock_data($course->id)) {
 
         $completion->delete_course_completion_data();
 
