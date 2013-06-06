@@ -385,8 +385,13 @@ if ($mform->is_cancelled()) {
         }
 
         if ($usetags) {
-            add_tags_info($fromform->modulename, $fromform->instance);
+            if (isset($fromform->otags)) {
+                tag_set($fromform->modulename, $fromform->instance, tag_get_name($fromform->otags));
+            } else {
+                tag_set($fromform->modulename, $fromform->instance, array());
+            }
         }
+
         // make sure visibility is set correctly (in particular in calendar)
         if (has_capability('moodle/course:activityvisibility', $modcontext)) {
             set_coursemodule_visible($fromform->coursemodule, $fromform->visible);
@@ -508,15 +513,13 @@ if ($mform->is_cancelled()) {
         }
 
         if ($usetags) {
-            add_tags_info($fromform->modulename, $fromform->instance);
+            if (isset($fromform->otags)) {
+                tag_set($fromform->modulename, $fromform->instance, tag_get_name($fromform->otags));
+            } else {
+                tag_set($fromform->modulename, $fromform->instance, array());
+            }
         }
-        // Trigger mod_created event with information about this module.
-        $eventdata = new stdClass();
-        $eventdata->modulename = $fromform->modulename;
-        $eventdata->name       = $fromform->name;
-        $eventdata->cmid       = $fromform->coursemodule;
-        $eventdata->courseid   = $course->id;
-        $eventdata->userid     = $USER->id;
+
         $eventname = 'mod_created';
 
         add_to_log($course->id, "course", "add mod",
@@ -687,16 +690,4 @@ if ($mform->is_cancelled()) {
     $mform->display();
 
     echo $OUTPUT->footer();
-}
-
-/**
- * Function to attach tag to a course module
- */
-function add_tags_info($modulename, $instance) {
-
-    $tags = array();
-    if ($otags = optional_param_array('otags', '', PARAM_INT)) {
-        $tags = tag_get_name($otags);
-    }
-    tag_set($modulename, $instance, $tags);
 }
