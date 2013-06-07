@@ -54,6 +54,10 @@ table.dp-plan-evidence-items td a {
     margin-top:4px;
 }
 
+.dir-rtl .plan-launch-course-button {
+    float:left;
+}
+
 img.disabled_action_icon {
     vertical-align: text-bottom;
     padding: 2px;
@@ -106,11 +110,20 @@ div.plan_box {
     padding: 10px 0;
 }
 
+.dir-rtl #dp-plan-content #dp-plans-description .instructional_text {
+    float: right;
+}
+
 #dp-plan-content #dp-plans-description .dp-add-plan-link {
     float: right;
     text-align: right;
     width: 25%;
     padding-top: 10px;
+}
+
+.dir-rtl #dp-plan-content #dp-plans-description .dp-add-plan-link {
+    float: left;
+    text-align: left;
 }
 
 #dp-plan-content #dp-plans-list-active-plans table td.c0,
