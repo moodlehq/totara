@@ -69,7 +69,7 @@ $report->include_js();
 $graph = (substr($report->source, 0, strlen('graphical_feedback_questions')) ==
     'graphical_feedback_questions');
 
-$override_initial = isset($searched['addfilter']) && ($searched['addfilter'] == 'Search');
+$override_initial = isset($searched['addfilter']);
 $hide_initial_display = ($report->initialdisplay == RB_INITIAL_DISPLAY_HIDE && !$override_initial);
 $countfiltered = 0;
 $countall = 0;
