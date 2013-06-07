@@ -431,7 +431,7 @@ function reminder_cron() {
                                 ON cc.course = ?
                                AND cc.userid = u.id
                         ";
-                    $params = array($course->id);
+                    $tparams = array($course->id);
                 } else {
                     // Otherwise get the activity
                     // Load moduleinstance
@@ -449,7 +449,7 @@ function reminder_cron() {
                                AND cc.userid = u.id
                                AND cc.criteriaid = cr.id
                         ";
-                    $params = array($course->id, COMPLETION_CRITERIA_TYPE_ACTIVITY, $module, $config['tracking'], $course->id);
+                    $tparams = array($course->id, COMPLETION_CRITERIA_TYPE_ACTIVITY, $module, $config['tracking'], $course->id);
                 }
 
                 // Process each message
@@ -487,7 +487,7 @@ function reminder_cron() {
                            AND (cc.timecompleted + ?) >= ?
                            AND (cc.timecompleted + ?) < ?
                     ";
-                    $params = array_merge($params, array($reminder->id, $message->id, $requirementid, $periodsecs, $reminder->timecreated, $periodsecs, $now));
+                    $params = array_merge($tparams, array($reminder->id, $message->id, $requirementid, $periodsecs, $reminder->timecreated, $periodsecs, $now));
                     // Check if any users found
                     $rs = $DB->get_recordset_sql($sql, $params);
                     if (!$rs->valid()) {
