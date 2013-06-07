@@ -65,6 +65,7 @@ if ($fromform = $mform->get_data()) {
     $todb = new stdClass();
     $todb->id = $id;
     $todb->fullname = $fromform->fullname;
+    $todb->shortname = reportbuilder::create_shortname($fromform->fullname);
     $todb->hidden = $fromform->hidden;
     $todb->description_editor = $fromform->description_editor;
     // ensure we show between 1 and 9999 records
