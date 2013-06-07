@@ -108,7 +108,6 @@ class badge {
     public $timemodified;
     public $usercreated;
     public $usermodified;
-    public $image;
     public $issuername;
     public $issuerurl;
     public $issuercontact;
@@ -241,7 +240,6 @@ class badge {
 
         $fordb->name = get_string('copyof', 'badges', $this->name);
         $fordb->status = BADGE_STATUS_INACTIVE;
-        $fordb->image = 0;
         $fordb->usercreated = $USER->id;
         $fordb->usermodified = $USER->id;
         $fordb->timecreated = time();
@@ -1103,10 +1101,7 @@ function badges_process_badge_image(badge $badge, $iconfile) {
     require_once($CFG->libdir. '/gdlib.php');
 
     if (!empty($CFG->gdversion)) {
-        if ($fileid = (int)process_new_icon($badge->get_context(), 'badges', 'badgeimage', $badge->id, $iconfile)) {
-            $badge->image = $fileid;
-            $badge->save();
-        }
+        process_new_icon($badge->get_context(), 'badges', 'badgeimage', $badge->id, $iconfile);
         @unlink($iconfile);
 
         // Clean up file draft area after badge image has been saved.
@@ -1351,18 +1346,15 @@ function badges_handle_course_deletion($courseid) {
     $coursecontext = context_course::instance($courseid);
     $fs = get_file_storage();
 
+    // Move badges images to the system context.
+    $fs->move_area_files_to_new_context($coursecontext->id, $systemcontext->id, 'badges', 'badgeimage');
+
     // Get all course badges.
     $badges = $DB->get_records('badge', array('type' => BADGE_TYPE_COURSE, 'courseid' => $courseid));
     foreach ($badges as $badge) {
-        // Move badges images to the system context.
-        $fs->move_area_files_to_new_context($coursecontext->id, $systemcontext->id, 'badges', 'badgeimage', $badge->id);
-        // Update ids in badge table as we might need an image for badge baking.
-        $file = $fs->get_file($systemcontext->id, 'badges', 'badgeimage', $badge->id, '/', 'f1.png');
-
         // Archive badges in this course.
         $toupdate = new stdClass();
         $toupdate->id = $badge->id;
-        $toupdate->image = $file->get_id();
         $toupdate->type = BADGE_TYPE_SITE;
         $toupdate->courseid = null;
         $toupdate->status = BADGE_STATUS_ARCHIVED;
