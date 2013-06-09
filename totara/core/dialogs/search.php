@@ -92,10 +92,11 @@ switch ($searchtype) {
 
         // Generate search SQL
         $keywords = totara_search_parse_keywords($query);
-        $fields = array('firstname', 'lastname');
+        $fields = array('firstname', 'lastname', 'email');
         list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
 
         $search_info->fullname = $DB->sql_fullname('firstname', 'lastname');
+        $search_info->email = 'email';
 
         // exclude deleted, guest users and self
         $guest = guest_user();
@@ -115,7 +116,7 @@ switch ($searchtype) {
             $params[] = $userid;
         }
 
-        $search_info->order = " ORDER BY firstname, lastname";
+        $search_info->order = " ORDER BY firstname, lastname, email";
         $search_info->params = $params;
         break;
 
@@ -388,6 +389,9 @@ if (strlen($query)) {
     $start = $page * DIALOG_SEARCH_NUM_PER_PAGE;
 
     $select = "SELECT {$search_info->id} AS id, {$search_info->fullname} AS fullname ";
+    if (isset($search_info->email)) {
+        $select .= ", {$search_info->email} AS email ";
+    }
     $count  = "SELECT COUNT({$search_info->id}) ";
 
     $total = $DB->count_records_sql($count.$search_info->sql, $search_info->params);
@@ -421,7 +425,14 @@ if (strlen($query)) {
                 }
 
                 $item->id = $result->id;
-                $item->fullname = format_string($result->fullname);
+                if (isset($result->email)) {
+                    $username = new stdClass();
+                    $username->fullname = $result->fullname;
+                    $username->email = $result->email;
+                    $item->fullname = get_string('assignindividual', 'totara_program', $username);
+                } else {
+                    $item->fullname = format_string($result->fullname);
+                }
 
                 if (method_exists($this, 'search_get_item_hover_data')) {
                     $item->hover = $this->search_get_item_hover_data($item->id);
