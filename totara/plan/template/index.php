@@ -116,7 +116,7 @@ if ((!empty($moveup) or !empty($movedown))) {
     }
 }
 
-if ($default) {
+if ($default && $DB->record_exists('dp_template', array('id' => $default, 'visible' => true))) {
     $transaction = $DB->start_delegated_transaction();
     // Unset current default
     $DB->execute('UPDATE {dp_template} SET isdefault = 0 WHERE isdefault = 1');
