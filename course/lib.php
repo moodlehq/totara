@@ -1568,17 +1568,17 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                         echo facetoface_print_coursemodule_info($mod);
                         echo '</div>';
                     } else {
-                        // Display link itself
-                        echo '<a ' . $linkcss . $mod->extra . $onclick .
-                            ' href="' . $url . '"><img src="' . $mod->get_icon_url() .
-                            '" class="iconlarge activityicon" alt="' . $mod->modfullname . '" />' .
-                            $accesstext . '<span class="instancename">' .
-                            $instancename . $altname . '</span></a>';
+                        // Display link itself.
+                        $activitylink = html_writer::empty_tag('img', array('src' => $mod->get_icon_url(),
+                            'class' => 'iconlarge activityicon', 'alt' => $mod->modfullname)) . $accesstext .
+                            html_writer::tag('span', $instancename . $altname, array('class' => 'instancename'));
+                        echo html_writer::link($url, $activitylink, array('class' => $linkcss, 'onclick' => $onclick)) .
+                            $groupinglabel;
 
-                        // If specified, display extra content after link
+                        // If specified, display extra content after link.
                         if ($content) {
-                            $contentpart = '<div class="' . trim('contentafterlink' . $textclasses) .
-                                '">' . $content . '</div>';
+                            $contentpart = html_writer::tag('div', $content, array('class' =>
+                                    trim('contentafterlink ' . $textclasses)));
                         }
                     }
                 } else {
