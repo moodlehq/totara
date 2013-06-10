@@ -81,6 +81,20 @@ function update_global_settings($fromform) {
     }
     set_config('exportoptions', $exportoptions, 'reportbuilder');
 
+    // Export to file system checkbox option.
+    $exporttofilesystemoption = 0;
+    if (isset($fromform->exporttofilesystem)) {
+        $exporttofilesystemoption = $fromform->exporttofilesystem;
+    }
+    set_config('exporttofilesystem', $exporttofilesystemoption, 'reportbuilder');
+
+    // Export to file system path textbox.
+    $exportfilesystempath = '';
+    if (isset($fromform->exportfilesystempath)) {
+        $exportfilesystempath = $fromform->exportfilesystempath;
+    }
+    set_config('exporttofilesystempath', $exportfilesystempath, 'reportbuilder');
+
     $financialyear = 'financialyear';
     $newconfig = $fromform->$financialyear;
     set_config('financialyear', date("dm", mktime(0, 0, 0, $newconfig["F"], $newconfig["d"], 0)), 'reportbuilder');

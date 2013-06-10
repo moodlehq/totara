@@ -49,6 +49,7 @@ if ($id == 0) {
     $report->reportid = $reportid;
     $report->frequency = null;
     $report->schedule = null;
+    $report->exporttofilesystem = null;
 }
 else{
     if (!$report = $DB->get_record('report_builder_schedule', array('id' => $id))) {
@@ -63,7 +64,8 @@ $mform = new scheduled_reports_new_form(
         'id' => $id,
         'reportid' => $report->reportid,
         'frequency' => $report->frequency,
-        'schedule' => $report->schedule
+        'schedule' => $report->schedule,
+        'exporttofilesystem' => $report->exporttofilesystem
     )
 );
 
@@ -126,6 +128,7 @@ function add_scheduled_report($fromform) {
         $todb->savedsearchid = $fromform->savedsearchid;
         $todb->userid = $USER->id;
         $todb->format = $fromform->format;
+        $todb->exporttofilesystem = $fromform->emailsaveorboth;
         $todb->frequency = $fromform->frequency;
         $todb->schedule = $fromform->schedule;
         if (!$id) {

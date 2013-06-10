@@ -181,8 +181,15 @@ $string['exportcsv'] = 'Export in text format';
 $string['exportfusion'] = 'Export to Google Fusion';
 $string['exportods'] = 'Export in ODS format';
 $string['exportoptions'] = 'Report Export options';
+$string['exporttoemail'] = 'Email scheduled report';
+$string['exporttoemailandsave'] = 'Email and save scheduled report to file';
+$string['exportfilesystemoptions'] = 'Export options';
+$string['exporttosave'] = 'Save scheduled report to file system only';
 $string['exportproblem'] = 'There was a problem downloading the file';
 $string['exportxls'] = 'Export in Excel format';
+$string['exporttofilesystem'] = 'Export to file system';
+$string['exporttofilesystemenable'] = 'Enable exporting to file system';
+$string['exportfilesystempath'] = 'Export file system path:';
 $string['extrasqlshouldusenamedparams'] = 'get_sql_filter() extra sql should use named parameters';
 $string['filter'] = 'Filter';
 $string['confirmfilterdelete'] = 'Are you sure you want to delete this filter?';
@@ -722,6 +729,16 @@ $string['reportbuilderfinancialyear'] = 'Report Financial Year Settings';
 $string['reportbuilderfinancialyear_help'] = '**Financial year** is used in the reports content controls.
 
 This setting allows to set the start date of the financial year.';
+$string['reportbuilderexporttofilesystem'] = 'Enable exporting to file system';
+$string['reportbuilderexporttofilesystem_help'] = '**Exporting to file system** allows reports to be saved to a directory on the web server\'s file system, instead of only emailing the report to the user scheduling the report.
+
+This can be useful when the report needs to be accessed by an external system automation, and the report directory might have SFTP access enabled.
+
+Reports saved to the filesystem are saved as **\'Export file system root path\'**/username/report.ext where *username* is an internal username of a user who owns the scheduled report, *report* is the name of the scheduled report with non alpha-numeric characters removed, and *ext* is the appropriate export file name extension.';
+$string['error:emptyexportfilesystempath'] = 'If you enabled export to file system, you need to specify file system path.';
+$string['error:notapathexportfilesystempath'] = 'Specified file system path is not found.';
+$string['error:notdirexportfilesystempath'] = 'Specified file system path does not exist or is not a directory.';
+$string['error:notwriteableexportfilesystempath'] = 'Specified file system path is not writeable.';
 // add audience fields
 $string['usercohortids'] = 'User audience IDs';
 $string['enrolledcoursecohortids'] = 'Enrolled course audience IDs';

@@ -265,11 +265,14 @@ class totara_core_renderer extends plugin_renderer_base {
 
         $table = new html_table();
         $table->id = 'scheduled_reports';
-        $table->attributes['class'] = 'scheduled-reports generalbox';
+        $table->attributes['class'] = 'scheduled-reports generaltable';
         $headers = array();
         $headers[] = get_string('reportname', 'totara_reportbuilder');
         $headers[] = get_string('savedsearch', 'totara_reportbuilder');
         $headers[] = get_string('format', 'totara_reportbuilder');
+        if (get_config('reportbuilder', 'exporttofilesystem') == 1) {
+            $headers[] = get_string('exportfilesystemoptions', 'totara_reportbuilder');
+        }
         $headers[] = get_string('schedule', 'totara_reportbuilder');
         if ($showoptions) {
             $headers[] = get_string('options', 'totara_core');
@@ -281,6 +284,9 @@ class totara_core_renderer extends plugin_renderer_base {
             $cells[] = new html_table_cell($sched->fullname);
             $cells[] = new html_table_cell($sched->data);
             $cells[] = new html_table_cell($sched->format);
+            if (get_config('reportbuilder', 'exporttofilesystem') == 1) {
+                $cells[] = new html_table_cell($sched->exporttofilesystem);
+            }
             $cells[] = new html_table_cell($sched->schedule);
             if ($showoptions) {
                 $text = get_string('edit');
