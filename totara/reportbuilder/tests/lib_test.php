@@ -669,17 +669,17 @@ class reportbuilderlib_test extends advanced_testcase {
         $shortname1 = reportbuilder::create_shortname('name');
         $shortname2 = reportbuilder::create_shortname('My Report with special chars\'"%$*[]}~');
         $shortname3 = reportbuilder::create_shortname('Space here');
-
-        $this->assertEquals($shortname1, 'name');
+        // should prepend 'report_' to name
+        $this->assertEquals($shortname1, 'report_name');
         // special chars should be stripped
-        $this->assertEquals($shortname2, 'my_report_with_special_chars');
+        $this->assertEquals($shortname2, 'report_my_report_with_special_chars');
         // spaces should be replaced with underscores and upper case moved to lower case
-        $this->assertEquals($shortname3, 'space_here');
+        $this->assertEquals($shortname3, 'report_space_here');
         // create a db entry
         $rb = new reportbuilder(null, $shortname3, $this->embed);
         $existingname = reportbuilder::create_shortname('space_here');
         // should append numbers to suggestion if shortname already exists
-        $this->assertEquals($existingname, 'space_here1');
+        $this->assertEquals($existingname, 'report_space_here1');
 
         $this->resetAfterTest(true);
     }

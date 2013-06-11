@@ -977,7 +977,8 @@ class reportbuilder {
 
         // leaves only letters and numbers
         // replaces spaces + dashes with underscores
-        $shortname = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/', '/[\s-]/'), array('', '_'), $fullname));
+        $validchars = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/', '/[\s-]/'), array('', '_'), $fullname));
+        $shortname = "report_{$validchars}";
         $try = $shortname;
         $i = 1;
         while($i < 1000) {
@@ -3046,7 +3047,7 @@ class reportbuilder {
 
         if (!$file) {
             $export = new csv_export_writer();
-            $export->filename = $filename;
+            $export->set_filename($filename);
         } else {
             $fp = fopen($file, "w");
         }
