@@ -3,15 +3,53 @@
 
 Totara LMS Changelog
 
+Release 2.4.3 (11th June 2013):
+==================================================
+
+New features:
+    T-10685    Allow reports to be exported to the file system
+
+Improvements:
+    T-10666    Include debugging state for a site with registration data
+    T-10702    Show email beside user name when assigning individuals to a program
+    T-10743    Add new permission for resetting course completion data
+
+Database Upgrades:
+    T-10807    Removed unused image column from badge table
+
+Bug Fixes:
+    T-10534    Hidden Learning Plan template cannot be set to default
+    T-10802    Added instruction text to Site Notices setting in Facetoface
+    T-10792    Only allow managers to approve their own staff for Facetoface sessions
+    T-10798    Added end date placeholder for emails in Facetoface
+    T-10710    Notification records are now deleted when Facetoface sessions are deleted
+    T-10811    Fixed incorrect parameter assignment in course reminder cron
+    T-10576    Fixed wording in report builder performance tab help
+    T-10806    Added missing session date to booking notifications in Facetoface
+    T-10545    Fixed RTL issues in Learning Plans
+    T-10805    Fixed automatic assignment of competencies by organisation
+    T-10588    Updated help text for "Override user conflicts" in Facetoface
+    T-10801    Fixed spacing issue in user profile fields
+    T-10799    Fixed RTL language style issue in exceptions reports in Programs
+    T-10790    Removed deprecated build_navigation() in Facetoface
+    T-10781    Fixed upgrade error in Leaning Plans
+    T-10788    Fixed one email per session date in Facetoface
+    T-10723    Fixed SCORM screen size issue on mobile devices
+    T-10786    Fixed RTL language progress bar direction
+    T-9369     Fixed removal of selected courses in competencies and objectives in Learning Plans
+    T-10419    Fixed PHP warnings in Learning Plans
+    T-10605    Fixed breadcrumbs when editing notifications in Facetoface
+    T-5734     Fixed merge issue in course activity display
+    T-5734     Fixed incorrect variable name in course/program search
+
+
 Release 2.4.2 (28th May 2013):
 ==================================================
 
 New features:
-
     T-10625    Add activity filters to the main calendar
 
 Improvements:
-
     T-7702     Hide components from record of learning if they are not relevant to users
     T-10742    Add module requirements to completion progress details page
     T-10773    Add badges block to the course page
@@ -20,12 +58,10 @@ Improvements:
     T-10749    New date finished column in Facetoface reports
 
 Database Upgrades:
-
     T-10782    Fixed upgrade from Moodle 2.4.4
     T-10776    Fixed badgeid foreign key on badge_manual_award table
 
 Bug Fixes:
-
     T-5734     Fixed undefined variable warning in Report Builder
     T-6710     Fixed hardcoded competency language strings
     T-10511    Fixed breadcrumbs in templates in Learning plans
@@ -57,15 +93,14 @@ Bug Fixes:
     T-10585    Fixed help text typos in Learning Plans
     T-10538    Fixed undefined variable in Learning Plans
 
+
 Release 2.4.1 (14th May 2013):
 ==================================================
 
 New features:
-
     T-9460      Add learning plan report source
 
 Improvements:
-
     T-10193     Set minimum width on tinymce editors
     T-10726     Change the My Team page to be editable, so blocks can be added
     T-10742     Add module requirements to completion progress details page
@@ -76,11 +111,7 @@ Improvements:
     T-10713     Move changelog into PHP file to prevent version identification via the web
     T-10702     Show email next to user name when enrolling individuals
 
-Database Upgrades:
-
-
 Bug Fixes:
-
     T-10663     Allow selected scheduling conflicts doesn't work from bulk uploads
     T-10694     Ensure a table exists before trying to rename it
     T-10416     Fix rules issues in cloned audiences

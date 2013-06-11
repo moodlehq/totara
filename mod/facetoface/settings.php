@@ -75,7 +75,11 @@ $html .= html_writer::end_tag('p');
 $settings->add(new admin_setting_heading('facetoface_customfields_header', new lang_string('customfieldsheading', 'facetoface'), $html));
 
 // List of existing site notices
-$html = facetoface_list_of_sitenotices();
+$html = html_writer::start_tag('p');
+$url = html_writer::link(new moodle_url('/blocks/facetoface/calendar.php'), new lang_string('setting:sitenoticeshere', 'facetoface'));
+$html .= new lang_string('setting:sitenotices', 'facetoface', $url);
+$html .= html_writer::end_tag('p');
+$html .= facetoface_list_of_sitenotices();
 $html .= html_writer::start_tag('p');
 $url = new moodle_url('/mod/facetoface/sitenotice.php', array('id' => 0));
 $html .= html_writer::link($url, new lang_string('addnewnoticelink', 'facetoface'));

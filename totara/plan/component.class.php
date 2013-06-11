@@ -716,6 +716,7 @@ abstract class dp_base_component {
             }
         }
         if (!empty($componentids)) {
+            $relation = new stdClass();
             // There are still required compoent links that are not already in the database:
             $relation->component1 = $thiscomponentfirst ? $thiscomponent : $componentupdatetype;
             $relation->component2 = $thiscomponentfirst ? $componentupdatetype : $thiscomponent;

@@ -216,6 +216,30 @@ function completion_can_view_data($userid, $course = null) {
 
 
 /**
+ * Utility function for checking if the logged in user has permissions
+ * to unlock completion data for a course
+ *
+ * @access  public
+ * @param   int         $courseid   Course ID
+ * @return  boolean
+ */
+function completion_can_unlock_data($courseid) {
+    if (!isloggedin()) {
+        return false;
+    }
+
+    // Check if this is the site course.
+    if (!$courseid || $courseid == SITEID) {
+        return false;
+    }
+
+    // Check capabilities.
+    $coursecontext = context_course::instance($courseid);
+    return has_capability('moodle/course:unlockcompletion', $coursecontext);
+}
+
+
+/**
  * Check if a module type has RPL enabled for it
  *
  * RPLs for modules are enabled/disabled via $CFG->enablemodulerpl, which can

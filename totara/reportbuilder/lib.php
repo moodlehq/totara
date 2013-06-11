@@ -93,6 +93,21 @@ $REPORT_BUILDER_EXPORT_OPTIONS = array(
     'fusion' => REPORT_BUILDER_EXPORT_FUSION,
 );
 
+/**
+ *  Export to file system constants.
+ *
+ */
+define('REPORT_BUILDER_EXPORT_EMAIL', 0);
+define('REPORT_BUILDER_EXPORT_EMAIL_AND_SAVE', 1);
+define('REPORT_BUILDER_EXPORT_SAVE', 2);
+
+global $REPORT_BUILDER_EXPORT_FILESYSTEM_OPTIONS;
+$REPORT_BUILDER_EXPORT_FILESYSTEM_OPTIONS = array(
+    'exporttoemail' => REPORT_BUILDER_EXPORT_EMAIL,
+    'exporttoemailandsave' => REPORT_BUILDER_EXPORT_EMAIL_AND_SAVE,
+    'exporttosave' => REPORT_BUILDER_EXPORT_SAVE
+);
+
 // Maximum allowed time for report caching
 define('REPORT_CACHING_TIMEOUT', 3600);
 
@@ -4494,9 +4509,9 @@ function send_scheduled_report($sched) {
     }
 
     if ($sched->savedsearchid != 0) {
-        $attachment = create_attachment($sched->reportid, $sched->format, $user->id, $sched->savedsearchid);
+        $attachment = create_attachment($sched->reportid, $sched->format, $user->id, $sched->exporttofilesystem, $sched->savedsearchid);
     } else {
-        $attachment = create_attachment($sched->reportid, $sched->format, $user->id);
+        $attachment = create_attachment($sched->reportid, $sched->format, $user->id, $sched->exporttofilesystem);
     }
 
     switch($sched->format) {
@@ -4540,10 +4555,13 @@ function send_scheduled_report($sched) {
     $message = $strmgr->get_string('scheduledreportmessage', 'totara_reportbuilder', $messagedetails, $user->lang);
 
     $fromaddress = $CFG->noreplyaddress;
+    $emailed = false;
 
-    $emailed = email_to_user($user, $fromaddress, $subject, $message, '', $attachment, $attachmentfilename);
+    if ($sched->exporttofilesystem != REPORT_BUILDER_EXPORT_SAVE) {
+        $emailed = email_to_user($user, $fromaddress, $subject, $message, '', $attachment, $attachmentfilename);
+    }
 
-    if (!unlink($CFG->dataroot . '/' . $attachment)) {
+    if (!unlink($CFG->dataroot . DIRECTORY_SEPARATOR . $attachment)) {
         mtrace(get_string('error:failedtoremovetempfile', 'totara_reportbuilder'));
     }
 
@@ -4557,18 +4575,19 @@ function send_scheduled_report($sched) {
  *  @param integer reportid ID of the report to generate attachement for
  *  @param integer format Type of attachment to create
  *  @param integer userid ID of the user the report is for
+ *  @param integer exporttofilesystem setting from reportbulider global settings
  *  @param integer sid Saved search ID to use
  *
  *  @return string Filename of the created attachment
  */
-function create_attachment($reportid, $format, $userid, $sid=null) {
+function create_attachment($reportid, $format, $userid, $exporttofilesystem, $sid = null) {
     global $CFG;
 
     $report = new reportbuilder($reportid, null, false, $sid, $userid);
     $columns = $report->columns;
     $shortname = $report->shortname;
     $count = $report->get_filtered_count();
-    list($sql, $params, $cache) = $report->build_query(false, true);
+    list($sql, $params) = $report->build_query(false, true);
 
     // array of filters that have been applied
     // for including in report where possible
@@ -4582,21 +4601,58 @@ function create_attachment($reportid, $format, $userid, $sid=null) {
         }
     }
     $tempfilename = md5(time());
-    $tempfilepathname = $CFG->dataroot . '/' . $tempfilename;
+    $tempfilepathname = $CFG->dataroot . DIRECTORY_SEPARATOR . $tempfilename;
 
-    switch($format) {
+    switch ($format) {
         case REPORT_BUILDER_EXPORT_ODS:
-            $filename = $report->download_ods($headings, $sql, $params, $count, $restrictions, $tempfilepathname, $cache);
+            $filename = $report->download_ods($headings, $sql, $params, $count, $restrictions, $tempfilepathname);
+            if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
+                $reportfilepathname = get_directory($report, $userid) . '.ods';
+                $filename = $report->download_ods($headings, $sql, $params, $count, $restrictions, $reportfilepathname);
+            }
             break;
         case REPORT_BUILDER_EXPORT_EXCEL:
-            $filename = $report->download_xls($headings, $sql, $params, $count, $restrictions, $tempfilepathname, $cache);
+            $filename = $report->download_xls($headings, $sql, $params, $count, $restrictions, $tempfilepathname);
+            if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
+                $reportfilepathname = get_directory($report, $userid) . '.xls';
+                $filename = $report->download_xls($headings, $sql, $params, $count, $restrictions, $reportfilepathname);
+            }
             break;
         case REPORT_BUILDER_EXPORT_CSV:
             $filename = $report->download_csv($headings, $sql, $params, $count, $tempfilepathname);
+            if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
+                $reportfilepathname = get_directory($report, $userid) . '.csv';
+                $filename = $report->download_csv($headings, $sql, $params, $count, $reportfilepathname);
+            }
             break;
     }
 
     return $tempfilename;
+}
+
+/**
+ *  Checks if username directory under given path exists
+ *  If it does not it creates it and returns fullpath with filename
+ *  userdir + report fullname + time created
+ *
+ * @param $report
+ * @param $userid
+ *
+ * @return string reportfullpathname
+ */
+function get_directory($report, $userid) {
+    global $DB;
+    $reportfilename = format_string($report->fullname) . userdate(time(), get_string('strftimedatefullshort', 'langconfig'));
+    $reportfilename = clean_param($reportfilename, PARAM_FILE);
+    $username = $DB->get_field('user', 'username', array('id' => $userid));
+
+    $dir = get_config('reportbuilder', 'exporttofilesystempath') . DIRECTORY_SEPARATOR . $username;
+    if (!is_directory_a_preset($dir) && !file_exists($dir)) {
+        mkdir($dir);
+    }
+    $reportfilepathname = $dir . DIRECTORY_SEPARATOR . $reportfilename;
+
+    return $reportfilepathname;
 }
 
 /**

@@ -602,7 +602,7 @@ function totara_print_report_manager() {
 
 */
 function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $sqlclause=array()) {
-    global $CFG, $DB, $USER, $PAGE, $REPORT_BUILDER_EXPORT_OPTIONS;
+    global $CFG, $DB, $USER, $PAGE, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_EXPORT_FILESYSTEM_OPTIONS;
 
     require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
     require_once($CFG->dirroot.'/calendar/lib.php');
@@ -636,6 +636,9 @@ function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $s
         //format column
         $key = array_search($sched->format, $REPORT_BUILDER_EXPORT_OPTIONS);
         $sched->format = get_string($key . 'format','totara_reportbuilder');
+        // Export column.
+        $key = array_search($sched->exporttofilesystem, $REPORT_BUILDER_EXPORT_FILESYSTEM_OPTIONS);
+        $sched->exporttofilesystem = get_string($key, 'totara_reportbuilder');
         //schedule column
         if (isset($sched->frequency) && isset($sched->schedule)){
             $schedule = new scheduler($sched);

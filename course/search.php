@@ -825,7 +825,7 @@ if ($results['programs']) {
 
             // users with no capability to view hidden programs should not be able to lock themselves out
             if ($canconfigureprogram && has_capability('totara/program:viewhiddenprograms', $programcontext)) {
-                if (!empty($aprogram->visible)) {
+                if (!empty($program->visible)) {
                     echo $OUTPUT->action_icon(new moodle_url('/course/search.php',
                             array('search' => $encodedsearch, 'page' => $page, 'perpage' => $perpage, 'hide' => $program->id, 'sesskey' => $USER->sesskey, 'viewtype' => 'program')),
                             new pix_icon('t/hide', get_string("hide")));

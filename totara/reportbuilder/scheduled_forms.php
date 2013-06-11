@@ -46,6 +46,7 @@ class scheduled_reports_new_form extends moodleform {
         $frequency = $this->_customdata['frequency'];
         $schedule = $this->_customdata['schedule'];
         $reportid = $this->_customdata['reportid'];
+        $exporttofilesystem = $this->_customdata['exporttofilesystem'];
 
         $reportname = $DB->get_field('report_builder', 'fullname', array('id' => $reportid));
 
@@ -70,6 +71,11 @@ class scheduled_reports_new_form extends moodleform {
             }
         }
 
+        $exporttofilesystemenabled = false;
+        if (get_config('reportbuilder', 'exporttofilesystem') == 1) {
+            $exporttofilesystemenabled = true;
+        }
+
         //Report type options
         $reports = reportbuilder_get_reports(true);
         $reportselect = array();
@@ -82,6 +88,23 @@ class scheduled_reports_new_form extends moodleform {
         $mform->addElement('static', 'report', get_string('report', 'totara_reportbuilder'), $reportname);
         $mform->addElement('select', 'savedsearchid', 'Data', $savedsearchselect);
         $mform->addElement('select', 'format', get_string('export', 'totara_reportbuilder'), $exportformatselect);
+
+        if ($exporttofilesystemenabled) {
+            $exporttosystemarray = array();
+            $exporttosystemarray[] =& $mform->createElement('radio', 'emailsaveorboth', '',
+                    get_string('exporttoemail', 'totara_reportbuilder'), REPORT_BUILDER_EXPORT_EMAIL);
+            $exporttosystemarray[] =& $mform->createElement('radio', 'emailsaveorboth', '',
+                    get_string('exporttoemailandsave', 'totara_reportbuilder'), REPORT_BUILDER_EXPORT_EMAIL_AND_SAVE);
+            $exporttosystemarray[] =& $mform->createElement('radio', 'emailsaveorboth', '',
+                    get_string('exporttosave', 'totara_reportbuilder'), REPORT_BUILDER_EXPORT_SAVE);
+            $mform->setDefault('emailsaveorboth', $exporttofilesystem);
+            $mform->addGroup($exporttosystemarray, 'exporttosystemarray',
+                    get_string('exportfilesystemoptions', 'totara_reportbuilder'), array('<br />'), false);
+        } else {
+            $mform->addElement('hidden', 'emailsaveorboth', REPORT_BUILDER_EXPORT_EMAIL);
+            $mform->setType('emailsaveorboth', PARAM_TEXT);
+        }
+
         $mform->addElement('scheduler', 'schedulegroup', get_string('schedule', 'totara_reportbuilder'),
                            array('frequency' => $frequency, 'schedule' => $schedule));
         $this->add_action_buttons();

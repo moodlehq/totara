@@ -416,6 +416,7 @@ $string['debugsmtp'] = 'Debug email sending';
 $string['debugstringids'] = 'Show origin of languages strings';
 $string['debugstringids_desc'] = 'This option is designed to help translators. When this option is enabled, if you add the parameter strings=1 to a request URL, it will show the language file and string id beside each string that is output.';
 $string['debugvalidators'] = 'Show validator links';
+$string['debugstatus'] = 'Debug status';
 $string['defaultcity'] = 'Default city';
 $string['defaultcity_help'] = 'A city entered here will be the default city when creating new user accounts.';
 $string['defaultformatnotset'] = 'Error determining default course format. Please check site settings.';

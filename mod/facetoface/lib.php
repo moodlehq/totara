@@ -461,6 +461,13 @@ function facetoface_delete_instance($id) {
 
     $DB->delete_records_select('facetoface_sessions_dates', "sessionid in (SELECT id FROM {facetoface_sessions} WHERE facetoface = ?)", array($facetoface->id));
 
+    // Notifications.
+    $DB->delete_records('facetoface_notification', array('facetofaceid' => $facetoface->id));
+    $DB->delete_records_select('facetoface_notification_sent',
+            "sessionid IN (SELECT id FROM {facetoface_sessions} WHERE facetoface = ?)", array($facetoface->id));
+    $DB->delete_records_select('facetoface_notification_hist',
+            "sessionid IN (SELECT id FROM {facetoface_sessions} WHERE facetoface = ?)", array($facetoface->id));
+
     $DB->delete_records('facetoface_sessions', array('facetoface' => $facetoface->id));
 
     $DB->delete_records('facetoface', array('id' => $facetoface->id));
@@ -789,6 +796,10 @@ function facetoface_delete_session($session) {
         ");
 
     $DB->delete_records('facetoface_signups', array('sessionid' => $session->id));
+
+    // Notifications.
+    $DB->delete_records('facetoface_notification_sent', array('sessionid' => $session->id));
+    $DB->delete_records('facetoface_notification_hist', array('sessionid' => $session->id));
 
     $transaction->allow_commit();
 
@@ -2328,7 +2339,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     }
                     $sessiontime = $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
                     if (count($session->sessiondates) > 1) {
-                        $multiday = html_writer::start_tag('br'). '(' . get_string('multiday', 'facetoface').')';
+                        $multiday = html_writer::start_tag('br'). '(' . get_string('multidate', 'facetoface').')';
                     }
                 }
             } else {

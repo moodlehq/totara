@@ -136,15 +136,7 @@ if (($data = data_submitted()) && !empty($data->bulk_update)) {
 $streditinga = get_string('editinga', 'moodle', 'facetoface');
 $strmodulenameplural = get_string('modulenameplural', 'facetoface');
 
-$navlinks = array();
-$navlinks[] = array('name' => $strmodulenameplural, 'link' => new moodle_url('/mod/facetoface/index.php', array('id' => $course->id)), 'type' => 'activity');
-$navlinks[] = array('name' => format_string($facetoface->name, true), 'link' => "{$CFG->wwwroot}/mod/facetoface/view.php?id={$cm->id}", 'type' => 'activityinstance');
-$navlinks[] = array('name' => $streditinga, 'link' => '', 'type' => 'title');
-
-$navigation = build_navigation($navlinks);
-
 $PAGE->set_pagelayout('standard');
-$PAGE->navbar->add(get_string('notifications', 'facetoface'));
 $PAGE->set_title($streditinga);
 $PAGE->set_heading('');
 echo $OUTPUT->header();

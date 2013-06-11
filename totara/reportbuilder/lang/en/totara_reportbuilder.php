@@ -67,7 +67,7 @@ $string['cachegenstarted'] = 'Cache generation started at {$a}. This process can
 $string['cachegenfail'] = 'The last attempt to generate cache failed. Please try again later.';
 $string['cachenow'] = 'Generate Now';
 $string['cachenow_help'] = '
-When **Generate now** is checked then report cache will be generated immediately after form submit.';
+If **Generate now** is checked, then report cache will be generated immediately after form submit.';
 $string['cachenow_title'] = 'Report cache';
 $string['choosecomp'] = 'Choose Competency...';
 $string['chooseorg'] = 'Choose Organisation...';
@@ -181,8 +181,15 @@ $string['exportcsv'] = 'Export in text format';
 $string['exportfusion'] = 'Export to Google Fusion';
 $string['exportods'] = 'Export in ODS format';
 $string['exportoptions'] = 'Report Export options';
+$string['exporttoemail'] = 'Email scheduled report';
+$string['exporttoemailandsave'] = 'Email and save scheduled report to file';
+$string['exportfilesystemoptions'] = 'Export options';
+$string['exporttosave'] = 'Save scheduled report to file system only';
 $string['exportproblem'] = 'There was a problem downloading the file';
 $string['exportxls'] = 'Export in Excel format';
+$string['exporttofilesystem'] = 'Export to file system';
+$string['exporttofilesystemenable'] = 'Enable exporting to file system';
+$string['exportfilesystempath'] = 'Export file system path:';
 $string['extrasqlshouldusenamedparams'] = 'get_sql_filter() extra sql should use named parameters';
 $string['filter'] = 'Filter';
 $string['confirmfilterdelete'] = 'Are you sure you want to delete this filter?';
@@ -295,7 +302,7 @@ $string['initialdisplay'] = 'Restrict Initial Display';
 $string['initialdisplay_disabled'] = 'This setting is not available when there are no filters enabled';
 $string['initialdisplay_error'] = 'The last filter can not be deleted when initial display is restricted';
 $string['initialdisplay_heading'] = 'Filters Performance Settings';
-$string['initialdisplay_help'] = 'This setting controls the how the report is initially displayed and is recommended for larger reports where you will be filtering the results (e.g. sitelogs). It increases the speed of the report by allowing you to apply filters and displaying only the results instead of initially trying to display *all* the data.
+$string['initialdisplay_help'] = 'This setting controls how the report is initially displayed and is recommended for larger reports where you will be filtering the results (e.g. sitelogs). It increases the speed of the report by allowing you to apply filters and display only the results instead of initially trying to display *all* the data.
 
 **Disabled**: the report will display all results immediately *(default)*
 
@@ -544,7 +551,7 @@ When **Hide in My Reports** is checked the report will not appear on the \'My Re
 $string['reportbuildercache'] = 'Enable report caching';
 $string['reportbuildercache_heading'] = 'Caching Performance Settings';
 $string['reportbuildercache_help'] = '
-When **Enable report caching** is checked then a copy of this report will be generated on a set schedule, and users will see data from the stored report. This will make displaying and filtering of the report faster, but the data displayed will be from the last time the report was generated rather than "live" data. We recommend enabling this setting only if necessary (reports are taking too long to be displayed), and only for specific reports where this is a problem.';
+If **Enable report caching** is checked, then a copy of this report will be generated on a set schedule, and users will see data from the stored report. This will make displaying and filtering of the report faster, but the data displayed will be from the last time the report was generated rather than "live" data. We recommend enabling this setting only if necessary (reports are taking too long to be displayed), and only for specific reports where this is a problem.';
 $string['reportbuildercachescheduler'] = 'Cache Schedule';
 $string['reportbuildercachescheduler_help'] = 'Determines the schedule used to control how often a new version of the report is generated. The report will be generated on the cron that immediately follows the specified time.
 
@@ -722,6 +729,16 @@ $string['reportbuilderfinancialyear'] = 'Report Financial Year Settings';
 $string['reportbuilderfinancialyear_help'] = '**Financial year** is used in the reports content controls.
 
 This setting allows to set the start date of the financial year.';
+$string['reportbuilderexporttofilesystem'] = 'Enable exporting to file system';
+$string['reportbuilderexporttofilesystem_help'] = '**Exporting to file system** allows reports to be saved to a directory on the web server\'s file system, instead of only emailing the report to the user scheduling the report.
+
+This can be useful when the report needs to be accessed by an external system automation, and the report directory might have SFTP access enabled.
+
+Reports saved to the filesystem are saved as **\'Export file system root path\'**/username/report.ext where *username* is an internal username of a user who owns the scheduled report, *report* is the name of the scheduled report with non alpha-numeric characters removed, and *ext* is the appropriate export file name extension.';
+$string['error:emptyexportfilesystempath'] = 'If you enabled export to file system, you need to specify file system path.';
+$string['error:notapathexportfilesystempath'] = 'Specified file system path is not found.';
+$string['error:notdirexportfilesystempath'] = 'Specified file system path does not exist or is not a directory.';
+$string['error:notwriteableexportfilesystempath'] = 'Specified file system path is not writeable.';
 // add audience fields
 $string['usercohortids'] = 'User audience IDs';
 $string['enrolledcoursecohortids'] = 'Enrolled course audience IDs';

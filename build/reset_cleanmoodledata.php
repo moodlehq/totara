@@ -32,7 +32,7 @@
  * Only run this command if no config file exists
  * (just for a little bit of added security)
  */
-if (file_exists('config.php')) {
+if (stripos(getcwd(), '/var/lib/jenkins') !== 0) {
     die("ERROR: Do not run this command on a live site\n");
 }
 

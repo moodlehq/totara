@@ -202,5 +202,15 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2013032700, 'totara_reportbuilder');
     }
 
+    if ($oldversion < 2013061000) {
+        $table = new xmldb_table('report_builder_schedule');
+        $field = new xmldb_field('exporttofilesystem', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'frequency');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        set_config('exporttofilesystem', 0, 'reportbuilder');
+        totara_upgrade_mod_savepoint(true, 2013061000, 'totara_reportbuilder');
+    }
+
     return true;
 }

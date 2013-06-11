@@ -25,5 +25,5 @@ echo "Re-create moodledata"
 mkdir ../moodledata
 chmod 777 ../moodledata
 
-echo "Hit notifications page to complete upgrade"
-python build/complete_upgrade.py http://jobs.test.totaralms.com/$JOB_NAME/
+echo "Run the CLI-Upgrade script"
+sudo -u www-data php /var/lib/jenkins/jobs/Totara-2.4-upgrade-PostgreSQL/workspace/admin/cli/upgrade.php --non-interactive

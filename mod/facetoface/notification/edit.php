@@ -35,11 +35,6 @@ $f = required_param('f', PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
 $duplicate = optional_param('duplicate', 0, PARAM_INT);
 
-
-// Setup page and check permissions
-$url = new moodle_url('/mod/facetoface/notification/edit.php', array('f' => $f));
-$PAGE->set_url($url);
-
 if (!$facetoface = $DB->get_record('facetoface', array('id' => $f))) {
     error("This facetoface doesn't exist");
 }
@@ -53,6 +48,10 @@ $module = $DB->get_record('modules', array('name' => 'facetoface'));
 if (!$cm = $DB->get_record('course_modules', array('instance' => $f, 'module' => $module->id))) {
     error("This course module doesn't exist");
 }
+
+// Setup page and check permissions
+$url = new moodle_url('/mod/facetoface/notification/index.php', array('update' => $cm->id));
+$PAGE->set_url($url);
 
 $redirectto = new moodle_url('/mod/facetoface/notification/index.php', array('update' => $cm->id));
 $formurl = new moodle_url('/mod/facetoface/notification/edit.php', array('f' => $f, 'id' => $id));
@@ -171,17 +170,12 @@ if ($form->is_cancelled()) {
 
 $pagetitle = format_string($facetoface->name);
 
-$link = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
-$navlinks[] = array('name' => $course->shortname, 'link' => $link, 'type' => 'title');
-$link = $CFG->wwwroot . '/mod/facetoface/index.php?id=' . $course->id;
-$navlinks[] = array('name' => get_string('modulenameplural', 'facetoface'), 'link' => $link, 'type' => 'title');
-$link = $CFG->wwwroot . '/mod/facetoface/view.php?f=' . $facetoface->id;
-$navlinks[] = array('name' => $pagetitle, 'link' => $link, 'type' => 'activityinstance');
+if ($id) {
+    $PAGE->navbar->add(get_string('edit', 'moodle'));
+} else {
+    $PAGE->navbar->add(get_string('add', 'moodle'));
+}
 
-// TODO update depending on tab
-$navlinks[] = array('name' => get_string('attendees', 'facetoface'), 'link' => '', 'type' => 'title');
-
-$navigation = build_navigation($navlinks);
 $button = update_module_button($cm->id, $course->id, get_string('modulename', 'facetoface'));
 
 $PAGE->set_title($pagetitle);

@@ -24,7 +24,7 @@ $string['allowconflicts'] = 'Allow conflicts';
 $string['allowconflicts_help'] = 'This will allow scheduling conflicts to exist';
 $string['allowoverbook'] = 'Allow overbooking';
 $string['allowschedulingconflicts'] = 'Override user conflicts';
-$string['allowschedulingconflicts_help'] = 'If trainers or users are already assigned or booked onto another Facetoface session at the same time as this session then the administrator will be warned, but can override such warnings and proceed anyway by checking this box';
+$string['allowschedulingconflicts_help'] = 'If trainers or users are already assigned or booked onto another Facetoface session at the same time as this session then the administrator will be warned, but can override such warnings and proceed anyway by selecting "Yes" from the drop-down menu';
 $string['allowselectedschedulingconflicts'] = 'Allow selected scheduling conflicts';
 $string['allsessionsin'] = 'All sessions in {$a}';
 $string['alreadysignedup'] = 'You have already signed-up for this Face-to-face activity.';
@@ -292,7 +292,7 @@ $string['messageusers'] = 'Message users';
 $string['modulename'] = 'Face-to-face';
 $string['modulenameplural'] = 'Face-to-face';
 $string['moreinfo'] = 'More info';
-$string['multiday'] = 'multi-day';
+$string['multidate'] = 'multi-date';
 $string['newmanageremailaddress'] = 'Manager\'s email address';
 $string['noactionableunapprovedrequests'] = 'No actionable unapproved requests';
 $string['nocustomfields'] = '<p>No custom fields are defined.</p>';
@@ -375,6 +375,8 @@ $string['placeholder:lastname'] = '[lastname]';
 $string['placeholder:cost'] = '[cost]';
 $string['placeholder:alldates'] = '[alldates]';
 $string['placeholder:sessiondate'] = '[sessiondate]';
+$string['placeholder:startdate'] = '[startdate]';
+$string['placeholder:finishdate'] = '[finishdate]';
 $string['placeholder:starttime'] = '[starttime]';
 $string['placeholder:finishtime'] = '[finishtime]';
 $string['placeholder:duration'] = '[duration]';
@@ -537,7 +539,7 @@ Room:   [session:room]
 ';
 $string['setting:defaultdatetimechangesubject'] = 'Default subject line for date/time change emails.';
 $string['setting:defaultdatetimechangesubject_caption'] = 'Date/time change subject';
-$string['setting:defaultdatetimechangesubjectdefault'] = 'course booking date/time changed: [facetofacename], [starttime]-[finishtime]';
+$string['setting:defaultdatetimechangesubjectdefault'] = 'Course booking date/time changed: [facetofacename], [starttime]-[finishtime], [sessiondate]';
 $string['setting:defaultreminderinstrmngr'] = 'Default reminder message sent to managers.';
 $string['setting:defaultreminderinstrmngr_caption'] = 'Reminder message (managers)';
 $string['setting:defaultreminderinstrmngrdefault'] = '*** Reminder only ****
@@ -606,7 +608,7 @@ Location:   [session:location]
 Venue:   [session:venue]
 Room:   [session:room]
 ';
-$string['setting:defaultrequestsubjectdefault'] = 'Course booking request: [facetofacename], [starttime]-[finishtime]';
+$string['setting:defaultrequestsubjectdefault'] = 'Course booking request: [facetofacename], [starttime]-[finishtime], [sessiondate]';
 $string['setting:defaulttrainerconfirmationmessage'] = 'Default message sent to trainers when assigned to a session.';
 $string['setting:defaulttrainerconfirmationmessage_caption'] = 'Trainer confirmation message';
 $string['setting:defaulttrainerconfirmationmessagedefault'] = 'This is to confirm that you are now assigned to deliver training on the following course:
@@ -702,12 +704,14 @@ $string['setting:manageraddressformatdefault'] = '';
 $string['setting:manageraddressformatreadable'] = 'Short description of the restrictions on a manager\'s email address.  This setting has no effect if the previous one is not set.';
 $string['setting:manageraddressformatreadable_caption'] = 'Format example:';
 $string['setting:manageraddressformatreadabledefault'] = 'firstname.lastname@company.com';
-$string['setting:oneemailperday'] = 'Send multiple confirmation emails for multi-day events.';
-$string['setting:oneemailperday_caption'] = 'One message per day:';
+$string['setting:oneemailperday'] = 'Send multiple confirmation emails for multi-date sessions. Note: If there is more than one session date on a single day then each session date will generate an email. One session date spanning over multiple days will generate only one email.';
+$string['setting:oneemailperday_caption'] = 'One message per date:';
 $string['setting:hidecost'] = 'Hide the cost and discount code fields.';
 $string['setting:hidecost_caption'] = 'Hide cost and discount:';
 $string['setting:hidediscount'] = 'Hide only the discount code field.';
 $string['setting:hidediscount_caption'] = 'Hide discount:';
+$string['setting:sitenotices'] = 'Notices only appear on the Face-to-face Calendar found {$a}';
+$string['setting:sitenoticeshere'] = 'here';
 $string['setting:isfilter'] = 'Display as a filter';
 $string['setting:possiblevalues'] = 'List of possible values';
 $string['setting:showinsummary'] = 'Show in exports and lists';

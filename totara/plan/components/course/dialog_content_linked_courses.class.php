@@ -55,7 +55,7 @@ class totara_dialog_linked_courses_content_courses extends totara_dialog_content
      * @access  public
      * @var     integer planid  id of development plan for which linked courses should be loaded
      */
-    public function load_courses($planid) {
+    public function load_courses($planid = null) {
         global $DB;
 
         $planid = (int) $planid;

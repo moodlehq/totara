@@ -1307,7 +1307,7 @@ class dp_competency_component extends dp_base_component {
         }
 
         if ($competencies) {
-            $relation = array('component' => 'organisation', 'id' => $position_assignment->positionid);
+            $relation = array('component' => 'organisation', 'id' => $position_assignment->organisationid);
             if ($this->auto_assign_competencies($competencies, false, $relation)) {
                 // assign courses
                 if ($includecourses) {

@@ -102,6 +102,7 @@ $has_attendees = facetoface_get_num_attendees($s);
 if (has_capability('mod/facetoface:viewattendees', $context)) {
     $allowed_actions[] = 'attendees';
     $allowed_actions[] = 'waitlist';
+    $allowed_actions[] = 'addattendees';
     $available_actions[] = 'attendees';
 
     if (facetoface_get_users_by_status($s, MDL_F2F_STATUS_WAITLISTED)) {
@@ -139,6 +140,7 @@ $can_view_session = !empty($allowed_actions);
 
 $attendees = array();
 $cancellations = array();
+$requests = array();
 
 // If a user can take attendance, they can approve staff's booking requests
 if (in_array('approvalrequired', $allowed_actions)) {
@@ -222,11 +224,11 @@ if ($action == 'attendees') {
     }
 
     // Get list of actions
-    $actions = array(
-        'addremove'     => get_string('addremoveattendees', 'facetoface'),
-        'bulkaddfile'   => get_string('bulkaddattendeesfromfile', 'facetoface'),
-        'bulkaddinput'  => get_string('bulkaddattendeesfrominput', 'facetoface')
-    );
+    if (in_array('addattendees', $allowed_actions)) {
+        $actions['addremove']    = get_string('addremoveattendees', 'facetoface');
+        $actions['bulkaddfile']  = get_string('bulkaddattendeesfromfile', 'facetoface');
+        $actions['bulkaddinput'] = get_string('bulkaddattendeesfrominput', 'facetoface');
+    }
 
     if ($has_attendees) {
         $actions['exportxls'] = get_string('exportxls', 'totara_reportbuilder');
@@ -510,7 +512,6 @@ if (!$onlycontent && !$download) {
 /**
  * Print attendees (if user able to view)
  */
-$requests = facetoface_get_requests($session->id);
 if ($show_table) {
     // Get list of attendees
 

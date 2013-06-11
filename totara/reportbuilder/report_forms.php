@@ -158,6 +158,21 @@ class report_builder_global_settings_form extends moodleform {
         $mform->addGroup($group, 'exportoptions', get_string('exportoptions', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
         $mform->addHelpButton('exportoptions', 'reportbuilderexportoptions', 'totara_reportbuilder');
 
+        // Checkbox settings for export to file system.
+        $exportfilesystem = $mform->createElement('checkbox', 'exporttofilesystem', get_string('exporttofilesystemenable', 'totara_reportbuilder'), get_string('exporttofilesystem', 'totara_reportbuilder'));
+        $mform->setType('exporttofilesystem', PARAM_INT);
+        $mform->setDefault('exporttofilesystem', get_config('reportbuilder', 'exporttofilesystem'));
+        $mform->addElement($exportfilesystem);
+        $mform->addHelpButton('exporttofilesystem', 'reportbuilderexporttofilesystem', 'totara_reportbuilder');
+
+        // Textbox settings for export to file system root path.
+        $options = array('size' => '35');
+        $exportfilesystempath = $mform->createElement('text', 'exportfilesystempath', get_string('exportfilesystempath', 'totara_reportbuilder'), $options);
+        $mform->setType('exportfilesystempath', PARAM_TEXT);
+        $mform->setDefault('exportfilesystempath', get_config('reportbuilder', 'exporttofilesystempath'));
+        $mform->addElement($exportfilesystempath);
+        $mform->disabledIf('exportfilesystempath', 'exporttofilesystem', 'notchecked');
+
         // Settings for financial year
         $group = $mform->createElement('date', 'financialyear', get_string('financialyear', 'totara_reportbuilder'), array('format' => 'dF'));
 
@@ -168,9 +183,35 @@ class report_builder_global_settings_form extends moodleform {
         $mform->addGroup(array($group), 'finyeargroup', get_string('financialyear', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
         $mform->addHelpButton('finyeargroup', 'reportbuilderfinancialyear', 'totara_reportbuilder');
 
-        $this->add_action_buttons();
+        $this->add_action_buttons(false);
     }
 
+    function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+
+        $path = $data['exportfilesystempath'];
+        if (!empty($data['exporttofilesystem']) && empty($path)) {
+            $errors['exportfilesystempath'] = get_string('error:emptyexportfilesystempath', 'totara_reportbuilder');
+        }
+
+        if (!empty($path)) {
+            // Check path format.
+            if (DIRECTORY_SEPARATOR == '\\') {
+                $pattern = '/[^a-zA-Z0-9\/_\\\\\\:-]/i';
+            } else {
+                $pattern = '/[^a-zA-Z0-9\/_-]/i';
+            }
+            if (preg_match($pattern, $path)) {
+                $errors['exportfilesystempath'] = get_string('error:notapathexportfilesystempath', 'totara_reportbuilder');
+            } else if (!is_dir($path)) {
+                $errors['exportfilesystempath'] = get_string('error:notdirexportfilesystempath', 'totara_reportbuilder');
+            } else if (!is_writable($path)) {
+                $errors['exportfilesystempath'] = get_string('error:notwriteableexportfilesystempath', 'totara_reportbuilder');
+            }
+        }
+
+        return $errors;
+    }
 }
 
 

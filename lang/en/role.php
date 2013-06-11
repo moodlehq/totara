@@ -148,6 +148,7 @@ $string['course:request'] = 'Request new courses';
 $string['course:reset'] = 'Reset course';
 $string['course:sectionvisibility'] = 'Control section visibility';
 $string['course:setcurrentsection'] = 'Set current section';
+$string['course:unlockcompletion'] = 'Unlock course completion';
 $string['course:update'] = 'Update course settings';
 $string['course:useremail'] = 'Enable/disable email address';
 $string['course:view'] = 'View courses without participation';

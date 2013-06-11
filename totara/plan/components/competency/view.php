@@ -162,24 +162,25 @@ echo $component->display_competency_detail($caid);
 if ($coursesenabled) {
     echo html_writer::empty_tag('br');
     echo $OUTPUT->heading(get_string('linkedx', 'totara_plan', $coursename), 3);
-    echo $OUTPUT->container_start('', "dp-competency-courses-container");
+
+    $class = 'plan-remove-selected';
+    $currenturl->param('action', 'removelinkedcourses');
+    echo html_writer::start_tag('form', array('id' => 'dp-component-update', 'action' => $currenturl->out(false), 'method' => 'POST'));
+    echo $OUTPUT->container_start('', 'dp-competency-courses-container');
 
     if ($linkedcourses = $component->get_linked_components($caid, 'course')) {
-        $currenturl->param('action', 'removelinkedcourses');
-        echo html_writer::start_tag('form', array('id' => "dp-component-update",  'action' => $currenturl->out(false), "method" => "POST"));
         if ($delete_mandatory) {
             echo $plan->get_component('course')->display_linked_courses($linkedcourses);
         } else {
             echo $plan->get_component('course')->display_linked_courses($linkedcourses, $mandatory_list);
         }
-        if ($canupdate) {
-            echo html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('removeselected', 'totara_plan'), 'class' => 'plan-remove-selected'));
-        }
-        echo html_writer::end_tag('form');
     } else {
+        $class = 'plan-remove-selected-hidden';
         echo html_writer::tag('p', get_string('nolinkedx', 'totara_plan', strtolower($coursename)), array('class' => 'noitems-assigncourses'));
     }
+    echo html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('removeselected', 'totara_plan'), 'class' => $class, 'id' => 'remove-selected-course'));
     echo $OUTPUT->container_end();
+    echo html_writer::end_tag('form');
 
     if (!$plancompleted) {
         echo $component->display_course_picker($caid);

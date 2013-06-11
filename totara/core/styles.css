@@ -26,7 +26,7 @@ span.coursecompletionstatus span {
     overflow: hidden;
 }
 .dir-rtl span.coursecompletionstatus span {
-    background-image: url('[[pix:totara_core|progress-icons]]');
+    background-image: url('[[pix:totara_core|progress-icons-rtl]]');
 }
 
 span.coursecompletionstatus span.completion-inprogress {

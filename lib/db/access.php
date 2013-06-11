@@ -2021,5 +2021,20 @@ $capabilities = array(
             'teacher'        => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
         )
+    ),
+
+    // Unlock course completion.
+    'moodle/course:unlockcompletion' => array(
+
+        'riskbitmask' => RISK_DATALOSS,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+
+        'clonepermissionsfrom' => 'moodle/course:update'
     )
 );

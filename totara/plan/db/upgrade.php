@@ -52,11 +52,13 @@ function xmldb_totara_plan_upgrade($oldversion) {
         // Make the first record on the list default to keep current
         // default
         $record = $DB->get_record_select('dp_template', 'sortorder = (SELECT MIN(sortorder) FROM {dp_template})');
-        $todb = new stdClass();
-        $todb->id = $record->id;
-        $todb->isdefault = 1;
-        $DB->update_record('dp_template', $todb);
 
+        if ($record) {
+            $todb = new stdClass();
+            $todb->id = $record->id;
+            $todb->isdefault = 1;
+            $DB->update_record('dp_template', $todb);
+        }
 
         // Add column to plan table to record how a plan was created
         $table = new xmldb_table('dp_plan');

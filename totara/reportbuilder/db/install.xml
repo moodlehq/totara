@@ -131,8 +131,9 @@
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="reportid" NEXT="savedsearchid"/>
         <FIELD NAME="savedsearchid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="format"/>
         <FIELD NAME="format" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="savedsearchid" NEXT="frequency"/>
-        <FIELD NAME="frequency" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="format" NEXT="schedule"/>
-        <FIELD NAME="schedule" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="frequency" NEXT="nextreport"/>
+        <FIELD NAME="frequency" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="format" NEXT="exporttofilesystem"/>
+        <FIELD NAME="exporttofilesystem" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="frequency" NEXT="schedule"/>
+        <FIELD NAME="schedule" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="exporttofilesystem" NEXT="nextreport"/>
         <FIELD NAME="nextreport" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="schedule"/>
       </FIELDS>
       <KEYS>

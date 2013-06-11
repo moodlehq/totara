@@ -52,8 +52,13 @@ class course_completion_form extends moodleform {
         // Check if there is existing criteria completions
         if ($completion->is_course_locked()) {
             $mform->addElement('header', '', get_string('completionsettingslocked', 'completion'));
-            $mform->addElement('static', '', '', get_string('err_settingslocked', 'completion'));
-            $mform->addElement('submit', 'settingsunlock', get_string('unlockcompletiondelete', 'completion'));
+
+            if (completion_can_unlock_data($course->id)) {
+                $mform->addElement('static', '', '', get_string('err_settingsunlockable', 'completion'));
+                $mform->addElement('submit', 'settingsunlock', get_string('unlockcompletiondelete', 'completion'));
+            } else {
+                $mform->addElement('static', '', '', get_string('err_settingslocked', 'completion'));
+            }
         }
 
         // Get array of all available aggregation methods

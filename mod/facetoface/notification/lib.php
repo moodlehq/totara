@@ -448,9 +448,10 @@ class facetoface_notification extends data_object {
      * @access  public
      * @param   object  $user       User object
      * @param   int     $sessionid
+     * @param   int     $sessiondateid The specific sessiondate which this message is for.
      * @return  void
      */
-    public function send_to_user($user, $sessionid) {
+    public function send_to_user($user, $sessionid, $sessiondate = null) {
         global $CFG, $USER, $DB;
 
         // Check notification is enabled
@@ -467,6 +468,11 @@ class facetoface_notification extends data_object {
         if (empty($this->_sessions[$sessionid])) {
             $this->_sessions[$sessionid] = facetoface_get_session($sessionid);
         }
+        $session = $this->_sessions[$sessionid];
+
+        if (!empty($sessiondate)) {
+            $session->sessiondates = array($sessiondate);
+        }
 
         $subject = $this->title;
         $body = $this->body;
@@ -478,7 +484,7 @@ class facetoface_notification extends data_object {
                 $$text,
                 $this->_facetoface->name,
                 $user,
-                $this->_sessions[$sessionid],
+                $session,
                 $sessionid
             );
         }
@@ -537,18 +543,31 @@ class facetoface_notification extends data_object {
 
         $success = tm_alert_send($newevent);
         if ($success) {
-            $dates = $this->_sessions[$sessionid]->sessiondates;
-            foreach ($dates as $session_date) {
+            if (!empty($sessiondate)) {
                 $uid = (empty($ical_uids) ? '' : array_shift($ical_uids));
                 $hist = new stdClass();
                 $hist->notificationid = $this->id;
                 $hist->sessionid = $sessionid;
                 $hist->userid = $user->id;
-                $hist->sessiondateid = $session_date->id;
+                $hist->sessiondateid = $sessiondate->id;
                 $hist->ical_uid = $uid;
                 $hist->ical_method = $ical_method;
                 $hist->timecreated = time();
                 $DB->insert_record('facetoface_notification_hist', $hist);
+            } else {
+                $dates = $session->sessiondates;
+                foreach ($dates as $session_date) {
+                    $uid = (empty($ical_uids) ? '' : array_shift($ical_uids));
+                    $hist = new stdClass();
+                    $hist->notificationid = $this->id;
+                    $hist->sessionid = $sessionid;
+                    $hist->userid = $user->id;
+                    $hist->sessiondateid = $session_date->id;
+                    $hist->ical_uid = $uid;
+                    $hist->ical_method = $ical_method;
+                    $hist->timecreated = time();
+                    $DB->insert_record('facetoface_notification_hist', $hist);
+                }
             }
         }
 
@@ -675,6 +694,52 @@ class facetoface_notification extends data_object {
 
 
 /**
+ * Send a notice.
+ *
+ * @param class $facetoface record from the facetoface table
+ * @param class $session record from the facetoface_sessions table
+ * @param integer $userid ID of the recipient of the email
+ * @param array $params The parameters for the notification
+ * @param mixed $icalattachmenttype The ical attachment type, or null to disable ical attachments
+ * @returns string Error message (or empty string if successful)
+ */
+function facetoface_send_notice($facetoface, $session, $userid, $params, $icalattachmenttype = null) {
+    global $DB;
+
+    $user = $DB->get_record('user', array('id' => $userid));
+    if (!$user) {
+        return 'userdoesnotexist';
+    }
+
+    $notice = new facetoface_notification($params);
+    $result = '';
+
+    if (get_config(null, 'facetoface_oneemailperday')) {
+        // Keep track of all sessiondates.
+        $sessiondates = $session->sessiondates;
+        foreach ($sessiondates as $sessiondate) {
+            $session->sessiondates = array($sessiondate); // One day at a time.
+            if (!empty($icalattachmenttype)) {
+                $ical_attach = facetoface_get_ical_attachment($icalattachmenttype, $facetoface, $session, $userid);
+                $notice->set_ical_attachment($ical_attach);
+            }
+            $result .= $notice->send_to_user($user, $session->id, $sessiondate);
+        }
+        // Restore session dates.
+        $session->sessiondates = $sessiondates;
+    } else {
+        if (!empty($icalattachmenttype)) {
+            $ical_attach = facetoface_get_ical_attachment($icalattachmenttype, $facetoface, $session, $userid);
+            $notice->set_ical_attachment($ical_attach);
+        }
+        $result = $notice->send_to_user($user, $session->id);
+    }
+
+    return $result;
+}
+
+
+/**
  * Send a confirmation email to the user and manager regarding the
  * cancellation
  *
@@ -684,7 +749,7 @@ class facetoface_notification extends data_object {
  * @returns string Error message (or empty string if successful)
  */
 function facetoface_send_cancellation_notice($facetoface, $session, $userid) {
-    global $CFG, $DB;
+    global $CFG;
 
     $params = array(
         'facetofaceid'  => $facetoface->id,
@@ -692,17 +757,8 @@ function facetoface_send_cancellation_notice($facetoface, $session, $userid) {
         'conditiontype'     => MDL_F2F_CONDITION_CANCELLATION_CONFIRMATION
     );
 
-    $user = $DB->get_record('user', array('id' => $userid));
-    if (!$user) {
-        return 'userdoesnotexist';
-    }
-
-    $notice = new facetoface_notification($params);
-    if (!isset($CFG->facetoface_disableicalcancel) || empty($CFG->facetoface_disableicalcancel)) {
-        $ical_attach = facetoface_get_ical_attachment(MDL_F2F_CANCEL, $facetoface, $session, $userid);
-        $notice->set_ical_attachment($ical_attach);
-    }
-    return $notice->send_to_user($user, $session->id);
+    $includeical = !isset($CFG->facetoface_disableicalcancel) || empty($CFG->facetoface_disableicalcancel);
+    return facetoface_send_notice($facetoface, $session, $userid, $params, $includeical ? MDL_F2F_CANCEL : null);
 }
 
 
@@ -724,15 +780,7 @@ function facetoface_send_datetime_change_notice($facetoface, $session, $userid) 
         'conditiontype'     => MDL_F2F_CONDITION_SESSION_DATETIME_CHANGE
     );
 
-    $user = $DB->get_record('user', array('id' => $userid));
-    if (!$user) {
-        return 'userdoesnotexist';
-    }
-
-    $notice = new facetoface_notification($params);
-    $ical_attach = facetoface_get_ical_attachment(MDL_F2F_INVITE, $facetoface, $session, $userid);
-    $notice->set_ical_attachment($ical_attach);
-    return $notice->send_to_user($user, $session->id);
+    return facetoface_send_notice($facetoface, $session, $userid, $params, MDL_F2F_INVITE);
 }
 
 
@@ -760,15 +808,7 @@ function facetoface_send_confirmation_notice($facetoface, $session, $userid, $no
         $params['conditiontype'] = MDL_F2F_CONDITION_BOOKING_CONFIRMATION;
     }
 
-    $user = $DB->get_record('user', array('id' => $userid));
-    if (!$user) {
-        return 'userdoesnotexist';
-    }
-
-    $notice = new facetoface_notification($params);
-    $ical_attach = facetoface_get_ical_attachment(MDL_F2F_INVITE, $facetoface, $session, $userid);
-    $notice->set_ical_attachment($ical_attach);
-    return $notice->send_to_user($user, $session->id);
+    return facetoface_send_notice($facetoface, $session, $userid, $params, MDL_F2F_INVITE);
 }
 
 
@@ -790,15 +830,7 @@ function facetoface_send_trainer_confirmation_notice($facetoface, $session, $use
         'conditiontype'     => MDL_F2F_CONDITION_TRAINER_CONFIRMATION
     );
 
-    $user = $DB->get_record('user', array('id' => $userid));
-    if (!$user) {
-        return 'userdoesnotexist';
-    }
-
-    $notice = new facetoface_notification($params);
-    $ical_attach = facetoface_get_ical_attachment(MDL_F2F_INVITE, $facetoface, $session, $userid);
-    $notice->set_ical_attachment($ical_attach);
-    return $notice->send_to_user($user, $session->id);
+    return facetoface_send_notice($facetoface, $session, $userid, $params, MDL_F2F_INVITE);
 }
 
 
@@ -820,15 +852,7 @@ function facetoface_send_trainer_session_cancellation_notice($facetoface, $sessi
         'conditiontype'     => MDL_F2F_CONDITION_TRAINER_SESSION_CANCELLATION
     );
 
-    $user = $DB->get_record('user', array('id' => $userid));
-    if (!$user) {
-        return 'userdoesnotexist';
-    }
-
-    $notice = new facetoface_notification($params);
-    $ical_attach = facetoface_get_ical_attachment(MDL_F2F_CANCEL, $facetoface, $session, $userid);
-    $notice->set_ical_attachment($ical_attach);
-    return $notice->send_to_user($user, $session->id);
+    return facetoface_send_notice($facetoface, $session, $userid, $params, MDL_F2F_CANCEL);
 }
 
 
@@ -850,15 +874,7 @@ function facetoface_send_trainer_session_unassignment_notice($facetoface, $sessi
         'conditiontype'     => MDL_F2F_CONDITION_TRAINER_SESSION_UNASSIGNMENT
     );
 
-    $user = $DB->get_record('user', array('id' => $userid));
-    if (!$user) {
-        return 'userdoesnotexist';
-    }
-
-    $notice = new facetoface_notification($params);
-    $ical_attach = facetoface_get_ical_attachment(MDL_F2F_CANCEL, $facetoface, $session, $userid);
-    $notice->set_ical_attachment($ical_attach);
-    return $notice->send_to_user($user, $session->id);
+    return facetoface_send_notice($facetoface, $session, $userid, $params, MDL_F2F_CANCEL);
 }
 
 
@@ -883,14 +899,7 @@ function facetoface_send_request_notice($facetoface, $session, $userid) {
         'conditiontype' => MDL_F2F_CONDITION_BOOKING_REQUEST
     );
 
-    $user = $DB->get_record('user', array('id' => $userid));
-    if (!$user) {
-        return 'userdoesnotexist';
-    }
-
-    $notice = new facetoface_notification($params);
-    return $notice->send_to_user($user, $session->id);
-
+    return facetoface_send_notice($facetoface, $session, $userid, $params);
 }
 
 
@@ -922,21 +931,34 @@ function facetoface_message_substitutions($msg, $facetofacename, $user, $data, $
 
     if ($data->datetimeknown) {
         // Scheduled session
-        $sessiondate = userdate($data->sessiondates[0]->timestart, get_string('strftimedate'));
-        $starttime = userdate($data->sessiondates[0]->timestart, get_string('strftimetime'));
-        $finishtime = userdate($data->sessiondates[0]->timefinish, get_string('strftimetime'));
-
         $alldates = '';
         foreach ($data->sessiondates as $date) {
             if ($alldates != '') {
                 $alldates .= "\n";
             }
-            $alldates .= userdate($date->timestart, get_string('strftimedate')).', ';
-            $alldates .= userdate($date->timestart, get_string('strftimetime')).
-                ' to '.userdate($date->timefinish, get_string('strftimetime'));
+            $startdate = userdate($date->timestart, get_string('strftimedate'), $date->sessiontimezone);
+            $finishdate = userdate($date->timefinish, get_string('strftimedate'), $date->sessiontimezone);
+            if ($startdate == $finishdate) {
+                $alldates .= $startdate . ', ';
+            } else {
+                $alldates .= $startdate . ' - ' . $finishdate . ', ';
+            }
+            $starttime = userdate($date->timestart, get_string('strftimetime'), $date->sessiontimezone);
+            $finishtime = userdate($date->timefinish, get_string('strftimetime'), $date->sessiontimezone);
+            $timestr = $starttime . ' - ' . $finishtime . ' ' . $date->sessiontimezone;
+            $alldates .= $timestr;
         }
+
+        $startdate = userdate($data->sessiondates[0]->timestart, get_string('strftimedate'), $date->sessiontimezone);
+        $finishdate = userdate($data->sessiondates[0]->timefinish, get_string('strftimedate'), $date->sessiontimezone);
+        $sessiondate = ($startdate == $finishdate) ? $startdate : $startdate . ' - ' . $finishdate;
+        $starttime = userdate($data->sessiondates[0]->timestart, get_string('strftimetime'), $date->sessiontimezone);
+        $finishtime = userdate($data->sessiondates[0]->timefinish, get_string('strftimetime'), $date->sessiontimezone);
+
     } else {
         // Wait-listed session
+        $startdate   = get_string('unknowndate', 'facetoface');
+        $finishdate  = get_string('unknowndate', 'facetoface');
         $sessiondate = get_string('unknowndate', 'facetoface');
         $alldates    = get_string('unknowndate', 'facetoface');
         $starttime   = get_string('unknowntime', 'facetoface');
@@ -949,6 +971,8 @@ function facetoface_message_substitutions($msg, $facetofacename, $user, $data, $
     $msg = str_replace(get_string('placeholder:cost', 'facetoface'), facetoface_cost($user->id, $sessionid, $data, false), $msg);
     $msg = str_replace(get_string('placeholder:alldates', 'facetoface'), $alldates, $msg);
     $msg = str_replace(get_string('placeholder:sessiondate', 'facetoface'), $sessiondate, $msg);
+    $msg = str_replace(get_string('placeholder:startdate', 'facetoface'), $startdate, $msg);
+    $msg = str_replace(get_string('placeholder:finishdate', 'facetoface'), $finishdate, $msg);
     $msg = str_replace(get_string('placeholder:starttime', 'facetoface'), $starttime, $msg);
     $msg = str_replace(get_string('placeholder:finishtime', 'facetoface'), $finishtime, $msg);
     $msg = str_replace(get_string('placeholder:duration', 'facetoface'), format_duration($data->duration), $msg);

@@ -190,9 +190,28 @@ function process_scheduled_reports() {
         if ($schedule->is_time()) {
             $schedule->next();
 
+            if (get_config('reportbuilder', 'exporttofilesystem') == 0) {
+                $exporttofilesystem = REPORT_BUILDER_EXPORT_EMAIL;
+            } else {
+                $exporttofilesystem  = $report->exporttofilesystem;
+            }
+
+            switch ($exporttofilesystem) {
+                case REPORT_BUILDER_EXPORT_EMAIL_AND_SAVE:
+                    mtrace('ReportID:(' . $report->id . ') Option: Email and save scheduled report to file.');
+                    break;
+                case REPORT_BUILDER_EXPORT_SAVE:
+                    mtrace('ReportID:(' . $report->id . ') Option: Save scheduled report to file system only.');
+                    break;
+                default:
+                    mtrace('ReportID:(' . $report->id . ') Option: Email scheduled report.');
+            }
+
             //Send email
             if (send_scheduled_report($report)) {
                 mtrace('Sent email for report ' . $report->id);
+            } else if ($exporttofilesystem == REPORT_BUILDER_EXPORT_SAVE) {
+                mtrace('No scheduled report email has been send');
             } else {
                 mtrace('Failed to send email for report ' . $report->id);
             }
