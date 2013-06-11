@@ -101,7 +101,8 @@ class standard_form_elements extends moodleform {
         $mform->disabledIf('multiselectfield', 'disableelements', 'checked');
 
         // to disable individual options, build the select manually:
-        $select2 = HTML_QuickForm::createElement('select', 'selectwithdisabledoptionsfield', 'Select with disabled options');
+        $quickform = new HTML_QuickForm();
+        $select2 = $quickform->createElement('select', 'selectwithdisabledoptionsfield', 'Select with disabled options');
         $select2->addOption( 'An active option', '');
         $select2->addOption( 'A disabled option', '', array('disabled' => 'disabled'));
         $select2->addOption( 'Another active option', '');
