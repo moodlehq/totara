@@ -287,25 +287,24 @@ M.totara_completionrpl = M.totara_completionrpl || {
             // Show loading icon
             cell.append($('<img class="rplloading" src="'+pix_loading+'" />'));
 
-            // Save callback
-            var fnc_savecallback = function(response) {
-
-                var user = response.argument;
-
-                // Hide save icon
-                $('#user-'+user+' .rplloading').remove();
-            }
-
-            // Load courses
-            YAHOO.util.Connect.asyncRequest(
-                'GET',
-                wwwroot+'/report/completion/save_rpl.php?type='+type+'&course='+courseid+'&user='+user+'&rpl='+rpl,
-                {
-                    success:    fnc_savecallback,
-                    failure:    function(o) {},
-                    argument:   user
-                }
-            );
+            // Callback for saving RPL.
+            var callback = {
+                    method: 'GET',
+                    data: 'type='+type+'&course='+courseid+'&user='+user+'&rpl='+rpl,
+                    arguments: { success : user },
+                    on: {
+                        success: function(id, o, args) {
+                                    var user = args.success;
+                                    // Hide save icon.
+                                    $('#user-'+user+' .rplloading').remove();
+                                },
+                        failure: function(o) { }
+                    }
+                };
+            Y.use('io-base', function(Y) {
+                var uri = wwwroot+'/report/completion/save_rpl.php';
+                Y.io(uri, callback);
+            });
         }
     }
 };
