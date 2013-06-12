@@ -2322,7 +2322,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 continue;
             }
 
-            $multiday = '';
+            $multidate = '';
             $sessiondate = '';
             $sessiontime = '';
 
@@ -2339,7 +2339,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     }
                     $sessiontime = $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
                     if (count($session->sessiondates) > 1) {
-                        $multiday = html_writer::start_tag('br'). '(' . get_string('multidate', 'facetoface').')';
+                        $multidate = html_writer::start_tag('br') . get_string('multidate', 'facetoface');
                     }
                 }
             } else {
@@ -2367,9 +2367,9 @@ function facetoface_print_coursemodule_info($coursemodule) {
 
             if ($coursemodule->uservisible) {
                 $signup_url = new moodle_url('/mod/facetoface/signup.php', array('s' => $session->id));
-                $table .= html_writer::tag('td', html_writer::link($signup_url, $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multiday, array('class' => 'f2fsessiontime')));
+                $table .= html_writer::tag('td', html_writer::link($signup_url, $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multidate, array('class' => 'f2fsessiontime')));
             } else {
-                $table .= html_writer::tag('td', html_writer::tag('span', $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multiday, array('class' => 'f2fsessiontime')));
+                $table .= html_writer::tag('td', html_writer::tag('span', $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multidate, array('class' => 'f2fsessiontime')));
             }
         }
         if ($i++ % 2 == 0) {
