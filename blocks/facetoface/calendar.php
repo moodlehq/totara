@@ -146,7 +146,7 @@ $d_url = new moodle_url($sessionlist_baseurl);
 $d_url->param('tab', 'd');
 $row[] = new tabobject('d', $d_url, get_string('tab:bydate','block_facetoface'));
 $tabs[] = $row;
-echo html_writer::link('', '', array('name' => 'sessionlist'));
+echo html_writer::tag('a', '', array('name' => 'sessionlist'));
 echo $OUTPUT->container_start();
 print_tabs($tabs, $currenttab);
 $sessionsbydate = get_sessions_by_date($sessionids, $displayinfo);
