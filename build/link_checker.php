@@ -98,6 +98,8 @@ $lc->add_to_whitelist('admin/auth_config.php?auth=radius', 'errorbox');
 // requires an id at this url but used in an external admin page
 // not sure how to fix this one so just whitelist the page
 $lc->add_to_whitelist('webservice/amf/testclient/index.php', 'all');
+// Whitelist report, it links to non-existant pages if things get deleted.
+$lc->add_to_whitelist('report/log/user.php');
 
 // start spidering site
 $lc->go();
