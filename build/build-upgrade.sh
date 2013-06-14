@@ -44,6 +44,7 @@ step_time "1"
 #step_time "2"
 
 echo "STEP 3: Run PHPUnit";
+php admin/tool/phpunit/cli/init.php
 phpunit --log-junit build/logs/xml/TEST-suite.xml
 step_time "3"
 
