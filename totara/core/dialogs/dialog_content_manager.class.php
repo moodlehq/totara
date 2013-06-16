@@ -120,7 +120,7 @@ class totara_dialog_content_manager extends totara_dialog_content {
         if ($parentid) {
             // returns users who *are* managers, who's manager is user $parentid
             return $DB->get_records_sql("
-                SELECT u.id, " . $DB->sql_fullname() . " AS fullname
+                SELECT u.id, " . $DB->sql_fullname() . " AS fullname, u.email
                 FROM (
                     SELECT DISTINCT managerid AS id
                     FROM {pos_assignment}
@@ -151,7 +151,7 @@ class totara_dialog_content_manager extends totara_dialog_content {
 
         // returns users who *are* managers, but don't *have* a manager
         return $DB->get_records_sql("
-            SELECT u.id, " . $DB->sql_fullname() . " as fullname
+            SELECT u.id, " . $DB->sql_fullname() . " as fullname, u.email
             FROM (
                 SELECT DISTINCT managerid AS id
                 FROM {pos_assignment}

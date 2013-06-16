@@ -44,7 +44,7 @@ $guest = guest_user();
 $managers = $DB->get_records_sql(
     "
         SELECT
-            u.id,
+            u.id, u.email,
             ".$DB->sql_fullname('u.firstname', 'u.lastname')." AS fullname
         FROM
             {user} u
