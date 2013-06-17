@@ -132,7 +132,7 @@ if ($data = $form->get_data()) {
     } else {
         // Load users
         foreach ($addusers as $adduser) {
-            $result = facetoface_user_import($session, $adduser, true, false, true);
+            $result = facetoface_user_import($session, $adduser, false, false, true);
             if ($result['result'] !== true) {
                 $errors[] = $result;
             } else {
