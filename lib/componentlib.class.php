@@ -790,7 +790,7 @@ class lang_installer {
             return self::RESULT_INSTALLED;
 
         } else {
-            echo $OUTPUT->notification(get_string('unexpected_installer_result', 'error', $status), 'notifyproblem');
+            echo $OUTPUT->notification(get_string('unexpected_installer_result', 'totara_core', $status), 'notifyproblem');
             return self::RESULT_DOWNLOADERROR;
         }
     }

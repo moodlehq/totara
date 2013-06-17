@@ -26,7 +26,6 @@
 $string['advancedoptions'] = 'Advanced options';
 $string['allday'] = 'All day';
 $string['annually'] = 'Annually';
-$string['applyfilter'] = 'Apply filter';
 $string['calendar'] = 'Calendar';
 $string['calendarheading'] = '{$a} Calendar';
 $string['calendarpreferences'] = 'Calendar preferences';

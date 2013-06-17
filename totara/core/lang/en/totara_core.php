@@ -27,6 +27,23 @@
 
 $string['pluginname'] = 'Totara core';
 $string['totaraversion'] = 'Totara Version';
+//Totara-only strings removed from Moodle plugins
+$string['notimplementedtotara'] = 'Sorry, this feature is only implemented on MySQL, MSSQL and PostgreSQL databases.';
+$string['remotetotaralangnotavailable'] = 'Because Totara can not connect to download.totaralms.com, we are unable to do language pack installation automatically. Please download the appropriate zip file(s) from http://download.totaralms.com/lang/T{$a->totaraversion}/, copy them to your {$a->langdir} directory and unzip them manually.';
+$string['cannotdownloadtotaralanguageupdatelist'] = 'Cannot download list of language updates from download.totaralms.com';
+$string['unexpected_installer_result'] = 'Unspecified component install error: {$a}';
+$string['pluginnamewithkey'] = 'Self enrolment with key';
+$string['siteregistrationemailbody'] = 'Site {$a} was not able to register itself automatically. Access to push data to our registrations site is probably blocked by a firewall.';
+$string['totarabuild'] = 'Totara build number';
+$string['debugstatus'] = 'Debug status';
+$string['totararegistration'] = 'Totara Registration';
+$string['totararegistrationinfo'] = '<p>This page configures registration updates which are sent to totaralms.com.
+These updates allow Totara to know what versions of Totaralms and support software you are running.
+This information will allow Totara to better examine and resolve any support issues you face in the future.</p>
+<p>This information will be securely transmitted and held in confidence.</p>';
+$string['totararelease'] = 'Totara release identifier';
+$string['totaraversion'] = 'Totara version number';
+$string['configforcelogintotara'] = 'Normally, the entire site is only available to logged in users. If you would like to make the front page and the course listings (but not the course contents) available without logging in, then you should uncheck this setting.';
 //date picker variables
 $string['datepickerdisplayformat'] = 'dd/mm/y'; //how the datepicker displays the date, see jQuery documentation
 $string['datepickerplaceholder'] = 'dd/mm/yy'; //how the datepicker placeholder hint displays the default
@@ -272,8 +289,6 @@ $string['undeletednotx'] = 'Could not undelete {$a} !';
 $string['core:seedeletedusers'] = 'See deleted users';
 $string['core:undeleteuser'] = 'Undelete user';
 $string['core:appearance'] = 'Configure site appearance settings';
-
-$string['totararegistration'] = 'Totara Registration';
 
 $string['ampersand'] = 'and';
 ?>

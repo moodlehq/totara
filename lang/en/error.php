@@ -486,7 +486,6 @@ $string['TODO'] = 'TODO';
 $string['tokengenerationfailed'] = 'Cannot generate a new token.';
 $string['transactionvoid'] = 'Transaction cannot be voided because it has already been voided';
 $string['unenrolerror'] = 'An error occurred while trying to unenrol that person';
-$string['unexpected_installer_result'] = 'Unspecified component install error: {$a}';
 $string['unicodeupgradeerror'] = 'Sorry, but your database is not already in Unicode, and this version of Moodle is not able to migrate your database to Unicode.  Please upgrade to Moodle 1.7.x first and perform the Unicode migration from the Admin page.  After that is done you should be able to migrate to Moodle {$a}';
 $string['unknowaction'] = 'Unknown action!';
 $string['unknowcategory'] = 'Category not known!';

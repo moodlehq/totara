@@ -51,9 +51,9 @@
 /// Print headings
     echo $OUTPUT->header();
 
-    echo $OUTPUT->heading(get_string("totararegistration", 'admin'), 3, 'main');
+    echo $OUTPUT->heading(get_string("totararegistration", 'totara_core'), 3, 'main');
 
-    echo $OUTPUT->box(get_string("totararegistrationinfo", 'admin'));
+    echo $OUTPUT->box(get_string("totararegistrationinfo", 'totara_core'));
 
     $mform->display();
 

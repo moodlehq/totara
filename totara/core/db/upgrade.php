@@ -395,7 +395,7 @@ function xmldb_totara_core_upgrade($oldversion) {
         //get available and already-installed (via langimport tool) languages
         $installer = new lang_installer();
         if (!$availablelangs = $installer->get_remote_list_of_languages()) {
-            $notice_error[] = get_string('cannotdownloadtotaralanguageupdatelist', 'tool_langimport');
+            $notice_error[] = get_string('cannotdownloadtotaralanguageupdatelist', 'totara_core');
         } else {
             if (!isset($CFG->langotherroot)) {
                 $CFG->langotherroot = $CFG->dataroot.'/lang';

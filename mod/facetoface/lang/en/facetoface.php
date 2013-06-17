@@ -31,6 +31,7 @@ $string['alreadysignedup'] = 'You have already signed-up for this Face-to-face a
 $string['answer'] = 'Sign in';
 $string['answercancel'] = 'Sign out';
 $string['approvalreqd'] = 'Approval required';
+$string['applyfilter'] = 'Apply filter';
 $string['approve'] = 'Approve';
 $string['assessmentyour'] = 'Your assessment';
 $string['attendance'] = 'Attendance';

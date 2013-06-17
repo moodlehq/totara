@@ -857,7 +857,7 @@ class core_calendar_renderer extends plugin_renderer_base {
             $output .= html_writer::start_tag('form', array('action' => new moodle_url(qualified_me()), 'method' => 'post', 'id' => 'module_filter_' . $mod->name));
             // call renderer function to render module filter controls
             $output .= $filtercontrols;
-            $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => "apply{$mod->name}filter", 'value' => get_string('applyfilter', 'calendar')));
+            $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => "apply{$mod->name}filter", 'value' => get_string('applyfilter', 'facetoface')));
             $output .= html_writer::end_tag('form');
             $output .= html_writer::end_tag('fieldset');
         }
