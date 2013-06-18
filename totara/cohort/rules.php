@@ -108,13 +108,13 @@ if (($data = data_submitted()) && confirm_sesskey()) {
         if (!cohort_rules_approve_changes($cohort)) {
             print_error('error:couldnotapprovechanges', 'totara_cohort');
         }
-        totara_set_notification(get_string('rulesapprovesuccess', 'totara_cohort'), $page_url->out(), array('class' => 'notifysuccess'));
+        totara_set_notification(get_string('rulesapprovesuccess', 'totara_cohort'), $url->out(), array('class' => 'notifysuccess'));
     }
     if ($canapproverules && isset($data->cancelrulechanges)) {
         if (!cohort_rules_cancel_changes($cohort)) {
             print_error('error:couldnotcancelchanges', 'totara_cohort');
         }
-        totara_set_notification(get_string('rulescancelsuccess', 'totara_cohort'), $page_url->out());
+        totara_set_notification(get_string('rulescancelsuccess', 'totara_cohort'), $url->out());
     }
 }
 
@@ -153,7 +153,7 @@ if ($formdata = $mform->get_data()){
         }
     }
     add_to_log(SITEID, 'cohort', 'edit rule operators', 'cohort/view.php?id='.$cohort->id, $cohort->idnumber);
-    totara_set_notification(get_string('rulesupdatesuccess', 'totara_cohort'), $page_url->out(), array('class' => 'notifysuccess'));
+    totara_set_notification(get_string('rulesupdatesuccess', 'totara_cohort'), $url->out(), array('class' => 'notifysuccess'));
 
     // Regenerate the form so that it'll show the correct values for all the operators.
     // (We need to do this because we're showing all the operators as static items, which
