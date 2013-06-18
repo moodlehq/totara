@@ -26,11 +26,11 @@
 
 $capabilities = array(
         'block/badges:addinstance' => array(
-                'riskbitmask'  => RISK_PERSONAL,
                 'captype'      => 'read',
-                'contextlevel' => CONTEXT_SYSTEM,
+                'contextlevel' => CONTEXT_BLOCK,
                 'archetypes'   => array(
-                    'user' => CAP_ALLOW,
+                    'editingteacher' => CAP_ALLOW,
+                    'manager' => CAP_ALLOW
                 ),
                 'clonepermissionsfrom' => 'moodle/site:manageblocks'
         ),
