@@ -123,7 +123,11 @@ class completion_criteria_role extends completion_criteria {
     public function get_title() {
         global $DB;
         $role = $DB->get_record('role', array('id' => $this->role));
-        return role_get_name($role, context_course::instance($this->course));
+        if ($role) {
+            return role_get_name($role, context_course::instance($this->course));
+        } else {
+            return false;
+        }
     }
 
     /**

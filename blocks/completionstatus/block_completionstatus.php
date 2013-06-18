@@ -137,11 +137,15 @@ class block_completionstatus extends block_base {
                     continue;
                 }
 
-                $shtml .= '<tr><td>';
-                $shtml .= $criteria->get_title();
-                $shtml .= '</td><td style="text-align: right">';
-                $shtml .= $completion->get_status();
-                $shtml .= '</td></tr>';
+                // Some criteria will return false e.g. role criteria where the role has been deleted
+                $criteria_title = $criteria->get_title();
+                if ($criteria_title) {
+                    $shtml .= '<tr><td>';
+                    $shtml .= $criteria_title;
+                    $shtml .= '</td><td style="text-align: right">';
+                    $shtml .= $completion->get_status();
+                    $shtml .= '</td></tr>';
+                }
             }
 
             // Aggregate activities
