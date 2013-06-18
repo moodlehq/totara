@@ -155,16 +155,17 @@ function totara_print_main_subcategories($parentid, $secondarycats, $secondary_i
     $out = '';
     $numdisplayed = 0;
     $showmorelink = false;
+    $requiredcaps = ($viewtype == 'course') ? array('moodle/course:create', 'moodle/course:update') : array('totara/program:createprogram', 'totara/program:configureprogram');
     foreach ($subcats as $subcat) {
-        // don't show empty sub-categories unless viewing as admin
-        if (!$editingon && $subcat->itemcount == 0) {
+        $subcatcontext = context_coursecat::instance($subcat->id);
+        // don't show empty sub-categories unless viewing as admin or has course/program editing capabilities
+        if (!$editingon && $subcat->itemcount == 0 && !has_any_capability($requiredcaps, $subcatcontext)) {
             continue;
         }
 
-        // Check capabilities and hide if necessary
+        // Check capabilities if subcategory is hidden
         $cssclass = '';
         if (!$subcat->visible) {
-            $subcatcontext = context_coursecat::instance($subcat->id);
             if (!has_capability('moodle/category:viewhiddencategories', $subcatcontext)) {
                 continue;
             }
