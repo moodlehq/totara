@@ -119,6 +119,69 @@ function totara_version_info($version, $release) {
 }
 
 /**
+ * Import the latest timezone information - code taken from admin/tool/timezoneimport
+ * @return bool success or failure
+ */
+function totara_import_timezonelist() {
+    global $CFG, $OUTPUT;
+    require_once($CFG->libdir.'/adminlib.php');
+    require_once($CFG->libdir.'/datalib.php');
+    require_once($CFG->libdir.'/filelib.php');
+    require_once($CFG->libdir.'/olson.php');
+
+    // Try to find a source of timezones to import from.
+    $importdone = false;
+
+    // First, look for an Olson file locally.
+    $source = $CFG->tempdir.'/olson.txt';
+    if (!$importdone and is_readable($source)) {
+        if ($timezones = olson_to_timezones($source)) {
+            update_timezone_records($timezones);
+            $importdone = $source;
+        }
+    }
+
+    // Next, look for a CSV file locally.
+    $source = $CFG->tempdir.'/timezone.txt';
+    if (!$importdone and is_readable($source)) {
+        if ($timezones = get_records_csv($source, 'timezone')) {
+            update_timezone_records($timezones);
+            $importdone = $source;
+        }
+    }
+
+    // Otherwise, let's try moodle.org's copy.
+    $source = 'http://download.moodle.org/timezone/';
+    if (!$importdone && ($content=download_file_content($source))) {
+        if ($file = fopen($CFG->tempdir.'/timezone.txt', 'w')) {            // Make local copy
+            fwrite($file, $content);
+            fclose($file);
+            if ($timezones = get_records_csv($CFG->tempdir.'/timezone.txt', 'timezone')) {  // Parse it
+                update_timezone_records($timezones);
+                $importdone = $source;
+            }
+            unlink($CFG->tempdir.'/timezone.txt');
+        }
+    }
+
+    // Final resort, use the copy included in Moodle.
+    $source = $CFG->dirroot.'/lib/timezone.txt';
+    if (!$importdone and is_readable($source)) {  // Distribution file
+        if ($timezones = get_records_csv($source, 'timezone')) {
+            update_timezone_records($timezones);
+            $importdone = $source;
+        }
+    }
+
+    if ($importdone) {
+        echo $OUTPUT->notification(get_string('importtimezonessuccess', 'totara_core', $importdone), 'notifysuccess');
+    } else {
+        echo $OUTPUT->notification(get_string('error:importtimezonesfailed', 'totara_core'), 'notifyproblem');
+    }
+
+    return $importdone;
+}
+/**
  * gets a clean timezone array compatible with PHP DateTime, DateTimeZone etc functions
  * @param bool $assoc return a simple numerical index array or an associative array
  * @return array a clean timezone list that can be used safely

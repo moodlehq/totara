@@ -178,7 +178,8 @@ $string['teammembers'] = 'Team Members';
 $string['calendar'] = 'Calendar';
 $string['myteaminstructionaltext'] = 'Choose a team member from the table on the right.';
 $string['error:staffmanagerroleexists'] = 'A role "staffmanager" already exists. This role must be renamed before the upgrade can proceed.';
-
+$string['error:importtimezonesfailed'] = 'Failed to update timezone information.';
+$string['importtimezonessuccess'] = 'Timezone information updated from source {$a}.';
 // Course competencies
 $string['returntocourse'] = 'Return to the course';
 
