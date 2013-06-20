@@ -5387,6 +5387,9 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
         $messagehtml = '';
     } else {
         $is_this_an_ical_request = FALSE;
+        if ($messagehtml && right_to_left()) {
+            $messagehtml = '<div style="text-align:right;" dir="rtl">'.$messagehtml.'</div>';
+        }
     }
 
 
