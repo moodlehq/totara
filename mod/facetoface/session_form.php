@@ -186,21 +186,8 @@ class mod_facetoface_session_form extends moodleform {
             foreach ($roles as $role) {
                 $rolename = format_string($rolenames[$role->id]->localname);
 
-                // Attempt to load users with this role in this course
-                $rs = $DB->get_recordset_sql("
-                    SELECT
-                        u.id,
-                        u.firstname,
-                        u.lastname
-                    FROM
-                        {role_assignments} ra
-                    LEFT JOIN
-                        {user} u
-                      ON ra.userid = u.id
-                    WHERE
-                        contextid = {$context->id}
-                    AND roleid = {$role->id}
-                ");
+                // Attempt to load users with this role in this context.
+                $rs = get_role_users($role->id, $context, true, 'u.id, u.firstname, u.lastname', 'u.id ASC');
 
                 if (!$rs) {
                     continue;
@@ -210,7 +197,6 @@ class mod_facetoface_session_form extends moodleform {
                 foreach ($rs as $roleuser) {
                     $choices[$roleuser->id] = fullname($roleuser);
                 }
-                $rs->close();
 
                 // Show header (if haven't already)
                 if ($choices && !$header_shown) {
