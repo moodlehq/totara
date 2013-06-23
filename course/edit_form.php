@@ -296,14 +296,24 @@ class course_edit_form extends moodleform {
             $mform->addElement('advcheckbox', 'completionstartonenrol', get_string('completionstartonenrol', 'completion'));
             $mform->setDefault('completionstartonenrol', $courseconfig->completionstartonenrol);
             $mform->disabledIf('completionstartonenrol', 'enablecompletion', 'eq', 0);
+            $mform->addHelpButton('completionstartonenrol', 'completionstartonenrol', 'completion');
+
+            $mform->addElement('advcheckbox', 'completionprogressonview', get_string('completionprogressonview', 'completion'));
+            $mform->setDefault('completionprogressonview', $courseconfig->completionprogressonview);
+            $mform->disabledIf('completionprogressonview', 'enablecompletion', 'eq', 0);
+            $mform->addHelpButton('completionprogressonview', 'completionprogressonview', 'completion');
         } else {
             $mform->addElement('hidden', 'enablecompletion');
             $mform->setType('enablecompletion', PARAM_INT);
-            $mform->setDefault('enablecompletion',0);
+            $mform->setDefault('enablecompletion', 0);
 
             $mform->addElement('hidden', 'completionstartonenrol');
             $mform->setType('completionstartonenrol', PARAM_INT);
-            $mform->setDefault('completionstartonenrol',0);
+            $mform->setDefault('completionstartonenrol', 0);
+
+            $mform->addElement('hidden', 'completionprogressonview');
+            $mform->setType('completionprogressonview', PARAM_INT);
+            $mform->setDefault('completionprogressonview', 0);
         }
 
 /// customizable role names in this course

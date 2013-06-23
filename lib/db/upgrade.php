@@ -1963,5 +1963,20 @@ function xmldb_main_upgrade($oldversion) {
         upgrade_main_savepoint(true, 2012120304.04);
     }
 
+    // Add status column to course_completions table.
+    if ($oldversion < 2012120304.041) {
+        // Define field completionprogressonview to be added to course.
+        $table = new xmldb_table('course');
+        $field = new xmldb_field('completionprogressonview', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, 'completionstartonenrol');
+
+        // Conditionally launch add field completionprogressonview.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2012120304.041);
+    }
+
     return true;
 }
