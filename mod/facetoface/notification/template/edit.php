@@ -94,16 +94,16 @@ if ($form->is_cancelled()) {
     $data->managerprefix = '';
 
     if ($data->id) {
-        $itemid = $DB->update_record('facetoface_notification_tpl', $data);
+        $DB->update_record('facetoface_notification_tpl', $data);
     } else {
-        $itemid = $DB->insert_record('facetoface_notification_tpl', $data);
+        $data->id = $DB->insert_record('facetoface_notification_tpl', $data);
     }
 
-    $data = file_postupdate_standard_editor($data, 'body', $editoroptions, $contextsystem, 'mod_facetoface', 'session', $itemid);
-    $DB->set_field('facetoface_notification_tpl', 'body', $data->body, array('id' => $itemid));
+    $data = file_postupdate_standard_editor($data, 'body', $editoroptions, $contextsystem, 'mod_facetoface', 'session', $data->id);
+    $DB->set_field('facetoface_notification_tpl', 'body', $data->body, array('id' => $data->id));
 
-    $data = file_postupdate_standard_editor($data, 'managerprefix', $editoroptions, $contextsystem, 'mod_facetoface', 'session', $itemid);
-    $DB->set_field('facetoface_notification_tpl', 'managerprefix', $data->managerprefix, array('id' => $itemid));
+    $data = file_postupdate_standard_editor($data, 'managerprefix', $editoroptions, $contextsystem, 'mod_facetoface', 'session', $data->id);
+    $DB->set_field('facetoface_notification_tpl', 'managerprefix', $data->managerprefix, array('id' => $data->id));
 
     totara_set_notification(get_string('notificationtemplatesaved', 'facetoface'), $redirectto, array('class' => 'notifysuccess'));
 }
