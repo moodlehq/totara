@@ -57,6 +57,12 @@ if ($id) { // editing course
     print_error('needcourseid');
 }
 
+// Form unlocked override
+$unlocked = optional_param('unlocked', false, PARAM_BOOL);
+// Check permissions
+$unlocked = $unlocked && completion_can_unlock_data($course->id);
+
+
 // Load completion object
 $completion = new completion_info($course);
 
@@ -71,15 +77,15 @@ $PAGE->set_heading($course->fullname);
 $PAGE->set_pagelayout('standard');
 
 /// first create the form
-$form = new course_completion_form('completion.php?id='.$id, compact('course'));
+$form = new course_completion_form('completion.php?id='.$id, compact('course', 'unlocked'));
 
 /// set data
-$currentdata = array('criteria_course' => array());
+$currentdata = array('criteria_course_value' => array());
 
 // grab all course criteria and add to data array
 // as they are a special case
 foreach ($completion->get_criteria(COMPLETION_CRITERIA_TYPE_COURSE) as $criterion) {
-    $currentdata['criteria_course'][] = $criterion->courseinstance;
+    $currentdata['criteria_course_value'][] = $criterion->courseinstance;
 }
 
 $form->set_data($currentdata);
@@ -92,7 +98,9 @@ if ($form->is_cancelled()) {
 
 
 /// process criteria unlocking if requested
-    if (!empty($data->settingsunlock) && completion_can_unlock_data($course->id)) {
+    if (!empty($data->settingsunlockdelete) && completion_can_unlock_data($course->id)) {
+
+        add_to_log($course->id, 'course', 'completion data reset', 'completion.php?id='.$course->id);
 
         $completion->delete_course_completion_data();
 
@@ -100,17 +108,33 @@ if ($form->is_cancelled()) {
         redirect(new moodle_url('/course/completion.php', array('id' => $course->id)));
     }
 
+    if (!empty($data->settingsunlock) && completion_can_unlock_data($course->id)) {
+
+        add_to_log($course->id, 'course', 'completion unlocked without reset', 'completion.php?id='.$course->id);
+
+        // Return to form (now unlocked)
+        redirect("{$CFG->wwwroot}/course/completion.php?id={$course->id}&unlocked=1");
+    }
+
 /// process data if submitted
-    // Delete old criteria
-    $completion->clear_criteria();
+    // Delete old data if required
+    if (completion_can_unlock_data($course->id) && !$unlocked) {
+        $completion->delete_course_completion_data();
+    }
 
     // Loop through each criteria type and run update_config
+    $transaction = $DB->start_delegated_transaction();
+
     global $COMPLETION_CRITERIA_TYPES;
     foreach ($COMPLETION_CRITERIA_TYPES as $type) {
         $class = 'completion_criteria_'.$type;
-        $criterion = new $class();
-        $criterion->update_config($data);
+        if (!$class::update_config($data)) {
+            print_error('error:databaseupdatefailed', 'completion', new moodleurl('/course/view.php', array('id' => $course->id)));
+            die();
+        }
     }
+
+    $transaction->allow_commit();
 
     // Handle aggregation methods
     // Overall aggregation

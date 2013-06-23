@@ -149,7 +149,12 @@ abstract class completion_criteria extends data_object {
      * @param array $params associative arrays varname=>value
      * @return array array of data_object insatnces or false if none found.
      */
-    public static function fetch_all($params) {}
+    public static function fetch_all($params) {
+        // Get type
+        $c = new static();
+        $params['criteriatype'] = $c->criteriatype;
+        return self::fetch_all_helper('course_completion_criteria', get_called_class(), $params);
+    }
 
     /**
      * Factory method for creating correct class object
@@ -183,9 +188,64 @@ abstract class completion_criteria extends data_object {
      * Update the criteria information stored in the database
      *
      * @param array $data Form data
-     * @return void
+     * @return  boolean
      */
-    abstract public function update_config(&$data);
+    public static function update_config($data) {
+        // Get new criteria
+        $name = str_replace('completion_', '', get_called_class());
+        $formval = "{$name}_value";
+        $formmap = static::FORM_MAPPING;
+
+        $new = array();
+        // Check if enabled via checkbox ($name) or value(s) exist ($formval)
+        if ((!isset($data->$name) || !empty($data->$name)) && !empty($data->$formval)) {
+            if (is_array($data->$formval)) {
+                $new = array_keys($data->$formval);
+            } else {
+                $new[] = $data->$formval;
+            }
+        }
+
+        // Get existing items and check if still used
+        $criteria = static::fetch_all(array('course' => $data->id));
+        // Check if still being used (in list of new criteria)
+        if ($criteria) {
+            if ($formmap) {
+                foreach ($criteria as $criterion) {
+                    if (($key = array_search($criterion->$formmap, $new)) !== false) {
+                        unset($new[$key]);
+                    } else {
+                        // If not still being used, remove
+                        $criterion->delete();
+                    }
+                }
+            } else {
+                // Some criteria may not have any data associated with them,
+                // they are just enabled or disabled. In this case we can
+                // short circuit this loop.
+                if (count($criteria)) {
+                    // Criteria already exists, no need to create another
+                    if ($new) {
+                        $new = array();
+                    } else {
+                        reset($criteria)->delete();
+                    }
+                }
+            }
+        }
+
+        // Add new/different items
+        foreach ($new as $item) {
+            $criterion = new static();
+            $criterion->course = $data->id;
+            if ($formmap) {
+                $criterion->$formmap = $item;
+            }
+            $criterion->insert();
+        }
+
+        return true;
+    }
 
     /**
      * Review this criteria and decide if the user has completed
@@ -246,5 +306,21 @@ abstract class completion_criteria extends data_object {
         $review = $this->review($completion, false);
 
         return $review !== $completion->is_complete();
+    }
+
+    /**
+     * Deletes this object and related data from the database.
+     * @return boolean success
+     */
+    public function delete() {
+        $res = parent::delete();
+
+        if ($res) {
+            // Reset criteria data
+            global $DB;
+            $DB->delete_records('course_completion_crit_compl', array('criteriaid' => $this->id));
+        }
+
+        return $res;
     }
 }

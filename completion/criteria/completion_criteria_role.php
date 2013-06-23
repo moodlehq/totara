@@ -41,6 +41,12 @@ class completion_criteria_role extends completion_criteria {
     public $criteriatype = COMPLETION_CRITERIA_TYPE_ROLE;
 
     /**
+     * Criteria type form value
+     * @var string
+     */
+    const FORM_MAPPING = 'role';
+
+    /**
      * Finds and returns a data_object instance based on params.
      *
      * @param array $params associative arrays varname=>value
@@ -59,30 +65,10 @@ class completion_criteria_role extends completion_criteria {
     */
     public function config_form_display(&$mform, $data = null) {
 
-        $mform->addElement('checkbox', 'criteria_role['.$data->id.']', $this->get_title($data));
+        $mform->addElement('checkbox', 'criteria_role_value['.$data->id.']', $this->get_title($data));
 
         if ($this->id) {
-            $mform->setDefault('criteria_role['.$data->id.']', 1);
-        }
-    }
-
-    /**
-     * Update the criteria information stored in the database
-     *
-     * @param stdClass $data Form data
-     */
-    public function update_config(&$data) {
-
-        if (!empty($data->criteria_role) && is_array($data->criteria_role)) {
-
-            $this->course = $data->id;
-
-            foreach (array_keys($data->criteria_role) as $role) {
-
-                $this->role = $role;
-                $this->id = NULL;
-                $this->insert();
-            }
+            $mform->setDefault('criteria_role_value['.$data->id.']', 1);
         }
     }
 

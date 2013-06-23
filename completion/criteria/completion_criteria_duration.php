@@ -41,6 +41,12 @@ class completion_criteria_duration extends completion_criteria {
     public $criteriatype = COMPLETION_CRITERIA_TYPE_DURATION;
 
     /**
+     * Criteria type form value
+     * @var string
+     */
+    const FORM_MAPPING = 'enrolperiod';
+
+    /**
      * Finds and returns a data_object instance based on params.
      *
      * @param array $params associative arrays varname=>value
@@ -59,31 +65,18 @@ class completion_criteria_duration extends completion_criteria {
      */
     public function config_form_display(&$mform, $data = null) {
 
-        $mform->addElement('checkbox', 'criteria_duration', get_string('enable'));
+        $mform->addElement('advcheckbox', 'criteria_duration', get_string('enable'));
 
         $thresholdmenu=array();
         for ($i=1; $i<=30; $i++) {
             $seconds = $i * 86400;
             $thresholdmenu[$seconds] = get_string('numdays', '', $i);
         }
-        $mform->addElement('select', 'criteria_duration_days', get_string('daysafterenrolment', 'completion'), $thresholdmenu);
+        $mform->addElement('select', 'criteria_duration_value', get_string('daysafterenrolment', 'completion'), $thresholdmenu);
 
         if ($this->id) {
             $mform->setDefault('criteria_duration', 1);
-            $mform->setDefault('criteria_duration_days', $this->enrolperiod);
-        }
-    }
-
-    /**
-     * Update the criteria information stored in the database
-     *
-     * @param stdClass $data Form data
-     */
-    public function update_config(&$data) {
-        if (!empty($data->criteria_duration)) {
-            $this->course = $data->id;
-            $this->enrolperiod = $data->criteria_duration_days;
-            $this->insert();
+            $mform->setDefault('criteria_duration_value', $this->enrolperiod);
         }
     }
 

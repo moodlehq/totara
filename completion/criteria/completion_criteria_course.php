@@ -44,6 +44,12 @@ class completion_criteria_course extends completion_criteria {
     public $criteriatype = COMPLETION_CRITERIA_TYPE_COURSE;
 
     /**
+     * Criteria type form value
+     * @var string
+     */
+    const FORM_MAPPING = 'courseinstance';
+
+    /**
      * Finds and returns a data_object instance based on params.
      *
      * @param array $params associative arrays varname=>value
@@ -70,32 +76,25 @@ class completion_criteria_course extends completion_criteria {
      * Update the criteria information stored in the database
      *
      * @param array $data Form data
+     * @return  boolean
      */
-    public function update_config(&$data) {
+    public static function update_config($data) {
+        // Get new criteria
+        $name = str_replace('completion_', '', get_called_class());
+        $formval = "{$name}_value";
+        $formreset = "{$name}_none";
 
-        // If select none selected, clear selection
-        if (!empty($data->criteria_course_none)) {
-            $data->criteria_course = array();
-            return;
-        }
-
-        if (!empty($data->criteria_course) && is_array($data->criteria_course)) {
-
-            $this->course = $data->id;
-
-            foreach ($data->criteria_course as $course) {
-
-                $this->courseinstance = $course;
-                $this->id = NULL;
-
-                // Double check this isn't a circular reference
-                if ($this->course == $this->courseinstance) {
-                    continue;
-                }
-
-                $this->insert();
+        // Fix select to match expected values for parent::update_config
+        $cleaned = array();
+        if (empty($data->$formreset) && !empty($data->$formval)) {
+            foreach ($data->$formval as $v) {
+                $cleaned[$v] = true;
             }
         }
+
+        $data->$formval = $cleaned;
+
+        return parent::update_config($data);
     }
 
     /**
