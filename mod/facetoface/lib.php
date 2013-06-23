@@ -4644,3 +4644,21 @@ function facetoface_calendar_set_filter() {
         $SESSION->calendarfacetofacefilter[$f->shortname] = optional_param("field_{$f->shortname}", '', PARAM_TEXT);
     }
 }
+
+/**
+ * Get the room record for the specified session
+ *
+ * @param int $sessionid
+ *
+ * @return object the room record or false if no room found
+ */
+function facetoface_get_session_room($sessionid) {
+    global $DB;
+
+    $sql = "SELECT r.*
+        FROM {facetoface_sessions} s
+        JOIN {facetoface_room} r ON s.roomid = r.id
+        WHERE s.id = ?";
+
+    return $DB->get_record_sql($sql, array($sessionid));
+}
