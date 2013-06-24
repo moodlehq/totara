@@ -337,7 +337,7 @@ function tm_alert_send($eventdata) {
         }
 
         // Add footer to email
-        $eventdata->fullmessagehtml .= html_writer::empty_tag('br') . html_writer::empty_tag('br') . $string_manager->get_string('alertfooter', 'totara_message', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1", $eventdata->userto->lang);
+        $eventdata->fullmessagehtml .= html_writer::empty_tag('br') . html_writer::empty_tag('br') . $string_manager->get_string('alertfooter2', 'totara_message', $CFG->wwwroot."/message/edit.php", $eventdata->userto->lang);
 
         // Setup some more variables
         $fromaddress = !empty($eventdata->fromaddress) ? $eventdata->fromaddress : '';
