@@ -65,7 +65,7 @@ define('CUSTOMFIELD_TYPE_SELECT',      1);
 define('CUSTOMFIELD_TYPE_MULTISELECT', 2);
 
 // Calendar-related constants
-define('CALENDAR_MAX_NAME_LENGTH', 15);
+define('CALENDAR_MAX_NAME_LENGTH', 32);
 define('F2F_CAL_NONE',      0);
 define('F2F_CAL_COURSE',    1);
 define('F2F_CAL_SITE',      2);
@@ -293,6 +293,9 @@ function facetoface_fix_settings($facetoface) {
     }
     if (empty($facetoface->approvalreqd)) {
         $facetoface->approvalreqd = 0;
+    }
+    if (!empty($facetoface->shortname)) {
+        $facetoface->shortname = textlib::substr($facetoface->shortname, 0, CALENDAR_MAX_NAME_LENGTH);
     }
 }
 
@@ -2698,7 +2701,7 @@ function facetoface_add_session_to_calendar($session, $facetoface, $calendartype
 
     $shortname = $facetoface->shortname;
     if (empty($shortname)) {
-        $shortname = substr($facetoface->name, 0, CALENDAR_MAX_NAME_LENGTH);
+        $shortname = textlib::substr($facetoface->name, 0, CALENDAR_MAX_NAME_LENGTH);
     }
 
     $result = true;

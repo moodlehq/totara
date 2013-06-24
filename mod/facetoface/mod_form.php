@@ -60,7 +60,6 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->addElement('text', 'shortname', get_string('shortname'), array('size' => 32, 'maxlength' => 32));
         $mform->setType('shortname', PARAM_TEXT);
         $mform->addHelpButton('shortname', 'shortname', 'facetoface');
-        $mform->addRule('shortname', null, 'maxlength', 32);
 
         $features = new stdClass;
         $features->groups = false;
