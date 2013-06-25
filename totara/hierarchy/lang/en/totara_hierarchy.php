@@ -612,7 +612,6 @@ $string['positionnoframeworkssetup'] = 'There are no position frameworks setup f
 $string['nopositionsassigned'] = 'No positions currently assigned to this user';
 $string['noposition'] = 'No positions defined';
 $string['nopositionset'] = 'No position set';
-$string['position'] = 'Position';
 $string['positionhistory'] = 'Position history';
 $string['positionsaved'] = 'Position saved.';
 $string['positionreturntoframework'] = 'Return to position framework';
