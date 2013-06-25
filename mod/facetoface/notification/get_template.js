@@ -68,14 +68,22 @@ M.totara_f2f_notification_template = M.totara_f2f_notification_template || {
                 // Get current value
                 var current = select.val();
 
-                // Overwrite form data
-                $('input#id_title').val(templates[current].title);
-                $('textarea#id_body_editor').val(templates[current].body);
-                $('textarea#id_managerprefix_editor').val(templates[current].managerprefix);
-                tinyMCE.get('id_body_editor').setContent(templates[current].body);
-                if (templates[current].managerprefix) {
-                    tinyMCE.get('id_managerprefix_editor').setContent(templates[current].managerprefix);
+                // Overwrite form data.
+                if (current !== '0') {
+                    $('input#id_title').val(templates[current].title);
+                    $('textarea#id_body_editor').val(templates[current].body);
+                    $('textarea#id_managerprefix_editor').val(templates[current].managerprefix);
+                    tinyMCE.get('id_body_editor').setContent(templates[current].body);
+                    if (templates[current].managerprefix) {
+                        tinyMCE.get('id_managerprefix_editor').setContent(templates[current].managerprefix);
+                    } else {
+                        tinyMCE.get('id_managerprefix_editor').setContent('');
+                    }
                 } else {
+                    $('input#id_title').val('');
+                    $('textarea#id_body_editor').val('');
+                    $('textarea#id_managerprefix_editor').val('');
+                    tinyMCE.get('id_body_editor').setContent('');
                     tinyMCE.get('id_managerprefix_editor').setContent('');
                 }
             });
