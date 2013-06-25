@@ -25,10 +25,10 @@
 M.totara_f2f_room = M.totara_f2f_room || {
 
     Y: null,
-    // optional php params and defaults defined here, args passed to init method
+    // Optional php params and defaults defined here, args passed to init method
     // below will override these values
     config: {},
-    // public handler reference for the dialog
+    // Public handler reference for the dialog
     totaraDialog_handler_preRequisite: null,
 
     /**
@@ -40,10 +40,10 @@ M.totara_f2f_room = M.totara_f2f_room || {
     init: function(Y, args){
         var module = this;
 
-        // save a reference to the Y instance (all of its dependencies included)
+        // Save a reference to the Y instance (all of its dependencies included)
         this.Y = Y;
 
-        // if defined, parse args into this module's config object
+        // If defined, parse args into this module's config object
         if (args) {
             var jargs = Y.JSON.parse(args);
             for (var a in jargs) {
@@ -53,7 +53,7 @@ M.totara_f2f_room = M.totara_f2f_room || {
             }
         }
 
-        // check jQuery dependency is available
+        // Check jQuery dependency is available
         if (typeof $ === 'undefined') {
             throw new Error('M.totara_f2f_room.init()-> jQuery dependency required for this module to function.');
         }
@@ -66,7 +66,6 @@ M.totara_f2f_room = M.totara_f2f_room || {
         var buttonsObj = {};
         buttonsObj[M.util.get_string('cancel','moodle')] = function() { handler._cancel(); };
         buttonsObj[M.util.get_string('ok','moodle')] = function() { handler._save(); };
-
 
         totaraDialogs['addpdroom'] = new totaraDialog(
                 'addpdroom-dialog',
@@ -93,7 +92,6 @@ M.totara_f2f_room = M.totara_f2f_room || {
             }
         });
 
-
         // Clear pre-defined room selection if session start/finish datetimes change
         $('select[name^="timestart["]').change(function() {
             clean_pdroom_data();
@@ -102,10 +100,13 @@ M.totara_f2f_room = M.totara_f2f_room || {
             clean_pdroom_data();
         });
 
-        // Clear pre-defined room selection if custom room is selected
+        // Clear pre-defined room selection and set room capacity if custom room is selected
         $('input[name="customroom"]').click(function() {
             if ($(this).is(':checked')) {
                 clean_pdroom_data();
+                $('#warn').remove();
+                $('input[name="pdroomcapacity"]').val(0);
+                $('input[name="croomcapacity"]').val($('input[name="capacity"]').val());
             }
         });
 
@@ -115,10 +116,40 @@ M.totara_f2f_room = M.totara_f2f_room || {
             $('span#roomnote').html('');
         }
 
+        is_pdroom_exceeded = function() {
+            var pdroomcapacity = parseInt($('input[name="pdroomcapacity"]').val(), 10);
+            var sessioncapacity = parseInt($('input[name="capacity"]').val(), 10);
+
+            if ((sessioncapacity > pdroomcapacity) && (pdroomcapacity > 0) && ($.isNumeric($('input[name="capacity"]').val()))) {
+                $('<div id=warn class="notice">' + M.util.get_string('pdroomcapacityexceeded', 'facetoface') + '</div>').insertBefore('input[name="capacity"]');
+            }
+        }
+
+        // If pre-defined room capacity is exceeded by room capacity, a warning message will be shown
+        $('input[name="capacity"]').bind('keyup blur', function() {
+            $('#warn').remove();
+            is_pdroom_exceeded();
+        });
+        // Show the warning message is the session was saved with pre-defined room capacity exceeded by room capacity
+        $().ready(function() {
+            is_pdroom_exceeded();
+        });
 
         // Update session capacity if room capacity changes
-        $('input[name="croomcapacity"]').keyup(function() {
-            $('input[name="capacity"]').val($(this).val());
+        $('input[name="croomcapacity"]').bind('keyup cut paste', function() {
+            var capacity = $(this);
+            setTimeout(function() {
+                $('input[name="capacity"]').val(capacity.val());
+            });
+        });
+        // Update room capacity if session capacity changes
+        $('input[name="capacity"]').bind('keyup cut paste', function() {
+            if ($('input[name="customroom"]').is(':checked')) {
+                var capacity = $(this);
+                setTimeout(function() {
+                    $('input[name="croomcapacity"]').val(capacity.val());
+                });
+            }
         });
     }
 }
@@ -143,6 +174,8 @@ totaraDialog_handler_addpdroom.prototype.setup_delete = function() {
         $('input[name="pdroomid"]').val(0);
         $('span#roomnote').html('');
         $('input[name="capacity"]').val('10');
+        $('input[name="pdroomcapacity"]').val(0);
+        $('#warn').remove();
         handler.setup_delete();
     });
 
@@ -188,7 +221,6 @@ totaraDialog_handler_addpdroom.prototype.first_load = function() {
     }
 }
 
-
 totaraDialog_handler_addpdroom.prototype.every_load = function() {
     // Call parent function
     totaraDialog_handler_treeview_singleselect.prototype.every_load.call(this);
@@ -205,17 +237,19 @@ totaraDialog_handler_addpdroom.prototype.every_load = function() {
 
 // Called as part of _save
 totaraDialog_handler_addpdroom.prototype.external_function = function() {
-    //set the chosen room capacity
+    // Set the chosen room capacity
     $.ajax({
         url: M.cfg.wwwroot+'/mod/facetoface/room/ajax/roomcap.php?id='+$('input[name="pdroomid"]').val(),
     type: 'GET',
     success: function(o) {
         if (o.length) {
+            $('#warn').remove();
             $('input[name="capacity"]').val(o);
+            $('input[name="pdroomcapacity"]').val(o);
         }
     }
     });
-    //set room note
+    // Set room note
     $.ajax({
         url: M.cfg.wwwroot+'/mod/facetoface/room/ajax/roomnote.php?id='+$('input[name="pdroomid"]').val(),
     type: 'GET',
@@ -230,6 +264,8 @@ totaraDialog_handler_addpdroom.prototype.external_function = function() {
     }
     });
 
-    // clear custom room
+    // Clear custom room
     $('input[name="customroom"]').prop("checked", false);
+    // Disable custom room if pre-defined room is selected
+    $('input[name="croomname"], input[name="croombuilding"], input[name="croomaddress"], input[name="croomcapacity"]').prop('disabled', true);
 }

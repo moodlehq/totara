@@ -105,6 +105,8 @@ class mod_facetoface_session_form extends moodleform {
         $mform->addElement('static', 'addpdroom', '', '<input type="button" value="'.get_string('choosepredefinedroom', 'facetoface').'" name="show-addpdroom-dialog" id="show-addpdroom-dialog" />');
         $mform->addElement('hidden', 'pdroomid', 0);
         $mform->setType('pdroomid', PARAM_INT);
+        $mform->addElement('hidden', 'pdroomcapacity', 0);
+        $mform->setType('pdroomcapacity', PARAM_INT);
 
         $mform->addElement('checkbox', 'customroom', '', get_string('otherroom', 'facetoface'));
         $mform->setType('customroom', PARAM_INT);
@@ -347,7 +349,7 @@ class mod_facetoface_session_form extends moodleform {
 
         //check capcity is a number
         if (empty($data['capacity'])) {
-            $errors['capacity'] = get_string('error:capacitynotnumeric', 'facetoface');
+            $errors['capacity'] = get_string('error:capacityzero', 'facetoface');
         } else {
             $capacity = $data['capacity'];
             if (!(is_numeric($capacity) && (intval($capacity) == $capacity) && $capacity > 0)) {
