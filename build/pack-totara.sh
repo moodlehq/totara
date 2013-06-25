@@ -22,6 +22,9 @@ echo './build*
 ./TAGS
 *.swp
 *~
+./.settings*
+./.buildpath
+./.project
 ./config.php
 ./cucumber.yml
 ./webrat*
