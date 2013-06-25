@@ -2853,8 +2853,8 @@ class reportbuilder {
         global $CFG, $DB;
 
         require_once("$CFG->libdir/odslib.class.php");
-        $shortname = $this->shortname;
-        $filename = clean_filename($shortname . '_report.ods');
+        $fullname = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/', '/[\s-]/'), array('', '_'), $this->fullname));
+        $filename = clean_filename($fullname . '_report.ods');
 
         if (!$file) {
             header("Content-Type: application/download\n");
@@ -2945,8 +2945,8 @@ class reportbuilder {
 
         require_once("$CFG->libdir/excellib.class.php");
 
-        $shortname = $this->shortname;
-        $filename = clean_filename($shortname . '_report.xls');
+        $fullname = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/', '/[\s-]/'), array('', '_'), $this->fullname));
+        $filename = clean_filename($fullname . '_report.xls');
 
         if (!$file) {
             header("Content-Type: application/download\n");
@@ -3042,12 +3042,12 @@ class reportbuilder {
 
         require_once("{$CFG->libdir}/csvlib.class.php");
 
-        $shortname = $this->shortname;
-        $filename = clean_filename($shortname . '_report.csv');
+        $fullname = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/', '/[\s-]/'), array('', '_'), $this->fullname));
+        $filename = clean_filename($fullname . '_report.csv');
 
         if (!$file) {
             $export = new csv_export_writer();
-            $export->set_filename($filename);
+            $export->filename = $filename;
         } else {
             $fp = fopen($file, "w");
         }

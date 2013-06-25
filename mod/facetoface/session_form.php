@@ -119,19 +119,19 @@ class mod_facetoface_session_form extends moodleform {
         $mform->addElement('html', '</td><td>');
         $mform->addElement('static', '', '', get_string('capacity', 'facetoface'));
         $mform->addElement('html', '</td></tr><td>');
-        $mform->addElement('text', 'croomname');
+        $mform->addElement('text', 'croomname', array(), array('class' => 'cellwidth', 'maxlength' => '90'));
         $mform->setType('croomname', PARAM_TEXT);
         $mform->disabledIf('croomname', 'customroom', 'notchecked');
         $mform->addElement('html', '</td><td>');
-        $mform->addElement('text', 'croombuilding');
+        $mform->addElement('text', 'croombuilding', array(), array('class' => 'cellwidth', 'maxlength' => '90'));
         $mform->setType('croombuilding', PARAM_TEXT);
         $mform->disabledIf('croombuilding', 'customroom', 'notchecked');
         $mform->addElement('html', '</td><td>');
-        $mform->addElement('text', 'croomaddress');
+        $mform->addElement('text', 'croomaddress', array(), array('class' => 'cellwidth', 'maxlength' => '230'));
         $mform->setType('croomaddress', PARAM_TEXT);
         $mform->disabledIf('croomaddress', 'customroom', 'notchecked');
         $mform->addElement('html', '</td><td>');
-        $mform->addElement('text', 'croomcapacity');
+        $mform->addElement('text', 'croomcapacity', array(), array('class' => 'cellwidth', 'maxlength' => '10'));
         $mform->disabledIf('croomcapacity', 'customroom', 'notchecked');
         $mform->setType('croomcapacity', PARAM_INT);
         $mform->addElement('html', '</td><tr></table></div>');
@@ -186,21 +186,8 @@ class mod_facetoface_session_form extends moodleform {
             foreach ($roles as $role) {
                 $rolename = format_string($rolenames[$role->id]->localname);
 
-                // Attempt to load users with this role in this course
-                $rs = $DB->get_recordset_sql("
-                    SELECT
-                        u.id,
-                        u.firstname,
-                        u.lastname
-                    FROM
-                        {role_assignments} ra
-                    LEFT JOIN
-                        {user} u
-                      ON ra.userid = u.id
-                    WHERE
-                        contextid = {$context->id}
-                    AND roleid = {$role->id}
-                ");
+                // Attempt to load users with this role in this context.
+                $rs = get_role_users($role->id, $context, true, 'u.id, u.firstname, u.lastname', 'u.id ASC');
 
                 if (!$rs) {
                     continue;
@@ -210,7 +197,6 @@ class mod_facetoface_session_form extends moodleform {
                 foreach ($rs as $roleuser) {
                     $choices[$roleuser->id] = fullname($roleuser);
                 }
-                $rs->close();
 
                 // Show header (if haven't already)
                 if ($choices && !$header_shown) {

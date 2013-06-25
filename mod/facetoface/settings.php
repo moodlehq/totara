@@ -65,6 +65,16 @@ $settings->add(new admin_setting_configcheckbox('facetoface_oneemailperday', new
 $settings->add(new admin_setting_configcheckbox('facetoface_disableicalcancel', new lang_string('setting:disableicalcancel_caption', 'facetoface'),new lang_string('setting:disableicalcancel', 'facetoface'), 0));
 
 
+$settings->add(new admin_setting_heading('facetoface_bulkadd_header', new lang_string('bulkaddheading', 'facetoface'), ''));
+
+$menu['bulkaddsourceidnumber'] = new lang_string('bulkaddsourceidnumber', 'facetoface');
+$menu['bulkaddsourceuserid']   = new lang_string('bulkaddsourceuserid', 'facetoface');
+$menu['bulkaddsourceusername'] = new lang_string('bulkaddsourceusername', 'facetoface');
+
+$settings->add(new admin_setting_configselect('facetoface_bulkaddsource',
+        new lang_string('setting:bulkaddsource_caption', 'facetoface'),
+        new lang_string('setting:bulkaddsource', 'facetoface'), 'bulkaddsourceidnumber', $menu));
+
 // List of existing custom fields
 $html = facetoface_list_of_customfields();
 $html .= html_writer::start_tag('p');

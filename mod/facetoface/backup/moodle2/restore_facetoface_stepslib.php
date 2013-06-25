@@ -11,6 +11,7 @@ class restore_facetoface_activity_structure_step extends restore_activity_struct
         $userinfo = $this->get_setting_value('userinfo');
 
         $paths[] = new restore_path_element('facetoface', '/activity/facetoface');
+        $paths[] = new restore_path_element('facetoface_notification', '/activity/facetoface/notifications/notification');
         $paths[] = new restore_path_element('facetoface_session', '/activity/facetoface/sessions/session');
         $paths[] = new restore_path_element('facetoface_sessions_dates', '/activity/facetoface/sessions/session/sessions_dates/sessions_date');
         $paths[] = new restore_path_element('facetoface_session_custom_fields', '/activity/facetoface/sessions/session/custom_fields/custom_field');
@@ -34,6 +35,23 @@ class restore_facetoface_activity_structure_step extends restore_activity_struct
         // insert the facetoface record
         $newitemid = $DB->insert_record('facetoface', $data);
         $this->apply_activity_instance($newitemid);
+    }
+
+
+    protected function process_facetoface_notification($data) {
+        global $DB, $USER;
+
+        $data = (object)$data;
+        $oldid = $data->id;
+
+        $data->facetofaceid = $this->get_new_parentid('facetoface');
+        $data->course = $this->get_courseid();
+
+        $data->timemodified = $this->apply_date_offset($data->timemodified);
+        $data->usermodified = isset($USER->id) ? $USER->id : get_admin()->id;
+
+        // Insert the notification record.
+        $newitemid = $DB->insert_record('facetoface_notification', $data);
     }
 
 

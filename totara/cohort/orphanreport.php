@@ -35,8 +35,7 @@ require_capability('moodle/cohort:view', $context);
 $format = optional_param('format', '', PARAM_TEXT); // export format
 $debug  = optional_param('debug', false, PARAM_BOOL);
 
-$url = new moodle_url('/totara/cohort/orphanreport.php', array('format' => $format, 'debug' => $debug));
-admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout'=>'report'));
+$PAGE->set_context($context);
 
 $report = reportbuilder_get_embedded_report('cohort_orphaned_users');
 // Handle a request for export
@@ -45,6 +44,9 @@ if($format!='') {
     $report->export_data($format);
     die;
 }
+
+$url = new moodle_url('/totara/cohort/orphanreport.php', array('format' => $format, 'debug' => $debug));
+admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout' => 'report'));
 
 $strcohorts = get_string('cohorts', 'totara_cohort');
 echo $OUTPUT->header();

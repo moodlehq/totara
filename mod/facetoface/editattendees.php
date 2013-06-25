@@ -33,8 +33,8 @@ define('MAX_USERS_PER_PAGE', 5000);
 $s              = required_param('s', PARAM_INT); // facetoface session ID
 $add            = optional_param('add', 0, PARAM_BOOL);
 $remove         = optional_param('remove', 0, PARAM_BOOL);
-$showall        = optional_param('showall', 0, PARAM_BOOL);
 $searchtext     = optional_param('searchtext', '', PARAM_CLEAN); // search string
+$searchbutton   = optional_param('searchbutton', 0, PARAM_BOOL);
 $suppressemail  = optional_param('suppressemail', false, PARAM_BOOL); // send email notifications
 $previoussearch = optional_param('previoussearch', 0, PARAM_BOOL);
 $clear          = optional_param('clear', false, PARAM_BOOL); // new add/edit session, clear previous results
@@ -105,12 +105,8 @@ $waitingapproval = facetoface_get_requests($session->id);
 if ($save && $onlycontent) {
 
     if (empty($_SESSION['f2f-bulk-results'])) {
-        if (empty($_SESSION['f2f-bulk-results'])) {
-            $_SESSION['f2f-bulk-results'] = array();
-        }
+        $_SESSION['f2f-bulk-results'] = array();
     }
-
-    $_SESSION['f2f-bulk-results'][$session->id] = array(array(), array());
 
     $added  = array();
     $errors = array();
@@ -179,7 +175,7 @@ if ($save && $onlycontent) {
         facetoface_update_attendees($session);
     }
 
-    $_SESSION['f2f-bulk-results'][$session->id] = array($added, $errors, true);
+    $_SESSION['f2f-bulk-results'][$session->id] = array($added, $errors);
 
     $result_message = facetoface_generate_bulk_result_notice(array($added, $errors), 'addedit');
     $numattendees = facetoface_get_num_attendees($session->id);
@@ -225,7 +221,7 @@ if ($frm = data_submitted()) {
             }
         }
 
-    } else if ($showall) { // "Show All" button
+    } else if (!$searchbutton) { // Initialize search if "Show all" button is clicked
         $searchtext = '';
         $previoussearch = 0;
     }

@@ -3099,6 +3099,24 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
         redirect($url, get_string('activityiscurrentlyhidden'));
     }
 
+    // If completion is enabled and mark as started on first view is on
+    if ($course->id !== $SITE->id) {
+        $completion = new completion_info($course);
+        if ($completion->is_enabled() && !empty($course->completionprogressonview)) {
+            if ($completion->is_tracked_user($USER->id)) {
+                $params = array(
+                    'userid' => $USER->id,
+                    'course' => $course->id
+                );
+
+                $ccompletion = new completion_completion($params);
+                if (empty($ccompletion->id) || empty($ccompletion->timestarted)) {
+                    $ccompletion->mark_inprogress();
+                }
+            }
+        }
+    }
+
     // Finally access granted, update lastaccess times
     user_accesstime_log($course->id);
 }
@@ -5369,6 +5387,9 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
         $messagehtml = '';
     } else {
         $is_this_an_ical_request = FALSE;
+        if ($messagehtml && right_to_left()) {
+            $messagehtml = '<div style="text-align:right;" dir="rtl">'.$messagehtml.'</div>';
+        }
     }
 
 

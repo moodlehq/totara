@@ -142,7 +142,11 @@ if ($editform->is_cancelled()) {
     if ($data->id) {
         cohort_update_cohort($data);
         if ($usetags) {
-            add_tags_info($cohort->id);
+            if (isset($data->otags)) {
+                tag_set('cohort', $cohort->id, tag_get_name($data->otags));
+            } else {
+                tag_set('cohort', $cohort->id, array());
+            }
         }
         add_to_log(SITEID, 'cohort', 'edit', '/cohort/view.php?id='.$cohort->id, $data->idnumber);
         //update textarea
@@ -154,7 +158,11 @@ if ($editform->is_cancelled()) {
     } else {
         $cohortid = cohort_add_cohort($data);
         if ($usetags) {
-            add_tags_info($cohortid);
+            if (isset($data->otags)) {
+                tag_set('cohort', $cohortid, tag_get_name($data->otags));
+            } else {
+                tag_set('cohort', $cohortid, array());
+            }
         }
         add_to_log(SITEID, 'cohort', 'create', '/cohort/view.php?id='.$cohortid, $data->idnumber);
         //update textarea
@@ -191,16 +199,3 @@ local_js(array(
 build_datepicker_js('#id_startdate, #id_enddate');
 
 echo $OUTPUT->footer();
-
-/**
- * function to attach tags into a cohort
- * @param int cohortid - id of the course
- */
-function add_tags_info($cohortid) {
-
-    $tags = array();
-    if ($otags = optional_param_array('otags', '', PARAM_INT)) {
-        $tags = tag_get_name($otags);
-    }
-    tag_set('cohort', $cohortid, $tags);
-}

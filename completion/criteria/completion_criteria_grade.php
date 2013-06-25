@@ -43,6 +43,12 @@ class completion_criteria_grade extends completion_criteria {
     public $criteriatype = COMPLETION_CRITERIA_TYPE_GRADE;
 
     /**
+     * Criteria type form value
+     * @var string
+     */
+    const FORM_MAPPING = 'gradepass';
+
+    /**
      * Finds and returns a data_object instance based on params.
      *
      * @param array $params associative array varname => value of various
@@ -61,7 +67,7 @@ class completion_criteria_grade extends completion_criteria {
      * @param stdClass $data containing default values to be set in the form
      */
     public function config_form_display(&$mform, $data = null) {
-        $mform->addElement('checkbox', 'criteria_grade', get_string('enable'));
+        $mform->addElement('advcheckbox', 'criteria_grade', get_string('enable'));
         $mform->setType('criteria_grade', PARAM_BOOL);
         $mform->addElement('text', 'criteria_grade_value', get_string('graderequired', 'completion'));
         $mform->setType('criteria_grade_value', PARAM_NUMBER);
@@ -71,22 +77,6 @@ class completion_criteria_grade extends completion_criteria {
         if ($this->id) {
             $mform->setDefault('criteria_grade', 1);
             $mform->setDefault('criteria_grade_value', $this->gradepass);
-        }
-    }
-
-    /**
-     * Update the criteria information stored in the database
-     *
-     * @param stdClass $data Form data
-     */
-    public function update_config(&$data) {
-
-        // TODO validation
-        if (!empty($data->criteria_grade) && is_numeric($data->criteria_grade_value))
-        {
-            $this->course = $data->id;
-            $this->gradepass = $data->criteria_grade_value;
-            $this->insert();
         }
     }
 

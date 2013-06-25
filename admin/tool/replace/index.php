@@ -42,7 +42,7 @@ echo $OUTPUT->heading(get_string('pageheader', 'tool_replace'));
 
 $dbfamily = $DB->get_dbfamily();
 if (!in_array($dbfamily, array('mysql', 'postgres', 'mssql'))) {
-    echo $OUTPUT->notification(get_string('notimplementedtotara', 'tool_replace'));
+    echo $OUTPUT->notification(get_string('notimplementedtotara', 'totara_core'));
     echo $OUTPUT->footer();
     die;
 }

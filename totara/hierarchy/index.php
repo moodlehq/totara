@@ -86,6 +86,8 @@ if ($can_edit_item) {
         $hierarchy->reorder_hierarchy_item($movedown, HIERARCHY_ITEM_BELOW);
     }
 }
+//set page context so that export can use functions like format_text
+$PAGE->set_context(context_system::instance());
 
 if ($format!='') {
     add_to_log(SITEID, $prefix, 'export framework', "index.php?id={$framework->id}&amp;prefix={$prefix}", $framework->fullname);

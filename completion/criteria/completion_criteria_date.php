@@ -41,6 +41,12 @@ class completion_criteria_date extends completion_criteria {
     public $criteriatype = COMPLETION_CRITERIA_TYPE_DATE;
 
     /**
+     * Criteria type form value
+     * @var string
+     */
+    const FORM_MAPPING = 'timeend';
+
+    /**
      * Finds and returns a data_object instance based on params.
      *
      * @param array $params associative arrays varname=>value
@@ -58,7 +64,7 @@ class completion_criteria_date extends completion_criteria {
      * @param stdClass $data not used
      */
     public function config_form_display(&$mform, $data = null) {
-        $mform->addElement('checkbox', 'criteria_date', get_string('enable'));
+        $mform->addElement('advcheckbox', 'criteria_date', get_string('enable'));
         $mform->addElement('date_selector', 'criteria_date_value', get_string('afterspecifieddate', 'completion'));
 
         // If instance of criteria exists
@@ -67,19 +73,6 @@ class completion_criteria_date extends completion_criteria {
             $mform->setDefault('criteria_date_value', $this->timeend);
         } else {
             $mform->setDefault('criteria_date_value', time() + 3600 * 24);
-        }
-    }
-
-    /**
-     * Update the criteria information stored in the database
-     *
-     * @param stdClass $data Form data
-     */
-    public function update_config(&$data) {
-        if (!empty($data->criteria_date)) {
-            $this->course = $data->id;
-            $this->timeend = $data->criteria_date_value;
-            $this->insert();
         }
     }
 

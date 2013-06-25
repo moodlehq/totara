@@ -979,14 +979,13 @@ function facetoface_message_substitutions($msg, $facetofacename, $user, $data, $
 
     // add placeholders that somehow have been forgetten since moodle
     $roomnull = 'N/A';  // Displayed if empty.
-    $roomid = $DB->get_field('facetoface_sessions', 'roomid', array('id' => $sessionid));
 
     // Defaults if values are empty
     $strlocation = $roomnull;
     $strvenue = $roomnull;
     $strroom = $roomnull;
 
-    if ($room = $DB->get_record('facetoface_room', array('id' => $roomid))) {
+    if ($room = facetoface_get_session_room($sessionid)) {
         $strlocation = isset($room->address) ? $room->address : $roomnull;
         $strvenue = isset($room->building) ? $room->building : $roomnull;
         $strroom = isset($room->name) ? $room->name : $roomnull;

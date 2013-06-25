@@ -65,7 +65,7 @@ define('CUSTOMFIELD_TYPE_SELECT',      1);
 define('CUSTOMFIELD_TYPE_MULTISELECT', 2);
 
 // Calendar-related constants
-define('CALENDAR_MAX_NAME_LENGTH', 15);
+define('CALENDAR_MAX_NAME_LENGTH', 32);
 define('F2F_CAL_NONE',      0);
 define('F2F_CAL_COURSE',    1);
 define('F2F_CAL_SITE',      2);
@@ -293,6 +293,9 @@ function facetoface_fix_settings($facetoface) {
     }
     if (empty($facetoface->approvalreqd)) {
         $facetoface->approvalreqd = 0;
+    }
+    if (!empty($facetoface->shortname)) {
+        $facetoface->shortname = textlib::substr($facetoface->shortname, 0, CALENDAR_MAX_NAME_LENGTH);
     }
 }
 
@@ -2322,7 +2325,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 continue;
             }
 
-            $multiday = '';
+            $multidate = '';
             $sessiondate = '';
             $sessiontime = '';
 
@@ -2339,7 +2342,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     }
                     $sessiontime = $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
                     if (count($session->sessiondates) > 1) {
-                        $multiday = html_writer::start_tag('br'). '(' . get_string('multidate', 'facetoface').')';
+                        $multidate = html_writer::start_tag('br') . get_string('multidate', 'facetoface');
                     }
                 }
             } else {
@@ -2367,9 +2370,9 @@ function facetoface_print_coursemodule_info($coursemodule) {
 
             if ($coursemodule->uservisible) {
                 $signup_url = new moodle_url('/mod/facetoface/signup.php', array('s' => $session->id));
-                $table .= html_writer::tag('td', html_writer::link($signup_url, $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multiday, array('class' => 'f2fsessiontime')));
+                $table .= html_writer::tag('td', html_writer::link($signup_url, $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multidate, array('class' => 'f2fsessiontime')));
             } else {
-                $table .= html_writer::tag('td', html_writer::tag('span', $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multiday, array('class' => 'f2fsessiontime')));
+                $table .= html_writer::tag('td', html_writer::tag('span', $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multidate, array('class' => 'f2fsessiontime')));
             }
         }
         if ($i++ % 2 == 0) {
@@ -2698,7 +2701,7 @@ function facetoface_add_session_to_calendar($session, $facetoface, $calendartype
 
     $shortname = $facetoface->shortname;
     if (empty($shortname)) {
-        $shortname = substr($facetoface->name, 0, CALENDAR_MAX_NAME_LENGTH);
+        $shortname = textlib::substr($facetoface->name, 0, CALENDAR_MAX_NAME_LENGTH);
     }
 
     $result = true;
@@ -4027,41 +4030,53 @@ function facetoface_get_session_involvement($userid, $info) {
  * @param   mixed   $userid             User to signup (normally int)
  * @param   boolean $suppressemail      Suppress notifications flag
  * @param   boolean $ignoreconflicts    Ignore booking conflicts flag
- * @param   boolean $useidnumber        Flag to notify Userid is user's idnumber (string)
+ * @param   string  $bulkaddsource      Flag to indicate if $userid is actually another field
  * @param   string  $discountcode       Optional A user may specify a discount code
  * @param   integer $notificationtype   Optional A user may choose the type of notifications they will receive
  * @return  array
  */
-function facetoface_user_import($session, $userid, $suppressemail = false, $ignoreconflicts = false, $useidnumber = false,
-        $discountcode = '', $notificationtype = MDL_F2F_BOTH) {
+function facetoface_user_import($session, $userid, $suppressemail = false, $ignoreconflicts = false,
+        $bulkaddsource = 'bulkaddsourceuserid', $discountcode = '', $notificationtype = MDL_F2F_BOTH) {
     global $DB, $CFG, $USER;
 
     $result = array();
     $result['id'] = $userid;
 
-    // Get user
-    if ($useidnumber) {
-        $user = $DB->get_record('user', array('idnumber' => $userid));
-        if (!$user) {
-            $result['name'] = '';
-            $result['result'] = get_string('useridnumberdoesnotexist', 'facetoface', $userid);
-            return $result;
-        }
-    } else {
+    // Check parameters.
+    if ($bulkaddsource == 'bulkaddsourceuserid') {
         if (!is_int($userid) && !ctype_digit($userid)) {
             $result['name'] = '';
             $result['result'] = get_string('error:userimportuseridnotanint', 'facetoface', $userid);
             return $result;
         }
-        $user = $DB->get_record('user', array('id' => $userid));
-        if (!$user) {
-            $result['name'] = '';
-            $result['result'] = get_string('useriddoesnotexist', 'facetoface', $userid);
-            return $result;
-        }
+    }
+
+    // Get user.
+    switch ($bulkaddsource) {
+        case 'bulkaddsourceuserid':
+            $user = $DB->get_record('user', array('id' => $userid));
+            break;
+        case 'bulkaddsourceidnumber':
+            $user = $DB->get_record('user', array('idnumber' => $userid));
+            break;
+        case 'bulkaddsourceusername':
+            $user = $DB->get_record('user', array('username' => $userid));
+            break;
+    }
+    if (!$user) {
+        $result['name'] = '';
+        $a = array('fieldname' => get_string($bulkaddsource, 'facetoface'), 'value' => $userid);
+        $result['result'] = get_string('userdoesnotexist', 'facetoface', $a);
+        return $result;
     }
 
     $result['name'] = fullname($user);
+
+    if (isguestuser($user)) {
+        $a = array('fieldname' => get_string($bulkaddsource, 'facetoface'), 'value' => $userid);
+        $result['result'] = get_string('cannotsignupguest', 'facetoface', $a);
+        return $result;
+    }
 
     // Get facetoface
     $facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface));
@@ -4631,4 +4646,22 @@ function facetoface_calendar_set_filter() {
     foreach ($fields as $f) {
         $SESSION->calendarfacetofacefilter[$f->shortname] = optional_param("field_{$f->shortname}", '', PARAM_TEXT);
     }
+}
+
+/**
+ * Get the room record for the specified session
+ *
+ * @param int $sessionid
+ *
+ * @return object the room record or false if no room found
+ */
+function facetoface_get_session_room($sessionid) {
+    global $DB;
+
+    $sql = "SELECT r.*
+        FROM {facetoface_sessions} s
+        JOIN {facetoface_room} r ON s.roomid = r.id
+        WHERE s.id = ?";
+
+    return $DB->get_record_sql($sql, array($sessionid));
 }

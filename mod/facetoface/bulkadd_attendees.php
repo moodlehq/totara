@@ -85,6 +85,10 @@ if ($type === 'file') {
     die();
 }
 
+$bulkaddsource = get_config(null, 'facetoface_bulkaddsource');
+if (empty($bulkaddsource)) {
+    $bulkaddsource = 'bulkaddsourceidnumber';
+}
 
 // Check if data submitted
 if ($data = $form->get_data()) {
@@ -132,7 +136,7 @@ if ($data = $form->get_data()) {
     } else {
         // Load users
         foreach ($addusers as $adduser) {
-            $result = facetoface_user_import($session, $adduser, true, false, true);
+            $result = facetoface_user_import($session, $adduser, false, false, $bulkaddsource);
             if ($result['result'] !== true) {
                 $errors[] = $result;
             } else {
@@ -146,7 +150,7 @@ if ($data = $form->get_data()) {
     if (empty($_SESSION['f2f-bulk-results'])) {
         $_SESSION['f2f-bulk-results'] = array();
     }
-    $_SESSION['f2f-bulk-results'][$session->id] = array($added, $errors);
+    $_SESSION['f2f-bulk-results'][$session->id] = array($added, $errors, $bulkaddsource);
 
     $result_message = facetoface_generate_bulk_result_notice(array($added, $errors));
     $numattendees = facetoface_get_num_attendees($session->id);
@@ -168,5 +172,7 @@ if (!$dialog) {
 // Display form
 $form->display();
 
-// Help text.
-notify(get_string('bulkaddhelptext', 'facetoface'), 'notifyinfo', 'left');
+// Help text
+$bulkaddsourcestring = get_string($bulkaddsource, 'facetoface');
+$notestring = get_string('bulkaddhelptext', 'facetoface', $bulkaddsourcestring);
+notify($notestring, 'notifyinfo', 'left');

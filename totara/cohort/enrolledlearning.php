@@ -39,9 +39,11 @@ $id     = optional_param('id', false, PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT); // Export format.
 $debug  = optional_param('debug', false, PARAM_BOOL);
 
-$url = new moodle_url('/totara/cohort/enrolledlearning.php', array('id' => $id, 'format' => $format, 'debug' => $debug));
-admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout'=>'report'));
 require_capability('moodle/cohort:view', $context);
+$PAGE->set_context($context);
+
+$url = new moodle_url('/totara/cohort/enrolledlearning.php', array('id' => $id, 'format' => $format, 'debug' => $debug));
+admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout' => 'report'));
 
 if (!$id) {
     echo $OUTPUT->header();
@@ -50,8 +52,6 @@ if (!$id) {
     echo $OUTPUT->footer();
     exit;
 }
-
-$cohort = $DB->get_record('cohort', array('id' => $id), '*', MUST_EXIST);
 
 $report = reportbuilder_get_embedded_report(
     'cohort_associations_enrolled',
@@ -64,6 +64,8 @@ if ($format != '') {
     $report->export_data($format);
     die;
 }
+
+$cohort = $DB->get_record('cohort', array('id' => $id), '*', MUST_EXIST);
 
 // Setup lightbox.
 local_js(

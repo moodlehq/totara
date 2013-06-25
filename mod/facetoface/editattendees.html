@@ -1,6 +1,7 @@
 <form id="assignform" method="post" action="<?php echo "{$CFG->wwwroot}/mod/facetoface/editattendees.php?s={$s}"; ?>">
 <div>
 <input type="hidden" name="previoussearch" value="<?php p($previoussearch) ?>" />
+<input type="hidden" name="searchbutton" value="<?php p($searchbutton) ?>" />
 <input type="hidden" name="sesskey" value="<?php p(sesskey()) ?>" />
 <input type="hidden" name="add" value="" />
 <input type="hidden" name="remove" value="" />
@@ -39,9 +40,9 @@
       </td>
       <td valign="middle" style="width: 20%; text-align: center;">
         <p class="arrow_button">
-            <input name="add" id="add" type="submit" value="<?php echo $OUTPUT->larrow().'&nbsp;'.get_string('add'); ?>" title="<?php print_string('add'); ?>" style="width: 75%; text-align: center; margin-bottom: 10px;" onClick="$('form#assignform input[name=add]').val(1);" />
+            <input name="add" id="add" type="submit" value="<?php echo $OUTPUT->larrow().'&nbsp;'.get_string('add'); ?>" title="<?php print_string('add'); ?>" style="width: 75%; text-align: center; margin-bottom: 10px;" onclick="$('form#assignform input[name=add]').val(1);" />
             <br />
-            <input name="remove" id="remove" type="submit" value="<?php echo $OUTPUT->rarrow().'&nbsp;'.get_string('remove'); ?>" title="<?php print_string('remove'); ?>" style="width: 75%; text-align: center;" onCLick="$('form#assignform input[name=remove]').val(1);" />
+            <input name="remove" id="remove" type="submit" value="<?php echo $OUTPUT->rarrow().'&nbsp;'.get_string('remove'); ?>" title="<?php print_string('remove'); ?>" style="width: 75%; text-align: center;" onclick="$('form#assignform input[name=remove]').val(1);" />
         </p>
       </td>
       <td valign="top" width="40%">
@@ -56,12 +57,12 @@
                   onkeydown = "var keyCode = event.which ? event.which : event.keyCode;
                                if (keyCode == 13) {
                                     getElementById('assignform').previoussearch.value=1;
+                                    getElementById('assignform').searchbutton.value=1;
                                     $('#assignform').submit();
                                } " />
-         <input name="search" id="search" type="submit" value="<?php p($strsearch) ?>" />
+         <input name="search" id="search" type="submit" value="<?php p($strsearch) ?>" onclick="$('form#assignform input[name=searchbutton]').val(1);" />
          <?php if (!empty($searchtext)) { ?>
-         <input name="showall" id="showall" type="hidden" value=1 />
-         <input name="clearsearch" id="clearsearch" type="submit" value="<?php echo $strshowall ?>" />
+         <input name="clearsearch" id="clearsearch" type="submit" value="<?php echo $strshowall ?>" onclick="$('form#assignform input[name=searchbutton]').val(0);" />
          <?php } ?>
          <br />
          <select name="addselect[]" size="20" style="width: 100%;" id="addselect" multiple="multiple"

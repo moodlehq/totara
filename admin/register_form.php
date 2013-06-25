@@ -12,7 +12,7 @@ class register_form extends moodleform {
 
         $mform =& $this->_form;
 
-        $mform->addElement('header', 'settingsheader', get_string('totararegistration', 'admin'));
+        $mform->addElement('header', 'settingsheader', get_string('totararegistration', 'totara_core'));
         $radioarray=array();
         $radioarray[] = $mform->createElement('radio', 'registrationenabled', '', get_string('registrationenabled', 'admin'), 1);
         $radioarray[] = $mform->createElement('radio', 'registrationenabled', '', get_string('registrationdisabled', 'admin'), 0);
@@ -23,7 +23,8 @@ class register_form extends moodleform {
         $mform->addElement('header', 'registrationinfo', get_string('registrationinformation', 'admin'));
         $data = get_registration_data();
         foreach($data as $key => $value) {
-            $mform->addElement('static', $key, get_string($key, 'admin'));
+            $module = (strpos($key, 'totara') === 0 || ($key == 'debugstatus')) ? 'totara_core' : 'admin';
+            $mform->addElement('static', $key, get_string($key, $module));
         }
     }
 }

@@ -292,11 +292,12 @@ switch ($searchtype) {
      */
     case 'manager':
         $keywords = totara_search_parse_keywords($query);
-        $fields = array('u.firstname', 'u.lastname');
+        $fields = array('u.firstname', 'u.lastname', 'u.email');
         list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
 
         $search_info->id = 'pa.managerid';
         $search_info->fullname = $DB->sql_fullname('u.firstname', 'u.lastname');
+        $search_info->email = 'email';
         $search_info->sql = "
             FROM {pos_assignment} pa
             INNER JOIN {user} u
@@ -305,7 +306,7 @@ switch ($searchtype) {
                 pa.type = " . POSITION_TYPE_PRIMARY . "
                 AND {$searchsql}
         ";
-        $search_info->order = " GROUP BY pa.managerid, u.firstname, u.lastname ORDER BY u.firstname, u.lastname";
+        $search_info->order = " GROUP BY pa.managerid, u.firstname, u.lastname, u.email ORDER BY u.firstname, u.lastname";
         $search_info->params = $params;
         break;
 

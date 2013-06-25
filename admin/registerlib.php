@@ -110,7 +110,7 @@ function send_registration_data_email($data) {
 
     $attachmentfilename = 'site_registration.ttr';
     $subject = "[SITE REGISTRATION] Site: " . $data['sitefullname'];
-    $message = get_string('siteregistrationemailbody', 'admin', $data['sitefullname']);
+    $message = get_string('siteregistrationemailbody', 'totara_core', $data['sitefullname']);
     $fromaddress = $CFG->noreplyaddress;
 
     $touser = new stdClass();

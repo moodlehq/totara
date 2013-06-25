@@ -41,6 +41,12 @@ class completion_criteria_self extends completion_criteria {
     public $criteriatype = COMPLETION_CRITERIA_TYPE_SELF;
 
     /**
+     * Criteria type form value
+     * @var string
+     */
+    const FORM_MAPPING = '';
+
+    /**
      * Finds and returns a data_object instance based on params.
      *
      * @param array $params associative arrays varname=>value
@@ -58,22 +64,10 @@ class completion_criteria_self extends completion_criteria {
      * @param stdClass $data Form data
      */
     public function config_form_display(&$mform, $data = null) {
-        $mform->addElement('checkbox', 'criteria_self', get_string('enable'));
+        $mform->addElement('checkbox', 'criteria_self_value', get_string('enable'));
 
         if ($this->id ) {
-           $mform->setDefault('criteria_self', 1);
-        }
-    }
-
-    /**
-     * Update the criteria information stored in the database
-     *
-     * @param stdClass $data Form data
-     */
-    public function update_config(&$data) {
-        if (!empty($data->criteria_self)) {
-            $this->course = $data->id;
-            $this->insert();
+           $mform->setDefault('criteria_self_value', 1);
         }
     }
 

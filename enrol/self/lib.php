@@ -59,7 +59,7 @@ class enrol_self_plugin extends enrol_plugin {
             $icons[] = new pix_icon('withoutkey', get_string('pluginname', 'enrol_self'), 'enrol_self');
         }
         if ($key) {
-            $icons[] = new pix_icon('withkey', get_string('pluginnamewithkey', 'enrol_self'), 'enrol_self');
+            $icons[] = new pix_icon('withkey', get_string('pluginnamewithkey', 'totara_core'), 'enrol_self');
         }
         return $icons;
     }

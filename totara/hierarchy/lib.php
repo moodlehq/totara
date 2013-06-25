@@ -1822,8 +1822,8 @@ class hierarchy {
         if ($showcustomfields) {
             if ($custom_fields = $DB->get_records($this->shortprefix.'_type_info_field')) {
                 foreach ($custom_fields as $field) {
-                    $headings["cf_{$field->id}"] = $field->fullname;
-                    $select .= ", cf_{$field->id}.data as cf_{$field->id}";
+                    $headings["cf_{$field->datatype}_{$field->id}"] = $field->fullname;
+                    $select .= ", cf_{$field->id}.data as cf_{$field->datatype}_{$field->id}";
                     $from .= " LEFT JOIN {{$this->shortprefix}_type_info_data} cf_{$field->id} ON hierarchy.id = cf_{$field->id}.{$this->prefix}id AND cf_{$field->id}.fieldid = ?";
                     $params[] = $field->id;
                 }
@@ -1867,6 +1867,25 @@ class hierarchy {
         die;
     }
 
+    /** parse custom fields and call the appropriate display_item_data function on the class
+     * @param string $fieldid name of field
+     * @param string $fieldvalue data in field to be parsed
+     * @param bool $isexport true or false
+     * @return Returns the properly-parsed customfield data
+     */
+    function parse_customfield($fieldid, $fieldvalue, $isexport=false) {
+        global $CFG;
+        list($prefix, $datatype, $itemid) = explode('_', $fieldid);
+        $cf_class = 'customfield_' . $datatype;
+        $data = '';
+
+        $classfilepath = $CFG->dirroot . '/totara/customfield/field/' . $datatype . '/field.class.php';
+        if (file_exists($classfilepath)) {
+            require_once($classfilepath);
+            $data = call_user_func(array($cf_class, 'display_item_data'), $fieldvalue, array('prefix' => $this->prefix, 'itemid' => $itemid, 'isexport' => $isexport));
+        }
+        return $data;
+    }
 
     /** Download current table in ODS format
      * @param array $fields Array of column headings
@@ -1927,7 +1946,12 @@ class hierarchy {
                     $worksheet[0]->write($row, $datarow->depthlevel-1, htmlspecialchars_decode($datarow->hierarchyname));
                 }
                 foreach ($fields as $fieldid => $fieldname) {
-                    $worksheet[0]->write($row, $curcol++, htmlspecialchars_decode($datarow->$fieldid));
+                    if (strpos($fieldid, 'cf_') === 0) {
+                        $data = $this->parse_customfield($fieldid, $datarow->$fieldid, true);
+                        $worksheet[0]->write($row, $curcol++, htmlspecialchars_decode($data));
+                    } else {
+                        $worksheet[0]->write($row, $curcol++, htmlspecialchars_decode($datarow->$fieldid));
+                    }
                 }
                 $row++;
             }
@@ -1999,7 +2023,12 @@ class hierarchy {
                     $worksheet[0]->write($row, $datarow->depthlevel-1, htmlspecialchars_decode($datarow->hierarchyname));
                 }
                 foreach ($fields as $fieldid => $fieldname) {
-                    $worksheet[0]->write($row, $curcol++, htmlspecialchars_decode($datarow->$fieldid));
+                    if (strpos($fieldid, 'cf_') === 0) {
+                        $data = $this->parse_customfield($fieldid, $datarow->$fieldid, true);
+                        $worksheet[0]->write($row, $curcol++, htmlspecialchars_decode($data));
+                    } else {
+                        $worksheet[0]->write($row, $curcol++, htmlspecialchars_decode($datarow->$fieldid));
+                    }
                 }
                 $row++;
             }
@@ -2063,7 +2092,12 @@ class hierarchy {
                     if ($fieldid == 'hierarchyname' && !$searchactive) {
                         continue;
                     } else if ($datarow->$fieldid) {
-                        $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $datarow->$fieldid));
+                        if (strpos($fieldid, 'cf_') === 0) {
+                            $data = $this->parse_customfield($fieldid, $datarow->$fieldid, true);
+                            $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $data));
+                        } else {
+                            $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $datarow->$fieldid));
+                        }
                     } else {
                         $row[] = '';
                     }
@@ -2085,7 +2119,6 @@ class hierarchy {
             die;
         }
     }
-
 
     /**
      * Returns various stats about an item, used for listed what will be deleted

@@ -55,3 +55,7 @@ body.path-mod-facetoface div.f2f-button {
 body.path-mod-facetoface div#fgroup_id_recipients input[id*="id_booked_type"] {
     margin-left: 15px;
 }
+
+input.cellwidth {
+    width: 90% !important;
+}

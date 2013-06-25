@@ -185,25 +185,25 @@ class cohort_edit_form extends moodleform {
             }
         }
         // Check that startdate and enddate are empty or valid dates, and that
-         // startdate is before enddate if both are provided
-         $startdatestr = isset($data['startdate'])?$data['startdate']:'';
-         $startdate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $startdatestr );
-         $enddatestr = isset($data['enddate'])?$data['enddate']:'';
-         $enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddatestr );
+        // startdate is before enddate if both are provided
+        $startdatestr = isset($data['startdate'])?$data['startdate']:'';
+        $startdate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $startdatestr );
+        $enddatestr = isset($data['enddate'])?$data['enddate']:'';
+        $enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddatestr );
 
         // Enforce valid dates
         if (false === $startdate && $startdatestr !== get_string('datepickerdisplayformat', 'totara_core') && $startdatestr !== '') {
-             $errors['startdate'] = get_string('error:dateformat', 'totara_cohort', get_string('datepickerplaceholder', 'totara_core'));
+            $errors['startdate'] = get_string('error:dateformat', 'totara_cohort', get_string('datepickerplaceholder', 'totara_core'));
         }
         if (false === $enddate && $enddatestr !== get_string('datepickerdisplayformat', 'totara_core') && $enddatestr !== '') {
-             $errors['enddate'] = get_string('error:dateformat', 'totara_cohort', get_string('datepickerplaceholder', 'totara_core'));
+            $errors['enddate'] = get_string('error:dateformat', 'totara_cohort', get_string('datepickerplaceholder', 'totara_core'));
         }
 
         // Enforce start date before finish date
-        if ($startdate > $enddate && $startdate !== false && $enddate !== false) {
-             $errstr = get_string('error:startafterfinish','totara_cohort');
-             $errors['startdate_group'] = $errstr;
-             $errors['enddate_group'] = $errstr;
+        if ($startdate > $enddate && $enddate) {
+            $errstr = get_string('error:startafterfinish','totara_cohort');
+            $errors['startdate_group'] = $errstr;
+            $errors['enddate_group'] = $errstr;
             unset($errstr);
         }
         return $errors;

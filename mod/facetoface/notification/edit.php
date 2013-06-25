@@ -187,7 +187,7 @@ $PAGE->set_headingmenu(navmenu($course, $cm));
 echo $OUTPUT->header();
 
 if ($id) {
-    $notification_title = htmlentities($notification->title);
+    $notification_title = format_string($notification->title);
     echo $OUTPUT->heading(get_string('editnotificationx', 'facetoface', $notification_title));
 } else {
     echo $OUTPUT->heading(get_string('addnotification', 'facetoface'));

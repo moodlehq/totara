@@ -43,6 +43,12 @@ class completion_criteria_activity extends completion_criteria {
     public $criteriatype = COMPLETION_CRITERIA_TYPE_ACTIVITY;
 
     /**
+     * Criteria type form value
+     * @var string
+     */
+    const FORM_MAPPING = 'moduleinstance';
+
+    /**
      * Finds and returns a data_object instance based on params.
      *
      * @param array $params associative arrays varname=>value
@@ -60,34 +66,29 @@ class completion_criteria_activity extends completion_criteria {
      * @param stdClass $data details of various modules
      */
     public function config_form_display(&$mform, $data = null) {
-        $mform->addElement('checkbox', 'criteria_activity['.$data->id.']', ucfirst(self::get_mod_name($data->module)).' - '.$data->name);
+        $mform->addElement('checkbox', 'criteria_activity_value['.$data->id.']', ucfirst(self::get_mod_name($data->module)).' - '.$data->name);
 
         if ($this->id) {
-            $mform->setDefault('criteria_activity['.$data->id.']', 1);
+            $mform->setDefault('criteria_activity_value['.$data->id.']', 1);
         }
     }
 
     /**
-     * Update the criteria information stored in the database
-     *
-     * @param stdClass $data Form data
+     * Records this object in the database, sets its id to the returned value, and returns that value.
+     * If successful this function also fetches the new object data from database and stores it
+     * in object properties.
+     * @return int PK ID if successful, false otherwise
      */
-    public function update_config(&$data) {
+    public function insert() {
         global $DB;
 
-        if (!empty($data->criteria_activity) && is_array($data->criteria_activity)) {
-
-            $this->course = $data->id;
-
-            foreach (array_keys($data->criteria_activity) as $activity) {
-
-                $module = $DB->get_record('course_modules', array('id' => $activity));
+        if (empty($this->module)) {
+            if ($module = $DB->get_record('course_modules', array('id' => $this->moduleinstance))) {
                 $this->module = self::get_mod_name($module->module);
-                $this->moduleinstance = $activity;
-                $this->id = NULL;
-                $this->insert();
             }
         }
+
+        return parent::insert();
     }
 
     /**

@@ -51,7 +51,7 @@ if (isset($_SESSION['f2f-bulk-results'][$session->id])) {
 
 $added = $results[0];
 $errors = $results[1];
-$bulkaddasidnumber = empty($_SESSION['f2f-bulk-results'][$session->id][2]);
+$bulkaddsource = empty($results[2]) ? 'bulkaddsourceuserid' : $results[2];
 
 // Check capability
 
@@ -66,7 +66,7 @@ if ($data = data_submitted()) {
                 continue;
             }
 
-            $result = facetoface_user_import($session, $conflict, true, true, $bulkaddasidnumber);
+            $result = facetoface_user_import($session, $conflict, true, true, $bulkaddsource);
             if ($result['result'] !== true) {
                 $errors[] = $result;
             } else {
@@ -138,7 +138,7 @@ if ($errors) {
 }
 
 $table = new html_table();
-$table->head = array(get_string('bulkaddsourceidnumber', 'facetoface'), get_string('name'), get_string('result', 'facetoface'));
+$table->head = array(get_string($bulkaddsource, 'facetoface'), get_string('name'), get_string('result', 'facetoface'));
 $table->align = array('left', 'left', 'left');
 
 if ($has_conflict) {

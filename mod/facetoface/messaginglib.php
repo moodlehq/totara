@@ -119,22 +119,22 @@ function facetoface_get_ical_attachment($method, $facetoface, $session, $user) {
         $DESCRIPTION = facetoface_ical_escape(get_string('icaldescription', 'facetoface', $facetoface), true);
 
         // Get the location data from custom fields if they exist
-        $customfielddata = facetoface_get_customfielddata($session->id);
+        $room = facetoface_get_session_room($session->id);
         $locationstring = '';
-        if (!empty($customfielddata['room'])) {
-            $locationstring .= $customfielddata['room']->data;
+        if (!empty($room->name)) {
+            $locationstring .= $room->name;
         }
-        if (!empty($customfielddata['venue'])) {
+        if (!empty($room->building)) {
             if (!empty($locationstring)) {
                 $locationstring .= "\n";
             }
-            $locationstring .= $customfielddata['venue']->data;
+            $locationstring .= $room->building;
         }
-        if (!empty($customfielddata['location'])) {
+        if (!empty($room->address)) {
             if (!empty($locationstring)) {
                 $locationstring .= "\n";
             }
-            $locationstring .= $customfielddata['location']->data;
+            $locationstring .= $room->address;
         }
 
         // NOTE: Newlines are meant to be encoded with the literal sequence

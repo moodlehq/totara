@@ -113,7 +113,12 @@ class customfield_textarea extends customfield_base {
         }
         $context = context_system::instance();
         $data = file_rewrite_pluginfile_urls($data, 'pluginfile.php', $context->id, 'totara_customfield', $extradata['prefix'], $extradata['itemid']);
-        return $data;
+
+        if (isset($extradata['isexport']) && $extradata['isexport']) {
+            return format_string($data);
+        } else {
+            return $data;
+        }
     }
 }
 

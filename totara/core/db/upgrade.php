@@ -395,7 +395,7 @@ function xmldb_totara_core_upgrade($oldversion) {
         //get available and already-installed (via langimport tool) languages
         $installer = new lang_installer();
         if (!$availablelangs = $installer->get_remote_list_of_languages()) {
-            $notice_error[] = get_string('cannotdownloadtotaralanguageupdatelist', 'tool_langimport');
+            $notice_error[] = get_string('cannotdownloadtotaralanguageupdatelist', 'totara_core');
         } else {
             if (!isset($CFG->langotherroot)) {
                 $CFG->langotherroot = $CFG->dataroot.'/lang';
@@ -501,5 +501,17 @@ function xmldb_totara_core_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2013042600, 'totara_core');
     }
 
+    if ($oldversion < 2013061800) {
+        // Clean up course completion records for deleted roles
+        $sql= "SELECT cc.id, cc.role, r.shortname FROM {course_completion_criteria} cc
+      LEFT OUTER JOIN {role} r on cc.role=r.id
+                WHERE cc.role IS NOT NULL
+                  AND r.shortname IS NULL";
+        $roles = $DB->get_records_sql($sql, array());
+        foreach ($roles as $role) {
+            $DB->delete_records('course_completion_criteria', array('role' => $role->role));
+        }
+        totara_upgrade_mod_savepoint(true, 2013061800, 'totara_core');
+    }
     return true;
 }

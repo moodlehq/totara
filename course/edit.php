@@ -165,7 +165,11 @@ if ($editform->is_cancelled()) {
         // In creating the course
         $course = create_course($data, $editoroptions);
         if ($usetags) {
-            add_tags_info($course->id);
+            if (isset($data->otags)) {
+                tag_set('course', $course->id, tag_get_name($data->otags));
+            } else {
+                tag_set('course', $course->id, array());
+            }
         }
 
         $data->id = $course->id;
@@ -195,7 +199,11 @@ if ($editform->is_cancelled()) {
         // Save any changes to the files used in the editor
         update_course($data, $editoroptions);
         if ($usetags) {
-            add_tags_info($course->id);
+            if (isset($data->otags)) {
+                tag_set('course', $course->id, tag_get_name($data->otags));
+            } else {
+                tag_set('course', $course->id, array());
+            }
         }
         customfield_save_data($data, 'course', 'course');
     }
@@ -267,16 +275,3 @@ echo $OUTPUT->heading($streditcoursesettings);
 $editform->display();
 
 echo $OUTPUT->footer();
-
-/**
- * function to attach tags into a course
- * @param int courseid - id of the course
- */
-function add_tags_info($courseid) {
-
-    $tags = array();
-    if ($otags = optional_param_array('otags', '', PARAM_INT)) {
-        $tags = tag_get_name($otags);
-    }
-    tag_set('course', $courseid, $tags);
-}

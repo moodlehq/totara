@@ -1440,7 +1440,8 @@ function install_core($version, $verbose) {
         external_update_descriptions('moodle');
         events_update_definition('moodle');
         message_update_providers('moodle');
-
+        // Populate the timezone table.
+        totara_import_timezonelist();
         // Write default settings unconditionally
         admin_apply_default_settings(NULL, true);
 
@@ -1477,9 +1478,6 @@ function upgrade_core($version, $verbose) {
         print_upgrade_part_start('moodle', false, $verbose);
         // Upgrade current language pack if we can
         upgrade_language_pack();
-        //upgrade all language packs if we can
-        totara_upgrade_installed_languages();
-
         // one time special upgrade script for items that need fixing before main upgrade runs
         if ($CFG->version < 2012120303.02) {
             $initialupgradefile = "{$CFG->dirroot}/totara/core/upgrade/upgrade_initialise.php";
@@ -1544,7 +1542,13 @@ function upgrade_noncore($verbose) {
     global $CFG;
 
     raise_memory_limit(MEMORY_EXTRA);
-
+    // Upgrade internationalisation first.
+    print_upgrade_part_start('Totara', false, $verbose);
+    // Upgrade all language packs if we can.
+    totara_upgrade_installed_languages();
+    // Ensure timezones are updated.
+    totara_import_timezonelist();
+    print_upgrade_part_end('Totara', false, $verbose);
     // upgrade all plugins types
     try {
         // Disable the use of cache stores here.

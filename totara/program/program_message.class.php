@@ -640,6 +640,9 @@ abstract class prog_eventbased_message extends prog_message {
             $this->replacementvars['setlabel'] = $setlabel;
         }
 
+        if (!empty($recipient)) {
+            $this->replacementvars['userfullname'] = fullname($recipient);
+        }
         $result = true;
 
         $manager = totara_get_manager($recipient->id);

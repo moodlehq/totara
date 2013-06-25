@@ -217,7 +217,6 @@ $string['configfiltermatchoneperpage'] = 'Automatic linking filters will only ge
 $string['configfiltermatchonepertext'] = 'Automatic linking filters will only generate a single link for the first matching text instance found in each item of text (e.g., resource, block) on the page. All others are ignored. This setting is ignored if the one per page setting is <i>yes</i>.';
 $string['configfilteruploadedfiles'] = 'Process all uploaded HTML and text files with the filters before displaying them, only uploaded HTML files or none at all.';
 $string['configforcelogin'] = 'Normally, the front page of the site and the course listings (but not courses) can be read by people without logging in to the site.  If you want to force people to log in before they do ANYTHING on the site, then you should enable this setting.';
-$string['configforcelogintotara'] = 'Normally, the entire site is only available to logged in users. If you would like to make the front page and the course listings (but not the course contents) available without logging in, then you should uncheck this setting.';
 $string['configforceloginforprofiles'] = 'This setting forces people to login as a real (non-guest) account before viewing any user\'s profile. If you disabled this setting, you may find that some users post advertising (spam) or other inappropriate content in their profiles, which is then visible to the whole world.';
 $string['configfrontpage'] = 'The items selected above will be displayed on the site\'s front page.';
 $string['configfrontpageloggedin'] = 'The items selected above will be displayed on the site\'s front page when a user is logged in.';
@@ -416,7 +415,6 @@ $string['debugsmtp'] = 'Debug email sending';
 $string['debugstringids'] = 'Show origin of languages strings';
 $string['debugstringids_desc'] = 'This option is designed to help translators. When this option is enabled, if you add the parameter strings=1 to a request URL, it will show the language file and string id beside each string that is output.';
 $string['debugvalidators'] = 'Show validator links';
-$string['debugstatus'] = 'Debug status';
 $string['defaultcity'] = 'Default city';
 $string['defaultcity_help'] = 'A city entered here will be the default city when creating new user accounts.';
 $string['defaultformatnotset'] = 'Error determining default course format. Please check site settings.';
@@ -963,7 +961,6 @@ $string['showdetails'] = 'Show details';
 $string['showuseridentity'] = 'Show user identity';
 $string['showuseridentity_desc'] = 'When selecting or searching for users, and when displaying lists of users, these fields may be shown in addition to their full name. The fields are only shown to users who have the moodle/site:viewuseridentity capability; by default, teachers and managers. (This option makes most sense if you choose one or two fields that are mandatory at your institution.)';
 $string['simplexmlrequired'] = 'The SimpleXML PHP extension is now required by Totara.';
-$string['siteregistrationemailbody'] = 'Site {$a} was not able to register itself automatically. Access to push data to our registrations site is probably blocked by a firewall.';
 $string['sitemaintenance'] = 'The site is undergoing maintenance and is currently not available';
 $string['sitemaintenancemode'] = 'Maintenance mode';
 $string['sitemaintenanceoff'] = 'Maintenance mode has been disabled and the site is running normally again';
@@ -1076,31 +1073,19 @@ This can cause significant problems later, so in order to continue you must ensu
 
 The recommended way to clean your Totara directory is as follows:
 
-<<<<<<< HEAD
 * rename the current Totara directory to "totara_old"
 * create a new Totara directory containing only files from a standard Totara package download
 * move the original config.php file and any non-standard plugins from the "totara_old" directory to the new Totara directory
-=======
-* rename the current Moodle directory to "moodle_old"
-* create a new Moodle directory containing only files from either a standard Moodle package download, or from the Moodle Git repository
-* move the original config.php file and any non-standard plugins from the "moodle_old" directory to the new Moodle directory
->>>>>>> v2.4.4
 
 When you have a clean Totara directory, refresh this page to resume the Totara update process.
 
 This warning is often caused by unzipping a standard Totara package over a previous version of Totara. While this is OK for minor upgrades, it is strongly discouraged for major Totara upgrades.
 
-<<<<<<< HEAD
 This warning can also be caused by an incomplete checkout or update operation from a GIT repository, in which case you may just have to wait for the operation complete, or perhaps run the appropriate clean up command and retry the operation.
 
 You can find more information in upgrade documentation at <a href="{$a}">{$a}</a>';
 $string['upgradesure'] = 'Your Totara files have been changed, and you are about to automatically upgrade your server to this version: <br /><br />
-=======
-This warning can also be caused by an incomplete checkout or update operation from the Git repository, in which case you may just have to wait for the operation to complete, or perhaps run the appropriate clean-up command and retry the operation.
 
-You can find more information in upgrade documentation at <a href="{$a}">{$a}</a>.';
-$string['upgradesure'] = 'Your Moodle files have been changed, and you are about to automatically upgrade your server to this version: <br /><br />
->>>>>>> v2.4.4
 <strong>{$a}</strong> <br /><br />
 Once you do this you can not go back again. <br /><br />
 Please note that this process can take a long time. <br /><br />
@@ -1174,16 +1159,9 @@ $string['techsupportemail'] = 'Tech support email';
 $string['techsupportemailhelp'] = 'Email address of persons handling most technical issues related to site hosting';
 $string['techsupportphone'] = 'Tech support phone number';
 $string['techsupportphonehelp'] = 'Phone number of persons handling most technical issues related to site hosting. (Include country code)';
-$string['totarabuild'] = 'Totara build number';
-$string['totararegistration'] = 'Totara Registration';
-$string['totararegistrationinfo'] = '<p>This page configures registration updates which are sent to totaralms.com.
-These updates allow Totara to know what versions of Totaralms and support software you are running.
-This information will allow Totara to better examine and resolve any support issues you face in the future.</p>
-<p>This information will be securely transmitted and held in confidence.</p>';
 $string['checksum'] = 'Checksum';
 $string['dbtype'] = 'Database type';
-$string['totararelease'] = 'Totara release identifier';
-$string['totaraversion'] = 'Totara version number';
+
 $string['usercount'] = 'Number of site users';
 $string['activeusercount'] = 'Number of active users';
 $string['webserversoftware'] = 'Web server software identifier';

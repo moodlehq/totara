@@ -1436,6 +1436,7 @@ function delete_role($roleid) {
     $DB->delete_records('role_allow_override', array('allowoverride'=>$roleid));
     $DB->delete_records('role_names',          array('roleid'=>$roleid));
     $DB->delete_records('role_context_levels', array('roleid'=>$roleid));
+    $DB->delete_records('course_completion_criteria', array('role'=>$roleid));
 
     // finally delete the role itself
     // get this before the name is gone for logging

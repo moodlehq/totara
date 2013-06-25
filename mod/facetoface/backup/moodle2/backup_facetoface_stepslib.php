@@ -2,6 +2,10 @@
   //------------------------------------------------------------------
   // This is the "graphical" structure of the Facet-to-face module:
   //
+  //                          facetoface_notifications
+  //               +-------(CL, pk->id, fk->facetofaceid)
+  //               |
+  //               |
   //          facetoface                  facetoface_sessions
   //         (CL, pk->id)-------------(CL, pk->id, fk->facetoface)
   //                                          |  |  |  |
@@ -47,6 +51,13 @@ class backup_facetoface_activity_structure_step extends backup_activity_structur
             'name', 'intro', 'introformat', 'thirdparty', 'thirdpartywaitlist', 'display',
             'timecreated', 'timemodified', 'shortname', 'showoncalendar', 'approvalreqd', 'usercalentry'));
 
+        $notifications = new backup_nested_element('notifications');
+
+        $notification = new backup_nested_element('notification', array('id'), array(
+            'type', 'conditiontype', 'scheduleunit', 'scheduleamount', 'scheduletime', 'ccmanager', 'managerprefix',
+            'title', 'body', 'booked', 'waitlisted', 'cancelled', 'courseid', 'facetofaceid', 'status',
+            'issent', 'timemodified', 'usermodified'));
+
         $sessions = new backup_nested_element('sessions');
 
         $session = new backup_nested_element('session', array('id'), array(
@@ -81,6 +92,9 @@ class backup_facetoface_activity_structure_step extends backup_activity_structur
 
 
         // Build the tree
+        $facetoface->add_child($notifications);
+        $notifications->add_child($notification);
+
         $facetoface->add_child($sessions);
         $sessions->add_child($session);
 
@@ -101,6 +115,8 @@ class backup_facetoface_activity_structure_step extends backup_activity_structur
 
         // Define sources
         $facetoface->set_source_table('facetoface', array('id' => backup::VAR_ACTIVITYID));
+
+        $notification->set_source_table('facetoface_notification', array('facetofaceid' => backup::VAR_PARENTID));
 
         $session->set_source_sql('SELECT s.id, s.facetoface, s.capacity, s.allowoverbook, s.details, s.datetimeknown,
                                          s.duration, s.normalcost, s.discountcost, r.name AS room_name,
