@@ -3,6 +3,40 @@
 
 Totara LMS Changelog
 
+Release 2.4.4 (25th June 2013):
+==================================================
+
+Improvements:
+    T-10834    Include users with roles from higher contexts as session trainers in Facetoface
+    T-10743    Added course completion enhancements
+    T-10702    Show email beside user name when selecting users in dialogs
+    T-10825    Timezones are now updated on Totara install and upgrade
+    T-10727    Add bulk uploads using ID number, username or userid in Facetoface
+
+Bug Fixes:
+    T-10830    Set RTL direction of message body for RTL languages
+    T-10829    Fixed non-English event names truncation in Facetoface
+    T-10839    Fixed incorrect URL in Facetoface message footer
+    T-10838    Fixed Factoface session location in iCal invitations
+    T-10836    Fixed ID bug when updating notification template in Facetoface
+    T-10815    Fixes page set up to avoid reports export issues in Audiences
+    T-10823    Fixed error accessing a course with completion by role configured when a role has been deleted
+    T-10826    Fixed error when rule sets are updated in Audiences
+    T-10783    Fixed input boxes boundary in Facetoface session form
+    T-10686    Fixed exporting of hierarchy frameworks with custom fields
+    T-10821    Send notifications to users added to Facetoface sessions through text input
+    T-10818    Fixed participants search in Facetoface
+    T-9714     Users with create course/program capabilities in a category context can now see category if it is empty
+    T-10789    Fixed string formatting in Facetoface notifications
+    T-10819    Fixed userfullname variable replacement in event-driven Program messages
+    T-10808    Include notifications when duplicating a Facetoface activity
+    T-10772    Fixed PHP warning message when saving cohorts, courses, and modules with no tag selected
+    T-10812    Fixed internationalisation issues in Facetoface
+    T-10804    Fixed issues with filenames names when exporting a report
+    T-10525    Fixed PHP strict standards errors in Element Library
+    T-10517    Allow creating an audience without the end date
+
+
 Release 2.4.3 (11th June 2013):
 ==================================================
 
