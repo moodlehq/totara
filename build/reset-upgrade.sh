@@ -25,5 +25,11 @@ echo "Re-create moodledata"
 mkdir ../moodledata
 chmod 777 ../moodledata
 
+echo "Update the config file"
+# Get the salt from the 2.2 file.
+SALT=`grep passwordsaltmain /var/lib/jenkins/jobs/Totara-2.2-PostgreSQL/workspace/config.php`
+# Generate a new config file and replace the old one.
+sed 's/###PASSWORDSALTMAINGOESHERE###/'$SALT'/g' ../config-template.php > config.php
+
 echo "Run the CLI-Upgrade script"
 sudo -u www-data php /var/lib/jenkins/jobs/Totara-2.4-upgrade-PostgreSQL/workspace/admin/cli/upgrade.php --non-interactive
