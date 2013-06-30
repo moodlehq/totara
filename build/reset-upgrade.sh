@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This accepts three arguments
 # 1/ The database server e.g. oak
