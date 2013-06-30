@@ -91,10 +91,11 @@ class award_criteria_courseset extends award_criteria {
                 $select[$c->id] = $list[$c->category] . ' / ' . format_string($c->fullname, true, array('context' => context_course::instance($c->id)));
             }
 
+            asort($select);
             if ($this->id !== 0) {
                 $selected = array_keys($this->params);
             }
-            $settings = array('multiple' => 'multiple', 'size' => 20, 'style' => 'width:300px');
+            $settings = array('multiple' => 'multiple', 'size' => 20, 'class' => 'selectcourse');
             $mform->addElement('select', 'courses', get_string('addcourse', 'badges'), $select, $settings);
             $mform->addRule('courses', get_string('requiredcourse', 'badges'), 'required');
             $mform->addHelpButton('courses', 'addcourse', 'badges');

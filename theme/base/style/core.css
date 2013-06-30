@@ -1138,3 +1138,4 @@ div.badge .expireimage { width: 100px; height: 100px; left: 20px; top: 0px; }
 .statusbox.inactive { background-color: #FFEBA8; }
 .activatebadge { margin: 0px; text-align: left; vertical-align: middle; }
 .addcourse { float: right; }
+#page-badges-criteria_settings .selectcourse { min-width: 200px; max-width: 600px; }
