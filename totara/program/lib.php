@@ -1151,17 +1151,19 @@ function prog_eventhandler_courseset_completed($eventdata) {
 
 function prog_store_position_assignment($assignment) {
     global $DB;
+    // Need to check this since this is not necessarily set now.
+    $currentpositionid = isset($assignment->positionid) ? $assignment->positionid : null;
+
     $position_assignment_history = $DB->get_record('prog_pos_assignment', array('userid' => $assignment->userid, 'type' => $assignment->type));
     if (!$position_assignment_history) {
         $position_assignment_history = new stdClass();
         $position_assignment_history->userid = $assignment->userid;
-        $position_assignment_history->positionid = $assignment->positionid;
+        $position_assignment_history->positionid = $currentpositionid;
         $position_assignment_history->type = $assignment->type;
         $position_assignment_history->timeassigned = time();
         $DB->insert_record('prog_pos_assignment', $position_assignment_history);
-    }
-    else if ($position_assignment_history->positionid != $assignment->positionid) {
-        $position_assignment_history->positionid = $assignment->positionid;
+    } else if ($position_assignment_history->positionid != $currentpositionid) {
+        $position_assignment_history->positionid = $currentpositionid;
         $position_assignment_history->timeassigned = time();
         $DB->update_record('prog_pos_assignment', $position_assignment_history);
     }
