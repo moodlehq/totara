@@ -374,7 +374,8 @@ class cohort_rule_ui_menu extends cohort_rule_ui_form {
             'select',
             'listofvalues',
             '',
-            $options
+            $options,
+            array('size' => 10)
         );
         // todo: The UI mockup shows a fancy ajax thing to add/remove selected items.
         // For now, using a humble multi-select
