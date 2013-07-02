@@ -321,7 +321,7 @@ foreach($activities as $activity) {
     }
 
     // Some names (labels) come URL-encoded and can be very long, so shorten them
-    $activity->name = shorten_text($activity->name);
+    $activity->name = !$csv ? shorten_text($activity->name) : $activity->name;
 
     if ($csv) {
         print $sep.csv_quote(strip_tags($activity->name)).$sep.csv_quote($datetext);
