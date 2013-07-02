@@ -3330,7 +3330,7 @@ function facetoface_add_customfields_to_form(&$mform, $customfields, $alloptiona
         $fieldname = "custom_$field->shortname";
 
         $options = array();
-        if (!$field->required) {
+        if (!$field->required || $field->type == CUSTOMFIELD_TYPE_SELECT) {
             $options[''] = get_string('none');
         }
         foreach (explode(CUSTOMFIELD_DELIMITER, $field->possiblevalues) as $value) {
