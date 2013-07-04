@@ -113,13 +113,19 @@ class rb_filter_enrol extends rb_filter_type {
 
         $value = $data['value'];
 
-        // throw an error if a source doesn't define the field correctly
-        if (!isset($this->field['course']) || !isset($this->field['user'])) {
-            throw new ReportBuilderException('Invalid field passed to enrol filter, field must be an array with course and user elements.');
-        }
         // split out composite field into parts
-        $coursefield = $this->field['course'];
-        $userfield = $this->field['user'];
+        // if the report is cached there will be a rb_composite_* field for each part
+        if ($this->report->is_cached()) {
+            $coursefield = 'base.rb_composite_course';
+            $userfield = 'base.rb_composite_user';
+        } else {
+            // throw an error if a source doesn't define the field correctly
+            if (!is_array($this->field) || !isset($this->field['course']) || !isset($this->field['user'])) {
+                throw new ReportBuilderException('Invalid field passed to enrol filter, field must be an array with course and user elements.');
+            }
+            $coursefield = $this->field['course'];
+            $userfield = $this->field['user'];
+        }
 
         if ($value == '') {
             // return 1=1 instead of TRUE for MSSQL support
