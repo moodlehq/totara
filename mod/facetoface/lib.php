@@ -2244,7 +2244,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     } else {
                         $sessiondates .= $sessionobj->startdate . ' - ' . $sessionobj->enddate;
                     }
-                    $sessiontimes .= $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
+                    $sessiontimes .= get_string('sessiondatetimecourseformat', 'facetoface', $sessionobj);
                 }
             } else {
                 $sessiondates = get_string('wait-listed', 'facetoface');
@@ -2340,7 +2340,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     } else {
                         $sessiondate .= $sessionobj->startdate . ' - ' . $sessionobj->enddate;
                     }
-                    $sessiontime = $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
+                    $sessiontime = get_string('sessiondatetimecourseformat', 'facetoface', $sessionobj);
                     if (count($session->sessiondates) > 1) {
                         $multidate = html_writer::start_tag('br') . get_string('multidate', 'facetoface');
                     }
