@@ -126,47 +126,12 @@ function facetoface_get_status($statuscode) {
 }
 
 /**
- * Prints the cost amount along with the appropriate currency symbol.
- *
- * To set your currency symbol, set the appropriate 'locale' in
- * lang/en_utf8/langconfig.php (or the equivalent file for your
- * language).
- *
- * @param $amount      Numerical amount without currency symbol
- * @param $htmloutput  Whether the output is in HTML or not
- */
-function format_cost($amount, $htmloutput=true) {
-    setlocale(LC_MONETARY, get_string('locale', 'langconfig'));
-    $localeinfo = localeconv();
-
-    $symbol = $localeinfo['currency_symbol'];
-    if (empty($symbol)) {
-        // Cannot get the locale information, default to en_US.UTF-8
-        return '$' . $amount;
-    }
-
-    // Character between the currency symbol and the amount
-    $separator = '';
-    if ($localeinfo['p_sep_by_space']) {
-        $separator = $htmloutput ? '&nbsp;' : ' ';
-    }
-
-    // The symbol can come before or after the amount
-    if ($localeinfo['p_cs_precedes']) {
-        return $symbol . $separator . $amount;
-    }
-    else {
-        return $amount . $separator . $symbol;
-    }
-}
-
-/**
  * Returns the effective cost of a session depending on the presence
  * or absence of a discount code.
  *
  * @param class $sessiondata contains the discountcost and normalcost
  */
-function facetoface_cost($userid, $sessionid, $sessiondata, $htmloutput=true) {
+function facetoface_cost($userid, $sessionid, $sessiondata) {
     global $CFG,$DB;
 
     $count = $DB->count_records_sql("SELECT COUNT(*)
@@ -177,9 +142,9 @@ function facetoface_cost($userid, $sessionid, $sessiondata, $htmloutput=true) {
                                 AND su.discountcode IS NOT NULL
                                 AND su.sessionid = se.id", array($sessionid, $userid));
     if ($count > 0) {
-        return format_cost($sessiondata->discountcost, $htmloutput);
+        return format_string($sessiondata->discountcost);
     } else {
-        return format_cost($sessiondata->normalcost, $htmloutput);
+        return format_string($sessiondata->normalcost);
     }
 }
 
@@ -501,19 +466,6 @@ function cleanup_session_data($session) {
     elseif ($session->capacity > $MAX_CAPACITY) {
         $session->capacity = $MAX_CAPACITY;
     }
-
-    // Get the decimal point separator
-    setlocale(LC_MONETARY, get_string('locale', 'langconfig'));
-    $localeinfo = localeconv();
-    $symbol = $localeinfo['decimal_point'];
-    if (empty($symbol)) {
-        // Cannot get the locale information, default to en_US.UTF-8
-        $symbol = '.';
-    }
-
-    // Only numbers or decimal separators allowed here
-    $session->normalcost = round(preg_replace("/[^\d$symbol]/", '', $session->normalcost));
-    $session->discountcost = round(preg_replace("/[^\d$symbol]/", '', $session->discountcost));
 
     return $session;
 }
@@ -2951,10 +2903,10 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
     }
 
     if (!empty($session->normalcost)) {
-        $table->data[] = array(get_string('normalcost', 'facetoface'), format_cost($session->normalcost));
+        $table->data[] = array(get_string('normalcost', 'facetoface'), format_string($session->normalcost));
     }
     if (!empty($session->discountcost)) {
-        $table->data[] = array(get_string('discountcost', 'facetoface'), format_cost($session->discountcost));
+        $table->data[] = array(get_string('discountcost', 'facetoface'), format_string($session->discountcost));
     }
     if (!empty($session->details)) {
         $details = clean_text($session->details, FORMAT_HTML);

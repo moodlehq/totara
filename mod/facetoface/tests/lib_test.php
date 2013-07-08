@@ -62,10 +62,10 @@ class facetofacelib_test extends advanced_testcase {
     protected $facetoface_sessions_data = array(
         array('id', 'facetoface', 'capacity', 'allowoverbook', 'details', 'datetimeknown',
               'duration', 'normalcost', 'discountcost', 'timecreated', 'timemodified', 'usermodified'),
-        array(1,    1,   100,    1,  'dtl1',     1,     4,     75,     60,     1500,   1600, 2),
-        array(2,    2,    50,    0,  'dtl2',     0,     1,     90,      0,     1400,   1500, 2),
-        array(3,    3,    10,    1,  'dtl3',     1,     7,    100,     80,     1500,   1500, 2),
-        array(4,    4,    1,     0,  'dtl4',     0,     7,     10,      8,     0500,   1900, 2),
+        array(1,    1,   100,    1,  'dtl1',     1,     4,    '$75',     '$60',     1500,   1600, 2),
+        array(2,    2,    50,    0,  'dtl2',     0,     1,    '$90',     '$0',     1400,   1500, 2),
+        array(3,    3,    10,    1,  'dtl3',     1,     7,    '$100',    '$80',     1500,   1500, 2),
+        array(4,    4,    1,     0,  'dtl4',     0,     7,    '$10',     '$8',     0500,   1900, 2),
         );
 
     protected $facetoface_sessions_field_data = array(
@@ -631,8 +631,8 @@ class facetofacelib_test extends advanced_testcase {
                 'timefinish' => 0,
             ),
             'duration' => 3,
-            'normalcost' => 100,
-            'discountcost' => 75,
+            'normalcost' => '$100',
+            'discountcost' => '$75',
             'timecreated' => 1300,
             'timemodified' => 1400,
         ),
@@ -649,8 +649,8 @@ class facetofacelib_test extends advanced_testcase {
                 'timefinish' => 0,
             ),
             'duration' => 6,
-            'normalcost' => 100,
-            'discountcost' => 75,
+            'normalcost' => '$100',
+            'discountcost' => '$75',
             'timecreated' => 1300,
             'timemodified' => 1400,
         ),
@@ -662,16 +662,16 @@ class facetofacelib_test extends advanced_testcase {
             'fieldid' => 1,
             'sessionid' => 1,
             'data' => 'testdata1',
-            'discountcost' => 60,
-            'normalcost' => 75,
+            'discountcost' => '$60',
+            'normalcost' => '$75',
         ),
         'sess1' => array(
             'id' => 2,
             'fieldid' => 2,
             'sessionid' => 2,
             'data' => 'testdata2',
-            'discountcost' => NULL,
-            'normalcost' => 90,
+            'discountcost' => '',
+            'normalcost' => '$90',
         ),
     );
 
@@ -755,40 +755,6 @@ class facetofacelib_test extends advanced_testcase {
         $this->resetAfterTest(true);
     }
 
-    function test_format_cost() {
-        // Test - for a valid value.
-        $this->assertEquals(format_cost(1000, true), '$1000');
-        $this->assertEquals(format_cost(1000, false), '$1000');
-        $this->assertEquals(format_cost(1000), '$1000');
-
-        // Test - for a large negative value, html true/ false/ null.
-        $this->assertEquals(format_cost(-34000, true), '$-34000');
-        $this->assertEquals(format_cost(-34000, false), '$-34000');
-        $this->assertEquals(format_cost(-34000), '$-34000');
-
-        // Test - for a large positive value.
-        $this->assertEquals(format_cost(100000000000, true), '$100000000000');
-        $this->assertEquals(format_cost(100000000000, false), '$100000000000');
-        $this->assertEquals(format_cost(100000000000), '$100000000000');
-
-        // Test - for a decimal value.
-        $this->assertEquals(format_cost(32768.9045, true), '$32768.9045');
-        $this->assertEquals(format_cost(32768.9045, false), '$32768.9045');
-        $this->assertEquals(format_cost(32768.9045), '$32768.9045');
-
-        // Test - for a null value.
-        $this->assertEquals(format_cost(null, true), '$');
-        $this->assertEquals(format_cost(null, false), '$');
-        $this->assertEquals(format_cost(null), '$');
-
-        // Test - for a text string value.
-        $this->assertEquals(format_cost('string', true), '$string');
-        $this->assertEquals(format_cost('string', false), '$string');
-        $this->assertEquals(format_cost('string'), '$string');
-
-        $this->resetAfterTest(true);
-    }
-
     function test_facetoface_cost() {
         // Test variables - case WITH discount.
         $sessiondata = $this->sessiondata['sess0'];
@@ -797,8 +763,6 @@ class facetofacelib_test extends advanced_testcase {
         $userid1 = 1;
         $sessionid1 = 1;
 
-        $htmloutput1 = false; // Forced to true in the function.
-
         // Variable for test case NO discount.
         $sessiondata1 = $this->sessiondata['sess1'];
         $sess1 = $this->array_to_object($sessiondata1);
@@ -806,13 +770,11 @@ class facetofacelib_test extends advanced_testcase {
         $userid2 = 2;
         $sessionid2 = 2;
 
-        $htmloutput2 = false;
-
         // Test WITH discount.
-        $this->assertEquals(facetoface_cost($userid1, $sessionid1, $sess0, $htmloutput1), '$60');
+        $this->assertEquals(facetoface_cost($userid1, $sessionid1, $sess0), '$60');
 
         // Test NO discount case.
-        $this->assertEquals(facetoface_cost($userid2, $sessionid2, $sess1, $htmloutput2), '$90');
+        $this->assertEquals(facetoface_cost($userid2, $sessionid2, $sess1), '$90');
 
         $this->resetAfterTest(true);
     }

@@ -355,13 +355,13 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'session',
                 'normalcost',
                 get_string('normalcost', 'rb_source_facetoface_sessions'),
-                'number'
+                'text'
             ),
             new rb_filter_option(
                 'session',
                 'discountcost',
                 get_string('discountcost', 'rb_source_facetoface_sessions'),
-                'number'
+                'text'
             ),
         );
 

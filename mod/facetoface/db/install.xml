@@ -49,8 +49,8 @@
         <FIELD NAME="details" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="Extra information about this session" PREVIOUS="allowoverbook" NEXT="datetimeknown"/>
         <FIELD NAME="datetimeknown" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="A value of 0 means that the date and time are unknown whereas a value of 1 means that both are known." PREVIOUS="details" NEXT="duration"/>
         <FIELD NAME="duration" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Total duration (in minutes) of the session.  A session may be split across multiple dates, this is the total." PREVIOUS="datetimeknown" NEXT="normalcost"/>
-        <FIELD NAME="normalcost" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The normal (non-discounted) cost of the session" PREVIOUS="duration" NEXT="discountcost"/>
-        <FIELD NAME="discountcost" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Discounted cost of the event" PREVIOUS="normalcost" NEXT="roomid"/>
+        <FIELD NAME="normalcost" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The normal (non-discounted) cost of the session" PREVIOUS="duration" NEXT="discountcost"/>
+        <FIELD NAME="discountcost" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Discounted cost of the event" PREVIOUS="normalcost" NEXT="roomid"/>
         <FIELD NAME="roomid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key to facetoface_room" PREVIOUS="discountcost" NEXT="timecreated"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="roomid" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
