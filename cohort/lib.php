@@ -347,7 +347,7 @@ function cohort_print_tabs($currenttab, $cohortid, $cohorttype, $cohort) {
         if ($cohort->enddate && $cohort->enddate < time()) {
             $message = get_string('cohortmsgalreadyended', 'totara_cohort', userdate($cohort->enddate, get_string('strfdateshortmonth', 'langconfig')));
         }
-        print html_writer::tag('div', $message, array('class' => 'plan_box plan_box_action clearfix'));
+        print html_writer::tag('div', html_writer::tag('p', $message), array('class' => 'plan_box notifymessage clearfix'));
     }
 
     // Setup the top row of tabs
