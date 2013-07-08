@@ -56,12 +56,14 @@ if (!empty($CFG->forceloginforprofiles)) {
 }
 
 $userid = $userid ? $userid : $USER->id;       // Owner of the page
-$user = $DB->get_record('user', array('id' => $userid));
-
-if ($user->deleted) {
+if ((!$user = $DB->get_record('user', array('id' => $userid))) || ($user->deleted)) {
     $PAGE->set_context(context_system::instance());
     echo $OUTPUT->header();
-    echo $OUTPUT->notification(get_string('userdeleted'));
+    if (!$user) {
+        echo $OUTPUT->notification(get_string('invaliduser', 'error'));
+    } else {
+        echo $OUTPUT->notification(get_string('userdeleted'));
+    }
     echo $OUTPUT->footer();
     die;
 }
@@ -97,7 +99,7 @@ if (!$currentpage->userid) {
 }
 
 $PAGE->set_context($context);
-$PAGE->set_pagelayout('mydashboard');
+$PAGE->set_pagelayout('mypublic');
 $PAGE->set_pagetype('user-profile');
 
 // Set up block editing capabilities
