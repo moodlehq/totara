@@ -938,7 +938,7 @@ class development_plan {
 
         if ($completed) {
             $message .= $this->display_completed_plan_message();
-            $style = 'notifyinfo';
+            $style = 'notifymessage';
         } else {
             if (($haspendingitems && $canapprovepending) || ($unapproved && $canapproveplan)) {
                 $style = 'notifynotice';
