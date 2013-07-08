@@ -202,7 +202,8 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
                   FROM {cohort_members} cm
                   JOIN {enrol} e ON (e.customint1 = cm.cohortid AND e.status = :statusenabled AND e.enrol = 'cohort' $onecourse)
              LEFT JOIN {user_enrolments} ue ON (ue.enrolid = e.id AND ue.userid = cm.userid)
-                 WHERE e.id = :enrolid AND ue.id IS NULL";
+                 JOIN {user} u ON (u.id = cm.userid AND u.deleted = 0)
+             WHERE e.id = :enrolid AND ue.id IS NULL";
         $params['enrolid'] = $enrol->id;
         $rsuserids = $DB->get_recordset_sql($sql, $params);
 
