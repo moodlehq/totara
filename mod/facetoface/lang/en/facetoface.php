@@ -838,8 +838,10 @@ By default, the details text also appears in the confirmation, reminder, waitlis
 $string['discountcode_help'] = 'Discount code is the code required for the discount cost to be tracked for the training of a staff member.
 If the staff member does not enter the discount code, the normal cost appears in the training record.';
 
-$string['discountcost_help'] = 'Discount cost is the amount charged to staff members who have a membership id.
-If a staff member enters a membership id when signing-up for a session, the discount cost will appear in the cost column in the course\'s gradebook.';
+$string['discountcodelearner'] = 'Discount Code';
+$string['discountcodelearner_help'] = 'If you know the discount code enter it here. If you leave this field blank you will be charged the normal cost for this session';
+
+$string['discountcost_help'] = 'Discount cost is the amount charged to staff members who have a membership id.';
 
 $string['duration_help'] = '**Duration** is the total length of the training in hours.
 For example:
@@ -880,9 +882,7 @@ Each activity is offered in one or more identical sessions. These sessions can b
 
 Reminder messages are sent to users and their managers a few days before the session is scheduled to start. Confirmation messages are sent when users sign-up for a session or cancel.';
 
-$string['normalcost_help'] = 'Normal cost is the amount charged to staff members who do not have a membership id.
-
-The normal cost will appear in the cost column in the course\'s gradebook for each staff member who attends the session (unless a discount cost is entered and the staff member enters a membership id when signing of the session).';
+$string['normalcost_help'] = 'Normal cost is the amount charged to staff members who do not have a membership id.';
 
 $string['notificationtype_help'] = 'Notification Type allows the learner to select how they would like to be notified of their booking.
 
