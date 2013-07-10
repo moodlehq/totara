@@ -134,5 +134,15 @@ function xmldb_totara_program_upgrade($oldversion) {
         $dbman->change_field_notnull($table, $field);
     }
 
+    if ($oldversion < 2012081503) {
+        // Clean up exceptions where users are no longer assigned.
+        $DB->execute("DELETE FROM {prog_exception}
+                           WHERE id IN (
+                                SELECT e.id FROM {prog_exception} e
+                             LEFT JOIN {prog_user_assignment} ua ON e.assignmentid = ua.id
+                                 WHERE ua.id IS NULL
+                           )", array());
+        totara_upgrade_mod_savepoint(true, 2012081503, 'totara_program');
+    }
     return true;
 }
