@@ -3723,7 +3723,8 @@ function facetoface_task_check_capacity($data) {
 function facetoface_get_available_rooms($timeslots=array(), $fields='*', $excludesessions=array()) {
     global $DB;
 
-    $sqlwhere = ' custom = 0 ';
+    // Allow to have a room conflict, where type != 'external'
+    $sqlwhere = "type != 'external' AND custom = 0 ";
     $params = array();
     $timeslotsql = array();
     $timeslotparams = array();
