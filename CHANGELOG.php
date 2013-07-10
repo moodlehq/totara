@@ -3,6 +3,44 @@
 
 Totara LMS Changelog
 
+Release 2.4.5 (10th July 2013):
+==================================================
+
+Security fixes:
+    Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_2.4.5_release_notes
+
+New features:
+    T-10392    Allow user to choose Totara Sync delimiter
+
+Improvements:
+    T-10724    Added backup and restore for course badges
+    T-10854    Added extra checks for when user position is not set
+    T-10816    Improved error reporting in Totara Sync
+    T-10862    Display more information on Facetoface session timezone on course page
+
+Database Upgrades:
+    T-10784    Changed session cost fields to free text in Facetoface
+
+Bug Fixes:
+    T-10858    Display badge navigation to users with awardbadge capability
+    T-10430    Make discount field optional in Facetoface signup
+    T-10857    Fixed javascript error when editing course settings
+    T-10615    Fixed error when selecting template 'not required' in new notification form in Facetoface
+    T-10518    Fixed misc Learning Plans styles
+    T-10853    Fixed MSSQL custom fields rules issues in Dynamic Audiences
+    T-10860    Re-add Program links in alert blocks for learners
+    T-10735    Display activity name if session display is set to zero in Facetoface
+    T-10866    Fixed action selector in Facetoface sessions
+    T-10553    Fixed course reminders
+    T-10861    Fixed error with 'is enrolled' filter in cached course completion reports
+    T-10849    Show courses in alphabetical order in course selector in badges
+    T-10855    Show activities full names in exports of activity completion reports
+    T-10852    Fixed validation of required custom fields in Facetoface
+    T-10842    Fixed completion date for activities still in progress in activity completion report
+    T-10843    Fixed error when editing SCORM with activity completion locked
+    T-6710     Fixed language strings in Hierarchies custom fields
+
+
 Release 2.4.4 (25th June 2013):
 ==================================================
 
