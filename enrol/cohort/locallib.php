@@ -187,6 +187,7 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
     $sql = "SELECT DISTINCT e.id
               FROM {cohort_members} cm
               JOIN {enrol} e ON (e.customint1 = cm.cohortid AND e.status = :statusenabled AND e.enrol = 'cohort' $onecourse)
+              JOIN {user} u ON (u.id = cm.userid AND u.deleted = 0)
          LEFT JOIN {user_enrolments} ue ON (ue.enrolid = e.id AND ue.userid = cm.userid)
              WHERE ue.id IS NULL OR ue.status = :suspended";
     $params = array();
@@ -201,7 +202,8 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
                   FROM {cohort_members} cm
                   JOIN {enrol} e ON (e.customint1 = cm.cohortid AND e.status = :statusenabled AND e.enrol = 'cohort' $onecourse)
              LEFT JOIN {user_enrolments} ue ON (ue.enrolid = e.id AND ue.userid = cm.userid)
-                 WHERE e.id = :enrolid AND ue.id IS NULL";
+                 JOIN {user} u ON (u.id = cm.userid AND u.deleted = 0)
+             WHERE e.id = :enrolid AND ue.id IS NULL";
         $params['enrolid'] = $enrol->id;
         $rsuserids = $DB->get_recordset_sql($sql, $params);
 
@@ -349,6 +351,7 @@ function enrol_cohort_sync($courseid = NULL, $verbose = false) {
               FROM {user_enrolments} ue
               JOIN {enrol} e ON (e.id = ue.enrolid AND e.enrol = 'cohort' $onecourse)
               JOIN {groups} g ON (g.courseid = e.courseid AND g.id = e.customint2)
+              JOIN {user} u ON (u.id = ue.userid AND u.deleted = 0)
          LEFT JOIN {groups_members} gm ON (gm.groupid = g.id AND gm.userid = ue.userid)
              WHERE gm.id IS NULL";
     $params = array();

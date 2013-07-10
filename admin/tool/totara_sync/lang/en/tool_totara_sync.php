@@ -182,6 +182,7 @@ $string['cannotopenx'] = 'cannot open {$a}';
 $string['cannotreadx'] = 'cannot read {$a}';
 $string['csvnotvalidmissingfieldx'] = 'CSV file not valid, missing field "{$a}"';
 $string['csvnotvalidmissingfieldxmappingx'] = 'CSV file not valid, missing field "{$a->field}" (mapping for "{$a->mapping}")';
+$string['csvnotvalidinvalidchars'] = 'CSV file not valid. It contains invalid characters ("{$a->invalidchars}"). Fields in a CSV file must be separated by a selected delimiter ("{$a->delimiter}").';
 $string['couldnotimportallrecords'] = 'could not import all records';
 $string['syncstarted'] = 'sync started';
 $string['syncfinished'] = 'sync finished';
@@ -225,7 +226,7 @@ $string['managerxnotexist'] = 'manager {$a} does not exist';
 $string['nosourceconfigured'] = 'No source configured, please set configuration <a href=\'{$a}\'>here</a>';
 $string['duplicateuserswithidnumberx'] = 'Duplicate users with idnumber {$a->idnumber}';
 $string['duplicateidnumberx'] = 'Duplicate idnumber {$a}';
-$string['fieldcountmismatch'] = 'Skipping row {$a->rownum} in CSV file - {$a->fieldcount} fields found but {$a->headercount} fields expected';
+$string['fieldcountmismatch'] = 'Skipping row {$a->rownum} in CSV file - {$a->fieldcount} fields found but {$a->headercount} fields expected. Please make sure fields are separated by a selected delimiter ("{$a->delimiter}").';
 $string['nosynctablemethodforsourcex'] = 'Source {$a} has no get_sync_table method. This needs to be fixed by a programmer.';
 $string['sourcefilexnotfound'] = 'Source file {$a} not found.';
 $string['sourceclassxnotfound'] = 'Source class {$a} not found. This must be fixed by a programmer.';
@@ -268,4 +269,12 @@ see <a href=\"http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2\">http://en.wikipe
 $string['fileaccess_help'] = '**Directory**: This option allows you to specify a directory on the server to be checked for sync files automatically
 
 **Upload**: This option requires you to upload files via the \'upload sync files\' page under sources in site administration';
+
+//Delimiter strings
+$string['delimiter'] = 'Delimiter';
+$string['comma'] = 'Comma (,)';
+$string['semicolon'] = 'Semi-colon (;)';
+$string['colon'] = 'Colon (:)';
+$string['tab'] = 'Tab (\t)';
+$string['pipe'] = 'Pipe (|)';
 ?>

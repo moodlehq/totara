@@ -236,7 +236,7 @@ if (!$completion->is_enabled()) {
 
 }
 else if (!get_coursemodules_in_course('feedback', $course->id)) {
-    print_error('nofeedbackactivities', 'totara_coursecatalog', new moodle_url('/course/view.php', array('id' => $course->id)));
+    echo $OUTPUT->notification(get_string('nofeedbackactivities', 'totara_coursecatalog'), 'notifynotice');
     echo $OUTPUT->continue_button(new moodle_url('/course/view.php', array('id' => $course->id)));
 }
 else {

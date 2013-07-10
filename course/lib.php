@@ -135,6 +135,9 @@ function make_log_url($module, $url) {
             $url = '/my/' . $url;
             break;
         // End Totara specific modules
+        case 'grade':
+            $url = "/grade/$url";
+            break;
         default:
             $url = "/mod/$module/$url";
             break;

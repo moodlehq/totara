@@ -968,7 +968,7 @@ function facetoface_message_substitutions($msg, $facetofacename, $user, $data, $
     $msg = str_replace(get_string('placeholder:facetofacename', 'facetoface'), $facetofacename, $msg);
     $msg = str_replace(get_string('placeholder:firstname', 'facetoface'), $user->firstname, $msg);
     $msg = str_replace(get_string('placeholder:lastname', 'facetoface'), $user->lastname, $msg);
-    $msg = str_replace(get_string('placeholder:cost', 'facetoface'), facetoface_cost($user->id, $sessionid, $data, false), $msg);
+    $msg = str_replace(get_string('placeholder:cost', 'facetoface'), facetoface_cost($user->id, $sessionid, $data), $msg);
     $msg = str_replace(get_string('placeholder:alldates', 'facetoface'), $alldates, $msg);
     $msg = str_replace(get_string('placeholder:sessiondate', 'facetoface'), $sessiondate, $msg);
     $msg = str_replace(get_string('placeholder:startdate', 'facetoface'), $startdate, $msg);

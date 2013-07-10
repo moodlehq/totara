@@ -1105,52 +1105,51 @@ function sql_cast2float($fieldname) {
 function assign_user_position($assignment, $unittest=false) {
     global $CFG, $DB;
 
-        $transaction = $DB->start_delegated_transaction();
+    $transaction = $DB->start_delegated_transaction();
 
-        // Get old user id
+    // Get old user id.
+    if (!empty($assignment->reportstoid)) {
+        $old_managerid = $DB->get_field('role_assignments', 'userid', array('id' => $assignment->reportstoid));
+    } else {
         $old_managerid = null;
-        if ($assignment->reportstoid) {
-            $old_managerid = $DB->get_field('role_assignments', 'userid', array('id' => $assignment->reportstoid));
-        } else {
-            $old_managerid = null;
-        }
-        $managerchanged = false;
-        if ($old_managerid != $assignment->managerid) {
-            $managerchanged = true;
-        }
-        // TODO SCANMSG: Need to figure out how to re-add start time and end time into manager role assignment
-        //          now that the role_assignment record no longer has start/end fields. See:
-        //          http://docs.moodle.org/dev/New_enrolments_in_2.0
-        //          and mdl_enrol and mdl_user_enrolments
+    }
+    $managerchanged = false;
+    if ($old_managerid != $assignment->managerid) {
+        $managerchanged = true;
+    }
+    // TODO SCANMSG: Need to figure out how to re-add start time and end time into manager role assignment
+    //          now that the role_assignment record no longer has start/end fields. See:
+    //          http://docs.moodle.org/dev/New_enrolments_in_2.0
+    //          and mdl_enrol and mdl_user_enrolments.
 
-        // skip this bit during testing as we don't have all the required tables for role assignments
-        if (!$unittest) {
-            // Get context
-            $context = context_user::instance($assignment->userid);
-            // Get manager role id
-            $roleid = $CFG->managerroleid;
-            // Delete role assignment if there was a manager but it changed
-            if ($old_managerid && $managerchanged) {
-                role_unassign($roleid, $old_managerid, $context->id);
-            }
-            // Create new role assignment if there is now and a manager but it changed
-            if ($assignment->managerid && $managerchanged) {
-                // Assign manager to user
-                $raid = role_assign(
-                    $roleid,
-                    $assignment->managerid,
-                    $context->id
-                );
-                // update reportstoid
-                $assignment->reportstoid = $raid;
-            }
+    // Skip this bit during testing as we don't have all the required tables for role assignments.
+    if (!$unittest) {
+        // Get context.
+        $context = context_user::instance($assignment->userid);
+        // Get manager role id.
+        $roleid = $CFG->managerroleid;
+        // Delete role assignment if there was a manager but it changed.
+        if ($old_managerid && $managerchanged) {
+            role_unassign($roleid, $old_managerid, $context->id);
         }
-        // Store the date of this assignment
-        require_once($CFG->dirroot.'/totara/program/lib.php');
-        prog_store_position_assignment($assignment);
-        // Save assignment
-        $assignment->save($managerchanged);
-        $transaction->allow_commit();
+        // Create new role assignment if there is now and a manager but it changed.
+        if ($assignment->managerid && $managerchanged) {
+            // Assign manager to user.
+            $raid = role_assign(
+                $roleid,
+                $assignment->managerid,
+                $context->id
+            );
+            // Update reportstoid.
+            $assignment->reportstoid = $raid;
+        }
+    }
+    // Store the date of this assignment.
+    require_once($CFG->dirroot.'/totara/program/lib.php');
+    prog_store_position_assignment($assignment);
+    // Save assignment.
+    $assignment->save($managerchanged);
+    $transaction->allow_commit();
 
 }
 

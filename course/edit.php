@@ -103,7 +103,7 @@ $jsmodule = array(
         'requires' => array('json'));
 $args = array('args'=>'{"enrolledselected":"' . $enrolledselected . '",'.
         '"COHORT_ASSN_VALUE_ENROLLED":' . COHORT_ASSN_VALUE_ENROLLED . '}');
-$PAGE->requires->js_init_call('M.totara_coursecohort.init', $args, false, $jsmodule);
+$PAGE->requires->js_init_call('M.totara_coursecohort.init', $args, true, $jsmodule);
 
 $PAGE->requires->string_for_js('chooseicon', 'totara_program');
 $iconjsmodule = array(

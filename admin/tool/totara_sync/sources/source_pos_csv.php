@@ -64,13 +64,14 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             }
         }
 
-        $mform->addElement('html', html_writer::tag('div', html_writer::tag('p', get_string('csvimportfilestructinfo', 'tool_totara_sync', implode(',', $filestruct)), array('class' => "informationbox"))));
+        $delimiter = $this->config->delimiter;
+        $info = get_string('csvimportfilestructinfo', 'tool_totara_sync', implode($delimiter, $filestruct));
+        $mform->addElement('html', html_writer::tag('div', html_writer::tag('p', $info, array('class' => "informationbox"))));
 
         // Add some source file details
         $mform->addElement('header', 'fileheader', get_string('filedetails', 'tool_totara_sync'));
         if (get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
-            $mform->addElement('static', 'nameandloc', get_string('nameandloc', 'tool_totara_sync'),
-                html_writer::tag('strong', $filepath));
+            $mform->addElement('static', 'nameandloc', get_string('nameandloc', 'tool_totara_sync'), html_writer::tag('strong', $filepath));
         } else {
             $link = "{$CFG->wwwroot}/admin/tool/totara_sync/admin/uploadsourcefiles.php";
             $mform->addElement('static', 'uploadfilelink', get_string('uploadfilelink', 'tool_totara_sync', $link));
@@ -121,7 +122,7 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             $systemcontext = get_context_instance(CONTEXT_SYSTEM);
             $fieldid = get_config('totara_sync', 'sync_pos_itemid');
 
-            //check the file exists
+            // Check the file exists
             if (!$fs->file_exists($systemcontext->id, 'totara_sync', 'pos', $fieldid, '/', '')) {
                 throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofileuploaded', $this->get_element_name(), null, 'warn');
             }
@@ -130,11 +131,11 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             $fsfiles = $fs->get_area_files($systemcontext->id, 'totara_sync', 'pos', $fieldid, 'id DESC', false);
             $fsfile = reset($fsfiles);
 
-            //set up the temp dir
+            // Set up the temp dir
             $tempdir = $CFG->tempdir . '/totarasync/csv';
             check_dir_exists($tempdir, true, true);
 
-            //create temporary file (so we know the filepath)
+            // Create temporary file (so we know the filepath)
             $fsfile->copy_content_to($tempdir.'/pos.php');
             $itemid = $fsfile->get_itemid();
             $fs->delete_area_files($systemcontext->id, 'totara_sync', 'pos', $itemid);
@@ -146,17 +147,31 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotopenx', $storefilepath);
         }
 
-        // Map CSV fields with db fields
-        $fields = fgetcsv($file);
+        // Map CSV fields with db fields.
+        $fields = fgetcsv($file, 0, $this->config->delimiter);
         $fieldmappings = array();
         foreach ($this->fields as $field) {
             if (empty($this->config->{'import_'.$field})) {
                 continue;
             }
-            if (!empty($this->config->{'fieldmapping_'.$field})) {
+            if (empty($this->config->{'fieldmapping_'.$field})) {
+                $fieldmappings[$field] = $field;
+            } else {
                 $fieldmappings[$this->config->{'fieldmapping_'.$field}] = $field;
             }
         }
+
+        // Throw an exception if fields contain invalid characters
+        foreach ($fields as $field) {
+            $invalidchars = preg_replace('/[?!A-Za-z0-9_-]/i', '', $field);
+            if (strlen($invalidchars)) {
+                $errorvar = new stdClass();
+                $errorvar->invalidchars = $invalidchars[0];
+                $errorvar->delimiter = $this->config->delimiter;
+                throw new totara_sync_exception($this->get_element_name(), 'mapfields', 'csvnotvalidinvalidchars', $errorvar);
+            }
+        }
+
         // Ensure necessary fields are present
         foreach ($fieldmappings as $field => $map) {
             if (!in_array($field, $fields)) {
@@ -175,12 +190,9 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
                     }
                 }
                 if ($field == $map) {
-                    throw new totara_sync_exception($this->get_element_name(), 'mapfields',
-                        'csvnotvalidmissingfieldx', $field);
+                    throw new totara_sync_exception($this->get_element_name(), 'mapfields', 'csvnotvalidmissingfieldx', $field);
                 } else {
-                    throw new totara_sync_exception($this->get_element_name(), 'mapfields',
-                        'csvnotvalidmissingfieldxmappingx',
-                        (object)array('field' => $field, 'mapping' => $map));
+                    throw new totara_sync_exception($this->get_element_name(), 'mapfields', 'csvnotvalidmissingfieldxmappingx', (object)array('field' => $field, 'mapping' => $map));
                 }
             }
         }
@@ -194,7 +206,6 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
         }
         unset($fieldmappings);
 
-
         // Populate temp sync table from CSV
         $now = time();
         $datarows = array();    // holds csv row data
@@ -205,17 +216,21 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
         $fieldcount->rownum = 0;
         $csvdateformat = (isset($CFG->csvdateformat)) ? $CFG->csvdateformat : get_string('csvdateformatdefault', 'totara_core');
 
-        while ($row = fgetcsv($file)) {
+        while ($row = fgetcsv($file, 0, $this->config->delimiter)) {
             $fieldcount->rownum++;
-            // skip empty rows
+            // Skip empty rows
             if (is_array($row) && current($row) === null) {
                 $fieldcount->fieldcount = 0;
+                $fieldcount->delimiter = $this->config->delimiter;
                 $this->addlog(get_string('fieldcountmismatch', 'tool_totara_sync', $fieldcount), 'error', 'populatesynctablecsv');
+                unset($fieldcount->delimiter);
                 continue;
             }
             $fieldcount->fieldcount = count($row);
             if ($fieldcount->fieldcount !== $fieldcount->headercount) {
+                $fieldcount->delimiter = $this->config->delimiter;
                 $this->addlog(get_string('fieldcountmismatch', 'tool_totara_sync', $fieldcount), 'error', 'populatesynctablecsv');
+                unset($fieldcount->delimiter);
                 continue;
             }
             $row = array_combine($fields, $row);  // nice associative array
@@ -294,9 +309,9 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
 
         fclose($file);
 
-        //done, clean up the file(s)
+        // Done, clean up the file(s)
         if ($fileaccess == FILE_ACCESS_UPLOAD) {
-           unlink($storefilepath); //don't store this file in temp
+           unlink($storefilepath); // don't store this file in temp
         }
 
         return true;

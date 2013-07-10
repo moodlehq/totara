@@ -237,7 +237,8 @@ class course_edit_form extends moodleform {
             $mform->addElement('button', 'cohortsaddenrolled', get_string('cohortsaddenrolled', 'totara_cohort'));
         }
 
-        $mform->addElement('header','', get_string('groups', 'group'));
+//--------------------------------------------------------------------------------
+        $mform->addElement('header', '', get_string('groupsettingsheader', 'group'));
 
         $choices = array();
         $choices[NOGROUPS] = get_string('groupsnone', 'group');

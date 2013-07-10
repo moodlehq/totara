@@ -94,8 +94,8 @@ M.totara_coursecohort = M.totara_coursecohort || {
 totaraDialog_handler_coursecohorts = function() {
     // Base url
     this.baseurl = '';
-    this.cohort_items = $('input[name=cohortsenrolled]').val();
-    this.cohort_items = this.cohort_items.length > 0 ? this.cohort_items.split(',') : [];
+    this.cohort_items = $('input:hidden[name="cohortsenrolled"]').val();
+    this.cohort_items = (this.cohort_items && this.cohort_items.length > 0) ? this.cohort_items.split(',') : [];
     this.cohort_table = $('#course-cohorts-table-enrolled');
 
     this.add_cohort_delete_event_handlers();
@@ -117,7 +117,8 @@ totaraDialog_handler_coursecohorts.prototype._update = function(response) {
     var self = this;
     var elements = $('.selected > div > span', this._container);
     var selected_str = this._get_ids(elements).join(',');
-    this._dialog.default_url += '&selected=' + selected_str;
+    var url = this._dialog.default_url;
+    this._dialog.default_url = url.split("?")[0] + '?selected=' + selected_str;
 
     var newids = new Array();
 
@@ -192,7 +193,7 @@ totaraDialog_handler_coursecohorts.prototype.add_cohort_delete_event_handlers = 
 totaraDialog_handler_coursecohorts.prototype.add_cohort_item = function(itemid) {
     this.cohort_items.push(itemid);
 
-    $('input[name=cohortsenrolled]').val(this.cohort_items.join(','));
+    $('input:hidden[name="cohortsenrolled"]').val(this.cohort_items.join(','));
 
     this.check_table_hidden_status();
 }
@@ -221,8 +222,9 @@ totaraDialog_handler_coursecohorts.prototype.remove_cohort_item = function(item)
 
     this.check_table_hidden_status();
 
-    $('input[name=cohortsenrolled]').val(this.cohort_items.join(','));
+    $('input:hidden[name="cohortsenrolled"]').val(this.cohort_items.join(','));
 
-    this._dialog.default_url += '&selected=' + this.cohort_items.join(',');
+    var url = this._dialog.default_url;
+    this._dialog.default_url = url.split("?")[0] + '?selected=' + this.cohort_items.join(',');
 
 }

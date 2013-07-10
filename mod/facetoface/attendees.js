@@ -240,7 +240,7 @@ M.totara_f2f_attendees = M.totara_f2f_attendees || {
 
 
         // Handle actions drop down
-        $('select#menuf2f-actions').on('change', function() {
+        $(document).on('change', 'select#menuf2f-actions', function() {
             var select = $(this);
 
             var data = {

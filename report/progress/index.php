@@ -146,8 +146,6 @@ if ($csv && $grandtotal && count($activities)>0) { // Only show CSV if there are
         $line="\n";
     }
 } else {
-    // Use SVG to draw sideways text if supported
-    $svgcleverness = can_use_rotated_text();
 
     // Navigation and header
     $strreports = get_string("reports");
@@ -156,11 +154,8 @@ if ($csv && $grandtotal && count($activities)>0) { // Only show CSV if there are
     $PAGE->set_title($strcompletion);
     $PAGE->set_heading($course->fullname);
     echo $OUTPUT->header();
-
-    if ($svgcleverness) {
-        $PAGE->requires->js('/report/progress/textrotate.js');
-        $PAGE->requires->js_function_call('textrotate_init', null, true);
-    }
+    $PAGE->requires->js('/report/progress/textrotate.js');
+    $PAGE->requires->js_function_call('textrotate_init', null, true);
 
     // Handle groups (if enabled)
     groups_print_course_menu($course,$CFG->wwwroot.'/report/progress/?course='.$course->id);
@@ -321,7 +316,7 @@ foreach($activities as $activity) {
     }
 
     // Some names (labels) come URL-encoded and can be very long, so shorten them
-    $activity->name = shorten_text($activity->name);
+    $activity->name = !$csv ? shorten_text($activity->name) : $activity->name;
 
     if ($csv) {
         print $sep.csv_quote(strip_tags($activity->name)).$sep.csv_quote($datetext);
@@ -369,7 +364,11 @@ foreach($progress as $user) {
         if (array_key_exists($activity->id,$user->progress)) {
             $thisprogress=$user->progress[$activity->id];
             $state=$thisprogress->completionstate;
-            $date=userdate($thisprogress->timemodified);
+            if (!empty($thisprogress->timemodified)) {
+                $date = userdate($thisprogress->timemodified);
+            } else {
+                $date = '';
+            }
         } else {
             $state=COMPLETION_INCOMPLETE;
             $date='';

@@ -539,6 +539,7 @@ abstract class prog_noneventbased_message extends prog_message {
         $studentdata->userfrom = $sender;
         $studentdata->subject = $this->replacevars($this->studentmessagedata->subject);
         $studentdata->fullmessage = $this->replacevars($this->studentmessagedata->fullmessage);
+        $studentdata->contexturl = $this->studentmessagedata->contexturl;
         $result = $result && tm_alert_send($studentdata);
 
         // send the message to the manager
@@ -664,6 +665,7 @@ abstract class prog_eventbased_message extends prog_message {
         $studentdata->userfrom = $sender;
         $studentdata->subject = $this->replacevars($this->studentmessagedata->subject);
         $studentdata->fullmessage = $this->replacevars($this->studentmessagedata->fullmessage);
+        $studentdata->contexturl = $this->studentmessagedata->contexturl;
         $result = $result && tm_alert_send($studentdata);
 
         // if the message was sent, add a record to the message log to

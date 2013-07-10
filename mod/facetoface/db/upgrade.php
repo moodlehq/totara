@@ -1203,5 +1203,14 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2013013007, 'facetoface');
     }
 
+    if ($oldversion < 2013070900) {
+        // Change the cost fields to varchars instead of integers.
+        $table = new xmldb_table('facetoface_sessions');
+        $costfield = new xmldb_field('normalcost', XMLDB_TYPE_CHAR, '255', null, true, null, '0','duration');
+        $discountfield = new xmldb_field('discountcost', XMLDB_TYPE_CHAR, '255', null, true, null, '0','normalcost');
+        $dbman->change_field_type($table, $costfield);
+        $dbman->change_field_type($table, $discountfield);
+        upgrade_mod_savepoint(true, 2013070900, 'facetoface');
+    }
     return $result;
 }

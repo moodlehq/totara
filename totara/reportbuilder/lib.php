@@ -830,7 +830,11 @@ class reportbuilder {
                 }
                 // support of several fields in one filter/column/etc
                 if (is_array($fieldname)) {
-                    $field = $fieldname;
+                    $field = array();
+                    foreach ($fieldname as $key => $value) {
+                        // need to namespace these extra keys to avoid collisions
+                        $field["rb_composite_{$key}"] = $value;
+                    }
                 } else {
                      if (isset($fields->fieldalias)) {
                          $field = array($fields->fieldalias => $fieldname);

@@ -306,6 +306,9 @@ elseif ($session != null) { // Edit mode
     foreach ($customfields as $field) {
         $fieldname = "custom_$field->shortname";
         $toform->$fieldname = facetoface_get_customfield_value($field, $session->id, 'session');
+        if (empty($toform->$fieldname)) {
+            $toform->$fieldname = $field->defaultvalue;
+        }
     }
 
     if (!empty($sroom->id)) {

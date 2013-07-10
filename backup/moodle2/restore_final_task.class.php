@@ -66,6 +66,11 @@ class restore_final_task extends restore_task {
             $this->add_step(new restore_course_completion_structure_step('course_completion', 'completion.xml'));
         }
 
+        // Conditionally restore course badges.
+        if ($this->get_setting_value('badges')) {
+            $this->add_step(new restore_badges_structure_step('course_badges', 'badges.xml'));
+        }
+
         // Review all the module_availability records in backup_ids in order
         // to match them with existing modules / grade items.
         $this->add_step(new restore_process_course_modules_availability('process_modules_availability'));
@@ -142,6 +147,9 @@ class restore_final_task extends restore_task {
         $rules[] = new restore_log_rule('course', 'report participation', 'report/participation/index.php?id={course}', '{course}');
         $rules[] = new restore_log_rule('course', 'report stats', 'report/stats/index.php?id={course}', '{course}');
         $rules[] = new restore_log_rule('course', 'view section', 'view.php?id={course}&sectionid={course_section}', '{course_section}');
+
+        // module 'grade' rules
+        $rules[] = new restore_log_rule('grade', 'update', 'report/grader/index.php?id={course}', null);
 
         // module 'user' rules
         $rules[] = new restore_log_rule('user', 'view', 'view.php?id={user}&course={course}', '{user}');

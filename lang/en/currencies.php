@@ -182,4 +182,7 @@ $string['XPF'] = 'CFP Franc';
 $string['YER'] = 'Yemeni Rial';
 $string['ZAR'] = 'South African Rand';
 $string['ZMK'] = 'Zambian Kwacha';
+// Zambian Kwacha was rebased 1st Jan 2013 at a rate of 1000 old kwacha = 1 new kwacha
+// As part of this change the ISO currency code changed to ZMW
+$string['ZMW'] = 'Zambian Kwacha';
 $string['ZWL'] = 'Zimbabwe Dollar';

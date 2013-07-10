@@ -4055,6 +4055,9 @@ function delete_user(stdClass $user) {
     // unauthorise the user for all services
     $DB->delete_records('external_services_users', array('userid'=>$user->id));
 
+    // Remove users private keys.
+    $DB->delete_records('user_private_key', array('userid' => $user->id));
+
     // force logout - may fail if file based sessions used, sorry
     session_kill_user($user->id);
 
@@ -9597,9 +9600,10 @@ function format_float($float, $decimalpoints=1, $localized=true, $stripzeros=fal
  * Do NOT try to do any math operations before this conversion on any user submitted floats!
  *
  * @param string $locale_float locale aware float representation
- * @return float
+ * @param bool $strict If true, then check the input and return false if it is not a valid number.
+ * @return mixed float|bool - false or the parsed float.
  */
-function unformat_float($locale_float) {
+function unformat_float($locale_float, $strict = false) {
     $locale_float = trim($locale_float);
 
     if ($locale_float == '') {
@@ -9607,8 +9611,13 @@ function unformat_float($locale_float) {
     }
 
     $locale_float = str_replace(' ', '', $locale_float); // no spaces - those might be used as thousand separators
+    $locale_float = str_replace(get_string('decsep', 'langconfig'), '.', $locale_float);
 
-    return (float)str_replace(get_string('decsep', 'langconfig'), '.', $locale_float);
+    if ($strict && !is_numeric($locale_float)) {
+        return false;
+    }
+
+    return (float)$locale_float;
 }
 
 /**
@@ -10530,8 +10539,8 @@ function get_performance_info() {
     $info['html'] .= '<span class="included">Included '.$info['includecount'].' files</span> ';
     $info['txt']  .= 'includecount: '.$info['includecount'].' ';
 
-    if (!empty($CFG->early_install_lang)) {
-        // We can not track more performance before installation, sorry.
+    if (!empty($CFG->early_install_lang) or empty($PAGE)) {
+        // We can not track more performance before installation or before PAGE init, sorry.
         return $info;
     }
 

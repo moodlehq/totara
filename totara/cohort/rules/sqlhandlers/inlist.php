@@ -134,7 +134,7 @@ class cohort_rule_sqlhandler_in_usercustomfield extends cohort_rule_sqlhandler_i
                                      FROM {user_info_data} usinda
                                     WHERE usinda.userid = u.id
                                       AND usinda.fieldid = {$field}
-                                      AND usinda.data {$sqlin}
+                                      AND {$DB->sql_compare_text('usinda.data')} {$sqlin}
                                    )";
         $sqlhandler->params = $params;
         return $sqlhandler;
@@ -191,7 +191,7 @@ class cohort_rule_sqlhandler_in_poscustomfield extends cohort_rule_sqlhandler_in
                 ."where pa.userid=u.id "
                 ."and pa.type=".POSITION_TYPE_PRIMARY." "
                 ."and ptid.fieldid={$field} "
-                ."and ptid.data {$sqlin}"
+                ."and {$DB->sql_compare_text('ptid.data')} {$sqlin}"
             .")";
         $sqlhandler->params = $params;
         return $sqlhandler;
@@ -249,7 +249,7 @@ class cohort_rule_sqlhandler_in_posorgcustomfield extends cohort_rule_sqlhandler
                 ."where pa.userid=u.id "
                 ."and pa.type=".POSITION_TYPE_PRIMARY." "
                 ."and otid.fieldid={$field} "
-                ."and otid.data {$sqlin}"
+                ."and {$DB->sql_compare_text('otid.data')} {$sqlin}"
             .")";
         $sqlhandler->params = $params;
         return $sqlhandler;
