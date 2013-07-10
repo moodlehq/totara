@@ -83,7 +83,6 @@ class mod_scorm_mod_form extends moodleform_mod {
         $maxbytes = get_max_upload_file_size($CFG->maxbytes, $COURSE->maxbytes);
         $mform->setMaxFileSize($maxbytes);
         $mform->addElement('filepicker', 'packagefile', get_string('package', 'scorm'));
-        $mform->addRule('packagefile', null, 'required', null, 'client');
         $mform->addHelpButton('packagefile', 'package', 'scorm');
         $mform->disabledIf('packagefile', 'scormtype', 'noteq', SCORM_TYPE_LOCAL);
 
