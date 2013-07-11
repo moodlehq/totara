@@ -6755,6 +6755,8 @@ class core_string_manager implements string_manager {
      * @return string The String !
      */
     public function get_string($identifier, $component = '', $a = NULL, $lang = NULL) {
+        global $CFG;
+
         $this->countgetstring++;
         // there are very many uses of these time formating strings without the 'langconfig' component,
         // it would not be reasonable to expect that all of them would be converted during 2.0 migration
@@ -6822,6 +6824,11 @@ class core_string_manager implements string_manager {
         }
 
         $string = $string[$identifier];
+
+        // Force RTL direction for debugging purpose
+        if ($identifier == 'thisdirection' && isset($CFG->forcertl)) {
+            $string = 'rtl';
+        }
 
         if ($a !== NULL) {
             // Process array's and objects (except lang_strings)
