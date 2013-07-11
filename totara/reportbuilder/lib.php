@@ -4105,7 +4105,20 @@ function sql_table_from_select($table, $select, array $params = array()) {
             $indexlongsql = "CREATE INDEX rb_cache_{$md5}_%1\$s ON {$table} (%1\$s(%2\$d))";
             $fieldname = 'field';
 
-            $sql = "CREATE TABLE `{$table}` $select";
+            // Find out if want some special db engine.
+            $enginesql = $DB->get_dbengine() ? " ENGINE = " . $DB->get_dbengine() : '';
+
+            // Do we know collation?
+            $collation = $DB->get_dbcollation();
+            $collationsql = '';
+            if ($collation) {
+                if (strpos($collation, 'utf8_') === 0) {
+                    $collationsql .= " DEFAULT CHARACTER SET utf8";
+                }
+                $collationsql .= " DEFAULT COLLATE = {$collation}";
+            }
+
+            $sql = "CREATE TABLE `{$table}` $enginesql $collationsql $select";
             $result = $DB->execute($sql, $params);
             break;
         case 'mssql':
