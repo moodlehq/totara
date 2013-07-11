@@ -160,7 +160,7 @@ class totara_dialog_content_manager extends totara_dialog_content {
             LEFT JOIN {pos_assignment} pa on managers.id = pa.userid
             INNER JOIN {user} u on u.id = managers.id
             WHERE pa.managerid IS NULL OR pa.managerid = 0
-            GROUP BY u.id, u.firstname, u.lastname
+            GROUP BY u.id, u.firstname, u.lastname, u.email
             ORDER BY u.firstname, u.lastname
         ", array(POSITION_TYPE_PRIMARY));
     }

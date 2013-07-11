@@ -181,11 +181,11 @@ function cohort_rules_list(){
 
                     // choose from distinct customfield values
                     $sql = new stdClass;
-                    $sql->select = "DISTINCT data AS mkey, data AS mval";
+                    $sql->select = "DISTINCT {$DB->sql_compare_text('data', 255)} AS mkey, {$DB->sql_compare_text('data', 255)} AS mval";
                     $sql->from = "{user_info_data}";
                     $sql->where = "fieldid = ?";
                     $sql->orderby = 'data';
-                    $sql->valuefield = 'data';
+                    $sql->valuefield = "{$DB->sql_compare_text('data', 255)}";
                     $sql->sqlparams = array($id);
                     $dialogui = new cohort_rule_ui_menu(
                         get_string('usersx', 'totara_cohort', $field->name),
