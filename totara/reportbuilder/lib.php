@@ -202,11 +202,10 @@ class reportbuilder {
             $this->embedded = $report->embedded;
             $this->contentmode = $report->contentmode;
             // store the embedded URL for embedded reports only
-            if ($report->embedded) {
-                if ($embedobj = reportbuilder_get_embedded_report_object($report->shortname)) {
-                    $this->embeddedurl = $embedobj->url;
-                }
+            if ($report->embedded && $embed) {
+                $this->embeddedurl = $embed->url;
             }
+            $this->embedobj = $embed;
             $this->recordsperpage = $report->recordsperpage;
             $this->defaultsortcolumn = $report->defaultsortcolumn;
             $this->defaultsortorder = $report->defaultsortorder;
@@ -945,14 +944,11 @@ class reportbuilder {
             return false;
         }
 
-        // get the embedded source if the report is embedded
-        $embedobj = ($this->embedded) ? reportbuilder_get_embedded_report_object($this->shortname) : false;
-
         $out = array();
         foreach ($this->src->columnoptions as $option) {
             $key = $option->type . '-' . $option->value;
 
-            if ($embedobj && $embeddedheading = $embedobj->get_embedded_heading($option->type, $option->value)) {
+            if ($this->embedobj && $embeddedheading = $this->embedobj->get_embedded_heading($option->type, $option->value)) {
                 // use heading from embedded source
                 $defaultheading = $embeddedheading;
             } else {
