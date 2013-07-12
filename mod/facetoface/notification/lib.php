@@ -579,6 +579,19 @@ class facetoface_notification extends data_object {
                 $managerevent->fullmessage = $managerprefix . $body;
             }
             if ($this->conditiontype == MDL_F2F_CONDITION_BOOKING_REQUEST) {
+                // do the facetoface workflow event
+                $strmgr = get_string_manager();
+                $onaccept = new stdClass();
+                $onaccept->action = 'facetoface';
+                $onaccept->text = $strmgr->get_string('approveinstruction', 'facetoface', null, $manager->lang);
+                $onaccept->data = array('userid' => $user->id, 'session' => $session, 'facetoface' => $this->_facetoface);
+                $managerevent->onaccept = $onaccept;
+                $onreject = new stdClass();
+                $onreject->action = 'facetoface';
+                $onreject->text = $strmgr->get_string('rejectinstruction', 'facetoface', null, $manager->lang);
+                $onreject->data = array('userid' => $user->id, 'session' => $session, 'facetoface' => $this->_facetoface);
+                $managerevent->onreject = $onreject;
+
                 tm_task_send($managerevent);
             } else {
                 tm_alert_send($managerevent);
