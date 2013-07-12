@@ -692,4 +692,33 @@ class totara_core_renderer extends plugin_renderer_base {
 
         return $this->box($message, 'generalbox adminwarning');
     }
+
+    /**
+     * Render Totara information on user profile.
+     *
+     * @param $userid ID of a user.
+     * @return string HTML to output.
+     */
+    public function print_totara_user_profile($userid) {
+        global $USER;
+
+        $currentuser = ($userid == $USER->id);
+
+        // Display hierarchy information.
+        profile_display_hierarchy_fields($userid);
+
+        // Record of learning.
+        if ($currentuser || totara_is_manager($userid) || is_siteadmin()) {
+            $strrol = get_string('recordoflearning', 'totara_core');
+            $urlrol = new moodle_url('/totara/plan/record/index.php', array('userid' => $userid));
+            print_row($strrol . ':', html_writer::link($urlrol, $strrol));
+        }
+
+        // Learning plans.
+        if (dp_can_view_users_plans($userid)) {
+            $strplans = get_string('learningplans', 'totara_plan');
+            $urlplans = new moodle_url('/totara/plan/index.php', array('userid' => $userid));
+            print_row($strplans . ':', html_writer::link($urlplans, $strplans));
+        }
+    }
 }
