@@ -1372,11 +1372,9 @@ class facetofacelib_test extends advanced_testcase {
     }
 
     function test_facetoface_ical_escape() {
-        //TODO correct this function for ICAL format
         // Define test variables.
         $text1 = "this is a test!&nbsp";
         $text2 = NULL;
-        $text3 = "This is a string should be wrapped at 75 characters --- not quite yet then and here we go";
         $text3 = "This string should start repeating at 75 charaters for three repetitions. "
             . "This string should start repeating at 75 charaters for three repetitions. "
             . "This string should start repeating at 75 charaters for three repetitions.";
@@ -1393,15 +1391,14 @@ class facetofacelib_test extends advanced_testcase {
         $this->assertEquals(facetoface_ical_escape($text2, $converthtml2), $text2);
 
         $this->assertEquals(facetoface_ical_escape($text3, $converthtml1),
-            "This string should start repeating at 75 charaters for three repetitions.\n "
-            . "This string should start repeating at 75 charaters for three repetitions.\n "
+            "This string should start repeating at 75 charaters for three repetitions. \n "
+            . "This string should start repeating at 75 charaters for three repetitions. \n "
             . "This string should start repeating at 75 charaters for three repetitions.");
-/* not sure what is going on here, it is inserting \\n but wrapping early at 55 the first time
         $this->assertEquals(facetoface_ical_escape($text3, $converthtml2),
-            "This string should start repeating at 75 charaters for three repetitions.\\n"
-            . "This string should start repeating at 75 charaters for three repetitions.\\n"
+            "This string should start repeating at 75 charaters for three repetitions. \n "
+            . "This string should start repeating at 75 charaters for three repetitions. \n "
             . "This string should start repeating at 75 charaters for three repetitions.");
- */
+
         $this->assertEquals(facetoface_ical_escape($text4, $converthtml1), "/'s \; \\\" ' \\n \, . & &nbsp\;");
         $this->assertEquals(facetoface_ical_escape($text4, $converthtml2), "/'s \; \\\" ' \, . & ");
 

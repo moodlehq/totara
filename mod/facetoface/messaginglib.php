@@ -116,7 +116,11 @@ function facetoface_get_ical_attachment($method, $facetoface, $session, $user) {
         $SEQUENCE = ($method & MDL_F2F_CANCEL) ? 1 : 0;
 
         $SUMMARY     = str_replace("\\n", "\\n ", facetoface_ical_escape($facetoface->name, true));
-        $DESCRIPTION = facetoface_ical_escape(get_string('icaldescription', 'facetoface', $facetoface), true);
+        $icaldescription = get_string('icaldescription', 'facetoface', $facetoface);
+        if (!empty($session->details)) {
+            $icaldescription .= $session->details;
+        }
+        $DESCRIPTION = facetoface_ical_escape($icaldescription, true);
 
         // Get the location data from custom fields if they exist
         $room = facetoface_get_session_room($session->id);
@@ -254,7 +258,7 @@ function facetoface_ical_escape($text, $converthtml=false) {
     }
 
     if ($converthtml) {
-        $text = html_to_text($text);
+        $text = html_to_text($text, 0);
     }
 
     $text = str_replace(
@@ -265,7 +269,7 @@ function facetoface_ical_escape($text, $converthtml=false) {
 
     // Text should be wordwrapped at 75 octets, and there should be one
     // whitespace after the newline that does the wrapping
-    $text = wordwrap($text, 75, "\n ", true);
+    $text = wordwrap($text, 74, " \n ", true);
 
     return $text;
 }
