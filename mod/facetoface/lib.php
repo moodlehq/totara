@@ -959,7 +959,7 @@ function facetoface_get_attendees($sessionid, $status = array(MDL_F2F_STATUS_BOO
             f.course,
             ss.grade,
             ss.statuscode,
-            sign.timecreated
+            ss.timecreated
         FROM
             {facetoface} f
         JOIN
@@ -972,35 +972,15 @@ function facetoface_get_attendees($sessionid, $status = array(MDL_F2F_STATUS_BOO
             {facetoface_signups_status} ss
          ON su.id = ss.signupid
         JOIN
-            (
-            SELECT
-                ss.signupid,
-                MAX(ss.timecreated) AS timecreated
-            FROM
-                {facetoface_signups_status} ss
-            INNER JOIN
-                {facetoface_signups} s
-             ON s.id = ss.signupid
-            AND s.sessionid = ?
-            WHERE
-                ss.statuscode {$statussql}
-                AND ss.superceded != 1
-            GROUP BY
-                ss.signupid
-            ) sign
-         ON su.id = sign.signupid
-        JOIN
             {user} u
          ON u.id = su.userid
         WHERE
             s.id = ?
+        AND ss.statuscode {$statussql}
         AND ss.superceded != 1
-        AND ss.statuscode >= ?
-        ORDER BY
-            sign.timecreated ASC,
-            ss.timecreated ASC";
+        ORDER BY ss.timecreated ASC";
 
-    $params = array_merge(array($sessionid), $statusparams, array($sessionid, MDL_F2F_STATUS_APPROVED));
+    $params = array_merge(array($sessionid), $statusparams);
 
     $records = $DB->get_records_sql($sql, $params);
 
@@ -3387,8 +3367,8 @@ function facetoface_get_cancellations($sessionid) {
  * @return  array|false
  */
 function facetoface_get_requests($sessionid) {
-    $select = "u.id, su.id AS signupid, u.firstname, u.lastname,
-        ss.timecreated AS timerequested";
+    $select = "u.id, su.id AS signupid, u.firstname, u.lastname, u.email,
+        ss.statuscode, ss.timecreated AS timerequested";
 
     return facetoface_get_users_by_status($sessionid, MDL_F2F_STATUS_REQUESTED, $select);
 }
@@ -3402,8 +3382,8 @@ function facetoface_get_requests($sessionid) {
  * @return  array|false
  */
 function facetoface_get_declines($sessionid) {
-    $select = "u.id, su.id AS signupid, u.firstname, u.lastname,
-        ss.timecreated AS timerequested";
+    $select = "u.id, su.id AS signupid, u.firstname, u.lastname, u.email,
+        ss.statuscode, ss.timecreated AS timerequested";
 
     return facetoface_get_users_by_status($sessionid, MDL_F2F_STATUS_DECLINED, $select);
 }
@@ -3467,177 +3447,6 @@ function facetoface_supports($feature) {
         default: return null;
     }
 }
-
-/**
-* facetoface assignment candidates
-*/
-class facetoface_candidate_selector extends user_selector_base {
-    protected $sessionid;
-
-    public function __construct($name, $options) {
-        $this->sessionid = $options['sessionid'];
-        parent::__construct($name, $options);
-    }
-
-    /**
-     * Candidate users
-     * @param <type> $search
-     * @return array
-     */
-    public function find_users($search) {
-        global $DB;
-        /// All non-signed up system users
-        list($wherecondition, $params) = $this->search_sql($search, '{user}');
-
-        $fields      = 'SELECT id, firstname, lastname, email';
-        $countfields = 'SELECT COUNT(1)';
-        $sql = "
-                  FROM {user}
-                 WHERE $wherecondition
-                   AND id NOT IN
-                       (
-                       SELECT u.id
-                         FROM {facetoface_signups} s
-                         JOIN {facetoface_signups_status} ss ON s.id = ss.signupid
-                         JOIN {user} u ON u.id=s.userid
-                        WHERE s.sessionid = :sessid
-                          AND ss.statuscode >= :statusbooked
-                          AND ss.superceded = 0
-                       )
-               ";
-        $order = " ORDER BY lastname ASC, firstname ASC";
-        $params = array_merge($params, array('sessid' => $this->sessionid, 'statusbooked' => MDL_F2F_STATUS_BOOKED));
-
-        if (!$this->is_validating()) {
-            $potentialmemberscount = $DB->count_records_sql($countfields . $sql, $params);
-            if ($potentialmemberscount > 100) {
-                return $this->too_many_results($search, $potentialmemberscount);
-            }
-        }
-
-        $availableusers = $DB->get_records_sql($fields . $sql . $order, $params);
-
-        if (empty($availableusers)) {
-            return array();
-        }
-
-        $groupname = get_string('potentialusers', 'role', count($availableusers));
-
-        return array($groupname => $availableusers);
-    }
-
-    protected function get_options() {
-        $options = parent::get_options();
-        $options['sessionid'] = $this->sessionid;
-        $options['file'] = 'mod/facetoface/lib.php';
-        return $options;
-    }
-}
-
-/**
- * facetoface assignment candidates
- */
-class facetoface_existing_selector extends user_selector_base {
-    protected $sessionid;
-
-    public function __construct($name, $options) {
-        $this->sessionid = $options['sessionid'];
-        parent::__construct($name, $options);
-    }
-
-    /**
-     * Candidate users
-     * @param <type> $search
-     * @return array
-     */
-    public function find_users($search) {
-        global $DB;
-        //by default wherecondition retrieves all users except the deleted, not confirmed and guest
-        list($wherecondition, $whereparams) = $this->search_sql($search, 'u');
-
-        $fields = 'SELECT
-                        u.id,
-                        su.id AS submissionid,
-                        u.firstname,
-                        u.lastname,
-                        u.email,
-                        s.discountcost,
-                        su.discountcode,
-                        su.notificationtype,
-                        f.id AS facetofaceid,
-                        f.course,
-                        ss.grade,
-                        ss.statuscode,
-                        sign.timecreated';
-        $countfields = 'SELECT COUNT(1)';
-        $sql = "
-            FROM
-                {facetoface} f
-            JOIN
-                {facetoface_sessions} s
-             ON s.facetoface = f.id
-            JOIN
-                {facetoface_signups} su
-             ON s.id = su.sessionid
-            JOIN
-                {facetoface_signups_status} ss
-             ON su.id = ss.signupid
-            LEFT JOIN
-                (
-                SELECT
-                    ss.signupid,
-                    MAX(ss.timecreated) AS timecreated
-                FROM
-                    {facetoface_signups_status} ss
-                INNER JOIN
-                    {facetoface_signups} s
-                 ON s.id = ss.signupid
-                AND s.sessionid = :sessid1
-                WHERE
-                    ss.statuscode IN (:statusbooked, :statuswaitlisted)
-                GROUP BY
-                    ss.signupid
-                ) sign
-             ON su.id = sign.signupid
-            JOIN
-                {user} u
-             ON u.id = su.userid
-            WHERE
-                $wherecondition
-            AND s.id = :sessid2
-            AND ss.superceded != 1
-            AND ss.statuscode >= :statusapproved
-        ";
-        $order = " ORDER BY sign.timecreated ASC, ss.timecreated ASC";
-        $params = array ('sessid1' => $this->sessionid, 'statusbooked' => MDL_F2F_STATUS_BOOKED, 'statuswaitlisted' => MDL_F2F_STATUS_WAITLISTED);
-        $params = array_merge($params, $whereparams);
-        $params['sessid2'] = $this->sessionid;
-        $params['statusapproved'] = MDL_F2F_STATUS_APPROVED;
-        if (!$this->is_validating()) {
-            $potentialmemberscount = $DB->count_records_sql($countfields . $sql, $params);
-            if ($potentialmemberscount > 100) {
-                return $this->too_many_results($search, $potentialmemberscount);
-            }
-        }
-
-        $availableusers = $DB->get_records_sql($fields . $sql . $order, $params);
-
-        if (empty($availableusers)) {
-            return array();
-        }
-
-        $groupname = get_string('existingusers', 'role', count($availableusers));
-        return array($groupname => $availableusers);
-    }
-
-    protected function get_options() {
-        $options = parent::get_options();
-        $options['sessionid'] = $this->sessionid;
-        $options['file'] = 'mod/facetoface/lib.php';
-        return $options;
-    }
-}
-
 
 /**
  * Return the id of the user's manager if it is

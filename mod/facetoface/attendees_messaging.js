@@ -92,7 +92,7 @@ M.totara_f2f_attendees_messaging = M.totara_f2f_attendees_messaging || {
             // Get selected
             $('fieldset#recipientgroupsheader input:checked').each(function() {
                 // Get status code
-                var status = $(this).attr('name').substring(16, 18);
+                var status = $(this).attr('id').substring(('id_recipient_group_').length);
                 for (user in recipient_groups[status]) {
                     user = recipient_groups[status][user];
                     recipients.append('<option value="'+user.id+'">'+user.firstname+' '+user.lastname+', '+user.email+'</select>');

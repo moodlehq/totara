@@ -26,7 +26,7 @@
 require_once(dirname(dirname(dirname(__FILE__)))."/config.php");
 require_once($CFG->dirroot . '/mod/facetoface/lib.php');
 
-define('MAX_USERS_PER_PAGE', 5000);
+define('MAX_USERS_PER_PAGE', 1000);
 
 $s              = required_param('s', PARAM_INT); // facetoface session ID
 $add            = optional_param('add', 0, PARAM_BOOL);
