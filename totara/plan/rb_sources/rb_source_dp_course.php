@@ -539,21 +539,34 @@ from
         return $defaultcolumns;
     }
 
-    function rb_display_course_completion_progress($status, $row) {
+    function rb_display_course_completion_progress($status, $row, $isexport) {
+        if ($isexport) {
+            global $COMPLETION_STATUS;
+            if (in_array($status, array_keys($COMPLETION_STATUS))) {
+                return get_string($COMPLETION_STATUS[$status], 'completion');
+            } else {
+                return '';
+            }
+        }
+
         return totara_display_course_progress_icon($row->userid, $row->courseid, $status);
     }
 
-    function rb_display_course_completion_progress_and_approval($status, $row) {
+    function rb_display_course_completion_progress_and_approval($status, $row, $isexport) {
 
         $approved = isset($row->approved) ? $row->approved : null;
 
         // get the progress bar
-        $content = $this->rb_display_course_completion_progress($status, $row);
+        $content = $this->rb_display_course_completion_progress($status, $row, $isexport);
 
         // highlight if the item has not yet been approved
         if ($approved == DP_APPROVAL_UNAPPROVED ||
             $approved == DP_APPROVAL_REQUESTED) {
-            $content .= $this->rb_display_plan_item_status($approved);
+            if ($isexport) {
+                $content .= ' (' . $this->rb_display_plan_item_status($approved) . ')';
+            } else {
+                $content .= $this->rb_display_plan_item_status($approved);
+            }
         }
         return $content;
     }
