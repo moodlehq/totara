@@ -251,14 +251,14 @@ if ($fromform = $mform->get_data()) { // Form submitted
         }
     }
 
-    // Save trainer roles
-    if (isset($fromform->trainerrole)) {
-        facetoface_update_trainers($sessionid, $fromform->trainerrole);
-    }
-
     // Retrieve record that was just inserted/updated
     if (!$session = facetoface_get_session($sessionid)) {
         print_error('error:couldnotfindsession', 'facetoface', $returnurl);
+    }
+
+    // Save trainer roles
+    if (isset($fromform->trainerrole)) {
+        facetoface_update_trainers($facetoface, $session, $fromform->trainerrole);
     }
 
     facetoface_update_calendar_entries($session, $facetoface);

@@ -709,21 +709,27 @@ function facetoface_delete_session($session) {
         foreach ($signedupusers as $user) {
             if (facetoface_user_cancel($session, $user->userid, true)) {
                 facetoface_send_cancellation_notice($facetoface, $session, $user->userid);
-            }
-            else {
+            } else {
                 return false; // Cannot rollback since we notified users already
             }
+        }
+    }
+
+    // Load current trainers
+    $trainers = $DB->get_records("facetoface_session_roles", array("sessionid" => $session->id));
+    if ($trainers and count($trainers) > 0) {
+        foreach ($trainers as $trainer) {
+            facetoface_send_cancellation_notice($facetoface, $session, $trainer->userid);
         }
     }
 
     $transaction = $DB->start_delegated_transaction();
 
     // Remove entries from the teacher calendars
-    $DB->delete_records_select('event', "modulename = 'facetoface' AND
-                                         eventtype = 'facetofacesession' AND
-                                         instance = ? AND description LIKE ?",
-                                         array($facetoface->id, "%attendees.php?s={$session->id}%"));
-
+    $select = $DB->sql_like('description', ':attendess');
+    $select .= " AND modulename = 'facetoface' AND eventtype = 'facetofacesession' AND instance = :facetofaceid";
+    $params = array('attendess' => "%attendees.php?s={$session->id}%", 'facetofaceid' => $facetoface->id);
+    $DB->delete_records_select('event', $select, $params);
     if ($facetoface->showoncalendar == F2F_CAL_COURSE) {
         // Remove entry from course calendar
         facetoface_remove_session_from_calendar($session, $facetoface->course);
@@ -733,28 +739,20 @@ function facetoface_delete_session($session) {
     }
 
     // Delete session details
-    $DB->delete_records('facetoface_sessions', array('id' => $session->id));
-
-    $DB->delete_records('facetoface_sessions_dates', array('sessionid' => $session->id));
+    $DB->delete_records('facetoface_sessions_dates',array('sessionid' => $session->id));
+    $DB->delete_records('facetoface_session_roles', array('sessionid' => $session->id));
+    $DB->delete_records('facetoface_session_data',  array('sessionid' => $session->id));
 
     $DB->delete_records_select(
         'facetoface_signups_status',
-        "signupid IN
-        (
-            SELECT
-                id
-            FROM
-                {facetoface_signups}
-            WHERE
-                sessionid = {$session->id}
-        )
-        ");
-
+        "signupid IN (SELECT id FROM {facetoface_signups} WHERE sessionid = {$session->id})");
     $DB->delete_records('facetoface_signups', array('sessionid' => $session->id));
 
     // Notifications.
     $DB->delete_records('facetoface_notification_sent', array('sessionid' => $session->id));
     $DB->delete_records('facetoface_notification_hist', array('sessionid' => $session->id));
+
+    $DB->delete_records('facetoface_sessions', array('id' => $session->id));
 
     $transaction->allow_commit();
 
@@ -3045,7 +3043,7 @@ function facetoface_list_of_customfields() {
     return get_string('nocustomfields', 'facetoface');
 }
 
-function facetoface_update_trainers($sessionid, $form) {
+function facetoface_update_trainers($facetoface, $session, $form) {
     global $DB;
 
     // If we recieved bad data
@@ -3054,7 +3052,10 @@ function facetoface_update_trainers($sessionid, $form) {
     }
 
     // Load current trainers
-    $old_trainers = facetoface_get_trainers($sessionid);
+    $current_trainers = facetoface_get_trainers($session->id);
+    // To collect trainers
+    $new_trainers = array();
+    $old_trainers = array();
 
     $transaction = $DB->start_delegated_transaction();
 
@@ -3069,12 +3070,13 @@ function facetoface_update_trainers($sessionid, $form) {
             }
 
             // If the trainer doesn't exist already, create it
-            if (!isset($old_trainers[$roleid][$trainer])) {
+            if (!isset($current_trainers[$roleid][$trainer])) {
 
                 $newtrainer = new stdClass();
                 $newtrainer->userid = $trainer;
                 $newtrainer->roleid = $roleid;
-                $newtrainer->sessionid = $sessionid;
+                $newtrainer->sessionid = $session->id;
+                $new_trainers[] = $newtrainer;
 
                 if (!$DB->insert_record('facetoface_session_roles', $newtrainer)) {
                     print_error('error:couldnotaddtrainer', 'facetoface');
@@ -3082,15 +3084,15 @@ function facetoface_update_trainers($sessionid, $form) {
                     return false;
                 }
             } else {
-                unset($old_trainers[$roleid][$trainer]);
+                unset($current_trainers[$roleid][$trainer]);
             }
         }
     }
 
     // Loop through what is left of old trainers, and remove
     // (as they have been deselected)
-    if ($old_trainers) {
-        foreach ($old_trainers as $roleid => $trainers) {
+    if ($current_trainers) {
+        foreach ($current_trainers as $roleid => $trainers) {
             // If no trainers left
             if (empty($trainers)) {
                 continue;
@@ -3098,7 +3100,8 @@ function facetoface_update_trainers($sessionid, $form) {
 
             // Delete any remaining trainers
             foreach ($trainers as $trainer) {
-                if (!$DB->delete_records('facetoface_session_roles', array('sessionid' => $sessionid, 'roleid' => $roleid, 'userid' => $trainer->id))) {
+                $old_trainers[] = $trainer;
+                if (!$DB->delete_records('facetoface_session_roles', array('sessionid' => $session->id, 'roleid' => $roleid, 'userid' => $trainer->id))) {
                     print_error('error:couldnotdeletetrainer', 'facetoface');
                     $transaction->force_transaction_rollback();
                     return false;
@@ -3108,6 +3111,16 @@ function facetoface_update_trainers($sessionid, $form) {
     }
 
     $transaction->allow_commit();
+
+    // Send a confirmation notice to new trainer
+    foreach ($new_trainers as $i => $trainer) {
+        facetoface_send_trainer_confirmation_notice($facetoface, $session, $trainer->userid);
+    }
+
+    // Send an unassignment notice to old trainer
+    foreach ($old_trainers as $i => $trainer) {
+        facetoface_send_trainer_session_unassignment_notice($facetoface, $session, $trainer->id);
+    }
 
     return true;
 }
