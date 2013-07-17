@@ -36,7 +36,7 @@ class block_totara_alerts extends block_base {
 
     // label and button values can be set in admin
     function has_config() {
-      return false;
+      return true;
     } //has_config
 
     function preferred_width() {
@@ -44,7 +44,7 @@ class block_totara_alerts extends block_base {
     }
 
     function get_content() {
-        global $CFG, $PAGE, $DB, $OUTPUT;
+        global $CFG, $PAGE, $OUTPUT;
 
         //cache block contents
         if ($this->content !== NULL) {
@@ -129,9 +129,16 @@ class block_totara_alerts extends block_base {
         $count = count($this->msgs);
         if ($count) {
             $this->content->text .= html_writer::tag('p', get_string('showingxofx', 'block_totara_alerts', array('count' => $count, 'total' => $total)));
-        }
-        else {
-            $this->content->text .= html_writer::tag('p', get_string('noalerts', 'block_totara_alerts'));
+        } else {
+            if (!empty($CFG->block_totara_alerts)) {
+                if (!empty($this->config->showempty)) {
+                    $this->content->text .= html_writer::tag('p', get_string('noalerts', 'block_totara_alerts'));
+                } else {
+                    return '';
+                }
+            } else {
+                return '';
+            }
         }
 
         $this->content->text .= html_writer::table($table);
