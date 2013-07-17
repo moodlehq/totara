@@ -80,4 +80,39 @@ class totara_dialog_linked_courses_content_courses extends totara_dialog_content
         $this->courses = $DB->get_records_sql($sql, $params);
 
     }
+
+    /**
+     * Load courses to display based on a specific competency
+     *
+     * @access  public
+     * @var     integer competency id of development plan for which linked courses should be loaded
+     */
+    public function load_courses_from_competency($competencyid = null) {
+        global $DB;
+
+        $competencyid = (int) $competencyid;
+
+        $sql = "
+            SELECT
+                c.id As id,
+                c.fullname AS fullname,
+                c.sortorder AS sortorder
+            FROM
+                {course} c
+            INNER JOIN
+                {comp_criteria} cc
+             ON c.id = cc.iteminstance
+            INNER JOIN
+                {dp_plan_competency_assign} ca
+             ON cc.competencyid = ca.competencyid
+            WHERE
+                cc.itemtype = ?
+            AND ca.id = ?
+        ";
+        $params = array(COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION, $competencyid);
+
+        $this->courses = $DB->get_records_sql($sql, $params);
+
+    }
+
 }
