@@ -136,10 +136,10 @@ function xmldb_totara_program_upgrade($oldversion) {
 
     if ($oldversion < 2012081503) {
         // Clean up exceptions where users are no longer assigned.
-        $exceptionids = $DB->get_records_sql("SELECT e.id
-                                        FROM {prog_exception} e
-                                        LEFT JOIN {prog_user_assignment} ua ON e.assignmentid = ua.id
-                                        WHERE ua.id IS NULL");
+        $exceptionids = $DB->get_fieldset_sql("SELECT e.id
+                                      FROM {prog_exception} e
+                                      LEFT JOIN {prog_user_assignment} ua ON e.assignmentid = ua.id
+                                      WHERE ua.id IS NULL");
         if (!empty($exceptionids)) {
             list($insql, $inparams) = $DB->get_in_or_equal($exceptionids);
             $DB->execute("DELETE
