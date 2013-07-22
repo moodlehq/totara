@@ -91,7 +91,7 @@ $available_actions = array();
 $context = context_course::instance($course->id);
 $contextmodule = context_module::instance($cm->id);
 if (!$onlycontent) { // Need to check this for security issues
-    require_course_login($course, false, $cm);
+    require_login();
 }
 
 $PAGE->set_context($contextmodule);
