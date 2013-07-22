@@ -142,6 +142,8 @@ li.section.hidden span.commands a.editing_show {cursor:default;}
 
 .course ul.section {margin:5px;padding:0;}
 
+div.mod-indent p {width: 96%;} /* Wrap the content of activities/resources without link. */
+
 .weeks-format, /* Window-width: 800 pixels.IE doesn't support, see inline IE conditional comment. */
 .topics-format {margin-top: 8px;min-width: 763px;}
 .categoryboxcontent {border-width:1px;border-style:solid;}
