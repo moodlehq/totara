@@ -57,5 +57,12 @@ function xmldb_facetoface_install() {
     $tpl_request->body = text_to_html(get_string('setting:defaultrequestmessagedefault', 'facetoface'));
     $tpl_request->managerprefix = text_to_html(get_string('setting:defaultrequestinstrmngrdefault', 'facetoface'));
     $DB->insert_record('facetoface_notification_tpl', $tpl_request);
+
+    $tpl_decline = new stdClass();
+    $tpl_decline->status = 1;
+    $tpl_decline->title = get_string('setting:defaultdeclinesubjectdefault', 'facetoface');
+    $tpl_decline->body = text_to_html(get_string('setting:defaultdeclinemessagedefault', 'facetoface'));
+    $tpl_decline->managerprefix = text_to_html(get_string('setting:defaultdeclineinstrmngrdefault', 'facetoface'));
+    $DB->insert_record('facetoface_notification_tpl', $tpl_decline);
 }
 ?>

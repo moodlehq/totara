@@ -319,6 +319,15 @@ function facetoface_add_instance($facetoface) {
     $cancellation->ccmanager = 1;
     $cancellation->save();
 
+    $decline = new facetoface_notification($defaults, false);
+    $decline->title = get_string('setting:defaultdeclinesubjectdefault', 'facetoface');
+    $decline->body = text_to_html(get_string('setting:defaultdeclinemessagedefault', 'facetoface'));
+    $decline->managerprefix = text_to_html(get_string('setting:defaultdeclineinstrmngrdefault', 'facetoface'));
+    $decline->conditiontype = MDL_F2F_CONDITION_DECLINE_CONFIRMATION;
+    $decline->ccmanager = 0;
+    $decline->status = $facetoface->approvalreqd?1:0;
+    $decline->save();
+
     $reminder = new facetoface_notification($defaults, false);
     $reminder->title = get_string('setting:defaultremindersubjectdefault', 'facetoface');
     $reminder->body = text_to_html(get_string('setting:defaultremindermessagedefault', 'facetoface'));
@@ -1998,8 +2007,8 @@ function facetoface_approve_requests($data) {
                         $USER->id
                 );
 
-                // Send a cancellation notice to the user
-                facetoface_send_cancellation_notice($facetoface, $session, $attendee->id);
+                // Send a decline notice to the user.
+                facetoface_send_decline_notice($facetoface, $session, $attendee->id);
 
                 break;
 
