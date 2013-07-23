@@ -3101,6 +3101,7 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
 
     // If completion is enabled and mark as started on first view is on
     if ($course->id !== $SITE->id) {
+        require_once("{$CFG->libdir}/completionlib.php");
         $completion = new completion_info($course);
         if ($completion->is_enabled() && !empty($course->completionprogressonview)) {
             if ($completion->is_tracked_user($USER->id)) {
