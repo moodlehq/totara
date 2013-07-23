@@ -835,11 +835,13 @@ abstract class rb_base_source {
 
     // indicates if the user is deleted or not
     function rb_display_deleted_status($status, $row) {
-
-        if ($status == 1) {
-            return get_string('deleteduser', 'totara_reportbuilder');
-        } else {
-            return get_string('activeuser', 'totara_reportbuilder');
+        switch($status) {
+            case 1:
+                return get_string('deleteduser', 'totara_reportbuilder');
+            case 2:
+                return get_string('suspendeduser', 'totara_reportbuilder');
+            default:
+                return get_string('activeuser', 'totara_reportbuilder');
         }
     }
 
@@ -1318,7 +1320,7 @@ abstract class rb_base_source {
             'user',
             'deleted',
             get_string('userstatus', 'totara_reportbuilder'),
-            "$join.deleted",
+            "CASE WHEN $join.deleted = 0 and $join.suspended = 1 THEN 2 ELSE $join.deleted END",
             array(
                 'joins' => $join,
                 'displayfunc' => 'deleted_status'
@@ -1380,7 +1382,9 @@ abstract class rb_base_source {
             get_string('userstatus', 'totara_reportbuilder'),
             'select',
             array(
-                'selectchoices' => array(0 => get_string('activeonly', 'totara_reportbuilder'), 1 => get_string('deletedonly', 'totara_reportbuilder')),
+                'selectchoices' => array(0 => get_string('activeonly', 'totara_reportbuilder'),
+                                         1 => get_string('deletedonly', 'totara_reportbuilder'),
+                                         2 => get_string('suspendedonly', 'totara_reportbuilder')),
                 'attributes' => $select_width_options,
                 'simplemode' => true,
             )

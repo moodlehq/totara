@@ -123,6 +123,8 @@ class prog_assignments {
         $DB->delete_records('prog_future_user_assignment', array('programid' => $this->programid));
         // delete all configured assignments
         $DB->delete_records('prog_assignment', array('programid' => $this->programid));
+        // delete all exceptions
+        $DB->delete_records('prog_exception', array('programid' => $this->programid));
 
         $transaction->allow_commit();
 

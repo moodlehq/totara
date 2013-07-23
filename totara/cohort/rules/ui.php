@@ -494,7 +494,7 @@ JS;
             $sql .= " WHERE {$sqlobj->where} ";
         }
         if (!empty($sqlin)) {
-            $sql .= " AND {$sqlobj->valuefield} {$sqlin} ";
+            $sql .= " AND {$DB->sql_compare_text($sqlobj->valuefield, 255)} {$sqlin} ";
         }
 
         if (!empty($sqlobj->orderby)) {

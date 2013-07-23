@@ -207,19 +207,18 @@ M.totara_message = M.totara_message || {
      *
      */
     select_all_none_checkbox: function(){
-        $('th.message_values_dismiss_link').html('<div id="totara_message_selects"><a id="all">'+M.util.get_string('all', 'moodle')+
-                                        '</a>/<a id="none">'+M.util.get_string('none', 'moodle')+'</a></div>');
-        function jqCheckAll( id, name, flag ) {
-           if (flag === 0) {
-              $("form#" + id + " INPUT[@name=" + name + "][type='checkbox']").prop('checked', false);
+        $('th.message_values_dismiss_link').html('<div id="totara_message_selects"><a id="all" href="#">'+M.util.get_string('all', 'moodle')+
+                                        '</a>/<a id="none" href="#">'+M.util.get_string('none', 'moodle')+'</a></div>');
+        function jqCheckAll(flag) {
+           if (flag === false) {
+              $("form#totara_messages [type='checkbox']").prop('checked', false);
               if ($('form#totara_messages input[type=checkbox]:checked').length) {
                   $('#totara-dismiss').attr('disabled', false);
               } else {
                   $('#totara-dismiss').attr('disabled', true);
               }
-           }
-           else {
-              $("form#" + id + " INPUT[@name=" + name + "][type='checkbox']").prop('checked', true);
+           } else {
+              $("form#totara_messages [type='checkbox']").prop('checked', true);
               if ($('form#totara_messages input[type=checkbox]:checked').length) {
                   $('#totara-dismiss').attr('disabled', false);
               } else {
@@ -227,8 +226,8 @@ M.totara_message = M.totara_message || {
               }
            }
         }
-        $('#totara_message_selects #all').click(function() {jqCheckAll('totara_messages', 'totara_message', 1); return false;});
-        $('#totara_message_selects #none').click(function() {jqCheckAll('totara_messages', 'totara_message', 0); return false;});
+        $('#totara_message_selects #all').click(function() {jqCheckAll(true); return false;});
+        $('#totara_message_selects #none').click(function() {jqCheckAll(false); return false;});
     },
 
     /**

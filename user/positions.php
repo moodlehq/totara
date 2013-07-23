@@ -151,15 +151,8 @@ $position_assignment = file_prepare_standard_editor($position_assignment, 'descr
     'totara_core', 'pos_assignment', $position_assignment->id);
 $form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit', 'nojs', 'editoroptions'));
 $form->set_data($position_assignment);
-
-// Don't show the page if there are no positions
-if (!$DB->count_records('pos')) {
-    $PAGE->set_title("{$course->fullname}: {$fullname}: {$positiontype}");
-    $PAGE->set_heading($course->fullname);
-    echo $OUTPUT->header();
-    echo $OUTPUT->heading(get_string('noposition','totara_hierarchy'));
-}
-else if (!$can_edit && !$position_assignment->id) {
+// Don't show the page if they do not have a position & can't edit positions.
+if (!$can_edit && !$position_assignment->id) {
     $PAGE->set_title("{$course->fullname}: {$fullname}: {$positiontype}");
     $PAGE->set_heading($course->fullname);
     echo $OUTPUT->header();

@@ -202,11 +202,10 @@ class reportbuilder {
             $this->embedded = $report->embedded;
             $this->contentmode = $report->contentmode;
             // store the embedded URL for embedded reports only
-            if ($report->embedded) {
-                if ($embedobj = reportbuilder_get_embedded_report_object($report->shortname)) {
-                    $this->embeddedurl = $embedobj->url;
-                }
+            if ($report->embedded && $embed) {
+                $this->embeddedurl = $embed->url;
             }
+            $this->embedobj = $embed;
             $this->recordsperpage = $report->recordsperpage;
             $this->defaultsortcolumn = $report->defaultsortcolumn;
             $this->defaultsortorder = $report->defaultsortorder;
@@ -945,14 +944,11 @@ class reportbuilder {
             return false;
         }
 
-        // get the embedded source if the report is embedded
-        $embedobj = ($this->embedded) ? reportbuilder_get_embedded_report_object($this->shortname) : false;
-
         $out = array();
         foreach ($this->src->columnoptions as $option) {
             $key = $option->type . '-' . $option->value;
 
-            if ($embedobj && $embeddedheading = $embedobj->get_embedded_heading($option->type, $option->value)) {
+            if ($this->embedobj && $embeddedheading = $this->embedobj->get_embedded_heading($option->type, $option->value)) {
                 // use heading from embedded source
                 $defaultheading = $embeddedheading;
             } else {
@@ -4109,7 +4105,20 @@ function sql_table_from_select($table, $select, array $params = array()) {
             $indexlongsql = "CREATE INDEX rb_cache_{$md5}_%1\$s ON {$table} (%1\$s(%2\$d))";
             $fieldname = 'field';
 
-            $sql = "CREATE TABLE `{$table}` $select";
+            // Find out if want some special db engine.
+            $enginesql = $DB->get_dbengine() ? " ENGINE = " . $DB->get_dbengine() : '';
+
+            // Do we know collation?
+            $collation = $DB->get_dbcollation();
+            $collationsql = '';
+            if ($collation) {
+                if (strpos($collation, 'utf8_') === 0) {
+                    $collationsql .= " DEFAULT CHARACTER SET utf8";
+                }
+                $collationsql .= " DEFAULT COLLATE = {$collation}";
+            }
+
+            $sql = "CREATE TABLE `{$table}` $enginesql $collationsql $select";
             $result = $DB->execute($sql, $params);
             break;
         case 'mssql':

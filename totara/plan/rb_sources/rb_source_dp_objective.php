@@ -363,6 +363,8 @@ class rb_source_dp_objective extends rb_base_source {
                 'text'
         );
 
+        $this->add_user_fields_to_filters($filteroptions);
+
         return $filteroptions;
     }
 

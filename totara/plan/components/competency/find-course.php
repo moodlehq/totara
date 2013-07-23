@@ -34,6 +34,8 @@ require_login();
 
 $planid = required_param('planid', PARAM_INT);
 $competencyid = required_param('competencyid', PARAM_INT);
+// If it is one, find courses assigned to the competency otherwise find courses assigned to the plan
+$search = optional_param('competency_search', 0, PARAM_INT);
 
 ///
 /// Load plan
@@ -48,13 +50,15 @@ $linkedcourses = $component->get_linked_components($competencyid, 'course');
 $selected = array();
 if (!empty($linkedcourses)) {
     list($insql, $params) = $DB->get_in_or_equal($linkedcourses);
-    $sql = "SELECT ca.id, c.fullname, c.sortorder
+    $field = ($search == 1) ? " c.id, " : " ca.id, ";
+    $sql = "SELECT $field c.fullname, c.sortorder
             FROM {dp_plan_course_assign} ca
             INNER JOIN {course} c ON ca.courseid = c.id
             WHERE ca.id $insql
             ORDER BY c.fullname, c.sortorder";
     $selected = $DB->get_records_sql($sql, $params);
 }
+
 // Access control check
 if (!$permission = $component->can_update_items()) {
     print_error('error:cannotupdatecourses', 'totara_plan');
@@ -73,7 +77,11 @@ $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
 $dialog->selected_title = 'itemstoadd';
 
 // Add data
-$dialog->load_courses($planid);
+if ($search == 1) {
+    $dialog->load_courses_from_competency($competencyid);
+} else {
+    $dialog->load_courses($planid);
+}
 
 // Set selected items
 $dialog->selected_items = $selected;

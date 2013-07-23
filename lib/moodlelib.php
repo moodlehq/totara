@@ -3101,6 +3101,7 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
 
     // If completion is enabled and mark as started on first view is on
     if ($course->id !== $SITE->id) {
+        require_once("{$CFG->libdir}/completionlib.php");
         $completion = new completion_info($course);
         if ($completion->is_enabled() && !empty($course->completionprogressonview)) {
             if ($completion->is_tracked_user($USER->id)) {
@@ -6755,6 +6756,8 @@ class core_string_manager implements string_manager {
      * @return string The String !
      */
     public function get_string($identifier, $component = '', $a = NULL, $lang = NULL) {
+        global $CFG;
+
         $this->countgetstring++;
         // there are very many uses of these time formating strings without the 'langconfig' component,
         // it would not be reasonable to expect that all of them would be converted during 2.0 migration
@@ -6822,6 +6825,11 @@ class core_string_manager implements string_manager {
         }
 
         $string = $string[$identifier];
+
+        // Force RTL direction for debugging purpose
+        if ($identifier == 'thisdirection' && isset($CFG->forcertl)) {
+            $string = 'rtl';
+        }
 
         if ($a !== NULL) {
             // Process array's and objects (except lang_strings)

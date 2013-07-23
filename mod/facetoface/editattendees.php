@@ -28,7 +28,7 @@ require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once($CFG->dirroot.'/mod/facetoface/lib.php');
 require_once($CFG->dirroot.'/totara/core/searchlib.php');
 
-define('MAX_USERS_PER_PAGE', 5000);
+define('MAX_USERS_PER_PAGE', 1000);
 
 $s              = required_param('s', PARAM_INT); // facetoface session ID
 $add            = optional_param('add', 0, PARAM_BOOL);
@@ -36,7 +36,6 @@ $remove         = optional_param('remove', 0, PARAM_BOOL);
 $searchtext     = optional_param('searchtext', '', PARAM_CLEAN); // search string
 $searchbutton   = optional_param('searchbutton', 0, PARAM_BOOL);
 $suppressemail  = optional_param('suppressemail', false, PARAM_BOOL); // send email notifications
-$previoussearch = optional_param('previoussearch', 0, PARAM_BOOL);
 $clear          = optional_param('clear', false, PARAM_BOOL); // new add/edit session, clear previous results
 $onlycontent    = optional_param('onlycontent', false, PARAM_BOOL); // return content of attendees page
 $attendees      = optional_param('attendees', '', PARAM_SEQUENCE);
@@ -197,20 +196,21 @@ foreach ($waitingapproval as $waiting) {
 }
 // Handle the POST actions sent to the page
 if ($frm = data_submitted()) {
+    require_sesskey();
     // Add button
-    if ($add and !empty($frm->addselect) and confirm_sesskey()) {
+    if ($add and !empty($frm->addselect)) {
         foreach ($frm->addselect as $adduser) {
             if (!$adduser = clean_param($adduser, PARAM_INT)) {
                 continue; // invalid userid
             }
 
-            $adduser = $DB->get_record('user', array('id' => $adduser));
+            $adduser = $DB->get_record('user', array('id' => $adduser), 'id, lastname, firstname, email');
             $adduser->statuscode = MDL_F2F_STATUS_BOOKED;
             if ($adduser) {
                 $attendees[$adduser->id] = $adduser;
             }
         }
-    } else if ($remove and !empty($frm->removeselect) and confirm_sesskey()) { // Remove button
+    } else if ($remove and !empty($frm->removeselect)) { // Remove button
         foreach ($frm->removeselect as $removeuser) {
             if (!$removeuser = clean_param($removeuser, PARAM_INT)) {
                 continue; // invalid userid
@@ -223,7 +223,6 @@ if ($frm = data_submitted()) {
 
     } else if (!$searchbutton) { // Initialize search if "Show all" button is clicked
         $searchtext = '';
-        $previoussearch = 0;
     }
 }
 
@@ -252,7 +251,20 @@ if ($attendees) {
     $params = array_merge($params, $attendee_params);
 }
 
-$availableusers = $DB->get_recordset_sql("SELECT u.id, u.firstname, u.lastname, u.email, ss.statuscode
+$usercountrow = $DB->get_record_sql("SELECT COUNT(u.id) as num
+                                               FROM {user} u
+                                               LEFT JOIN {facetoface_signups} su
+                                                 ON u.id = su.userid
+                                                AND su.sessionid = {$session->id}
+                                               LEFT JOIN {facetoface_signups_status} ss
+                                                 ON su.id = ss.signupid
+                                                AND ss.superceded != 1
+                                      WHERE {$where} ", $params);
+
+$usercount = $usercountrow->num;
+
+if ($usercount <= MAX_USERS_PER_PAGE) {
+    $availableusers = $DB->get_recordset_sql("SELECT u.id, u.firstname, u.lastname, u.email, ss.statuscode
                                         FROM {user} u
                                         LEFT JOIN {facetoface_signups} su
                                           ON u.id = su.userid
@@ -261,21 +273,8 @@ $availableusers = $DB->get_recordset_sql("SELECT u.id, u.firstname, u.lastname, 
                                           ON su.id = ss.signupid
                                          AND ss.superceded != 1
                                        WHERE {$where}
-                                       ORDER BY u.lastname ASC, u.firstname ASC
-", $params);
-
-$usercountrow = $DB->get_record_sql("SELECT COUNT(u.id) as num
-                                       FROM {user} u
-                                       LEFT JOIN {facetoface_signups} su
-                                         ON u.id = su.userid
-                                        AND su.sessionid = {$session->id}
-                                       LEFT JOIN {facetoface_signups_status} ss
-                                         ON su.id = ss.signupid
-                                        AND ss.superceded != 1
-                                      WHERE {$where}
-", $params);
-
-$usercount = $usercountrow->num;
+                                       ORDER BY u.lastname ASC, u.firstname ASC", $params);
+}
 
 // Prints a form to add/remove users from the session
 include('editattendees.html');

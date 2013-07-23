@@ -19,5 +19,7 @@ $string['viewallnot'] = 'View all tasks';
 $string['clickformoreinfo'] = 'Click for more information';
 $string['f2fsessionfull'] = 'Session full';
 $string['f2fsessiondeleted'] = 'Session has been deleted';
+$string['showempty'] = 'Show this block when there are no tasks to display';
+$string['showemptyconfig'] = 'Show empty block';
 $string['totara_tasks:addinstance'] = 'Add a new tasks block';
 $string['totara_tasks:myaddinstance'] = 'Add a new tasks block to the My Moodle page';

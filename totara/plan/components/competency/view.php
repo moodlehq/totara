@@ -80,6 +80,7 @@ if ($canupdate) {
     $PAGE->requires->string_for_js('cancel', 'moodle');
     $PAGE->requires->string_for_js('addlinkedcourses', 'totara_plan');
     $PAGE->requires->string_for_js('addlinkedevidence', 'totara_plan');
+    $PAGE->requires->string_for_js('addlinkedcoursescompetency', 'totara_plan');
 
     // Get course picker
     $jsmodule = array(
@@ -89,6 +90,15 @@ if ($canupdate) {
     $PAGE->requires->js_init_call('M.totara_plan_competency_find_course.init',
             array('args' => '{"plan_id":'.$id.', "competency_id":'.$caid.'}'),
             false, $jsmodule);
+
+    // Get course picker for competencies
+    $jsmodule_competency = array(
+        'name' => 'totara_find_course_competency',
+        'fullpath' => '/totara/plan/components/competency/find-course-competency.js',
+        'requires' => array('json'));
+    $PAGE->requires->js_init_call('M.totara_find_course_competency.init',
+            array('args' => '{"plan_id":'.$id.', "competency_id":'.$caid.'}'),
+            false, $jsmodule_competency);
 
     // Get evidence picker
     $jsmodule_evidence = array(

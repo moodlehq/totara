@@ -1469,13 +1469,15 @@ class dp_competency_component extends dp_base_component {
             return '';
         }
 
-        $btntext = get_string('addlinkedcourses', 'totara_plan');
+        $btntext_addfromplan = get_string('addlinkedcourses', 'totara_plan');
+        $btntext_addfromcomp = get_string('addlinkedcoursescompetency', 'totara_plan');
 
         $html = $OUTPUT->container_start('buttons');
         $html .= $OUTPUT->container_start('singlebutton dp-plan-assign-button');
         $html .= $OUTPUT->container_start();
         $html .= html_writer::script('var competency_id = ' . $competencyid . ';' . 'var plan_id = ' . $this->plan->id . ';');
-        $html .= $OUTPUT->single_submit($btntext, array('id' => "show-course-dialog"));
+        $html .= $OUTPUT->single_submit($btntext_addfromplan, array('id' => "show-course-dialog"));
+        $html .= $OUTPUT->single_submit($btntext_addfromcomp, array('id' => "show-course-dialog-competency"));
 
         $html .= $OUTPUT->container_end();
         $html .= $OUTPUT->container_end();

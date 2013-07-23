@@ -118,7 +118,6 @@ $relations = array(
     'dp_objective_scale#defaultid' => 'dp_objective_scale_value#id',
     'dp_objective_scale_value#objscaleid' => 'dp_objective_scale#id',
     'dp_plan_history#planid' => 'dp_plan#id',
-    'dp_plan_evidence#planid' => 'dp_plan#id',
     'dp_objective_settings#templateid' => 'dp_template#id',
     'dp_objective_settings#priorityscale' => 'dp_priority_scale#id',
     'dp_objective_settings#objectivescale' => 'dp_objective_scale#id',

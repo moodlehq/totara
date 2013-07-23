@@ -572,6 +572,9 @@ class program {
             // delete future_user_assignment records too
             $DB->delete_records('prog_future_user_assignment', array('programid' => $this->id, 'userid' => $userid));
 
+            // delete all exceptions
+            $DB->delete_records('prog_exception', array('programid' => $this->id, 'userid' => $userid));
+
             // check if this program is also part of any of the user's learning plans
             if (!$this->assigned_to_users_non_required_learning($userid)) {
                 // delete the completion record if the program is not complete

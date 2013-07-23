@@ -29,7 +29,7 @@ echo "Update the config file"
 # Get the name of the previous build.
 PREBUILDNAME=${DBUPNAME:12}
 # Get the salt from the 2.2 file.
-SALT=`grep passwordsaltmain /var/lib/jenkins/jobs/${PREBUILDNAME}/workspace/config.php | sed -e 's/[\/&]/\\&/g'`
+SALT=`grep passwordsaltmain /var/lib/jenkins/jobs/${PREBUILDNAME}/workspace/config.php | sed -e 's/[\/&]/\\\\&/g'`
 # Generate a new config file and replace the old one.
 sed "s/###PASSWORDSALTMAINGOESHERE###/${SALT}/g" ../config-template.php > config.php
 
