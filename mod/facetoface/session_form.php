@@ -319,21 +319,34 @@ class mod_facetoface_session_form extends moodleform {
 
             // Loop through roles
             $hasconflicts = 0;
+            $context = context_course::instance($this->_customdata['course']->id);
             foreach ($trainerdata as $roleid => $trainers) {
-
-                // Loop through trainers in this role
+                // Attempt to load users with this role in this context.
+                $trainerlist = get_role_users($roleid, $context, true, 'u.id, u.firstname, u.lastname', 'u.id ASC');
+                // Initialize error variable.
+                $trainererrors = '';
+                // Loop through trainers in this role.
                 foreach ($trainers as $trainer) {
 
                     if (!$trainer) {
                         continue;
                     }
 
-                    // Check their availability
+                    // Check their availability.
                     $availability = facetoface_get_sessions_within($dates, $trainer, $wheresql, $whereparams);
                     if (!empty($availability)) {
-                        $errors["trainerrole[{$roleid}][{$trainer}]"] = facetoface_get_session_involvement($trainer, $availability);
+                        // Verify if trainers come in form of checkboxes or dropdown list to properly place the errors.
+                        if (isset($this->_form->_types["trainerrole[{$roleid}][{$trainer}]"])) {
+                            $errors["trainerrole[{$roleid}][{$trainer}]"] = facetoface_get_session_involvement($trainerlist[$trainer], $availability);
+                        } else if (isset($this->_form->_types["trainerrole[{$roleid}]"])) {
+                            $trainererrors .= html_writer::tag('div', facetoface_get_session_involvement($trainerlist[$trainer], $availability));
+                        }
                         ++$hasconflicts;
                     }
+                }
+
+                if (isset($this->_form->_types["trainerrole[{$roleid}]"]) && $trainererrors != '') {
+                    $errors["trainerrole[{$roleid}]"] = $trainererrors;
                 }
             }
 

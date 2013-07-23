@@ -3724,11 +3724,11 @@ function facetoface_get_sessions_within($times, $userid = null, $extrawhere = ''
  * Get session info and role description from get_sessions_within output
  *
  * @access  public
- * @param   int     $userid     User id of the user this $info relates to
- * @param   object  $info       Single result from facetoface_get_sessions_within()
+ * @param   object  $user     User this $info relates to
+ * @param   object  $info     Single result from facetoface_get_sessions_within()
  * @return  string
  */
-function facetoface_get_session_involvement($userid, $info) {
+function facetoface_get_session_involvement($user, $info) {
     global $USER;
 
     // Data to pass to lang string
@@ -3774,9 +3774,11 @@ function facetoface_get_session_involvement($userid, $info) {
         $strkey .= "multiday";
     }
 
-    if ($userid == $USER->id) {
+    if ($user->id == $USER->id) {
         $strkey .= "selfsignup";
     }
+
+    $data->fullname = fullname($user);
 
     return get_string($strkey, 'facetoface', $data);
 }
@@ -3894,7 +3896,7 @@ function facetoface_user_import($course, $facetoface, $session, $userid, $params
         if (!$ignoreconflicts) {
             $dates = facetoface_get_session_dates($session->id);
             if ($availability = facetoface_get_sessions_within($dates, $user->id)) {
-                $result['result'] = facetoface_get_session_involvement($user->id, $availability);
+                $result['result'] = facetoface_get_session_involvement($user, $availability);
                 $result['conflict'] = true;
                 return $result;
             }
