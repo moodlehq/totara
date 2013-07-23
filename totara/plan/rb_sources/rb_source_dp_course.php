@@ -462,6 +462,7 @@ from
                 'number'
         );
 
+        $this->add_user_fields_to_filters($filteroptions);
         $this->add_cohort_course_fields_to_filters($filteroptions);
 
         return $filteroptions;
