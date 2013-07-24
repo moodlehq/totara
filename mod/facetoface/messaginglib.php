@@ -76,7 +76,7 @@ function facetoface_get_unmailed_reminders() {
  * Returns the ICAL data for a facetoface meeting.
  *
  * @param integer $method The method, @see {{MDL_F2F_INVITE}}
- * @return string Filename of the attachment in the temp directory
+ * @return stdClass Object that contains a filename in dataroot directory and ical template
  */
 function facetoface_get_ical_attachment($method, $facetoface, $session, $user) {
     global $CFG, $DB;
@@ -191,7 +191,11 @@ function facetoface_get_ical_attachment($method, $facetoface, $session, $user) {
     $tempfilename = md5($template);
     $tempfilepathname = $CFG->dataroot . '/' . $tempfilename;
     file_put_contents($tempfilepathname, $template);
-    return $tempfilename;
+
+    $ical = new stdClass();
+    $ical->file = $tempfilename;
+    $ical->content = $template;
+    return $ical;
 }
 
 

@@ -519,8 +519,8 @@ class facetoface_notification extends data_object {
         $ical_content = '';
         $ical_uids = null;
         $ical_method = '';
-        if (file_exists($CFG->dataroot .'/'. $this->_ical_attachment) && $this->conditiontype != MDL_F2F_CONDITION_WAITLISTED_CONFIRMATION) {
-            $newevent->attachment = $this->_ical_attachment;
+        if ($this->conditiontype != MDL_F2F_CONDITION_WAITLISTED_CONFIRMATION) {
+            $newevent->attachment = $this->_ical_attachment->file;
 
             if ($this->conditiontype == MDL_F2F_CONDITION_CANCELLATION_CONFIRMATION) {
                 $newevent->attachmentname = 'cancel.ics';
@@ -529,7 +529,7 @@ class facetoface_notification extends data_object {
                 $newevent->attachmentname = 'invite.ics';
             }
 
-            $ical_content = file_get_contents($CFG->dataroot .'/'. $this->_ical_attachment);
+            $ical_content = $this->_ical_attachment->content;
 
             if (!empty($ical_content)) {
                 preg_match_all('/UID:([^\r\n ]+)/si', $ical_content, $matches);
@@ -597,6 +597,8 @@ class facetoface_notification extends data_object {
                 tm_alert_send($managerevent);
             }
         }
+
+        @unlink($CFG->dataroot . DIRECTORY_SEPARATOR . $this->_ical_attachment->file);
     }
 
 
