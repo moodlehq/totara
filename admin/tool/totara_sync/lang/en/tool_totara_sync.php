@@ -71,16 +71,18 @@ $string['removeitemsdesc'] = 'Specify what to do with internal items during sync
 // User
 $string['displayname:user'] = 'User';
 $string['settings:user'] = 'User element settings';
-$string['removeusers'] = 'Remove users';
-$string['removeusersdesc'] = 'Specify what to do with internal user accounts during sync when user was removed from source. Users are automatically revived if they reappear in source.';
-$string['keep'] = 'Keep';
-$string['delete'] = 'Delete';
 $string['deleted'] = 'Deleted';
 $string['sourceallrecords'] = 'Source contains all records';
 $string['sourceallrecordsdesc'] = 'Does the source provide all sync records, everytime <strong>OR</strong> are only records that need to be updated/deleted provided? If "No" (only records to be updated/deleted), then the source must use the <strong>"delete" flag</strong>.';
 $string['allowduplicatedemails'] = 'Allow duplicate emails';
 $string['allowduplicatedemailsdesc'] = 'If "Yes" duplicated emails are allowed from the source. If "No" only unique emails are allowed.';
 $string['checkuserconfig'] = 'These settings change the expected <a href=\'{$a}\'>source configuration</a>. You should check the format of your data source matches the new source configuration';
+$string['allowedactions'] = 'Allowed sync actions';
+$string['create'] = 'Create';
+$string['delete'] = 'Delete';
+$string['keep'] = 'Keep';
+$string['update'] = 'Update';
+
 
 ///
 /// Sources

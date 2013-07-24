@@ -123,5 +123,46 @@ function xmldb_tool_totara_sync_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2013092000, 'tool', 'totara_sync');
     }
 
+    if ($oldversion < 2013101500) {
+        // Add sync actions for all elements.
+        $actions = array('allow_create', 'allow_update', 'allow_delete');
+
+        $params = array('plugin' => 'totara_sync_element_user', 'name' => 'removeuser');
+        if ($oldsetting = $DB->get_record('config_plugins', $params)) {
+            $DB->delete_records('config_plugins', $params);
+        }
+
+        foreach ($actions as $action) {
+            $params = array('plugin' => 'totara_sync_element_user', 'name' => $action);
+            if (!$DB->record_exists('config_plugins', $params)) {
+                $newsetting = new stdClass();
+                $newsetting->plugin = 'totara_sync_element_user';
+                $newsetting->name   = $action;
+                $newsetting->value  = $action == 'allow_delete' ? !empty($oldsetting->value) : 1; // Keep the previously set value.
+                $DB->insert_record('config_plugins', $newsetting);
+            }
+        }
+
+        foreach (array('org', 'pos') as $element) {
+            $params = array('plugin' => "totara_sync_element_{$element}", 'name' => 'removeitems');
+            if ($oldsetting = $DB->get_record('config_plugins', $params)) {
+                $DB->delete_records('config_plugins', $params);
+            }
+
+            foreach ($actions as $action) {
+                $params = array('plugin' => "totara_sync_element_{$element}", 'name' => $action);
+                if (!$DB->record_exists('config_plugins', $params)) {
+                    $newsetting = new stdClass();
+                    $newsetting->plugin = "totara_sync_element_{$element}";
+                    $newsetting->name   = $action;
+                    $newsetting->value  = $action == 'allow_delete' ? !empty($oldsetting->value) : 1; // Keep the previously set value.
+                    $DB->insert_record('config_plugins', $newsetting);
+                }
+            }
+        }
+
+        upgrade_plugin_savepoint(true, 2013101500, 'tool', 'totara_sync');
+    }
+
     return true;
 }

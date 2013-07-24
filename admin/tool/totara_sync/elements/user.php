@@ -56,17 +56,25 @@ class totara_sync_element_user extends totara_sync_element {
     function config_form(&$mform) {
         $mform->addElement('selectyesno', 'sourceallrecords', get_string('sourceallrecords', 'tool_totara_sync'));
         $mform->addElement('static', 'sourceallrecordsdesc', '', get_string('sourceallrecordsdesc', 'tool_totara_sync'));
-        $options = array('' => get_string('keep', 'tool_totara_sync'), 'delete' => get_string('delete', 'tool_totara_sync'));
-        $mform->addElement('select', 'removeuser', get_string('removeusers', 'tool_totara_sync'), $options);
-        $mform->addElement('static', 'removeuserdesc', '', get_string('removeusersdesc', 'tool_totara_sync'));
         $mform->addElement('selectyesno', 'allowduplicatedemails', get_string('allowduplicatedemails', 'tool_totara_sync'));
         $mform->addElement('static', 'allowduplicatedemailsdesc', '', get_string('allowduplicatedemailsdesc', 'tool_totara_sync'));
+
+        $mform->addElement('header', 'crudheading', get_string('allowedactions', 'tool_totara_sync'));
+        $mform->addElement('checkbox', 'allow_create', get_string('create', 'tool_totara_sync'));
+        $mform->setDefault('allow_create', 1);
+        $mform->addElement('checkbox', 'allow_update', get_string('update', 'tool_totara_sync'));
+        $mform->setDefault('allow_update', 1);
+        $mform->addElement('checkbox', 'allow_delete', get_string('delete', 'tool_totara_sync'));
+        $mform->setDefault('allow_delete', 1);
+        $mform->setExpanded('crudheading');
     }
 
     function config_save($data) {
-        $this->set_config('removeuser', $data->removeuser);
         $this->set_config('sourceallrecords', $data->sourceallrecords);
         $this->set_config('allowduplicatedemails', $data->allowduplicatedemails);
+        $this->set_config('allow_create', !empty($data->allow_create));
+        $this->set_config('allow_update', !empty($data->allow_update));
+        $this->set_config('allow_delete', !empty($data->allow_delete));
         if (!empty($data->source_user)) {
             $source = $this->get_source($data->source_user);
             // Build link to source config.
@@ -99,7 +107,7 @@ class totara_sync_element_user extends totara_sync_element {
         $this->set_customfieldsdb();
 
         // Delete obsolete users.
-        if (!empty($this->config->removeuser) && $this->config->removeuser == 'delete') {
+        if (!empty($this->config->allow_delete)) {
             if (empty($this->config->sourceallrecords)) {
                 // Get records with "deleted" flag set.
                 $sql = "SELECT u.id, u.idnumber, u.auth
@@ -136,61 +144,65 @@ class totara_sync_element_user extends totara_sync_element {
 
         $issane = $this->check_sanity($synctable, $synctable_clone);
 
-        // Get accounts that must be created.
-        $sql = "SELECT s.*
-                  FROM {{$synctable}} s
-       LEFT OUTER JOIN {user} u ON (s.idnumber=u.idnumber)
-                 WHERE (u.idnumber IS NULL)";
-        $rscreateaccounts = $DB->get_recordset_sql($sql);
-
-        // The idea of doing this is to get the accounts that need to be created. Since users are created first and then user assignments,
-        // it is not possible (after creating users) to know which accounts need to be created.
-        $DB->execute("DELETE FROM {{$synctable_clone}}
-                       WHERE idnumber IN (
-                      SELECT s.idnumber
-                        FROM {user} u
-                  INNER JOIN {{$synctable}} s ON (u.idnumber=s.idnumber))");
-
-        // This must be done before creating new accounts because once the accounts are created this query would return them as well,
-        // even when they do not need to be updated.
-        $sql = "SELECT s.*, u.id AS uid
-                  FROM {user} u
-            INNER JOIN {{$synctable}} s ON (u.idnumber=s.idnumber)
-                 WHERE u.totarasync=1
-                   AND (s.timemodified = 0 OR u.timemodified != s.timemodified)";  // If no timemodified, always update.
-        $rsupdateaccounts = $DB->get_recordset_sql($sql);
-
-        if ($rscreateaccounts->valid()) {
-            // Create missing accounts.
-            foreach ($rscreateaccounts as $suser) {
-                try {
-                    $this->create_user($suser);
-                    $this->addlog(get_string('createduserx', 'tool_totara_sync', $suser->idnumber), 'info', 'createuser');
-                } catch (Exception $e) {
-                    $this->addlog(get_string('cannotcreateuserx', 'tool_totara_sync', $suser->idnumber), 'error', 'createuser');
-                }
-            }
-            $rscreateaccounts->close(); // Free mem.
-
-            // Create user assignments.
-            $sql = "SELECT sc.*, u.id as uid
-                      FROM {{$synctable_clone}} sc
-                INNER JOIN {user} u ON (sc.idnumber=u.idnumber)";
-            $rscreateassignments = $DB->get_recordset_sql($sql);
-            foreach ($rscreateassignments as $suser) {
-                try {
-                    $this->sync_user_assignments($suser->uid, $suser);
-                } catch (Exception $e) {
-                    throw new totara_sync_exception('user', 'syncuserassignments', 'cannotcreateuserassignments', $suser->idnumber, $e->getMessage());
-                }
-            }
-            $rscreateassignments->close(); // Free mem.
+        if (!empty($this->config->allow_update)) {
+            // This must be done before creating new accounts because once the accounts are created this query would return them as well,
+            // even when they do not need to be updated.
+            $sql = "SELECT s.*, u.id AS uid
+                      FROM {user} u
+                INNER JOIN {{$synctable}} s ON (u.idnumber=s.idnumber)
+                     WHERE u.totarasync=1
+                       AND (s.timemodified = 0 OR u.timemodified != s.timemodified)";  // If no timemodified, always update.
+            $rsupdateaccounts = $DB->get_recordset_sql($sql);
         }
 
-        if ($rsupdateaccounts->valid()) {
+        if (!empty($this->config->allow_create)) {
+            // Get accounts that must be created.
+            $sql = "SELECT s.*
+                      FROM {{$synctable}} s
+           LEFT OUTER JOIN {user} u ON (s.idnumber=u.idnumber)
+                     WHERE (u.idnumber IS NULL)";
+            $rscreateaccounts = $DB->get_recordset_sql($sql);
+
+            // The idea of doing this is to get the accounts that need to be created. Since users are created first and then user assignments,
+            // it is not possible (after creating users) to know which accounts need to be created.
+            $DB->execute("DELETE FROM {{$synctable_clone}}
+                           WHERE idnumber IN (
+                          SELECT s.idnumber
+                            FROM {user} u
+                      INNER JOIN {{$synctable}} s ON (u.idnumber=s.idnumber))");
+
+            if ($rscreateaccounts->valid()) {
+                // Create missing accounts.
+                foreach ($rscreateaccounts as $suser) {
+                    try {
+                        $this->create_user($suser);
+                        $this->addlog(get_string('createduserx', 'tool_totara_sync', $suser->idnumber), 'info', 'createuser');
+                    } catch (Exception $e) {
+                        $this->addlog(get_string('cannotcreateuserx', 'tool_totara_sync', $suser->idnumber), 'error', 'createuser');
+                    }
+                }
+                $rscreateaccounts->close(); // Free mem.
+
+                // Create user assignments.
+                $sql = "SELECT sc.*, u.id as uid
+                          FROM {{$synctable_clone}} sc
+                    INNER JOIN {user} u ON (sc.idnumber=u.idnumber)";
+                $rscreateassignments = $DB->get_recordset_sql($sql);
+                foreach ($rscreateassignments as $suser) {
+                    try {
+                        $this->sync_user_assignments($suser->uid, $suser);
+                    } catch (Exception $e) {
+                        throw new totara_sync_exception('user', 'syncuserassignments', 'cannotcreateuserassignments', $suser->idnumber, $e->getMessage());
+                    }
+                }
+                $rscreateassignments->close(); // Free mem.
+            }
+        }
+
+        if (!empty($this->config->allow_update) && $rsupdateaccounts->valid()) {
             foreach ($rsupdateaccounts as $suser) {
                 $user = $DB->get_record('user', array('id' => $suser->uid));
-                if (!empty($user->deleted)) {
+                if (!empty($this->config->allow_create) && !empty($user->deleted)) {
                     // Revive previously-deleted user.
                     if (undelete_user($user)) {
                         $user->deleted = 0;
@@ -234,13 +246,16 @@ class totara_sync_element_user extends totara_sync_element {
                     unset($userauth);
                 }
 
+                // Unpack custom field data
+                $suser->customfields = json_decode($suser->customfields);
+
                 // Update user assignment data.
                 $this->sync_user_assignments($user->id, $suser);
 
                 // Update custom field data.
-                if ($customfields = json_decode($suser->customfields)) {
+                if ($suser->customfields) {
                     require_once($CFG->dirroot.'/user/profile/lib.php');
-                    foreach ($customfields as $name => $value) {
+                    foreach ($suser->customfields as $name => $value) {
                         $profile = str_replace('customfield_', 'profile_field_', $name);
                         $user->{$profile} = (isset($this->customfieldsdb[$name])) ? array_search(strtolower($value), $this->customfieldsdb[$name]) : $value;
                     }

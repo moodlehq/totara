@@ -50,14 +50,19 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
     }
 
     function config_form(&$mform) {
-        $options = array('' => get_string('keep', 'tool_totara_sync'),
-            'delete' => get_string('delete', 'tool_totara_sync'));
-        $mform->addElement('select', 'removeitems', get_string('removeitems', 'tool_totara_sync'), $options);
-        $mform->addElement('static', 'removeitemsdesc', '', get_string('removeitemsdesc', 'tool_totara_sync'));
+        $mform->addElement('header', 'crud', get_string('allowedactions', 'tool_totara_sync'));
+        $mform->addElement('checkbox', 'allow_create', get_string('create', 'tool_totara_sync'));
+        $mform->setDefault('allow_create', 1);
+        $mform->addElement('checkbox', 'allow_update', get_string('update', 'tool_totara_sync'));
+        $mform->setDefault('allow_update', 1);
+        $mform->addElement('checkbox', 'allow_delete', get_string('delete', 'tool_totara_sync'));
+        $mform->setDefault('allow_delete', 1);
     }
 
     function config_save($data) {
-        $this->set_config('removeitems', $data->removeitems);
+        $this->set_config('allow_create', !empty($data->allow_create));
+        $this->set_config('allow_update', !empty($data->allow_update));
+        $this->set_config('allow_delete', !empty($data->allow_delete));
     }
 
     function sync() {
@@ -99,7 +104,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
         $rs->close();
 
         /// Delete obsolete items
-        if (!empty($this->config->removeitems) && $this->config->removeitems == 'delete') {
+        if (!empty($this->config->allow_delete)) {
             $sql = "SELECT i.id, i.idnumber
                       FROM {{$elname}} i
            LEFT OUTER JOIN {{$synctable}} s ON i.idnumber = s.idnumber
@@ -133,6 +138,11 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
      */
     function sync_item($newitem, $synctable) {
         global $DB;
+
+        if (empty($this->config->allow_create) && empty($this->config->allow_update)) {
+            // not allowed to create/update, so return early
+            return true;
+        }
 
         $elname = $this->get_name();
 
@@ -172,6 +182,9 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
             ///
             /// Create new hierarchy item
             ///
+            if (empty($this->config->allow_create)) {
+                return true;
+            }
             $newitem->totarasync = 1;
             $newitem->visible = 1;
             $newitem->usermodified = get_admin()->id;
@@ -202,9 +215,13 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
 
         $newitem->id = $dbitem->id;
 
+
         ///
         /// Update the item
         ///
+        if (empty($this->config->allow_update)) {
+            return true;
+        }
         $newitem->usermodified = get_admin()->id;
         if (!$this->hierarchy->update_hierarchy_item($dbitem->id, $newitem, false, true, false)) {
             throw new totara_sync_exception($elname, 'syncitem', 'cannotupdatex',
