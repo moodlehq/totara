@@ -54,6 +54,12 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                 $fieldmappings[$f] = $this->config->{'fieldmapping_'.$f};
             }
         }
+        foreach ($this->customfields as $key => $f) {
+            if (!empty($this->config->{'fieldmapping_'.$key})) {
+                $fieldmappings[$key] = $this->config->{'fieldmapping_'.$key};
+            }
+        }
+
         $filestruct = array();
         foreach ($this->fields as $f) {
             if (!empty($this->config->{'import_'.$f})) {
@@ -62,7 +68,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         }
         foreach (array_keys($this->customfields) as $f) {
             if (!empty($this->config->{'import_'.$f})) {
-                $filestruct[] = '"'.$f.'"';
+                $filestruct[] = !empty($fieldmappings[$f]) ? '"'.$fieldmappings[$f].'"' : '"'.$f.'"';
             }
         }
         // Add stupid line breaks :(
@@ -173,6 +179,15 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
             }
         }
 
+        foreach (array_keys($this->customfields) as $f) {
+            if (empty($this->config->{'import_'.$f})) {
+                continue;
+            }
+            if (!empty($this->config->{'fieldmapping_'.$f})) {
+                $fieldmappings[$this->config->{'fieldmapping_'.$f}] = $f;
+            }
+        }
+
         // Throw an exception if fields contain invalid characters
         foreach ($fields as $field) {
             $invalidchars = preg_replace('/[?!A-Za-z0-9_-]/i', '', $field);
@@ -205,15 +220,6 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         foreach ($this->fields as $f) {
             if (empty($this->config->{'import_'.$f}) || in_array($f, $fieldmappings)) {
                 // Disabled or mapped fields can be ignored
-                continue;
-            }
-            if (!in_array($f, $fields)) {
-                throw new totara_sync_exception($this->get_element_name(), 'importdata', 'csvnotvalidmissingfieldx', $f);
-            }
-        }
-        foreach (array_keys($this->customfields) as $f) {
-            if (empty($this->config->{'import_'.$f})) {
-                // Disabled custom fields can be ignored
                 continue;
             }
             if (!in_array($f, $fields)) {

@@ -28,7 +28,7 @@ require_once($CFG->dirroot.'/admin/tool/totara_sync/elements/user.php');
 abstract class totara_sync_source_user extends totara_sync_source {
 
     protected $fields;
-    protected $customfields;
+    protected $customfields, $customfieldtitles;
     protected $element;
 
     /**
@@ -79,9 +79,11 @@ abstract class totara_sync_source_user extends totara_sync_source {
 
         // Custom fields
         $this->customfields = array();
+        $this->customfieldtitles = array();
         $cfields = $DB->get_records('user_info_field');
         foreach ($cfields as $cf) {
-            $this->customfields['customfield_'.$cf->shortname] = $cf->name;
+            $this->customfields['customfield_'.$cf->shortname] = $cf->shortname;
+            $this->customfieldtitles['customfield_'.$cf->shortname] = $cf->name;
         }
 
         $this->element = new totara_sync_element_user();
@@ -138,7 +140,7 @@ abstract class totara_sync_source_user extends totara_sync_source {
                 }
             }
         }
-        foreach ($this->customfields as $field => $name) {
+        foreach ($this->customfieldtitles as $field => $name) {
             $mform->addElement('checkbox', 'import_'.$field, $name);
         }
 
@@ -148,6 +150,11 @@ abstract class totara_sync_source_user extends totara_sync_source {
         foreach ($this->fields as $f) {
             $mform->addElement('text', 'fieldmapping_'.$f, $f);
             $mform->setType('fieldmapping_'.$f, PARAM_TEXT);
+        }
+
+        foreach ($this->customfields as $key => $f) {
+            $mform->addElement('text', 'fieldmapping_'.$key, $f);
+            $mform->setType('fieldmapping_'.$key, PARAM_TEXT);
         }
     }
 
@@ -160,6 +167,9 @@ abstract class totara_sync_source_user extends totara_sync_source {
             $this->set_config('import_'.$f, !empty($data->{'import_'.$f}));
         }
         foreach ($this->fields as $f) {
+            $this->set_config('fieldmapping_'.$f, $data->{'fieldmapping_'.$f});
+        }
+        foreach (array_keys($this->customfields) as $f) {
             $this->set_config('fieldmapping_'.$f, $data->{'fieldmapping_'.$f});
         }
     }

@@ -45,6 +45,11 @@ class totara_sync_source_user_database extends totara_sync_source_user {
                 $fieldmappings[$f] = $this->config->{'fieldmapping_'.$f};
             }
         }
+        foreach ($this->customfields as $key => $f) {
+            if (!empty($this->config->{'fieldmapping_'.$key})) {
+                $fieldmappings[$key] = $this->config->{'fieldmapping_'.$key};
+            }
+        }
 
         $dbstruct = array();
         foreach ($this->fields as $f) {
@@ -54,7 +59,7 @@ class totara_sync_source_user_database extends totara_sync_source_user {
         }
         foreach (array_keys($this->customfields) as $f) {
             if (!empty($this->config->{'import_'.$f})) {
-                $dbstruct[] = $f;
+                $dbstruct[] = !empty($fieldmappings[$f]) ? $fieldmappings[$f] : $f;;
             }
         }
 
@@ -183,10 +188,8 @@ class totara_sync_source_user_database extends totara_sync_source_user {
 
         // Finally, perform externaldb to totara db field mapping
         foreach ($fields as $i => $f) {
-            if (!preg_match('/^customfield_/', $f)) {
-                if (in_array($f, array_keys($fieldmappings))) {
-                    $fields[$i] = $fieldmappings[$f];
-                }
+            if (in_array($f, array_keys($fieldmappings))) {
+                $fields[$i] = $fieldmappings[$f];
             }
         }
 
@@ -244,9 +247,13 @@ class totara_sync_source_user_database extends totara_sync_source_user {
                 $cfield_data = array();
                 foreach (array_keys($this->customfields) as $cf) {
                     if (!empty($this->config->{'import_'.$cf})) {
-                        //get shortname and check if we need to do field type processing
-                        $value = trim($extdbrow[$cf]);
+                        if (!empty($this->config->{'fieldmapping_'.$cf})) {
+                            $value = trim($extdbrow[$this->config->{'fieldmapping_'.$cf}]);
+                        } else {
+                            $value = trim($extdbrow[$cf]);
+                        }
                         if (!empty($value)) {
+                            //get shortname and check if we need to do field type processing
                             $shortname = str_replace("customfield_", "", $cf);
                             $datatype = $DB->get_field('user_info_field', 'datatype', array('shortname' => $shortname));
                             switch ($datatype) {
