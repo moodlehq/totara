@@ -3869,7 +3869,7 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
 
         $defaultlearnerrole = $DB->get_record('role', array('id' => $CFG->learnerroleid));
 
-        if (!enrol_try_internal_enrol($course->id, $user->id, $defaultlearnerrole->id)) {
+        if (!enrol_try_internal_enrol($course->id, $user->id, $defaultlearnerrole->id, time())) {
             $result['result'] = get_string('error:enrolmentfailed', 'facetoface', fullname($user));
             return $result;
         }
