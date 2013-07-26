@@ -21,7 +21,7 @@
 // Set default prefix.
 // Some scripts may include this one and preset the prefix so
 // only change if it isn't yet set.
-if (!isset($prefix) {
+if (!isset($prefix)) {
    $prefix = 'mdl_';
 }
 
