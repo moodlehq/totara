@@ -500,11 +500,11 @@ input[type="checkbox"] {
 .mform .fitem .felement {
     width: 74%;
     float: right;
-    margin-left: 0;
+    margin-left: 0 !important;
 }
 .dir-rtl .mform .fitem .felement {
     float: left;
-    margin-right: 0;
+    margin-right: 0 !important;
 }
 .mform .fitem fieldset {
     padding: 0 !important;
