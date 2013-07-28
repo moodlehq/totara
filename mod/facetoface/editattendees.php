@@ -129,8 +129,11 @@ if ($save && $onlycontent) {
     // Check if we need to add anyone.
     $attendeestoadd = array_diff_key($attendees, $original);
     if (!empty($attendeestoadd) && has_capability('mod/facetoface:addattendees', $context)) {
+        // Prepare params
+        $params = array();
+        $params['suppressemail'] = $suppressemail;
         foreach ($attendeestoadd as $attendee) {
-            $result = facetoface_user_import($session, $attendee->id, $suppressemail);
+            $result = facetoface_user_import($course, $facetoface, $session, $attendee->id, $params);
             if ($result['result'] !== true) {
                 $errors[] = $result;
             } else {

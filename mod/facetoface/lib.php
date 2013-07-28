@@ -371,7 +371,7 @@ function facetoface_add_instance($facetoface) {
  * with new data.
  */
 function facetoface_update_instance($facetoface, $instanceflag = true) {
-    global $DB;
+    global $DB, $USER;
 
     if ($instanceflag) {
         $facetoface->id = $facetoface->instance;
@@ -381,12 +381,27 @@ function facetoface_update_instance($facetoface, $instanceflag = true) {
    if ($return = $DB->update_record('facetoface', $facetoface)) {
         facetoface_grade_item_update($facetoface);
 
-        //update any calendar entries
+        // Update any calendar entries
         if ($sessions = facetoface_get_sessions($facetoface->id)) {
             foreach ($sessions as $session) {
                 facetoface_update_calendar_entries($session, $facetoface);
+                // If manager changed from approval required to not
+                if ($facetoface->approvalreqd == 0) {
+                    // Check if we have the users who need approval
+                    $attendees = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_REQUESTED));
+                    if (count($attendees) > 0) {
+                        // Update user status code from MDL_F2F_STATUS_REQUESTED to MDL_F2F_STATUS_BOOKED, otherwise these users will be hidden
+                        foreach ($attendees as $i => $attendee) {
+                            if (facetoface_update_signup_status($attendee->submissionid, MDL_F2F_STATUS_BOOKED, $USER->id, '', $attendee->grade)) {
+                                // Send confirmation email that an user is booked and cc to user's manager if exists
+                                facetoface_send_confirmation_notice($facetoface, $session, $attendee->id, 0, 0);
+                            }
+                        }
+                    }
+                }
             }
         }
+
     }
     return $return;
 }
@@ -3781,21 +3796,34 @@ function facetoface_get_session_involvement($userid, $info) {
  * Import user and signup to session
  *
  * @access  public
+ * @param   object  $course             Record from the course table
+ * @param   object  $facetoface         Record from the facetoface table
  * @param   object  $session            Session to signup user to
  * @param   mixed   $userid             User to signup (normally int)
- * @param   boolean $suppressemail      Suppress notifications flag
- * @param   boolean $ignoreconflicts    Ignore booking conflicts flag
- * @param   string  $bulkaddsource      Flag to indicate if $userid is actually another field
- * @param   string  $discountcode       Optional A user may specify a discount code
- * @param   integer $notificationtype   Optional A user may choose the type of notifications they will receive
+ * @param   array   $params             Optional suppressemail, ignoreconflicts, bulkaddsource, discountcode, notificationtype
+ *          boolean $suppressemail      Suppress notifications flag
+ *          boolean $ignoreconflicts    Ignore booking conflicts flag
+ *          string  $bulkaddsource      Flag to indicate if $userid is actually another field
+ *          string  $discountcode       Optional A user may specify a discount code
+ *          integer $notificationtype   Optional A user may choose the type of notifications they will receive
  * @return  array
  */
-function facetoface_user_import($session, $userid, $suppressemail = false, $ignoreconflicts = false,
-        $bulkaddsource = 'bulkaddsourceuserid', $discountcode = '', $notificationtype = MDL_F2F_BOTH) {
+function facetoface_user_import($course, $facetoface, $session, $userid, $params = array()) {
     global $DB, $CFG, $USER;
 
     $result = array();
     $result['id'] = $userid;
+
+    $suppressemail    = (isset($params['suppressemail'])    ? $params['suppressemail']    : false);
+    $ignoreconflicts  = (isset($params['ignoreconflicts'])  ? $params['ignoreconflicts']  : false);
+    $bulkaddsource    = (isset($params['bulkaddsource'])    ? $params['bulkaddsource']    : 'bulkaddsourceuserid');
+    $discountcode     = (isset($params['discountcode'])     ? $params['discountcode']     : '');
+    $notificationtype = (isset($params['notificationtype']) ? $params['notificationtype'] : MDL_F2F_BOTH);
+
+    $facetoface->ccmanager = (isset($params['ccmanager']) ? $params['ccmanager'] : 0);
+    if (isset($params['approvalreqd'])) {
+        $facetoface->approvalreqd = $params['approvalreqd'];
+    }
 
     // Check parameters.
     if ($bulkaddsource == 'bulkaddsourceuserid') {
@@ -3833,13 +3861,8 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
         return $result;
     }
 
-    // Get facetoface
-    $facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface));
-
-    $course = $DB->get_record('course', array('id' => $facetoface->course));
-    $context = context_course::instance($course->id);
-
     // Make sure that the user is enroled in the course
+    $context   = context_course::instance($course->id);
     if (!is_enrolled($context, $user)) {
 
         $defaultlearnerrole = $DB->get_record('role', array('id' => $CFG->learnerroleid));
