@@ -3045,26 +3045,15 @@ class reportbuilder {
         $fullname = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/', '/[\s-]/'), array('', '_'), $this->fullname));
         $filename = clean_filename($fullname . '_report.csv');
 
-        if (!$file) {
-            $export = new csv_export_writer();
-            $export->filename = $filename;
-        } else {
-            $fp = fopen($file, "w");
-        }
+        $export = new csv_export_writer();
+        $export->filename = $filename;
 
-        $delimiter = get_string('listsep', 'langconfig');
-        $encdelim  = '&#' . ord($delimiter) . ';';
         $row = array();
         foreach ($fields as $field) {
-            $row[] = str_replace($delimiter, $encdelim, strip_tags($field->heading));
+            $row[] = strip_tags($field->heading);
         }
 
-        if ($file) {
-            fputcsv($fp, $row, $delimiter, '"');
-        } else {
-            $export->add_data($row);
-        }
-
+        $export->add_data($row);
         $numfields = count($fields);
 
         if ($records = $DB->get_recordset_sql($query, $params)) {
@@ -3073,16 +3062,12 @@ class reportbuilder {
                 $row = array();
                 for ($j=0; $j<$numfields; $j++) {
                     if (isset($record_data[$j])) {
-                        $row[] = html_entity_decode(str_replace($delimiter, $encdelim, $record_data[$j]), ENT_COMPAT, 'UTF-8');
+                        $row[] = html_entity_decode($record_data[$j], ENT_COMPAT, 'UTF-8');
                     } else {
                         $row[] = '';
                     }
                 }
-                if ($file) {
-                    fputcsv($fp, $row, $delimiter, '"');
-                } else {
-                    $export->add_data($row);
-                }
+                $export->add_data($row);
             }
             $records->close();
         } else {
@@ -3091,6 +3076,8 @@ class reportbuilder {
         }
 
         if ($file) {
+            $fp = fopen($file, "w");
+            fwrite($fp, $export->print_csv_data(true));
             fclose($fp);
         } else {
             $export->download_file();
