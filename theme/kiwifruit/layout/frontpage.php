@@ -189,10 +189,9 @@ echo $OUTPUT->doctype() ?>
       </div>
     <div class="clear"></div>
     </div>
-<div class="push"></div>
+
 <!-- END OF CONTENT -->
   </div>
-
 </div>
 <!-- START OF FOOTER -->
     <?php if ($hasfooter) { ?>
@@ -221,6 +220,7 @@ echo $OUTPUT->doctype() ?>
     <?php } ?>
 
 <!-- END OF FOOTER -->
+
 <?php echo $OUTPUT->standard_end_of_body_html() ?>
 </body>
 </html>

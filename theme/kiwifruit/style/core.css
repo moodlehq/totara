@@ -481,13 +481,14 @@ p.errormessage {
     margin:0 auto;
     background:transparent;
 }
-#page-footer, div.push {
+#page-footer {
     height:80px;
 }
 #page-footer {
     border:none;
     padding-bottom:0;
     background:#BFBFB3;
+    position: relative;
 }
 #page-footer .footer-content {
     width:98%;

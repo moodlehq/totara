@@ -212,7 +212,6 @@ echo $OUTPUT->doctype() ?>
 
 <!-- END OF CONTENT -->
   </div>
-  <div class="push"></div>
 </div>
 <!-- START OF FOOTER -->
     <?php if (!empty($coursefooter)) { ?>
@@ -244,6 +243,7 @@ echo $OUTPUT->doctype() ?>
     <?php } ?>
 
 <!-- END OF FOOTER -->
+
 <?php echo $OUTPUT->standard_end_of_body_html() ?>
 </body>
 </html>
