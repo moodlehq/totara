@@ -4,6 +4,10 @@
 <input type="hidden" name="sesskey" value="<?php p(sesskey()) ?>" />
 <input type="hidden" name="add" value="" />
 <input type="hidden" name="remove" value="" />
+<input type="hidden" name="waitlist" value="<?php echo $waitlist; ?>" />
+<input type="hidden" name="takeattendance" value="<?php echo $takeattendance; ?>" />
+<input type="hidden" name="requireapproval" value="<?php echo $requireapproval; ?>" />
+<input type="hidden" name="removedusers" value="<?php echo implode(',', array_values($removed)); ?>" />
 <input type="hidden" name="attendees" value="<?php echo implode(',', array_keys($attendees)); ?>" />
   <table summary="" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
     <tr>
