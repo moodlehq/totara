@@ -205,19 +205,25 @@ foreach ($courses as $type => $infos) {
 
             // Aggregate activities
             if (!empty($activities)) {
+                $activities_stats = new stdClass();
+                $activities_stats->completed = $activities_complete;
+                $activities_stats->total = count($activities);
 
                 $row = array();
                 $row['title'] = get_string('activitiescomplete', 'report_completion');
-                $row['status'] = $activities_complete.' of '.count($activities);
+                $row['status'] = get_string('xofy', 'report_completion', $activities_stats);
                 $rows[] = $row;
             }
 
             // Aggregate dependencies
             if (!empty($dependencies)) {
+                $dependencies_stats = new stdClass();
+                $dependencies_stats->completed = $dependencies_complete;
+                $dependencies_stats->total = count($dependencies);
 
                 $row = array();
                 $row['title'] = get_string('dependenciescompleted', 'completion');
-                $row['status'] = $dependencies_complete.' of '.count($dependencies);
+                $row['status'] = get_string('xofy', 'report_completion', $dependencies_stats);
                 array_splice($rows, 0, 0, array($row));
             }
 
