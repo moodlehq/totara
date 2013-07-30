@@ -440,7 +440,7 @@ if (!$onlycontent) {
 
     $PAGE->requires->string_for_js('save', 'admin');
     $PAGE->requires->string_for_js('cancel', 'moodle');
-    $PAGE->requires->strings_for_js(array('uploadfile', 'addremoveattendees', 'approvalreqd','bulkaddattendeesfrominput', 'submitcsvtext', 'bulkaddattendeesresults', 'bulkaddattendeesfromfile', 'bulkaddattendeesresults'), 'facetoface');
+    $PAGE->requires->strings_for_js(array('uploadfile', 'addremoveattendees', 'approvalreqd','bulkaddattendeesfrominput', 'submitcsvtext', 'bulkaddattendeesresults', 'bulkaddattendeesfromfile', 'bulkaddattendeesresults', 'wait-list', 'cancellations', 'approvalreqd', 'takeattendance'), 'facetoface');
 
     $json_action = json_encode($action);
     $args = array('args' => '{"sessionid":'.$session->id.','.

@@ -27,6 +27,7 @@
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once($CFG->dirroot.'/mod/facetoface/lib.php');
 require_once($CFG->dirroot.'/totara/core/searchlib.php');
+require_once($CFG->dirroot.'/totara/core/utils.php');
 
 define('MAX_USERS_PER_PAGE', 1000);
 
@@ -39,6 +40,7 @@ $suppressemail  = optional_param('suppressemail', false, PARAM_BOOL); // send em
 $clear          = optional_param('clear', false, PARAM_BOOL); // new add/edit session, clear previous results
 $onlycontent    = optional_param('onlycontent', false, PARAM_BOOL); // return content of attendees page
 $attendees      = optional_param('attendees', '', PARAM_SEQUENCE);
+$removedusers   = optional_param('removedusers', '', PARAM_SEQUENCE); // Cancellations and removed users list
 $save           = optional_param('save', false, PARAM_BOOL);
 
 if (!$session = facetoface_get_session($s)) {
@@ -67,6 +69,16 @@ $strsearchresults = get_string('searchresults');
 $strfacetofaces = get_string('modulenameplural', 'facetoface');
 $strfacetoface = get_string('modulename', 'facetoface');
 
+// Set wait-list
+$waitlist = $session->datetimeknown ? 0 : 1;
+
+// Set removed users
+$removed = $removedusers ? explode(',', $removedusers) : array();
+
+// Get facetoface cancellations and add them to the removed attendees list
+if (!$removed) {
+    $removed = array_keys(facetoface_get_cancellations($s));
+}
 
 // Setup attendees array
 if ($clear) {
@@ -97,8 +109,15 @@ if (!$attendees) {
     $attendees = array();
 }
 
-//get users waiting approval to add to the "already attending" list as we do not want to add them again
+// Set takeattendance base on the attendes number
+$sessionstarted = facetoface_has_session_started($session, time());
+$takeattendance = ($attendees && $session->datetimeknown && $sessionstarted) ? 1 : 0;
+
+// Get users waiting approval to add to the "already attending" list as we do not want to add them again
 $waitingapproval = facetoface_get_requests($session->id);
+
+// Set requireapproval
+$requireapproval = ($waitingapproval) ? 1 : 0;
 
 // If we are finished editing, save
 if ($save && $onlycontent) {
@@ -185,7 +204,7 @@ if ($save && $onlycontent) {
     die();
 }
 
-//add the waiting-approval users - we don't want to add them again
+// Add the waiting-approval users - we don't want to add them again
 foreach ($waitingapproval as $waiting) {
     if (!isset($attendees[$waiting->id])) {
         $attendees[$waiting->id] = $waiting;
@@ -207,6 +226,8 @@ if ($frm = data_submitted()) {
                 $attendees[$adduser->id] = $adduser;
             }
         }
+        // Remove any attendees from the removed users list
+        $removed = array_diff($removed, array_keys($attendees));
     } else if ($remove and !empty($frm->removeselect)) { // Remove button
         foreach ($frm->removeselect as $removeuser) {
             if (!$removeuser = clean_param($removeuser, PARAM_INT)) {
@@ -214,6 +235,10 @@ if ($frm = data_submitted()) {
             }
 
             if (isset($attendees[$removeuser])) {
+                // Real cancellation - The user is signed up for this session and has a status code
+                if ($attendees[$removeuser]->statuscode) {
+                    $removed[] = $removeuser;
+                }
                 unset($attendees[$removeuser]);
             }
         }
@@ -221,6 +246,14 @@ if ($frm = data_submitted()) {
     } else if (!$searchbutton) { // Initialize search if "Show all" button is clicked
         $searchtext = '';
     }
+
+    // Set takeattendance for the new users
+    $attendance = totara_search_for_value($attendees, 'statuscode', TOTARA_SEARCH_OP_GREATER_THAN, MDL_F2F_STATUS_REQUESTED);
+    $takeattendance = ($attendance && $session->datetimeknown && $sessionstarted) ? 1 : 0;
+
+    // Set approval required for the new users
+    $requireapproval = (totara_search_for_value($attendees, 'statuscode', TOTARA_SEARCH_OP_EQUAL, MDL_F2F_STATUS_REQUESTED)) ? 1 : 0;
+
 }
 
 // Main page

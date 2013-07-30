@@ -124,16 +124,59 @@ M.totara_f2f_attendees = M.totara_f2f_attendees || {
         totaraDialog_handler_addremoveattendees.prototype._updatePage = function(response) {
             // Get all root elements in response
             var newtable = $(response);
-            if (M.totara_f2f_attendees.config.approvalreqd == "1") {
-                if ($('<div></div>').append(newtable).find('div.addedattendees').length > 0) {
-                    //find the approval tab
-                    var tab = $('span:contains("' + M.util.get_string('approvalreqd','facetoface') + '")');
-                    if (tab.length > 0) {
-                        //remove the nolink class if present and set up the link attributes
-                        tab.parent('a').removeClass('nolink');
-                        tab.parent('a').attr("href", M.cfg.wwwroot + '/mod/facetoface/attendees.php?s=' + M.totara_f2f_attendees.config.sessionid + '&action=approvalrequired');
-                        tab.parent('a').attr("title", M.util.get_string('approvalreqd','facetoface'));
-                    }
+
+            // Get tabs
+            var waitlisttab = $('span:contains("' + M.util.get_string('wait-list','facetoface') + '")');
+            var cancellationtab = $('span:contains("' + M.util.get_string('cancellations','facetoface') + '")');
+            var takeattendancetab = $('span:contains("' + M.util.get_string('takeattendance','facetoface') + '")');
+            var approvalrequiredtab = $('span:contains("' + M.util.get_string('approvalreqd','facetoface') + '")');
+
+
+            // Activate or deactivate waitlist tab
+            if (waitlisttab.length > 0) {
+                if ($('input[name=waitlist]').val() == 1 && $('input[name=attendees]').val()) {
+                    waitlisttab.parent('a').removeClass('nolink');
+                    waitlisttab.parent('a').attr("href", M.cfg.wwwroot + '/mod/facetoface/attendees.php?s=' +
+                        M.totara_f2f_attendees.config.sessionid + '&action=waitlist');
+                } else {
+                    waitlisttab.parent('a').addClass('nolink');
+                    waitlisttab.parent('a').removeAttr("href");
+                }
+            }
+
+            // Activate or deactivate cancellation tab
+            if (cancellationtab.length > 0) {
+                if ($('input[name=removedusers]').val()) {
+                    cancellationtab.parent('a').removeClass('nolink');
+                    cancellationtab.parent('a').attr("href", M.cfg.wwwroot + '/mod/facetoface/attendees.php?s=' +
+                        M.totara_f2f_attendees.config.sessionid + '&action=cancellations');
+                } else {
+                    cancellationtab.parent('a').addClass('nolink');
+                    cancellationtab.parent('a').removeAttr("href");
+                }
+            }
+
+            // Activate or deactivate take attendance tab
+            if (takeattendancetab.length > 0) {
+                if ($('input[name=takeattendance]').val() == 1) {
+                    takeattendancetab.parent('a').removeClass('nolink');
+                    takeattendancetab.parent('a').attr("href", M.cfg.wwwroot + '/mod/facetoface/attendees.php?s=' +
+                        M.totara_f2f_attendees.config.sessionid + '&action=takeattendance');
+                } else {
+                    takeattendancetab.parent('a').addClass('nolink');
+                    takeattendancetab.parent('a').removeAttr("href");
+                }
+            }
+
+            // Activate or deactivate approval required tab
+            if (approvalrequiredtab.length > 0) {
+                if (M.totara_f2f_attendees.config.approvalreqd == "1" && $('input[name=requireapproval]').val() == 1) {
+                    approvalrequiredtab.parent('a').removeClass('nolink');
+                    approvalrequiredtab.parent('a').attr("href", M.cfg.wwwroot + '/mod/facetoface/attendees.php?s=' +
+                        M.totara_f2f_attendees.config.sessionid + '&action=approvalrequired');
+                } else {
+                    approvalrequiredtab.parent('a').addClass('nolink');
+                    approvalrequiredtab.parent('a').removeAttr("href");
                 }
             }
 
