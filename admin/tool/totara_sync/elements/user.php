@@ -28,12 +28,29 @@ require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
 
 class totara_sync_element_user extends totara_sync_element {
 
+    protected $customfieldsdb = array();
+
     function get_name() {
         return 'user';
     }
 
     function has_config() {
         return true;
+    }
+
+    /**
+     * Set customfieldsdb property with menu of choices options
+     */
+    function set_customfieldsdb() {
+        global $DB;
+
+        $rs = $DB->get_recordset('user_info_field', array('datatype' => 'menu'), '', 'shortname, param1');
+        if ($rs->valid()) {
+            foreach ($rs as $r) {
+                $this->customfieldsdb['customfield_'.$r->shortname] = array_map('strtolower', explode("\n", $r->param1));
+            }
+        }
+        $rs->close();
     }
 
     function config_form(&$mform) {
@@ -76,6 +93,8 @@ class totara_sync_element_user extends totara_sync_element {
         if (!$synctable_clone = $this->get_source_sync_table_clone($synctable)) {
             throw new totara_sync_exception('user', 'usersync', 'couldnotcreateclonetable');
         }
+
+        $this->set_customfieldsdb();
 
         if (!$this->check_sanity($synctable, $synctable_clone)) {
             throw new totara_sync_exception('user', 'usersync', 'sanitycheckfailed');
@@ -207,7 +226,7 @@ class totara_sync_element_user extends totara_sync_element {
                     require_once($CFG->dirroot.'/user/profile/lib.php');
                     foreach ($customfields as $name => $value) {
                         $profile = str_replace('customfield_', 'profile_field_', $name);
-                        $user->{$profile} = $value;
+                        $user->{$profile} = (isset($this->customfieldsdb[$name])) ? array_search(strtolower($value), $this->customfieldsdb[$name]) : $value;
                     }
                     profile_save_data($user);
                 }
@@ -315,7 +334,7 @@ class totara_sync_element_user extends totara_sync_element {
             require_once($CFG->dirroot.'/user/profile/lib.php');
             foreach ($customfields as $name => $value) {
                 $profile = str_replace('customfield_', 'profile_field_', $name);
-                $user->{$profile} = $value;
+                $user->{$profile} = (isset($this->customfieldsdb[$name])) ? array_search(strtolower($value), $this->customfieldsdb[$name]) : $value;
             }
             profile_save_data($user);
         }
