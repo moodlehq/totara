@@ -63,11 +63,15 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
         // handle changes to the 'Add another filter...' selector
         $('select.new_filter_selector').bind('change', function() {
             var addbutton = module.rb_init_addbutton($(this));
+            var advancedCheck = $(this).closest('td').next('td').find('input[type=checkbox]');
             var selectedval = $(this).val();
 
             if (selectedval == 0) {
-                // clean out the selections
+                advancedCheck.prop('disabled', true);
+                // Clean out the selections
                 addbutton.remove();
+            } else {
+                advancedCheck.prop('disabled', false);
             }
         });
 
@@ -121,7 +125,7 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
                         module.config.rb_filters++;
 
                         // Set row atts
-                        $('select[').removeClass('new_filter_selector');
+                        $('#id_newfilter').removeClass('new_filter_selector');
                         var filterbox = optionsbox.prev('td').prev('td');
                         filterbox.find('select.filter_selector').attr('name', 'filter'+fid);
                         filterbox.find('select optgroup[label=New]').remove();

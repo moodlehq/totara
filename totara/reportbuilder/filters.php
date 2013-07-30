@@ -165,33 +165,31 @@ function build_filters($id, $fromform) {
 
     $transaction = $DB->start_delegated_transaction();
     $oldfilters = $DB->get_records('report_builder_filters', array('reportid' => $id));
-    // see if existing filters have changed
+    // See if existing filters have changed
     foreach ($oldfilters as $fid => $oldfilter) {
         $filtername = "filter{$fid}";
         $advancedname = "advanced{$fid}";
-        // update db only if filter has changed
+        // Update db only if filter has changed
         if (isset($fromform->$filtername) &&
-            ($fromform->$filtername != $oldfilter->type.'-'.$oldfilter->value ||
-            $fromform->$filtername != $oldfilter->advanced)) {
+            ($fromform->$filtername == $oldfilter->type.'-'.$oldfilter->value ||
+            $fromform->$advancedname != $oldfilter->advanced)) {
             $todb = new stdClass();
             $todb->id = $fid;
+            $todb->advanced = isset($fromform->$advancedname) ? 1 : 0;
             $parts = explode('-', $fromform->$filtername);
-            $thisadv = isset($fromform->$advancedname) ? 1 : 0;
             $todb->type = $parts[0];
             $todb->value = $parts[1];
-            $todb->advanced = $thisadv;
             $DB->update_record('report_builder_filters', $todb);
         }
     }
-    // add any new filters
+    // Add any new filters
     if (isset($fromform->newfilter) && $fromform->newfilter != '0') {
         $todb = new stdClass();
         $todb->reportid = $id;
+        $todb->advanced = isset($fromform->newadvanced) ? 1 : 0;
         $parts = explode('-', $fromform->newfilter);
-        $thisadv = isset($fromform->newadvanced) ? 1 : 0;
         $todb->type = $parts[0];
         $todb->value = $parts[1];
-        $todb->advanced = $thisadv;
         $sortorder = $DB->get_field('report_builder_filters', 'MAX(sortorder) + 1', array('reportid' => $id));
         if (!$sortorder) {
             $sortorder = 1;
