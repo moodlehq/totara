@@ -103,6 +103,7 @@ $string['currentorgenable'] = 'Show records from staff in the user\'s organisati
 $string['currentposenable'] = 'Show records from staff in the user\'s position';
 $string['currentsearchparams'] = 'Settings to be saved';
 $string['daily'] = 'Daily';
+$string['data'] = 'Data';
 $string['defaultsortcolumn'] = 'Default column';
 $string['defaultsortorder'] = 'Default order';
 $string['delete'] = 'Delete';
@@ -524,6 +525,7 @@ $string['type_org_type'] = 'Organisation custom fields';
 $string['type_pos_type'] = 'Position custom fields';
 $string['type_comp_type'] = 'Competency custom fields';
 $string['type_prog'] = 'Program';
+$string['type_statistics'] = 'Statistics';
 $string['reportbuildergroupname'] = 'Report Builder: Group Name';
 $string['reportbuildergroupname_help'] = '
 The name of the group. This will allow you to identify the group when you want to create a new report based on it. Look for the name in the report source pulldown menu.';
