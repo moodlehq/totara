@@ -183,7 +183,8 @@ abstract class totara_sync_element {
      * Add sync log message
      */
     function addlog($info, $type='info', $action='') {
-        totara_sync_log($this->get_name(), $info, $type, $action);
+        // false param avoid showing error messages on the main page when running sync
+        totara_sync_log($this->get_name(), $info, $type, $action, false);
     }
 
     /**

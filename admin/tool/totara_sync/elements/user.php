@@ -56,21 +56,23 @@ class totara_sync_element_user extends totara_sync_element {
     function config_form(&$mform) {
         $mform->addElement('selectyesno', 'sourceallrecords', get_string('sourceallrecords', 'tool_totara_sync'));
         $mform->addElement('static', 'sourceallrecordsdesc', '', get_string('sourceallrecordsdesc', 'tool_totara_sync'));
-        $options = array('' => get_string('keep', 'tool_totara_sync'),
-            'delete' => get_string('delete', 'tool_totara_sync'));
+        $options = array('' => get_string('keep', 'tool_totara_sync'), 'delete' => get_string('delete', 'tool_totara_sync'));
         $mform->addElement('select', 'removeuser', get_string('removeusers', 'tool_totara_sync'), $options);
         $mform->addElement('static', 'removeuserdesc', '', get_string('removeusersdesc', 'tool_totara_sync'));
+        $mform->addElement('selectyesno', 'allowduplicatedemails', get_string('allowduplicatedemails', 'tool_totara_sync'));
+        $mform->addElement('static', 'allowduplicatedemailsdesc', '', get_string('allowduplicatedemailsdesc', 'tool_totara_sync'));
     }
 
     function config_save($data) {
         $this->set_config('removeuser', $data->removeuser);
         $this->set_config('sourceallrecords', $data->sourceallrecords);
+        $this->set_config('allowduplicatedemails', $data->allowduplicatedemails);
         if (!empty($data->source_user)) {
             $source = $this->get_source($data->source_user);
-            //build link to source config
+            // Build link to source config
             $url = new moodle_url('/admin/tool/totara_sync/admin/sourcesettings.php', array('element' => $this->get_name(), 'source' => $source->get_name()));
             if ($source->has_config()) {
-                //set import_deleted and warn if necessary
+                // Set import_deleted and warn if necessary
                 $import_deleted_new = ($data->sourceallrecords == 0) ? '1' : '0';
                 $import_deleted_old = $source->get_config('import_deleted');
                 if ($import_deleted_new != $import_deleted_old) {
@@ -96,12 +98,10 @@ class totara_sync_element_user extends totara_sync_element {
 
         $this->set_customfieldsdb();
 
-        if (!$this->check_sanity($synctable, $synctable_clone)) {
-            throw new totara_sync_exception('user', 'usersync', 'sanitycheckfailed');
-        }
+        $this->set_customfieldsdb();
 
         ///
-        /// delete obsolete users
+        /// Delete obsolete users
         ///
         if (!empty($this->config->removeuser) && $this->config->removeuser == 'delete') {
             if (empty($this->config->sourceallrecords)) {
@@ -120,14 +120,12 @@ class totara_sync_element_user extends totara_sync_element {
 
             if ($rs = $DB->get_recordset_sql($sql)) {
                 foreach ($rs as $user) {
-                    // remove user
+                    // Remove user
                     try {
                         delete_user($DB->get_record('user', array('id' => $user->id)));
-                        $this->addlog(get_string('deleteduserx', 'tool_totara_sync', $user->idnumber),
-                            'info', 'deleteuser');
+                        $this->addlog(get_string('deleteduserx', 'tool_totara_sync', $user->idnumber), 'info', 'deleteuser');
                     } catch (Exception $e) {
-                        throw new totara_sync_exception('user', 'deleteuser',
-                            'cannotdeleteuserx', $user->idnumber, $e->getMessage());
+                        throw new totara_sync_exception('user', 'deleteuser', 'cannotdeleteuserx', $user->idnumber, $e->getMessage());
                     }
                 }
                 $rs->close();
@@ -140,9 +138,10 @@ class totara_sync_element_user extends totara_sync_element {
             $DB->execute("DELETE FROM {{$synctable}} WHERE deleted = 1");
         }
 
+        $issane = $this->check_sanity($synctable, $synctable_clone);
 
         ///
-        /// create missing accounts
+        /// Create missing accounts
         ///
         $sql = "SELECT s.*
                   FROM {{$synctable}} s
@@ -150,20 +149,18 @@ class totara_sync_element_user extends totara_sync_element {
                  WHERE (u.idnumber IS NULL)";
         if ($rs = $DB->get_recordset_sql($sql)) {
             foreach ($rs as $suser) {
-                 try {
-                     $this->create_user($suser, $synctable);
-                     $this->addlog(get_string('createduserx', 'tool_totara_sync', $suser->idnumber),
-                         'info', 'createuser');
-                 } catch (Exception $e) {
-                     throw new totara_sync_exception('user', 'createuser',
-                         'cannotcreateuserx', $suser->idnumber, $e->getMessage());
-                 }
+                try {
+                    $this->create_user($suser);
+                    $this->addlog(get_string('createduserx', 'tool_totara_sync', $suser->idnumber), 'info', 'createuser');
+                } catch (Exception $e) {
+                    $this->addlog(get_string('cannotcreateuserx', 'tool_totara_sync', $suser->idnumber), 'error', 'createuser');
+                }
             }
             $rs->close(); // free mem
         }
 
         ///
-        /// update existing accounts
+        /// Update existing accounts
         ///
         $sql = "SELECT s.*, u.id AS uid
                   FROM {user} u
@@ -178,7 +175,7 @@ class totara_sync_element_user extends totara_sync_element {
                     if (undelete_user($user)) {
                         $user->deleted = 0;
 
-                        // tag the revived user for new password generation (if applicable)
+                        // Tag the revived user for new password generation (if applicable)
                         $userauth = get_auth_plugin($user->auth);
                         if ($userauth->can_change_password()) {
                             set_user_preference('auth_forcepasswordchange', 1, $user->id);
@@ -194,18 +191,17 @@ class totara_sync_element_user extends totara_sync_element {
 
                 $transaction = $DB->start_delegated_transaction();
 
-                // update user
+                // Update user
                 $this->set_sync_user_fields($user, $suser);
 
                 try {
                     $DB->update_record('user', $user);
                 } catch (dml_exception $e) {
                     $transaction->rollback($e);
-                    throw new totara_sync_exception('user', 'updateusers', 'cannotupdateuserx',
-                        $user->idnumber, $e->getMessage());
+                    throw new totara_sync_exception('user', 'updateusers', 'cannotupdateuserx', $user->idnumber, $e->getMessage());
                 }
 
-                // update user password
+                // Update user password
                 if (isset($suser->password) && trim($suser->password) !== '') {
                     $userauth = get_auth_plugin($user->auth);
                     if ($userauth->can_change_password()) {
@@ -218,10 +214,10 @@ class totara_sync_element_user extends totara_sync_element {
                     unset($userauth);
                 }
 
-                // update user assignment data
+                // Update user assignment data
                 $this->sync_user_assignments($user, $suser);
 
-                // update custom field data
+                // Update custom field data
                 if ($customfields = json_decode($suser->customfields)) {
                     require_once($CFG->dirroot.'/user/profile/lib.php');
                     foreach ($customfields as $name => $value) {
@@ -242,28 +238,24 @@ class totara_sync_element_user extends totara_sync_element {
 
         $this->get_source()->drop_table();
         $this->addlog(get_string('syncfinished', 'tool_totara_sync'), 'info', 'usersync');
+
+        return $issane;
     }
 
     /**
      * Create a user
      *
      * @param stdClass $suser escaped sync user object
-     * @param string $synctable sync table name
      *
      * @return boolean true if successful
      * @throws totara_sync_exception
      */
-    function create_user($suser, $synctable) {
+    function create_user($suser) {
         global $CFG, $DB;
 
         $transaction = $DB->start_delegated_transaction();
 
-        if ($DB->record_exists('user', array('idnumber' => $suser->idnumber))) {
-            // Record might have been created recursively
-            return true;
-        }
-
-        // prep a few params
+        // Prep a few params
         $user = new stdClass;
         $user->username = strtolower($suser->username);  // usernames always lowercase in moodle
         $user->idnumber = $suser->idnumber;
@@ -283,11 +275,11 @@ class totara_sync_element_user extends totara_sync_element {
         $userauth = get_auth_plugin($user->auth);
         if ($userauth->can_change_password()) {
             if (!isset($suser->password) || trim($suser->password) === '') {
-                // tag for password generation
+                // Tag for password generation
                 set_user_preference('auth_forcepasswordchange', 1, $user->id);
                 set_user_preference('create_password',          1, $user->id);
             } else {
-                // set user password
+                // Set user password
                 if (!$userauth->user_update_password($user, $suser->password)) {
                     $this->addlog(get_string('cannotsetuserpassword', 'tool_totara_sync', $user->idnumber), 'warn', 'createusers');
                 }
@@ -295,41 +287,15 @@ class totara_sync_element_user extends totara_sync_element {
         }
         unset($userauth);
 
-        // ensure user's manager exists
-        if (!empty($suser->manageridnumber) && !$DB->record_exists('user', array('idnumber' => $suser->manageridnumber))) {
-            // Create user's manager first (recursive)
-            $sql = "SELECT *
-                      FROM {{$synctable}}
-                     WHERE idnumber = ? ";
-
-            if (!$smanager = $DB->get_record_sql($sql, array($suser->manageridnumber))) {
-                $exception = new totara_sync_exception('user', 'createusers', 'cannotfindmanagerxforusery',
-                    (object)array('manageridnumber' => $suser->manageridnumber,
-                    'idnumber' => $suser->idnumber));
-                $transaction->rollback($exception);
-                throw $exception;
-            }
-
-            try {
-                $this->create_user($smanager, $synctable);
-            } catch (totara_sync_exception $e) {
-                $transaction->rollback($e);
-                throw new totara_sync_exception('user', 'createusers', 'cannotcreatemanagerxforusery',
-                    (object)array('manageridnumber' => $suser->manageridnumber,
-                    'idnumber' => $suser->idnumber), $e->getMessage());
-            }
-        }
-
-        // create user assignments
+        // Create user assignments
         try {
             $this->sync_user_assignments($user, $suser);
         } catch (Exception $e) {
             $transaction->rollback($e);
-            throw new totara_sync_exception('user', 'syncuserassignments',
-                'cannotcreateuserassignments', $user->idnumber, $e->getMessage());
+            throw new totara_sync_exception('user', 'syncuserassignments', 'cannotcreateuserassignments', $user->idnumber, $e->getMessage());
         }
 
-        // add custom field data
+        // Add custom field data
         if ($customfields = json_decode($suser->customfields)) {
             require_once($CFG->dirroot.'/user/profile/lib.php');
             foreach ($customfields as $name => $value) {
@@ -357,9 +323,9 @@ class totara_sync_element_user extends totara_sync_element {
             'type' => POSITION_TYPE_PRIMARY
         ));
 
-        //if we have no position info at all we do not need to set a position
+        // If we have no position info at all we do not need to set a position
         if (!isset($suser->postitle) && empty($suser->posidnumber) && !isset($suser->posstartdate)
-                 && !isset($suser->posenddate) && empty($suser->orgidnumber) && empty($suser->manageridnumber)) {
+            && !isset($suser->posenddate) && empty($suser->orgidnumber) && empty($suser->manageridnumber)) {
             return false;
         }
         $posdata = new stdClass;
@@ -377,7 +343,7 @@ class totara_sync_element_user extends totara_sync_element {
             $posdata->positionid = $pos->id;
 
             if (!isset($suser->postitle)) {
-                // set title and shortname based on position
+                // Set title and shortname based on position
                 $posdata->fullname = $pos->fullname;
                 $posdata->shortname = $pos->shortname;
             }
@@ -466,129 +432,248 @@ class totara_sync_element_user extends totara_sync_element {
         $user->auth = isset($suser->auth) ? $suser->auth : 'manual';
     }
 
+    /**
+     * Check if the data contains invalid values
+     *
+     * @param string $synctable sync table name
+     * @param string $synctable_clone sync clone table name
+     *
+     * @return boolean true if the data is valid, false otherwise
+     */
     function check_sanity($synctable, $synctable_clone) {
         global $DB;
 
-        $elname = $this->get_name();
+        $invalidids = array();
 
         // Get a row from the sync table, so we can check field existence
         if (!$syncfields = $DB->get_record_sql("SELECT * FROM {{$synctable}}", null, IGNORE_MULTIPLE)) {
-            // nothing to check
-            return true;
+            return; // nothing to check
         }
 
-        /// Check for duplicate idnumbers
-        if (isset($syncfields->idnumber)) {
-            $sql = "SELECT s.idnumber
-                      FROM {{$synctable}} s
-                  GROUP BY s.idnumber
-                    HAVING count(s.idnumber) > 1";
-            $rs = $DB->get_recordset_sql($sql);
-            if ($rs->valid()) {
-                foreach ($rs as $r) {
-                    $this->addlog(get_string('duplicateuserswithidnumberx', 'tool_totara_sync', $r), 'error', 'checksanity');
-                }
-                $rs->close();
-                return false;
-            }
+        // Get duplicated idnumbers
+        $badids = $this->get_duplicated_values($synctable, $synctable_clone, 'idnumber', 'duplicateuserswithidnumberx');
+        $invalidids = array_merge($invalidids, $badids);
+
+        // Get duplicated usernames
+        $badids = $this->get_duplicated_values($synctable, $synctable_clone, 'username', 'duplicateuserswithusernamex');
+        $invalidids = array_merge($invalidids, $badids);
+        // Check usernames against the DB to avoid saving repeated values
+        $badids = $this->check_values_in_db($synctable, 'username', 'duplicateusernamexdb');
+        $invalidids = array_merge($invalidids, $badids);
+
+        if (isset($syncfields->email) && !$this->config->allowduplicatedemails) {
+            // Get duplicated emails
+            $badids = $this->get_duplicated_values($synctable, $synctable_clone, 'email', 'duplicateuserswithemailx');
+            $invalidids = array_merge($invalidids, $badids);
+            // Check emails against the DB to avoid saving repeated values
+            $badids = $this->check_values_in_db($synctable, 'email', 'duplicateusersemailxdb');
+            $invalidids = array_merge($invalidids, $badids);
         }
 
-        /// Check orgs
-        if (isset($syncfields->orgidnumber)) {
-            $sql = "SELECT DISTINCT(s.orgidnumber)
-                      FROM {{$synctable}} s
-           LEFT OUTER JOIN {org} o ON s.orgidnumber = o.idnumber
-                     WHERE s.orgidnumber IS NOT NULL
-                       AND s.orgidnumber != ''
-                       AND o.idnumber IS NULL";
-            if (empty($this->config->sourceallrecords)) {
-                // Avoid users that will be deleted
-                $sql .= ' AND s.deleted = 0';
-            }
-            $rs = $DB->get_recordset_sql($sql);
-            if ($rs->valid()) {
-                foreach ($rs as $r) {
-                    $this->addlog(get_string('orgxnotexist', 'tool_totara_sync', $r->orgidnumber), 'error', 'checksanity');
-                }
-                $rs->close();
-                return false;
-            }
-        }
-
-        /// Check positions
+        // Get invalid positions
         if (isset($syncfields->posidnumber)) {
-            $sql = "SELECT DISTINCT(s.posidnumber)
-                      FROM {{$synctable}} s
-           LEFT OUTER JOIN {pos} p
-                        ON s.posidnumber = p.idnumber
-                     WHERE s.posidnumber IS NOT NULL
-                       AND s.posidnumber != ''
-                       AND p.idnumber IS NULL";
-            if (empty($this->config->sourceallrecords)) {
-                // Avoid users that will be deleted
-                $sql .= ' AND s.deleted = 0';
-            }
-
-            $rs = $DB->get_recordset_sql($sql);
-            if ($rs->valid()) {
-                foreach ($rs as $r) {
-                    $this->addlog(get_string('posxnotexist', 'tool_totara_sync', $r->posidnumber), 'error', 'checksanity');
-                }
-                $rs->close();
-                return false;
-            }
+            $badids = $this->get_invalid_org_pos($synctable, 'pos', 'posidnumber', 'posxnotexist');
+            $invalidids = array_merge($invalidids, $badids);
         }
 
-        /// Check managers
+        // Get invalid orgs
+        if (isset($syncfields->orgidnumber)) {
+            $badids = $this->get_invalid_org_pos($synctable, 'org', 'orgidnumber', 'orgxnotexist');
+            $invalidids = array_merge($invalidids, $badids);
+        }
+
+        // Get invalid managers
         if (isset($syncfields->manageridnumber)) {
-            $sql = "SELECT DISTINCT(s.manageridnumber)
-                      FROM {{$synctable}} s
-           LEFT OUTER JOIN {user} u
-                        ON s.manageridnumber = u.idnumber
-                     WHERE s.manageridnumber IS NOT NULL
-                       AND s.manageridnumber != ''
-                       AND u.idnumber IS NULL
-                       AND s.manageridnumber NOT IN
-                           (SELECT idnumber FROM {{$synctable_clone}})";
-            $rs = $DB->get_recordset_sql($sql);
-
-            if ($rs->valid()) {
-                foreach ($rs as $r) {
-                    $this->addlog(get_string('managerxnotexist', 'tool_totara_sync', $r->manageridnumber), 'error', 'checksanity');
-                }
-                $rs->close();
-                return false;
-            }
+            $badids = $this->get_invalid_managers($synctable, $synctable_clone);
+            $invalidids = array_merge($invalidids, $badids);
         }
 
-        // Get all user records to be created/updated - exclude removed/unmodified users
-        /*
-        $sql = "SELECT s.*
-            FROM {{$synctable}} s
-            WHERE s.idnumber NOT IN
-                (SELECT uu.idnumber
-                FROM {user} uu
-                LEFT OUTER JOIN {{$synctable}} ss ON (uu.idnumber = ss.idnumber)
-                WHERE ss.idnumber IS NULL
-                OR ss.timemodified = uu.timemodified)";
-        $rs = $DB->get_recordset_sql($sql);
+        // Get invalid options (in case of menu of choices)
+        if ($syncfields->customfields != '[]') {
+            $badids = $this->validate_menu_of_choices($synctable);
+            $invalidids = array_merge($invalidids, $badids);
+        }
 
+        if (count($invalidids)) {
+            list($badids, $params) = $DB->get_in_or_equal($invalidids);
+            $DB->execute("DELETE FROM {{$synctable}} WHERE id $badids", $params);
+        }
+
+        return !$invalidids;
+    }
+
+    /**
+     * Get duplicated values for a specific field
+     *
+     * @param string $synctable sync table name
+     * @param string $synctable_clone sync clone table name
+     * @param string $field field name
+     * @param string $identifier for logging messages
+     *
+     * @return array with invalid ids from synctable for duplicated values
+     */
+    function get_duplicated_values($synctable, $synctable_clone, $field, $identifier) {
+        global $DB;
+
+        $params = array();
+        $invalidids = array();
+        $extracondition = '';
+        if (empty($this->config->sourceallrecords)) {
+            $extracondition = "WHERE deleted = ?";
+            $params[0] = 0;
+        }
+        $sql = "SELECT id, idnumber, $field
+                  FROM {{$synctable}}
+                 WHERE $field IN (SELECT $field FROM {{$synctable_clone}} $extracondition GROUP BY $field HAVING count($field) > 1)";
+        $rs = $DB->get_recordset_sql($sql, $params);
         foreach ($rs as $r) {
-            /// Check custom fields
-            if ($customfields = json_decode($r->customfields, true)) {
-                $customfields = array_keys($customfields);
-                foreach ($customfields as $c) {
-                    $shortname = str_replace('customfield_', '', $c);
-                    if (!$DB->record_exists('user_info_field', array('shortname' => $shortname))) {
-                        $this->addlog("custom field {$shortname} does not exist", 'error', 'checksanity');
-                        return false;
+            $this->addlog(get_string($identifier, 'tool_totara_sync', $r), 'error', 'checksanity');
+            $invalidids[] = $r->id;
+        }
+        $rs->close();
+
+        return $invalidids;
+    }
+
+    /**
+     * Get invalid organisations or positions
+     *
+     * @param string $synctable sync table name
+     * @param string $table table name (org or pos)
+     * @param string $field field name
+     * @param string $identifier for logging messages
+     *
+     * @return array with invalid ids from synctable for organisations or positions that do not exist in the database
+     */
+    function get_invalid_org_pos($synctable, $table, $field, $identifier) {
+        global $DB;
+
+        $params = array();
+        $invalidids = array();
+        $sql = "SELECT s.id, s.idnumber, s.$field
+                  FROM {{$synctable}} s
+       LEFT OUTER JOIN {{$table}} t ON s.$field = t.idnumber
+                 WHERE s.$field IS NOT NULL
+                   AND s.$field != ''
+                   AND t.idnumber IS NULL";
+        if (empty($this->config->sourceallrecords)) {
+            $sql .= ' AND s.deleted = ?'; // avoid users that will be deleted
+            $params[0] = 0;
+        }
+        $rs = $DB->get_recordset_sql($sql, $params);
+        foreach ($rs as $r) {
+            $this->addlog(get_string($identifier, 'tool_totara_sync', $r), 'error', 'checksanity');
+            $invalidids[] = $r->id;
+        }
+        $rs->close();
+
+        return $invalidids;
+    }
+
+    /**
+     * Get invalid managers
+     *
+     * @param string $synctable sync table name
+     * @param string $synctable_clone sync clone table name
+     *
+     * @return array with invalid ids from synctable for managers that do not exist in synctable nor in the database
+     */
+    function get_invalid_managers($synctable, $synctable_clone) {
+        global $DB;
+
+        $params = array();
+        $invalidids = array();
+        $sql = "SELECT s.id, s.idnumber, s.manageridnumber
+                  FROM {{$synctable}} s
+       LEFT OUTER JOIN {user} u
+                    ON s.manageridnumber = u.idnumber
+                 WHERE s.manageridnumber IS NOT NULL
+                   AND s.manageridnumber != ''
+                   AND u.idnumber IS NULL
+                   AND s.manageridnumber NOT IN
+                       (SELECT idnumber FROM {{$synctable_clone}})";
+        if (empty($this->config->sourceallrecords)) {
+            $sql .= ' AND s.deleted = ?'; // avoid users that will be deleted
+            $params[0] = 0;
+        }
+        $rs = $DB->get_recordset_sql($sql, $params);
+        foreach ($rs as $r) {
+            $this->addlog(get_string('managerxnotexist', 'tool_totara_sync', $r), 'error', 'checksanity');
+            $invalidids[] = $r->id;
+        }
+        $rs->close();
+
+        return $invalidids;
+    }
+
+    /**
+     * Ensure options from menu of choices are valid
+     *
+     * @param string $synctable sync table name
+     *
+     * @return array with invalid ids from synctable for options that do not exist in the database
+     */
+    function validate_menu_of_choices($synctable) {
+        global $DB;
+
+        $params = empty($this->config->sourceallrecords) ? array('deleted' => 0) : array();
+        $invalidids = array();
+        $rs = $DB->get_recordset($synctable, $params, '', 'id, idnumber, customfields');
+        foreach ($rs as $r) {
+            $customfields = json_decode($r->customfields, true);
+            if (!empty($customfields)) {
+                foreach ($customfields as $name => $value) {
+                    if (!isset($this->customfieldsdb[$name])) {
+                        // Not a menu of choices.
+                        continue;
+                    }
+                    if (trim($value) == '') {
+                        // No value provided, this is okay.
+                        continue;
+                    }
+                    // Check menu value matches one of the available options.
+                    if (!in_array(strtolower($value), $this->customfieldsdb[$name])) {
+                        $this->addlog(get_string('optionxnotexist', 'tool_totara_sync', (object)array('idnumber' => $r->idnumber, 'option' => $value, 'fieldname' => $name)), 'error', 'checksanity');
+                        $invalidids[] = $r->id;
+                        break;
                     }
                 }
             }
         }
         $rs->close();
-        */
 
-        return true;
+        return $invalidids;
+    }
+
+    /**
+     * Avoid saving values from synctable that already exist in the database
+     *
+     * @param string $synctable sync table name
+     * @param string $field field name
+     * @param string $identifier for logging messages
+     *
+     * @return array with invalid ids from synctable for usernames or emails that are already registered in the database
+     */
+    function check_values_in_db($synctable, $field, $identifier) {
+        global $DB;
+
+        $params = array();
+        $invalidids = array();
+        $sql = "SELECT s.id, s.idnumber, s.$field
+                  FROM {{$synctable}} s
+            INNER JOIN {user} u ON s.idnumber <> u.idnumber
+                   AND s.$field = u.$field";
+        if (empty($this->config->sourceallrecords)) {
+            $sql .= ' AND s.deleted = ?'; // avoid users that will be deleted
+            $params[0] = 0;
+        }
+        $rs = $DB->get_recordset_sql($sql, $params);
+        foreach ($rs as $r) {
+            $this->addlog(get_string($identifier, 'tool_totara_sync', $r), 'error', 'checksanity');
+            $invalidids[] = $r->id;
+        }
+        $rs->close();
+
+        return $invalidids;
     }
 }

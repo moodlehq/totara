@@ -48,11 +48,13 @@ if ($execute) {
     // Run the sync
     add_to_log(SITEID, 'totara_sync', 'Execute Sync', 'admin/syncexecute.php');
     $msg = get_string('runsynccronstart', 'tool_totara_sync');
-    tool_totara_sync_cron();
     $msg .= get_string('runsynccronend', 'tool_totara_sync');
+    if (!($succeed = tool_totara_sync_cron())) {
+        $msg .= ' ' . get_string('runsynccronendwithproblem', 'tool_totara_sync');
+    }
     $url = new moodle_url('/admin/tool/totara_sync/admin/synclog.php');
     $msg .= html_writer::empty_tag('br') . get_string('viewsynclog', 'tool_totara_sync', $url->out());
-    echo $OUTPUT->notification($msg, 'notifysuccess');
+    echo $succeed ? $OUTPUT->notification($msg, 'notifysuccess') : $OUTPUT->notification($msg, 'notifynotice');
 }
     $configured = true;
     //sanity checks
