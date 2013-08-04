@@ -2554,8 +2554,9 @@ class reportbuilder {
 
         // Output cache information if needed
         if ($cache) {
-            $lastreport = userdate($cache['lastreport']);
-            $nextreport = userdate($cache['nextreport']);
+            $usertz = totara_get_clean_timezone();
+            $lastreport = userdate($cache['lastreport'], '', $usertz);
+            $nextreport = userdate($cache['nextreport'], '', $usertz);
 
             $html = html_writer::start_tag('div', array('class' => 'noticebox'));
             $html .= get_string('report:cachelast', 'totara_reportbuilder', $lastreport);
@@ -2888,7 +2889,8 @@ class reportbuilder {
 
         // add report caching data
         if ($cache) {
-            $a = userdate($cache['lastreport']);
+            $usertz = totara_get_clean_timezone();
+            $a = userdate($cache['lastreport'], '', $usertz);
             $worksheet[0]->write($row, 0, get_string('report:cachelast', 'totara_reportbuilder', $a));
             $row++;
         }
@@ -2983,7 +2985,8 @@ class reportbuilder {
 
         // add report caching data
         if ($cache) {
-            $a = userdate($cache['lastreport']);
+            $usertz = totara_get_clean_timezone();
+            $a = userdate($cache['lastreport'], '', $usertz);
             $worksheet[0]->write($row, 0, get_string('report:cachelast', 'totara_reportbuilder', $a));
             $row++;
         }
@@ -3847,6 +3850,7 @@ class scheduler {
         $this->changed = true;
         $calendardays = calendar_get_days();
         $init = !isset($this->subject->{$this->map['nextevent']});
+        $cache = property_exists($this->subject, 'cachetable');
         $frequency = $this->subject->{$this->map['frequency']};
         $schedule = $this->subject->{$this->map['schedule']};
 
@@ -3856,7 +3860,11 @@ class scheduler {
 
         switch ($frequency) {
             case self::DAILY:
-                $offset = ($init && date('G', $this->time) <= $schedule) ? 0 : 86400; // If the scheduled hour has passed then set the offset to 86400 (1 day)
+                if (!$cache) {
+                    $offset = ($init && date('G', $this->time) <= $schedule) ? 0 : 86400; // If the scheduled hour has passed then set the offset to 86400 (1 day)
+                } else {
+                    $offset = (date('G', $this->time) < $schedule) ? 0 : 86400;
+                }
                 $nextevent = mktime(0, 0, 0, $timemonth, $timeday, $timeyear) + $offset + ($schedule * 60 * 60); //calculate next report time (startofcurrentday + offset + hourofschedule)
                 break;
 

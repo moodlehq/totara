@@ -53,7 +53,6 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
             $row = array();
             $strsettings = get_string('settings', 'totara_reportbuilder');
             $strdelete = get_string('delete', 'totara_reportbuilder');
-            $strcache = get_string('reportbuilderinitcache', 'totara_reportbuilder');
             $viewurl = new moodle_url(reportbuilder_get_report_url($report));
             $editurl = new moodle_url('/totara/reportbuilder/general.php', array('id' => $report->id));
             $deleteurl = new moodle_url('/totara/reportbuilder/index.php', array('id' => $report->id, 'd' => 1));
