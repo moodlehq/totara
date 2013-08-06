@@ -420,7 +420,16 @@ if ($hassiteconfig) {
     }
 }
 
-/// Add all local plugins - must be always last!
+// Add any settings from totara modules.
+foreach (get_plugin_list('totara') as $plugin => $plugindir) {
+    $settings_path = "$plugindir/settings.php";
+    if (file_exists($settings_path)) {
+        include($settings_path);
+        continue;
+    }
+}
+
+// Add all local plugins - must be always last!
 if ($hassiteconfig) {
     $ADMIN->add('modules', new admin_category('localplugins', new lang_string('localplugins')));
     $ADMIN->add('localplugins', new admin_externalpage('managelocalplugins', new lang_string('localpluginsmanage'),
@@ -430,14 +439,6 @@ if ($hassiteconfig) {
 // extend settings for each local plugin. Note that their settings may be in any part of the
 // settings tree and may be visible not only for administrators. We can not use $allplugins here
 foreach (get_plugin_list('local') as $plugin => $plugindir) {
-    $settings_path = "$plugindir/settings.php";
-    if (file_exists($settings_path)) {
-        include($settings_path);
-        continue;
-    }
-}
-//add any settings from totara modules
-foreach (get_plugin_list('totara') as $plugin => $plugindir) {
     $settings_path = "$plugindir/settings.php";
     if (file_exists($settings_path)) {
         include($settings_path);
