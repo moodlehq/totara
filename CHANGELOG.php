@@ -3,6 +3,25 @@
 
 Totara LMS Changelog
 
+Release 2.4.7 (6th August 2013):
+==================================================
+
+Improvements:
+    T-10927    Various performance improvements for Facetoface bookings
+
+Bug Fixes:
+    T-10926    Fixed issues with participants being completely removed when when approval setting is changed within a facetoface activity
+    T-10917    Fixed issue with text editor alignment when editing section name and summary
+    T-10931    Fixed alignment of report filters in Report builder
+    T-10932    Cached reports are now scheduled for the closest day. Cache status is displayed in user date/time taking into account user timezone
+    T-10925    Fixed rebuild_course_cache() warning when upgrading from Moodle to Totara
+    T-10835    Fixed issue with syncing menu of choice custom fields in Totara Sync
+    T-10938    Fixed saving advanced option for filters in Report builder
+    T-10936    Format of reports exported to csv is now consistent with reports saved to the file system
+    T-10937    Make page footer links clickable for the Kiwifruit theme
+    T-10916    Fixed label alignment issue with completion checkboxes in Courses
+
+
 Release 2.4.6 (23rd July 2013):
 ==================================================
 
