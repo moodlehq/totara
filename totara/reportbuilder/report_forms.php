@@ -717,8 +717,13 @@ class report_builder_edit_performance_form extends moodleform {
             $mform->disabledIf('schedulegroup', 'cache');
             $mform->addHelpButton('schedulegroup', 'reportbuildercachescheduler', 'totara_reportbuilder');
 
+            $mform->addElement('static', 'servertime', get_string('reportbuildercacheservertime', 'totara_reportbuilder'),
+                    date_format_string(time(), get_string('strftimedaydatetime', 'langconfig')));
+            $mform->addHelpButton('servertime', 'reportbuildercacheservertime', 'totara_reportbuilder');
+
+            $usertz = totara_get_clean_timezone();
             $cachetime = isset($report->cacheschedule->lastreport) ? $report->cacheschedule->lastreport : 0;
-            $cachedstr = get_string('lastcached','totara_reportbuilder', userdate($cachetime));
+            $cachedstr = get_string('lastcached','totara_reportbuilder', userdate($cachetime, '', $usertz));
             $notcachedstr = get_string('notcached','totara_reportbuilder');
             $lastcached = ($cachetime > 0) ? $cachedstr : $notcachedstr;
 

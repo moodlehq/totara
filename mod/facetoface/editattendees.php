@@ -125,53 +125,46 @@ if ($save && $onlycontent) {
         }
     }
 
-    // Add new
-    foreach ($attendees as $attendee) {
-        // If not in original list, add
-        if (!isset($original[$attendee->id])) {
-
-            require_capability('mod/facetoface:addattendees', $context);
-
-            $result = facetoface_user_import($session, $attendee->id, $suppressemail);
+    // Adding new attendees.
+    // Check if we need to add anyone.
+    $attendeestoadd = array_diff_key($attendees, $original);
+    if (!empty($attendeestoadd) && has_capability('mod/facetoface:addattendees', $context)) {
+        // Prepare params
+        $params = array();
+        $params['suppressemail'] = $suppressemail;
+        foreach ($attendeestoadd as $attendee) {
+            $result = facetoface_user_import($course, $facetoface, $session, $attendee->id, $params);
             if ($result['result'] !== true) {
                 $errors[] = $result;
             } else {
                 $result['result'] = get_string('addedsuccessfully', 'facetoface');
                 $added[] = $result;
             }
-        } else {
-            unset($original[$attendee->id]);
         }
     }
 
-    // Remove old
-    if ($original) {
-        foreach ($original as $orig) {
-            require_capability('mod/facetoface:removeattendees', $context);
+    // Removing old attendees.
+    // Check if we need to remove anyone.
+    $attendeestoremove = array_diff_key($original, $attendees);
+    if (!empty($attendeestoremove) && has_capability('mod/facetoface:removeattendees', $context)) {
+        foreach ($attendeestoremove as $attendee) {
+            $result = array();
+            $result['id'] = $attendee->id;
+            $result['name'] = fullname($attendee);
 
-            if (facetoface_user_cancel($session, $orig->id, true, $cancelerr)) {
+            if (facetoface_user_cancel($session, $attendee->id, true, $cancelerr)) {
                 // Notify the user of the cancellation if the session hasn't started yet
                 $timenow = time();
                 if (!$suppressemail and !facetoface_has_session_started($session, $timenow)) {
-                    facetoface_send_cancellation_notice($facetoface, $session, $orig->id);
+                    facetoface_send_cancellation_notice($facetoface, $session, $attendee->id);
                 }
-
-                $result = array();
-                $result['id'] = $orig->id;
-                $result['name'] = fullname($orig);
                 $result['result'] = get_string('removedsuccessfully', 'facetoface');
                 $added[] = $result;
             } else {
-                $result = array();
-                $result['id'] = $orig->id;
-                $result['name'] = fullname($orig);
                 $result['result'] = $cancelerr;
                 $errors[] = $result;
             }
         }
-
-        // Update attendees
-        facetoface_update_attendees($session);
     }
 
     $_SESSION['f2f-bulk-results'][$session->id] = array($added, $errors);

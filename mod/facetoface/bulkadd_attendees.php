@@ -40,11 +40,12 @@ $dialog = optional_param('dialog', false, PARAM_BOOL);
 if (!$session = facetoface_get_session($s)) {
     print_error('error:incorrectcoursemodulesession', 'facetoface');
 }
-
 if (!$facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface))) {
     print_error('error:incorrectfacetofaceid', 'facetoface');
 }
-
+if (!$course = $DB->get_record('course', array('id' => $facetoface->course))) {
+    print_error('error:coursemisconfigured', 'facetoface');
+}
 // Check capability
 require_login($facetoface->course);
 
@@ -134,9 +135,16 @@ if ($data = $form->get_data()) {
     if (!$addusers) {
         $errors[] = get_string('error:nodatasupplied', 'facetoface');
     } else {
+        $params = array();
+        $params['bulkaddsource'] = $bulkaddsource;
+        // Do not need the approval, change the status
+        $params['approvalreqd'] = 0;
+        // If it is a list of user, do not need to notify manager
+        $params['ccmanager'] = 0;
+
         // Load users
         foreach ($addusers as $adduser) {
-            $result = facetoface_user_import($session, $adduser, false, false, $bulkaddsource);
+            $result = facetoface_user_import($course, $facetoface, $session, $adduser, $params);
             if ($result['result'] !== true) {
                 $errors[] = $result;
             } else {

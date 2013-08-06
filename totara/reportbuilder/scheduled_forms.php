@@ -86,7 +86,7 @@ class scheduled_reports_new_form extends moodleform {
         $mform->addElement('header', 'general', get_string('scheduledreportsettings', 'totara_reportbuilder'));
 
         $mform->addElement('static', 'report', get_string('report', 'totara_reportbuilder'), $reportname);
-        $mform->addElement('select', 'savedsearchid', 'Data', $savedsearchselect);
+        $mform->addElement('select', 'savedsearchid', get_string('data', 'totara_reportbuilder'), $savedsearchselect);
         $mform->addElement('select', 'format', get_string('export', 'totara_reportbuilder'), $exportformatselect);
 
         if ($exporttofilesystemenabled) {

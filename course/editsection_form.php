@@ -18,7 +18,7 @@ class editsection_form extends moodleform {
 
     function definition() {
 
-        $mform  = $this->_form;
+        $mform  =& $this->_form;
         $course = $this->_customdata['course'];
 
         $elementgroup = array();
@@ -45,8 +45,6 @@ class editsection_form extends moodleform {
         if (!empty($formatoptions)) {
             $elements = $courseformat->create_edit_form_elements($mform, true);
         }
-
-        $mform->_registerCancelButton('cancel');
     }
 
     public function definition_after_data() {

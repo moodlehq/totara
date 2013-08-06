@@ -84,8 +84,11 @@ if ($fromform = $mform->get_data()) { // Form submitted
         print_error('error:manageremailaddressmissing', 'facetoface', $returnurl);
     }
 
-    $result = facetoface_user_import($session, $USER->id, false, false, 'bulkaddsourceuserid',
-        $fromform->discountcode, $fromform->notificationtype);
+    $params = array();
+    $params['discountcode']     = $fromform->discountcode;
+    $params['notificationtype'] = $fromform->notificationtype;
+
+    $result = facetoface_user_import($course, $facetoface, $session, $USER->id, $params);
     if ($result['result'] === true) {
         add_to_log($course->id, 'facetoface', 'signup', "signup.php?s=$session->id", $session->id, $cm->id);
 

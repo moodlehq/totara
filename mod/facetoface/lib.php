@@ -371,7 +371,7 @@ function facetoface_add_instance($facetoface) {
  * with new data.
  */
 function facetoface_update_instance($facetoface, $instanceflag = true) {
-    global $DB;
+    global $DB, $USER;
 
     if ($instanceflag) {
         $facetoface->id = $facetoface->instance;
@@ -381,12 +381,27 @@ function facetoface_update_instance($facetoface, $instanceflag = true) {
    if ($return = $DB->update_record('facetoface', $facetoface)) {
         facetoface_grade_item_update($facetoface);
 
-        //update any calendar entries
+        // Update any calendar entries
         if ($sessions = facetoface_get_sessions($facetoface->id)) {
             foreach ($sessions as $session) {
                 facetoface_update_calendar_entries($session, $facetoface);
+                // If manager changed from approval required to not
+                if ($facetoface->approvalreqd == 0) {
+                    // Check if we have the users who need approval
+                    $attendees = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_REQUESTED));
+                    if (count($attendees) > 0) {
+                        // Update user status code from MDL_F2F_STATUS_REQUESTED to MDL_F2F_STATUS_BOOKED, otherwise these users will be hidden
+                        foreach ($attendees as $i => $attendee) {
+                            if (facetoface_update_signup_status($attendee->submissionid, MDL_F2F_STATUS_BOOKED, $USER->id, '', $attendee->grade)) {
+                                // Send confirmation email that an user is booked and cc to user's manager if exists
+                                facetoface_send_confirmation_notice($facetoface, $session, $attendee->id, 0, 0);
+                            }
+                        }
+                    }
+                }
             }
         }
+
     }
     return $return;
 }
@@ -1567,7 +1582,7 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
                                 $notificationtype, $statuscode, $userid = false,
                                 $notifyuser = true) {
 
-    global $CFG, $DB, $OUTPUT, $USER;
+    global $DB, $OUTPUT, $USER;
 
     // Get user id
     if (!$userid) {
@@ -1582,7 +1597,7 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
         $usersignup = $existingsignup;
     } else {
         // Otherwise, prepare a signup object
-        $usersignup = new stdclass;
+        $usersignup = new stdClass();
         $usersignup->sessionid = $session->id;
         $usersignup->userid = $userid;
     }
@@ -1597,15 +1612,14 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
 
     // Update/insert the signup record
     if (!empty($usersignup->id)) {
-        $success =  $DB->update_record('facetoface_signups', $usersignup);
+        $success = $DB->update_record('facetoface_signups', $usersignup);
     } else {
-        $usersignup->id =  $DB->insert_record('facetoface_signups', $usersignup);
+        $usersignup->id = $DB->insert_record('facetoface_signups', $usersignup);
         $success = (bool)$usersignup->id;
     }
 
     if (!$success) {
         print_error('error:couldnotupdatef2frecord', 'facetoface');
-        return false;
     }
 
     // Work out which status to use
@@ -1623,40 +1637,21 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
         if ($current_status == MDL_F2F_STATUS_APPROVED) {
             $new_status = $statuscode;
         } else if ($session->datetimeknown) {
-        // Otherwise, send manager request
+            // Otherwise, send manager request.
             $new_status = MDL_F2F_STATUS_REQUESTED;
         } else {
             $new_status = MDL_F2F_STATUS_WAITLISTED;
         }
     }
 
-    // Update status
+    // Update status.
     if (!facetoface_update_signup_status($usersignup->id, $new_status, $USER->id)) {
         print_error('error:f2ffailedupdatestatus', 'facetoface');
-        return false;
     }
 
     // Add to user calendar -- if facetoface usercalentry is set to true
-    if ($facetoface->usercalentry) {
-        if (in_array($new_status, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED))) {
-            facetoface_add_session_to_calendar($session, $facetoface, 'user', $userid, 'booking');
-        }
-    }
-
-    // Course completion
-    if (in_array($new_status, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED))) {
-
-        $completion = new completion_info($course);
-        if ($completion->is_enabled()) {
-
-            $ccdetails = array(
-                'course'        => $course->id,
-                'userid'        => $userid,
-            );
-
-            $cc = new completion_completion($ccdetails);
-            $cc->mark_inprogress($timenow);
-        }
+    if ($facetoface->usercalentry && in_array($new_status, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED))) {
+        facetoface_add_session_to_calendar($session, $facetoface, 'user', $userid, 'booking');
     }
 
     // If session has already started, do not send a notification
@@ -1664,9 +1659,8 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
         $notifyuser = false;
     }
 
-    // Send notification
+    // Send notification.
     if ($notifyuser) {
-        // If booked/waitlisted
         switch ($new_status) {
             case MDL_F2F_STATUS_BOOKED:
                 $error = facetoface_send_confirmation_notice($facetoface, $session, $userid, $notificationtype, false);
@@ -1684,7 +1678,6 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
         if (!empty($error)) {
             if ($error == 'userdoesnotexist') {
                 print_error($error, 'facetoface');
-                return false;
             } else {
                 // Don't fail if email isn't sent, just display a warning
                 echo $OUTPUT->notification(get_string($error, 'facetoface'), 'notifyproblem');
@@ -1693,20 +1686,18 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
 
         if (!$DB->update_record('facetoface_signups', $usersignup)) {
             print_error('error:couldnotupdatef2frecord', 'facetoface');
-            return false;
         }
     }
 
-
-    // Course completion
+    // Update course completion.
     if (in_array($new_status, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED))) {
 
         $completion = new completion_info($course);
         if ($completion->is_enabled()) {
 
             $ccdetails = array(
-                'course'        => $course->id,
-                'userid'        => $userid,
+                'course' => $course->id,
+                'userid' => $userid,
             );
 
             $cc = new completion_completion($ccdetails);
@@ -3805,21 +3796,34 @@ function facetoface_get_session_involvement($userid, $info) {
  * Import user and signup to session
  *
  * @access  public
+ * @param   object  $course             Record from the course table
+ * @param   object  $facetoface         Record from the facetoface table
  * @param   object  $session            Session to signup user to
  * @param   mixed   $userid             User to signup (normally int)
- * @param   boolean $suppressemail      Suppress notifications flag
- * @param   boolean $ignoreconflicts    Ignore booking conflicts flag
- * @param   string  $bulkaddsource      Flag to indicate if $userid is actually another field
- * @param   string  $discountcode       Optional A user may specify a discount code
- * @param   integer $notificationtype   Optional A user may choose the type of notifications they will receive
+ * @param   array   $params             Optional suppressemail, ignoreconflicts, bulkaddsource, discountcode, notificationtype
+ *          boolean $suppressemail      Suppress notifications flag
+ *          boolean $ignoreconflicts    Ignore booking conflicts flag
+ *          string  $bulkaddsource      Flag to indicate if $userid is actually another field
+ *          string  $discountcode       Optional A user may specify a discount code
+ *          integer $notificationtype   Optional A user may choose the type of notifications they will receive
  * @return  array
  */
-function facetoface_user_import($session, $userid, $suppressemail = false, $ignoreconflicts = false,
-        $bulkaddsource = 'bulkaddsourceuserid', $discountcode = '', $notificationtype = MDL_F2F_BOTH) {
+function facetoface_user_import($course, $facetoface, $session, $userid, $params = array()) {
     global $DB, $CFG, $USER;
 
     $result = array();
     $result['id'] = $userid;
+
+    $suppressemail    = (isset($params['suppressemail'])    ? $params['suppressemail']    : false);
+    $ignoreconflicts  = (isset($params['ignoreconflicts'])  ? $params['ignoreconflicts']  : false);
+    $bulkaddsource    = (isset($params['bulkaddsource'])    ? $params['bulkaddsource']    : 'bulkaddsourceuserid');
+    $discountcode     = (isset($params['discountcode'])     ? $params['discountcode']     : '');
+    $notificationtype = (isset($params['notificationtype']) ? $params['notificationtype'] : MDL_F2F_BOTH);
+
+    $facetoface->ccmanager = (isset($params['ccmanager']) ? $params['ccmanager'] : 0);
+    if (isset($params['approvalreqd'])) {
+        $facetoface->approvalreqd = $params['approvalreqd'];
+    }
 
     // Check parameters.
     if ($bulkaddsource == 'bulkaddsourceuserid') {
@@ -3857,19 +3861,13 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
         return $result;
     }
 
-    // Get facetoface
-    $facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface));
-
-    $course = $DB->get_record('course', array('id' => $facetoface->course));
-    $context = context_course::instance($course->id);
-
     // Make sure that the user is enroled in the course
-    $coursecontext   = context_course::instance($course->id);
-    if (!is_enrolled($coursecontext, $user)) {
+    $context   = context_course::instance($course->id);
+    if (!is_enrolled($context, $user)) {
 
         $defaultlearnerrole = $DB->get_record('role', array('id' => $CFG->learnerroleid));
 
-        if (!enrol_try_internal_enrol($course->id, $user->id, $defaultlearnerrole->id)) {
+        if (!enrol_try_internal_enrol($course->id, $user->id, $defaultlearnerrole->id, time())) {
             $result['result'] = get_string('error:enrolmentfailed', 'facetoface', fullname($user));
             return $result;
         }

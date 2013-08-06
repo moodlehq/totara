@@ -103,6 +103,7 @@ $string['currentorgenable'] = 'Show records from staff in the user\'s organisati
 $string['currentposenable'] = 'Show records from staff in the user\'s position';
 $string['currentsearchparams'] = 'Settings to be saved';
 $string['daily'] = 'Daily';
+$string['data'] = 'Data';
 $string['defaultsortcolumn'] = 'Default column';
 $string['defaultsortorder'] = 'Default order';
 $string['delete'] = 'Delete';
@@ -524,6 +525,7 @@ $string['type_org_type'] = 'Organisation custom fields';
 $string['type_pos_type'] = 'Position custom fields';
 $string['type_comp_type'] = 'Competency custom fields';
 $string['type_prog'] = 'Program';
+$string['type_statistics'] = 'Statistics';
 $string['reportbuildergroupname'] = 'Report Builder: Group Name';
 $string['reportbuildergroupname_help'] = '
 The name of the group. This will allow you to identify the group when you want to create a new report based on it. Look for the name in the report source pulldown menu.';
@@ -554,11 +556,13 @@ $string['reportbuildercache'] = 'Enable report caching';
 $string['reportbuildercache_heading'] = 'Caching Performance Settings';
 $string['reportbuildercache_help'] = '
 If **Enable report caching** is checked, then a copy of this report will be generated on a set schedule, and users will see data from the stored report. This will make displaying and filtering of the report faster, but the data displayed will be from the last time the report was generated rather than "live" data. We recommend enabling this setting only if necessary (reports are taking too long to be displayed), and only for specific reports where this is a problem.';
-$string['reportbuildercachescheduler'] = 'Cache Schedule';
+$string['reportbuildercacheservertime'] = 'Current Server Time';
+$string['reportbuildercacheservertime_help'] = 'All reports are being cached based on server time. Cache status shows you current local time which might be different from server time. Make sure to take into account your server time when scheduling cache.';
+$string['reportbuildercachescheduler'] = 'Cache Schedule (Server Time)';
 $string['reportbuildercachescheduler_help'] = 'Determines the schedule used to control how often a new version of the report is generated. The report will be generated on the cron that immediately follows the specified time.
 
 For example, if you have set up your cron to run every 20 minutes at 10, 30 and 50 minutes past the hour and you schedule a report to run at midnight, it will actually run at 10 minutes past midnight.';
-$string['reportbuilderinitcache'] = 'Cache Status';
+$string['reportbuilderinitcache'] = 'Cache Status (User Time)';
 $string['reportbuilderexportoptions'] = 'Report Export Settings';
 $string['reportbuilderexportoptions_help'] = '
 **Report export settings** allows a user with the appropriate permissions to specify the export options that are available for users at the bottom of a report page. This setting affects all **Report builder** reports.

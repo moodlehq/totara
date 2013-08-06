@@ -18,6 +18,13 @@
  *
  */
 
+// Set default prefix.
+// Some scripts may include this one and preset the prefix so
+// only change if it isn't yet set.
+if (!isset($prefix)) {
+   $prefix = 'mdl_';
+}
+
 $relations = array(
     // key => table#column, value => table#foreignkey
     // face to face module
@@ -125,8 +132,6 @@ $relations = array(
     'dp_plan_objective#priority' => 'dp_priority_scale_value#id',
     'dp_plan_objective#scalevalueid' => 'dp_objective_scale_value#id',
 );
-
-$prefix = 'mdl_';
 
 print <<<EOF
 <schemaMeta>
