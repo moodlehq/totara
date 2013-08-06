@@ -52,7 +52,7 @@ class block_totara_tasks extends block_base {
         return $this->content;
         }
 
-        $this->content = new stdClass;
+        $this->content = new stdClass();
         // initialise jquery and confirm requirements
         require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
         require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
@@ -171,6 +171,7 @@ class block_totara_tasks extends block_base {
             }
         }
 
+        $this->content->text = '';
         $count = count($this->msgs);
         if ($count) {
             $this->content->text .= html_writer::tag('p', get_string('showingxofx', 'block_totara_tasks', array('count' => $count, 'total' => $total)));
