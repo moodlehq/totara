@@ -453,7 +453,7 @@ class facetoface_notification extends data_object {
      * @access  public
      * @param   object  $user       User object
      * @param   int     $sessionid
-     * @param   int     $sessiondateid The specific sessiondate which this message is for.
+     * @param   int     $sessiondate The specific sessiondate which this message is for.
      * @return  void
      */
     public function send_to_user($user, $sessionid, $sessiondate = null) {
@@ -608,6 +608,20 @@ class facetoface_notification extends data_object {
             }
         }
 
+        // Third-party notification.
+        if (!empty($this->_facetoface->thirdparty) && ($session->datetimeknown || !empty($this->_facetoface->thirdpartywaitlist))) {
+            $newevent->attachment = null; // Leave out the ical attachments in the third-parties notification.
+            $recipients = array_map('trim', explode(',', $this->_facetoface->thirdparty));
+            $thirdparty = $user;
+            $thirdparty->firstname = ''; $thirdparty->lastname = ''; // Avoid showing user's name to third-party recipient.
+            foreach ($recipients as $recipient) {
+                $thirdparty->email = $recipient;
+                $newevent->userto = $thirdparty;
+                $newevent->fullmessagehtml = ''; // Avoid repeating footer at the end of the email.
+                tm_alert_send($newevent);
+            }
+        }
+
         @unlink($CFG->dataroot . DIRECTORY_SEPARATOR . $this->_ical_attachment->file);
     }
 
@@ -729,7 +743,7 @@ class facetoface_notification extends data_object {
  * @param integer $userid ID of the recipient of the email
  * @param array $params The parameters for the notification
  * @param mixed $icalattachmenttype The ical attachment type, or null to disable ical attachments
- * @returns string Error message (or empty string if successful)
+ * @return string Error message (or empty string if successful)
  */
 function facetoface_send_notice($facetoface, $session, $userid, $params, $icalattachmenttype = null) {
     global $DB;
