@@ -2826,7 +2826,7 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
 
     if ($showcapacity) {
         if ($session->allowoverbook) {
-            $table->data[] = array(get_string('capacity', 'facetoface'), $session->capacity . ' ('.strtolower(get_string('allowoverbook', 'facetoface')).')');
+            $table->data[] = array(get_string('capacity', 'facetoface'), get_string('capacityallowoverbook', 'facetoface', $session->capacity));
         } else {
             $table->data[] = array(get_string('capacity', 'facetoface'), $session->capacity);
         }

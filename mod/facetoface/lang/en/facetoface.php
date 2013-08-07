@@ -70,6 +70,7 @@ $string['cancellationsentmgr'] = 'You and your manager should immediately receiv
 $string['cancellationstablesummary'] = 'List of people who have cancelled their session signups.';
 $string['cancelreason'] = 'Reason';
 $string['capacity'] = 'Capacity';
+$string['capacityallowoverbook'] = '{$a} (allow overbooking)';
 $string['capacitycurrentofmaximum'] = '{$a->current} / {$a->maximum}';
 $string['capacityoverbooked'] = ' (Overbooked)';
 $string['capacityoverbookedlong'] = 'This session is overbooked ({$a->current} / {$a->maximum})';
