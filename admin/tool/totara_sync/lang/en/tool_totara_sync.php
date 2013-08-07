@@ -140,6 +140,7 @@ $string['posenddate'] = 'Position end date';
 $string['manageridnumber'] = 'Manager';
 $string['auth'] = 'Auth';
 $string['password'] = 'Password';
+$string['suspended'] = 'Suspended';
 $string['customfields'] = 'Custom fields';
 $string['csvimportfilestructinfo'] = 'The current config requires a CSV file with the following structure:<br><pre>{$a}<br>...<br>...<br>...</pre>';
 

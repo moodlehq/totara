@@ -421,7 +421,7 @@ class totara_sync_element_user extends totara_sync_element {
 
         $fields = array('address', 'city', 'country', 'department', 'description',
             'email', 'firstname', 'institution', 'lang', 'lastname', 'phone1', 'phone2',
-            'timemodified', 'timezone', 'url', 'username');
+            'timemodified', 'timezone', 'url', 'username', 'suspended');
 
         $requiredfields = array('username', 'firstname', 'lastname', 'email');
 

@@ -74,6 +74,7 @@ abstract class totara_sync_source_user extends totara_sync_source {
             'manageridnumber',
             'auth',
             'password',
+            'suspended',
         );
 
         // Custom fields
@@ -262,6 +263,9 @@ abstract class totara_sync_source_user extends totara_sync_source {
         }
         if (!empty($this->config->import_password)) {
             $table->add_field('password', XMLDB_TYPE_CHAR, '32');
+        }
+        if (!empty($this->config->import_suspended)) {
+            $table->add_field('suspended', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
         }
         $table->add_field('customfields', XMLDB_TYPE_TEXT, 'big');
 
