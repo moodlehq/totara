@@ -375,7 +375,7 @@ class reminder_message extends data_object {
  * @access  public
  */
 function reminder_cron() {
-    global $DB;
+    global $DB, $CFG;
 
     // Get reminders
     $reminders = reminder::fetch_all(
@@ -462,8 +462,7 @@ function reminder_cron() {
                     // # of seconds after completion (for timestamp comparison)
                     if ($message->period) {
                         $periodsecs = (int) $message->period * 24 * 60 * 60;
-                    }
-                    else {
+                    } else {
                         $periodsecs = 0;
                     }
 
@@ -495,12 +494,6 @@ function reminder_cron() {
                         continue;
                     }
 
-                    // Get manager location
-                    static $managerfield;
-                    if (!$managerfield) {
-                        $managerfield = $DB->get_field('user_info_field', 'id', array('shortname' => 'managerid'));
-                    }
-
                     // Get deadline
                     $escalationtime = $DB->get_field(
                         'reminder_message',
@@ -520,67 +513,80 @@ function reminder_cron() {
                     // Loop through results and send emails
                     foreach ($rs as $user) {
 
-                        // Check that even with weekends accounted for, the period
-                        // has still passed
+                        // Check that even with weekends accounted for the period has still passed.
                         if (!reminder_check_businessdays($user->timecompleted, $message->period)) {
                             continue;
                         }
 
-                        // Load user's manager (or grab from cache)
-                        $managerid = $DB->get_field('user_info_data', 'data', array('userid' => $user->id, 'fieldid' => $managerfield));
+                        // Get user's manager.
+                        $manager = totara_get_manager($user->id);
 
-                        // If no manager, skip
-                        if (!$managerid) {
-                            $manager = false;
-                        }
-                        else {
-                            static $managers;
-                            if (!isset($managers[$managerid])) {
-                                $managers[$managerid] = $DB->get_record('user', array('idnumber' => $managerid));
-                            }
-
-                            $manager = $managers[$managerid];
-                        }
-
-                        // Generate email content
+                        // Generate email content.
                         $user->manager = $manager;
                         $content = reminder_email_substitutions($message->message, $user, $course, $message, $reminder);
                         $subject = reminder_email_substitutions($message->subject, $user, $course, $message, $reminder);
 
-                        // Send email
-                        if (email_to_user($user, '', $subject, $content, '')) {
+                        // Get course contact.
+                        $rusers = array();
+                        if (!empty($CFG->coursecontact)) {
+                            $context = context_course::instance($course->id);
+                            $croles = explode(',', $CFG->coursecontact);
+                            list($sort, $sortparams) = users_order_by_sql('u');
+                            $rusers = get_role_users($croles, $context, true, '', 'r.sortorder ASC, ' . $sort, null, '', '', '', '', $sortparams);
+                        }
+                        if ($rusers) {
+                            $contact = reset($rusers);
+                        } else {
+                            $contact = generate_email_supportuser();
+                        }
 
+                        // Prepare message object.
+                        $eventdata = new stdClass();
+                        $eventdata->component         = 'moodle';
+                        $eventdata->name              = 'instantmessage';
+                        $eventdata->userfrom          = $contact;
+                        $eventdata->userto            = $user;
+                        $eventdata->subject           = $subject;
+                        $eventdata->fullmessage       = $content;
+                        $eventdata->fullmessageformat = FORMAT_PLAIN;
+                        $eventdata->fullmessagehtml   = text_to_html($content, null, false, true);
+                        $eventdata->smallmessage      = '';
+
+                        // Send user email.
+                        if (message_send($eventdata)) {
                             $sent = new stdClass();
                             $sent->reminderid = $reminder->id;
                             $sent->messageid = $message->id;
                             $sent->userid = $user->id;
                             $sent->timesent = time();
 
-                            // Record in database
+                            // Record in database.
                             if (!$DB->insert_record('reminder_sent', $sent)) {
                                 mtrace('ERROR: Failed to insert reminder_sent record for userid '.$user->id);
                                 ++$mfail;
-                            }
-                            else {
+                            } else {
                                 ++$msent;
                             }
-                        }
-                        else {
+                        } else {
                             ++$mfail;
-                            mtrace('Could not send email to '.$user->email);
+                            mtrace('Could not send email to ' . $user->email);
                         }
 
-                        // Check if we need to send to their manager also
+                        // Check if we need to send to their manager also.
                         if ($message->type === 'escalation' && empty($message->copyto)) {
 
-                            // Send email
-                            $manager->manager = $manager;
-                            if (email_to_user($manager, '', $subject, $content, '')) {
-                                ++$msent;
-                            }
-                            else {
+                            if ($manager !== false) {
+                                // Send manager email.
+                                $eventdata->userto = $manager;
+                                if (message_send($eventdata)) {
+                                    ++$msent;
+                                } else {
+                                    ++$mfail;
+                                    mtrace('Could not send email to ' . fullname($user) . '\'s manager at ' . $manager->email);
+                                }
+                            } else {
                                 ++$mfail;
-                                mtrace('Could not send email to '.$user->email.'\'s manager '.$manager->email);
+                                mtrace(fullname($user) . ' does not have a manager... Skipping manager email.');
                             }
                         }
                     }
