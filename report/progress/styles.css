@@ -5,3 +5,6 @@
 #page-report-progress-index .completion_prev {display:inline;margin-right:2em;}
 #page-report-progress-index .completion_pagingbar p {display:inline;margin:0;}
 #page-report-progress-index .completion_next {display:inline;margin-left:2em;}
+.ie8 div.ie-vertical {writing-mode:tb-lr;max-height:27% !important;text-align:right !important;}
+.ie8 th.ie-vertical {height:27% !important;overflow:hidden !important;}
+.ie8 img.ie-size {width:16px;height:16px;float:right;margin-top:5px;margin-bottom:5px;}
