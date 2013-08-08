@@ -91,3 +91,56 @@ function totara_search_get_keyword_where_clause($keywords, $fields, $type=SQL_PA
     // all keywords must be found in at least one field
     return array(implode(' AND ', $queries), $params);
 }
+
+/**
+ * Return an SQL snippet to search for the given keywords
+ *
+ * @param string $field the field to search in
+ * @param array $keywords Array of strings to search for
+ * @param boolean $negate negate the conditions
+ * @param string $operator can be 'contains', 'equal', 'startswith', 'endswith'
+ *
+ * @return array containing SQL clause and params
+ */
+function search_get_keyword_where_clause_options($field, $keywords, $negate=false, $operator='contains') {
+    global $DB;
+
+    $count = 1;
+    $presign = '';
+    $postsign = '';
+    $queries = array();
+    $params  = array();
+
+    if ($negate) {
+        $not = true;
+        $token = ' AND ';
+    } else {
+        $not = false;
+        $token = ' OR ';
+    }
+
+    switch ($operator) {
+        case 'contains':
+            $presign = $postsign = '%';
+            break;
+        case 'startswith':
+            $postsign = '%';
+            break;
+        case 'endswith':
+            $presign = '%';
+            break;
+        default:
+            break;
+    }
+
+    foreach ($keywords as $keyword) {
+        $uniqueparam = "{$operator}_{$count}_" . rand(1, 30777);
+        $queries[] = $DB->sql_like($field, ":{$uniqueparam}", false, true, $not);
+        $params[$uniqueparam] = $presign . $DB->sql_like_escape($keyword) . $postsign;
+        ++$count;
+    }
+
+    $sql =  implode($token, $queries);
+
+    return array($sql, $params);
+}

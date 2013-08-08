@@ -29,9 +29,10 @@ if (!defined('MOODLE_INTERNAL')) {
 global $CFG;
 require_once($CFG->dirroot . '/totara/reportbuilder/tests/reportcache_advanced_testcase.php');
 require_once($CFG->dirroot . '/totara/cohort/lib.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/lib.php');
 
 class rb_cohort_orphaned_users_embedded_cache_test extends reportcache_advanced_testcase {
-    // testcase data
+    // Testcase data
     protected $report_builder_data = array('id' => 3, 'fullname' => 'Audience Orphaned Users', 'shortname' => 'cohort_orphaned_users',
                                            'source' => 'cohort_orphaned_users', 'hidden' => 1, 'embedded' => 1);
 
@@ -100,7 +101,7 @@ class rb_cohort_orphaned_users_embedded_cache_test extends reportcache_advanced_
         $values = array($this->users[2]->firstname,
                       $this->users[3]->firstname,
                       $this->users[4]->firstname);
-        $this->getDataGenerator()->create_cohort_rule_params($ruleid, array('equal' => 1), $values);
+        $this->getDataGenerator()->create_cohort_rule_params($ruleid, array('equal' => COHORT_RULES_OP_IN_ISEQUALTO), $values);
         cohort_rules_approve_changes($this->cohort2);
     }
 

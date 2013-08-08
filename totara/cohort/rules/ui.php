@@ -254,15 +254,13 @@ class cohort_rule_ui_text extends cohort_rule_ui_form {
     protected function addFormFields(&$mform) {
 
         // Put everything in one row to make it look cooler
+        global $COHORT_RULES_OP_IN_LIST;
         $row = array();
         $row[0] = $mform->createElement(
             'select',
             'equal',
             '',
-            array(
-                COHORT_RULES_OP_IN_EQUAL=>get_string('equalto','totara_cohort'),
-                COHORT_RULES_OP_IN_NOTEQUAL=>get_string('notequalto', 'totara_cohort')
-            )
+            $COHORT_RULES_OP_IN_LIST
         );
         $row[1] = $mform->createElement('text', 'listofvalues', '');
         $mform->addGroup($row, 'row1', ' ', ' ', false);
@@ -274,11 +272,32 @@ class cohort_rule_ui_text extends cohort_rule_ui_form {
         $mform->addGroupRule(
             'row1',
                 array(
-                    1=>array(
-                        array(0=>get_string('error:mustpickonevalue', 'totara_cohort'), 1=>'required', 3=>'server')
+                    1 => array(
+                        array(0 => get_string('error:mustpickonevalue', 'totara_cohort'), 1 => 'callback', 2 => 'validate_emptyruleuiform', 3 => 'client')
                     )
                 )
         );
+
+        $error = get_string('error:mustpickonevalue', 'totara_cohort');
+        $isemptyopt = COHORT_RULES_OP_IN_ISEMPTY;
+
+        // Allow empty value for ​​listofvalues as long as the rule is "is empty"
+        $js = <<<JS
+<script type="text/javascript">
+function validate_emptyruleuiform() {
+    var sucess = true;
+
+    if ($('#id_listofvalues').val() === '' && $('#id_equal').val() !== '$isemptyopt') {
+        if ($('#id_error_listofvalues').length == 0 ) {
+            $('div#fgroup_id_row1 > fieldset').prepend('<span id="id_error_listofvalues" class="error">{$error}</span><br>');
+        }
+        sucess = false;
+    }
+    return sucess;
+}
+</script>
+JS;
+        $mform->addElement('html', $js);
     }
 
     /**
@@ -288,13 +307,18 @@ class cohort_rule_ui_text extends cohort_rule_ui_form {
      * @return string
      */
     public function getRuleDescription($ruleid, $static=true) {
-        global $COHORT_RULES_OP_IN;
+        global $COHORT_RULES_OP_IN_LIST;
         if (!isset($this->equal) || !isset($this->listofvalues)) {
             return get_string('error:rulemissingparams', 'totara_cohort');
         }
         $ret = ucfirst($this->description);
-        $ret .= get_string("is{$COHORT_RULES_OP_IN[$this->equal]}to", 'totara_cohort');
-        $ret .= '"' . htmlspecialchars(implode('", "', $this->listofvalues)) . '"';
+        $ret .= $COHORT_RULES_OP_IN_LIST[$this->equal];
+
+        // Show list of values only if the rule is different from "is_empty"
+        if ($this->equal != COHORT_RULES_OP_IN_ISEMPTY) {
+            $ret .= '"' . htmlspecialchars(implode('", "', $this->listofvalues)) . '"';
+        }
+
         return $ret;
     }
 
