@@ -3823,9 +3823,10 @@ function facetoface_user_import($course, $facetoface, $session, $userid, $params
     $discountcode     = (isset($params['discountcode'])     ? $params['discountcode']     : '');
     $notificationtype = (isset($params['notificationtype']) ? $params['notificationtype'] : MDL_F2F_BOTH);
 
-    $facetoface->ccmanager = (isset($params['ccmanager']) ? $params['ccmanager'] : 0);
     if (isset($params['approvalreqd'])) {
+        // Overwrite default behaviour as bulkadd_* is requested
         $facetoface->approvalreqd = $params['approvalreqd'];
+        $facetoface->ccmanager = (isset($params['ccmanager']) ? $params['ccmanager'] : 0);
     }
 
     // Check parameters.

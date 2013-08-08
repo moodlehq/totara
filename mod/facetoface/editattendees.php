@@ -132,6 +132,10 @@ if ($save && $onlycontent) {
         // Prepare params
         $params = array();
         $params['suppressemail'] = $suppressemail;
+        // Do not need the approval, change the status
+        $params['approvalreqd'] = 0;
+        // If it is a list of user, do not need to notify manager
+        $params['ccmanager'] = 0;
         foreach ($attendeestoadd as $attendee) {
             $result = facetoface_user_import($course, $facetoface, $session, $attendee->id, $params);
             if ($result['result'] !== true) {
