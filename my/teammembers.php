@@ -45,6 +45,7 @@ $PAGE->set_url(new moodle_url('/my/teammembers.php'));
 global $SESSION,$USER;
 
 $edit = optional_param('edit', -1, PARAM_BOOL);
+$sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT); // export format
 
 /**
@@ -53,7 +54,7 @@ $format = optional_param('format', '', PARAM_TEXT); // export format
 $strheading = get_string('teammembers', 'totara_core');
 
 $shortname = 'team_members';
-if (!$report = reportbuilder_get_embedded_report($shortname)) {
+if (!$report = reportbuilder_get_embedded_report($shortname, null, false, $sid)) {
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
@@ -112,7 +113,11 @@ echo $OUTPUT->heading($heading);
 echo $renderer->print_description($report->description, $report->_id);
 
 echo html_writer::tag('p', get_string('teammembers_text', 'totara_core'));
+
 $report->display_search();
+
+// Print saved search buttons if appropriate.
+echo $report->display_saved_search_options();
 
 echo html_writer::empty_tag('br');
 
@@ -120,7 +125,7 @@ if ($countfiltered>0) {
     $report->display_table();
     print $report->edit_button();
     // export button
-    $renderer->export_select($report->_id);
+    $renderer->export_select($report->_id, $sid);
 }
 
 echo $OUTPUT->blocks_for_region('content');

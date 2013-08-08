@@ -53,7 +53,7 @@ if (isguestuser()) {  // Force them to see system default, no editing allowed
         redirect(new moodle_url('/', array('redirect' => 0)));
     }
 
-    $userid = NULL; 
+    $userid = null;
     $USER->editing = $edit = 0;  // Just in case
     $context = context_system::instance();
     $PAGE->set_blocks_editing_capability('moodle/my:configsyspages');  // unlikely :)

@@ -43,15 +43,15 @@ $PAGE->set_url('/totara/reportbuilder/report.php', array('id' => $id));
 $PAGE->set_totara_menu_selected('myreports');
 $PAGE->set_pagelayout('noblocks');
 
-// new report object
+// New report object.
 $report = new reportbuilder($id, null, false, $sid);
 if (!$report->is_capable($id)) {
     print_error('nopermission', 'totara_reportbuilder');
 }
 
-if ($report->embeddedurl !== null) {
-    // redirect to embedded url
-    redirect($CFG->wwwroot . $report->embeddedurl);
+// Embedded reports can only be viewed through their embedded url.
+if ($report->embedded) {
+    print_error('cannotviewembedded', 'totara_reportbuilder');
 }
 
 if ($format != '') {

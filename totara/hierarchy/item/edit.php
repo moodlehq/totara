@@ -120,9 +120,18 @@ if ($itemform->is_cancelled()) {
         $itemnew->evidencecount = 0;
     }
 
+    // Handle target dates for goal hierarchies.
+    if (isset($itemnew->targetdateselector)) {
+        if (empty($itemnew->targetdateselector)) {
+            $itemnew->targetdate = 0;
+        } else {
+            $itemnew->targetdate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $itemnew->targetdateselector);
+        }
+        unset($itemnew->targetdateselector);
+    }
 
     // Save
-    //class to hold totara_set_notification info
+    // Class to hold totara_set_notification info.
     $notification = new stdClass();
 
     if ($itemnew->id == 0) {

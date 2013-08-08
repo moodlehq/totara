@@ -40,6 +40,7 @@ echo $OUTPUT->heading('Totara specific elements', 3);
 echo html_writer::start_tag('ul');
 echo html_writer::tag('li', html_writer::link(new moodle_url('/elementlibrary/toolbar.php'), 'Toolbar'));
 echo html_writer::tag('li', html_writer::link(new moodle_url('/elementlibrary/dialogs.php'), 'Dialogs'));
+echo html_writer::tag('li', html_writer::link(new moodle_url('/elementlibrary/verticaltabs.php'), 'Vertical tabs'));
 echo html_writer::end_tag('ul');
 echo $OUTPUT->container_end();
 

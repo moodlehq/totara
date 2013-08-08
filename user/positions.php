@@ -120,7 +120,8 @@ local_js(array(
     TOTARA_JS_DATEPICKER,
     TOTARA_JS_PLACEHOLDER
 ));
-$PAGE->requires->strings_for_js(array('chooseposition', 'choosemanager','chooseorganisation','currentlyselected'), 'totara_hierarchy');
+$PAGE->requires->strings_for_js(array('chooseposition', 'chooseappraiser', 'choosemanager',
+    'chooseorganisation', 'currentlyselected'), 'totara_hierarchy');
 $PAGE->requires->strings_for_js(array('error:positionnotselected','error:organisationnotselected','error:managernotselected'), 'totara_core');
 $jsmodule = array(
         'name' => 'totara_positionuser',
@@ -129,12 +130,14 @@ $jsmodule = array(
 $selected_position = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'position'));
 $selected_organisation = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'organisation'));
 $selected_manager = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'manager'));
+$selected_appraiser = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'appraiser'));
 $js_can_edit = (pos_can_edit_position_assignment($user->id)) ? 'true' : 'false';
 $args = array('args'=>'{"userid":'.$user->id.','.
         '"can_edit":'.$js_can_edit.','.
         '"dialog_display_position":'.$selected_position.','.
         '"dialog_display_organisation":'.$selected_organisation.','.
-        '"dialog_display_manager":'.$selected_manager.'}');
+        '"dialog_display_manager":'.$selected_manager.','.
+        '"dialog_display_appraiser":'.$selected_appraiser.'}');
 
 $PAGE->requires->js_init_call('M.totara_positionuser.init', $args, false, $jsmodule);
 
@@ -192,6 +195,17 @@ else {
             }
         } else {
             $managerid = null;
+        }
+
+        // Get new appraiser id.
+        if (isset($data->appraiserid) && $data->appraiserid > 0) {
+            if ($data->appraiserid == $data->userid) {
+                print_error('error:userownappraiser', 'totara_hierarchy');
+            } else {
+                $appraiserid = $data->appraiserid;
+            }
+        } else {
+            $appraiserid = null;
         }
 
         // If aspiration type, make sure no manager is set

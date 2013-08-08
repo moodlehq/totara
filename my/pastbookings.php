@@ -28,6 +28,7 @@ require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 require_login();
 
 $userid = optional_param('userid', $USER->id, PARAM_INT); // which user to show
+$sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format','', PARAM_TEXT); // export format
 
 $PAGE->set_context(context_system::instance());
@@ -57,7 +58,7 @@ $data = array(
     'userid' => $userid,
 );
 
-if (!$report = reportbuilder_get_embedded_report($shortname, $data)) {
+if (!$report = reportbuilder_get_embedded_report($shortname, $data, false, $sid)) {
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
@@ -99,13 +100,16 @@ print $output->print_description($report->description, $report->_id);
 
 $report->display_search();
 
+// Print saved search buttons if appropriate.
+echo $report->display_saved_search_options();
+
 echo html_writer::empty_tag('br');
 
 if ($countfiltered > 0) {
     print $output->showhide_button($report->_id, $report->shortname);
     $report->display_table();
     // export button
-    $output->export_select($report->_id);
+    $output->export_select($report->_id, $sid);
 }
 
 echo $OUTPUT->footer();

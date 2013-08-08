@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="totara/hierarchy/db" VERSION="2012110500" COMMENT="XMLDB file for Moodle totara/hierarchy"
+<XMLDB PATH="totara/hierarchy/db" VERSION="20130618" COMMENT="XMLDB file for Moodle totara/hierarchy"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -8,7 +8,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="idnumber"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="idnumber"/>
         <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="description" NEXT="frameworkid"/>
         <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="idnumber" NEXT="path"/>
         <FIELD NAME="path" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="parentid"/>
@@ -109,7 +109,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
         <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="sortorder"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="sortorder"/>
         <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="visible"/>
         <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="hidecustomfields"/>
         <FIELD NAME="hidecustomfields" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="visible" NEXT="timecreated"/>
@@ -128,7 +128,7 @@
     <TABLE NAME="comp_relations" COMMENT="Tracks relationships between competencies" PREVIOUS="comp_framework" NEXT="comp_scale">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
         <FIELD NAME="id1" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="id2"/>
         <FIELD NAME="id2" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id1"/>
       </FIELDS>
@@ -140,7 +140,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="timemodified"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="usermodified"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="defaultid"/>
         <FIELD NAME="defaultid" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified"/>
@@ -164,9 +164,9 @@
     <TABLE NAME="comp_scale_values" COMMENT="The individual values that make up a competency scale" PREVIOUS="comp_scale_assignments" NEXT="comp_template">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="name"/>
-        <FIELD NAME="name" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
+        <FIELD NAME="name" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
         <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="scaleid"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="scaleid"/>
         <FIELD NAME="scaleid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="numericscore"/>
         <FIELD NAME="numericscore" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="5" PREVIOUS="scaleid" NEXT="sortorder"/>
         <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="numericscore" NEXT="timemodified"/>
@@ -182,9 +182,9 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="frameworkid"/>
         <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="fullname"/>
-        <FIELD NAME="fullname" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="shortname"/>
+        <FIELD NAME="fullname" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="visible"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="visible"/>
         <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="competencycount"/>
         <FIELD NAME="competencycount" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="visible" NEXT="timecreated"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="competencycount" NEXT="timemodified"/>
@@ -212,7 +212,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="timecreated"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="timecreated"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
@@ -230,7 +230,7 @@
     <TABLE NAME="comp_type_info_data" COMMENT="Stores custom field data related to competencies" PREVIOUS="comp_type" NEXT="comp_type_info_field">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="data"/>
-        <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="fieldid"/>
+        <FIELD NAME="data" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="fieldid"/>
         <FIELD NAME="fieldid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="data" NEXT="competencyid"/>
         <FIELD NAME="competencyid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="fieldid"/>
       </FIELDS>
@@ -238,7 +238,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-          <INDEX NAME="comptyp_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
+        <INDEX NAME="comptyp_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="comp_type_info_field" COMMENT="Stores the custom fields for each competency type" PREVIOUS="comp_type_info_data" NEXT="pos">
@@ -247,18 +247,18 @@
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="typeid"/>
         <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="shortname" NEXT="datatype"/>
         <FIELD NAME="datatype" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
         <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="hidden"/>
         <FIELD NAME="hidden" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="locked"/>
         <FIELD NAME="locked" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
         <FIELD NAME="required" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="locked" NEXT="forceunique"/>
         <FIELD NAME="forceunique" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
-        <FIELD NAME="defaultdata" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
-        <FIELD NAME="param1" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
-        <FIELD NAME="param2" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
-        <FIELD NAME="param3" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
-        <FIELD NAME="param4" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
-        <FIELD NAME="param5" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4" NEXT="fullname"/>
+        <FIELD NAME="defaultdata" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
+        <FIELD NAME="param1" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
+        <FIELD NAME="param2" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
+        <FIELD NAME="param3" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
+        <FIELD NAME="param4" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
+        <FIELD NAME="param5" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4" NEXT="fullname"/>
         <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="param5" NEXT="categoryid"/>
         <FIELD NAME="categoryid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname"/>
       </FIELDS>
@@ -271,7 +271,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
         <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="frameworkid"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="frameworkid"/>
         <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="path"/>
         <FIELD NAME="path" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="visible"/>
         <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="path" NEXT="timevalidfrom"/>
@@ -293,18 +293,19 @@
     <TABLE NAME="pos_assignment" COMMENT="Tracks a users current position assignments" PREVIOUS="pos" NEXT="pos_assignment_history">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="fullname"/>
-        <FIELD NAME="fullname" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
+        <FIELD NAME="fullname" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="idnumber"/>
         <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="timevalidfrom"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="timevalidfrom"/>
         <FIELD NAME="timevalidfrom" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="description" NEXT="timevalidto"/>
         <FIELD NAME="timevalidto" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="timevalidfrom" NEXT="timecreated"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timevalidto" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="organisationid"/>
         <FIELD NAME="organisationid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="organisationid" NEXT="positionid"/>
-        <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="userid" NEXT="reportstoid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="organisationid" NEXT="appraiserid"/>
+        <FIELD NAME="appraiserid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="userid" NEXT="positionid"/>
+        <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="appraiserid" NEXT="reportstoid"/>
         <FIELD NAME="reportstoid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="positionid" NEXT="type"/>
         <FIELD NAME="type" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="1" SEQUENCE="false" PREVIOUS="reportstoid" NEXT="managerid"/>
         <FIELD NAME="managerid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="type" NEXT="managerpath"/>
@@ -322,10 +323,10 @@
     <TABLE NAME="pos_assignment_history" COMMENT="Tracks a users historical position assignments" PREVIOUS="pos_assignment" NEXT="pos_competencies">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="fullname"/>
-        <FIELD NAME="fullname" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
+        <FIELD NAME="fullname" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="idnumber"/>
         <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="timevalidfrom"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="timevalidfrom"/>
         <FIELD NAME="timevalidfrom" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="description" NEXT="timevalidto"/>
         <FIELD NAME="timevalidto" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="timevalidfrom" NEXT="timecreated"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timevalidto" NEXT="timefinished"/>
@@ -359,7 +360,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
         <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="sortorder"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="sortorder"/>
         <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="timecreated"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
@@ -378,7 +379,7 @@
     <TABLE NAME="pos_relations" COMMENT="Tracks relationships between positions" PREVIOUS="pos_framework" NEXT="pos_type">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
         <FIELD NAME="id1" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="id2"/>
         <FIELD NAME="id2" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id1"/>
       </FIELDS>
@@ -390,7 +391,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="timecreated"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="timecreated"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
@@ -410,13 +411,13 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="fieldid"/>
         <FIELD NAME="fieldid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="positionid"/>
         <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="fieldid" NEXT="data"/>
-        <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="positionid"/>
+        <FIELD NAME="data" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="positionid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-          <INDEX NAME="postype_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
+        <INDEX NAME="postype_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="pos_type_info_field" COMMENT="Stores the custom fields for each position type" PREVIOUS="pos_type_info_data" NEXT="org">
@@ -425,18 +426,18 @@
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="typeid"/>
         <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="datatype"/>
         <FIELD NAME="datatype" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="typeid" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
         <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="hidden"/>
         <FIELD NAME="hidden" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="locked"/>
         <FIELD NAME="locked" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
         <FIELD NAME="required" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="locked" NEXT="forceunique"/>
         <FIELD NAME="forceunique" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
-        <FIELD NAME="defaultdata" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
-        <FIELD NAME="param1" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
-        <FIELD NAME="param2" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
-        <FIELD NAME="param3" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
-        <FIELD NAME="param4" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
-        <FIELD NAME="param5" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4" NEXT="fullname"/>
+        <FIELD NAME="defaultdata" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
+        <FIELD NAME="param1" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
+        <FIELD NAME="param2" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
+        <FIELD NAME="param3" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
+        <FIELD NAME="param4" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
+        <FIELD NAME="param5" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4" NEXT="fullname"/>
         <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="param5" NEXT="categoryid"/>
         <FIELD NAME="categoryid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname"/>
       </FIELDS>
@@ -448,7 +449,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="idnumber"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="idnumber"/>
         <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="description" NEXT="frameworkid"/>
         <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="idnumber" NEXT="path"/>
         <FIELD NAME="path" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="parentid"/>
@@ -485,7 +486,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
         <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="sortorder"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="sortorder"/>
         <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="visible"/>
         <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="hidecustomfields"/>
         <FIELD NAME="hidecustomfields" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="visible" NEXT="timecreated"/>
@@ -504,7 +505,7 @@
     <TABLE NAME="org_relations" COMMENT="Tracks relationships between organisations" PREVIOUS="org_framework" NEXT="org_type">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
         <FIELD NAME="id1" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="id2"/>
         <FIELD NAME="id2" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id1"/>
       </FIELDS>
@@ -516,7 +517,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="timecreated"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="timecreated"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
@@ -534,7 +535,7 @@
     <TABLE NAME="org_type_info_data" COMMENT="Stores custom field data related to organisations" PREVIOUS="org_type" NEXT="org_type_info_field">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="data"/>
-        <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="fieldid"/>
+        <FIELD NAME="data" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="fieldid"/>
         <FIELD NAME="fieldid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="data" NEXT="organisationid"/>
         <FIELD NAME="organisationid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="fieldid"/>
       </FIELDS>
@@ -542,32 +543,274 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-          <INDEX NAME="orgtype_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
+        <INDEX NAME="orgtype_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="org_type_info_field" COMMENT="Stores the custom fields for each organisation type" PREVIOUS="org_type_info_data">
+    <TABLE NAME="org_type_info_field" COMMENT="Stores the custom fields for each organisation type" PREVIOUS="org_type_info_data" NEXT="goal">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="typeid"/>
         <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="shortname" NEXT="datatype"/>
         <FIELD NAME="datatype" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
         <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="hidden"/>
         <FIELD NAME="hidden" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="locked"/>
         <FIELD NAME="locked" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
         <FIELD NAME="required" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="locked" NEXT="forceunique"/>
         <FIELD NAME="forceunique" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
-        <FIELD NAME="defaultdata" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
-        <FIELD NAME="param1" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
-        <FIELD NAME="param2" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
-        <FIELD NAME="param3" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
-        <FIELD NAME="param4" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
-        <FIELD NAME="param5" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4" NEXT="fullname"/>
+        <FIELD NAME="defaultdata" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
+        <FIELD NAME="param1" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
+        <FIELD NAME="param2" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
+        <FIELD NAME="param3" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
+        <FIELD NAME="param4" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
+        <FIELD NAME="param5" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4" NEXT="fullname"/>
         <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="param5" NEXT="categoryid"/>
         <FIELD NAME="categoryid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal" COMMENT="Totara goals" PREVIOUS="org_type_info_field" NEXT="goal_framework">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="description" NEXT="frameworkid"/>
+        <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="idnumber" NEXT="path"/>
+        <FIELD NAME="path" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="parentid"/>
+        <FIELD NAME="parentid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="path" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="parentid" NEXT="targetdate"/>
+        <FIELD NAME="targetdate" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="visible" NEXT="proficiencyexpected"/>
+        <FIELD NAME="proficiencyexpected" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="targetdate" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="proficiencyexpected" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="depthlevel"/>
+        <FIELD NAME="depthlevel" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="depthlevel" NEXT="sortthread"/>
+        <FIELD NAME="sortthread" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="frameworkid"/>
+        <KEY NAME="frameworkid" TYPE="foreign" FIELDS="frameworkid" REFTABLE="goal_framework" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+      <INDEXES>
+          <INDEX NAME="parentid" UNIQUE="false" FIELDS="parentid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="goal_framework" COMMENT="A collection of goals" PREVIOUS="goal" NEXT="goal_scale">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="hidecustomfields"/>
+        <FIELD NAME="hidecustomfields" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="visible" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="hidecustomfields" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="true" SEQUENCE="false" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="goalfram_sor_uix" UNIQUE="true" FIELDS="sortorder"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="goal_scale" COMMENT="Scale represents the different levels of achievement of a goal" PREVIOUS="goal_framework" NEXT="goal_scale_assignments">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="defaultid"/>
+        <FIELD NAME="defaultid" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal_scale_assignments" COMMENT="Tracks which scales are assigned to which goal frameworks" PREVIOUS="goal_scale" NEXT="goal_scale_values">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="scaleid"/>
+        <FIELD NAME="scaleid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="frameworkid"/>
+        <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="scaleid" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal_scale_values" COMMENT="The individual values that make up a goal scale" PREVIOUS="goal_scale_assignments" NEXT="goal_record">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="scaleid"/>
+        <FIELD NAME="scaleid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="numericscore"/>
+        <FIELD NAME="numericscore" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="5" PREVIOUS="scaleid" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="numericscore" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="proficient"/>
+        <FIELD NAME="proficient" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="goaltype_idn_ix" UNIQUE="false" FIELDS="idnumber"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="goal_record" COMMENT="Track current status of a user within goals" PREVIOUS="goal_scale_values" NEXT="goal_type">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="goalid"/>
+        <FIELD NAME="goalid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="scalevalueid"/>
+        <FIELD NAME="scalevalueid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="goalid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="user_fk"/>
+        <KEY NAME="user_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="primary" NEXT="goal_fk"/>
+        <KEY NAME="goal_fk" TYPE="foreign" FIELDS="goalid" REFTABLE="goal" REFFIELDS="id" PREVIOUS="user_fk" NEXT="scvl_fk"/>
+        <KEY NAME="scvl_fk" TYPE="foreign" FIELDS="scalevalueid" REFTABLE="goal_scale_value" REFFIELDS="id" PREVIOUS="goal_fk"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal_type" COMMENT="Goal types are used to manage custom fields" PREVIOUS="goal_record" NEXT="goal_type_info_data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal_type_info_data" COMMENT="Stores custom field data related to goals" PREVIOUS="goal_type" NEXT="goal_type_info_field">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="data"/>
+        <FIELD NAME="data" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="fieldid"/>
+        <FIELD NAME="fieldid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="data" NEXT="goalid"/>
+        <FIELD NAME="goalid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="fieldid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fieldid"/>
+        <KEY NAME="fieldid" TYPE="foreign" FIELDS="fieldid" REFTABLE="goal_type_info_field" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal_type_info_field" COMMENT="Stores the custom fields for each goal type" PREVIOUS="goal_type_info_data" NEXT="goal_user_assignment">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="shortname" NEXT="datatype"/>
+        <FIELD NAME="datatype" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="hidden"/>
+        <FIELD NAME="hidden" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="locked"/>
+        <FIELD NAME="locked" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
+        <FIELD NAME="required" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="locked" NEXT="forceunique"/>
+        <FIELD NAME="forceunique" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
+        <FIELD NAME="defaultdata" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
+        <FIELD NAME="param1" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
+        <FIELD NAME="param2" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
+        <FIELD NAME="param3" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
+        <FIELD NAME="param4" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
+        <FIELD NAME="param5" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="param5" NEXT="categoryid"/>
+        <FIELD NAME="categoryid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal_user_assignment" COMMENT="Stores the user assignments of goals" PREVIOUS="goal_type_info_field" NEXT="goal_grp_pos">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="assigntype"/>
+        <FIELD NAME="assigntype" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="assignmentid"/>
+        <FIELD NAME="assignmentid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="assigntype" NEXT="goalid"/>
+        <FIELD NAME="goalid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="assignmentid" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="goalid" NEXT="extrainfo"/>
+        <FIELD NAME="extrainfo" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="userid" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="extrainfo" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="primary" NEXT="goalid"/>
+        <KEY NAME="goalid" TYPE="foreign" FIELDS="goalid" REFTABLE="goal" REFFIELDS="id" PREVIOUS="userid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal_grp_pos" COMMENT="Stores the position assignments of goals" PREVIOUS="goal_user_assignment" NEXT="goal_grp_org">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="goalid"/>
+        <FIELD NAME="goalid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="posid"/>
+        <FIELD NAME="posid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="goalid" NEXT="includechildren"/>
+        <FIELD NAME="includechildren" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="posid" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="includechildren" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="posid"/>
+        <KEY NAME="posid" TYPE="foreign" FIELDS="posid" REFTABLE="pos" REFFIELDS="id" PREVIOUS="primary" NEXT="goalid"/>
+        <KEY NAME="goalid" TYPE="foreign" FIELDS="goalid" REFTABLE="goal" REFFIELDS="id" PREVIOUS="posid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal_grp_org" COMMENT="Stores the organisation assignments of goals" PREVIOUS="goal_grp_pos" NEXT="goal_grp_cohort">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="goalid"/>
+        <FIELD NAME="goalid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="orgid"/>
+        <FIELD NAME="orgid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="goalid" NEXT="includechildren"/>
+        <FIELD NAME="includechildren" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="orgid" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="includechildren" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="orgid"/>
+        <KEY NAME="orgid" TYPE="foreign" FIELDS="orgid" REFTABLE="org" REFFIELDS="id" PREVIOUS="primary" NEXT="goalid"/>
+        <KEY NAME="goalid" TYPE="foreign" FIELDS="goalid" REFTABLE="goal" REFFIELDS="id" PREVIOUS="orgid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal_grp_cohort" COMMENT="Stores the assignments of goals" PREVIOUS="goal_grp_org" NEXT="goal_personal">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="goalid"/>
+        <FIELD NAME="goalid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="cohortid"/>
+        <FIELD NAME="cohortid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="goalid" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="cohortid" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="cohortid"/>
+        <KEY NAME="cohortid" TYPE="foreign" FIELDS="cohortid" REFTABLE="cohort" REFFIELDS="id" PREVIOUS="primary" NEXT="goalid"/>
+        <KEY NAME="goalid" TYPE="foreign" FIELDS="goalid" REFTABLE="goal" REFFIELDS="id" PREVIOUS="cohortid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="goal_personal" COMMENT="Totara goals" PREVIOUS="goal_grp_cohort">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="userid" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="targetdate"/>
+        <FIELD NAME="targetdate" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="description" NEXT="scaleid"/>
+        <FIELD NAME="scaleid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="targetdate" NEXT="scalevalueid"/>
+        <FIELD NAME="scalevalueid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" PREVIOUS="scaleid" NEXT="assigntype"/>
+        <FIELD NAME="assigntype" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false" PREVIOUS="scalevalueid" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="assigntype" NEXT="usercreated"/>
+        <FIELD NAME="usercreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="usercreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="primary" NEXT="scaleid"/>
+        <KEY NAME="scaleid" TYPE="foreign" FIELDS="scaleid" REFTABLE="goal_scale" REFFIELDS="id" PREVIOUS="userid" NEXT="scalevalueid"/>
+        <KEY NAME="scalevalueid" TYPE="foreign" FIELDS="scalevalueid" REFTABLE="goal_scale_values" REFFIELDS="id" PREVIOUS="scaleid"/>
       </KEYS>
     </TABLE>
   </TABLES>

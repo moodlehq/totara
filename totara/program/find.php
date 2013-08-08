@@ -25,6 +25,7 @@
 require_once('../../config.php');
 require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
+$sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format','', PARAM_TEXT); // export format
 
 $PAGE->set_context(context_system::instance());
@@ -38,7 +39,7 @@ $renderer = $PAGE->get_renderer('totara_reportbuilder');
 $strheading = get_string('searchprograms', 'totara_program');
 $shortname = 'findprograms';
 
-if (!$report = reportbuilder_get_embedded_report($shortname)) {
+if (!$report = reportbuilder_get_embedded_report($shortname, null, false, $sid)) {
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
@@ -77,20 +78,14 @@ print $renderer->print_description($report->description, $report->_id);
 
 $report->display_search();
 
-// print saved search buttons if appropriate
-$table = new html_table();
-$cells = array();
-$cells[] = new html_table_cell($renderer->save_button($report->_id));
-$cells[] = new html_table_cell($report->view_saved_menu());
-$table->data[] = new html_table_row($cells);
-echo html_writer::table($table);
-echo html_writer::empty_tag('br'). html_writer::empty_tag('br');
+// Print saved search buttons if appropriate.
+echo $report->display_saved_search_options();
 
 if ($countfiltered>0) {
     print $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
     // export button
-    $renderer->export_select($report->_id);
+    $renderer->export_select($report->_id, $sid);
 }
 
 echo $OUTPUT->footer();

@@ -224,9 +224,9 @@ function competency_scale_display_table($scales, $editingon=0) {
     }
 
     echo html_writer::tag('div',
-        $OUTPUT->single_button(new moodle_url('/totara/hierarchy/prefix/competency/scale/edit.php', array('prefix' => 'competency')), get_string('scalescustomcreate', 'totara_hierarchy'), 'get')
-        . $OUTPUT->help_icon('competencyscalesgeneral', 'totara_hierarchy'),
-    array('class' => 'buttons'));
+        $OUTPUT->single_button(new moodle_url('/totara/hierarchy/prefix/competency/scale/edit.php',
+        array('prefix' => 'competency')), get_string('scalescompcustomcreate', 'totara_hierarchy'), 'get') .
+        $OUTPUT->help_icon('competencyscalesgeneral', 'totara_hierarchy'), array('class' => 'buttons'));
 }
 
 ?>

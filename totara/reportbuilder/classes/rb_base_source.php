@@ -64,6 +64,8 @@ abstract class rb_base_source {
             'preproc' => null,
             'grouptype' => 'none',
             'groupid' => null,
+            'selectable' => true,
+            'cacheable' => true
         );
         foreach ($defaults as $property => $default) {
             if (!property_exists($this, $property)) {
@@ -262,6 +264,7 @@ abstract class rb_base_source {
                     'grouping' => $coloption->grouping,
                     'nosort' => $coloption->nosort,
                     'style' => $coloption->style,
+                    'class' => $coloption->class,
                     'hidden' => $hidden,
                     'customheading' => $customheading,
                 )
@@ -3019,6 +3022,23 @@ abstract class rb_base_source {
      * @return array
      */
     protected function define_requiredcolumns() {
+        return array();
+    }
+
+    /**
+     * Called after parameters have been read, allows the source to configure source title, additional tables, etc.
+     *
+     * @param array $params
+     */
+    public function post_config($params) {
+    }
+
+    /**
+     * Returns an array of js objects that need to be included with this report.
+     *
+     * @return array(object)
+     */
+    public function get_required_jss() {
         return array();
     }
 

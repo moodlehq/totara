@@ -31,6 +31,7 @@
 require_once($CFG->dirroot . '/calendar/lib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
+require_once($CFG->dirroot . '/totara/core/lib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_base_source.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_base_content.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_base_access.php');
@@ -152,17 +153,23 @@ class reportbuilder {
      *
      * Requires either a valid ID or shortname as parameters.
      *
+     * Note: If a report is embedded then it is now guaranteed to have its embedded object loaded.
+     * Previously, embedded reports were required to create the embedded object and pass it to this constructor in the
+     * $embed_deprecated parameter. Now, this constructor will create the embedded object. The data required by the embedded
+     * object should be passed in the $embeddata parameter.
+     *
      * @param integer $id ID of the report to generate
      * @param string $shortname Shortname of the report to generate
-     * @param object $embed Object containing settings for an embedded report
+     * @param object $embed_deprecated Object containing settings for an embedded report - see note above
      * @param integer $sid Saved search ID if displaying a saved search
      * @param integer $reportfor User ID of user who is viewing the report
      *                           (or null to use the current user)
      * @param bool $nocache Force no cache usage. Only works if cache for current report is enabled
      *                       and generated
+     * @param array $embeddata data to be passed to the embedded object constructor
      *
      */
-    function __construct($id=null, $shortname=null, $embed=false, $sid=null, $reportfor=null, $nocache = false) {
+    function __construct($id=null, $shortname=null, $embed_deprecated=false, $sid=null, $reportfor=null, $nocache = false, $embeddata = array()) {
         global $USER, $DB;
 
         if ($id != null) {
@@ -176,73 +183,91 @@ class reportbuilder {
             print_error('noshortnameorid', 'totara_reportbuilder');
         }
 
-        // handle if report not found in db
+        // Handle if report not found in db.
+        $embed = null;
         if (!$report) {
+            // Determine if this is an embedded report with a missing embedded record.
+            if ($embed_deprecated) {
+                $embed = $embed_deprecated;
+            } else if ($shortname !== null) {
+                $embed = reportbuilder_get_embedded_report_object($shortname, $embeddata);
+            }
             if ($embed) {
+                // This is an embedded report - maybe this is the first time we have run it, so try to create it.
                 if (! $id = reportbuilder_create_embedded_record($shortname, $embed, $error)) {
                     print_error('error:creatingembeddedrecord', 'totara_reportbuilder', '', $error);
                 }
                 $report = $DB->get_record('report_builder', array('id' => $id));
-            } else {
-                print_error('reportwithidnotfound', 'totara_reportbuilder', '', $id);
             }
         }
 
-        if ($report) {
-            $this->_id = $report->id;
-            $this->source = $report->source;
-            $this->src = self::get_source_object($this->source);
-            $this->shortname = $report->shortname;
-            $this->fullname = $report->fullname;
-            $this->hidden = $report->hidden;
-            $this->initialdisplay = $report->initialdisplay;
-            $this->cache = $report->cache;
-            $this->cacheignore = $nocache;
-            $this->description = $report->description;
-            $this->embedded = $report->embedded;
-            $this->contentmode = $report->contentmode;
-            // store the embedded URL for embedded reports only
-            if ($report->embedded && $embed) {
-                $this->embeddedurl = $embed->url;
-            }
-            $this->embedobj = $embed;
-            $this->recordsperpage = $report->recordsperpage;
-            $this->defaultsortcolumn = $report->defaultsortcolumn;
-            $this->defaultsortorder = $report->defaultsortorder;
-            $this->_sid = $sid;
-            // assume no grouping initially
-            $this->grouped = false;
-            $this->badcolumns = array();
-
-            // pull in data for this report from the source
-            $this->_base = $this->src->base . ' base';
-            $this->_joinlist = $this->src->joinlist;
-            $this->columnoptions = $this->src->columnoptions;
-            $this->filteroptions = $this->src->filteroptions;
-            $this->_paramoptions = $this->src->paramoptions;
-            $this->contentoptions = $this->src->contentoptions;
-            $this->requiredcolumns = $this->src->requiredcolumns;
-            // Load report cache
-            $restored = false;
-            if (!$this->cacheignore && $report->cache) {
-                if ($this->restore_cached_state()) {
-                    $restored = true;
-                }
-            }
-            if (!$restored) {
-                $this->columns = $this->get_columns();
-                $this->filters = $this->get_filters();
-            }
-
-            $this->process_filters();
-        } else {
+        if (!$report) {
             print_error('reportwithidnotfound', 'totara_reportbuilder', '', $id);
         }
 
+        // If this is an embedded report then load the embedded report object.
+        if ($report->embedded && !$embed) {
+            $embed = reportbuilder_get_embedded_report_object($report->shortname, $embeddata);
+        }
+
+        $this->_id = $report->id;
+        $this->source = $report->source;
+        $this->src = self::get_source_object($this->source);
+        $this->shortname = $report->shortname;
+        $this->fullname = $report->fullname;
+        $this->hidden = $report->hidden;
+        $this->initialdisplay = $report->initialdisplay;
+        $this->cache = $report->cache;
+        $this->cacheignore = $nocache;
+        $this->description = $report->description;
+        $this->embedded = $report->embedded;
+        $this->contentmode = $report->contentmode;
+        // Store the embedded URL for embedded reports only.
+        if ($report->embedded && $embed) {
+            $this->embeddedurl = $embed->url;
+        }
+        $this->embedobj = $embed;
+        $this->recordsperpage = $report->recordsperpage;
+        $this->defaultsortcolumn = $report->defaultsortcolumn;
+        $this->defaultsortorder = $report->defaultsortorder;
+        $this->_sid = $sid;
+        // Assume no grouping initially.
+        $this->grouped = false;
+        $this->badcolumns = array();
+
+        // Load report cache - requires column options.
+        $restored = false;
+        if (!$this->cacheignore && $report->cache) {
+            if ($this->restore_cached_state()) {
+                $restored = true;
+            }
+        }
+
+        // Before we pull in the rest of the data, get the parameters and call the post_config method.
+        // This allows the source to configure additional tables and columns based on the parameters.
+        $this->_paramoptions = $this->src->paramoptions;
         if ($embed) {
             $this->_embeddedparams = $embed->embeddedparams;
         }
         $this->_params = $this->get_current_params();
+        $this->src->post_config($this->_params);
+
+        // Pull in the rest of the data for this report from the source.
+        $this->_base = $this->src->base . ' base';
+        $this->columnoptions = $this->src->columnoptions;
+        $this->filteroptions = $this->src->filteroptions;
+        $this->contentoptions = $this->src->contentoptions;
+        $this->requiredcolumns = $this->src->requiredcolumns;
+        if ($restored) {
+            $this->columns = $this->get_columns($this->columns);
+            $this->filters = $this->get_filters($this->filters);
+        } else {
+            $this->columns = $this->get_columns();
+            $this->filters = $this->get_filters();
+        }
+        $this->_joinlist = $this->src->joinlist;
+
+        $this->process_filters();
 
         // determine who is viewing or receiving the report
         // used for access and content restriction checks
@@ -268,8 +293,10 @@ class reportbuilder {
         $dialog = false;
         $treeview = false;
 
-        // only include show/hide code for tabular reports
-        $js = array();
+        // Get any required js files that are specified by the source.
+        $js = $this->src->get_required_jss();
+
+        // Only include show/hide code for tabular reports.
         $graph = (substr($this->source, 0,
             strlen('graphical_feedback_questions')) ==
             'graphical_feedback_questions');
@@ -458,10 +485,11 @@ class reportbuilder {
     /**
      * Searches codebase for report builder source files and returns a list
      *
+     * @param bool $includenonselectable If true then include sources even if they can't be used in custom reports (for testing)
      * @return array Associative array of all available sources, formatted
      *               to be used in a select element.
      */
-    static function get_source_list() {
+    public static function get_source_list($includenonselectable = false) {
         global $DB;
 
         $output = array();
@@ -478,20 +506,21 @@ class reportbuilder {
                     $sourcename = $src->sourcetitle;
                     $preproc = $src->preproc;
 
-                    if ($src->grouptype == 'all') {
-                        $sourcestr = $source . '_grp_all';
-                        $output[$sourcestr] = $sourcename;
-                    } else if ($src->grouptype != 'none') {
-                        // create a source for every group that's based on
-                        // this source's preprocessor
-                        $groups = $DB->get_records('report_builder_group', array('preproc' => $preproc));
-                        foreach ($groups as $group) {
-                            $sourcestr = $source . '_grp_' . $group->id;
-                            $output[$sourcestr] = $sourcename . ': ' . $group->name;
+                    if ($src->selectable || $includenonselectable) {
+                        if ($src->grouptype == 'all') {
+                            $sourcestr = $source . '_grp_all';
+                            $output[$sourcestr] = $sourcename;
+                        } else if ($src->grouptype != 'none') {
+                            // Create a source for every group that's based on this source's preprocessor.
+                            $groups = $DB->get_records('report_builder_group', array('preproc' => $preproc));
+                            foreach ($groups as $group) {
+                                $sourcestr = $source . '_grp_' . $group->id;
+                                $output[$sourcestr] = $sourcename . ': ' . $group->name;
+                            }
+                        } else {
+                            // Otherwise, just create a single source.
+                            $output[$source] = $sourcename;
                         }
-                    } else {
-                        // otherwise, just create a single source
-                        $output[$source] = $sourcename;
                     }
                 }
                 closedir($dh);
@@ -858,7 +887,7 @@ class reportbuilder {
      * @param array $columns predefined set of columns
      * @return array Array of columns for current report or empty array if none set
      */
-    function get_columns(array $columns = array()) {
+    public function get_columns(array $columns = array(), $runcolumngenerators = true) {
         global $DB;
 
         $out = array();
@@ -871,42 +900,53 @@ class reportbuilder {
             $columns = $DB->get_records('report_builder_columns', array('reportid' => $id), 'sortorder');
         }
         foreach ($columns as $column) {
-            // to properly support multiple languages - only use value
-            // in database if it's different from the default. If it's the
-            // same as the default for that column, use the default string
-            // directly
-            if ($column->customheading) {
-                // use value from database
-                $heading = $column->heading;
-            } else {
-                // use default value
-                $defaultheadings = $this->get_default_headings_array();
-                $heading = isset($defaultheadings[$column->type . '-' . $column->value]) ?
-                    $defaultheadings[$column->type . '-' . $column->value] : null;
-            }
+            // Find the column option that matches this column.
+            $columnoption = self::get_single_item($this->columnoptions, $column->type, $column->value);
 
-            try {
-                $out[$column->id] = $this->src->new_column_from_option(
-                    $column->type,
-                    $column->value,
-                    $heading,
-                    $column->customheading,
-                    $column->hidden
-                );
-                // enabled report grouping if any columns are grouped
-                if ($out[$column->id]->grouping != 'none') {
-                    $this->grouped = true;
+            if ($runcolumngenerators && isset($columnoption->columngenerator)) {
+                /* Rather than putting the column into the list, we call the generator and it
+                 * will supply an array of columns (0 or more) that should be included. We pass
+                 * all available information to the generator (columnoption and hidden). */
+                $columngenerator = 'rb_cols_generator_' . $columnoption->columngenerator;
+                $results = $this->src->$columngenerator($columnoption, $column->hidden);
+                $out = array_merge($out, $results);
+            } else {
+                /* To properly support multiple languages - only use value
+                 * in database if it's different from the default. If it's the
+                 * same as the default for that column, use the default string
+                 * directly. */
+                if ($column->customheading) {
+                    // Use value from database.
+                    $heading = $column->heading;
+                } else {
+                    // Use default value.
+                    $defaultheadings = $this->get_default_headings_array();
+                    $heading = isset($defaultheadings[$column->type . '-' . $column->value]) ?
+                        $defaultheadings[$column->type . '-' . $column->value] : null;
                 }
-            }
-            catch (ReportBuilderException $e) {
-                // save list of bad columns
-                $this->badcolumns[] = array(
-                    'id' => $column->id,
-                    'type' => $column->type,
-                    'value' => $column->value,
-                    'heading' => $column->heading
-                );
-                trigger_error($e->getMessage(), E_USER_WARNING);
+
+                try {
+                    $out[$column->id] = $this->src->new_column_from_option(
+                        $column->type,
+                        $column->value,
+                        $heading,
+                        $column->customheading,
+                        $column->hidden
+                    );
+                    // Enabled report grouping if any columns are grouped.
+                    if ($out[$column->id]->grouping != 'none') {
+                        $this->grouped = true;
+                    }
+                } catch (ReportBuilderException $e) {
+                    // Save list of bad columns.
+                    $this->badcolumns[] = array(
+                        'id' => $column->id,
+                        'type' => $column->type,
+                        'value' => $column->value,
+                        'heading' => $column->heading
+                    );
+                    trigger_error($e->getMessage(), E_USER_WARNING);
+                }
             }
         }
 
@@ -2119,20 +2159,7 @@ class reportbuilder {
             throw new ReportBuilderException('Cache unserialization failed');
         }
         foreach ($data as $property => $value) {
-            switch ($property) {
-                case 'filters':
-                    $this->filters = $this->get_filters($value);
-                break;
-                case 'columns':
-                    $this->columns = $this->get_columns($value);
-                break;
-                default:
-                    $this->{$property} = $value;
-            }
-        }
-        // support of filters
-        foreach($this->filters as $filter) {
-            $filter->set_report($this);
+            $this->{$property} = $value;
         }
     }
     /**
@@ -2572,20 +2599,27 @@ class reportbuilder {
         foreach ($columns as $column) {
             if ($column->display_column()) {
                 $ident = "{$column->type}_{$column->value}";
-                // assign $type_$value class to each column
-                $table->column_class($ident, ' ' . $ident);
-                // apply any column-specific styling
+                // Assign $type_$value class to each column.
+                $classes = $ident;
+                // Apply any column-specific class.
+                if (is_array($column->class)) {
+                    foreach ($column->class as $class) {
+                        $classes .= ' ' . $class;
+                    }
+                }
+                $table->column_class($ident, $classes);
+                // Apply any column-specific styling.
                 if (is_array($column->style)) {
                     foreach ($column->style as $property => $value) {
                         $table->column_style($ident, $property, $value);
                     }
                 }
-                // hide any columns where hidden flag is set
+                // Hide any columns where hidden flag is set.
                 if ($column->hidden != 0) {
                     $table->column_style($ident, 'display', 'none');
                 }
 
-                // disable sorting on column where indicated
+                // Disable sorting on column where indicated.
                 if ($column->nosort) {
                     $table->no_sorting($ident);
                 }
@@ -2762,8 +2796,12 @@ class reportbuilder {
         $id = $this->_id;
         $sid = $this->_sid;
         $savedoptions = array();
-        $common = new moodle_url('/totara/reportbuilder/report.php', array('id' => $id));
-        // are there saved searches for this report and user?
+        if ($this->embedded) {
+            $common = new moodle_url($this->get_current_url());
+        } else {
+            $common = new moodle_url('/totara/reportbuilder/report.php', array('id' => $id));
+        }
+        // Are there saved searches for this report and user?
         $saved = $DB->get_records('report_builder_saved', array('reportid' => $id, 'userid' => $USER->id));
         foreach ($saved as $item) {
             $savedoptions[$item->id] = format_string($item->name);
@@ -4190,22 +4228,6 @@ function sql_table_from_select($table, $select, array $params = array()) {
     return true;
 }
 
-function sql_drop_table_if_exists($table) {
-    global $DB;
-    switch ($DB->get_dbfamily()) {
-        case 'mssql':
-            $sql = "IF OBJECT_ID('dbo.{$table}','U') IS NOT NULL DROP TABLE dbo.{$table}";
-            break;
-        case 'mysql':
-            $sql = "DROP TABLE IF EXISTS `{$table}`";
-            break;
-        case 'postgres':
-        default:
-            $sql = "DROP TABLE IF EXISTS \"{$table}\"";
-            break;
-    }
-    return $DB->execute($sql);
-}
 /**
  * Returns the proper SQL to aggregate a field by joining with a specified delimiter
  *
@@ -4434,7 +4456,7 @@ function reportbuilder_generate_cache($reportid) {
             // Instantiate
             if ($reportcacherecord->embedded) {
                 $shortname = $reportcacherecord->shortname;
-                $report = reportbuilder_get_embedded_report($shortname, array(), true);
+                $report = reportbuilder_get_embedded_report($shortname, array(), true, 0);
             } else {
                 $report = new reportbuilder($reportid, null, false, null, null, true);
             }
@@ -4722,23 +4744,25 @@ function reportbuilder_get_embedded_report_object($embedname, $data=array()) {
 /**
  * Generate actual embedded report
  *
- * This method returns a new instance of an embedded report. It does it
- * by created an embedded report object first then generating the report
- * based on that.
+ * This function is an alias to "new reportbuilder()", for use within embedded report pages. The embedded object
+ * will be created within the reportbuilder constructor.
  *
  * @param string $embedname Shortname of embedded report
  *                          e.g. X from rb_X_embedded.php
  * @param array $data Associative array of data needed by source (optional)
  * @param bool $nocache Disable cache
+ * @param int $sid saved search id
  *
  * @return reportbuilder Embedded report
  */
-function reportbuilder_get_embedded_report($embedname, $data = array(), $nocache = false) {
-    if ($embed = reportbuilder_get_embedded_report_object($embedname, $data)) {
-        return new reportbuilder(null, $embedname, $embed, null, null, $nocache);
+function reportbuilder_get_embedded_report($embedname, $data = array(), $nocache = false, $sid = 'nosidsupplied') {
+    if ($sid === 'nosidsupplied') {
+        debugging('Call to reportbuilder_get_embedded_report without supplying $sid is probably an error - if you
+            want to save searches on your embedded report then you must pass in $sid here, otherwise pass 0 to remove
+            this warning');
+        $sid = 0;
     }
-    // file or class not found
-    return false;
+    return new reportbuilder(null, $embedname, false, $sid, null, $nocache, $data);
 }
 
 

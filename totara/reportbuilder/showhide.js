@@ -63,12 +63,14 @@ M.totara_reportbuilder_showhide = M.totara_reportbuilder_showhide || {
         if (window.id === undefined) {return;}
 
         $('#show-showhide-dialog').css('display','inline');
-        var url = M.cfg.wwwroot + '/totara/reportbuilder/';
+        var path = M.cfg.wwwroot + '/totara/reportbuilder/';
 
         var handler = new totaraDialog_handler();
         var name = 'showhide';
         var buttons = {};
         buttons[M.util.get_string('ok', 'moodle')] = function() { handler._cancel() };
+
+        var querystring = window.location.search;
 
         totaraDialogs[name] = new totaraDialog(
             name,
@@ -77,7 +79,7 @@ M.totara_reportbuilder_showhide = M.totara_reportbuilder_showhide || {
                 buttons: buttons,
                 title: '<h2>' + M.util.get_string('showhidecolumns', 'totara_reportbuilder') + '</h2>'
             },
-            url+'showhide.php?id='+id.toString(),
+            path + 'showhide.php?id=' + id.toString() + querystring.replace('?', '&'),
             handler
         );
     }

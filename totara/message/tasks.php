@@ -36,6 +36,7 @@ require_login();
 
 global $SESSION,$USER;
 
+$sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format', '',PARAM_TEXT); //export format
 
 // default to current user
@@ -56,7 +57,7 @@ $shortname = 'tasks';
 $data = array(
     'userid' => $id,
 );
-if (!$report = reportbuilder_get_embedded_report($shortname, $data)) {
+if (!$report = reportbuilder_get_embedded_report($shortname, $data, false, $sid)) {
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
@@ -98,9 +99,12 @@ $countall = $report->get_full_count();
 
 // display heading including filtering stats
 if ($countfiltered == $countall) {
-    echo $output->heading("$countall ".get_string('records', 'totara_reportbuilder'));
+    echo $output->heading(get_string('recordsall', 'totara_message', $countall));
 } else {
-    echo $output->heading("$countfiltered/$countall".get_string("recordsshown", "totara_plan"));
+    $a = new stdClass();
+    $a->countfiltered = $countfiltered;
+    $a->countall = $countall;
+    echo $output->heading(get_string('recordsshown', 'totara_message', $a));
 }
 
 if (empty($report->description)) {
@@ -110,6 +114,9 @@ if (empty($report->description)) {
 echo $output->print_description($report->description, $report->_id);
 
 $report->display_search();
+
+// Print saved search buttons if appropriate.
+echo $report->display_saved_search_options();
 
 $PAGE->requires->string_for_js('reviewitems', 'block_totara_alerts');
 $PAGE->requires->js_init_call('M.totara_message.dismiss_input_toggle');
@@ -136,7 +143,7 @@ if ($countfiltered > 0) {
     echo $out;
     echo html_writer::end_tag('form');
     // export button
-    $output->export_select($report->_id);
+    $output->export_select($report->_id, $sid);
     echo totara_message_checkbox_all_none();
 }
 echo $output->footer();

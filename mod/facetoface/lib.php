@@ -778,11 +778,13 @@ function facetoface_delete_session($session) {
  * Function to be run periodically according to the moodle cron
  * Finds all facetoface notifications that have yet to be mailed out, and mails them.
  */
-function facetoface_cron() {
-    global $CFG, $USER, $DB;
+function facetoface_cron($testing = false) {
+    global $DB;
 
     // Find "instant" manual notifications that haven't yet been sent
-    echo "\nChecking for instant Face-to-face notifications\n";
+    if (!$testing) {
+        mtrace('Checking for instant Face-to-face notifications');
+    }
     $manual = $DB->get_records_select(
         'facetoface_notification',
         'type = ? AND issent <> ? AND status = 1',
@@ -795,7 +797,9 @@ function facetoface_cron() {
     }
 
     // Find scheduled notifications that haven't yet been sent
-    echo "\nChecking for scheduled Face-to-face notifications\n";
+    if (!$testing) {
+        mtrace('Checking for scheduled Face-to-face notifications');
+    }
     $sched = $DB->get_records_select(
         'facetoface_notification',
         'scheduletime IS NOT NULL
@@ -809,7 +813,6 @@ function facetoface_cron() {
         }
     }
 
-    print "\n";
     return true;
 }
 

@@ -667,6 +667,134 @@ input[type="checkbox"] {
     top: 33px;
     left: 0;
 }
+/* Vertical tab tree */
+.verticaltabtree-wrapper {
+  border-right: 1px solid #999999;
+  background: #ffffff url('[[pix:theme|vtt_border_grey]]') bottom repeat-x;
+  margin-bottom: 10px;
+  zoom: 1;
+}
+.dir-ltr .verticaltabtree-wrapper {
+  margin-left: 200px;
+}
+.dir-rtl .verticaltabtree-wrapper {
+  margin-right: 200px;
+}
+/* clearfix stuff start */
+.verticaltabtree-wrapper:before,
+.verticaltabtree-wrapper:after {
+    content:"";
+    display:table;
+}
+.verticaltabtree-wrapper:after {
+    clear:both;
+}
+/* clearfix stuff end */
+.verticaltabtree {
+    width: 200px;
+}
+
+.dir-ltr .verticaltabtree {
+  float: left;
+  margin-left: -200px;
+}
+
+.dir-rtl .verticaltabtree {
+  float: right;
+  margin-right: -200px;
+}
+
+.verticaltabtree div.tabtree {
+    margin: 0;
+}
+
+.verticaltabtree .tabtree li {
+    border-top: 1px solid #999999;
+    display: list-item;
+    overflow: hidden;
+    float: none !important;
+}
+.dir-ltr .verticaltabtree .tabtree li {
+    border-right: 1px solid #999999;
+}
+.dir-rtl .verticaltabtree .tabtree li {
+    border-left: 1px solid #999999;
+}
+
+.verticaltabtree .tabtree li.first {
+    border-top: none;
+}
+
+.dir-ltr .verticaltabtree .tabtree li.selected {
+    border-right: none;
+}
+.dir-rtl .verticaltabtree .tabtree li.selected {
+    border-left: none;
+}
+
+.verticaltabtree .tabtree .tabrow0 li,
+.verticaltabtree .tabtree ul {
+    margin: 0;
+}
+
+.verticaltabtree .tabtree ul {
+    border: 1px solid #999999;
+}
+.dir-ltr .verticaltabtree .tabtree ul {
+    border-right: none;
+}
+.dir-rtl .verticaltabtree .tabtree ul {
+    border-left: none;
+}
+
+.verticaltabtree .tabtree ul li.here .empty {
+    display: none;
+}
+
+.verticaltabtree .tabtree ul li a {
+  background-color: #e8e8e8;
+}
+
+.verticaltabtree .tabtree ul li a,
+.verticaltabtree .tabtree ul li a:hover {
+    border: none !important;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+    display: block;
+    margin: 0 !important;
+    float: none !important;
+    text-align: left;
+    color: #666666;
+}
+.dir-rtl .verticaltabtree .tabtree ul li a,
+.dir-rtl .verticaltabtree .tabtree ul li a:hover {
+    text-align: right;
+}
+
+.verticaltabtree .tabtree ul li a.nolink,
+.verticaltabtree .tabtree ul li a.nolink:hover {
+  background-color: #e8e8e8;
+  color: #999999;
+}
+
+.verticaltabtree .tabtree ul li.selected a.nolink,
+.verticaltabtree .tabtree ul li.selected a.nolink:hover {
+  background-color: #ffffff;
+  color: #666666;
+}
+
+.verticaltabtree-content {
+    padding: 10px;
+    border-top: 1px solid #999999;
+    border-left: 1px solid #999999;
+    margin-bottom: 1px;
+}
+
+.verticaltabtree > .clearer {
+  display: none;
+}
 /**
  * Totara Dialog boxes
  *

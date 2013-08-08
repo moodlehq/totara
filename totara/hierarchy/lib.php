@@ -91,8 +91,12 @@ function totara_hierarchy_pluginfile($course, $cm, $context, $filearea, $args, $
  */
 function totara_hierarchy_cron() {
     global $CFG;
+
     require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/cron.php');
+    require_once($CFG->dirroot.'/totara/hierarchy/prefix/goal/cron.php');
+
     competency_cron();
+    goal_cron();
 }
 
 /**
@@ -326,6 +330,21 @@ class hierarchy {
     function get_items() {
         global $DB;
         return $DB->get_records($this->shortprefix, array('frameworkid' => $this->frameworkid), 'sortthread, fullname');
+    }
+
+    /**
+     * Static method to get all items.
+     *
+     * @return array
+     */
+    public static function get_framework_items($frameworkid = null) {
+        global $DB;
+
+        if (isset($frameworkid)) {
+            return $DB->get_records(static::SHORT_PREFIX, array('frameworkid' => $frameworkid), 'sortthread, fullname');
+        } else {
+            return $DB->get_records(static::SHORT_PREFIX, array(), 'sortthread, fullname');
+        }
     }
 
     /**
@@ -1120,7 +1139,7 @@ class hierarchy {
     /**
      * Returns the short prefix for the given prefix name. Note that it will error
      * out if the prefixname is for a non-existent hierarchy prefix.
-     * 
+     *
      * @param string $prefixname
      * @return string
      */
@@ -1180,7 +1199,7 @@ class hierarchy {
      * @return string HTML to display the item as a row in the hierarchy index table
      */
     function display_hierarchy_item($record, $include_custom_fields=false, $indicate_depth=true, $cfields=array(), $types=array()) {
-        global $OUTPUT;
+        global $OUTPUT, $CFG;
 
         // never indent more than 10 levels as we only have 10 levels of CSS styles
         // and the table format would break anyway if indented too much
@@ -1192,14 +1211,20 @@ class hierarchy {
         $out .= $OUTPUT->action_link(new moodle_url('item/view.php', array('prefix' => $this->prefix, 'id' => $record->id)), format_string($record->fullname), null, array('class' => $cssclass));
         if ($include_custom_fields) {
             $out .= html_writer::empty_tag('br');
-            // print description if available
+            // Print description if available.
             if ($record->description) {
                 $record->description = file_rewrite_pluginfile_urls($record->description, 'pluginfile.php', context_system::instance()->id, 'totara_hierarchy', $this->shortprefix, $record->id);
                 $safetext = format_text($record->description, FORMAT_HTML);
                 $out .= html_writer::tag('div', html_writer::tag('strong', get_string('description') . ': ') . $safetext, array('class' => 'itemdescription ' . $cssclass));
             }
 
-            // print type, unless unclassified
+            // Print target date if available.
+            if (!empty($record->targetdate)) {
+                $targetdate = userdate($record->targetdate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
+                $out .= html_writer::tag('div', html_writer::tag('strong', get_string('goaltargetdate', 'totara_hierarchy') . ': ') . $targetdate, array('class' => 'itemtargetdate ' . $cssclass));
+            }
+
+            // Print type, unless unclassified.
             if ($record->typeid !=0 && is_array($types) && array_key_exists($record->typeid, $types)) {
                 $out .= html_writer::tag('div', html_writer::tag('strong', get_string('type', 'totara_hierarchy') . ': ') . format_string($types[$record->typeid]->fullname), array('class' => 'itemtype' . $cssclass));
             }
@@ -1376,6 +1401,12 @@ class hierarchy {
                 // default to visible if not set
                 $item->visible = 1;
             }
+
+            if (!empty($item->targetdateselector)) {
+                // Set up formatting the date for goals.
+                $item->targetdate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $item->targetdateselector);
+            }
+
             $item->timemodified = $now;
             $item->usermodified = $USER->id;
             if ($newitem = $this->add_hierarchy_item($item, $parentid, $frameworkid, false, $triggerevent)) {
@@ -1391,7 +1422,6 @@ class hierarchy {
         return $new_ids;
 
     }
-
 
     /**
      * Add a new hierarchy item to an existing framework

@@ -397,7 +397,10 @@ class report_builder_edit_columns_form extends moodleform {
             $columnoptions = array();
 
             if (isset($report->columns) && is_array($report->columns) && count($report->columns) > 0) {
-                $columns = $report->columns;
+                /* Here we get the ORIGINAL columns from the database, rather than the processed (through any
+                 * available column generators) columns that are normally returned when a report is built.
+                 * Ideally, we wouldn't be calling get_columns for a second time. See bug 10920. */
+                $columns = $report->get_columns(array(), false);
                 $colcount = count($columns);
                 $i = 1;
                 foreach ($columns as $index => $column) {
@@ -709,7 +712,11 @@ class report_builder_edit_performance_form extends moodleform {
         $mform->addElement('header', 'general', get_string('reportbuildercache_heading', 'totara_reportbuilder'));
         if (!empty($CFG->enablereportcaching)) {
             //only show report cache settings if it is enabled
-            $mform->addElement('advcheckbox', 'cache', get_string('cache', 'totara_reportbuilder'), '', null, array(0, 1));
+            $caching_attributes = $report->src->cacheable ? null : array('disabled' => 'disabled', 'group' => null);
+            $caching_sidenote = is_null($caching_attributes) ? '' :
+                    get_string('reportbuildercache_disabled', 'totara_reportbuilder');
+            $mform->addElement('advcheckbox', 'cache', get_string('cache', 'totara_reportbuilder'),
+                    $caching_sidenote, $caching_attributes, array(0, 1));
             $mform->setType('cache', PARAM_INT);
             $mform->addHelpButton('cache', 'reportbuildercache', 'totara_reportbuilder');
 

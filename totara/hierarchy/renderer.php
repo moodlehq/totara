@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Ciaran Irvine <ciaran.irvine@totaralms.com>
+ * @author David Curry <david.curry@totaralms.com>
  * @package totara
  * @subpackage totara_core
  */
@@ -171,6 +172,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
             $out .= html_writer::end_tag('form');
             $out .= html_writer::end_tag('div');
         }
+
         $out .= html_writer::end_tag('div');
         return $out;
     }
@@ -279,6 +281,86 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
 
         return $out;
     }
+
+    /**
+     * Outputs a table containing all of the assignments for a given goal ($item)
+     *
+     * @param object $item          The goal object to show the assignments for
+     * @param bool $can_edit        Whether or not the viewing user can delete/add assignments
+     * @param array $assignments    A list of current assignments for the goal
+     * @return string HTML to output
+     */
+    public function print_goal_view_assignments($item, $can_edit = false, $assignments = null) {
+        global $DB, $CFG;
+
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/goal/lib.php');
+
+
+        // Initialize $out.
+        $out = '';
+        $str_edit = get_string('edit');
+        $str_remove = get_string('remove');
+
+        // Display table heading.
+        $out .= $this->output->heading(get_string('goalassignments', 'totara_hierarchy'), 3);
+
+        // Initialise table and add header row.
+        $table = new html_table();
+        $header_cells = array();
+        $header_cells['name'] = new html_table_cell(get_string('goaltable:name', 'totara_hierarchy'));
+        $header_cells['name']->header = true;
+        $header_cells['type'] = new html_table_cell(get_string('goaltable:type', 'totara_hierarchy'));
+        $header_cells['type']->header = true;
+        $header_cells['users'] = new html_table_cell(get_string('goaltable:numusers', 'totara_hierarchy'));
+        $header_cells['users']->header = true;
+
+        $remove = get_string('remove');
+        if ($can_edit) {
+            $header_cells['delete'] = new html_table_cell(get_string('delete'));
+            $header_cells['delete']->header = true;
+        }
+
+        $titlerow = new html_table_row($header_cells);
+        $table->data[] = $titlerow;
+
+        $andchildstr = get_string('andchildren', 'totara_hierarchy');
+        foreach ($assignments as $assignment) {
+
+            $assigntype = goal::grp_type_to_assignment($assignment->grouptype);
+
+            // Check permissions.
+            if ($can_edit) {
+                // Add a delete action button.
+                $params = array('goalid' => $item->id, 'assigntype' => $assigntype, 'modid' => $assignment->sourceid, 'view' => true);
+                $url = new moodle_url('/totara/hierarchy/prefix/goal/assign/remove.php', $params);
+                $delete = $this->output->action_icon($url, new pix_icon('t/delete', $remove), null,
+                       array('id' => 'goalassigdel', 'class' => 'iconsmall', 'title' => $remove));
+            } else {
+                $delete = null;
+            }
+
+            if ($assignment->includechildren) {
+                $namestr = format_string($assignment->sourcefullname) . ' ' . $andchildstr;
+            } else {
+                $namestr = format_string($assignment->sourcefullname);
+            }
+
+            $cells = array();
+            $cells['name'] = new html_table_cell($namestr);
+            $cells['type'] = new html_table_cell($assignment->grouptypename);
+            $cells['users'] = new html_table_cell($assignment->groupusers);
+            if ($can_edit) {
+                $cells['delete'] = new html_table_cell($delete);
+            }
+            $row = new html_table_row($cells);
+            $table->data[] = $row;
+        }
+
+        $out = $this->output->container(html_writer::table($table), 'clearfix', 'assignedgroups');
+
+        return $out;
+    }
+
     /**
     * Outputs a table containing items in this organisation
     *
@@ -381,7 +463,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
             $out .= html_writer::start_tag('div', array('class' => 'singlebutton'));
             $out .= html_writer::start_tag('form', array('action' => $addurl, 'method' => 'get'));
             $out .= html_writer::start_tag('div');
-            $out .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => "show-".$displaytitle."-dialog", 'value' => $add_button_text));
+            $out .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => "show-{$displaytitle}-dialog", 'value' => $add_button_text));
             $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "assignto", 'value' => $itemid));
             $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "nojs", 'value' => '1'));
             $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "returnurl", 'value' => qualified_me()));
@@ -394,4 +476,328 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
         return $out;
     }
 
+    /**
+     * Print out the table of assigned goals for a given pos/org
+     *
+     * @param string  $prefix       The prefix of the hierarchy type
+     * @param string  $shortprefix  The short prefix of the hierarhcy type
+     * @param string  $addgoalurl   The url used to add goal assignments to the hierarchy type
+     * @param int     $itemid       The id of the hierarchy instance
+     */
+    public function print_assigned_goals($prefix, $shortprefix, $addgoalurl, $itemid) {
+        global $DB, $CFG;
+
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/goal/lib.php');
+
+        // Set up some variables.
+        $table = 'goal_grp_' . $shortprefix;
+        $field = $shortprefix . 'id';
+        $remove = get_string('remove');
+        $level_only = get_string('goalassignthislevelonly', 'totara_hierarchy');
+        $level_below = get_string('goalassignthislevelbelow', 'totara_hierarchy');
+        $can_edit = has_capability('totara/hierarchy:managegoalassignments', context_system::instance());
+        $out = html_writer::start_tag('div', array('id' => 'print_assigned_goals', 'class' => $prefix));
+
+        $assignment_type = goal::grp_type_to_assignment($shortprefix);
+        $assigned_goals = goal::get_modules_assigned_goals($assignment_type, $itemid);
+
+        if (empty($assigned_goals)) {
+            // Don't show the table just print No Competencies Assigned.
+            $out .= html_writer::start_tag('div', array('class' => 'nogoals'));
+            $out .= html_writer::tag('p', get_string('noassignedgoals', 'totara_hierarchy'));
+            $out .= html_writer::end_tag('div');
+        } else {
+            // Initialise table and add header row.
+            $table = new html_table();
+            $cellname = new html_table_cell(get_string('goaltable:name', 'totara_hierarchy'));
+            $cellname->header = true;
+            $celltype = new html_table_cell(get_string('goaltable:assignmentlevel', 'totara_hierarchy'));
+            $celltype->header = true;
+
+            if ($can_edit) {
+                $celldelete = new html_table_cell(get_string('delete'));
+                $celldelete->header = true;
+            } else {
+                 $celldelete = null;
+            }
+
+            $titlerow = new html_table_row(array($cellname, $celltype, $celldelete));
+            $table->data[] = $titlerow;
+
+            // Add each assignment to the table.
+            foreach ($assigned_goals as $goal) {
+
+                // Check permissions.
+                if ($can_edit && $goal->$field == $itemid) {
+                    // Add a delete action button.
+                    $params = array('goalid' => $goal->goalid, 'assigntype' => $assignment_type, 'modid' => $itemid);
+                    $url = new moodle_url('/totara/hierarchy/prefix/goal/assign/remove.php', $params);
+                    $delete = $this->output->action_icon($url, new pix_icon('t/delete', $remove), null,
+                           array('id' => 'goalassigdel', 'class' => 'iconsmall', 'title' => $remove));
+                } else {
+                    $delete = null;
+                }
+
+                $nameurl = new moodle_url('/totara/hierarchy/item/view.php', array('prefix' => 'goal', 'id' => $goal->goalid));
+                $namewithlink = html_writer::link($nameurl, format_string($goal->fullname));
+
+                if ($goal->includechildren) {
+                    if ($goal->$field == $itemid) {
+                        $level = $level_below;
+                    } else {
+                        //goalassignlevelparent
+                        $parentid = $goal->$field;
+                        $parent_params = array('prefix' => $prefix, 'id' => $parentid);
+                        $parent_url = new moodle_url('/totara/hierarchy/item/view.php', $parent_params);
+                        $parent_link = html_writer::link($parent_url, format_string($goal->parentname));
+                        $level = get_string('goalassignlevelparent', 'totara_hierarchy', $parent_link);
+                    }
+                } else {
+                    $level = $level_only;
+                }
+
+                $cellname = new html_table_cell($namewithlink);
+                $celltype = new html_table_cell($level);
+                $celldelete = new html_table_cell($delete);
+                $row = new html_table_row(array($cellname, $celltype, $celldelete));
+                $table->data[] = $row;
+            }
+
+            $out .= html_writer::table($table);
+        }
+
+        if ($can_edit) {
+            // Need to be done manually (not with single_button) to get correct ID on input button element.
+            $add_button_text = get_string('addgoal', 'totara_hierarchy');
+            $out .= html_writer::start_tag('div', array('class' => 'buttons'));
+            $out .= html_writer::start_tag('div', array('class' => 'singlebutton'));
+            $out .= html_writer::start_tag('form', array('action' => $addgoalurl, 'method' => 'get'));
+            $out .= html_writer::start_tag('div');
+            $out .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => "show-assignedgoals-dialog", 'value' => $add_button_text));
+            $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "assignto", 'value' => $itemid));
+            $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "assigntype", 'value' => $assignment_type));
+            $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "nojs", 'value' => '1'));
+            $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "returnurl", 'value' => qualified_me()));
+            $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "s", 'value' => sesskey()));
+            $out .= html_writer::end_tag('div');
+            $out .= html_writer::end_tag('form');
+            $out .= html_writer::end_tag('div');
+            $out .= html_writer::end_tag('div');
+        }
+
+        // Close the print_assigned_goals div.
+        $out .= html_writer::end_tag('div');
+
+        return $out;
+    }
+
+    /**
+     * Create the assigned company goals table for the mygoals page
+     *
+     * @param int $user         The id of the user whos page we are viewing
+     * @param bool $can_edit    Whether or not the person viewing the page can edit it
+     */
+    public function mygoals_company_table($userid, $can_edit) {
+        global $CFG, $DB;
+
+        $out = '';
+
+        // Set up the header rows for both tables.
+        $header_cells = array();
+        $header_cells['name'] = new html_table_cell(get_string('goaltable:name', 'totara_hierarchy'));
+        $header_cells['name']->header = true;
+        $header_cells['due'] = new html_table_cell(get_string('goaltable:due', 'totara_hierarchy'));
+        $header_cells['due']->header = true;
+        $header_cells['status'] = new html_table_cell(get_string('goaltable:status', 'totara_hierarchy'));
+        $header_cells['status']->header = true;
+        $header_cells['assign'] = new html_table_cell(get_string('goaltable:assigned', 'totara_hierarchy'));
+        $header_cells['assign']->header = true;
+        $header_row = new html_table_row($header_cells);
+
+        $assignments = goal::get_user_assignments($userid, $can_edit);
+        $company_table = new html_table();
+        $company_table->data[] = $header_row;
+
+        // Add any company goals the user has assigned to the table.
+        foreach ($assignments as $goalid => $assignment) {
+            $duedate = !empty($assignment->targetdate) ? userdate($assignment->targetdate,
+                get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) : '';
+
+            // Set up the scale value selector.
+            if ($can_edit) {
+                $current_sql = "SELECT gsv.*
+                                FROM {goal_scale_values} gsv
+                                JOIN {goal_record} gr
+                                ON gr.scalevalueid = gsv.id
+                                WHERE gr.userid = :uid
+                                AND gr.goalid = :gid";
+                $current_params = array('uid' => $userid, 'gid' => $goalid);
+                $current = $DB->get_record_sql($current_sql, $current_params);
+                $values = $DB->get_records('goal_scale_values', array('scaleid' => $current->scaleid));
+                $options = array();
+                foreach ($values as $value) {
+                    $options[$value->id] = $value->name;
+                }
+                $attributes = array(
+                    'class' => 'company_scalevalue_selector',
+                    'itemid' => $assignment->assignmentid,
+                    'onChange' => "\$.get(".
+                        "'{$CFG->wwwroot}/totara/hierarchy/prefix/goal/update-scalevalue.php" .
+                        "?type=company" .
+                        "&sesskey=" . sesskey() .
+                        "&gid={$goalid}" .
+                        "&uid={$userid}" .
+                        "&scv=' + $(this).val()" .
+                        ");"
+                    );
+
+                $update_text = get_string('update');
+                $scaleurl = new moodle_url('/totara/hierarchy/prefix/goal/update-scalevalue.php', array('nojs' => true));
+
+                $scalevalue = html_writer::start_tag('form', array('action' => $scaleurl, 'method' => 'get'));
+                $scalevalue .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "nojs", 'value' => '1'));
+                $scalevalue .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "type", 'value' => 'company'));
+                $scalevalue .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "uid", 'value' => $userid));
+                $scalevalue .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "gid", 'value' => $goalid));
+                $scalevalue .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "sesskey", 'value' => sesskey()));
+                $scalevalue .= html_writer::select($options, 'scv', $current->id, false, $attributes);
+                $scalevalue .= html_writer::start_tag('noscript');
+                $scalevalue .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => "update-{$assignment->assignmentid}", 'value' => $update_text));
+                $scalevalue .= html_writer::end_tag('noscript');
+                $scalevalue .= html_writer::end_tag('form');
+            } else {
+                $scalevalue = $DB->get_field('goal_scale_values', 'name', array('id' => $assignment->scalevalue));
+            }
+
+            $cells = array();
+            $cells['name'] = new html_table_cell($assignment->goalname);
+            $cells['due'] = new html_table_cell($duedate);
+            $cells['status'] = new html_table_cell($scalevalue);
+            $cells['assign'] = new html_table_cell($assignment->via);
+            $row = new html_table_row($cells);
+
+            $company_table->data[] = $row;
+        }
+
+        $out .= html_writer::start_tag('div', array('id' => 'company_goals_table', 'class' => 'individual'));
+        $out .= html_writer::table($company_table);
+        $out .= html_writer::end_tag('div');
+
+        return $out;
+    }
+
+    /**
+     * Create the assigned personal goals table for the mygoals page
+     *
+     * @param int $user         The id of the user whos page we are viewing
+     * @param bool $can_edit    Whether or not the person viewing the page can edit it
+     */
+    public function mygoals_personal_table($userid, $can_edit) {
+        global $DB, $CFG;
+
+        $out = '';
+
+        // Set up the header rows for both tables.
+        $header_cells = array();
+        $header_cells['name'] = new html_table_cell(get_string('goaltable:name', 'totara_hierarchy'));
+        $header_cells['name']->header = true;
+        $header_cells['due'] = new html_table_cell(get_string('goaltable:due', 'totara_hierarchy'));
+        $header_cells['due']->header = true;
+        $header_cells['status'] = new html_table_cell(get_string('goaltable:status', 'totara_hierarchy'));
+        $header_cells['status']->header = true;
+        $header_cells['assign'] = new html_table_cell(get_string('goaltable:assigned', 'totara_hierarchy'));
+        $header_cells['assign']->header = true;
+        $header_cells['edit'] = new html_table_cell(get_string('edit'));
+        $header_cells['edit']->header = true;
+        $header_row = new html_table_row($header_cells);
+
+        // Set up the personal goal data.
+        $personal_goals = goal::get_user_personalgoals($userid);
+        $personal_table = new html_table();
+        $personal_table->data[] = $header_row;
+
+        // Add any personal goals the user has assigned to the table.
+        foreach ($personal_goals as $goal) {
+
+            if ($can_edit[$goal->assigntype]) {
+                // Set up the edit and delete icons.
+                $edit_url = new moodle_url('/totara/hierarchy/prefix/goal/item/edit_personal.php', array('user' => $goal->userid, 'goal' => $goal->id));
+                $edit_str = get_string('edit');
+                $edit_button = $this->output->action_icon($edit_url, new pix_icon('t/edit', $edit_str));
+                $delete_url = new moodle_url('/totara/hierarchy/prefix/goal/item/delete.php', array('goal' => $goal->id, 'user' => $goal->userid));
+                $delete_str = get_string('delete');
+                $delete_button = $this->output->action_icon($delete_url, new pix_icon('t/delete', $delete_str));
+            } else {
+                // Set up greyed out buttons.
+                $edit_button = $this->output->pix_icon('t/edit_gray', get_string('error:editgoals', 'totara_hierarchy'), 'moodle', array('class' => 'iconsmall'));
+                $delete_button = $this->output->pix_icon('t/delete_gray', get_string('error:deletegoalassignment', 'totara_hierarchy'), 'moodle', array('class' => 'iconsmall'));
+            }
+
+            $duedate = !empty($goal->targetdate) ? userdate($goal->targetdate, get_string('strftimedatefullshort', 'langconfig'),
+                $CFG->timezone, false) : '';
+            $status = goal::get_status_string();
+            $assign = goal::get_assignment_string('personal', $goal);
+            $nameurl = new moodle_url('/totara/hierarchy/prefix/goal/item/view.php', array('goal' => $goal->id));
+            $namelink = html_writer::link($nameurl, format_string($goal->name));
+
+            // Set up the scale value selector.
+            if (!empty($goal->scaleid)) {
+                if ($can_edit) {
+                    $values = $DB->get_records('goal_scale_values', array('scaleid' => $goal->scaleid));
+                    $options = array();
+                    foreach ($values as $value) {
+                        $options[$value->id] = $value->name;
+                    }
+
+                    $attributes = array(
+                        'class' => 'personal_scalevalue_selector',
+                        'itemid' => $goal->id,
+                        'onChange' => "\$.get(".
+                            "'{$CFG->wwwroot}/totara/hierarchy/prefix/goal/update-scalevalue.php" .
+                            "?type=personal" .
+                            "&sesskey=" . sesskey() .
+                            "&gaid={$goal->id}" .
+                            "&uid={$userid}" .
+                            "&scv=' + $(this).val()" .
+                            ");"
+                    );
+
+                    $update_text = get_string('update');
+                    $scaleurl = new moodle_url('/totara/hierarchy/prefix/goal/update-scalevalue.php', array('nojs' => true));
+
+                    $scalevalue = html_writer::start_tag('form', array('action' => $scaleurl, 'method' => 'get'));
+                    $scalevalue .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "nojs", 'value' => '1'));
+                    $scalevalue .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "type", 'value' => 'personal'));
+                    $scalevalue .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "uid", 'value' => $userid));
+                    $scalevalue .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "gaid", 'value' => $goal->id));
+                    $scalevalue .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "sesskey", 'value' => sesskey()));
+                    $scalevalue .= html_writer::select($options, 'scv', $goal->scalevalueid, false, $attributes);
+                    $scalevalue .= html_writer::start_tag('noscript');
+                    $scalevalue .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => "update-{$goal->id}", 'value' => $update_text));
+                    $scalevalue .= html_writer::end_tag('noscript');
+                    $scalevalue .= html_writer::end_tag('form');
+                } else {
+                    $scalevalue = $DB->get_field('goal_scale_values', 'name', array('id' => $goal->scalevalueid));
+                }
+            } else {
+                $scalevalue = '';
+            }
+
+            $cells = array();
+            $cells['name'] = new html_table_cell($namelink);
+            $cells['due'] = new html_table_cell($duedate);
+            $cells['status'] = new html_table_cell($scalevalue);
+            $cells['assign'] = new html_table_cell($assign);
+            $cells['edit'] = new html_table_cell($edit_button . ' ' . $delete_button);
+            $row = new html_table_row($cells);
+
+            $personal_table->data[] = $row;
+        }
+
+        $out .= html_writer::start_tag('div', array('id' => 'personal_goals_table'));
+        $out .= html_writer::table($personal_table);
+        $out .= html_writer::end_tag('div');
+
+        return $out;
+    }
 }

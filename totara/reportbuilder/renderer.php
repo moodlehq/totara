@@ -573,10 +573,10 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
      * Renders a table containing report saved searches
      *
      * @param array $searches array of saved searches
+     * @param object $report report that these saved searches belong to
      * @return string HTML table
      */
-    public function saved_searches_table($searches) {
-        global $CFG;
+    public function saved_searches_table($searches, $report) {
         $tableheader = array(get_string('name', 'totara_reportbuilder'),
                              get_string('options', 'totara_reportbuilder'));
         $data = array();
@@ -584,7 +584,13 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
         foreach ($searches as $search) {
             $row = array();
             $strdelete = get_string('delete', 'totara_reportbuilder');
-            $reporturl = new moodle_url('/totara/reportbuilder/report.php', array('id' => $search->reportid, 'sid' => $search->id));
+            if ($report->embedded) {
+                $reporturl = new moodle_url($report->embeddedurl,
+                        array('id' => $search->reportid, 'sid' => $search->id));
+            } else {
+                $reporturl = new moodle_url('/totara/reportbuilder/report.php',
+                        array('id' => $search->reportid, 'sid' => $search->id));
+            }
 
             $row[] = html_writer::link($reporturl, $search->name );
 
