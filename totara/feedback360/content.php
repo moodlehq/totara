@@ -123,6 +123,8 @@ switch ($action) {
                     array('class' => 'notifysuccess'));
         }
         break;
+    case 'clone':
+        $question->duplicate($feedback360id);
     default:
         $questions = feedback360_question::get_list($feedback360->id);
         if ($isdraft && $CFG->enableajax) {
