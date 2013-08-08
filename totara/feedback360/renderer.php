@@ -456,7 +456,6 @@ class totara_feedback360_renderer extends plugin_renderer_base {
 
             $strposition = get_string('reorder', 'totara_question');
             $stredit = get_string('settings', 'totara_question');
-            $strclone = get_string('copy');
             $strdelete = get_string('delete', 'totara_question');
             $strup =  get_string('moveup', 'totara_question');
             $strdown =  get_string('movedown', 'totara_question');
@@ -488,18 +487,14 @@ class totara_feedback360_renderer extends plugin_renderer_base {
                         'feedback360id' => $feedback360->id));
                 $editurl = new moodle_url('/totara/feedback360/content.php', array('action' => 'edit',
                     'id' => $quest->id, 'feedback360id' => $feedback360->id));
-                $cloneurl = new moodle_url('/totara/feedback360/content.php', array('action' => 'clone',
-                    'id' => $quest->id, 'feedback360id' => $feedback360->id));
                 $deleteurl = new moodle_url('/totara/feedback360/content.php', array('action' => 'delete',
                     'id' => $quest->id, 'feedback360id' => $feedback360->id));;
 
                 $dragdrop = $this->pix_icon('/i/dragdrop', '', 'moodle', array('class' => 'smallicon js-show-inline move'));
                 $editlink = $this->output->action_icon($editurl, new pix_icon('/t/edit', $stredit, 'moodle'), null,
-                    array('class' => 'action-icon edit'));
-                $clonelink = $this->output->action_icon($cloneurl, new pix_icon('/t/copy', $strclone, 'moodle'), null,
-                    array('class' => 'action-icon copy'));
+                        array('class' => 'action-icon edit'));
                 $deletelink = $this->output->action_icon($deleteurl, new pix_icon('/t/delete', $strdelete, 'moodle'), null,
-                    array('class' => 'action-icon delete'));
+                        array('class' => 'action-icon delete'));
 
                 $titlename = ($quest->name != '') ? format_string($quest->name) : $questtypes[$quest->datatype]['title'];
                 $questname = html_writer::tag('strong', $titlename).'<br/>'.$questtypes[$quest->datatype]['title'];
@@ -507,7 +502,7 @@ class totara_feedback360_renderer extends plugin_renderer_base {
 
                 $actions = '';
                 if (feedback360::is_draft($feedback360)) {
-                    $actions = html_writer::tag('span', $posuplink.$posdownlink.$dragdrop.$editlink.$clonelink.$deletelink,
+                    $actions = html_writer::tag('span', $posuplink.$posdownlink.$dragdrop.$editlink.$deletelink,
                             array('class'=>'feedback360-quest-actions'));
                 } else {
                     $actions = html_writer::tag('span', $editlink, array('class'=>'feedback360-quest-actions'));
