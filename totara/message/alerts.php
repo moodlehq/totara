@@ -100,9 +100,12 @@ $countall = $report->get_full_count();
 
 // display heading including filtering stats
 if ($countfiltered == $countall) {
-    echo $output->heading("$countall ".get_string('records', 'totara_reportbuilder'));
+    echo $output->heading(get_string('recordsall', 'totara_message', $countall));
 } else {
-    echo $output->heading("$countfiltered/$countall".get_string("recordsshown", "totara_plan"));
+    $a = new stdClass();
+    $a->countfiltered = $countfiltered;
+    $a->countall = $countall;
+    echo $output->heading(get_string('recordsshown', 'totara_message', $a));
 }
 
 if (empty($report->description)) {
