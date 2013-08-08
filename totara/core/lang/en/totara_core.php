@@ -22,39 +22,11 @@
  *
  * totara_core specific language strings.
  * these should be called like get_string('key', 'totara_core');
+ * Replaces lang/[lang]/local.php from 1.1 series
  */
 
 $string['pluginname'] = 'Totara core';
 $string['totaraversion'] = 'Totara Version';
-
-// Assignment class strings.
-$string['assigngroup'] = 'Assign User Group';
-$string['assignincludechildren'] = ' + CHILDREN';
-$string['assignedvia'] = 'Assigned Via';
-$string['error:assignmentprefixnotfound'] = 'Assignment class for group type {$a} not found';
-$string['error:assignmentbadparameters'] = 'Bad parameter array passed to dialog set_parameters';
-$string['error:assignmentmoduleinstancelocked'] = 'You cannot make changes to an assignment module instance which is locked';
-$string['error:assignmentgroupnotallowed'] = 'You cannot assign groups of type {$a->grouptype} to {$a->module}';
-$string['error:assigntablenotexist'] = 'Assignment table {$a} does not exist!';
-$string['error:assigncannotdeletegrouptypex'] = 'You cannot delete groups of type {$a}';
-
-// Datatable language strings.
-$string['datatable:sEmptyTable'] = 'No data available in table';
-$string['datatable:sInfo'] = 'Showing _START_ to _END_ of _TOTAL_ entries';
-$string['datatable:sInfoEmpty'] = 'Showing 0 to 0 of 0 entries';
-$string['datatable:sInfoFiltered'] = '(filtered from _MAX_ total entries)';
-$string['datatable:sInfoPostFix'] = '';
-$string['datatable:sInfoThousands'] = ',';
-$string['datatable:sLengthMenu'] = 'Show _MENU_ entries';
-$string['datatable:sLoadingRecords'] = 'Loading...';
-$string['datatable:sProcessing'] = 'Processing...';
-$string['datatable:sSearch'] = 'Search:';
-$string['datatable:sZeroRecords'] = 'No matching records found';
-$string['datatable:oPaginate:sFirst'] = 'First';
-$string['datatable:oPaginate:sLast'] = 'Last';
-$string['datatable:oPaginate:sNext'] = 'Next';
-$string['datatable:oPaginate:sPrevious'] = 'Previous';
-
 //Totara-only strings removed from Moodle plugins
 $string['notimplementedtotara'] = 'Sorry, this feature is only implemented on MySQL, MSSQL and PostgreSQL databases.';
 $string['remotetotaralangnotavailable'] = 'Because Totara can not connect to download.totaralms.com, we are unable to do language pack installation automatically. Please download the appropriate zip file(s) from http://download.totaralms.com/lang/T{$a->totaraversion}/, copy them to your {$a->langdir} directory and unzip them manually.';
@@ -137,13 +109,6 @@ $string['searchx'] = 'Search {$a}';
 $string['searchcourses'] = 'Search Courses';
 $string['findcourses'] = 'Find Courses';
 $string['viewmyteam'] = 'View My Team';
-
-// Appraisals
-$string['allappraisals'] = 'All Appraisals';
-$string['appraisals'] = 'Appraisals';
-$string['latestappraisal'] = 'Latest Appraisal';
-$string['feedback'] = 'Feedback';
-$string['feedback360'] = '360&deg; Feedback';
 
 //Dialogs
 $string['browse'] = 'Browse';

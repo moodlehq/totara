@@ -4,7 +4,7 @@
  * PhpUnit tests for hierarchy/lib.php
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
- * @editor David Curry <david.curry@totaralms.com>
+ * @editor David Curry <david.curry@totaratest.com>
  */
 
 if (!defined('MOODLE_INTERNAL')) {

@@ -604,11 +604,6 @@ abstract class moodleform {
         return false;
     }
 
-    function show_cancel() {
-        $mform =& $this->_form;
-        return $mform->_cancelButtons;
-    }
-
     /**
      * Return submitted data if properly submitted or returns NULL if validation fails or
      * if there is no submitted data.

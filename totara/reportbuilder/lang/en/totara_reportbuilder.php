@@ -69,7 +69,6 @@ $string['cachenow'] = 'Generate Now';
 $string['cachenow_help'] = '
 If **Generate now** is checked, then report cache will be generated immediately after form submit.';
 $string['cachenow_title'] = 'Report cache';
-$string['cannotviewembedded'] = 'Embedded reports can only be accessed through their embedded url';
 $string['choosecomp'] = 'Choose Competency...';
 $string['chooseorg'] = 'Choose Organisation...';
 $string['choosepos'] = 'Choose Position...';
@@ -554,7 +553,6 @@ When **Hide in My Reports** is checked the report will not appear on the \'My Re
 
 **Note:** The **Hide in My Reports** option only hides the link to the report. Users with the correct access permissions may still access the report using the URL.';
 $string['reportbuildercache'] = 'Enable report caching';
-$string['reportbuildercache_disabled'] = 'This setting is not available for this report source';
 $string['reportbuildercache_heading'] = 'Caching Performance Settings';
 $string['reportbuildercache_help'] = '
 If **Enable report caching** is checked, then a copy of this report will be generated on a set schedule, and users will see data from the stored report. This will make displaying and filtering of the report faster, but the data displayed will be from the last time the report was generated rather than "live" data. We recommend enabling this setting only if necessary (reports are taking too long to be displayed), and only for specific reports where this is a problem.';

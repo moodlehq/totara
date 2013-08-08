@@ -591,8 +591,8 @@ class plugin_manager {
 
             // Totara:
             'totara' => array(
-                'appraisal', 'cohort', 'core', 'coursecatalog', 'customfield', 'dashboard', 'feedback360',
-                'hierarchy', 'message', 'oauth', 'plan', 'program', 'question', 'reportbuilder'
+                'cohort', 'core', 'coursecatalog', 'customfield', 'dashboard', 'hierarchy',
+                'message', 'oauth', 'plan', 'program', 'reportbuilder'
             ),
 
             'webservice' => array(

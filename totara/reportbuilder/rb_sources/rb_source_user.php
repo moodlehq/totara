@@ -395,26 +395,19 @@ class rb_source_user extends rb_base_source {
         $planstr = get_string('plans', 'rb_source_user');
         $profilestr = get_string('profile', 'rb_source_user');
         $bookingstr = get_string('bookings', 'rb_source_user');
-        $appraisalstr = get_string('appraisals', 'totara_appraisal');
-        $feedback360str = get_string('feedback360', 'totara_feedback360');
-        $goalstr = get_string('goalplural', 'totara_hierarchy');
-        $rol_link = html_writer::link("{$CFG->wwwroot}/totara/plan/record/courses.php?userid={$userid}", $recordstr);
+
+        $rol_link = html_writer::link("{$CFG->wwwroot}/totara/plan/record/index.php?userid={$userid}",
+            $recordstr);
         $plan_link = html_writer::link("{$CFG->wwwroot}/totara/plan/index.php?userid={$userid}", $planstr);
         $profile_link = html_writer::link("{$CFG->wwwroot}/user/view.php?id={$userid}", $profilestr);
         $booking_link = html_writer::link("{$CFG->wwwroot}/my/bookings.php?userid={$userid}", $bookingstr);
-        $appraisal_link = html_writer::link("{$CFG->wwwroot}/totara/appraisal/index.php?subjectid={$userid}", $appraisalstr);
-        $feedback_link = html_writer::link("{$CFG->wwwroot}/totara/feedback360/index.php?userid={$userid}", $feedback360str);
-        $goal_link = html_writer::link("{$CFG->wwwroot}/totara/hierarchy/prefix/goal/mygoals.php?id={$userid}", $goalstr);
 
         require_once($CFG->dirroot . '/totara/plan/lib.php');
         $show_plan_link = dp_can_view_users_plans($userid);
         $links = $show_plan_link ? ($plan_link.'&nbsp;|&nbsp;') : '';
         $links .= $profile_link.'&nbsp;|&nbsp;';
         $links .= $booking_link.'&nbsp;|&nbsp;';
-        $links .= $rol_link.'&nbsp;|&nbsp;';
-        $links .= $appraisal_link.'&nbsp;|&nbsp;';
-        $links .= $feedback_link.'&nbsp;|&nbsp;';
-        $links .= $goal_link;
+        $links .= $rol_link;
 
         $table = new html_table();
         $table->attributes['class'] = 'namewithlinks-layout';

@@ -464,6 +464,7 @@ class totara_dialog_content {
             $html .= '<span class="deletebutton">delete</span>';
             $html .= '</span></div>';
         }
+
         return $html;
     }
 }

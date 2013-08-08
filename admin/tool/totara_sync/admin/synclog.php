@@ -27,7 +27,6 @@ require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 require_once($CFG->dirroot . '/' . $CFG->admin . '/tool/totara_sync/lib.php');
 
 $debug  = optional_param('debug', false, PARAM_BOOL);
-$sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT); // export format
 $delete = optional_param('del', 'none', PARAM_ALPHANUM);
 
@@ -44,7 +43,7 @@ $renderer = $PAGE->get_renderer('totara_reportbuilder');
 $strheading = get_string('synclog', 'tool_totara_sync');
 $shortname = 'totarasynclog';
 
-if (!$report = reportbuilder_get_embedded_report($shortname, null, false, $sid)) {
+if (!$report = reportbuilder_get_embedded_report($shortname)) {
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
@@ -111,14 +110,11 @@ print $renderer->print_description($report->description, $report->_id);
 
 $report->display_search();
 
-// Print saved search buttons if appropriate.
-echo $report->display_saved_search_options();
-
 if ($countfiltered > 0) {
     $report->display_table();
 
     // export button
-    $renderer->export_select($report->_id, $sid);
+    $renderer->export_select($report->_id);
 }
 
 if (has_capability('tool/totara_sync:deletesynclog', $context)) {

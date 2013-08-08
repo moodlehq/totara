@@ -7934,8 +7934,7 @@ class TCPDF {
 				$pw = $this->getHTMLUnitToUnits($w, 0, $this->pdfunit, true) * $this->imgscale * $this->k;
 				$ph = $this->getHTMLUnitToUnits($h, 0, $this->pdfunit, true) * $this->imgscale * $this->k;
 				$imsize = array($pw, $ph);
-                        } else {
-                            return;
+			} else {
 				$this->Error('[Image] Unable to get image: '.$file);
 			}
 		}

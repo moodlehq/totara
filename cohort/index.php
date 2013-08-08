@@ -31,7 +31,6 @@ require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
 $contextid = optional_param('contextid', 0, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);
-$sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT); //export format
 $debug = optional_param('debug', false, PARAM_BOOL); //report debug
 
@@ -62,6 +61,13 @@ $strcohorts = get_string('cohorts', 'cohort');
 
 $PAGE->set_context($context);
 
+$report = reportbuilder_get_embedded_report('cohort_admin');
+// handle report exports
+if (!empty($format)) {
+    $report->export_data($format);
+    die;
+}
+
 if ($category) {
     $PAGE->set_pagelayout('report');
     $PAGE->set_url('/cohort/index.php', array('contextid'=>$context->id));
@@ -71,14 +77,8 @@ if ($category) {
     admin_externalpage_setup('cohorts', '', null, '', array('pagelayout'=>'report'));
 }
 
-$report = reportbuilder_get_embedded_report('cohort_admin', null, false, $sid);
-if (!empty($format)) {
-    $report->export_data($format);
-    die;
-}
-
 echo $OUTPUT->header();
-if ($debug) {
+if($debug) {
     $report->debug($debug);
 }
 
@@ -98,11 +98,8 @@ if ($report->is_cached()) {
 }
 $report->display_search();
 
-// Print saved search buttons if appropriate.
-echo $report->display_saved_search_options();
-
 $report->display_table();
-$output->export_select($report->_id, $sid);
+$output->export_select($report->_id);
 if ($manager) {
     echo $OUTPUT->single_button(new moodle_url('/cohort/edit.php', array('contextid'=>$context->id)), get_string('add'));
 }

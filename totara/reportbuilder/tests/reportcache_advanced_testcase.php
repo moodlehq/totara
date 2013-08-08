@@ -60,7 +60,7 @@ abstract class reportcache_advanced_testcase extends advanced_testcase {
         global $DB, $SESSION;
 
         $SESSION->reportbuilder = array();
-        $report = reportbuilder_get_embedded_report($shortname, $data, false, 0);
+        $report = reportbuilder_get_embedded_report($shortname, $data);
         if ($form) {
             $SESSION->reportbuilder[$report->_id] = $form;
         }

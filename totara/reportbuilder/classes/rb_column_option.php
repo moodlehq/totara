@@ -211,20 +211,6 @@ class rb_column_option {
     public $style;
 
     /**
-     * Class to be applied to this column
-     *
-     * Array of CSS classes like this:
-     *
-     * <code>array('vertical')</code>
-     *
-     * The CSS classes are added to the column class property
-     *
-     * @access public
-     * @var array
-     */
-    public $class;
-
-    /**
      * Default visibility status for this column
      *
      * If set to true, users will not see this column by default, but they
@@ -245,11 +231,6 @@ class rb_column_option {
      * clutter up the column option list
      */
     public $selectable;
-
-    /**
-     * Name of the method to call to generate actual columns, rather than performing the default action.
-     */
-    public $columngenerator;
 
     /**
      * Generate a new column option instance
@@ -278,11 +259,9 @@ class rb_column_option {
             'noexport' => false,
             'grouping' => 'none',
             'style' => null,
-            'class' => null,
             'nosort' => false,
             'hidden' => 0,
             'selectable' => true,
-            'columngenerator' => null
         );
         $options = array_merge($defaults, $options);
 

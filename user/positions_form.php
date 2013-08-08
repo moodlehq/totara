@@ -81,26 +81,6 @@ class user_position_assignment_form extends moodleform {
             }
         }
 
-        // Get appraiser title.
-        $appraiser_title = '';
-        $appraiser_id = 0;
-        if ($pa->appraiserid) {
-            $appraiser = $DB->get_record_sql(
-                "SELECT
-                    u.id,
-                    u.firstname,
-                    u.lastname
-                 FROM
-                    {user} u
-                 WHERE
-                    u.id = ?",
-                 array($pa->appraiserid));
-            if ($appraiser) {
-                $appraiser_title = fullname($appraiser);
-                $appraiser_id = $appraiser->id;
-            }
-        }
-
         // Add some extra hidden fields
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
@@ -179,22 +159,13 @@ class user_position_assignment_form extends moodleform {
                         u.firstname,
                         u.lastname");
                 if ( is_array($allmanagers) && !empty($allmanagers) ){
-                    // Manager.
                     $mform->addElement('select', 'managerid', get_string('choosemanager','totara_hierarchy'),
                         array(0 => get_string('choosemanager','totara_hierarchy')) + $allmanagers);
                     $mform->setDefault('managerid', $manager_id);
-
-                    // Appraiser.
-                    $mform->addElement('select', 'appraiserid', get_string('chooseappraiser', 'totara_hierarchy'),
-                        array(0 => get_string('chooseappraiser', 'totara_hierarchy')) + $allmanagers);
-                    $mform->setDefault('appraiserid', $appraiser_id);
                 } else {
                     $mform->addElement('static','managerid',get_string('choosemanager','totara_hierarchy'), get_string('error:dialognotreeitems', 'manager'));
-                    $mform->addElement('static', 'appraiserid', get_string('chooseappraiser', 'totara_hierarchy'),
-                            get_string('error:dialognotreeitems', 'appraiser'));
                 }
                 $mform->addHelpButton('managerid', 'choosemanager', 'totara_hierarchy');
-                $mform->addHelpButton('appraiserid', 'chooseappraiser', 'totara_hierarchy');
             } else {
                 // Show manager
                 // If we can edit, show button. Else show link to manager's profile
@@ -220,34 +191,6 @@ class user_position_assignment_form extends moodleform {
                 $mform->setType('managerid', PARAM_INT);
                 $mform->setDefault('managerid', $manager_id);
                 $mform->addHelpButton('managerselector', 'choosemanager', 'totara_hierarchy');
-
-                // Show appraiser.
-                // If we can edit, show button. Else show link to appraiser's profile.
-                if ($can_edit) {
-                    $appraiser_class = strlen($appraiser_title) ? 'nonempty' : '';
-                    $mform->addElement(
-                        'static',
-                        'appraiserselector',
-                        get_string('appraiser', 'totara_hierarchy'),
-                        html_writer::tag('span', format_string($appraiser_title), array('class' => $appraiser_class,
-                            'id' => 'appraisertitle'))
-                        . html_writer::empty_tag('input', array('type' => 'button',
-                            'value' => get_string('chooseappraiser', 'totara_hierarchy'), 'id' => 'show-appraiser-dialog'))
-                    );
-                } else {
-                    $mform->addElement(
-                        'static',
-                        'appraiserselector',
-                        get_string('appraiser', 'totara_hierarchy'),
-                        html_writer::tag('span', html_writer::link(new moodle_url('/user/view.php',
-                            array('id' => $appraiser_id)), format_string($appraiser_title)), array('id' => 'appraisertitle'))
-                    );
-                }
-
-                $mform->addElement('hidden', 'appraiserid');
-                $mform->setType('appraiserid', PARAM_INT);
-                $mform->setDefault('appraiserid', $appraiser_id);
-                $mform->addHelpButton('appraiserselector', 'chooseappraiser', 'totara_hierarchy');
             }
 
             $group = array();

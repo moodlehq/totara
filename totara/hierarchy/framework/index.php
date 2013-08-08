@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Simon Coggins <simon.coggins@totaralms.com>
- * @author David Curry <david.curry@totaralms.com>
  * @package totara
  * @subpackage totara_hierarchy
  */
@@ -35,7 +34,7 @@ require_once("{$CFG->dirroot}/totara/hierarchy/lib.php");
 $sitecontext = context_system::instance();
 
 // Get params
-$prefix      = required_param('prefix', PARAM_ALPHA);
+$prefix        = required_param('prefix', PARAM_ALPHA);
 $edit        = optional_param('edit', -1, PARAM_BOOL);
 $hide        = optional_param('hide', 0, PARAM_INT);
 $show        = optional_param('show', 0, PARAM_INT);
@@ -45,30 +44,12 @@ $movedown    = optional_param('movedown', 0, PARAM_INT);
 $hierarchy = hierarchy::load_hierarchy($prefix);
 
 // Cache user capabilities
-$can_add = has_capability('totara/hierarchy:create' . $prefix . 'frameworks', $sitecontext);
-$can_edit = has_capability('totara/hierarchy:update' . $prefix . 'frameworks', $sitecontext);
-$can_delete = has_capability('totara/hierarchy:delete' . $prefix . 'frameworks', $sitecontext);
-$can_view = has_capability('totara/hierarchy:view' . $prefix . 'frameworks', $sitecontext);
+$can_add = has_capability('totara/hierarchy:create'.$prefix.'frameworks', $sitecontext);
+$can_edit = has_capability('totara/hierarchy:update'.$prefix.'frameworks', $sitecontext);
+$can_delete = has_capability('totara/hierarchy:delete'.$prefix.'frameworks', $sitecontext);
 
-$can_manage = $can_edit || $can_delete || $can_add;
-
-if (!$can_view) {
-    print_error('accessdenied', 'admin');
-}
-
-if ($can_manage) {
-    // Setup page as admin and check permissions.
-    admin_externalpage_setup($prefix.'manage', '', array('prefix' => $prefix));
-} else {
-    // Non admin page set up.
-    $detailsstr = get_string($prefix . 'details', 'totara_hierarchy');
-    $url_params = array('prefix' => $prefix);
-    $PAGE->set_url(new moodle_url('/totara/hierarchy/framework/index', $url_params));
-    $PAGE->set_context($sitecontext);
-    $PAGE->set_pagelayout('admin');
-    $PAGE->set_title($detailsstr);
-    $PAGE->set_heading($detailsstr);
-}
+// Setup page and check permissions
+admin_externalpage_setup($prefix.'manage', '', array('prefix' => $prefix));
 
 ///
 /// Process any actions
@@ -129,10 +110,8 @@ if ($frameworks) {
         $row = array();
 
         $cssclass = !$framework->visible ? 'dimmed' : '';
-
-        $link_params = array('prefix' => $prefix, 'frameworkid' => $framework->id);
-        $link_url = new moodle_url('/totara/hierarchy/index.php', $link_params);
-        $row[] = $OUTPUT->action_link($link_url, format_string($framework->fullname), null, array('class' => $cssclass));
+        $row[] = $OUTPUT->action_link(new moodle_url('/totara/hierarchy/index.php', array('prefix' => $prefix, 'frameworkid' => $framework->id)),
+                                      format_string($framework->fullname), null, array('class' => $cssclass));
         $row[] = html_writer::tag('span', $framework->item_count, array('class' => $cssclass));
 
         // Add edit link

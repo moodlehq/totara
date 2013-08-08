@@ -549,11 +549,8 @@ totaraDialog_handler.prototype._get_ids = function(elements, prefix) {
 
             // Get id attr
             var id = $(this).attr('id').split('_');
-            if (id[id.length-2] == 'personal') {
-              id = 'p' + id[id.length-1]; // If the item is a personal goal, we add a prefix
-            } else {
-              id = id[id.length-1];  // The last item is the actual id
-            }
+            id = id[id.length-1];  // The last item is the actual id
+
             // Append to list
             ids.push(id);
         }
@@ -630,25 +627,6 @@ totaraDialog_handler.prototype._set_framework = function() {
     this._dialog._request(url, {outputelement: $('#browse-tab .treeview-wrapper', this._container)});
 }
 
-/**
- * Change plan
- *
- * @return void
- */
-totaraDialog_handler.prototype._set_plan = function() {
-
-    // Get currently selected option
-    var selected = $('.planselector option:selected', this._container).val();
-
-    // Update URL
-    var url = this._dialog.url;
-
-    url = url + '&planid=' + selected + '&treeonly=1&switchplan=1';
-
-    this._dialog.showLoading();  // Show loading icon and then perform request
-    this._dialog._request(url, {outputelement: $('#browse-tab .treeview-wrapper', this._container)});
-}
-
 
 /*****************************************************************************/
 /** totaraDialog_handler_treeview **/
@@ -716,12 +694,6 @@ totaraDialog_handler_treeview.prototype.first_load = function() {
     $('.simpleframeworkpicker', this._container).unbind('change');  // Unbind any previous events
     $('.simpleframeworkpicker', this._container).change(function() {
         handler._set_framework();
-    });
-
-    // Setup plan picker
-    $('.planselector', this._container).unbind('change');  // Unbind any previous events
-    $('.planselector', this._container).change(function() {
-        handler._set_plan();
     });
 
     // Setup hierarchy
@@ -1348,12 +1320,6 @@ totaraDialog_handler_skeletalTreeview.prototype.every_load = function() {
         handler._set_framework();
     });
 
-    // Setup plan picker if one exists
-    $('.planselector', this._container).unbind('change');  // Unbind any previous events
-    $('.planselector', this._container).change(function() {
-        handler._set_plan();
-    });
-
     // Setup hierarchy
     this._make_hierarchy($('.treeview', this._container));
 
@@ -1643,6 +1609,7 @@ totaraMultiSelectDialog = function(name, title, find_url, save_url) {
         handler
     );
 }
+
 
 /**
  * Setup multi-select treeview dialog for use in a report builder filter

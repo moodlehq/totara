@@ -64,7 +64,6 @@ class rb_source_[source_name] extends rb_base_source {
                     'noexport' => false,
                     'grouping' => 'none',
                     'style' => null,
-                    'class' => null
                 )
             )
             */

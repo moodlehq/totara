@@ -37,7 +37,6 @@
     global $SESSION,$USER;
 
     $userid     = optional_param('userid', null, PARAM_INT);                       // which user to show
-    $sid = optional_param('sid', '0', PARAM_INT);
     $format = optional_param('format','', PARAM_TEXT); // export format
     $rolstatus = optional_param('status', 'all', PARAM_ALPHANUM);
     if (!in_array($rolstatus, array('active','completed','all'))) {
@@ -83,7 +82,7 @@
     if ($rolstatus !== 'all') {
         $data['rolstatus'] = $rolstatus;
     }
-    $report = reportbuilder_get_embedded_report($shortname, $data, false, $sid);
+    $report = reportbuilder_get_embedded_report($shortname, $data);
 
     $log_url = "record/programs.php?format={$format}&amp;status={$rolstatus}&amp;userid={$userid}";
 
@@ -137,14 +136,11 @@
 
     $report->display_search();
 
-    // Print saved search buttons if appropriate.
-    echo $report->display_saved_search_options();
-
     if ($countfiltered > 0) {
         echo $renderer->showhide_button($report->_id, $report->shortname);
         $report->display_table();
         // export button
-        $renderer->export_select($report->_id, $sid);
+        $renderer->export_select($report->_id);
     }
 
     echo $OUTPUT->container_end();

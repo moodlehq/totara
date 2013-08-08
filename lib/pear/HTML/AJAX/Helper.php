@@ -23,7 +23,7 @@
  * @version    Release: 0.5.6
  * @link       http://pear.php.net/package/HTML_AJAX
  */
-class HTML_AJAX_Helper
+class HTML_AJAX_Helper 
 {
 	/**
 	 * URL where an HTML_AJAX_Server instance is serving up clients and taking ajax requests
@@ -52,7 +52,7 @@ class HTML_AJAX_Helper
 	 *
 	 * @return	string
 	 */
-	function setupAJAX()
+	function setupAJAX() 
 	{
 		$libs = array(0=>array());
         $combinedLibs = array();
@@ -80,7 +80,7 @@ class HTML_AJAX_Helper
         if ($this->combineJsIncludes == true) {
             $list = implode(',',$combinedLibs);
             $ret .= "<script type='text/javascript' src='{$this->serverUrl}{$sep}client={$list}'></script>\n";
-        }
+        } 
         else {
             foreach($libs as $list) {
                 $ret .= "<script type='text/javascript' src='{$this->serverUrl}{$sep}client={$list}'></script>\n";
@@ -102,8 +102,8 @@ class HTML_AJAX_Helper
 	 * @param string	$class	CSS class of the div
 	 * @param string	$style	style tag of the loading div
 	 */
-	function loadingMessage($body, $class = 'HTML_AJAX_Loading',
-			$style = 'position: absolute; top: 0; right: 0; background-color: red; width: 80px; padding: 4px; display: none')
+	function loadingMessage($body, $class = 'HTML_AJAX_Loading', 
+			$style = 'position: absolute; top: 0; right: 0; background-color: red; width: 80px; padding: 4px; display: none') 
 	{
 		return "<div id='HTML_AJAX_LOADING' class='{$class}' style=\"{$style}\">{$body}</div>\n";
 	}

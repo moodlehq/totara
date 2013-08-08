@@ -29,7 +29,6 @@ require_once($CFG->dirroot.'/cohort/lib.php');
 require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
 $id     = optional_param('id', false, PARAM_INT);
-$sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format','',PARAM_TEXT); //export format
 $debug  = optional_param('debug', false, PARAM_BOOL);
 
@@ -37,6 +36,13 @@ $context = context_system::instance();
 require_capability('moodle/cohort:view', $context);
 
 $PAGE->set_context($context);
+
+$report = reportbuilder_get_embedded_report('cohort_members', array('cohortid' => $id));
+// handle report exports
+if ($format != '') {
+    $report->export_data($format);
+    die;
+}
 
 $url = new moodle_url('/cohort/members.php', array('id' => $id, 'format' => $format, 'debug' => $debug));
 admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout' => 'report'));
@@ -51,13 +57,6 @@ if (!$id) {
 
 $cohort = $DB->get_record('cohort',array('id' => $id), '*', MUST_EXIST);
 
-$report = reportbuilder_get_embedded_report('cohort_members', array('cohortid' => $id), false, $sid);
-
-if ($format != '') {
-    $report->export_data($format);
-    die;
-}
-
 $strheading = get_string('viewmembers', 'totara_cohort');
 totara_cohort_navlinks($cohort->id, $cohort->name, $strheading);
 echo $OUTPUT->header();
@@ -71,11 +70,8 @@ if (isset($id)) {
 
 $report->display_search();
 
-// Print saved search buttons if appropriate.
-echo $report->display_saved_search_options();
-
 $report->display_table();
 $output = $PAGE->get_renderer('totara_reportbuilder');
-$output->export_select($report->_id, $sid);
+$output->export_select($report->_id);
 
 echo $OUTPUT->footer();

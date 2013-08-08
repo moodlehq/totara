@@ -320,31 +320,6 @@ class totara_sync_element_user extends totara_sync_element {
             }
         }
 
-        // ensure user's appraiser exists
-        if (!empty($suser->appraiseridnumber) && !$DB->record_exists('user', array('idnumber' => $suser->appraiseridnumber))) {
-            // Create user's appraiser first (recursive)
-            $sql = "SELECT *
-                      FROM {{$synctable}}
-                     WHERE idnumber = ? ";
-
-            if (!$sappraiser = $DB->get_record_sql($sql, array($suser->appraiseridnumber))) {
-                $exception = new totara_sync_exception('user', 'createusers', 'cannotfindappraiserxforusery',
-                    (object)array('appraiseridnumber' => $suser->appraiseridnumber,
-                    'idnumber' => $suser->idnumber));
-                $transaction->rollback($exception);
-                throw $exception;
-            }
-
-            try {
-                $this->create_user($sappraiser, $synctable);
-            } catch (totara_sync_exception $e) {
-                $transaction->rollback($e);
-                throw new totara_sync_exception('user', 'createusers', 'cannotcreateappraiserxforusery',
-                    (object)array('appraiseridnumber' => $suser->appraiseridnumber,
-                    'idnumber' => $suser->idnumber), $e->getMessage());
-            }
-        }
-
         // create user assignments
         try {
             $this->sync_user_assignments($user, $suser);
@@ -384,8 +359,7 @@ class totara_sync_element_user extends totara_sync_element {
 
         //if we have no position info at all we do not need to set a position
         if (!isset($suser->postitle) && empty($suser->posidnumber) && !isset($suser->posstartdate)
-                && !isset($suser->posenddate) && empty($suser->orgidnumber)
-                && empty($suser->manageridnumber) && empty($suser->appraiseridnumber)) {
+                 && !isset($suser->posenddate) && empty($suser->orgidnumber) && empty($suser->manageridnumber)) {
             return false;
         }
         $posdata = new stdClass;
@@ -394,7 +368,6 @@ class totara_sync_element_user extends totara_sync_element {
         $posdata->positionid = 0;
         $posdata->organisationid = 0;
         $posdata->managerid = 0;
-        $posdata->appraiserid = 0;
         if (isset($suser->postitle)) {
             $posdata->fullname = $suser->postitle;
             $posdata->shortname = empty($suser->postitleshortname) ? $suser->postitle : $suser->postitleshortname;
@@ -432,14 +405,6 @@ class totara_sync_element_user extends totara_sync_element {
                 $posdata->managerid = $DB->get_field('user', 'id', array('idnumber' => $suser->manageridnumber, 'deleted' => 0), MUST_EXIST);
             } catch (dml_missing_record_exception $e) {
                 $posdata->managerid = null;
-            }
-        }
-        $posdata->appraiserid = null;
-        if (!empty($suser->appraiseridnumber)) {
-            try {
-                $posdata->appraiserid = $DB->get_field('user', 'id', array('idnumber' => $suser->appraiseridnumber, 'deleted' => 0), MUST_EXIST);
-            } catch (dml_missing_record_exception $e) {
-                $posdata->appraiserid = null;
             }
         }
 
@@ -590,28 +555,6 @@ class totara_sync_element_user extends totara_sync_element {
             if ($rs->valid()) {
                 foreach ($rs as $r) {
                     $this->addlog(get_string('managerxnotexist', 'tool_totara_sync', $r->manageridnumber), 'error', 'checksanity');
-                }
-                $rs->close();
-                return false;
-            }
-        }
-
-        /// Check appraisers
-        if (isset($syncfields->appraiseridnumber)) {
-            $sql = "SELECT DISTINCT(s.appraiseridnumber)
-                      FROM {{$synctable}} s
-           LEFT OUTER JOIN {user} u
-                        ON s.appraiseridnumber = u.idnumber
-                     WHERE s.appraiseridnumber IS NOT NULL
-                       AND s.appraiseridnumber != ''
-                       AND u.idnumber IS NULL
-                       AND s.appraiseridnumber NOT IN
-                           (SELECT idnumber FROM {{$synctable_clone}})";
-            $rs = $DB->get_recordset_sql($sql);
-
-            if ($rs->valid()) {
-                foreach ($rs as $r) {
-                    $this->addlog(get_string('appraiserxnotexist', 'tool_totara_sync', $r->appraiseridnumber), 'error', 'checksanity');
                 }
                 $rs->close();
                 return false;

@@ -49,7 +49,6 @@ $THEME->sheets = array(
     'message',
     'question',
     'totara_jquery_treeview',
-    'totara_jquery_datatables',
     'totara_jquery_ui_dialog',  /** Generated file: see comments **/
     'totara',   /** Totara-specific layout **/
     'user',

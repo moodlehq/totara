@@ -36,6 +36,7 @@
  */
 function totara_customfield_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $options=array()) {
     $fs = get_file_storage();
+    $relativepath = implode('/', $args);
     $fullpath = "/{$context->id}/totara_customfield/$filearea/$args[0]/$args[1]";
     if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
         return false;

@@ -470,12 +470,7 @@ function totara_set_notification($message, $redirect = null, $options = array())
 
     // Redirect if requested
     if ($redirect !== null) {
-        // Cancel redirect for AJAX scripts.
-        if (is_ajax_request($_SERVER)) {
-            ajax_result(true, totara_queue_shift('notifications'));
-        } else {
-            redirect($redirect);
-        }
+        redirect($redirect);
         exit();
     }
 }
@@ -835,52 +830,6 @@ function totara_get_manager($userid, $postype=null){
            AND pa.type = ?";
 
     //Return a manager if they have one otherwise false
-    return $DB->get_record_sql($sql, array($userid, $postype));
-}
-
-
-/**
- * Find out a user's teamleader (manager's manager).
- *
- * @param int $userid Id of the user whose teamleader we want
- * @param int $postype Type of the position we want the teamleader for (POSITION_TYPE_* constant).
- *                     Defaults to primary position(optional)
- * @return mixed False if no teamleader. Teamleader user object from mdl_user if the user has a teamleader.
- */
-function totara_get_teamleader($userid, $postype=null) {
-    $manager = totara_get_manager($userid, $postype);
-    if ($manager) {
-        // We use the default postype for the manager's manager.
-        return totara_get_manager($manager->id);
-    } else {
-        return false;
-    }
-}
-
-
-/**
- * Find out a user's appraiser.
- *
- * @param int $userid Id of the user whose appraiser we want
- * @param int $postype Type of the position we want the appraiser for (POSITION_TYPE_* constant).
- *                     Defaults to primary position(optional)
- * @return mixed False if no appraiser. Appraiser user object from mdl_user if the user has a appraiser.
- */
-function totara_get_appraiser($userid, $postype=null) {
-    global $CFG, $DB;
-    require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
-    $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
-
-    $userid = (int) $userid;
-    $sql = "
-        SELECT appraiser.*
-          FROM {pos_assignment} pa
-    INNER JOIN {user} appraiser
-            ON pa.appraiserid = appraiser.id
-         WHERE pa.userid = ?
-           AND pa.type = ?";
-
-    // Return an appraiser if they have one otherwise false.
     return $DB->get_record_sql($sql, array($userid, $postype));
 }
 
@@ -1283,65 +1232,6 @@ function totara_build_menu() {
         'url' => '/my/'
     );
 
-
-    // My Appraisals tab.
-    require_once($CFG->dirroot . '/totara/appraisal/lib.php');
-    require_once($CFG->dirroot . '/totara/feedback360/lib.php');
-    require_once($CFG->dirroot . '/totara/hierarchy/prefix/goal/lib.php');
-    $viewappraisal = appraisal::has_appraisal();
-    $viewfeedback360 = feedback360::has_feedback360();
-    $viewgoals = goal::tab_visible();
-    if ($viewappraisal || $viewfeedback360 || $viewgoals) {
-        if (appraisal::has_own_appraisal()) {
-            $tree[] = (object)array(
-                'name' => 'appraisals',
-                'linktext' => get_string('appraisals', 'totara_core'),
-                'parent' => null,
-                'url' => '/totara/appraisal/myappraisal.php?latest=1'
-            );
-            $tree[] = (object)array(
-                'name' => 'latestappraisal',
-                'linktext' => get_string('latestappraisal', 'totara_core'),
-                'parent' => 'appraisals',
-                'url' => '/totara/appraisal/myappraisal.php?latest=1'
-            );
-        } else {
-            $tree[] = (object)array(
-                'name' => 'appraisals',
-                'linktext' => get_string('appraisals', 'totara_core'),
-                'parent' => null,
-                'url' => '/totara/appraisal/index.php'
-            );
-        }
-
-        if ($viewappraisal) {
-            $tree[] = (object)array(
-                'name' => 'allappraisals',
-                'linktext' => get_string('allappraisals', 'totara_core'),
-                'parent' => 'appraisals',
-                'url' => '/totara/appraisal/index.php'
-            );
-        }
-
-        if ($viewfeedback360) {
-            $tree[] = (object)array(
-                'name' => 'feedback360',
-                'linktext' => get_string('feedback360', 'totara_core'),
-                'parent' => 'appraisals',
-                'url' => '/totara/feedback360/index.php'
-            );
-        }
-
-        if ($viewgoals) {
-            $tree[] = (object)array(
-                'name' => 'mygoals',
-                'linktext' => get_string('mygoals', 'totara_hierarchy'),
-                'parent' => 'appraisals',
-                'url' => '/totara/hierarchy/prefix/goal/mygoals.php'
-            );
-        }
-    }
-
     if ($canviewlearningplans) {
         $tree[] = (object)array(
             'name' => 'learningplans',
@@ -1729,27 +1619,4 @@ function encrypt_data($plaintext, $key = '') {
     $rsa->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
     $ciphertext = $rsa->encrypt($plaintext);
     return $ciphertext;
-}
-
-/**
- * Determine if the current request is an ajax request
- *
- * @param array $server A $_SERVER array
- * @return boolean
- */
-function is_ajax_request($server) {
-    return (isset($server['HTTP_X_REQUESTED_WITH']) && strtolower($server['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
-}
-
-/**
- * Totara specific initialisation
- * Currently needed only for AJAX scripts
- * Caution: Think before change to avoid conflict with other $CFG->moodlepageclass affecting code (for example installation scripts)
- */
-function totara_setup() {
-    global $CFG;
-    if (is_ajax_request($_SERVER)) {
-        $CFG->moodlepageclassfile = $CFG->dirroot.'/totara/core/pagelib.php';
-        $CFG->moodlepageclass = 'totara_page';
-    }
 }

@@ -105,10 +105,7 @@ $heading = format_string("{$framework->fullname} - {$item->fullname}");
 $str_edit = get_string('edit');
 $str_remove = get_string('remove');
 
-if ($can_edit_item) {
-    $heading .= ' ' . $OUTPUT->action_icon(new moodle_url("edit.php", array('prefix' => $prefix, 'frameworkid' => $framework->id, 'id' => $item->id)),
-        new pix_icon('t/edit', $str_edit, 'moodle', array('class' => 'iconsmall')));
-}
+$heading .= ' ' . $OUTPUT->action_icon(new moodle_url("edit.php", array('prefix' => $prefix, 'frameworkid' => $framework->id, 'id' => $item->id)), new pix_icon('t/edit', $str_edit, 'moodle', array('class' => 'iconsmall')));
 
 echo $OUTPUT->heading($heading);
 $data = $hierarchy->get_item_data($item);

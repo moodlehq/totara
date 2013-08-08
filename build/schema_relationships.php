@@ -91,7 +91,6 @@ $relations = array(
     'org_relations#id2' => 'org#id',
     'pos_assignment#organisationid' => 'org#id',
     'pos_assignment#userid' => 'user#id',
-    'pos_assignment#appraiserid' => 'user#id',
     'pos_assignment#positionid' => 'pos#id',
     'pos_assignment#reportstoid' => 'role_assignments#id',
     // course completion

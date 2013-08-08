@@ -32,13 +32,12 @@ require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 $context = context_system::instance();
 require_capability('moodle/cohort:view', $context);
 
-$sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT); // export format
 $debug  = optional_param('debug', false, PARAM_BOOL);
 
 $PAGE->set_context($context);
 
-$report = reportbuilder_get_embedded_report('cohort_orphaned_users', false, $sid);
+$report = reportbuilder_get_embedded_report('cohort_orphaned_users');
 // Handle a request for export
 if($format!='') {
 //    add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
@@ -61,12 +60,9 @@ echo $OUTPUT->container(get_string('orphanhelptext', 'totara_cohort'));
 
 $report->display_search();
 
-// Print saved search buttons if appropriate.
-echo $report->display_saved_search_options();
-
 $report->display_table();
 
 $output = $PAGE->get_renderer('totara_reportbuilder');
-$output->export_select($report->_id, $sid);
+$output->export_select($report->_id);
 
 echo $OUTPUT->footer();

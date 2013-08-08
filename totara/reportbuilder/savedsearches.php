@@ -115,7 +115,7 @@ echo $output->heading(get_string('savedsearches', 'totara_reportbuilder'));
 
 $searches = $DB->get_records('report_builder_saved', array('userid' => $USER->id, 'reportid' => $id), 'name');
 if (!empty($searches)) {
-    echo $output->saved_searches_table($searches, $report);
+    echo $output->saved_searches_table($searches);
 } else {
     echo html_writer::tag('p', get_string('error:nosavedsearches', 'totara_reportbuilder'));
 }
