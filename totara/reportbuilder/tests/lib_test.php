@@ -579,10 +579,10 @@ class reportbuilderlib_test extends advanced_testcase {
     function test_reportbuilder_initialize_db_instance() {
         $rb = $this->rb;
         // should create report builder object with the correct properties
-        $this->assertEquals($rb->fullname,'Test Report');
-        $this->assertEquals($rb->shortname,'test_report');
-        $this->assertEquals($rb->source, 'competency_evidence');
-        $this->assertEquals($rb->hidden, 0);
+        $this->assertEquals('Test Report', $rb->fullname);
+        $this->assertEquals('test_report', $rb->shortname);
+        $this->assertEquals('competency_evidence', $rb->source);
+        $this->assertEquals(0, $rb->hidden);
 
         $this->resetAfterTest(true);
     }
@@ -590,10 +590,10 @@ class reportbuilderlib_test extends advanced_testcase {
     function test_reportbuilder_initialize_embedded_instance() {
         $rb = new reportbuilder(null, $this->shortname, $this->embed);
         // should create embedded report builder object with the correct properties
-        $this->assertEquals($rb->fullname, 'Record of Learning: Competencies');
-        $this->assertEquals($rb->shortname, 'plan_competencies');
-        $this->assertEquals($rb->source, 'dp_competency');
-        $this->assertEquals($rb->hidden, 1);
+        $this->assertEquals('Record of Learning: Competencies', $rb->fullname);
+        $this->assertEquals('plan_competencies', $rb->shortname);
+        $this->assertEquals('dp_competency', $rb->source);
+        $this->assertEquals(1, $rb->hidden);
 
         $this->resetAfterTest(true);
     }
@@ -612,8 +612,8 @@ class reportbuilderlib_test extends advanced_testcase {
         $this->assertTrue((bool)$rb->restore_saved_search());
         // the correct SESSION var should now be set
         // the SESSION var should be set to the value specified by the saved search
-        $this->assertEquals($SESSION->reportbuilder[1],
-            array('user-fullname' => array(0 => array('operator' => 0, 'value' => 'a'))));
+        $this->assertEquals(array('user-fullname' => array(0 => array('operator' => 0, 'value' => 'a'))),
+                $SESSION->reportbuilder[1]);
 
         $this->resetAfterTest(true);
     }
@@ -624,16 +624,22 @@ class reportbuilderlib_test extends advanced_testcase {
 
         // should return the current filters for this report
         $this->assertTrue((bool)is_array($filters));
-        $this->assertEquals(sizeof($filters), 8);
-        $this->assertEquals(current($filters)->type, 'user');
-        $this->assertEquals(current($filters)->value, 'fullname');
-        $this->assertEquals(current($filters)->advanced, '0');
-        $this->assertEquals(current($filters)->get_label(array('operator' => 0, 'value' => 'content')), 'User\'s Fullname contains "content"');
-        $this->assertEquals(current($filters)->get_label(array('operator' => 1, 'value' => 'nocontent')), 'User\'s Fullname doesn\'t contain "nocontent"');
-        $this->assertEquals(current($filters)->get_label(array('operator' => 2, 'value' => 'fullname')), 'User\'s Fullname is equal to "fullname"');
-        $this->assertEquals(current($filters)->get_label(array('operator' => 3, 'value' => 'start')), 'User\'s Fullname starts with "start"');
-        $this->assertEquals(current($filters)->get_label(array('operator' => 4, 'value' => 'end')), 'User\'s Fullname ends with "end"');
-        $this->assertEquals(current($filters)->get_label(array('operator' => 5, 'value' => '')), 'User\'s Fullname is empty');
+        $this->assertEquals(8, count($filters));
+        $this->assertEquals('user', current($filters)->type);
+        $this->assertEquals('fullname', current($filters)->value);
+        $this->assertEquals('0', current($filters)->advanced);
+        $this->assertEquals('User\'s Fullname contains "content"',
+                current($filters)->get_label(array('operator' => 0, 'value' => 'content')));
+        $this->assertEquals('User\'s Fullname doesn\'t contain "nocontent"',
+                current($filters)->get_label(array('operator' => 1, 'value' => 'nocontent')));
+        $this->assertEquals('User\'s Fullname is equal to "fullname"',
+                current($filters)->get_label(array('operator' => 2, 'value' => 'fullname')));
+        $this->assertEquals('User\'s Fullname starts with "start"',
+                current($filters)->get_label(array('operator' => 3, 'value' => 'start')));
+        $this->assertEquals('User\'s Fullname ends with "end"',
+                current($filters)->get_label(array('operator' => 4, 'value' => 'end')));
+        $this->assertEquals('User\'s Fullname is empty',
+                current($filters)->get_label(array('operator' => 5, 'value' => '')));
 
         $this->resetAfterTest(true);
     }
@@ -645,10 +651,10 @@ class reportbuilderlib_test extends advanced_testcase {
         $columns = $rb->get_columns();
         // should return the current columns for this report
         $this->assertTrue((bool)is_array($columns));
-        $this->assertEquals(count($columns), 8);
-        $this->assertEquals(current($columns)->type, 'user');
-        $this->assertEquals(current($columns)->value, 'namelink');
-        $this->assertEquals(current($columns)->heading, 'Participant');
+        $this->assertEquals(8, count($columns));
+        $this->assertEquals('user', current($columns)->type);
+        $this->assertEquals('namelink', current($columns)->value);
+        $this->assertEquals('Participant', current($columns)->heading);
 
         $this->resetAfterTest(true);
     }
@@ -670,16 +676,16 @@ class reportbuilderlib_test extends advanced_testcase {
         $shortname2 = reportbuilder::create_shortname('My Report with special chars\'"%$*[]}~');
         $shortname3 = reportbuilder::create_shortname('Space here');
         // should prepend 'report_' to name
-        $this->assertEquals($shortname1, 'report_name');
+        $this->assertEquals('report_name', $shortname1);
         // special chars should be stripped
-        $this->assertEquals($shortname2, 'report_my_report_with_special_chars');
+        $this->assertEquals('report_my_report_with_special_chars', $shortname2);
         // spaces should be replaced with underscores and upper case moved to lower case
-        $this->assertEquals($shortname3, 'report_space_here');
+        $this->assertEquals('report_space_here', $shortname3);
         // create a db entry
         $rb = new reportbuilder(null, $shortname3, $this->embed);
         $existingname = reportbuilder::create_shortname('space_here');
         // should append numbers to suggestion if shortname already exists
-        $this->assertEquals($existingname, 'report_space_here1');
+        $this->assertEquals('report_space_here1', $existingname);
 
         $this->resetAfterTest(true);
     }
@@ -688,10 +694,10 @@ class reportbuilderlib_test extends advanced_testcase {
         global $CFG;
         $rb = $this->rb;
         // a normal report should return the report.php url
-        $this->assertEquals(substr($rb->report_url(),strlen($CFG->wwwroot)),'/totara/reportbuilder/report.php?id=1');
+        $this->assertEquals('/totara/reportbuilder/report.php?id=1', substr($rb->report_url(), strlen($CFG->wwwroot)));
         $rb2 = new reportbuilder(null, $this->shortname, $this->embed);
         // an embedded report should return the embedded url (this page)
-        $this->assertEquals($rb2->report_url(), $CFG->wwwroot . '/totara/plan/record/competencies.php');
+        $this->assertEquals($CFG->wwwroot . '/totara/plan/record/competencies.php', $rb2->report_url());
 
         $this->resetAfterTest(true);
     }
@@ -710,7 +716,7 @@ class reportbuilderlib_test extends advanced_testcase {
         $param = new rb_param('userid',array($paramoption));
         $param->value = 2;
         // should return the expected embedded param
-        $this->assertEquals($rb->get_current_params(), array($param));
+        $this->assertEquals(array($param), $rb->get_current_params());
 
         $this->resetAfterTest(true);
     }
@@ -767,7 +773,7 @@ class reportbuilderlib_test extends advanced_testcase {
 
         // should return ( 1=1 ) if content mode = 0
         $restrictions = $rb->get_content_restrictions();
-        $this->assertEquals($restrictions[0],'( 1=1 )');
+        $this->assertEquals('( 1=1 )', $restrictions[0]);
         $todb = new stdClass();
         $todb->id = 1;
         $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_ANY;
@@ -776,7 +782,7 @@ class reportbuilderlib_test extends advanced_testcase {
         // should return (1=0) if content mode = 1 but no restrictions set
         // using 1=0 instead of FALSE for MSSQL support
         $restrictions = $rb->get_content_restrictions();
-        $this->assertEquals($restrictions[0],'(1=0)');
+        $this->assertEquals('(1=0)', $restrictions[0]);
         $todb = new stdClass();
         $todb->reportid = 1;
         $todb->type = 'date_content';
@@ -814,14 +820,14 @@ class reportbuilderlib_test extends advanced_testcase {
 
         $rb = $this->rb;
         // should return empty array if content mode = 0
-        $this->assertEquals($rb->get_restriction_descriptions('content'), array());
+        $this->assertEquals(array(), $rb->get_restriction_descriptions('content'));
         $todb = new stdClass();
         $todb->id = 1;
         $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_ANY;
         $DB->update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
         // should return an array with empty string if content mode = 1 but no restrictions set
-        $this->assertEquals($rb->get_restriction_descriptions('content'), array(''));
+        $this->assertEquals(array(''), $rb->get_restriction_descriptions('content'));
         $todb = new stdClass();
         $todb->reportid = 1;
         $todb->type = 'date_content';
@@ -862,7 +868,7 @@ class reportbuilderlib_test extends advanced_testcase {
         // should return an array
         $this->assertTrue((bool)is_array($columns));
         // the array should contain the correct number of columns
-        $this->assertEquals(count($columns), 10);
+        $this->assertEquals(10, count($columns));
         // the strings should have the correct format
         // can't check exactly because different dbs use different concat format
         $this->assertRegExp('/auser\.firstname/', current($columns));
@@ -883,7 +889,7 @@ class reportbuilderlib_test extends advanced_testcase {
         // should return an array
         $this->assertTrue((bool)is_array($columns));
         // the array should contain the correct number of columns
-        $this->assertEquals(count($columns), 2);
+        $this->assertEquals(2, count($columns));
         $userjoin = new rb_join(
             'auser',
             'LEFT',
@@ -893,12 +899,12 @@ class reportbuilderlib_test extends advanced_testcase {
             'base'
         );
         // the strings should have the correct format
-        $this->assertEquals(current($columns), $userjoin);
+        $this->assertEquals($userjoin, current($columns));
         // should also work with string instead of array
         $columns2 = $rb->get_joins($obj2, 'test');
         $this->assertTrue((bool)is_array($columns2));
         // the array should contain the correct number of columns
-        $this->assertEquals(count($columns2), 2);
+        $this->assertEquals(2, count($columns2));
         $posjoin = new rb_join(
             'position',
             'LEFT',
@@ -908,7 +914,7 @@ class reportbuilderlib_test extends advanced_testcase {
             'position_assignment'
         );
         // the strings should have the correct format
-        $this->assertEquals(current($columns2), $posjoin);
+        $this->assertEquals($posjoin, current($columns2));
 
         $this->resetAfterTest(true);
     }
@@ -916,7 +922,7 @@ class reportbuilderlib_test extends advanced_testcase {
     function test_reportbuilder_get_content_joins() {
         $rb = $this->rb;
         // should return an empty array if content mode = 0
-        $this->assertEquals($rb->get_content_joins(), array());
+        $this->assertEquals(array(), $rb->get_content_joins());
         // TODO test other options
         // can't do with competency evidence as no joins required
 
@@ -930,7 +936,7 @@ class reportbuilderlib_test extends advanced_testcase {
         // should return an array
         $this->assertTrue((bool)is_array($columns));
         // the array should contain the correct number of columns
-        $this->assertEquals(count($columns), 9);
+        $this->assertEquals(9, count($columns));
         $userjoin = new rb_join(
             'auser',
             'LEFT',
@@ -940,7 +946,7 @@ class reportbuilderlib_test extends advanced_testcase {
             'base'
         );
         // the strings should have the correct format
-        $this->assertEquals(current($columns), $userjoin);
+        $this->assertEquals($userjoin, current($columns));
 
         $this->resetAfterTest(true);
     }
@@ -954,7 +960,7 @@ class reportbuilderlib_test extends advanced_testcase {
         // should return an array
         $this->assertTrue((bool)is_array($columns));
         // the array should contain the correct number of columns
-        $this->assertEquals(count($columns), 2);
+        $this->assertEquals(2, count($columns));
 
         $userjoin = new rb_join(
             'auser',
@@ -965,7 +971,7 @@ class reportbuilderlib_test extends advanced_testcase {
             'base'
         );
         // the strings should have the correct format
-        $this->assertEquals(current($columns), $userjoin);
+        $this->assertEquals($userjoin, current($columns));
         unset($SESSION->reportbuilder[1]);
 
         $this->resetAfterTest(true);
@@ -975,16 +981,16 @@ class reportbuilderlib_test extends advanced_testcase {
     function test_reportbuilder_sort_join() {
         $rb = $this->rb;
         // should return the correct values for valid joins
-        $this->assertEquals($rb->sort_join('user','position_assignment'),-1);
-        $this->assertEquals($rb->sort_join('position_assignment','user'), 1);
-        $this->assertEquals($rb->sort_join('user','user'), 0);
+        $this->assertEquals(-1, $rb->sort_join('user','position_assignment'));
+        $this->assertEquals(1, $rb->sort_join('position_assignment','user'));
+        $this->assertEquals(0, $rb->sort_join('user','user'));
         // should throw errors if invalid keys provided
         $this->expectError('Missing array key in sort_join(). Add \'junk\' to order array.');
-        $this->assertEquals($rb->sort_join('user', 'junk'), -1);
+        $this->assertEquals(-1, $rb->sort_join('user', 'junk'));
         $this->expectError('Missing array key in sort_join(). Add \'junk\' to order array.');
-        $this->assertEquals($rb->sort_join('junk', 'user'), 1);
+        $this->assertEquals(1, $rb->sort_join('junk', 'user'));
         $this->expectError('Missing array keys in sort_join(). Add \'junk\' and \'junk2\' to order array.');
-        $this->assertEquals($rb->sort_join('junk', 'junk2'), 0);
+        $this->assertEquals(0, $rb->sort_join('junk', 'junk2'));
     }
      */
 
@@ -1066,7 +1072,7 @@ class reportbuilderlib_test extends advanced_testcase {
         $rb->check_sort_keys();
         $after = count($SESSION->flextable['test_report']->sortby);
         // the bad sort key should have been deleted
-        $this->assertEquals($before - $after, 1);
+        $this->assertEquals(1, $before - $after);
 
         $this->resetAfterTest(true);
     }
@@ -1088,10 +1094,10 @@ class reportbuilderlib_test extends advanced_testcase {
         $strip_tags = $rb->strip_tags_r($nested);
         $end = end($strip_tags);
         $current_end = current($end);
-        $this->assertEquals($current_end, 'should strip tags');
+        $this->assertEquals('should strip tags', $current_end);
 
         $next_end = next($end);
-        $this->assertEquals($next_end, 'even here');
+        $this->assertEquals('even here', $next_end);
 
         $this->resetAfterTest(true);
     }
@@ -1116,7 +1122,7 @@ class reportbuilderlib_test extends advanced_testcase {
         // should return an array of content options
         $this->assertTrue((bool)is_array($contentoptions));
         // should have the appropriate format
-        $this->assertEquals(current($contentoptions), 'current_org');
+        $this->assertEquals('current_org', current($contentoptions));
 
         $this->resetAfterTest(true);
     }
@@ -1127,7 +1133,7 @@ class reportbuilderlib_test extends advanced_testcase {
         // should return an array
         $this->assertTrue((bool)is_array($options));
         // the strings should have the correct format
-        $this->assertEquals($options['User']['user-fullname'], "User's Fullname");
+        $this->assertEquals("User's Fullname", $options['User']['user-fullname']);
 
         $this->resetAfterTest(true);
     }
@@ -1138,7 +1144,7 @@ class reportbuilderlib_test extends advanced_testcase {
         // should return an array
         $this->assertTrue((bool)is_array($options));
         // the strings should have the correct format
-        $this->assertEquals($options['User']['user-fullname'], "User's Fullname");
+        $this->assertEquals("User's Fullname", $options['User']['user-fullname']);
 
         $this->resetAfterTest(true);
     }
@@ -1149,12 +1155,12 @@ class reportbuilderlib_test extends advanced_testcase {
         $rb->delete_column(999);
         $afterfail = count($rb->columns);
         // should not delete column if cid doesn't match
-        $this->assertEquals($before - $afterfail, 0);
+        $this->assertEquals($before, $afterfail);
         // should return true if successful
         $this->assertTrue((bool)$rb->delete_column(4));
         $after = count($rb->columns);
         // should be one less column after successful delete operation
-        $this->assertEquals($before - $after, 1);
+        $this->assertEquals($before - 1, $after);
 
         $this->resetAfterTest(true);
     }
@@ -1165,12 +1171,12 @@ class reportbuilderlib_test extends advanced_testcase {
         $rb->delete_filter(999);
         $afterfail = count($rb->filters);
         // should not delete filter if fid doesn't match
-        $this->assertEquals($before - $afterfail, 0);
+        $this->assertEquals($before, $afterfail);
         // should return true if successful
         $this->assertTrue((bool)$rb->delete_filter(4));
         $after = count($rb->filters);
         // should be one less filter after successful delete operation
-        $this->assertEquals($before - $after, 1);
+        $this->assertEquals($before - 1, $after);
 
         $this->resetAfterTest(true);
     }
@@ -1251,13 +1257,13 @@ class reportbuilderlib_test extends advanced_testcase {
 
         $scheduler = new scheduler();
         $firstresult = $method->invokeArgs($scheduler, array(1287313200, 20));
-        $this->assertEquals($firstresult, 1287486000);
+        $this->assertEquals(1287486000, $firstresult);
 
         $secondresult = $method->invokeArgs($scheduler, array(1287509000, 20));
-        $this->assertEquals($secondresult, 1290164400);
+        $this->assertEquals(1290164400, $secondresult);
 
         $thirdresult = $method->invokeArgs($scheduler, array(1287658800, 20));
-        $this->assertEquals($thirdresult, 1290164400);
+        $this->assertEquals(1290164400, $thirdresult);
 
         $this->resetAfterTest(true);
     }

@@ -51,7 +51,7 @@ class scheduler_test extends PHPUnit_Framework_TestCase {
         $this->assertTrue($scheduler->is_time());
 
         $scheduler->next();
-        $this->assertLessThan($scheduler->get_scheduled_time(), time());
+        $this->assertGreaterThan(time(), $scheduler->get_scheduled_time());
         $this->assertTrue($scheduler->is_changed());
         $this->assertFalse($scheduler->is_time());
     }
