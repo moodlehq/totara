@@ -188,4 +188,57 @@ function totara_site_version_tracking() {
 
 }
 
+function totara_core_cron() {
+
+    // Temporary manager tasks.
+    totara_update_temporary_managers();
+
+    return true;
+}
+
+function totara_update_temporary_managers() {
+    global $CFG, $DB;
+
+    if (empty($CFG->enabletempmanagers)) {
+        // Unassign all current temporary managers.
+        if ($rs = $DB->get_recordset('temporary_manager', null, '', 'userid')) {
+            mtrace('Removing obsolete temporary managers...');
+            foreach ($rs as $tmassignment) {
+                totara_unassign_temporary_manager($tmassignment->userid);
+            }
+        }
+
+        return true;
+    }
+
+    if (!empty($CFG->tempmanagerrestrictselection)) {
+        // Ensure only users that are currently managers are assigned as temporary managers.
+        // We need this check for scenarios where tempmanagerrestrictselection was previously disabled.
+        $sql = "SELECT DISTINCT tm.userid
+                  FROM {temporary_manager} tm
+             LEFT JOIN {pos_assignment} pa ON tm.tempmanagerid = pa.managerid
+                 WHERE pa.managerid IS NULL";
+        if ($rs = $DB->get_recordset_sql($sql)) {
+            mtrace('Removing non-manager temporary managers...');
+            foreach ($rs as $assignment) {
+                totara_unassign_temporary_manager($assignment->userid);
+            }
+        }
+    }
+
+    // Remove expired temporary managers.
+    $timenow = time();
+    $expiredmanagers = $DB->get_records_select('temporary_manager', 'expirytime < ?', array($timenow));
+    if (!empty($expiredmanagers)) {
+        mtrace('Removing expired temporary managers...');
+
+        foreach ($expiredmanagers as $m) {
+            totara_unassign_temporary_manager($m->userid);
+        }
+
+        mtrace('DONE Removing expired temporary managers');
+    }
+}
+
 ?>
+

@@ -31,12 +31,17 @@ class user_position_assignment_form extends moodleform {
     function definition () {
         global $CFG, $DB, $OUTPUT, $COURSE, $POSITION_TYPES;
 
-        $mform =& $this->_form;
+        $mform = $this->_form;
         $type = $this->_customdata['type'];
         $pa = $this->_customdata['position_assignment'];
         $editoroptions = $this->_customdata['editoroptions'];
         $can_edit = $this->_customdata['can_edit'];
+        $can_edit_tempmanager = empty($this->_customdata['can_edit_tempmanager']) ? 0 : 1;
         $nojs = $this->_customdata['nojs'];
+
+        // Check if a primary position.
+        $primary = isset($POSITION_TYPES[POSITION_TYPE_PRIMARY])
+            && $type == $POSITION_TYPES[POSITION_TYPE_PRIMARY] ? true : false;
 
         // Check if an aspirational position
         $aspirational = false;
@@ -54,31 +59,6 @@ class user_position_assignment_form extends moodleform {
         $organisation_title = '';
         if ($pa->organisationid) {
             $organisation_title = $DB->get_field('org', 'fullname', array('id' => $pa->organisationid));
-        }
-
-        // Get manager title
-        $manager_title = '';
-        $manager_id = 0;
-        if ($pa->reportstoid) {
-            $manager = $DB->get_record_sql(
-                "SELECT
-                    u.id,
-                    u.firstname,
-                    u.lastname,
-                    ra.id AS ra
-                 FROM
-                    {user} u
-                 INNER JOIN
-                    {role_assignments} ra
-                     ON u.id = ra.userid
-                 WHERE
-                    ra.id = ?",
-                 array($pa->reportstoid));
-
-            if ($manager) {
-                $manager_title = fullname($manager);
-                $manager_id = $manager->id;
-            }
         }
 
         // Add some extra hidden fields
@@ -148,6 +128,60 @@ class user_position_assignment_form extends moodleform {
                 $mform->addHelpButton('organisationselector', 'chooseorganisation', 'totara_hierarchy');
             }
 
+
+            $group = array();
+            $group[] = $mform->createElement('text', 'timevalidfrom', '',
+                array('name' => get_string('startdate', 'totara_hierarchy'),
+                    'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+            $mform->addGroup($group, 'timevalidfrom_group', get_string('startdate', 'totara_hierarchy'), array(' '), false);
+            $mform->setType('timevalidfrom', PARAM_TEXT);
+            $mform->setDefault('timevalidfrom', get_string('datepickerdisplayformat', 'totara_core'));
+            $mform->addHelpButton('timevalidfrom_group', 'startdate', 'totara_hierarchy');
+
+            $group = array();
+            $group[] = $mform->createElement('text', 'timevalidto', '',
+                array('name' => get_string('finishdate', 'totara_hierarchy'),
+                    'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+            $mform->addGroup($group, 'timevalidto_group', get_string('finishdate', 'totara_hierarchy'), array(' '), false);
+            $mform->setType('timevalidto', PARAM_TEXT);
+            $mform->setDefault('timevalidto', get_string('datepickerdisplayformat', 'totara_core'));
+            $mform->addHelpButton('timevalidto_group', 'finishdate', 'totara_hierarchy');
+
+            $rule1['timevalidfrom'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex',
+                    get_string('datepickerregexphp', 'totara_core'));
+            $mform->addGroupRule('timevalidfrom_group', $rule1);
+            $rule2['timevalidto'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex',
+                    get_string('datepickerregexphp', 'totara_core'));
+            $mform->addGroupRule('timevalidto_group', $rule2);
+
+            // Manager details.
+            $mform->addElement('header', 'managerheader', get_string('manager', 'totara_hierarchy'));
+
+            // Get manager title.
+            $manager_title = '';
+            $manager_id = 0;
+            if ($pa->reportstoid) {
+                $manager = $DB->get_record_sql(
+                    "SELECT
+                        u.id,
+                        u.firstname,
+                        u.lastname,
+                        ra.id AS ra
+                     FROM
+                        {user} u
+                     INNER JOIN
+                        {role_assignments} ra
+                         ON u.id = ra.userid
+                     WHERE
+                        ra.id = ?",
+                     array($pa->reportstoid));
+
+                if ($manager) {
+                    $manager_title = fullname($manager);
+                    $manager_id = $manager->id;
+                }
+            }
+
             if ($nojs) {
              $allmanagers = $DB->get_records_sql_menu("
                     SELECT
@@ -164,7 +198,8 @@ class user_position_assignment_form extends moodleform {
                     $mform->setType('managerid', PARAM_INT);
                     $mform->setDefault('managerid', $manager_id);
                 } else {
-                    $mform->addElement('static','managerid',get_string('choosemanager','totara_hierarchy'), get_string('error:dialognotreeitems', 'manager'));
+                    $mform->addElement('static', 'managerid', get_string('choosemanager', 'totara_hierarchy'),
+                            get_string('error:dialognotreeitems', 'totara_core'));
                 }
                 $mform->addHelpButton('managerid', 'choosemanager', 'totara_hierarchy');
             } else {
@@ -194,34 +229,101 @@ class user_position_assignment_form extends moodleform {
                 $mform->addHelpButton('managerselector', 'choosemanager', 'totara_hierarchy');
             }
 
-            $group = array();
-            $group[] = $mform->createElement('text', 'timevalidfrom','', array('name'=>get_string('startdate', 'totara_hierarchy'),'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
-            $mform->addGroup($group, 'timevalidfrom_group', get_string('startdate', 'totara_hierarchy'), array(' '), false);
-            $mform->setType('timevalidfrom', PARAM_TEXT);
-            $mform->setDefault('timevalidfrom', get_string('datepickerdisplayformat','totara_core'));
-            $mform->addHelpButton('timevalidfrom_group', 'startdate', 'totara_hierarchy');
+            if ($primary && $CFG->enabletempmanagers) {
+                // Temporary manager.
+                $tempmanager = totara_get_manager($pa->userid, null, false, true);
 
-            $group = array();
-            $group[] = $mform->createElement('text', 'timevalidto', '', array('name'=>get_string('finishdate', 'totara_hierarchy'),'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
-            $mform->addGroup($group, 'timevalidto_group', get_string('finishdate', 'totara_hierarchy'), array(' '), false);
-            $mform->setType('timevalidto', PARAM_TEXT);
-            $mform->setDefault('timevalidto', get_string('datepickerdisplayformat','totara_core'));
-            $mform->addHelpButton('timevalidto_group', 'finishdate', 'totara_hierarchy');
+                $tempmanager_id = !empty($tempmanager->id) ? $tempmanager->id : 0;
+                $tempmanager_title = !empty($tempmanager) ? fullname($tempmanager) : '';
+                $tempmanager_expiry = !empty($tempmanager) ? $tempmanager->expirytime : null;
+                if ($nojs) {
+                    $sql = "SELECT u.id, ".$DB->sql_fullname('u.firstname', 'u.lastname')." AS fullname
+                              FROM {user} u
+                             WHERE u.deleted = 0 ";
+                    $params = array();
+                    if (!empty($CFG->managerscanbetempmanagers)) {
+                        $sql .= "AND u.id IN (SELECT DISTINCT pa.managerid
+                                                      FROM {pos_assignment} pa
+                                                     WHERE pa.type = ?) ";
+                        $params[] = POSITION_TYPE_PRIMARY;
+                    }
+                    $sql .= "ORDER BY u.firstname, u.lastname";
+                    $allmanagers = $DB->get_records_sql_menu($sql, $params);
 
-            $rule1['timevalidfrom'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex' , get_string('datepickerregexphp', 'totara_core'));
-            $mform->addGroupRule('timevalidfrom_group', $rule1);
-            $rule2['timevalidto'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex' , get_string('datepickerregexphp', 'totara_core'));
-            $mform->addGroupRule('timevalidto_group', $rule2);
+                    if (!empty($allmanagers)) {
+                        $mform->addElement('select', 'tempmanagerid', get_string('choosetempmanager', 'totara_core'),
+                            array(0 => get_string('choosetempmanager', 'totara_core')) + $allmanagers);
+                        $mform->setDefault('tempmanagerid', $tempmanager_id);
+                    } else {
+                        $mform->addElement('static', 'tempmanagerid', get_string('choosetempmanager', 'totara_core'),
+                                get_string('error:dialognotreeitems', 'totara_core'));
+                    }
+                    $mform->addHelpButton('tempmanagerid', 'choosetempmanager', 'totara_core');
+                } else {
+                    // If we can edit, show button, else show link to manager's profile.
+                    if ($can_edit_tempmanager) {
+                        $tempmanager_class = strlen($tempmanager_title) ? 'nonempty' : '';
+                        $mform->addElement(
+                            'static',
+                            'tempmanagerselector',
+                            get_string('tempmanager', 'totara_core'),
+                            html_writer::tag('span', format_string($tempmanager_title),
+                                    array('class' => $tempmanager_class, 'id' => 'tempmanagertitle')) .
+                            html_writer::empty_tag('input', array('type' => 'button',
+                                    'value' => get_string('choosetempmanager', 'totara_core'), 'id' => 'show-tempmanager-dialog'))
+                        );
+                    } else {
+                        $mform->addElement(
+                            'static',
+                            'tempmanagerselector',
+                            get_string('tempmanager', 'totara_core'),
+                            html_writer::tag('span', html_writer::link(new moodle_url('/user/view.php',
+                                    array('id' => $tempmanager_id)), format_string($tempmanager_title)),
+                                    array('id' => 'tempmanagertitle'))
+                        );
+                    }
+
+                    $mform->addElement('hidden', 'tempmanagerid');
+                    $mform->setType('tempmanagerid', PARAM_INT);
+                    $mform->setDefault('tempmanagerid', $tempmanager_id);
+                    $mform->addHelpButton('tempmanagerselector', 'choosetempmanager', 'totara_core');
+                }
+
+                $group = array();
+                $group[] = $mform->createElement('text', 'tempmanagerexpiry', '',
+                        array('name' => get_string('tempmanagerexpiry', 'totara_core'),
+                            'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+                $mform->addGroup($group, 'tempmanagerexpiry_group',
+                        get_string('tempmanagerexpiry', 'totara_core'), array(' '), false);
+                $mform->setType('tempmanagerexpiry', PARAM_TEXT);
+                $mform->setDefault('tempmanagerexpiry',
+                    $tempmanager_expiry ? $tempmanager_expiry : strtotime($CFG->tempmanagerexpirydays.' days'));
+                $mform->addHelpButton('tempmanagerexpiry_group', 'tempmanagerexpiry', 'totara_core');
+
+                $rule1['tempmanagerexpiry'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex',
+                        get_string('datepickerregexphp', 'totara_core'));
+                $mform->addGroupRule('tempmanagerexpiry_group', $rule1);
+                $rule2['tempmanagerexpiry'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex',
+                        get_string('datepickerregexphp', 'totara_core'));
+                $mform->addGroupRule('tempmanagerexpiry_group', $rule2);
+            }
         }
 
         $this->add_action_buttons(true, get_string('updateposition', 'totara_hierarchy'));
+
     }
 
     function definition_after_data() {
-        $mform =& $this->_form;
+        $mform = $this->_form;
+        $can_edit = $this->_customdata['can_edit'];
 
-        // Fix odd date values
-        // Check if form is frozen
+        // Freeze the form if appropriate.
+        if (!$can_edit) {
+            $this->freezeForm();
+        }
+
+        // Fix odd date values.
+        // Check if form is frozen.
         if ($mform->elementExists('timevalidfrom_group')) {
 
             $groupfrom = $mform->getElement('timevalidfrom_group');
@@ -249,18 +351,49 @@ class user_position_assignment_form extends moodleform {
                 $mform->setDefault('timevalidto', date(get_string('datepickerparseformat', 'totara_core'), $timevalidtodateint));
             }
         }
+
+        if ($mform->elementExists('tempmanagerexpiry_group')) {
+
+            $groupto = $mform->getElement('tempmanagerexpiry_group');
+            $date2 = $groupto->getValue();
+            $timeexpiryint = (int)$date2["tempmanagerexpiry"];
+
+            if (!$timeexpiryint) {
+                $mform->setDefault('tempmanagerexpiry', '');
+            }
+            else {
+                $mform->setDefault('tempmanagerexpiry', date(get_string('datepickerparseformat', 'totara_core'), $timeexpiryint));
+            }
+        }
+
     }
 
     function freezeForm() {
-        $mform =& $this->_form;
+        $mform = $this->_form;
+        $can_edit_tempmanager = empty($this->_customdata['can_edit_tempmanager']) ? 0 : 1;
 
         // Freeze values
-        $mform->hardFreezeAllVisibleExcept(array());
+        $freezeexclude = array();
+        if ($can_edit_tempmanager) {
+            // Freeze the form except for temp manager functionality.
+            $freezeexclude = array('tempmanagerselector', 'tempmanagerexpiry_group', 'buttonar');
+        }
+        $mform->hardFreezeAllVisibleExcept($freezeexclude);
 
         // Hide elements with no values
         foreach (array_keys($mform->_elements) as $key) {
 
             $element =& $mform->_elements[$key];
+
+            // Tempmanager - skip some elements.
+            $skipelements = array('positionheader', 'managerheader');
+            if ($can_edit_tempmanager) {
+                $skipelements = array_merge($skipelements,
+                    array('tempmanagerselector', 'tempmanagerid', 'tempmanagerexpiry_group', 'buttonar'));
+            }
+            if (in_array($element->getName(), $skipelements)) {
+                continue;
+            }
 
             // Check static elements differently
             if ($element->getType() == 'static') {
@@ -301,7 +434,8 @@ class user_position_assignment_form extends moodleform {
 
     function validation($data, $files) {
 
-        $mform =& $this->_form;
+        $mform = $this->_form;
+        $can_edit_tempmanager = empty($this->_customdata['can_edit_tempmanager']) ? 0 : 1;
 
         $result = array();
 
@@ -324,6 +458,28 @@ class user_position_assignment_form extends moodleform {
             $result['timevalidfrom_group'] = $errstr;
             $result['timevalidto_group'] = $errstr;
             unset($errstr);
+        }
+
+        if ($can_edit_tempmanager) {
+            // If tempmanager, check that expiry is set.
+            if ($mform->getElement('tempmanagerid')->getValue()) {
+                if (empty($data['tempmanagerexpiry'])) {
+                    $result['tempmanagerexpiry_group'] = get_string('error:tempmanagerexpirynotset', 'totara_core');
+                }
+            }
+
+            // Ensure temp manager expiry in right format and date is in future.
+            $tempmanagerexpirystr = !empty($data['tempmanagerexpiry']) ? $data['tempmanagerexpiry'] : '';
+            $tempmanagerexpiry = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),
+                    $tempmanagerexpirystr);
+
+            if (false === $tempmanagerexpiry && $tempmanagerexpirystr !== 'dd/mm/yy' && $tempmanagerexpirystr !== '') {
+                $result['tempmanagerexpiry'] = get_string('error:dateformat', 'position');
+            }
+
+            if (time() >  $tempmanagerexpiry && $tempmanagerexpiry !== false) {
+                $result['tempmanagerexpiry_group'] = get_string('error:datenotinfuture', 'totara_core');
+            }
         }
 
         return $result;

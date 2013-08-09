@@ -301,4 +301,46 @@ $string['old_release_security_text_plural'] = ' (including [[SECURITY_COUNT]] ne
 $string['supported_branch_text'] = 'You may want to consider upgrading from {$a} to the most recent version ([[CURRENT_MAJOR_VERSION]]) to benefit from the latest features';
 $string['supported_branch_old_release_text'] = 'You may also want to consider upgrading from {$a} to the most recent version ([[CURRENT_MAJOR_VERSION]]) to benefit from the latest features';
 $string['totarareleaselink'] = 'See the <a href="http://community.totaralms.com/mod/forum/view.php?id=819\" target=\"_blank\">release notes</a> for more details.';
-?>
+
+// Temporary managers.
+$string['xpositions'] = '{$a}\'s Positions';
+$string['tempmanager'] = 'Temporary manager';
+$string['choosetempmanager'] = 'Choose temporary manager';
+$string['choosetempmanager_help'] = 'A temporary manager can be assigned. The assigned Temporary Manager will have the same rights as a normal manager, for the specified amount of time.
+
+Click **Choose temporary manager** to select a temporary manager.
+
+If the name you are looking for does not appear in the list, it might be that the user does not have the necessary rights to act as a temporary manager.';
+$string['tempmanagerexpiry'] = 'Temporary manager expiry date';
+$string['tempmanagerexpiry_help'] = 'Click the calendar icon to select the date the temporary manager will expire.';
+$string['core:delegateownmanager'] = 'Assign a temporary manager to yourself';
+$string['core:delegateusersmanager'] = 'Assign a temporary manager to other users';
+$string['tempmanagers'] = 'Temporary managers';
+$string['enabletempmanagers'] = 'Enable temporary managers';
+$string['enabletempmanagersdesc'] = 'Enable functionality that allows for assigning a temporary manager to a user. Disabling this will cause all current temporary managers to be unassigned on next cron run.';
+$string['tempmanagerrestrictselection'] = 'Temporary manager selection';
+$string['tempmanagerrestrictselectiondesc'] = 'Determine which users will be available in the temporary manager selection dialog. Selecting \'Only staff managers\' will remove any assigned temporary managers who don\'t have the \'staff manager\' role on the next cron run.';
+$string['tempmanagerselectionallusers'] = 'All users';
+$string['tempmanagerselectiononlymanagers'] = 'Only staff managers';
+$string['tempmanagerexpirydays'] = 'Temporary manager expiry days';
+$string['tempmanagerexpirydaysdesc'] = 'Set a default temporary manager expiry period (in days).';
+$string['unassignall'] = 'Unassign all';
+$string['error:tempmanagernotset'] = 'Temporary manager needs to be set';
+$string['error:tempmanagernotselected'] = 'No temporary manager selected';
+$string['error:tempmanagerexpirynotset'] = 'An expiry date for the temporary manager needs to be set';
+$string['error:datenotinfuture'] = 'The date needs to be in the future';
+$string['manager(s)'] = 'Manager(s)';
+$string['tempmanagersupporttext'] = ' Note, only current team managers can be selected.';
+$string['tempmanagerassignmsgstaffsubject'] = '{$a->tempmanager} is now your temporary manager';
+$string['tempmanagerassignmsgmgrsubject'] = '{$a->tempmanager} is now temporary manager for {$a->staffmember}';
+$string['tempmanagerassignmsgtmpmgrsubject'] = 'You are now {$a->staffmember}\'s temporary manager';
+$string['tempmanagerassignmsgmgr'] = '{$a->tempmanager} has been assigned as temporary manager to {$a->staffmember} (one of your team members).<br>Temporary manager expiry: {$a->expirytime}.<br>View details <a href="{$a->url}">here</a>.';
+$string['tempmanagerassignmsgtmpmgr'] = 'You have been assigned as temporary manager to {$a->staffmember}.<br>Temporary manager expiry: {$a->expirytime}.<br>View details <a href="{$a->url}">here</a>.';
+$string['tempmanagerassignmsgstaff'] = '{$a->tempmanager} has been assigned as temporary manager to you.<br>Temporary manager expiry: {$a->expirytime}.<br>View details <a href="{$a->url}">here</a>.';
+
+$string['tempmanagerexpiryupdatemsgstaffsubject'] = 'Expiry date updated for your temporary manager';
+$string['tempmanagerexpiryupdatemsgmgrsubject'] = 'Expiry date updated for {$a->staffmember}\'s temporary manager';
+$string['tempmanagerexpiryupdatemsgtmpmgrsubject'] = 'Temporary manager expiry updated for {$a->staffmember}';
+$string['tempmanagerexpiryupdatemsgmgr'] = 'The expiry date for {$a->staffmember}\'s temporary manager ({$a->tempmanager}) has been updated to {$a->expirytime}.<br>View details <a href="{$a->url}">here</a>.';
+$string['tempmanagerexpiryupdatemsgtmpmgr'] = 'Your expiry date as temporary manager for {$a->staffmember} has been updated to {$a->expirytime}.<br>View details <a href="{$a->url}">here</a>.';
+$string['tempmanagerexpiryupdatemsgstaff'] = 'The expiry date for {$a->tempmanager} (your temporary manager) has been updated to {$a->expirytime}.<br>View details <a href="{$a->url}">here</a>.';

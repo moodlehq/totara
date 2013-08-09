@@ -183,6 +183,27 @@ if ($hassiteconfig
         $temp->add(new admin_setting_configtext('gravatardefaulturl', new lang_string('gravatardefaulturl', 'admin'), new lang_string('gravatardefaulturl_help', 'admin'), 'mm'));
     }
 
+    // Temporary managers.
+    $temp->add(new admin_setting_heading('tempmanagers',
+            new lang_string('tempmanagers', 'totara_core'), ''));
+
+    $temp->add(new admin_setting_configcheckbox('enabletempmanagers',
+            new lang_string('enabletempmanagers', 'totara_core'),
+            new lang_string('enabletempmanagersdesc', 'totara_core'),
+            1));
+
+    $temp->add(new admin_setting_configselect('tempmanagerrestrictselection',
+            new lang_string('tempmanagerrestrictselection', 'totara_core'),
+            new lang_string('tempmanagerrestrictselectiondesc', 'totara_core'),
+            1,
+            array(null => get_string('tempmanagerselectionallusers', 'totara_core'),
+                  1 => get_string('tempmanagerselectiononlymanagers', 'totara_core'))));
+
+    $temp->add(new admin_setting_configtext('tempmanagerexpirydays',
+            new lang_string('tempmanagerexpirydays', 'totara_core'),
+            new lang_string('tempmanagerexpirydaysdesc', 'totara_core'),
+            '30', PARAM_INT));
+
     $ADMIN->add('roles', $temp);
 
     if (is_siteadmin()) {

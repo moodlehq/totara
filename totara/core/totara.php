@@ -772,10 +772,18 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
     global $DB, $USER;
 
     $userid = (int) $userid;
+    $now = time();
 
     if (!isset($managerid)) {
         // Use logged in user as default
         $managerid = $USER->id;
+    }
+
+    if ($DB->record_exists_select('temporary_manager', 'userid = ? AND tempmanagerid = ? AND expirytime > ?',
+            array($userid, $managerid, $now))) {
+
+        // This is a temporary manager of the user.
+        return true;
     }
 
     $params = array($userid, $managerid);
@@ -800,8 +808,11 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
 **/
 function totara_get_staff($userid=null, $postype=null) {
     global $CFG, $DB, $USER;
+
     require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
+
     $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
+    $now = time();
 
     $userid = !empty($userid) ? (int) $userid : $USER->id;
     // this works because:
@@ -810,6 +821,15 @@ function totara_get_staff($userid=null, $postype=null) {
     // - there is a unique key on (type, userid) on pos_assignment so no need to use
     //   DISTINCT on the userid
     $staff = $DB->get_fieldset_select('pos_assignment', 'userid', "type = ? AND managerid = ?", array($postype, $userid));
+
+    // Get temporary staff.
+    if ($CFG->enabletempmanagers && $postype == POSITION_TYPE_PRIMARY) {
+        $tempstaff = $DB->get_fieldset_select('temporary_manager', 'userid', 'tempmanagerid = ? AND expirytime > ?',
+            array($userid, $now));
+
+        $staff = array_unique(array_merge($staff, $tempstaff));
+    }
+
     return (empty($staff)) ? false : $staff;
 }
 
@@ -818,26 +838,200 @@ function totara_get_staff($userid=null, $postype=null) {
  *
  * @param int $userid Id of the user whose manager we want
  * @param int $postype Type of the position we want the manager for (POSITION_TYPE_* constant). Defaults to primary position(optional)
+ * @param boolean $skiptemp Skip check and return of temporary manager
+ * @param boolean $skipreal Skip check and return of real manager
  * @return mixed False if no manager. Manager user object from mdl_user if the user has a manager.
  */
-function totara_get_manager($userid, $postype=null){
+function totara_get_manager($userid, $postype=null, $skiptemp=false, $skipreal=false) {
     global $CFG, $DB;
+
     require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
+
     $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
-
     $userid = (int) $userid;
-    $sql = "
-        SELECT manager.*
-          FROM {pos_assignment} pa
-    INNER JOIN {user} manager
-            ON pa.managerid = manager.id
-         WHERE pa.userid = ?
-           AND pa.type = ?";
+    $now = time();
 
-    //Return a manager if they have one otherwise false
-    return $DB->get_record_sql($sql, array($userid, $postype));
+    if ($CFG->enabletempmanagers && $postype == POSITION_TYPE_PRIMARY && !$skiptemp) {
+        // Temporary manager.
+        $sql = "SELECT u.*, tm.expirytime
+                  FROM {temporary_manager} tm
+            INNER JOIN {user} u ON tm.tempmanagerid = u.id
+                 WHERE tm.userid = ? AND tm.expirytime > ?";
+        if ($tempmanager = $DB->get_record_sql($sql, array($userid, $now))) {
+            return $tempmanager;
+        }
+    }
+
+    if (!$skipreal) {
+        $sql = "
+            SELECT manager.*
+              FROM {pos_assignment} pa
+        INNER JOIN {user} manager
+                ON pa.managerid = manager.id
+             WHERE pa.userid = ?
+               AND pa.type = ?";
+
+        // Return a manager if they have one otherwise false.
+        return $DB->get_record_sql($sql, array($userid, $postype));
+    }
+
+    return false;
 }
 
+/**
+ * Update/set a temp manager for the specified user
+ *
+ * @param int $userid Id of user to set temp manager for
+ * @param int $managerid Id of temp manager to be assigned to user.
+ * @param int $expiry Temp manager expiry epoch timestamp
+ */
+function totara_update_temporary_manager($userid, $managerid, $expiry) {
+    global $CFG, $DB, $USER;
+
+    if (!$user = $DB->get_record('user', array('id' => $userid))) {
+        return false;
+    }
+
+    $usercontext = context_user::instance($userid);
+    $realmanager = totara_get_manager($userid, null, true);
+    $oldtempmanager = $DB->get_record('temporary_manager', array('userid' => $userid));
+
+    if (!$newtempmanager = $DB->get_record('user', array('id' => $managerid))) {
+        return false;
+    }
+
+    // Set up messaging.
+    require_once($CFG->dirroot.'/totara/message/messagelib.php');
+    $msg = new stdClass();
+    $msg->userfrom = $USER;
+    $msg->msgstatus = TOTARA_MSG_STATUS_OK;
+    $msg->contexturl = $CFG->wwwroot.'/user/positions.php?user='.$userid.'&courseid='.SITEID;
+    $msg->contexturlname = get_string('xpositions', 'totara_core', fullname($user));
+    $msgparams = (object)array('staffmember' => fullname($user), 'tempmanager' => fullname($newtempmanager),
+        'expirytime' => userdate($expiry, get_string('strftimedatefullshort', 'langconfig')), 'url' => $msg->contexturl);
+
+    if (!empty($oldtempmanager) && $newtempmanager->id == $oldtempmanager->tempmanagerid) {
+        if ($oldtempmanager->expirytime == $expiry) {
+            // Nothing to do here.
+            return true;
+        } else {
+            // Update expiry time.
+            $oldtempmanager->expirytime = $expiry;
+            $oldtempmanager->timemodified = time();
+
+            $DB->update_record('temporary_manager', $oldtempmanager);
+
+            // Expiry change notifications.
+
+            // Notify staff member.
+            $msg->userto = $user;
+            $msg->subject = get_string('tempmanagerexpiryupdatemsgstaffsubject', 'totara_core', $msgparams);
+            $msg->fullmessage = get_string('tempmanagerexpiryupdatemsgstaff', 'totara_core', $msgparams);
+            $msg->fullmessagehtml = get_string('tempmanagerexpiryupdatemsgstaff', 'totara_core', $msgparams);
+            tm_alert_send($msg);
+
+            // Notify real manager.
+            if (!empty($realmanager)) {
+                $msg->userto = $realmanager;
+                $msg->subject = get_string('tempmanagerexpiryupdatemsgmgrsubject', 'totara_core', $msgparams);
+                $msg->fullmessage = get_string('tempmanagerexpiryupdatemsgmgr', 'totara_core', $msgparams);
+                $msg->fullmessagehtml = get_string('tempmanagerexpiryupdatemsgmgr', 'totara_core', $msgparams);
+                $msg->roleid = $CFG->managerroleid;
+                tm_alert_send($msg);
+            }
+
+            // Notify temp manager.
+            $msg->userto = $newtempmanager;
+            $msg->subject = get_string('tempmanagerexpiryupdatemsgtmpmgrsubject', 'totara_core', $msgparams);
+            $msg->fullmessage = get_string('tempmanagerexpiryupdatemsgtmpmgr', 'totara_core', $msgparams);
+            $msg->fullmessagehtml = get_string('tempmanagerexpiryupdatemsgtmpmgr', 'totara_core', $msgparams);
+            $msg->roleid = $CFG->managerroleid;
+            tm_alert_send($msg);
+
+            return true;
+        }
+    }
+
+    $transaction = $DB->start_delegated_transaction();
+
+    // Unassign the current temporary manager.
+    totara_unassign_temporary_manager($userid);
+
+    // Assign new temporary manager.
+    $record = new stdClass();
+    $record->userid = $userid;
+    $record->tempmanagerid = $managerid;
+    $record->expirytime = $expiry;
+    $record->timemodified = time();
+    $record->usermodified = $USER->id;
+
+    $record->id = $DB->insert_record('temporary_manager', $record);
+
+    // Assign/update temp manager role assignment.
+    role_assign($CFG->managerroleid, $managerid, $usercontext->id, '', 0, time());
+
+    $transaction->allow_commit();
+
+    // Send assignment notifications.
+
+    // Notify staff member.
+    $msg->userto = $user;
+    $msg->subject = get_string('tempmanagerassignmsgstaffsubject', 'totara_core', $msgparams);
+    $msg->fullmessage = get_string('tempmanagerassignmsgstaff', 'totara_core', $msgparams);
+    $msg->fullmessagehtml = get_string('tempmanagerassignmsgstaff', 'totara_core', $msgparams);
+    tm_alert_send($msg);
+
+    // Notify real manager.
+    if (!empty($realmanager)) {
+        $msg->userto = $realmanager;
+        $msg->subject = get_string('tempmanagerassignmsgmgrsubject', 'totara_core', $msgparams);
+        $msg->fullmessage = get_string('tempmanagerassignmsgmgr', 'totara_core', $msgparams);
+        $msg->fullmessagehtml = get_string('tempmanagerassignmsgmgr', 'totara_core', $msgparams);
+        $msg->roleid = $CFG->managerroleid;
+        tm_alert_send($msg);
+    }
+
+    // Notify temp manager.
+    $msg->userto = $newtempmanager;
+    $msg->subject = get_string('tempmanagerassignmsgtmpmgrsubject', 'totara_core', $msgparams);
+    $msg->fullmessage = get_string('tempmanagerassignmsgtmpmgr', 'totara_core', $msgparams);
+    $msg->fullmessagehtml = get_string('tempmanagerassignmsgtmpmgr', 'totara_core', $msgparams);
+    $msg->roleid = $CFG->managerroleid;
+    tm_alert_send($msg);
+}
+
+/**
+ * Unassign the temporary manager of the specified user
+ *
+ * @param int $userid
+ * @return boolean true on success
+ * @throws Exception
+ */
+function totara_unassign_temporary_manager($userid) {
+    global $DB, $CFG;
+
+    if (!$tempmanager = $DB->get_record('temporary_manager', array('userid' => $userid))) {
+        // Nothing to do.
+        return true;
+    }
+    $realmanager = totara_get_manager($userid, null, true);
+
+    $transaction = $DB->start_delegated_transaction();
+
+    // Unassign temp manager from user's context.
+    if (empty($realmanager) || $tempmanager->tempmanagerid != $realmanager->id) {
+        // Unassign old temp manager, if this is not somehow the real manager as well.
+        $usercontext = context_user::instance($userid);
+        role_unassign($CFG->managerroleid, $tempmanager->tempmanagerid, $usercontext->id);
+    }
+
+    // Delete temp manager record.
+    $DB->delete_records('temporary_manager', array('id' => $tempmanager->id));
+
+    $transaction->allow_commit();
+
+    return true;
+}
 
 /**
 * returns unix timestamp from a date string depending on the date format

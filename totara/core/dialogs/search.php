@@ -400,6 +400,32 @@ switch ($searchtype) {
         $search_info->params = $params;
         break;
 
+    case 'temporary_manager':
+        // Generate search SQL.
+        $keywords = totara_search_parse_keywords($query);
+        $fields = array('u.firstname', 'u.lastname', 'u.email');
+        list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
+
+        // Generate manager sql.
+        $managersql = '';
+        if ($CFG->tempmanagerrestrictselection) {
+            // Current managers.
+            $managersql = "AND u.id IN (SELECT DISTINCT pa.managerid
+                                      FROM {pos_assignment} pa
+                                     WHERE pa.type = ?)";
+            $params[] = POSITION_TYPE_PRIMARY;
+        }
+
+        $search_info->id = 'u.id';
+        $search_info->fullname = $DB->sql_fullname('u.firstname', 'u.lastname');
+        $search_info->email = 'email';
+        $search_info->sql = "FROM {user} u
+                            WHERE {$searchsql} {$managersql}";
+        $search_info->order = " ORDER BY u.firstname, u.lastname";
+        $search_info->params = $params;
+        break;
+
+
     default:
         print_error('invalidsearchtable', 'totara_core');
 }

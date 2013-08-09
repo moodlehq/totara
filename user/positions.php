@@ -91,6 +91,16 @@ elseif (!in_array($type, $POSITION_TYPES)) {
     redirect("{$CFG->wwwroot}/user/positions.php?user={$user->id}&amp;course={$course->id}");
 }
 
+// Can user edit temp manager.
+$can_edit_tempmanager = false;
+if ($type == $POSITION_TYPES[POSITION_TYPE_PRIMARY] && $CFG->enabletempmanagers) {
+    if (has_capability('totara/core:delegateusersmanager', $personalcontext)) {
+        $can_edit_tempmanager = true;
+    } else if ($USER->id == $user->id && has_capability('totara/core:delegateownmanager', $personalcontext)) {
+        $can_edit_tempmanager = true;
+    }
+}
+
 // Attempt to load the assignment
 $position_assignment = new position_assignment(
     array(
@@ -121,6 +131,7 @@ local_js(array(
     TOTARA_JS_PLACEHOLDER
 ));
 $PAGE->requires->strings_for_js(array('chooseposition', 'choosemanager','chooseorganisation','currentlyselected'), 'totara_hierarchy');
+$PAGE->requires->strings_for_js(array('choosetempmanager'), 'totara_core');
 $PAGE->requires->strings_for_js(array('error:positionnotselected','error:organisationnotselected','error:managernotselected'), 'totara_core');
 $jsmodule = array(
         'name' => 'totara_positionuser',
@@ -129,12 +140,16 @@ $jsmodule = array(
 $selected_position = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'position'));
 $selected_organisation = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'organisation'));
 $selected_manager = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'manager'));
-$js_can_edit = (pos_can_edit_position_assignment($user->id)) ? 'true' : 'false';
+$selected_tempmanager = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'tempmanager'));
+$js_can_edit = $can_edit ? 'true' : 'false';
+$js_can_edit_tempmanager = $can_edit_tempmanager ? 'true' : 'false';
 $args = array('args'=>'{"userid":'.$user->id.','.
         '"can_edit":'.$js_can_edit.','.
+        '"can_edit_tempmanager":'.$js_can_edit_tempmanager.','.
         '"dialog_display_position":'.$selected_position.','.
         '"dialog_display_organisation":'.$selected_organisation.','.
-        '"dialog_display_manager":'.$selected_manager.'}');
+        '"dialog_display_manager":'.$selected_manager.','.
+        '"dialog_display_tempmanager":'.$selected_tempmanager.'}');
 
 $PAGE->requires->js_init_call('M.totara_positionuser.init', $args, false, $jsmodule);
 
@@ -149,10 +164,11 @@ if ($nojs) {
 $position_assignment->descriptionformat = FORMAT_HTML;
 $position_assignment = file_prepare_standard_editor($position_assignment, 'description', $editoroptions, $editoroptions['context'],
     'totara_core', 'pos_assignment', $position_assignment->id);
-$form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit', 'nojs', 'editoroptions'));
+$form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit',
+        'nojs', 'editoroptions', 'can_edit_tempmanager'));
 $form->set_data($position_assignment);
 // Don't show the page if they do not have a position & can't edit positions.
-if (!$can_edit && !$position_assignment->id) {
+if (!$can_edit && !$position_assignment->id && !$can_edit_tempmanager) {
     $PAGE->set_title("{$course->fullname}: {$fullname}: {$positiontype}");
     $PAGE->set_heading($course->fullname);
     echo $OUTPUT->header();
@@ -202,13 +218,22 @@ else {
         assign_user_position($position_assignment);
 
         // Description editor post-update
-        if ($data->type != POSITION_TYPE_ASPIRATIONAL) {
+        if ($can_edit && $data->type != POSITION_TYPE_ASPIRATIONAL) {
             $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $editoroptions['context'], 'totara_core', 'pos_assignment', $data->id);
             $DB->set_field('pos_assignment', 'description', $data->description, array('id' => $data->id));
         }
 
         // Log
         add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");
+
+        if (!empty($data->tempmanagerid)) {
+            // Update temporary manager.
+            totara_update_temporary_manager($user->id, $data->tempmanagerid,
+                totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->tempmanagerexpiry));
+        } else if (!empty($CFG->enabletempmanagers)) {
+            // Unassign the current temporary manager.
+            totara_unassign_temporary_manager($user->id);
+        }
 
         // Display success message
         totara_set_notification(get_string('positionsaved','totara_hierarchy'), $currenturl, array('class' => 'notifysuccess'));
@@ -217,10 +242,6 @@ else {
     // Log
     add_to_log($course->id, "user", "position view", "positions.php?user={$user->id}&amp;courseid={$course->id}&amp;type={$type}", fullname($user)." (ID: {$user->id})");
 
-    if (!$can_edit) {
-        $form->freezeForm();
-    }
-
     $PAGE->set_title("{$course->fullname}: {$fullname}: {$positiontype}");
     $PAGE->set_heading("{$positiontype}");
     echo $OUTPUT->header();
@@ -228,6 +249,7 @@ else {
     $form->display();
 
     // Setup calendar
-    build_datepicker_js('#id_timevalidfrom, #id_timevalidto');
+    build_datepicker_js('#id_timevalidfrom:not([readonly]), #id_timevalidto:not([readonly]), ' .
+            '#id_tempmanagerexpiry:not([readonly])');
 }
 echo $OUTPUT->footer();

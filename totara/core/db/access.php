@@ -103,6 +103,26 @@ $capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes'   => array(
             'manager' => CAP_ALLOW
-        ),
+        )
+    ),
+
+    // Assign own temporary manager.
+    'totara/core:delegateownmanager' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_USER,
+        'archetypes'   => array(
+            'manager'       => CAP_ALLOW,
+            'user'          => CAP_ALLOW,
+        )
+    ),
+    // Assign temporary manager to users.
+    'totara/core:delegateusersmanager' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_USER,
+        'archetypes'   => array(
+            'manager'       => CAP_ALLOW,
+        )
     )
 );

@@ -104,5 +104,22 @@ M.totara_positionuser = M.totara_positionuser || {
             );
         })();
 
+        ///
+        /// Temporary manager dialog
+        ///
+        (function() {
+            var url = M.cfg.wwwroot+'/totara/hierarchy/prefix/position/assign/';
+
+            totaraSingleSelectDialog(
+                'tempmanager',
+                M.util.get_string('choosetempmanager', 'totara_core') + M.totara_positionuser.config.dialog_display_tempmanager,
+                url+'tempmanager.php?userid='+M.totara_positionuser.config.userid,
+                'tempmanagerid',
+                'tempmanagertitle',
+                undefined,
+                M.totara_positionuser.config.can_edit_tempmanager            // Make selection deletable
+            );
+        })();
+
     }
 };
