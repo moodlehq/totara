@@ -346,12 +346,23 @@ function tm_alert_send($eventdata) {
 
         $userfrom = !empty($eventdata->fromemailuser) ? $eventdata->fromemailuser : $eventdata->userfrom;
 
+        switch ($eventdata->userto->mailformat) {
+            case FORMAT_MOODLE: // 0 is current user preference email plain format value
+            case FORMAT_PLAIN:
+                $fullmessagehtml = '';
+                break;
+
+            default: // FORMAT_HTML
+                $fullmessagehtml = format_text($eventdata->fullmessagehtml, FORMAT_HTML);
+                break;
+        }
+
         $result = email_to_user(
             $eventdata->userto,
             $userfrom,
             format_string($eventdata->subject),
-            format_text($eventdata->fullmessage, FORMAT_PLAIN),
-            format_text($eventdata->fullmessagehtml, FORMAT_HTML),
+            html_to_text($eventdata->fullmessage),
+            $fullmessagehtml,
             $attachment,
             $attachmentname,
             true,
