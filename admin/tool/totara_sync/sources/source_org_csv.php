@@ -206,7 +206,6 @@ class totara_sync_source_org_csv extends totara_sync_source_org {
                 }
             }
         }
-        unset($fieldmappings);
 
         // Populate temp sync table from CSV
         $now = time();
@@ -216,7 +215,6 @@ class totara_sync_source_org_csv extends totara_sync_source_org {
         $fieldcount = new object();
         $fieldcount->headercount = count($fields);
         $fieldcount->rownum = 0;
-
         $csvdateformat = (isset($CFG->csvdateformat)) ? $CFG->csvdateformat : get_string('csvdateformatdefault', 'totara_core');
 
         while ($row = fgetcsv($file, 0, $this->config->delimiter)) {
@@ -289,6 +287,7 @@ class totara_sync_source_org_csv extends totara_sync_source_org {
             $rowcount++;
 
             if ($rowcount >= $dbpersist) {
+                $this->check_length_limit($datarows, $DB->get_columns($temptable), $fieldmappings, 'org');
                 // Bulk insert
                 try {
                     totara_sync_bulk_insert($temptable, $datarows);
@@ -304,15 +303,16 @@ class totara_sync_source_org_csv extends totara_sync_source_org {
             }
         }
 
+        $this->check_length_limit($datarows, $DB->get_columns($temptable), $fieldmappings, 'org');
         // Insert remaining rows
         try {
             totara_sync_bulk_insert($temptable, $datarows);
         } catch (dml_exception $e) {
             throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'couldnotimportallrecords', $e->getMessage());
         }
+        unset($fieldmappings);
 
         fclose($file);
-
         // Done, clean up the file(s)
         if ($fileaccess == FILE_ACCESS_UPLOAD) {
             unlink($storefilepath); // don't store this file in temp

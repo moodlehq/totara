@@ -187,6 +187,7 @@ $string['csvnotvalidmissingfieldx'] = 'CSV file not valid, missing field "{$a}"'
 $string['csvnotvalidmissingfieldxmappingx'] = 'CSV file not valid, missing field "{$a->mapping}" (mapping for "{$a->field}")';
 $string['csvnotvalidinvalidchars'] = 'CSV file not valid. It contains invalid characters ("{$a->invalidchars}"). Fields in a CSV file must be separated by a selected delimiter ("{$a->delimiter}").';
 $string['couldnotimportallrecords'] = 'could not import all records';
+$string['lengthlimitexceeded'] = 'value "{$a->value}" is too long for "{$a->field}" field. It cannot be longer than {$a->length} characters. Skipped {$a->source} {$a->idnumber}';
 $string['syncstarted'] = 'sync started';
 $string['syncfinished'] = 'sync finished';
 $string['couldnotgetsourcetable'] = 'could not get source table, aborting...';

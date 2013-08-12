@@ -204,7 +204,6 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
                 }
             }
         }
-        unset($fieldmappings);
 
         // Populate temp sync table from CSV
         $now = time();
@@ -242,6 +241,7 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             $row['parentidnumber'] = !empty($row['parentidnumber']) ? $row['parentidnumber'] : '';
             $row['parentidnumber'] = $row['parentidnumber'] == $row['idnumber'] ? '' : $row['parentidnumber'];
             $row['typeidnumber'] = !empty($row['typeidnumber']) ? $row['typeidnumber'] : '';
+
             if (empty($row['timemodified'])) {
                 $row['timemodified'] = $now;
             } else {
@@ -285,6 +285,7 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             $rowcount++;
 
             if ($rowcount >= $dbpersist) {
+                $this->check_length_limit($datarows, $DB->get_columns($temptable), $fieldmappings, 'pos');
                 // Bulk insert
                 try {
                     totara_sync_bulk_insert($temptable, $datarows);
@@ -300,18 +301,19 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             }
         }
 
+        $this->check_length_limit($datarows, $DB->get_columns($temptable), $fieldmappings, 'pos');
         // Insert remaining rows
         try {
             totara_sync_bulk_insert($temptable, $datarows);
         } catch (dml_exception $e) {
             throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'couldnotimportallrecords', $e->getMessage());
         }
+        unset($fieldmappings);
 
         fclose($file);
-
         // Done, clean up the file(s)
         if ($fileaccess == FILE_ACCESS_UPLOAD) {
-           unlink($storefilepath); // don't store this file in temp
+            unlink($storefilepath); // don't store this file in temp
         }
 
         return true;
