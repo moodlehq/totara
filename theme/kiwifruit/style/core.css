@@ -433,6 +433,7 @@ p.errormessage {
     height: auto !important;
     height: 100%;
     margin: 0 auto -80px;
+    padding-bottom: 80px; /*height of footer*/
 }
 #wrapper {
     background:transparent;
