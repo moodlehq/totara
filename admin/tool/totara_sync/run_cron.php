@@ -35,6 +35,6 @@ require_once($CFG->dirroot . '/admin/tool/totara_sync/lib.php');
 
 echo get_string('runsynccronstart', 'tool_totara_sync');
 
-tool_totara_sync_cron();
+tool_totara_sync_cron(true);
 
 echo get_string('runsynccronend', 'tool_totara_sync').PHP_EOL;

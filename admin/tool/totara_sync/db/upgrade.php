@@ -116,5 +116,12 @@ function xmldb_tool_totara_sync_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2013031400, 'tool', 'totara_sync');
     }
 
+    if ($oldversion < 2013092000) {
+        // Set the lastnotify flag so emails with entire log file don't get sent out on first run.
+        set_config('lastnotify', time(), 'totara_sync');
+
+        upgrade_plugin_savepoint(true, 2013092000, 'tool', 'totara_sync');
+    }
+
     return true;
 }

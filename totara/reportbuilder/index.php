@@ -30,6 +30,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/report_forms.php');
+require_once($CFG->dirroot . '/totara/core/lib/scheduler.php');
 
 $id = optional_param('id', null, PARAM_INT); // id for delete report
 $d = optional_param('d', false, PARAM_BOOL); // delete record?

@@ -49,7 +49,7 @@ if ($execute) {
     add_to_log(SITEID, 'totara_sync', 'Execute Sync', 'admin/syncexecute.php');
     $msg = get_string('runsynccronstart', 'tool_totara_sync');
     $msg .= get_string('runsynccronend', 'tool_totara_sync');
-    if (!($succeed = tool_totara_sync_cron())) {
+    if (!($succeed = tool_totara_sync_cron(true))) {
         $msg .= ' ' . get_string('runsynccronendwithproblem', 'tool_totara_sync');
     }
     $url = new moodle_url('/admin/tool/totara_sync/admin/synclog.php');

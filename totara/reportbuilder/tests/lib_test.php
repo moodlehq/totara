@@ -30,6 +30,7 @@ if (!defined('MOODLE_INTERNAL')) {
 
 global $CFG;
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/totara/core/lib/scheduler.php');
 
 class reportbuilderlib_test extends advanced_testcase {
 

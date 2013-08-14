@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die;
 define('TOTARA_SYNC_DBROWS', 10000);
 define('FILE_ACCESS_DIRECTORY', 0);
 define('FILE_ACCESS_UPLOAD', 1);
+define('TOTARA_SYNC_LOGTYPE_MAX_NOTIFICATIONS', 50);
 
 /**
  * Finds the run id of the latest sync run
@@ -46,17 +47,36 @@ function latest_runid() {
 }
 
 /**
-* Run the cron for syncing Totara elements with external sources
-*
-* This can be run separately from the main cron via run_cron.php
-*
-* @access public
-* @return void
-*/
-function tool_totara_sync_cron() {
+ * Run the cron for syncing Totara elements with external sources
+ *
+ * This can be run separately from the main cron via run_cron.php
+ *
+ * @param boolean $forcerun force sync to run, ignoring configured schedule
+ * @access public
+ * @return void
+ */
+function tool_totara_sync_cron($forcerun=false) {
     global $CFG, $OUTPUT;
 
-    //first run through the sanity checks
+    if (!$forcerun) {
+        // Check if the time is ripe for the sync to run.
+        $config = get_config('totara_sync');
+        if (empty($config->cronenable)) {
+            return false;
+        }
+        if (!empty($config->nextcron) && $config->nextcron > time()) {
+            // Sync should not be run yet.
+            return false;
+        } else {
+            // Set time for next run and allow to proceed.
+            require_once($CFG->dirroot . '/totara/core/lib/scheduler.php');
+            $scheduler = new scheduler($config, array('nextevent' => 'nextcron'));
+            $scheduler->next();
+            set_config('nextcron', $scheduler->get_scheduled_time(), 'totara_sync');
+        }
+    }
+
+    // First run through the sanity checks.
     $configured = true;
 
     $fileaccess = get_config('totara_sync', 'fileaccess');
@@ -118,6 +138,7 @@ function tool_totara_sync_cron() {
 
         $element->get_source()->drop_table();
     }
+    totara_sync_notify();
 
     return $status;
 }
@@ -291,6 +312,79 @@ function totara_sync_bulk_insert($table, $datarows) {
     }
 
     unset($chunked_datarows);
+
+    return true;
+}
+
+/**
+ * Notify admin users or admin user of any sync failures since last notification.
+ *
+ * Note that this function must be only executed from the cron script
+ *
+ * @return bool true if executed, false if not
+ */
+function totara_sync_notify() {
+    global $CFG, $DB;
+
+    $now = time();
+    $dateformat = get_string('strftimedateseconds', 'langconfig');
+    $notifyemails = get_config('totara_sync', 'notifymailto');
+    $notifyemails = !empty($notifyemails) ? explode(',', $notifyemails) : array();
+    $notifytypes = get_config('totara_sync', 'notifytypes');
+    $notifytypes = !empty($notifytypes) ? explode(',', $notifytypes) : array();
+
+    if (empty($notifyemails) || empty($notifytypes)) {
+        set_config('lastnotify', $now, 'totara_sync');
+        return false;
+    }
+
+    // The same users as login failures.
+    if (!$lastnotify = get_config('totara_sync', 'lastnotify')) {
+        $lastnotify = 0;
+    }
+
+    // Get most recent log messages of type.
+    list($sqlin, $params) = $DB->get_in_or_equal($notifytypes);
+    $params = array_merge($params, array($lastnotify));
+    $logitems = $DB->get_records_select('totara_sync_log', "logtype {$sqlin} AND time > ?", $params,
+                                        'time DESC', '*', 0, TOTARA_SYNC_LOGTYPE_MAX_NOTIFICATIONS);
+    if (!$logitems) {
+        // Nothing to report.
+        return true;
+    }
+
+    // Build email message.
+    $logcount = count($logitems);
+    $sitename = get_site();
+    $sitename = format_string($sitename->fullname);
+    $notifytypes_str = array_map(create_function('$type', "return get_string(\$type.'plural', 'tool_totara_sync');"), $notifytypes);
+    $subject = get_string('notifysubject', 'tool_totara_sync', $sitename);
+
+    $a = new stdClass();
+    $a->logtypes = implode(', ', $notifytypes_str);
+    $a->count = $logcount;
+    $a->since = date_format_string($lastnotify, $dateformat);
+    $message = get_string('notifymessagestart', 'tool_totara_sync', $a);
+    $message .= "\n\n";
+    foreach ($logitems as $logentry) {
+        $logentry->time = date_format_string($logentry->time, $dateformat);
+        $logentry->logtype = get_string($logentry->logtype, 'tool_totara_sync');
+        $message .= get_string('notifymessage', 'tool_totara_sync', $logentry) . "\n\n";
+    }
+    $message .= "\n" . get_string('viewsyncloghere', 'tool_totara_sync',
+            $CFG->wwwroot . '/admin/tool/totara_sync/admin/synclog.php');
+
+    // Send emails.
+    mtrace("\n{$logcount} relevant totara sync log messages since " .
+            date_format_string($lastnotify, $dateformat)) . ". Sending notifications...";
+    $supportuser = generate_email_supportuser();
+    foreach ($notifyemails as $emailaddress) {
+        $userto = totara_generate_email_user(trim($emailaddress));
+        email_to_user($userto, $supportuser, $subject, $message);
+    }
+
+    // Update lastnotify with current time.
+    set_config('lastnotify', $now, 'totara_sync');
 
     return true;
 }

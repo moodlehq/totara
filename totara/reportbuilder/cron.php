@@ -24,6 +24,7 @@
 
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/groupslib.php');
+require_once($CFG->dirroot . '/totara/core/lib/scheduler.php');
 
 /**
  * Run the cron functions required by report builder

@@ -47,7 +47,7 @@ class totara_sync_elements_test extends PHPUnit_Framework_TestCase {
         $suffix = '/test/csv';
         $suffixos = str_replace('/', DIRECTORY_SEPARATOR, $suffix);
         $paths = array(__DIR__ => array(__DIR__ . $suffixos, true),
-            '/pathmustnotexist' => array('/pathmustnotexist' . $suffix, true),
+            '/pathmustnotexist' => array('/pathmustnotexist' . $suffix, false),
             '/path$not valid'=> array('/path$not valid' . $suffix, false),
             'c:\\pathmustnotexists' => array('c:\\pathmustnotexists' . $suffix, false)
         );
@@ -61,7 +61,7 @@ class totara_sync_elements_test extends PHPUnit_Framework_TestCase {
         $form = new totara_sync_config_form();
         foreach ($paths as $path => $expected) {
             $source->filesdir = $path;
-            $valid = $form->validation(array('filesdir' => $path), null);
+            $valid = $form->validation(array('fileaccess' => FILE_ACCESS_DIRECTORY, 'filesdir' => $path), null);
             $valid = empty($valid);
 
             $this->assertEquals($expected[0], $source->get_canonical_filesdir($suffix));

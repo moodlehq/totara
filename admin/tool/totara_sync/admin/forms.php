@@ -26,7 +26,7 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
-require_once($CFG->libdir.'/formslib.php');
+require_once($CFG->libdir . '/formslib.php');
 
 /**
  * Formslib template for the element settings form
@@ -114,20 +114,45 @@ class totara_sync_source_settings_form extends moodleform {
  */
 class totara_sync_config_form extends moodleform {
     function definition() {
-        $mform =& $this->_form;
+        global $CFG;
 
-        $dir = get_string('fileaccess_directory', 'tool_totara_sync');
-        $upl = get_string('fileaccess_upload', 'tool_totara_sync');
-        $mform->addElement('select', 'fileaccess', get_string('fileaccess', 'tool_totara_sync'),
-            array(FILE_ACCESS_DIRECTORY => $dir, FILE_ACCESS_UPLOAD => $upl));
-        $mform->setType('fileaccess', PARAM_INT);
-        $mform->setDefault('fileaccess', $dir);
-        $mform->addHelpButton('fileaccess', 'fileaccess', 'tool_totara_sync');
-        if (get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
+        $mform = $this->_form;
+
+        // File access.
+        if (has_capability('tool/totara_sync:setfileaccess', context_system::instance())) {
+            $mform->addElement('header', 'fileheading', get_string('files', 'tool_totara_sync'));
+            $dir = get_string('fileaccess_directory', 'tool_totara_sync');
+            $upl = get_string('fileaccess_upload', 'tool_totara_sync');
+            $mform->addElement('select', 'fileaccess', get_string('fileaccess', 'tool_totara_sync'),
+                array(FILE_ACCESS_DIRECTORY => $dir, FILE_ACCESS_UPLOAD => $upl));
+            $mform->setType('fileaccess', PARAM_INT);
+            $mform->setDefault('fileaccess', $dir);
+            $mform->addHelpButton('fileaccess', 'fileaccess', 'tool_totara_sync');
             $mform->addElement('text', 'filesdir', get_string('filesdir', 'tool_totara_sync'), array('size' => 50));
             $mform->setType('filesdir', PARAM_TEXT);
             $mform->disabledIf('filesdir', 'fileaccess', 'eq', FILE_ACCESS_UPLOAD);
         }
+
+        // Notifications.
+        $mform->addElement('header', 'notificationheading', get_string('notifications', 'tool_totara_sync'));
+        $mform->addElement('checkbox', 'notifytypes[error]', get_string('notifytypes', 'tool_totara_sync'),
+                get_string('errorplural', 'tool_totara_sync'));
+        $mform->addElement('checkbox', 'notifytypes[warn]', '', get_string('warnplural', 'tool_totara_sync'));
+
+        $mform->addElement('text', 'notifymailto', get_string('notifymailto', 'tool_totara_sync'));
+        $mform->setType('notifymailto', PARAM_TEXT);
+        $mform->setDefault('notifymailto', $CFG->supportemail);
+        $mform->addHelpButton('notifymailto', 'notifymailto', 'tool_totara_sync');
+        $mform->setExpanded('notificationheading');
+
+        // Schedule.
+        $mform->addElement('header', 'scheduleheading', get_string('schedule', 'tool_totara_sync'));
+        $mform->addElement('advcheckbox', 'cronenable', get_string('enablescheduledsync', 'tool_totara_sync'));
+        $mform->setDefault('cronenable', 1);
+        $mform->addElement('scheduler', 'schedulegroup', get_string('schedule', 'tool_totara_sync'));
+        $mform->disabledIf('schedulegroup', 'cronenable', 'notchecked');
+        $mform->setExpanded('scheduleheading');
+
         $this->add_action_buttons(false);
     }
 
@@ -145,9 +170,26 @@ class totara_sync_config_form extends moodleform {
             $pattern = '/^[a-z0-9\/\.\-_]{1,}$/i';
         }
 
-        if (isset($data['filesdir']) && !preg_match($pattern, $data['filesdir'])) {
-            $errors['filesdir'] = get_string('pathformerror', 'tool_totara_sync');
+        if ($data['fileaccess'] == FILE_ACCESS_DIRECTORY && isset($data['filesdir'])) {
+            if (!preg_match($pattern, $data['filesdir'])) {
+                $errors['filesdir'] = get_string('pathformerror', 'tool_totara_sync');
+            } else if (!is_dir($data['filesdir'])) {
+                $errors['filesdir'] = get_string('notadirerror', 'tool_totara_sync', $data['filesdir']);
+            } else if (!is_writable($data['filesdir'])) {
+                $errors['filesdir'] = get_string('readonlyerror', 'tool_totara_sync', $data['filesdir']);
+            }
         }
+
+        if (!empty($data['notifymailto'])) {
+            $emailaddresses = array_map('trim', explode(',', $data['notifymailto']));
+            foreach ($emailaddresses as $mailaddress) {
+                if (!validate_email($mailaddress)) {
+                    $errors['notifymailto'] = get_string('invalidemailaddress', 'tool_totara_sync', format_string($mailaddress));
+                    break;
+                }
+            }
+        }
+
         return $errors;
     }
 }

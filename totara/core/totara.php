@@ -677,9 +677,10 @@ function totara_print_report_manager() {
 function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $sqlclause=array()) {
     global $CFG, $DB, $USER, $PAGE, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_EXPORT_FILESYSTEM_OPTIONS;
 
-    require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
-    require_once($CFG->dirroot.'/calendar/lib.php');
-    require_once($CFG->dirroot.'/totara/reportbuilder/scheduled_forms.php');
+    require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
+    require_once($CFG->dirroot . '/totara/core/lib/scheduler.php');
+    require_once($CFG->dirroot . '/calendar/lib.php');
+    require_once($CFG->dirroot . '/totara/reportbuilder/scheduled_forms.php');
 
 
     $sql = "SELECT rbs.*, rb.fullname
@@ -2006,4 +2007,21 @@ function totara_setup() {
         $CFG->moodlepageclassfile = $CFG->dirroot.'/totara/core/pagelib.php';
         $CFG->moodlepageclass = 'totara_page';
     }
+}
+
+/**
+ * Generate a user object to which an email can be sent with email_to_user
+ *
+ * @param string emailaddress
+ * @return object email user object
+ */
+function totara_generate_email_user($emailaddress) {
+    $emailuser = new stdClass();
+    $emailuser->id = 0;
+    $emailuser->email = $emailaddress;
+    $emailuser->firstname = $emailaddress;
+    $emailuser->lastname = '';
+    $emailuser->maildisplay = true;
+
+    return $emailuser;
 }

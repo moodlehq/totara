@@ -26,7 +26,6 @@ require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.ph
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->dirroot.'/admin/tool/totara_sync/lib.php');
-require_once($CFG->dirroot.'/admin/tool/totara_sync/admin/forms.php');
 
 admin_externalpage_setup('managesyncelements');
 
@@ -46,17 +45,6 @@ if ($enable = optional_param('enable', null, PARAM_TEXT)) {
     if (has_capability("tool/totara_sync:manage{$disable}", $systemcontext) && !empty($elements[$disable])) {
         $elements[$disable]->disable();
         totara_set_notification(get_string('elementdisabled', 'tool_totara_sync'), $url, array('class'=>'notifysuccess'));
-    }
-}
-
-$form = new totara_sync_config_form();
-if (has_capability('tool/totara_sync:setfileaccess', $systemcontext)) {
-    if ($fdata = $form->get_data()) {
-        set_config('fileaccess', $fdata->fileaccess, 'totara_sync');
-        if (isset($fdata->filesdir)) {
-            set_config('filesdir', $fdata->filesdir, 'totara_sync');
-        }
-        totara_set_notification(get_string('settingssaved', 'tool_totara_sync'), $url, array('class'=>'notifysuccess'));
     }
 }
 
@@ -110,24 +98,5 @@ foreach ($elements as $ename => $eobj) {
 $table->finish_html();
 
 $fileaccess = get_config('totara_sync', 'fileaccess');
-$form->set_data((object) array('fileaccess' => $fileaccess));
-
-if ($fileaccess === (string)FILE_ACCESS_DIRECTORY) {
-    $filesdir = get_config('totara_sync', 'filesdir');
-    // Always check accessibility of target folder, not only on save.
-    // Also, allow save data even when folder not accessible.
-    // Not sure why... May be for some removable media that is not always mounted.
-    if (!is_dir($filesdir)) {
-        $form->_form->setElementError('filesdir', get_string('notadirerror', 'tool_totara_sync', $filesdir));
-    } else if (!is_writable($filesdir)) {
-        $form->_form->setElementError('filesdir', get_string('readonlyerror', 'tool_totara_sync', $filesdir));
-    }
-
-    $form->set_data((object) array('filesdir' => $filesdir));
-}
-
-if (has_capability('tool/totara_sync:setfileaccess', $systemcontext)) {
-    $form->display();
-}
 
 echo $OUTPUT->footer();

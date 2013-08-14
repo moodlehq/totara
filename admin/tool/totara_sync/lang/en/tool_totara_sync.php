@@ -40,10 +40,6 @@ $string['totara_sync:deletesynclog'] = 'Clear the sync logs';
 $string['settingssaved'] = 'Settings saved';
 $string['elementenabled'] = 'Element enabled';
 $string['elementdisabled'] = 'Element disabled';
-$string['filesdir'] = 'Files directory';
-$string['fileaccess'] = 'File Access';
-$string['fileaccess_directory'] = 'Directory Check';
-$string['fileaccess_upload'] = 'Upload Files';
 $string['uploadsuccess'] = 'Sync files uploaded successfully';
 $string['uploaderror'] = 'The was a problem with uploading the file(s)...';
 $string['uploadaccessdenied'] = 'Your Totara Sync configuration is set to look for files in a server directory, not to use uploaded files. To change this go {$a}';
@@ -285,7 +281,6 @@ see <a href=\"http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2\">http://en.wikipe
 $string['fileaccess_help'] = '**Directory**: This option allows you to specify a directory on the server to be checked for sync files automatically
 
 **Upload**: This option requires you to upload files via the \'upload sync files\' page under sources in site administration';
-
 //Delimiter strings
 $string['delimiter'] = 'Delimiter';
 $string['comma'] = 'Comma (,)';
@@ -293,4 +288,26 @@ $string['semicolon'] = 'Semi-colon (;)';
 $string['colon'] = 'Colon (:)';
 $string['tab'] = 'Tab (\t)';
 $string['pipe'] = 'Pipe (|)';
+
+$string['errorplural'] = 'Errors';
+$string['notifymessage'] = 'Server time: {$a->time}, Element: {$a->element}, Action: {$a->action}, {$a->logtype}: {$a->info}';
+$string['notifymessagestart'] = '{$a->count} new Totara sync log messages ({$a->logtypes}) since {$a->since}. See below for most recent messages:';
+$string['notifysubject'] = '{$a} :: Totara sync notification';
+$string['syncnotifications'] = 'Totara sync notifications';
+$string['viewsyncloghere'] = 'For more information, view the sync log at {$a}';
+$string['warnplural'] = 'Warnings';
+$string['enablescheduledsync'] = 'Enable scheduled syncing';
+$string['files'] = 'Files';
+$string['filesdir'] = 'Files directory';
+$string['fileaccess'] = 'File Access';
+$string['fileaccess_directory'] = 'Directory Check';
+$string['fileaccess_upload'] = 'Upload Files';
+$string['generalsettings'] = 'General settings';
+$string['invalidemailaddress'] = 'Invalid email address \'{$a}\'';
+$string['notifications'] = 'Notifications';
+$string['notifymailto'] = 'Email notifications to';
+$string['notifymailto_help'] = 'A comma-separated list of email addresses so which nofifications should be sent.';
+$string['notifytypes'] = 'Send nofications for';
+$string['schedule'] = 'Schedule';
+
 ?>
