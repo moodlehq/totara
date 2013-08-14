@@ -29,7 +29,7 @@ if (!defined('MOODLE_INTERNAL')) {
 global $CFG;
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/cron.php');
-require_once($CFG->dirroot . '/lib/phpunit/classes/data_generator.php');
+require_once($CFG->libdir . '/testing/generator/data_generator.php');
 
 abstract class reportcache_advanced_testcase extends advanced_testcase {
     protected static $generator = null;
@@ -84,11 +84,11 @@ abstract class reportcache_advanced_testcase extends advanced_testcase {
     /**
      * Get data generator
      * @static Late static binding of overloaded generator
-     * @return reportcache_phpunit_data_generator
+     * @return reportcache_testing_data_generator
      */
     public static function getDataGenerator() {
         if (is_null(static::$generator)) {
-            static::$generator = new reportcache_phpunit_data_generator();
+            static::$generator = new reportcache_testing_data_generator();
         }
         return static::$generator;
     }
@@ -97,7 +97,7 @@ abstract class reportcache_advanced_testcase extends advanced_testcase {
  * This class intended to generate different mock entities
  *
  */
-class reportcache_phpunit_data_generator extends phpunit_data_generator {
+class reportcache_testing_data_generator extends testing_data_generator {
     protected static $ind = 0;
     /**
      * Add particular mock params to cohort rules

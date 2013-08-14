@@ -49,7 +49,7 @@ class tool_installaddon_installer_test extends advanced_testcase {
         $this->assertEquals(3, count($site));
         $this->assertSame('Nasty site', $site['fullname']);
         $this->assertSame('file:///etc/passwd', $site['url']);
-        $this->assertSame("2.5'; DROP TABLE mdl_user; --", $site['majorversion']);
+        $this->assertSame("2.5'; DROP TABLE {user}; --", $site['majorversion']);
     }
 
     public function test_extract_installfromzip_file() {
@@ -79,14 +79,14 @@ class tool_installaddon_installer_test extends advanced_testcase {
         $installer = testable_tool_installaddon_installer::instance();
 
         $request = base64_encode(json_encode(array(
-            'name' => '<h1>Stamp collection</h1>"; DELETE FROM mdl_users; --',
+            'name' => '<h1>Stamp collection</h1>"; DELETE FROM {users}; --',
             'component' => 'mod_stampcoll',
             'version' => 2013032800,
         )));
         $request = $installer->testable_decode_remote_request($request);
         $this->assertTrue(is_object($request));
         // One, my little hobbit, never trusts the input parameters!
-        $this->assertEquals('Stamp collection&quot;; DELETE FROM mdl_users; --', $request->name);
+        $this->assertEquals('Stamp collection&quot;; DELETE FROM {users}; --', $request->name);
         $this->assertEquals('mod_stampcoll', $request->component);
         $this->assertEquals(2013032800, $request->version);
 
@@ -159,7 +159,7 @@ class testable_tool_installaddon_installer extends tool_installaddon_installer {
     }
 
     public function get_site_major_version() {
-        return "2.5'; DROP TABLE mdl_user; --";
+        return "2.5'; DROP TABLE {user}; --";
     }
 
     public function testable_decode_remote_request($request) {
