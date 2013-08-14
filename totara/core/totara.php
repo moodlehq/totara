@@ -591,12 +591,14 @@ function totara_add_icon_picker(&$mform, $action, $type, $currenticon='default',
             }
             $mform->addElement('select', 'icon', get_string('icon', 'totara_core'), $icons);
             $mform->setDefault('icon', $currenticon);
+            $mform->setType('icon', PARAM_TEXT);
         }
     } else {
         $buttonhtml = '';
         if ($action=='add' || $action=='edit') {
             $buttonhtml = html_writer::empty_tag('input', array('type' => 'button', 'value' => get_string('chooseicon', 'totara_program'), 'id' => 'show-icon-dialog'));
             $mform->addElement('hidden', 'icon');
+            $mform->setType('icon', PARAM_TEXT);
         }
         $mform->addElement('static', 'currenticon', get_string('currenticon', 'totara_core'), $iconhtml . $buttonhtml);
     }
@@ -1619,4 +1621,27 @@ function encrypt_data($plaintext, $key = '') {
     $rsa->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
     $ciphertext = $rsa->encrypt($plaintext);
     return $ciphertext;
+}
+
+/**
+ * Fix badges and completion capabilities when upgrading from Totara 2.4.
+ *
+ * @return void
+ */
+function totara_fix_existing_capabilities() {
+    global $DB;
+
+    // Get all existing totara_core capabilities in the database.
+    $cachedcaps = get_cached_capabilities('totara_core');
+    if ($cachedcaps) {
+        foreach ($cachedcaps as $cachedcap) {
+            // If it is a moodle capability, update its component.
+            if (strpos($cachedcap->name, 'moodle') === 0) {
+                $updatecap = new stdClass();
+                $updatecap->id = $cachedcap->id;
+                $updatecap->component = 'moodle';
+                $DB->update_record('capabilities', $updatecap);
+            }
+        }
+    }
 }

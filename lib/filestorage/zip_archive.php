@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Implementation of zip file archive.
  *
@@ -28,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once("$CFG->libdir/filestorage/file_archive.php");
 
 /**
- * zip file archive class.
+ * Zip file archive class.
  *
  * @package   core_files
  * @category  files
@@ -55,8 +54,14 @@ class zip_archive extends file_archive {
     /** @var bool was this archive modified? */
     protected $modified = false;
 
-    /** @var array unicode decoding array, created by decoding zip file*/
+    /** @var array unicode decoding array, created by decoding zip file */
     protected $namelookup = null;
+
+    /** @var string base64 encoded contents of empty zip file */
+    protected static $emptyzipcontent = 'UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==';
+
+    /** @var bool ugly hack for broken empty zip handling in < PHP 5.3.10 */
+    protected $emptyziphack = false;
 
     /**
      * Create new zip_archive instance.
@@ -66,7 +71,7 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Open or create archive (depending on $mode)
+     * Open or create archive (depending on $mode).
      *
      * @todo MDL-31048 return error message
      * @param string $archivepathname
@@ -93,6 +98,17 @@ class zip_archive extends file_archive {
 
         $result = $this->za->open($archivepathname, $flags);
 
+        if ($flags == 0 and $result === ZIPARCHIVE::ER_NOZIP and filesize($archivepathname) === 22) {
+            // Legacy PHP versions < 5.3.10 can not deal with empty zip archives.
+            if (file_get_contents($archivepathname) === base64_decode(self::$emptyzipcontent)) {
+                if ($temp = make_temp_directory('zip')) {
+                    $this->emptyziphack = tempnam($temp, 'zip');
+                    $this->za = new ZipArchive();
+                    $result = $this->za->open($this->emptyziphack, ZIPARCHIVE::CREATE);
+                }
+            }
+        }
+
         if ($result === true) {
             if (file_exists($archivepathname)) {
                 $this->archivepathname = realpath($archivepathname);
@@ -102,9 +118,21 @@ class zip_archive extends file_archive {
             return true;
 
         } else {
+            $message = 'Unknown error.';
+            switch ($result) {
+                case ZIPARCHIVE::ER_EXISTS: $message = 'File already exists.'; break;
+                case ZIPARCHIVE::ER_INCONS: $message = 'Zip archive inconsistent.'; break;
+                case ZIPARCHIVE::ER_INVAL: $message = 'Invalid argument.'; break;
+                case ZIPARCHIVE::ER_MEMORY: $message = 'Malloc failure.'; break;
+                case ZIPARCHIVE::ER_NOENT: $message = 'No such file.'; break;
+                case ZIPARCHIVE::ER_NOZIP: $message = 'Not a zip archive.'; break;
+                case ZIPARCHIVE::ER_OPEN: $message = 'Can\'t open file.'; break;
+                case ZIPARCHIVE::ER_READ: $message = 'Read error.'; break;
+                case ZIPARCHIVE::ER_SEEK: $message = 'Seek error.'; break;
+            }
+            debugging($message.': '.$archivepathname, DEBUG_DEVELOPER);
             $this->za = null;
             $this->archivepathname = null;
-            // TODO: maybe we should return some error info
             return false;
         }
     }
@@ -140,7 +168,7 @@ class zip_archive extends file_archive {
 
         if (!isset($this->namelookup[$localname])) {
             $name = $localname;
-            // This should not happen
+            // This should not happen.
             if (!empty($this->encoding) and $this->encoding !== 'utf-8') {
                 $name = @textlib::convert($name, $this->encoding, 'utf-8');
             }
@@ -153,13 +181,38 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Close archive
+     * Close archive, write changes to disk.
      *
      * @return bool success
      */
     public function close() {
         if (!isset($this->za)) {
             return false;
+        }
+
+        if ($this->emptyziphack) {
+            $this->za->close();
+            $this->za = null;
+            $this->mode = null;
+            $this->namelookup = null;
+            $this->modified = false;
+            @unlink($this->emptyziphack);
+            $this->emptyziphack = false;
+            return true;
+
+        } else if ($this->za->numFiles == 0) {
+            // PHP can not create empty archives, so let's fake it.
+            $this->za->close();
+            $this->za = null;
+            $this->mode = null;
+            $this->namelookup = null;
+            $this->modified = false;
+            @unlink($this->archivepathname);
+            $data = base64_decode(self::$emptyzipcontent);
+            if (!file_put_contents($this->archivepathname, $data)) {
+                return false;
+            }
+            return true;
         }
 
         $res = $this->za->close();
@@ -176,7 +229,7 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Returns file stream for reading of content
+     * Returns file stream for reading of content.
      *
      * @param int $index index of file
      * @return resource|bool file handle or false if error
@@ -195,7 +248,7 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Returns file information
+     * Returns file information.
      *
      * @param int $index index of file
      * @return stdClass|bool info object or false if error
@@ -233,7 +286,7 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Returns array of info about all files in archive
+     * Returns array of info about all files in archive.
      *
      * @return array of file infos
      */
@@ -256,7 +309,7 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Returns number of files in archive
+     * Returns number of files in archive.
      *
      * @return int number of files
      */
@@ -269,42 +322,40 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Add file into archive
+     * Add file into archive.
      *
      * @param string $localname name of file in archive
      * @param string $pathname location of file
      * @return bool success
      */
     public function add_file_from_pathname($localname, $pathname) {
+        if ($this->emptyziphack) {
+            $this->close();
+            $this->open($this->archivepathname, file_archive::OVERWRITE, $this->encoding);
+        }
+
         if (!isset($this->za)) {
             return false;
         }
 
         if ($this->archivepathname === realpath($pathname)) {
-            // do not add self into archive
+            // Do not add self into archive.
+            return false;
+        }
+
+        if (!is_readable($pathname) or is_dir($pathname)) {
             return false;
         }
 
         if (is_null($localname)) {
             $localname = clean_param($pathname, PARAM_PATH);
         }
-        $localname = trim($localname, '/'); // no leading slashes in archives
+        $localname = trim($localname, '/'); // No leading slashes in archives!
         $localname = $this->mangle_pathname($localname);
 
         if ($localname === '') {
-            //sorry - conversion failed badly
+            // Sorry - conversion failed badly.
             return false;
-        }
-
-        if (!check_php_version('5.2.8')) {
-            // workaround for open file handles problem, ZipArchive uses file locking in order to prevent file modifications before the close() (strange, eh?)
-            if ($this->count() > 0 and $this->count() % 500 === 0) {
-                $this->close();
-                $res = $this->open($this->archivepathname, file_archive::OPEN, $this->encoding);
-                if ($res !== true) {
-                    print_error('cannotopenzip');
-                }
-            }
         }
 
         if (!$this->za->addFile($pathname, $localname)) {
@@ -315,27 +366,32 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Add content of string into archive
+     * Add content of string into archive.
      *
      * @param string $localname name of file in archive
      * @param string $contents contents
      * @return bool success
      */
     public function add_file_from_string($localname, $contents) {
+        if ($this->emptyziphack) {
+            $this->close();
+            $this->open($this->archivepathname, file_archive::OVERWRITE, $this->encoding);
+        }
+
         if (!isset($this->za)) {
             return false;
         }
 
-        $localname = trim($localname, '/'); // no leading slashes in archives
+        $localname = trim($localname, '/'); // No leading slashes in archives!
         $localname = $this->mangle_pathname($localname);
 
         if ($localname === '') {
-            //sorry - conversion failed badly
+            // Sorry - conversion failed badly.
             return false;
         }
 
         if ($this->usedmem > 2097151) {
-            // this prevents running out of memory when adding many large files using strings
+            // This prevents running out of memory when adding many large files using strings.
             $this->close();
             $res = $this->open($this->archivepathname, file_archive::OPEN, $this->encoding);
             if ($res !== true) {
@@ -352,12 +408,17 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Add empty directory into archive
+     * Add empty directory into archive.
      *
      * @param string $localname name of file in archive
      * @return bool success
      */
     public function add_directory($localname) {
+        if ($this->emptyziphack) {
+            $this->close();
+            $this->open($this->archivepathname, file_archive::OVERWRITE, $this->encoding);
+        }
+
         if (!isset($this->za)) {
             return false;
         }
@@ -365,7 +426,7 @@ class zip_archive extends file_archive {
         $localname = $this->mangle_pathname($localname);
 
         if ($localname === '/') {
-            //sorry - conversion failed badly
+            // Sorry - conversion failed badly.
             return false;
         }
 
@@ -379,7 +440,7 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Returns current file info
+     * Returns current file info.
      *
      * @return stdClass
      */
@@ -392,7 +453,7 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Returns the index of current file
+     * Returns the index of current file.
      *
      * @return int current file index
      */
@@ -401,14 +462,14 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Moves forward to next file
+     * Moves forward to next file.
      */
     public function next() {
         $this->pos++;
     }
 
     /**
-     * Rewinds back to the first file
+     * Rewinds back to the first file.
      */
     public function rewind() {
         $this->pos = 0;
@@ -432,6 +493,11 @@ class zip_archive extends file_archive {
      * @return void
      */
     protected function init_namelookup() {
+        if ($this->emptyziphack) {
+            $this->namelookup = array();
+            return;
+        }
+
         if (!isset($this->za)) {
             return;
         }
@@ -581,6 +647,10 @@ class zip_archive extends file_archive {
      * @return bool success, modifies the file contents
      */
     protected function fix_utf8_flags() {
+        if ($this->emptyziphack) {
+            return true;
+        }
+
         if (!file_exists($this->archivepathname)) {
             return true;
         }
@@ -703,7 +773,7 @@ class zip_archive extends file_archive {
     }
 
     /**
-     * Parse file header
+     * Parse file header.
      * @internal
      * @param string $data
      * @param array $centralend

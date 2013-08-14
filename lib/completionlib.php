@@ -201,7 +201,7 @@ function completion_can_view_data($userid, $course = null) {
         return true;
     }
 
-    if (isset($course->id)) {
+    if ($course->id) {
         $coursecontext = context_course::instance($course->id);
     } else {
         $coursecontext = context_system::instance();

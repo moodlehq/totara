@@ -6,35 +6,23 @@ if (!defined('MOODLE_INTERNAL')) {
 
 require_once($CFG->libdir.'/formslib.php');
 require_once($CFG->libdir.'/questionlib.php');
+require_once($CFG->libdir. '/coursecatlib.php');
 
 class delete_category_form extends moodleform {
 
     var $_category;
 
     function definition() {
-        global $CFG, $DB;
+        $mform = & $this->_form;
+        $this->_category = $this->_customdata;
+        $categorycontext = context_coursecat::instance($this->_category->id);
 
-        $mform    =& $this->_form;
-        $category = $this->_customdata;
-        $categorycontext = context_coursecat::instance($category->id);
-        $this->_category = $category;
+        // Check permissions, to see if it OK to give the option to delete
+        // the contents, rather than move elsewhere.
+        $candeletecontent = $this->_category->can_delete_full();
 
-    /// Check permissions, to see if it OK to give the option to delete
-    /// the contents, rather than move elsewhere.
-    /// Are there any subcategories of this one, can they be deleted?
-        $candeletecontent = true;
-        $tocheck = get_child_categories($category->id);
-        $containscategories = !empty($tocheck);
-        $categoryids = array($category->id);
-        while (!empty($tocheck)) {
-            $checkcat = array_pop($tocheck);
-            $childcategoryids[] = $checkcat->id;
-            $tocheck = $tocheck + get_child_categories($checkcat->id);
-            $chcontext = context_coursecat::instance($checkcat->id);
-            if ($candeletecontent && !has_capability('moodle/category:manage', $chcontext)) {
-                $candeletecontent = false;
-            }
-        }
+        // Get the list of categories we might be able to move to.
+        $displaylist = $this->_category->move_content_targets_list();
 
     /// Are there any courses in here, can they be deleted?
         list($test, $params) = $DB->get_in_or_equal($categoryids);
@@ -80,7 +68,7 @@ class delete_category_form extends moodleform {
             make_categories_list($displaylist, $notused, $testcaps, $category->id);
         }
 
-    /// Now build the options.
+        // Now build the options.
         $options = array();
         if ($displaylist) {
             $options[0] = get_string('movecontentstoanothercategory');
@@ -88,10 +76,14 @@ class delete_category_form extends moodleform {
         if ($candeletecontent) {
             $options[1] = get_string('deleteallcannotundo');
         }
+        if (empty($options)) {
+            print_error('youcannotdeletecategory', 'error', 'index.php', $this->_category->get_formatted_name());
+        }
 
-    /// Now build the form.
-        $mform->addElement('header','general', get_string('categorycurrentcontents', '', format_string($category->name, true, array('context' => $categorycontext))));
+        // Now build the form.
+        $mform->addElement('header','general', get_string('categorycurrentcontents', '', $this->_category->get_formatted_name()));
 
+/* TODO: TOTARA CODE START
         if ($containscourses || $containscategories || $containsquestions || $containsprograms) {
             if (empty($options)) {
                 print_error('youcannotdeletecategory', 'error', 'index.php', format_string($category->name, true, array('context' => $categorycontext)));
@@ -130,21 +122,51 @@ class delete_category_form extends moodleform {
                 }
                 $mform->disabledIf('newparent', 'fulldelete', 'eq', '1');
             }
+TODO: TOTARA CODE END */
+        // Describe the contents of this category.
+        $contents = '';
+        if ($this->_category->has_children()) {
+            $contents .= '<li>' . get_string('subcategories') . '</li>';
+        }
+        if ($this->_category->has_courses()) {
+            $contents .= '<li>' . get_string('courses') . '</li>';
+        }
+        if (question_context_has_any_questions($categorycontext)) {
+            $contents .= '<li>' . get_string('questionsinthequestionbank') . '</li>';
+        }
+        if (!empty($contents)) {
+            $mform->addElement('static', 'emptymessage', get_string('thiscategorycontains'), html_writer::tag('ul', $contents));
         } else {
-            $mform->addElement('hidden', 'fulldelete', 1);
-            $mform->setType('fulldelete', PARAM_INT);
             $mform->addElement('static', 'emptymessage', '', get_string('deletecategoryempty'));
         }
 
-        $mform->addElement('hidden', 'delete');
-        $mform->setType('delete', PARAM_ALPHANUM);
+        // Give the options for what to do.
+        $mform->addElement('select', 'fulldelete', get_string('whattodo'), $options);
+        if (count($options) == 1) {
+            $optionkeys = array_keys($options);
+            $option = reset($optionkeys);
+            $mform->hardFreeze('fulldelete');
+            $mform->setConstant('fulldelete', $option);
+        }
+
+        if ($displaylist) {
+            $mform->addElement('select', 'newparent', get_string('movecategorycontentto'), $displaylist);
+            if (in_array($this->_category->parent, $displaylist)) {
+                $mform->setDefault('newparent', $this->_category->parent);
+            }
+            $mform->disabledIf('newparent', 'fulldelete', 'eq', '1');
+        }
+
+        $mform->addElement('hidden', 'deletecat');
+        $mform->setType('deletecat', PARAM_ALPHANUM);
         $mform->addElement('hidden', 'sure');
         $mform->setType('sure', PARAM_ALPHANUM);
-        $mform->setDefault('sure', md5(serialize($category)));
+        $mform->setDefault('sure', md5(serialize($this->_category)));
 
 //--------------------------------------------------------------------------------
         $this->add_action_buttons(true, get_string('delete'));
 
+        $this->set_data(array('deletecat' => $this->_category->id));
     }
 
 /// perform some extra moodle validation

@@ -29,13 +29,168 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/repository/lib.php');
+require_once($CFG->libdir . '/filestorage/stored_file.php');
 
 class filestoragelib_testcase extends advanced_testcase {
+
+    /**
+     * Files can be created from strings.
+     */
+    public function test_create_file_from_string() {
+        global $DB;
+
+        $this->resetAfterTest(true);
+
+        $this->assertEquals(0, $DB->count_records('files', array()));
+
+        $content = 'abcd';
+        $syscontext = context_system::instance();
+        $filerecord = array(
+            'contextid' => $syscontext->id,
+            'component' => 'core',
+            'filearea'  => 'unittest',
+            'itemid'    => 0,
+            'filepath'  => '/images/',
+            'filename'  => 'testfile.txt',
+        );
+        $pathhash = sha1('/'.$filerecord['contextid'].'/'.$filerecord['component'].'/'.$filerecord['filearea'].'/'.$filerecord['itemid'].$filerecord['filepath'].$filerecord['filename']);
+
+        $fs = get_file_storage();
+        $file = $fs->create_file_from_string($filerecord, $content);
+
+        $this->assertInstanceOf('stored_file', $file);
+        $this->assertSame(sha1($content), $file->get_contenthash());
+        $this->assertSame($pathhash, $file->get_pathnamehash());
+
+        $this->assertTrue($DB->record_exists('files', array('pathnamehash'=>$pathhash)));
+
+        $location = test_stored_file_inspection::get_pretected_pathname($file);
+
+        $this->assertFileExists($location);
+
+
+        // Verify the dir placeholder files are created.
+        $this->assertEquals(3, $DB->count_records('files', array()));
+        $this->assertTrue($DB->record_exists('files', array('pathnamehash'=>sha1('/'.$filerecord['contextid'].'/'.$filerecord['component'].'/'.$filerecord['filearea'].'/'.$filerecord['itemid'].'/.'))));
+        $this->assertTrue($DB->record_exists('files', array('pathnamehash'=>sha1('/'.$filerecord['contextid'].'/'.$filerecord['component'].'/'.$filerecord['filearea'].'/'.$filerecord['itemid'].$filerecord['filepath'].'.'))));
+
+
+        // Tests that missing content file is recreated.
+
+        unlink($location);
+        $this->assertFileNotExists($location);
+
+        $filerecord['filename'] = 'testfile2.txt';
+        $file2 = $fs->create_file_from_string($filerecord, $content);
+        $this->assertInstanceOf('stored_file', $file2);
+        $this->assertSame($file->get_contenthash(), $file2->get_contenthash());
+        $this->assertFileExists($location);
+
+        $this->assertEquals(4, $DB->count_records('files', array()));
+
+
+        // Test that borked content file is recreated.
+
+        $this->assertSame(2, file_put_contents($location, 'xx'));
+
+        $filerecord['filename'] = 'testfile3.txt';
+        $file3 = $fs->create_file_from_string($filerecord, $content);
+        $this->assertInstanceOf('stored_file', $file3);
+        $this->assertSame($file->get_contenthash(), $file3->get_contenthash());
+        $this->assertFileExists($location);
+
+        $this->assertSame($content, file_get_contents($location));
+        $this->assertDebuggingCalled();
+
+        $this->assertEquals(5, $DB->count_records('files', array()));
+    }
 
     /**
      * Local files can be added to the filepool
      */
     public function test_create_file_from_pathname() {
+        global $CFG, $DB;
+
+        $this->resetAfterTest(true);
+
+        $filecount = $DB->count_records('files', array());
+        $this->assertEquals(0, $filecount);
+
+        $filepath = $CFG->dirroot.'/lib/filestorage/tests/fixtures/testimage.jpg';
+        $syscontext = context_system::instance();
+        $filerecord = array(
+            'contextid' => $syscontext->id,
+            'component' => 'core',
+            'filearea'  => 'unittest',
+            'itemid'    => 0,
+            'filepath'  => '/images/',
+            'filename'  => 'testimage.jpg',
+        );
+        $pathhash = sha1('/'.$filerecord['contextid'].'/'.$filerecord['component'].'/'.$filerecord['filearea'].'/'.$filerecord['itemid'].$filerecord['filepath'].$filerecord['filename']);
+
+        $fs = get_file_storage();
+        $file = $fs->create_file_from_pathname($filerecord, $filepath);
+
+        $this->assertInstanceOf('stored_file', $file);
+        $this->assertSame(sha1_file($filepath), $file->get_contenthash());
+
+        $this->assertTrue($DB->record_exists('files', array('pathnamehash'=>$pathhash)));
+
+        $location = test_stored_file_inspection::get_pretected_pathname($file);
+
+        $this->assertFileExists($location);
+
+
+        // Verify the dir placeholder files are created.
+        $this->assertEquals(3, $DB->count_records('files', array()));
+        $this->assertTrue($DB->record_exists('files', array('pathnamehash'=>sha1('/'.$filerecord['contextid'].'/'.$filerecord['component'].'/'.$filerecord['filearea'].'/'.$filerecord['itemid'].'/.'))));
+        $this->assertTrue($DB->record_exists('files', array('pathnamehash'=>sha1('/'.$filerecord['contextid'].'/'.$filerecord['component'].'/'.$filerecord['filearea'].'/'.$filerecord['itemid'].$filerecord['filepath'].'.'))));
+
+
+        // Tests that missing content file is recreated.
+
+        unlink($location);
+        $this->assertFileNotExists($location);
+
+        $filerecord['filename'] = 'testfile2.jpg';
+        $file2 = $fs->create_file_from_pathname($filerecord, $filepath);
+        $this->assertInstanceOf('stored_file', $file2);
+        $this->assertSame($file->get_contenthash(), $file2->get_contenthash());
+        $this->assertFileExists($location);
+
+        $this->assertEquals(4, $DB->count_records('files', array()));
+
+
+        // Test that borked content file is recreated.
+
+        $this->assertSame(2, file_put_contents($location, 'xx'));
+
+        $filerecord['filename'] = 'testfile3.jpg';
+        $file3 = $fs->create_file_from_pathname($filerecord, $filepath);
+        $this->assertInstanceOf('stored_file', $file3);
+        $this->assertSame($file->get_contenthash(), $file3->get_contenthash());
+        $this->assertFileExists($location);
+
+        $this->assertSame(file_get_contents($filepath), file_get_contents($location));
+        $this->assertDebuggingCalled();
+
+        $this->assertEquals(5, $DB->count_records('files', array()));
+
+        // Test invalid file creation.
+
+        $filerecord['filename'] = 'testfile4.jpg';
+        try {
+            $fs->create_file_from_pathname($filerecord, $filepath.'nonexistent');
+            $this->fail('Exception expected when trying to add non-existent stored file.');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('file_exception', $e);
+        }
+    }
+
+    /**
+     * Tests get get file.
+     */
+    public function test_get_file() {
         global $CFG;
 
         $this->resetAfterTest(false);
@@ -50,26 +205,31 @@ class filestoragelib_testcase extends advanced_testcase {
             'filepath'  => '/images/',
             'filename'  => 'testimage.jpg',
         );
+        $pathhash = sha1('/'.$filerecord['contextid'].'/'.$filerecord['component'].'/'.$filerecord['filearea'].'/'.$filerecord['itemid'].$filerecord['filepath'].$filerecord['filename']);
 
         $fs = get_file_storage();
-        $fs->create_file_from_pathname($filerecord, $filepath);
+        $file = $fs->create_file_from_pathname($filerecord, $filepath);
 
-        $this->assertTrue($fs->file_exists($syscontext->id, 'core', 'unittest', 0, '/images/', 'testimage.jpg'));
+        $this->assertInstanceOf('stored_file', $file);
+        $this->assertEquals($syscontext->id, $file->get_contextid());
+        $this->assertEquals('core', $file->get_component());
+        $this->assertEquals('unittest', $file->get_filearea());
+        $this->assertEquals(0, $file->get_itemid());
+        $this->assertEquals('/images/', $file->get_filepath());
+        $this->assertEquals('testimage.jpg', $file->get_filename());
+        $this->assertEquals(filesize($filepath), $file->get_filesize());
+        $this->assertEquals($pathhash, $file->get_pathnamehash());
 
-        return $fs->get_file($syscontext->id, 'core', 'unittest', 0, '/images/', 'testimage.jpg');
+        return $file;
     }
 
     /**
      * Local images can be added to the filepool and their preview can be obtained
      *
-     * @depends test_create_file_from_pathname
+     * @depends test_get_file
      */
     public function test_get_file_preview(stored_file $file) {
         global $CFG;
-
-        if (empty($CFG->gdversion)) {
-            $this->markTestSkipped('GD extension is disabled');
-        }
 
         $this->resetAfterTest(true);
         $fs = get_file_storage();
@@ -689,6 +849,17 @@ class filestoragelib_testcase extends advanced_testcase {
 
         $areafiles = $fs->get_area_files($user->ctxid, 'user', 'private');
         // Should be the two files we added plus the folder.
+        $this->assertEquals(0, count($areafiles));
+    }
+
+    public function test_delete_component_files() {
+        $user = $this->setup_three_private_files();
+        $fs = get_file_storage();
+
+        $areafiles = $fs->get_area_files($user->ctxid, 'user', 'private');
+        $this->assertEquals(4, count($areafiles));
+        $fs->delete_component_files('user');
+        $areafiles = $fs->get_area_files($user->ctxid, 'user', 'private');
         $this->assertEquals(0, count($areafiles));
     }
 
@@ -1351,5 +1522,73 @@ class filestoragelib_testcase extends advanced_testcase {
         $symlink2 = $fs->get_file($aliasrecord->contextid, $aliasrecord->component,
             $aliasrecord->filearea, $aliasrecord->itemid, '/B/', 'symlink.txt');
         $this->assertTrue($symlink2->is_external_file());
+    }
+
+    public function test_get_unused_filename() {
+        global $USER;
+        $this->resetAfterTest(true);
+
+        $fs = get_file_storage();
+        $this->setAdminUser();
+        $contextid = context_user::instance($USER->id)->id;
+        $component = 'user';
+        $filearea = 'private';
+        $itemid = 0;
+        $filepath = '/';
+
+        // Create some private files.
+        $file = new stdClass;
+        $file->contextid = $contextid;
+        $file->component = 'user';
+        $file->filearea  = 'private';
+        $file->itemid    = 0;
+        $file->filepath  = '/';
+        $file->source    = 'test';
+        $filenames = array('foo.txt', 'foo (1).txt', 'foo (20).txt', 'foo (999)', 'bar.jpg', 'What (a cool file).jpg',
+                'Hurray! (1).php', 'Hurray! (2).php', 'Hurray! (9a).php', 'Hurray! (abc).php');
+        foreach ($filenames as $key => $filename) {
+            $file->filename = $filename;
+            $userfile = $fs->create_file_from_string($file, "file $key $filename content");
+            $this->assertInstanceOf('stored_file', $userfile);
+        }
+
+        // Asserting new generated names.
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'unused.txt');
+        $this->assertEquals('unused.txt', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'foo.txt');
+        $this->assertEquals('foo (21).txt', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'foo (1).txt');
+        $this->assertEquals('foo (21).txt', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'foo (2).txt');
+        $this->assertEquals('foo (2).txt', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'foo (20).txt');
+        $this->assertEquals('foo (21).txt', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'foo');
+        $this->assertEquals('foo', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'foo (123)');
+        $this->assertEquals('foo (123)', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'foo (999)');
+        $this->assertEquals('foo (1000)', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'bar.png');
+        $this->assertEquals('bar.png', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'bar (12).png');
+        $this->assertEquals('bar (12).png', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'bar.jpg');
+        $this->assertEquals('bar (1).jpg', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'bar (1).jpg');
+        $this->assertEquals('bar (1).jpg', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'What (a cool file).jpg');
+        $this->assertEquals('What (a cool file) (1).jpg', $newfilename);
+        $newfilename = $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, 'Hurray! (1).php');
+        $this->assertEquals('Hurray! (3).php', $newfilename);
+
+        $this->setExpectedException('coding_exception');
+        $fs->get_unused_filename($contextid, $component, $filearea, $itemid, $filepath, '');
+    }
+}
+
+class test_stored_file_inspection extends stored_file {
+    public static function get_pretected_pathname(stored_file $file) {
+        return $file->get_pathname_by_contenthash();
     }
 }

@@ -63,28 +63,7 @@ $CFG->dboptions = array(
 
 
 //=========================================================================
-// 2. SECRET PASSWORD SALT
-//=========================================================================
-// User password salt is very important security feature, it is created
-// automatically in installer, you have to uncomment and modify value
-// on the next line if you are creating config.php manually.
-//
-// $CFG->passwordsaltmain = 'a_very_long_random_string_of_characters#@6&*1';
-//
-// After changing the main salt you have to copy old value into one
-// of the following settings - this allows migration to the new salt
-// during the next login of each user.
-//
-// $CFG->passwordsaltalt1 = '';
-// $CFG->passwordsaltalt2 = '';
-// $CFG->passwordsaltalt3 = '';
-// ....
-// $CFG->passwordsaltalt19 = '';
-// $CFG->passwordsaltalt20 = '';
-
-
-//=========================================================================
-// 3. WEB SITE LOCATION
+// 2. WEB SITE LOCATION
 //=========================================================================
 // Now you need to tell Moodle where it is located. Specify the full
 // web address to where moodle has been installed.  If your web site
@@ -98,7 +77,7 @@ $CFG->wwwroot   = 'http://example.com/moodle';
 
 
 //=========================================================================
-// 4. DATA FILES LOCATION
+// 3. DATA FILES LOCATION
 //=========================================================================
 // Now you need a place where Moodle can save uploaded files.  This
 // directory should be readable AND WRITEABLE by the web server user
@@ -114,7 +93,7 @@ $CFG->dataroot  = '/home/example/moodledata';
 
 
 //=========================================================================
-// 5. DATA FILES PERMISSIONS
+// 4. DATA FILES PERMISSIONS
 //=========================================================================
 // The following parameter sets the permissions of new directories
 // created by Moodle within the data directory.  The format is in
@@ -128,7 +107,7 @@ $CFG->directorypermissions = 02777;
 
 
 //=========================================================================
-// 6. DIRECTORY LOCATION  (most people can just ignore this setting)
+// 5. DIRECTORY LOCATION  (most people can just ignore this setting)
 //=========================================================================
 // A very few webhosts use /admin as a special URL for you to access a
 // control panel or something.  Unfortunately this conflicts with the
@@ -140,7 +119,7 @@ $CFG->admin = 'admin';
 
 
 //=========================================================================
-// 7. OTHER MISCELLANEOUS SETTINGS (ignore these for new installations)
+// 6. OTHER MISCELLANEOUS SETTINGS (ignore these for new installations)
 //=========================================================================
 //
 // These are additional tweaks for which no GUI exists in Moodle yet.
@@ -241,10 +220,6 @@ $CFG->admin = 'admin';
 // Some servers may need a special rewrite rule to work around internal path length limitations:
 // RewriteRule (^.*/theme/yui_combo\.php)(/.*) $1?file=$2
 //
-//
-// This setting will prevent the 'My Courses' page being displayed when a student
-// logs in. The site front page will always show the same (logged-out) view.
-//     $CFG->disablemycourses = true;
 //
 // By default all user sessions should be using locking, uncomment
 // the following setting to prevent locking for guests and not-logged-in
@@ -459,6 +434,16 @@ $CFG->admin = 'admin';
 //
 //      $CFG->disableupdatenotifications = true;
 //
+// Use the following flag to completely disable the Automatic updates deployment
+// feature and hide it from the server administration UI.
+//
+//      $CFG->disableupdateautodeploy = true;
+//
+// Use the following flag to completely disable the On-click add-on installation
+// feature and hide it from the server administration UI.
+//
+//      $CFG->disableonclickaddoninstall = true;
+//
 // As of version 2.4 Moodle serves icons as SVG images if the users browser appears
 // to support SVG.
 // For those wanting to control the serving of SVG images the following setting can
@@ -471,8 +456,14 @@ $CFG->admin = 'admin';
 // To ensure they are never used even when available:
 //      $CFG->svgicons = false;
 //
+// Some administration options allow setting the path to executable files. This can
+// potentially cause a security risk. Set this option to true to disable editing
+// those config settings via the web. They will need to be set explicitly in the
+// config.php file
+//      $CFG->preventexecpath = true;
+//
 //=========================================================================
-// 8. SETTINGS FOR DEVELOPMENT SERVERS - not intended for production use!!!
+// 7. SETTINGS FOR DEVELOPMENT SERVERS - not intended for production use!!!
 //=========================================================================
 //
 // Force a debugging mode regardless the settings in the site administration
@@ -489,6 +480,9 @@ $CFG->admin = 'admin';
 // Prevent theme caching
 // $CFG->themerev = -1; // NOT FOR PRODUCTION SERVERS!
 //
+// Prevent JS caching
+// $CFG->jsrev = -1; // NOT FOR PRODUCTION SERVERS!
+//
 // Prevent core_string_manager on-disk cache
 // $CFG->langstringcache = false; // NOT FOR PRODUCTION SERVERS!
 //
@@ -499,17 +493,8 @@ $CFG->admin = 'admin';
 // Divert all outgoing emails to this address to test and debug emailing features
 // $CFG->divertallemailsto = 'root@localhost.local'; // NOT FOR PRODUCTION SERVERS!
 //
-// special magic evil developer only wanting to edit the xmldb files manually
-// AND don't use the XMLDBEditor nor the prev/next stuff at all (Mahara and others)
-// Uncomment these if you're lazy like Penny
+// Uncomment if you want to allow empty comments when modifying install.xml files.
 // $CFG->xmldbdisablecommentchecking = true;    // NOT FOR PRODUCTION SERVERS!
-// $CFG->xmldbdisablenextprevchecking = true;   // NOT FOR PRODUCTION SERVERS!
-//
-// Special magic - evil developer only wanting to edit xmldb files manually
-// AND allowing the XMLDBEditor to reconstruct the prev/next elements every
-// time one file is loaded and saved (Moodle).
-// Uncomment this if you're lazy like Petr
-// $CFG->xmldbreconstructprevnext = true;   // NOT FOR PRODUCTION SERVERS!
 //
 // Since 2.0 sql queries are not shown during upgrade by default.
 // Please note that this setting may produce very long upgrade page on large sites.
@@ -522,7 +507,7 @@ $CFG->admin = 'admin';
 // $CFG->showcrondebugging = true;
 //
 //=========================================================================
-// 9. FORCED SETTINGS
+// 8. FORCED SETTINGS
 //=========================================================================
 // It is possible to specify normal admin settings here, the point is that
 // they can not be changed through the standard admin settings pages any more.
@@ -542,6 +527,104 @@ $CFG->admin = 'admin';
 // $CFG->phpunit_prefix = 'phpu_';
 // $CFG->phpunit_dataroot = '/home/example/phpu_moodledata';
 // $CFG->phpunit_directorypermissions = 02777; // optional
+//
+//
+//=========================================================================
+// 10. SECRET PASSWORD SALT
+//=========================================================================
+// A single site-wide password salt is no longer required *unless* you are
+// upgrading an older version of Moodle (prior to 2.5), or if you are using
+// a PHP version below 5.3.7. If upgrading, keep any values from your old
+// config.php file. If you are using PHP < 5.3.7 set to a long random string
+// below:
+//
+// $CFG->passwordsaltmain = 'a_very_long_random_string_of_characters#@6&*1';
+//
+// You may also have some alternative salts to allow migration from previously
+// used salts.
+//
+// $CFG->passwordsaltalt1 = '';
+// $CFG->passwordsaltalt2 = '';
+// $CFG->passwordsaltalt3 = '';
+// ....
+// $CFG->passwordsaltalt19 = '';
+// $CFG->passwordsaltalt20 = '';
+//
+//
+//=========================================================================
+// 11. BEHAT SUPPORT
+//=========================================================================
+// Behat needs a separate data directory and unique database prefix:
+//
+// $CFG->behat_prefix = 'bht_';
+// $CFG->behat_dataroot = '/home/example/bht_moodledata';
+//
+// Behat uses http://localhost:8000 as default URL to run
+// the acceptance tests, you can override this value.
+// Example:
+//   $CFG->behat_wwwroot = 'http://192.168.1.250:8000';
+//
+// You can override default Moodle configuration for Behat and add your own
+// params; here you can add more profiles, use different Mink drivers than Selenium...
+// These params would be merged with the default Moodle behat.yml, giving priority
+// to the ones specified here. The array format is YAML, following the Behat
+// params hierarchy. More info: http://docs.behat.org/guides/7.config.html
+// Example:
+//   $CFG->behat_config = array(
+//       'default' => array(
+//           'formatter' => array(
+//               'name' => 'pretty',
+//               'parameters' => array(
+//                   'decorated' => true,
+//                   'verbose' => false
+//               )
+//           )
+//       ),
+//       'Mac-Firefox' => array(
+//           'extensions' => array(
+//               'Behat\MinkExtension\Extension' => array(
+//                   'selenium2' => array(
+//                       'browser' => 'firefox',
+//                       'capabilities' => array(
+//                           'platform' => 'OS X 10.6',
+//                           'version' => 20
+//                       )
+//                   )
+//               )
+//           )
+//       ),
+//       'Mac-Safari' => array(
+//           'extensions' => array(
+//               'Behat\MinkExtension\Extension' => array(
+//                   'selenium2' => array(
+//                       'browser' => 'safari',
+//                       'capabilities' => array(
+//                           'platform' => 'OS X 10.8',
+//                           'version' => 6
+//                       )
+//                   )
+//               )
+//           )
+//       )
+//   );
+//
+// You can completely switch to test environment when "php admin/tool/behat/cli/util --enable",
+// this means that all the site accesses will be routed to the test environment instead of
+// the regular one, so NEVER USE THIS SETTING IN PRODUCTION SITES. This setting is useful
+// when working with cloud CI (continous integration) servers which requires public sites to run the
+// tests, or in testing/development installations when you are developing in a pre-PHP 5.4 server.
+// Note that with this setting enabled $CFG->behat_wwwroot is ignored and $CFG->behat_wwwroot
+// value will be the regular $CFG->wwwroot value.
+// Example:
+//   $CFG->behat_switchcompletely = true;
+//
+// You can force the browser session (not user's sessions) to restart after N seconds. This could
+// be useful if you are using a cloud-based service with time restrictions in the browser side.
+// Setting this value the browser session that Behat is using will be restarted. Set the time in
+// seconds. Is not recommended to use this setting if you don't explicitly need it.
+// Example:
+//   $CFG->behat_restart_browser_after = 7200;     // Restarts the browser session after 2 hours
+//
 
 //=========================================================================
 // ALL DONE!  To continue installation, visit your main page with a browser

@@ -17,14 +17,14 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * assign module PHPUnit data generator class
+ * assign module data generator class
  *
  * @package mod_assign
- * @category phpunit
+ * @category test
  * @copyright 2012 Paul Charsley
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_assign_generator extends phpunit_module_generator {
+class mod_assign_generator extends testing_module_generator {
 
     /**
      * Create new assign module instance
@@ -45,78 +45,33 @@ class mod_assign_generator extends phpunit_module_generator {
         if (empty($record->course)) {
             throw new coding_exception('module generator requires $record->course');
         }
-        if (!isset($record->name)) {
-            $record->name = get_string('pluginname', 'data').' '.$i;
-        }
-        if (!isset($record->intro)) {
-            $record->intro = 'Test database '.$i;
-        }
-        if (!isset($record->introformat)) {
-            $record->introformat = FORMAT_MOODLE;
-        }
-        if (!isset($record->alwaysshowdescription)) {
-            $record->alwaysshowdescription = 1;
-        }
-        if (!isset($record->nosubmissions)) {
-            $record->nosubmissions = 0;
-        }
-        if (!isset($record->submissiondrafts)) {
-            $record->submissiondrafts = 1;
-        }
-        if (!isset($record->requiresubmissionstatement)) {
-            $record->requiresubmissionstatement = 0;
-        }
-        if (!isset($record->sendnotifications)) {
-            $record->sendnotifications = 0;
-        }
-        if (!isset($record->sendlatenotifications)) {
-            $record->sendlatenotifications = 0;
-        }
-        if (!isset($record->duedate)) {
-            $record->duedate = 0;
-        }
-        if (!isset($record->allowsubmissionsfromdate)) {
-            $record->allowsubmissionsfromdate = 0;
-        }
 
-        // If a submission or feedback plugin is not activated, make sure it's disabled.
-        $installedplugins = get_plugin_list('assignsubmission');
-        foreach ($installedplugins as $pluginname => $path) {
-            $enabledvariable = 'assignsubmission_'.$pluginname.'_enabled';
-            if (!isset($record->{$enabledvariable})) {
-                $record->{$enabledvariable} = 0;
-            }
-        }
-        $installedplugins = get_plugin_list('assignfeedback');
-        foreach ($installedplugins as $pluginname => $path) {
-            $enabledvariable = 'assignfeedback_'.$pluginname.'_enabled';
-            if (!isset($record->{$enabledvariable})) {
-                $record->{$enabledvariable} = 0;
-            }
-        }
+        $defaultsettings = array(
+            'name'                              => get_string('pluginname', 'assign').' '.$i,
+            'intro'                             => 'Test assign ' . $i,
+            'introformat'                       => FORMAT_MOODLE,
+            'alwaysshowdescription'             => 1,
+            'submissiondrafts'                  => 1,
+            'requiresubmissionstatement'        => 0,
+            'sendnotifications'                 => 0,
+            'sendlatenotifications'             => 0,
+            'duedate'                           => 0,
+            'allowsubmissionsfromdate'          => 0,
+            'grade'                             => 100,
+            'cutoffdate'                        => 0,
+            'teamsubmission'                    => 0,
+            'requireallteammemberssubmit'       => 0,
+            'teamsubmissiongroupingid'          => 0,
+            'blindmarking'                      => 0,
+            'cmidnumber'                        => '',
+            'attemptreopenmethod'               => 'none',
+            'maxattempts'                       => -1
+        );
 
-        if (!isset($record->grade)) {
-            $record->grade = 100;
-        }
-        if (!isset($record->cutoffdate)) {
-            $record->cutoffdate = 0;
-        }
-        if (!isset($record->teamsubmission)) {
-            $record->teamsubmission = 0;
-        }
-        if (!isset($record->requireallteammemberssubmit)) {
-            $record->requireallteammemberssubmit = 0;
-        }
-        if (!isset($record->teamsubmissiongroupingid)) {
-            $record->teamsubmissiongroupingid = 0;
-        }
-        if (!isset($record->blindmarking)) {
-            $record->blindmarking = 0;
-        }
-        if (isset($options['idnumber'])) {
-            $record->cmidnumber = $options['idnumber'];
-        } else {
-            $record->cmidnumber = '';
+        foreach ($defaultsettings as $name => $value) {
+            if (!isset($record->{$name})) {
+                $record->{$name} = $value;
+            }
         }
 
         $record->coursemodule = $this->precreate_course_module($record->course, $options);

@@ -33,7 +33,8 @@ ul {
     color:inherit;
     font-size:inherit;
 }
-h1.helpheading {
+h1.helpheading,
+h2.helpheading {
     font-size: 1.6em;
 }
 /*extra line abve labels and remove padding right for no icon */
@@ -164,7 +165,7 @@ ul.section li.activity .mod-indent {
  .category a .ui-li-count {
     right: 1em;
 }
-.coursebox .name {
+.coursebox > .info > .name {
     font-size: 1.2em;
 }
 .coursebox div.summary {
@@ -933,6 +934,10 @@ table#user-grades {
     border-width: 0px;
     font-size: inherit;
 }
+table#user-grades .dimmed_text,
+table#user-grades .dimmed_text a {
+    color: #AAAAAA;
+}
 table.user-grade td.oddd1.b1t.b2b.b1l{
     width: 0px;
 }
@@ -1164,7 +1169,7 @@ div.gradeparent, #attemptsform .no-overflow, .usersubmissions .no-overflow {
 #attemptsform .no-overflow, .usersubmissions .no-overflow {
     max-height: 200px;
 }
-.userenrolment .col_enrol .enrolment, #page-admin-course-category .generalbox th, .editcourse .header, .results .header, #attempts .header, .generaltable .header, .plugincompattable th, .environmenttable th, .forumheaderlist th, .path-mod-assignment #dates .c0, .userenrolment tr.r1, .userenrolment tr.r0, table#user-grades .catlevel1, table#user-grades .r1, .path-grade-report-grader table tr.even td.cell, .path-grade-report-grader table tr.even th, .gradestable .lastrow td.cell, .gradestable .lastrow th.header, table#user-grades tr.avg td.cell, table#fixed_column tr.odd th, table#user-grades tr.odd th, table#user-grades tr.odd td.cell, table#user-grades td.topleft, table#user-grades .catlevel1, table#user-grades .r1, .path-grade-report-grader table tr.even td.cell, .path-grade-report-grader table tr.even th {
+.userenrolment .col_enrol .enrolment, #page-admin-course-manage .generalbox th, .editcourse .header, .results .header, #attempts .header, .generaltable .header, .plugincompattable th, .environmenttable th, .forumheaderlist th, .path-mod-assignment #dates .c0, .userenrolment tr.r1, .userenrolment tr.r0, table#user-grades .catlevel1, table#user-grades .r1, .path-grade-report-grader table tr.even td.cell, .path-grade-report-grader table tr.even th, .gradestable .lastrow td.cell, .gradestable .lastrow th.header, table#user-grades tr.avg td.cell, table#fixed_column tr.odd th, table#user-grades tr.odd th, table#user-grades tr.odd td.cell, table#user-grades td.topleft, table#user-grades .catlevel1, table#user-grades .r1, .path-grade-report-grader table tr.even td.cell, .path-grade-report-grader table tr.even th {
     background-color:inherit !important;
     background: inherit !important;
 }

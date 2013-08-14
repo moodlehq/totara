@@ -62,7 +62,7 @@ $return = true;
 if (!empty($edit) || !empty($new)) {
     if (!empty($edit)) {
         $instance = repository::get_instance($edit);
-        if ($instance->instance->contextid != $context->id) {
+        if (!$instance->can_be_edited_by_user()) {
             throw new repository_exception('nopermissiontoaccess', 'repository');
         }
         $instancetype = repository::get_type_by_id($instance->options['typeid']);
@@ -124,7 +124,7 @@ if (!empty($edit) || !empty($new)) {
     if ($instance->readonly) {
         // If you try to delete an instance set as readonly, display an error message.
         throw new repository_exception('readonlyinstance', 'repository');
-    } else if ($instance->instance->contextid != $context->id) {
+    } else if (!$instance->can_be_edited_by_user()) {
         throw new repository_exception('nopermissiontoaccess', 'repository');
     }
     if ($sure) {

@@ -243,6 +243,23 @@ class cache_phpunit_tests extends advanced_testcase {
         $this->assertEquals('red_ptc_wfc', $result->property1);
         $this->assertEquals('blue_ptc_wfc', $result->property2);
 
+        // Test array of objects.
+        $specobject = new cache_phpunit_dummy_object('red', 'blue');
+        $data = new cacheable_object_array(array(
+            clone($specobject),
+            clone($specobject),
+            clone($specobject))
+        );
+        $this->assertTrue($cache->set($key, $data));
+        $result = $cache->get($key);
+        $this->assertInstanceOf('cacheable_object_array', $result);
+        $this->assertCount(3, $data);
+        foreach ($result as $item) {
+            $this->assertInstanceOf('cache_phpunit_dummy_object', $item);
+            $this->assertEquals('red_ptc_wfc', $item->property1);
+            $this->assertEquals('blue_ptc_wfc', $item->property2);
+        }
+
         // Test set many.
         $cache->set_many(array('key1' => 'data1', 'key2' => 'data2'));
         $this->assertEquals('data1', $cache->get('key1'));
@@ -1287,5 +1304,74 @@ class cache_phpunit_tests extends advanced_testcase {
         $this->assertEquals(array('b' => 'B', 'c' => 'C'), $cache->get_many(array('b', 'c')));
         $this->assertTrue($cache->delete('a'));
         $this->assertFalse($cache->has('a'));
+    }
+
+    /**
+     * Test the static cache_helper method purge_stores_used_by_definition.
+     */
+    public function test_purge_stores_used_by_definition() {
+        $instance = cache_config_phpunittest::instance(true);
+        $instance->phpunit_add_definition('phpunit/test_purge_stores_used_by_definition', array(
+            'mode' => cache_store::MODE_APPLICATION,
+            'component' => 'phpunit',
+            'area' => 'test_purge_stores_used_by_definition'
+        ));
+        $cache = cache::make('phpunit', 'test_purge_stores_used_by_definition');
+        $this->assertInstanceOf('cache_application', $cache);
+        $this->assertTrue($cache->set('test', 'test'));
+        unset($cache);
+
+        cache_helper::purge_stores_used_by_definition('phpunit', 'test_purge_stores_used_by_definition');
+
+        $cache = cache::make('phpunit', 'test_purge_stores_used_by_definition');
+        $this->assertInstanceOf('cache_application', $cache);
+        $this->assertFalse($cache->get('test'));
+    }
+
+    /**
+     * Test purge routines.
+     */
+    public function test_purge_routines() {
+        $instance = cache_config_phpunittest::instance(true);
+        $instance->phpunit_add_definition('phpunit/purge1', array(
+            'mode' => cache_store::MODE_APPLICATION,
+            'component' => 'phpunit',
+            'area' => 'purge1'
+        ));
+        $instance->phpunit_add_definition('phpunit/purge2', array(
+            'mode' => cache_store::MODE_APPLICATION,
+            'component' => 'phpunit',
+            'area' => 'purge2',
+            'requireidentifiers' => array(
+                'id'
+            )
+        ));
+
+        $factory = cache_factory::instance();
+        $definition = $factory->create_definition('phpunit', 'purge1');
+        $this->assertFalse($definition->has_required_identifiers());
+        $cache = $factory->create_cache($definition);
+        $this->assertInstanceOf('cache_application', $cache);
+        $this->assertTrue($cache->set('test', 'test'));
+        $this->assertTrue($cache->has('test'));
+        cache_helper::purge_by_definition('phpunit', 'purge1');
+        $this->assertFalse($cache->has('test'));
+
+        $factory = cache_factory::instance();
+        $definition = $factory->create_definition('phpunit', 'purge2');
+        $this->assertTrue($definition->has_required_identifiers());
+        $cache = $factory->create_cache($definition);
+        $this->assertInstanceOf('cache_application', $cache);
+        $this->assertTrue($cache->set('test', 'test'));
+        $this->assertTrue($cache->has('test'));
+        cache_helper::purge_stores_used_by_definition('phpunit', 'purge2');
+        $this->assertFalse($cache->has('test'));
+
+        try {
+            cache_helper::purge_by_definition('phpunit', 'purge2');
+            $this->fail('Should not be able to purge a definition required identifiers without providing them.');
+        } catch (coding_exception $ex) {
+            $this->assertContains('Identifier required for cache has not been provided', $ex->getMessage());
+        }
     }
 }

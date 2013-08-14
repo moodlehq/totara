@@ -94,6 +94,7 @@ course_created - object course table record
 course_updated - object course table record
 course_content_removed - object course table record + context property
 course_deleted - object course table record + context property
+course_restored - custom object with courseid, userid and restore information
 
 user_enrolled - object record from user_enrolments table + courseid,enrol
 user_enrolled_bulk - object record from user_enrolments table + courseid,enrol
@@ -142,5 +143,11 @@ role_unassigned_bulk  - object role_assignments table record
 mod_deleted - int courseid, int cmid, text modulename - happens when a module is deleted
 mod_created - int courseid, int cmid, text modulename - happens when a module is created
 mod_updated - int courseid, int cmid, text modulename - happens when a module is updated
+
+=== blog events
+
+blog_entry_added - blog post object
+blog_entry_edited - blog post object
+blog_entry_deleteded - blog post object
 
 */

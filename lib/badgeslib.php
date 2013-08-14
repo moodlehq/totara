@@ -1208,14 +1208,17 @@ function get_backpack_settings($userid) {
 
         if ($collections = $DB->get_records('badge_external', array('backpackid' => $record->id))) {
             $out->totalcollections = count($collections);
+            $out->totalbadges = 0;
             $out->badges = array();
             foreach ($collections as $collection) {
                 $badges = $backpack->get_badges($collection->collectionid);
                 if (isset($badges->badges)) {
                     $out->badges = array_merge($out->badges, $badges->badges);
+                    $out->totalbadges += count($out->badges);
+                } else {
+                    $out->badges = array_merge($out->badges, array());
                 }
             }
-            $out->totalbadges = count($out->badges);
         } else {
             $out->totalbadges = 0;
             $out->totalcollections = 0;
@@ -1278,7 +1281,8 @@ function profile_display_badges($userid, $courseid = 0) {
         if ($records) {
             $left = get_string('localbadgesp', 'badges', $SITE->fullname);
             $right = $renderer->print_badges_list($records, $userid, true);
-            echo "\n<tr><th class=\"label c0 badge-profile\">$left</th><td class=\"info c1\">$right</td></tr>\n";
+            echo html_writer::tag('dt', $left);
+            echo html_writer::tag('dd', $right);
         }
 
         // Print external badges.
@@ -1287,7 +1291,8 @@ function profile_display_badges($userid, $courseid = 0) {
             if (isset($backpack->totalbadges) && $backpack->totalbadges !== 0) {
                 $left = get_string('externalbadgesp', 'badges');
                 $right = $renderer->print_badges_list($backpack->badges, $userid, true, true);
-                echo "\n<tr><th class=\"label c0 badge-profile\">$left</th><td class=\"info c1\">$right</td></tr>\n";
+                echo html_writer::tag('dt', $left);
+                echo html_writer::tag('dd', $right);
             }
         }
     }
@@ -1310,9 +1315,8 @@ function badges_check_backpack_accessibility() {
     $options = array(
         'FRESH_CONNECT' => true,
         'RETURNTRANSFER' => true,
-        'FORBID_REUSE' => true,
         'HEADER' => 0,
-        'CONNECTTIMEOUT_MS' => 1000,
+        'CONNECTTIMEOUT' => 2,
     );
     $location = 'http://backpack.openbadges.org/baker';
     $out = $curl->get($location, array('assertion' => $fakeassertion->out(false)), $options);

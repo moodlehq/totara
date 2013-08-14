@@ -177,10 +177,10 @@ class edit_details_form extends moodleform {
         // Check for duplicate badge names.
         if ($data['action'] == 'new') {
             $duplicate = $DB->record_exists_select('badge', 'name = :name AND status != :deleted',
-                        array('name' => $data['name'], 'deleted' => BADGE_STATUS_ARCHIVED));
+                array('name' => $data['name'], 'deleted' => BADGE_STATUS_ARCHIVED));
         } else {
             $duplicate = $DB->record_exists_select('badge', 'name = :name AND id != :badgeid AND status != :deleted',
-                    array('name' => $data['name'], 'badgeid' => $data['id'], 'deleted' => BADGE_STATUS_ARCHIVED));
+                array('name' => $data['name'], 'badgeid' => $data['id'], 'deleted' => BADGE_STATUS_ARCHIVED));
         }
 
         if ($duplicate) {

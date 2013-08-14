@@ -61,7 +61,7 @@ class repository_local extends repository {
                 $component = is_null($params['component']) ? NULL : clean_param($params['component'], PARAM_COMPONENT);
                 $filearea  = is_null($params['filearea']) ? NULL : clean_param($params['filearea'], PARAM_AREA);
                 $itemid    = is_null($params['itemid']) ? NULL : clean_param($params['itemid'], PARAM_INT);
-                $filepath  = is_null($params['filepath']) ? NULL : clean_param($params['filepath'], PARAM_PATH);;
+                $filepath  = is_null($params['filepath']) ? NULL : clean_param($params['filepath'], PARAM_PATH);
                 $filename  = is_null($params['filename']) ? NULL : clean_param($params['filename'], PARAM_FILE);
                 $context = context::instance_by_id(clean_param($params['contextid'], PARAM_INT));
             }
@@ -261,5 +261,14 @@ class repository_local extends repository {
             'path' => $encodedpath,
             'name' => $fileinfo->get_visible_name()
         );
+    }
+
+    /**
+     * Is this repository accessing private data?
+     *
+     * @return bool
+     */
+    public function contains_private_data() {
+        return false;
     }
 }

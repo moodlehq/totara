@@ -17,8 +17,7 @@
 /**
  * This file keeps track of upgrades to the imsenterprise enrolment plugin
  *
- * @package    enrol
- * @subpackage imsenterprise
+ * @package    enrol_imsenterprise
  * @copyright  2011 Petr Skoda {@link http://skodak.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -37,6 +36,10 @@ function xmldb_enrol_imsenterprise_upgrade($oldversion) {
 
     // Moodle v2.4.0 release upgrade line
     // Put any upgrade step following this
+
+
+    // Moodle v2.5.0 release upgrade line.
+    // Put any upgrade step following this.
 
 
     return true;

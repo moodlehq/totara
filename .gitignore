@@ -41,3 +41,6 @@ composer.lock
 # Private key should never be added to repository
 totara_private.pem
 /local/codechecker/
+/behat.yml
+*/yui/build/*/*-coverage.js
+/lib/yuilib/*/build/*/*-coverage.js

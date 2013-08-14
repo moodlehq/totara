@@ -460,6 +460,21 @@ abstract class moodleform_mod extends moodleform {
         //$this->standard_grading_coursemodule_elements();
 
         $mform->addElement('header', 'modstandardelshdr', get_string('modstandardels', 'form'));
+
+        $mform->addElement('modvisible', 'visible', get_string('visible'));
+        if (!empty($this->_cm)) {
+            $context = context_module::instance($this->_cm->id);
+            if (!has_capability('moodle/course:activityvisibility', $context)) {
+                $mform->hardFreeze('visible');
+            }
+        }
+
+        if ($this->_features->idnumber) {
+            $mform->addElement('text', 'cmidnumber', get_string('idnumbermod'));
+            $mform->setType('cmidnumber', PARAM_RAW);
+            $mform->addHelpButton('cmidnumber', 'idnumbermod');
+        }
+
         if ($this->_features->groups) {
             $options = array(NOGROUPS       => get_string('groupsnone'),
                              SEPARATEGROUPS => get_string('groupsseparate'),
@@ -479,26 +494,11 @@ abstract class moodleform_mod extends moodleform {
             }
             $mform->addElement('select', 'groupingid', get_string('grouping', 'group'), $options);
             $mform->addHelpButton('groupingid', 'grouping', 'group');
-            $mform->setAdvanced('groupingid');
         }
 
         if ($this->_features->groupmembersonly) {
             $mform->addElement('checkbox', 'groupmembersonly', get_string('groupmembersonly', 'group'));
             $mform->addHelpButton('groupmembersonly', 'groupmembersonly', 'group');
-            $mform->setAdvanced('groupmembersonly');
-        }
-
-        $mform->addElement('modvisible', 'visible', get_string('visible'));
-        if (!empty($this->_cm)) {
-            $context = context_module::instance($this->_cm->id);
-            if (!has_capability('moodle/course:activityvisibility', $context)) {
-                $mform->hardFreeze('visible');
-            }
-        }
-
-        if ($this->_features->idnumber) {
-            $mform->addElement('text', 'cmidnumber', get_string('idnumbermod'));
-            $mform->addHelpButton('cmidnumber', 'idnumbermod');
         }
 
         if (!empty($CFG->enableavailability)) {
@@ -561,8 +561,10 @@ abstract class moodleform_mod extends moodleform {
                 $fieldcount = 1;
             }
 
-            $this->repeat_elements(array($group), $count, array(), 'conditiongraderepeats', 'conditiongradeadds', 2,
-                                   get_string('addgrades', 'condition'), true);
+            $this->repeat_elements(array($group), $count, array(
+                'conditiongradegroup[conditiongrademin]' => array('type' => PARAM_RAW),
+                'conditiongradegroup[conditiongrademax]' => array('type' => PARAM_RAW)
+                ), 'conditiongraderepeats', 'conditiongradeadds', 2, get_string('addgrades', 'condition'), true);
             $mform->addHelpButton('conditiongradegroup[0]', 'gradecondition', 'condition');
 
             // Conditions based on user fields
@@ -576,11 +578,11 @@ abstract class moodleform_mod extends moodleform {
             $grouparray[] =& $mform->createElement('select', 'conditionfield', '', $useroptions);
             $grouparray[] =& $mform->createElement('select', 'conditionfieldoperator', '', $operators);
             $grouparray[] =& $mform->createElement('text', 'conditionfieldvalue');
-            $mform->setType('conditionfieldvalue', PARAM_RAW);
             $group = $mform->createElement('group', 'conditionfieldgroup', get_string('userfield', 'condition'), $grouparray);
 
-            $this->repeat_elements(array($group), $fieldcount, array(), 'conditionfieldrepeats', 'conditionfieldadds', 2,
-                                   get_string('adduserfields', 'condition'), true);
+            $this->repeat_elements(array($group), $fieldcount, array(
+                'conditionfieldgroup[conditionfieldvalue]' => array('type' => PARAM_RAW)),
+                'conditionfieldrepeats', 'conditionfieldadds', 2, get_string('adduserfields', 'condition'), true);
             $mform->addHelpButton('conditionfieldgroup[0]', 'userfield', 'condition');
 
             // Conditions based on completion
@@ -823,7 +825,8 @@ abstract class moodleform_mod extends moodleform {
         $mform = $this->_form;
         $label = is_null($customlabel) ? get_string('moduleintro') : $customlabel;
 
-        $mform->addElement('editor', 'introeditor', $label, null, array('maxfiles'=>EDITOR_UNLIMITED_FILES, 'noclean'=>true, 'context'=>$this->context));
+        $mform->addElement('editor', 'introeditor', $label, array('rows' => 3), array('maxfiles' => EDITOR_UNLIMITED_FILES,
+            'noclean' => true, 'context' => $this->context, 'collapsed' => true));
         $mform->setType('introeditor', PARAM_RAW); // no XSS prevention here, users must be trusted
         if ($required) {
             $mform->addRule('introeditor', get_string('required'), 'required', null, 'client');

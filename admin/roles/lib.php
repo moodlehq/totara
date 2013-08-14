@@ -739,6 +739,56 @@ class define_role_table_advanced extends capability_table_with_risks {
         return $output;
     }
 
+    /**
+     * Returns an array of roles of the allowed type.
+     *
+     * @param string $type Must be one of: assign, switch, or override.
+     * @return array
+     */
+    protected function get_allow_roles_list($type) {
+        global $DB;
+
+        if ($type !== 'assign' and $type !== 'switch' and $type !== 'override') {
+            debugging('Invalid role allowed type specified', DEBUG_DEVELOPER);
+            return array();
+        }
+
+        if (empty($this->roleid)) {
+            return array();
+        }
+
+        $sql = "SELECT r.*
+                  FROM {role} r
+                  JOIN {role_allow_{$type}} a ON a.allow{$type} = r.id
+                 WHERE a.roleid = :roleid
+              ORDER BY r.sortorder ASC";
+        return $DB->get_records_sql($sql, array('roleid'=>$this->roleid));
+    }
+
+    /**
+     * Returns an array of roles with the allowed type.
+     *
+     * @param string $type Must be one of: assign, switch, or override.
+     * @return array Am array of role names with the allowed type
+     */
+    protected function get_allow_role_control($type) {
+        if ($roles = $this->get_allow_roles_list($type)) {
+            $roles = role_fix_names($roles, null, ROLENAME_ORIGINAL, true);
+            return implode(', ', $roles);
+        } else {
+            return get_string('none');
+        }
+    }
+
+    /**
+     * Returns information about the risks associated with a role.
+     *
+     * @return string
+     */
+    protected function get_role_risks_info() {
+        return '';
+    }
+
     protected function print_field($name, $caption, $field) {
         global $OUTPUT;
         // Attempt to generate HTML like formslib.
@@ -782,6 +832,12 @@ class define_role_table_advanced extends capability_table_with_risks {
         $this->print_field('edit-description', get_string('customroledescription', 'role').'&nbsp;'.$OUTPUT->help_icon('customroledescription', 'role'), $this->get_description_field('description'));
         $this->print_field('menuarchetype', get_string('archetype', 'role').'&nbsp;'.$OUTPUT->help_icon('archetype', 'role'), $this->get_archetype_field('archetype'));
         $this->print_field('', get_string('maybeassignedin', 'role'), $this->get_assignable_levels_control());
+        $this->print_field('', get_string('allowassign', 'role'), $this->get_allow_role_control('assign'));
+        $this->print_field('', get_string('allowoverride', 'role'), $this->get_allow_role_control('override'));
+        $this->print_field('', get_string('allowswitch', 'role'), $this->get_allow_role_control('switch'));
+        if ($risks = $this->get_role_risks_info()) {
+            $this->print_field('', get_string('rolerisks', 'role'), $risks);
+        }
         echo "</div>";
 
         $this->print_show_hide_advanced_button();
@@ -881,6 +937,57 @@ class view_role_definition_table extends define_role_table_advanced {
 
     protected function print_show_hide_advanced_button() {
         // Do nothing.
+    }
+
+    /**
+     * Returns HTML risk icons.
+     *
+     * @return string
+     */
+    protected function get_role_risks_info() {
+        global $OUTPUT;
+
+        if (empty($this->roleid)) {
+            return '';
+        }
+
+        $risks = array();
+        $allrisks = get_all_risks();
+        foreach ($this->capabilities as $capability) {
+            $perm = $this->permissions[$capability->name];
+            if ($perm != CAP_ALLOW) {
+                continue;
+            }
+            foreach ($allrisks as $type=>$risk) {
+                if ($risk & (int)$capability->riskbitmask) {
+                    $risks[$type] = $risk;
+                }
+            }
+        }
+
+        $risksurl = new moodle_url(get_docs_url(s(get_string('risks', 'role'))));
+        foreach ($risks as $type=>$risk) {
+            $pixicon = new pix_icon('/i/' . str_replace('risk', 'risk_', $type), get_string($type . 'short', 'admin'));
+            $risks[$type] = $OUTPUT->action_icon($risksurl, $pixicon, new popup_action('click', $risksurl));
+        }
+
+        return implode(' ', $risks);
+    }
+
+    /**
+     * Returns true if the row should be skipped.
+     *
+     * @param string $capability
+     * @return bool
+     */
+    protected function skip_row($capability) {
+        $perm = $this->permissions[$capability->name];
+        if ($perm == CAP_INHERIT) {
+            // Do not print empty rows in role overview, admins need to know quickly what is allowed and prohibited,
+            // if they want to see the list of all capabilities they can go to edit role page.
+            return true;
+        }
+        parent::skip_row($capability);
     }
 
     protected function add_permission_cells($capability) {
@@ -983,8 +1090,6 @@ class override_permissions_table_advanced extends capability_table_with_risks {
  * Base class to avoid duplicating code.
  */
 abstract class role_assign_user_selector_base extends user_selector_base {
-    const MAX_USERS_PER_PAGE = 100;
-
     protected $roleid;
     protected $context;
 
@@ -1053,7 +1158,7 @@ class potential_assignees_below_course extends role_assign_user_selector_base {
         // Check to see if there are too many to show sensibly.
         if (!$this->is_validating()) {
             $potentialmemberscount = $DB->count_records_sql($countfields . $sql, $params);
-            if ($potentialmemberscount > role_assign_user_selector_base::MAX_USERS_PER_PAGE) {
+            if ($potentialmemberscount > $this->maxusersperpage) {
                 return $this->too_many_results($search, $potentialmemberscount);
             }
         }
@@ -1081,9 +1186,6 @@ class potential_assignees_below_course extends role_assign_user_selector_base {
  * @copyright 2012 Petr Skoda {@link http://skodak.org}
  */
 class role_check_users_selector extends user_selector_base {
-    const MAX_ENROLLED_PER_PAGE = 100;
-    const MAX_POTENTIAL_PER_PAGE = 100;
-
     /** @var bool limit listing of users to enrolled only */
     var $onlyenrolled;
 
@@ -1164,7 +1266,7 @@ class role_check_users_selector extends user_selector_base {
 
         if ($sql1) {
             $enrolleduserscount = $DB->count_records_sql($countfields . $sql1, $params);
-            if (!$this->is_validating() and $enrolleduserscount > $this::MAX_ENROLLED_PER_PAGE) {
+            if (!$this->is_validating() and $enrolleduserscount > $this->maxusersperpage) {
                 $result[$groupname1] = array();
                 $toomany = $this->too_many_results($search, $enrolleduserscount);
                 $result[implode(' - ', array_keys($toomany))] = array();
@@ -1181,7 +1283,7 @@ class role_check_users_selector extends user_selector_base {
         }
         if ($sql2) {
             $otheruserscount = $DB->count_records_sql($countfields . $sql2, $params);
-            if (!$this->is_validating() and $otheruserscount > $this::MAX_POTENTIAL_PER_PAGE) {
+            if (!$this->is_validating() and $otheruserscount > $this->maxusersperpage) {
                 $result[$groupname2] = array();
                 $toomany = $this->too_many_results($search, $otheruserscount);
                 $result[implode(' - ', array_keys($toomany))] = array();
@@ -1234,7 +1336,7 @@ class potential_assignees_course_and_above extends role_assign_user_selector_bas
 
         if (!$this->is_validating()) {
             $potentialmemberscount = $DB->count_records_sql($countfields . $sql, $params);
-            if ($potentialmemberscount > role_assign_user_selector_base::MAX_USERS_PER_PAGE) {
+            if ($potentialmemberscount > $this->maxusersperpage) {
                 return $this->too_many_results($search, $potentialmemberscount);
             }
         }
@@ -1659,7 +1761,7 @@ class admins_potential_selector extends user_selector_base {
         // Check to see if there are too many to show sensibly.
         if (!$this->is_validating()) {
             $potentialcount = $DB->count_records_sql($countfields . $sql, $params);
-            if ($potentialcount > 100) {
+            if ($potentialcount > $this->maxusersperpage) {
                 return $this->too_many_results($search, $potentialcount);
             }
         }

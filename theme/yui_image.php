@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,7 +17,7 @@
 /**
  * This file is responsible for serving of yui images
  *
- * @package   moodlecore
+ * @package   core
  * @copyright 2009 Petr Skoda (skodak)  {@link http://skodak.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -41,17 +40,29 @@ if ($slashargument = min_get_slash_argument()) {
 $etag = sha1($path);
 $parts = explode('/', $path);
 $version = array_shift($parts);
-
 if ($version == 'moodle' && count($parts) >= 3) {
-    //TODO: this is a ugly hack because we should not load any libs here!
-    define('MOODLE_INTERNAL', true);
-    require_once($CFG->libdir.'/moodlelib.php');
+    if (!defined('ABORT_AFTER_CONFIG_CANCEL')) {
+        define('ABORT_AFTER_CONFIG_CANCEL', true);
+        define('NO_UPGRADE_CHECK', true);
+        define('NO_MOODLE_COOKIES', true);
+        require($CFG->libdir.'/setup.php');
+    }
     $frankenstyle = array_shift($parts);
     $module = array_shift($parts);
     $image = array_pop($parts);
     $subdir = join('/', $parts);
     $dir = get_component_directory($frankenstyle);
-    $imagepath = $dir.'/yui/'.$module.'/assets/skins/sam/'.$image;
+
+    // For shifted YUI modules, we need the YUI module name in frankenstyle format.
+    $frankenstylemodulename = join('-', array($version, $frankenstyle, $module));
+
+    // By default, try and use the /yui/build directory.
+    $imagepath = $dir . '/yui/build/' . $frankenstylemodulename . '/assets/skins/sam/' . $image;
+
+    // If the shifted versions don't exist, fall back to the non-shifted file.
+    if (!file_exists($imagepath) or !is_file($imagepath)) {
+        $imagepath = $dir . '/yui/' . $module . '/assets/skins/sam/' . $image;
+    }
 } else if ($version == 'gallery' && count($parts)==3) {
     list($module, $version, $image) = $parts;
     $imagepath = "$CFG->dirroot/lib/yui/gallery/$module/$version/assets/skins/sam/$image";

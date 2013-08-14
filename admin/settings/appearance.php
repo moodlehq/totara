@@ -70,7 +70,21 @@ if ($hassiteconfig
     }
     $temp->add(new admin_setting_configselect('calendar_maxevents',new lang_string('configmaxevents','admin'),new lang_string('helpupcomingmaxevents', 'admin'),10,$options));
     $temp->add(new admin_setting_configcheckbox('enablecalendarexport', new lang_string('enablecalendarexport', 'admin'), new lang_string('configenablecalendarexport','admin'), 1));
+
+    // Calendar custom export settings.
+    $days = array(365 => new lang_string('numdays', '', 365),
+            180 => new lang_string('numdays', '', 180),
+            150 => new lang_string('numdays', '', 150),
+            120 => new lang_string('numdays', '', 120),
+            90  => new lang_string('numdays', '', 90),
+            60  => new lang_string('numdays', '', 60),
+            30  => new lang_string('numdays', '', 30),
+            5  => new lang_string('numdays', '', 5));
+    $temp->add(new admin_setting_configcheckbox('calendar_customexport', new lang_string('configcalendarcustomexport', 'admin'), new lang_string('helpcalendarcustomexport','admin'), 1));
+    $temp->add(new admin_setting_configselect('calendar_exportlookahead', new lang_string('configexportlookahead','admin'), new lang_string('helpexportlookahead', 'admin'), 365, $days));
+    $temp->add(new admin_setting_configselect('calendar_exportlookback', new lang_string('configexportlookback','admin'), new lang_string('helpexportlookback', 'admin'), 5, $days));
     $temp->add(new admin_setting_configtext('calendar_exportsalt', new lang_string('calendarexportsalt','admin'), new lang_string('configcalendarexportsalt', 'admin'), random_string(60)));
+    $temp->add(new admin_setting_configcheckbox('calendar_showicalsource', new lang_string('configshowicalsource', 'admin'), new lang_string('helpshowicalsource','admin'), 1));
     $ADMIN->add('appearance', $temp);
 
     // blog
@@ -99,6 +113,7 @@ if ($hassiteconfig
     );
     $temp->add(new admin_setting_configselect('defaulthomepage', new lang_string('defaulthomepage', 'admin'), new lang_string('configdefaulthomepage', 'admin'), HOMEPAGE_SITE, $choices));
     $temp->add(new admin_setting_configcheckbox('allowguestmymoodle', new lang_string('allowguestmymoodle', 'admin'), new lang_string('configallowguestmymoodle', 'admin'), 1));
+    $temp->add(new admin_setting_configcheckbox('navshowfullcoursenames', new lang_string('navshowfullcoursenames', 'admin'), new lang_string('navshowfullcoursenames_help', 'admin'), 0));
     $temp->add(new admin_setting_configcheckbox('navshowcategories', new lang_string('navshowcategories', 'admin'), new lang_string('confignavshowcategories', 'admin'), 1));
     $temp->add(new admin_setting_configcheckbox('navshowmycoursecategories', new lang_string('navshowmycoursecategories', 'admin'), new lang_string('navshowmycoursecategories_help', 'admin'), 0));
     $temp->add(new admin_setting_configcheckbox('navshowallcourses', new lang_string('navshowallcourses', 'admin'), new lang_string('confignavshowallcourses', 'admin'), 0));
@@ -123,7 +138,7 @@ if ($hassiteconfig
     $temp->add(new admin_setting_emoticons());
     $ADMIN->add('appearance', $temp);
     $ADMIN->add('appearance', new admin_externalpage('resetemoticons', new lang_string('emoticonsreset', 'admin'),
-        new moodle_url('/admin/resetemoticons.php'), 'moodle/site:config', true), array('totara/core:appearance'));
+        new moodle_url('/admin/resetemoticons.php'), 'moodle/site:config', true));
 
     // The "media" subpage.
     $temp = new admin_settingpage('mediasettings', new lang_string('mediasettings', 'core_media'));
@@ -187,6 +202,10 @@ if ($hassiteconfig
             new lang_string('courselistshortnames_desc', 'admin'), 0));
     $temp->add(new admin_setting_configtext('coursesperpage', new lang_string('coursesperpage', 'admin'), new lang_string('configcoursesperpage', 'admin'), 20, PARAM_INT));
     $temp->add(new admin_setting_configtext('courseswithsummarieslimit', new lang_string('courseswithsummarieslimit', 'admin'), new lang_string('configcourseswithsummarieslimit', 'admin'), 10, PARAM_INT));
+    $temp->add(new admin_setting_configtext('courseoverviewfileslimit', new lang_string('courseoverviewfileslimit'),
+            new lang_string('configcourseoverviewfileslimit', 'admin'), 1, PARAM_INT));
+    $temp->add(new admin_setting_configtext('courseoverviewfilesext', new lang_string('courseoverviewfilesext'),
+            new lang_string('configcourseoverviewfilesext', 'admin'), '.jpg,.gif,.png'));
     $ADMIN->add('appearance', $temp);
 
     $temp = new admin_settingpage('ajax', new lang_string('ajaxuse'), array('totara/core:appearance'));

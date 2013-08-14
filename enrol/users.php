@@ -17,8 +17,7 @@
 /**
  * Main course enrolment management UI, this is not compatible with frontpage course.
  *
- * @package    core
- * @subpackage enrol
+ * @package    core_enrol
  * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -32,6 +31,13 @@ require_once("$CFG->dirroot/group/lib.php");
 $id      = required_param('id', PARAM_INT); // course id
 $action  = optional_param('action', '', PARAM_ALPHANUMEXT);
 $filter  = optional_param('ifilter', 0, PARAM_INT);
+$search  = optional_param('search', '', PARAM_RAW);
+$role    = optional_param('role', 0, PARAM_INT);
+
+// When users reset the form, redirect back to first page without other params.
+if (optional_param('resetbutton', '', PARAM_RAW) !== '') {
+    redirect('users.php?id=' . $id);
+}
 
 $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
 $context = context_course::instance($course->id, MUST_EXIST);
@@ -44,7 +50,7 @@ require_login($course);
 require_capability('moodle/course:enrolreview', $context);
 $PAGE->set_pagelayout('admin');
 
-$manager = new course_enrolment_manager($PAGE, $course, $filter);
+$manager = new course_enrolment_manager($PAGE, $course, $filter, $role, $search);
 $table = new course_enrolment_users_table($manager, $PAGE);
 $PAGE->set_url('/enrol/users.php', $manager->get_url_params()+$table->get_url_params());
 navigation_node::override_active_url(new moodle_url('/enrol/users.php', array('id' => $id)));
@@ -195,6 +201,10 @@ if (!has_capability('moodle/course:viewhiddenuserfields', $context)) {
     }
 }
 
+$filterform = new enrol_users_filter_form('users.php', array('manager' => $manager, 'id' => $id),
+        'get', '', array('id' => 'filterform'));
+$filterform->set_data(array('search' => $search, 'ifilter' => $filter, 'role' => $role));
+
 $table->set_fields($fields, $renderer);
 
 $canassign = has_capability('moodle/role:assign', $manager->get_context());
@@ -203,7 +213,7 @@ foreach ($users as $userid=>&$user) {
     $user['picture'] = $OUTPUT->render($user['picture']);
     $user['role'] = $renderer->user_roles_and_actions($userid, $user['roles'], $manager->get_assignable_roles(), $canassign, $PAGE->url);
     $user['group'] = $renderer->user_groups_and_actions($userid, $user['groups'], $manager->get_all_groups(), has_capability('moodle/course:managegroups', $manager->get_context()), $PAGE->url);
-    $user['enrol'] = $renderer->user_enrolments_and_actions($user['enrolments']);;
+    $user['enrol'] = $renderer->user_enrolments_and_actions($user['enrolments']);
 }
 $table->set_total_users($manager->get_total_users());
 $table->set_users($users);
@@ -213,5 +223,5 @@ $PAGE->set_heading($PAGE->title);
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('enrolledusers', 'enrol'));
-echo $renderer->render($table);
+echo $renderer->render_course_enrolment_users_table($table, $filterform);
 echo $OUTPUT->footer();

@@ -501,6 +501,22 @@ class cm_info extends stdClass {
     public $groupmembersonly;
 
     /**
+     * Indicates whether the course containing the module has forced the groupmode
+     * This means that cm_info::$groupmode should be ignored and cm_info::$coursegroupmode be
+     * used instead
+     * @var bool
+     */
+    public $coursegroupmodeforce;
+
+    /**
+     * Group mode (one of the constants NONE, SEPARATEGROUPS, or VISIBLEGROUPS) - from
+     * course table - as specified for the course containing the module
+     * Effective only if cm_info::$coursegroupmodeforce is set
+     * @var int
+     */
+    public $coursegroupmode;
+
+    /**
      * Indent level on course page (0 = no indent) - from course_modules table
      * @var int
      */
@@ -754,6 +770,47 @@ class cm_info extends stdClass {
     public function get_content() {
         $this->obtain_view_data();
         return $this->content;
+    }
+
+    /**
+     * Returns the content to display on course/overview page, formatted and passed through filters
+     *
+     * if $options['context'] is not specified, the module context is used
+     *
+     * @param array|stdClass $options formatting options, see {@link format_text()}
+     * @return string
+     */
+    public function get_formatted_content($options = array()) {
+        $this->obtain_view_data();
+        if (empty($this->content)) {
+            return '';
+        }
+        // Improve filter performance by preloading filter setttings for all
+        // activities on the course (this does nothing if called multiple
+        // times)
+        filter_preload_activities($this->get_modinfo());
+
+        $options = (array)$options;
+        if (!isset($options['context'])) {
+            $options['context'] = context_module::instance($this->id);
+        }
+        return format_text($this->content, FORMAT_HTML, $options);
+    }
+
+    /**
+     * Returns the name to display on course/overview page, formatted and passed through filters
+     *
+     * if $options['context'] is not specified, the module context is used
+     *
+     * @param array|stdClass $options formatting options, see {@link format_string()}
+     * @return string
+     */
+    public function get_formatted_name($options = array()) {
+        $options = (array)$options;
+        if (!isset($options['context'])) {
+            $options['context'] = context_module::instance($this->id);
+        }
+        return format_string($this->name, true,  $options);
     }
 
     /**
@@ -1017,6 +1074,8 @@ class cm_info extends stdClass {
         $this->groupmode        = isset($mod->groupmode) ? $mod->groupmode : 0;
         $this->groupingid       = isset($mod->groupingid) ? $mod->groupingid : 0;
         $this->groupmembersonly = isset($mod->groupmembersonly) ? $mod->groupmembersonly : 0;
+        $this->coursegroupmodeforce = $course->groupmodeforce;
+        $this->coursegroupmode  = $course->groupmode;
         $this->indent           = isset($mod->indent) ? $mod->indent : 0;
         $this->extra            = isset($mod->extra) ? $mod->extra : '';
         $this->extraclasses     = isset($mod->extraclasses) ? $mod->extraclasses : '';
@@ -1029,13 +1088,6 @@ class cm_info extends stdClass {
         $this->context          = context_module::instance($mod->cm);
         $this->showdescription  = isset($mod->showdescription) ? $mod->showdescription : 0;
         $this->state = self::STATE_BASIC;
-
-        // This special case handles old label data. Labels used to use the 'name' field for
-        // content
-        if ($this->modname === 'label' && $this->content === '') {
-            $this->content = $this->extra;
-            $this->extra = '';
-        }
 
         // Note: These fields from $cm were not present in cm_info in Moodle
         // 2.0.2 and prior. They may not be available if course cache hasn't
@@ -1279,11 +1331,6 @@ class cm_info extends stdClass {
  */
 function get_fast_modinfo($courseorid, $userid = 0, $resetonly = false) {
     global $CFG, $USER;
-    require_once($CFG->dirroot.'/course/lib.php');
-
-    if (!empty($CFG->enableavailability)) {
-        require_once($CFG->libdir.'/conditionlib.php');
-    }
 
     static $cache = array();
 
@@ -1292,6 +1339,11 @@ function get_fast_modinfo($courseorid, $userid = 0, $resetonly = false) {
         debugging("Using the string 'reset' as the first argument of get_fast_modinfo() is deprecated. Use get_fast_modinfo(0,0,true) instead.", DEBUG_DEVELOPER);
         $courseorid = 0;
         $resetonly = true;
+    }
+
+    // Function get_fast_modinfo() can never be called during upgrade unless it is used for clearing cache only.
+    if (!$resetonly) {
+        upgrade_ensure_not_running();
     }
 
     if (is_object($courseorid)) {
@@ -1360,9 +1412,8 @@ function get_fast_modinfo($courseorid, $userid = 0, $resetonly = false) {
 function rebuild_course_cache($courseid=0, $clearonly=false) {
     global $COURSE, $SITE, $DB, $CFG;
 
-    if (!$clearonly && !empty($CFG->upgraderunning)) {
-        debugging('Function rebuild_course_cache() should not be called from upgrade script unless with argument clearonly.',
-                DEBUG_DEVELOPER);
+    // Function rebuild_course_cache() can not be called during upgrade unless it's clear only.
+    if (!$clearonly && !upgrade_ensure_not_running(true)) {
         $clearonly = true;
     }
 
@@ -1376,8 +1427,7 @@ function rebuild_course_cache($courseid=0, $clearonly=false) {
 
     if ($clearonly) {
         if (empty($courseid)) {
-            $DB->set_field('course', 'modinfo', null);
-            $DB->set_field('course', 'sectioncache', null);
+            $DB->execute('UPDATE {course} set modinfo = ?, sectioncache = ?', array(null, null));
         } else {
             // Clear both fields in one update
             $resetobj = (object)array('id' => $courseid, 'modinfo' => null, 'sectioncache' => null);
@@ -1433,8 +1483,8 @@ function rebuild_course_cache($courseid=0, $clearonly=false) {
  * Class that is the return value for the _get_coursemodule_info module API function.
  *
  * Note: For backward compatibility, you can also return a stdclass object from that function.
- * The difference is that the stdclass object may contain an 'extra' field (deprecated because
- * it was crazy, except for label which uses it differently). The stdclass object may not contain
+ * The difference is that the stdclass object may contain an 'extra' field (deprecated,
+ * use extraclasses and onclick instead). The stdclass object may not contain
  * the new fields defined here (content, extraclasses, customdata).
  */
 class cached_cm_info {
@@ -1655,6 +1705,7 @@ class section_info implements IteratorAggregate {
      */
     public function __construct($data, $number, $courseid, $sequence, $modinfo, $userid) {
         global $CFG;
+        require_once($CFG->dirroot.'/course/lib.php');
 
         // Data that is always present
         $this->_id = $data->id;
@@ -1692,6 +1743,7 @@ class section_info implements IteratorAggregate {
 
         // Availability data
         if (!empty($CFG->enableavailability)) {
+            require_once($CFG->libdir. '/conditionlib.php');
             // Get availability information
             $ci = new condition_info_section($this);
             $this->_available = $ci->is_available($this->_availableinfo, true,

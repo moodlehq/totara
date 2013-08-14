@@ -39,7 +39,6 @@ abstract class restore_search_base implements renderable {
      */
     static $VAR_SEARCH = 'search';
 
-    static $MAXRESULTS = 10;
     /**
      * The current search string
      * @var string|null
@@ -66,6 +65,11 @@ abstract class restore_search_base implements renderable {
      */
     private $requiredcapabilities = array();
     /**
+     * Max number of courses to return in a search.
+     * @var int
+     */
+    private $maxresults = null;
+    /**
      * Indicates if we have more than maxresults found.
      * @var boolean
      */
@@ -78,6 +82,7 @@ abstract class restore_search_base implements renderable {
     public function __construct(array $config=array()) {
 
         $this->search = optional_param($this->get_varsearch(), self::DEFAULT_SEARCH, PARAM_NOTAGS);
+        $this->maxresults = get_config('backup', 'import_general_maxresults');
 
         foreach ($config as $name=>$value) {
             $method = 'set_'.$name;
@@ -183,7 +188,7 @@ abstract class restore_search_base implements renderable {
             $requiredcaps[] = $cap['capability'];
         }
         // Iterate while we have records and haven't reached $this->maxresults.
-        while ($totalcourses > $offs and $this->totalcount < self::$MAXRESULTS) {
+        while ($totalcourses > $offs and $this->totalcount < $this->maxresults) {
             $resultset = $DB->get_records_sql($sql, $params, $offs, $blocksz);
             foreach ($resultset as $result) {
                 context_instance_preload($result);
@@ -195,7 +200,7 @@ abstract class restore_search_base implements renderable {
                     }
                 }
                 // Check if we are over the limit.
-                if ($this->totalcount+1 > self::$MAXRESULTS) {
+                if ($this->totalcount+1 > $this->maxresults) {
                     $this->hasmoreresults = true;
                     break;
                 }

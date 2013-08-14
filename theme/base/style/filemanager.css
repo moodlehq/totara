@@ -58,7 +58,7 @@ background: #E2E2E2;filter: progid:DXImageTransform.Microsoft.gradient(startColo
 .dir-rtl .file-picker .fp-list {text-align:right;float:left;}
 .file-picker .fp-list .fp-repo a{display:block;padding:.5em .7em;}
 .file-picker .fp-list .fp-repo.active {background:#F2F2F2;}
-.file-picker .fp-list .fp-repo-icon {padding: 0px 7px 0px 5px;}
+.file-picker .fp-list .fp-repo-icon {padding: 0 7px 0 5px; vertical-align: text-bottom;}
 
 /*
  * Tools, Path & View on fp-navbar (File Picker and File Manager)
@@ -268,8 +268,7 @@ a.ygtvspacer:hover {color: transparent;text-decoration: none;}
 .filemanager.fm-loaded .filemanager-loading {display:none;}
 .filemanager.fm-maxfiles .fp-btn-add {display:none;}
 .filemanager.fm-maxfiles .dndupload-message {display:none;}
-.filemanager.fm-noitems .fp-btn-download,
-.filemanager.fm-nofiles .fp-btn-download {display:none;}
+.filemanager.fm-noitems .fp-btn-download {display:none;}
 .filemanager .fm-empty-container {display:none;}
 .filemanager.fm-noitems .filemanager-container .fp-content {display:none;}
 .filemanager .filemanager-updating {display:none;text-align:center;}
@@ -354,6 +353,12 @@ a.ygtvspacer:hover {color: transparent;text-decoration: none;}
 .dndupload-uploading .dndupload-uploadinprogress {display:block;}
 .dndupload-arrow {background:url([[pix:theme|fp/dnd_arrow]]) center no-repeat;width:100%;height:80px;position:absolute;margin-left: -28px;top: 5px;}
 .fitem.disabled .filepicker-container, .fitem.disabled .fm-empty-container {display:none;}
+.dndupload-progressbars {padding:10px;display:none;}
+.dndupload-inprogress .dndupload-progressbars {display:block;}
+.dndupload-inprogress .fp-content {display:none;}
+.filemanager.fm-noitems .dndupload-inprogress .fm-empty-container {display:none;}
+.filepicker-filelist.dndupload-inprogress .filepicker-container {display:none;}
+.filepicker-filelist.dndupload-inprogress a {display:none;}
 
 /*
  * Select Dialogue (File Manager only)

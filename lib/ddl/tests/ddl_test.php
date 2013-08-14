@@ -1213,7 +1213,7 @@ class ddl_testcase extends database_driver_testcase {
         try {
             $result = $DB->insert_record('test_table_cust0', $record, false);
         } catch (dml_exception $e) {
-            $result = false;;
+            $result = false;
         }
         $this->resetDebugging();
         $this->assertFalse($result);
@@ -1229,6 +1229,51 @@ class ddl_testcase extends database_driver_testcase {
         $index->set_attributes(XMLDB_INDEX_NOTUNIQUE, array('course', 'name'));
         $dbman->add_index($table, $index);
         $this->assertTrue($dbman->index_exists($table, $index));
+
+        try {
+            $dbman->add_index($table, $index);
+            $this->fail('Exception expected for duplicate indexes');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('ddl_exception', $e);
+        }
+
+        $index = new xmldb_index('third');
+        $index->set_attributes(XMLDB_INDEX_NOTUNIQUE, array('course'));
+        try {
+            $dbman->add_index($table, $index);
+            $this->fail('Exception expected for duplicate indexes');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('ddl_exception', $e);
+        }
+
+        $table = new xmldb_table('test_table_cust0');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('onenumber', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('name', XMLDB_TYPE_CHAR, '30', null, XMLDB_NOTNULL, null, 'Moodle');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_key('onenumber', XMLDB_KEY_FOREIGN, array('onenumber'));
+
+        try {
+            $table->add_index('onenumber', XMLDB_INDEX_NOTUNIQUE, array('onenumber'));
+            $this->fail('Coding exception expected');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('coding_exception', $e);
+        }
+
+        $table = new xmldb_table('test_table_cust0');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('onenumber', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('name', XMLDB_TYPE_CHAR, '30', null, XMLDB_NOTNULL, null, 'Moodle');
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_index('onenumber', XMLDB_INDEX_NOTUNIQUE, array('onenumber'));
+
+        try {
+            $table->add_key('onenumber', XMLDB_KEY_FOREIGN, array('onenumber'));
+            $this->fail('Coding exception expected');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('coding_exception', $e);
+        }
+
     }
 
     public function testFindIndexName() {
@@ -1400,21 +1445,12 @@ class ddl_testcase extends database_driver_testcase {
             $this->assertTrue($e instanceof moodle_exception);
         }
 
-        // Real file but invalid xml file
-        $devhack = false;
-        if (!empty($CFG->xmldbdisablenextprevchecking)) {
-            $CFG->xmldbdisablenextprevchecking = false;
-            $devhack = true;
-        }
         try {
             $dbman->delete_tables_from_xmldb_file(__DIR__ . '/fixtures/invalid.xml');
             $this->assertTrue(false);
         } catch (Exception $e) {
             $this->resetDebugging();
             $this->assertTrue($e instanceof moodle_exception);
-        }
-        if ($devhack) {
-            $CFG->xmldbdisablenextprevchecking = true;
         }
 
         // Check that the table has not been deleted from DB
@@ -1441,21 +1477,12 @@ class ddl_testcase extends database_driver_testcase {
             $this->assertTrue($e instanceof moodle_exception);
         }
 
-        // Real but invalid xml file
-        $devhack = false;
-        if (!empty($CFG->xmldbdisablenextprevchecking)) {
-            $CFG->xmldbdisablenextprevchecking = false;
-            $devhack = true;
-        }
         try {
             $dbman->install_from_xmldb_file(__DIR__ . '/fixtures/invalid.xml');
             $this->assertTrue(false);
         } catch (Exception $e) {
             $this->resetDebugging();
             $this->assertTrue($e instanceof moodle_exception);
-        }
-        if ($devhack) {
-            $CFG->xmldbdisablenextprevchecking = true;
         }
 
         // Check that the table has not yet been created in DB

@@ -28,6 +28,9 @@
         <testsuite name="core_phpunit">
             <directory suffix="_test.php">lib/phpunit/tests</directory>
         </testsuite>
+        <testsuite name="core_test">
+            <directory suffix="_test.php">lib/testing/tests</directory>
+        </testsuite>
         <testsuite name="core_db">
             <directory suffix="_test.php">lib/ddl/tests</directory>
             <directory suffix="_test.php">lib/dml/tests</directory>
@@ -36,7 +39,7 @@
             <directory suffix="_test.php">lib/tests</directory>
             <directory suffix="_test.php">lib/ajax/tests</directory>
             <directory suffix="_test.php">lib/form/tests</directory>
-            <directory suffix="_test.php">lib/phpseclib/tests</directory>
+            <directory>lib/password_compat/tests</directory>
         </testsuite>
         <testsuite name="core_files">
             <directory suffix="_test.php">lib/filestorage/tests</directory>
@@ -75,6 +78,9 @@
         </testsuite>
         <testsuite name="core_cache">
             <directory suffix="_test.php">cache/tests</directory>
+        </testsuite>
+        <testsuite name="core_calendar">
+            <directory suffix="_test.php">calendar/tests</directory>
         </testsuite>
         <testsuite name="core_enrol">
             <directory suffix="_test.php">enrol/tests</directory>

@@ -94,6 +94,7 @@ class portfolio_plugin_boxnet extends portfolio_plugin_push_base {
         $folders = $this->get_folder_list();
         $mform->addElement('checkbox', 'plugin_sharefile', get_string('sharefile', 'portfolio_boxnet'));
         $mform->addElement('text', 'plugin_newfolder', get_string('newfolder', 'portfolio_boxnet'));
+        $mform->setType('plugin_newfolder', PARAM_RAW);
         $mform->addElement('checkbox', 'plugin_sharefolder', get_string('sharefolder', 'portfolio_boxnet'));
         $folders[0] = '----';
         ksort($folders);
@@ -112,6 +113,7 @@ class portfolio_plugin_boxnet extends portfolio_plugin_push_base {
 
         $mform->addElement('text', 'apikey', get_string('apikey', 'portfolio_boxnet'));
         $mform->addRule('apikey', get_string('required'), 'required', null, 'client');
+        $mform->setType('apikey', PARAM_RAW_TRIMMED);
         $a = new stdClass();
         $a->servicesurl = 'http://www.box.net/developers/services';
         $a->callbackurl = $CFG->wwwroot . '/portfolio/add.php?postcontrol=1&type=boxnet';

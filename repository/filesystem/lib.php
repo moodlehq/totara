@@ -207,6 +207,7 @@ class repository_filesystem extends repository {
                 if (empty($choices)) {
                     $mform->addElement('static', '', '', get_string('nosubdir', 'repository_filesystem', $path));
                     $mform->addElement('hidden', 'fs_path', '');
+                    $mform->setType('fs_path', PARAM_PATH);
                 } else {
                     $mform->addElement('select', 'fs_path', $fieldname, $choices);
                     $mform->addElement('static', null, '',  get_string('information','repository_filesystem', $path));
@@ -332,5 +333,14 @@ class repository_filesystem extends repository {
         } else {
             send_file_not_found();
         }
+    }
+
+    /**
+     * Is this repository accessing private data?
+     *
+     * @return bool
+     */
+    public function contains_private_data() {
+        return false;
     }
 }

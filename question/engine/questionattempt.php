@@ -118,6 +118,12 @@ class question_attempt {
     /** @var array of {@link question_attempt_step}s. The steps in this attempt. */
     protected $steps = array();
 
+    /**
+     * @var question_attempt_step if, when we loaded the step from the DB, there was
+     * an autosaved step, we save a pointer to it here. (It is also added to the $steps array.)
+     */
+    protected $autosavedstep = null;
+
     /** @var boolean whether the user has flagged this attempt within the usage. */
     protected $flagged = false;
 
@@ -342,6 +348,21 @@ class question_attempt {
     }
 
     /**
+     * Get the number of real steps in this attempt.
+     * This is put as a hidden field in the HTML, so that when we receive some
+     * data to process, then we can check that it came from the question
+     * in the state we are now it.
+     * @return int a number that summarises the current state of this question attempt.
+     */
+    public function get_sequence_check_count() {
+        $numrealsteps = $this->get_num_steps();
+        if ($this->has_autosaved_step()) {
+            $numrealsteps -= 1;
+        }
+        return $numrealsteps;
+    }
+
+    /**
      * Get the number of steps in this attempt.
      * For internal/test code use only.
      * @return int the number of steps we currently have.
@@ -360,6 +381,14 @@ class question_attempt {
             return new question_null_step();
         }
         return end($this->steps);
+    }
+
+    /**
+     * @return boolean whether this question_attempt has autosaved data from
+     * some time in the past.
+     */
+    public function has_autosaved_step() {
+        return !is_null($this->autosavedstep);
     }
 
     /**
@@ -789,6 +818,31 @@ class question_attempt {
     }
 
     /**
+     * Add an auto-saved step to this question attempt. We mark auto-saved steps by
+     * changing saving the step number with a - sign.
+     * @param question_attempt_step $step the new step.
+     */
+    protected function add_autosaved_step(question_attempt_step $step) {
+        $this->steps[] = $step;
+        $this->autosavedstep = $step;
+        end($this->steps);
+        $this->observer->notify_step_added($step, $this, -key($this->steps));
+    }
+
+    /**
+     * Discard any auto-saved data belonging to this question attempt.
+     */
+    public function discard_autosaved_step() {
+        if (!$this->has_autosaved_step()) {
+            return;
+        }
+
+        $autosaved = array_pop($this->steps);
+        $this->autosavedstep = null;
+        $this->observer->notify_step_deleted($autosaved, $this);
+    }
+
+    /**
      * Use a strategy to pick a variant.
      * @param question_variant_selection_strategy $variantstrategy a strategy.
      * @return int the selected variant.
@@ -958,7 +1012,7 @@ class question_attempt {
             $postdata = $_POST;
         }
 
-        $pattern = '/^' . preg_quote($this->get_field_prefix()) . '[^-:]/';
+        $pattern = '/^' . preg_quote($this->get_field_prefix(), '/') . '[^-:]/';
         $prefixlen = strlen($this->get_field_prefix());
 
         $submitteddata = array();
@@ -1045,16 +1099,34 @@ class question_attempt {
      * Perform the action described by $submitteddata.
      * @param array $submitteddata the submitted data the determines the action.
      * @param int $timestamp the time to record for the action. (If not given, use now.)
-     * @param int $userid the user to attribute the aciton to. (If not given, use the current user.)
+     * @param int $userid the user to attribute the action to. (If not given, use the current user.)
+     * @param int $existingstepid used by the regrade code.
      */
     public function process_action($submitteddata, $timestamp = null, $userid = null, $existingstepid = null) {
         $pendingstep = new question_attempt_pending_step($submitteddata, $timestamp, $userid, $existingstepid);
+        $this->discard_autosaved_step();
         if ($this->behaviour->process_action($pendingstep) == self::KEEP) {
             $this->add_step($pendingstep);
             if ($pendingstep->response_summary_changed()) {
                 $this->responsesummary = $pendingstep->get_new_response_summary();
             }
         }
+    }
+
+    /**
+     * Process an autosave.
+     * @param array $submitteddata the submitted data the determines the action.
+     * @param int $timestamp the time to record for the action. (If not given, use now.)
+     * @param int $userid the user to attribute the action to. (If not given, use the current user.)
+     * @return bool whether anything was saved.
+     */
+    public function process_autosave($submitteddata, $timestamp = null, $userid = null) {
+        $pendingstep = new question_attempt_pending_step($submitteddata, $timestamp, $userid);
+        if ($this->behaviour->process_autosave($pendingstep) == self::KEEP) {
+            $this->add_autosaved_step($pendingstep);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -1212,6 +1284,7 @@ class question_attempt {
 
         $qa->behaviour = question_engine::make_behaviour(
                 $record->behaviour, $qa, $preferredbehaviour);
+        $qa->observer = $observer;
 
         // If attemptstepid is null (which should not happen, but has happened
         // due to corrupt data, see MDL-34251) then the current pointer in $records
@@ -1223,12 +1296,28 @@ class question_attempt {
         }
 
         $i = 0;
+        $autosavedstep = null;
+        $autosavedsequencenumber = null;
         while ($record && $record->questionattemptid == $questionattemptid && !is_null($record->attemptstepid)) {
-            $qa->steps[$i] = question_attempt_step::load_from_records($records, $record->attemptstepid);
-            if ($i == 0) {
-                $question->apply_attempt_state($qa->steps[0]);
+            $sequencenumber = $record->sequencenumber;
+            $nextstep = question_attempt_step::load_from_records($records, $record->attemptstepid, $qa->get_question()->get_type_name());
+
+            if ($sequencenumber < 0) {
+                if (!$autosavedstep) {
+                    $autosavedstep = $nextstep;
+                    $autosavedsequencenumber = -$sequencenumber;
+                } else {
+                    // Old redundant data. Mark it for deletion.
+                    $qa->observer->notify_step_deleted($nextstep, $qa);
+                }
+            } else {
+                $qa->steps[$i] = $nextstep;
+                if ($i == 0) {
+                    $question->apply_attempt_state($qa->steps[0]);
+                }
+                $i++;
             }
-            $i++;
+
             if ($records->valid()) {
                 $record = $records->current();
             } else {
@@ -1236,7 +1325,14 @@ class question_attempt {
             }
         }
 
-        $qa->observer = $observer;
+        if ($autosavedstep) {
+            if ($autosavedsequencenumber >= $i) {
+                $qa->autosavedstep = $autosavedstep;
+                $qa->steps[$i] = $qa->autosavedstep;
+            } else {
+                $qa->observer->notify_step_deleted($autosavedstep, $qa);
+            }
+        }
 
         return $qa;
     }

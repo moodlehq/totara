@@ -18,7 +18,7 @@
     $section     = optional_param('section', 0, PARAM_INT);
     $move        = optional_param('move', 0, PARAM_INT);
     $marker      = optional_param('marker',-1 , PARAM_INT);
-    $switchrole  = optional_param('switchrole',-1, PARAM_INT);
+    $switchrole  = optional_param('switchrole',-1, PARAM_INT); // Deprecated, use course/switchrole.php instead.
     $modchooser  = optional_param('modchooser', -1, PARAM_BOOL);
     $return      = optional_param('return', 0, PARAM_LOCALURL);
 
@@ -282,10 +282,6 @@
     echo html_writer::end_tag('div');
 
     // Include course AJAX
-    if (include_course_ajax($course, $modnamesused)) {
-        // Add the module chooser
-        $renderer = $PAGE->get_renderer('core', 'course');
-        echo $renderer->course_modchooser(get_module_metadata($course, $modnames, $displaysection), $course);
-    }
+    include_course_ajax($course, $modnamesused);
 
     echo $OUTPUT->footer();

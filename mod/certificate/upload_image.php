@@ -31,7 +31,7 @@ require_once($CFG->dirroot . '/repository/lib.php');
 
 require_login();
 
-$context = get_system_context();
+$context = context_system::instance();
 require_capability('moodle/site:config', $context);
 
 $struploadimage = get_string('uploadimage', 'certificate');

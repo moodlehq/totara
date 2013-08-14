@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->libdir . '/statslib.php');
+require_once($CFG->libdir . '/cronlib.php');
 
 /**
  * Test functions that affect daily stats
@@ -108,6 +109,11 @@ class statslib_daily_testcase extends advanced_testcase {
         $this->setUpDB();
 
         $this->resetAfterTest(true);
+    }
+
+    protected function tearDown() {
+        // Reset the timeouts.
+        set_time_limit(0);
     }
 
     /**

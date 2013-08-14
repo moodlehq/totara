@@ -35,6 +35,71 @@
 
 $functions = array(
 
+    // Cohort related functions.
+
+    'core_cohort_create_cohorts' => array(
+        'classname'   => 'core_cohort_external',
+        'methodname'  => 'create_cohorts',
+        'classpath'   => 'cohort/externallib.php',
+        'description' => 'Creates new cohorts.',
+        'type'        => 'write',
+        'capabilities'=> 'moodle/cohort:manage',
+    ),
+
+    'core_cohort_delete_cohorts' => array(
+        'classname'   => 'core_cohort_external',
+        'methodname'  => 'delete_cohorts',
+        'classpath'   => 'cohort/externallib.php',
+        'description' => 'Deletes all specified cohorts.',
+        'type'        => 'delete',
+        'capabilities'=> 'moodle/cohort:manage',
+    ),
+
+    'core_cohort_get_cohorts' => array(
+        'classname'   => 'core_cohort_external',
+        'methodname'  => 'get_cohorts',
+        'classpath'   => 'cohort/externallib.php',
+        'description' => 'Returns cohort details.',
+        'type'        => 'read',
+        'capabilities'=> 'moodle/cohort:view',
+    ),
+
+    'core_cohort_update_cohorts' => array(
+        'classname'   => 'core_cohort_external',
+        'methodname'  => 'update_cohorts',
+        'classpath'   => 'cohort/externallib.php',
+        'description' => 'Updates existing cohorts.',
+        'type'        => 'write',
+        'capabilities'=> 'moodle/cohort:manage',
+    ),
+
+    'core_cohort_add_cohort_members' => array(
+        'classname'   => 'core_cohort_external',
+        'methodname'  => 'add_cohort_members',
+        'classpath'   => 'cohort/externallib.php',
+        'description' => 'Adds cohort members.',
+        'type'        => 'write',
+        'capabilities'=> 'moodle/cohort:assign',
+    ),
+
+    'core_cohort_delete_cohort_members' => array(
+        'classname'   => 'core_cohort_external',
+        'methodname'  => 'delete_cohort_members',
+        'classpath'   => 'cohort/externallib.php',
+        'description' => 'Deletes cohort members.',
+        'type'        => 'delete',
+        'capabilities'=> 'moodle/cohort:assign',
+    ),
+
+    'core_cohort_get_cohort_members' => array(
+        'classname'   => 'core_cohort_external',
+        'methodname'  => 'get_cohort_members',
+        'classpath'   => 'cohort/externallib.php',
+        'description' => 'Returns cohort members.',
+        'type'        => 'read',
+        'capabilities'=> 'moodle/cohort:view',
+    ),
+
     // === group related functions ===
 
     'moodle_group_create_groups' => array(
@@ -273,6 +338,15 @@ $functions = array(
         'capabilities'=> 'moodle/user:create',
     ),
 
+    'core_user_get_users' => array(
+        'classname'   => 'core_user_external',
+        'methodname'  => 'get_users',
+        'classpath'   => 'user/externallib.php',
+        'description' => 'search for users matching the parameters',
+        'type'        => 'read',
+        'capabilities'=> 'moodle/user:viewdetails, moodle/user:viewhiddendetails, moodle/course:useremail, moodle/user:update',
+    ),
+
     'moodle_user_get_users_by_id' => array(
         'classname'   => 'core_user_external',
         'methodname'  => 'get_users_by_id',
@@ -282,11 +356,20 @@ $functions = array(
         'capabilities'=> 'moodle/user:viewdetails, moodle/user:viewhiddendetails, moodle/course:useremail, moodle/user:update',
     ),
 
+    'core_user_get_users_by_field' => array(
+        'classname'   => 'core_user_external',
+        'methodname'  => 'get_users_by_field',
+        'classpath'   => 'user/externallib.php',
+        'description' => 'Retrieve users information for a specified unique field - If you want to do a user search, use core_user_get_users()',
+        'type'        => 'read',
+        'capabilities'=> 'moodle/user:viewdetails, moodle/user:viewhiddendetails, moodle/course:useremail, moodle/user:update',
+    ),
+
     'core_user_get_users_by_id' => array(
         'classname'   => 'core_user_external',
         'methodname'  => 'get_users_by_id',
         'classpath'   => 'user/externallib.php',
-        'description' => 'Get users by id.',
+        'description' => 'DEPRECATED: this deprecated function will be removed in a future version. This function has been replaced by core_user_get_users_by_field()',
         'type'        => 'read',
         'capabilities'=> 'moodle/user:viewdetails, moodle/user:viewhiddendetails, moodle/course:useremail, moodle/user:update',
     ),
@@ -496,6 +579,15 @@ $functions = array(
         'capabilities'=> 'moodle/course:delete',
     ),
 
+    'core_course_delete_modules' => array(
+        'classname' => 'core_course_external',
+        'methodname' => 'delete_modules',
+        'classpath' => 'course/externallib.php',
+        'description' => 'Deletes all specified module instances',
+        'type' => 'write',
+        'capabilities' => 'moodle/course:manageactivities'
+    ),
+
     'core_course_duplicate_course' => array(
         'classname'   => 'core_course_external',
         'methodname'  => 'duplicate_course',
@@ -503,6 +595,15 @@ $functions = array(
         'description' => 'Duplicate an existing course (creating a new one) without user data',
         'type'        => 'write',
         'capabilities'=> 'moodle/backup:backupcourse,moodle/restore:restorecourse,moodle/course:create',
+    ),
+
+    'core_course_update_courses' => array(
+        'classname'   => 'core_course_external',
+        'methodname'  => 'update_courses',
+        'classpath'   => 'course/externallib.php',
+        'description' => 'Update courses',
+        'type'        => 'write',
+        'capabilities'=> 'moodle/course:update,moodle/course:changecategory,moodle/course:changefullname,moodle/course:changeshortname,moodle/course:changeidnumber,moodle/course:changesummary,moodle/course:visibility',
     ),
 
     // === course category related functions ===
@@ -572,6 +673,60 @@ $functions = array(
         'capabilities'=> 'moodle/site:sendmessage',
     ),
 
+    'core_message_create_contacts' => array(
+        'classname'   => 'core_message_external',
+        'methodname'  => 'create_contacts',
+        'classpath'   => 'message/externallib.php',
+        'description' => 'Add contacts to the contact list',
+        'type'        => 'write',
+        'capabilities'=> '',
+    ),
+
+    'core_message_delete_contacts' => array(
+        'classname'   => 'core_message_external',
+        'methodname'  => 'delete_contacts',
+        'classpath'   => 'message/externallib.php',
+        'description' => 'Remove contacts from the contact list',
+        'type'        => 'write',
+        'capabilities'=> '',
+    ),
+
+    'core_message_block_contacts' => array(
+        'classname'   => 'core_message_external',
+        'methodname'  => 'block_contacts',
+        'classpath'   => 'message/externallib.php',
+        'description' => 'Block contacts',
+        'type'        => 'write',
+        'capabilities'=> '',
+    ),
+
+    'core_message_unblock_contacts' => array(
+        'classname'   => 'core_message_external',
+        'methodname'  => 'unblock_contacts',
+        'classpath'   => 'message/externallib.php',
+        'description' => 'Unblock contacts',
+        'type'        => 'write',
+        'capabilities'=> '',
+    ),
+
+    'core_message_get_contacts' => array(
+        'classname'   => 'core_message_external',
+        'methodname'  => 'get_contacts',
+        'classpath'   => 'message/externallib.php',
+        'description' => 'Retrieve the contact list',
+        'type'        => 'read',
+        'capabilities'=> '',
+    ),
+
+    'core_message_search_contacts' => array(
+        'classname'   => 'core_message_external',
+        'methodname'  => 'search_contacts',
+        'classpath'   => 'message/externallib.php',
+        'description' => 'Search for contacts',
+        'type'        => 'read',
+        'capabilities'=> '',
+    ),
+
     // === notes related functions ===
 
     'moodle_notes_create_notes' => array(
@@ -590,6 +745,43 @@ $functions = array(
         'description' => 'Create notes',
         'type'        => 'write',
         'capabilities'=> 'moodle/notes:manage',
+    ),
+
+    'core_notes_delete_notes' => array(
+        'classname'   => 'core_notes_external',
+        'methodname'  => 'delete_notes',
+        'classpath'   => 'notes/externallib.php',
+        'description' => 'Delete notes',
+        'type'        => 'write',
+        'capabilities'=> 'moodle/notes:manage',
+    ),
+
+    'core_notes_get_notes' => array(
+        'classname'   => 'core_notes_external',
+        'methodname'  => 'get_notes',
+        'classpath'   => 'notes/externallib.php',
+        'description' => 'Get notes',
+        'type'        => 'read',
+        'capabilities'=> 'moodle/notes:view',
+    ),
+
+    'core_notes_update_notes' => array(
+        'classname'   => 'core_notes_external',
+        'methodname'  => 'update_notes',
+        'classpath'   => 'notes/externallib.php',
+        'description' => 'Update notes',
+        'type'        => 'write',
+        'capabilities'=> 'moodle/notes:manage',
+    ),
+
+    // === grade related functions ===
+
+    'core_grade_get_definitions' => array(
+        'classname'   => 'core_grade_external',
+        'methodname'  => 'get_definitions',
+        'classpath'   => 'grade/externallib.php',
+        'description' => 'Get grading definitions',
+        'type'        => 'read'
     ),
 
     // === webservice related functions ===
@@ -633,6 +825,37 @@ $functions = array(
         'description' => 'Return all raw strings (with {$a->xxx}) for a specific component
             - similar to core get_component_strings() call',
         'type'        => 'read',
+    ),
+
+
+    // === Calendar related functions ===
+
+    'core_calendar_delete_calendar_events' => array(
+        'classname'   => 'core_calendar_external',
+        'methodname'  => 'delete_calendar_events',
+        'description' => 'Delete calendar events',
+        'classpath'   => 'calendar/externallib.php',
+        'type'        => 'write',
+        'capabilities'=> 'moodle/calendar:manageentries', 'moodle/calendar:manageownentries', 'moodle/calendar:managegroupentries'
+    ),
+
+
+    'core_calendar_get_calendar_events' => array(
+        'classname'   => 'core_calendar_external',
+        'methodname'  => 'get_calendar_events',
+        'description' => 'Get calendar events',
+        'classpath'   => 'calendar/externallib.php',
+        'type'        => 'read',
+        'capabilities'=> 'moodle/calendar:manageentries', 'moodle/calendar:manageownentries', 'moodle/calendar:managegroupentries'
+    ),
+
+    'core_calendar_create_calendar_events' => array(
+        'classname'   => 'core_calendar_external',
+        'methodname'  => 'create_calendar_events',
+        'description' => 'Create calendar events',
+        'classpath'   => 'calendar/externallib.php',
+        'type'        => 'write',
+        'capabilities'=> 'moodle/calendar:manageentries', 'moodle/calendar:manageownentries', 'moodle/calendar:managegroupentries'
     ),
 );
 

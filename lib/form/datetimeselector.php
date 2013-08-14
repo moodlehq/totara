@@ -56,8 +56,17 @@ class MoodleQuickForm_date_time_selector extends MoodleQuickForm_group{
     var $_options = array('startyear' => 1970, 'stopyear' => 2020, 'defaulttime' => 0,
                     'timezone' => 99, 'step' => 5, 'optional' => false);
 
-    /** @var array These complement separators, they are appended to the resultant HTML */
-    var $_wrap = array('', '');
+    /**
+     * @var array These complement separators, they are appended to the resultant HTML.
+     */
+    protected $_wrap = array('', '');
+
+    /**
+     * @var null|bool Keeps track of whether the date selector was initialised using createElement
+     *                or addElement. If true, createElement was used signifying the element has been
+     *                added to a group - see MDL-39187.
+     */
+    protected $_usedcreateelement = true;
 
     /**
      * Class constructor
@@ -95,6 +104,8 @@ class MoodleQuickForm_date_time_selector extends MoodleQuickForm_group{
      */
     function _createElements()
     {
+        global $OUTPUT;
+
         $this->_elements = array();
         for ($i=1; $i<=31; $i++) {
             $days[$i] = $i;
@@ -122,6 +133,8 @@ class MoodleQuickForm_date_time_selector extends MoodleQuickForm_group{
             $this->_elements[] = @MoodleQuickForm::createElement('select', 'hour', get_string('hour', 'form'), $hours, $this->getAttributes(), true);
             $this->_elements[] = @MoodleQuickForm::createElement('select', 'minute', get_string('minute', 'form'), $minutes, $this->getAttributes(), true);
         }
+        $this->_elements[] = @MoodleQuickForm::createElement('image', 'calendar', $OUTPUT->pix_url('i/calendar', 'moodle'),
+            array('title' => get_string('calendar', 'calendar'), 'class' => 'visibleifjs'));
         // If optional we add a checkbox which the user can use to turn if on
         if($this->_options['optional']) {
             $this->_elements[] = @MoodleQuickForm::createElement('checkbox', 'enabled', null, get_string('enable'), $this->getAttributes(), true);
@@ -190,8 +203,22 @@ class MoodleQuickForm_date_time_selector extends MoodleQuickForm_group{
                 break;
             case 'createElement':
                 if($arg[2]['optional']) {
-                    $caller->disabledIf($arg[0], $arg[0].'[enabled]');
+                    // When using the function addElement, rather than createElement, we still
+                    // enter this case, making this check necessary.
+                    if ($this->_usedcreateelement) {
+                        $caller->disabledIf($arg[0] . '[day]', $arg[0] . '[enabled]');
+                        $caller->disabledIf($arg[0] . '[month]', $arg[0] . '[enabled]');
+                        $caller->disabledIf($arg[0] . '[year]', $arg[0] . '[enabled]');
+                        $caller->disabledIf($arg[0] . '[hour]', $arg[0] . '[enabled]');
+                        $caller->disabledIf($arg[0] . '[minute]', $arg[0] . '[enabled]');
+                    } else {
+                        $caller->disabledIf($arg[0], $arg[0] . '[enabled]');
+                    }
                 }
+                return parent::onQuickFormEvent($event, $arg, $caller);
+                break;
+            case 'addElement':
+                $this->_usedcreateelement = false;
                 return parent::onQuickFormEvent($event, $arg, $caller);
                 break;
             default:
@@ -210,7 +237,16 @@ class MoodleQuickForm_date_time_selector extends MoodleQuickForm_group{
         $renderer = new HTML_QuickForm_Renderer_Default();
         $renderer->setElementTemplate('{element}');
         parent::accept($renderer);
-        return $this->_wrap[0] . $renderer->toHtml() . $this->_wrap[1];
+
+        $html = $this->_wrap[0];
+        if ($this->_usedcreateelement) {
+            $html .= html_writer::tag('span', $renderer->toHtml(), array('class' => 'fdate_time_selector'));
+        } else {
+            $html .= $renderer->toHtml();
+        }
+        $html .= $this->_wrap[1];
+
+        return $html;
     }
 
     /**

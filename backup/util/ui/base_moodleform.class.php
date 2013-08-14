@@ -81,12 +81,27 @@ abstract class base_moodleform extends moodleform {
     function definition() {
         $ui = $this->uistage->get_ui();
         $mform = $this->_form;
+        $mform->setDisableShortforms();
         $stage = $mform->addElement('hidden', 'stage', $this->uistage->get_stage());
+        $mform->setType('stage', PARAM_INT);
         $stage = $mform->addElement('hidden', $ui->get_name(), $ui->get_uniqueid());
+        $mform->setType($ui->get_name(), PARAM_ALPHANUM);
         $params = $this->uistage->get_params();
         if (is_array($params) && count($params) > 0) {
             foreach ($params as $name=>$value) {
+                // TODO: Horrible hack, but current backup ui structure does not allow
+                // to make this easy (only changing params to objects that would be
+                // possible. MDL-38735.
+                $intparams = array(
+                        'contextid', 'importid', 'target');
                 $stage = $mform->addElement('hidden', $name, $value);
+                if (in_array($name, $intparams)) {
+                    $mform->setType($name, PARAM_INT);
+                } else {
+                    // Adding setType() to avoid missing setType() warnings.
+                    // MDL-39126: support $mform->setType() for additional backup parameters.
+                    $mform->setType($name, PARAM_RAW);
+                }
             }
         }
     }
@@ -155,6 +170,7 @@ abstract class base_moodleform extends moodleform {
 
             // Then call the add method with the get_element_properties array
             call_user_func_array(array($this->_form, 'addElement'), $setting->get_ui()->get_element_properties($task, $OUTPUT));
+            $this->_form->setType($setting->get_ui_name(), $setting->get_param_validation());
             $defaults[$setting->get_ui_name()] = $setting->get_value();
             if ($setting->has_help()) {
                 list($identifier, $component) = $setting->get_help();
@@ -261,6 +277,7 @@ abstract class base_moodleform extends moodleform {
             $this->_form->addElement('html', html_writer::end_tag('div'));
         }
         $this->_form->addElement('hidden', $settingui->get_name(), $settingui->get_value());
+        $this->_form->setType($settingui->get_name(), $settingui->get_param_validation());
     }
     /**
      * Adds dependencies to the form recursively

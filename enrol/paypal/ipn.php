@@ -22,8 +22,7 @@
  * If PayPal verifies this then it sets up the enrolment for that
  * user.
  *
- * @package    enrol
- * @subpackage paypal
+ * @package    enrol_paypal
  * @copyright 2010 Eugene Venter
  * @author     Eugene Venter - based on code by others
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -185,7 +184,7 @@ if (strlen($result) > 0) {
         }
 
         if (!$course = $DB->get_record('course', array('id'=>$data->courseid))) { // Check that course exists
-            message_paypal_error_to_admin("Course $data->courseid doesn't exist", $data);;
+            message_paypal_error_to_admin("Course $data->courseid doesn't exist", $data);
             die;
         }
 
@@ -198,8 +197,10 @@ if (strlen($result) > 0) {
             $cost = (float) $plugin_instance->cost;
         }
 
+        // Use the same rounding of floats as on the enrol form.
+        $cost = format_float($cost, 2, false);
+
         if ($data->payment_gross < $cost) {
-            $cost = format_float($cost, 2);
             message_paypal_error_to_admin("Amount paid is not enough ($data->payment_gross < $cost))", $data);
             die;
 

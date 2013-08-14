@@ -70,13 +70,13 @@ class completion_criteria_grade extends completion_criteria {
         $mform->addElement('advcheckbox', 'criteria_grade', get_string('enable'));
         $mform->setType('criteria_grade', PARAM_BOOL);
         $mform->addElement('text', 'criteria_grade_value', get_string('graderequired', 'completion'));
-        $mform->setType('criteria_grade_value', PARAM_NUMBER);
-        $mform->setDefault('criteria_grade_value', $data);
-        $mform->addElement('static', 'criteria_grade_value_note', '', get_string('criteriagradenote', 'completion'));
+        $mform->disabledIf('criteria_grade_value', 'criteria_grade');
+        $mform->setType('criteria_grade_value', PARAM_RAW); // Uses unformat_float.
+        $mform->setDefault('criteria_grade_value', format_float($data));
 
         if ($this->id) {
             $mform->setDefault('criteria_grade', 1);
-            $mform->setDefault('criteria_grade_value', $this->gradepass);
+            $mform->setDefault('criteria_grade_value', format_float($this->gradepass));
         }
     }
 

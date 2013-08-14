@@ -836,7 +836,15 @@ M.core_dock.genericblock.prototype = {
         }
 
         // Must set the image src seperatly of we get an error with XML strict headers
-        var moveto = Y.Node.create('<input type="image" class="moveto customcommand requiresjs" alt="'+M.str.block.addtodock+'" title="'+M.str.block.addtodock+'" />');
+        var moveto = Y.Node.create('<input type="image" class="moveto customcommand requiresjs" />');
+        var header = node.one('.header .title h2');
+        moveto.setAttribute('alt', Y.Escape.html(M.util.get_string('addtodock', 'block')));
+        if (header) {
+            moveto.setAttribute('title', Y.Escape.html(M.util.get_string('dockblock', 'block', header.getHTML())));
+        } else {
+            moveto.setAttribute('title', Y.Escape.html(M.util.get_string('addtodock', 'block')));
+        }
+
         var icon = 't/block_to_dock';
         if (right_to_left()) {
             icon = 't/block_to_dock_rtl';
@@ -906,7 +914,8 @@ M.core_dock.genericblock.prototype = {
         }
 
         // Must set the image src seperatly of we get an error with XML strict headers
-        var movetoimg = Y.Node.create('<img alt="'+M.str.block.undockitem+'" title="'+M.str.block.undockitem+'" />');
+        var movetoimg = Y.Node.create('<img alt="'+Y.Escape.html(M.str.block.undockitem)+'" title="'+
+            Y.Escape.html(M.util.get_string('undockblock', 'block', blocktitle.innerHTML)) +'" />');
         var icon = 't/dock_to_block';
         if (right_to_left()) {
             icon = 't/dock_to_block_rtl';

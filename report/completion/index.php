@@ -368,7 +368,7 @@ if (!$csv) {
     print '<table id="completion-progress" class="generaltable flexible boxaligncenter completionreport" style="text-align: left" cellpadding="5" border="1">';
 
     // Print criteria group names
-    print PHP_EOL.'<tr style="vertical-align: top">';
+    print PHP_EOL.'<thead><tr style="vertical-align: top">';
     echo '<th scope="row" class="rowheader" colspan="' . $leftcols . '">' .
             get_string('criteriagroup', 'completion') . '</th>';
 
@@ -615,8 +615,9 @@ if (!$csv) {
 
     print '</th>';
 
-    print '</tr>';
+    print '</tr></thead>';
 
+    echo '<tbody>';
 } else {
     // The CSV headers
     $row = array();
@@ -670,6 +671,7 @@ foreach ($progress as $user) {
         } else {
             $userurl = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $course->id));
         }
+
         print '<th scope="row"><a href="'.$userurl->out().'">'.fullname($user).'</a></th>';
         foreach ($extrafields as $field) {
             echo '<td>'.s($user->{$field}).'</td>';
@@ -842,6 +844,8 @@ foreach ($progress as $user) {
 
 if ($csv) {
     $export->download_file();
+} else {
+    echo '</tbody>';
 }
 
 print '</table>';

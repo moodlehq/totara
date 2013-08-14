@@ -910,13 +910,52 @@ class moodlelib_testcase extends advanced_testcase {
     function test_clean_param_file() {
         $this->assertEquals(clean_param('correctfile.txt', PARAM_FILE), 'correctfile.txt');
         $this->assertEquals(clean_param('b\'a<d`\\/fi:l>e.t"x|t', PARAM_FILE), 'badfile.txt');
-        $this->assertEquals(clean_param('../parentdirfile.txt', PARAM_FILE), 'parentdirfile.txt');
+        $this->assertEquals(clean_param('../parentdirfile.txt', PARAM_FILE), '..parentdirfile.txt');
+        $this->assertEquals(clean_param('../../grandparentdirfile.txt', PARAM_FILE), '....grandparentdirfile.txt');
+        $this->assertEquals(clean_param('..\winparentdirfile.txt', PARAM_FILE), '..winparentdirfile.txt');
+        $this->assertEquals(clean_param('..\..\wingrandparentdir.txt', PARAM_FILE), '....wingrandparentdir.txt');
+        $this->assertEquals(clean_param('myfile.a.b.txt', PARAM_FILE), 'myfile.a.b.txt');
+        $this->assertEquals(clean_param('myfile..a..b.txt', PARAM_FILE), 'myfile..a..b.txt');
+        $this->assertEquals(clean_param('myfile.a..b...txt', PARAM_FILE), 'myfile.a..b...txt');
+        $this->assertEquals(clean_param('myfile.a.txt', PARAM_FILE), 'myfile.a.txt');
+        $this->assertEquals(clean_param('myfile...txt', PARAM_FILE), 'myfile...txt');
+        $this->assertEquals(clean_param('...jpg', PARAM_FILE), '...jpg');
+        $this->assertEquals(clean_param('.a.b.', PARAM_FILE), '.a.b.');
+        $this->assertEquals(clean_param('.', PARAM_FILE), '');
+        $this->assertEquals(clean_param('..', PARAM_FILE), '');
+        $this->assertEquals(clean_param('...', PARAM_FILE), '...');
+        $this->assertEquals(clean_param('. . . .', PARAM_FILE), '. . . .');
+        $this->assertEquals(clean_param('dontrtrim.me. .. .. . ', PARAM_FILE), 'dontrtrim.me. .. .. . ');
+        $this->assertEquals(clean_param(' . .dontltrim.me', PARAM_FILE), ' . .dontltrim.me');
+        $this->assertEquals(clean_param("here is a tab\t.txt", PARAM_FILE), 'here is a tab.txt');
+        $this->assertEquals(clean_param("here is a line\r\nbreak.txt", PARAM_FILE), 'here is a linebreak.txt');
+
         //The following behaviours have been maintained although they seem a little odd
         $this->assertEquals(clean_param('funny:thing', PARAM_FILE), 'funnything');
         $this->assertEquals(clean_param('./currentdirfile.txt', PARAM_FILE), '.currentdirfile.txt');
         $this->assertEquals(clean_param('c:\temp\windowsfile.txt', PARAM_FILE), 'ctempwindowsfile.txt');
         $this->assertEquals(clean_param('/home/user/linuxfile.txt', PARAM_FILE), 'homeuserlinuxfile.txt');
         $this->assertEquals(clean_param('~/myfile.txt', PARAM_FILE), '~myfile.txt');
+    }
+
+    function test_clean_param_path() {
+        $this->assertEquals(clean_param('correctfile.txt', PARAM_PATH), 'correctfile.txt');
+        $this->assertEquals(clean_param('b\'a<d`\\/fi:l>e.t"x|t', PARAM_PATH), 'bad/file.txt');
+        $this->assertEquals(clean_param('../parentdirfile.txt', PARAM_PATH), '/parentdirfile.txt');
+        $this->assertEquals(clean_param('../../grandparentdirfile.txt', PARAM_PATH), '/grandparentdirfile.txt');
+        $this->assertEquals(clean_param('..\winparentdirfile.txt', PARAM_PATH), '/winparentdirfile.txt');
+        $this->assertEquals(clean_param('..\..\wingrandparentdir.txt', PARAM_PATH), '/wingrandparentdir.txt');
+        $this->assertEquals(clean_param('funny:thing', PARAM_PATH), 'funnything');
+        $this->assertEquals(clean_param('./././here', PARAM_PATH), './here');
+        $this->assertEquals(clean_param('./currentdirfile.txt', PARAM_PATH), './currentdirfile.txt');
+        $this->assertEquals(clean_param('c:\temp\windowsfile.txt', PARAM_PATH), 'c/temp/windowsfile.txt');
+        $this->assertEquals(clean_param('/home/user/linuxfile.txt', PARAM_PATH), '/home/user/linuxfile.txt');
+        $this->assertEquals(clean_param('/home../user ./.linuxfile.txt', PARAM_PATH), '/home../user ./.linuxfile.txt');
+        $this->assertEquals(clean_param('~/myfile.txt', PARAM_PATH), '~/myfile.txt');
+        $this->assertEquals(clean_param('~/../myfile.txt', PARAM_PATH), '~/myfile.txt');
+        $this->assertEquals(clean_param('/..b../.../myfile.txt', PARAM_PATH), '/..b../.../myfile.txt');
+        $this->assertEquals(clean_param('..b../.../myfile.txt', PARAM_PATH), '..b../.../myfile.txt');
+        $this->assertEquals(clean_param('/super//slashes///', PARAM_PATH), '/super/slashes/');
     }
 
     function test_clean_param_username() {
@@ -2302,7 +2341,11 @@ class moodlelib_testcase extends advanced_testcase {
 
         // Forcing locale and timezone.
         $oldlocale = setlocale(LC_TIME, '0');
-        setlocale(LC_TIME, 'en_AU.UTF-8');
+        if ($CFG->ostype == 'WINDOWS') {
+            setlocale(LC_TIME, 'English_Australia.1252');
+        } else {
+            setlocale(LC_TIME, 'en_AU.UTF-8');
+        }
         $systemdefaulttimezone = date_default_timezone_get();
         date_default_timezone_set('Australia/Perth');
 
@@ -2322,6 +2365,10 @@ class moodlelib_testcase extends advanced_testcase {
                 'str' => '%A, %d %B %Y, %I:%M %p',
                 'expected' => 'Saturday, 01 January 2011, 10:00 AM'
             ),
+            // Following tests pass on Windows only because en lang pack does
+            // not contain localewincharset, in real life lang pack maintainers
+            // may use only characters that are present in localewincharset
+            // in format strings!
             array(
                 'tz' => 99,
                 'str' => 'Žluťoučký koníček %A',
@@ -2351,5 +2398,268 @@ class moodlelib_testcase extends advanced_testcase {
         // Restore system default values.
         date_default_timezone_set($systemdefaulttimezone);
         setlocale(LC_TIME, $oldlocale);
+    }
+
+    public function test_get_config() {
+        global $CFG;
+
+        $this->resetAfterTest();
+
+        // Preparation.
+        set_config('phpunit_test_get_config_1', 'test 1');
+        set_config('phpunit_test_get_config_2', 'test 2', 'mod_forum');
+        if (!is_array($CFG->config_php_settings)) {
+            $CFG->config_php_settings = array();
+        }
+        $CFG->config_php_settings['phpunit_test_get_config_3'] = 'test 3';
+
+        if (!is_array($CFG->forced_plugin_settings)) {
+            $CFG->forced_plugin_settings = array();
+        }
+        if (!array_key_exists('mod_forum', $CFG->forced_plugin_settings)) {
+            $CFG->forced_plugin_settings['mod_forum'] = array();
+        }
+        $CFG->forced_plugin_settings['mod_forum']['phpunit_test_get_config_4'] = 'test 4';
+        $CFG->phpunit_test_get_config_5 = 'test 5';
+
+        // Testing.
+        $this->assertEquals('test 1', get_config('core', 'phpunit_test_get_config_1'));
+        $this->assertEquals('test 2', get_config('mod_forum', 'phpunit_test_get_config_2'));
+        $this->assertEquals('test 3', get_config('core', 'phpunit_test_get_config_3'));
+        $this->assertEquals('test 4', get_config('mod_forum', 'phpunit_test_get_config_4'));
+        $this->assertFalse(get_config('core', 'phpunit_test_get_config_5'));
+        $this->assertFalse(get_config('core', 'phpunit_test_get_config_x'));
+        $this->assertFalse(get_config('mod_forum', 'phpunit_test_get_config_x'));
+
+        // Test config we know to exist.
+        $this->assertEquals($CFG->dataroot, get_config('core', 'dataroot'));
+        $this->assertEquals($CFG->phpunit_dataroot, get_config('core', 'phpunit_dataroot'));
+        $this->assertEquals($CFG->dataroot, get_config('core', 'phpunit_dataroot'));
+        $this->assertEquals(get_config('core', 'dataroot'), get_config('core', 'phpunit_dataroot'));
+
+        // Test setting a config var that already exists.
+        set_config('phpunit_test_get_config_1', 'test a');
+        $this->assertEquals('test a', $CFG->phpunit_test_get_config_1);
+        $this->assertEquals('test a', get_config('core', 'phpunit_test_get_config_1'));
+
+        // Test cache invalidation.
+        $cache = cache::make('core', 'config');
+        $this->assertInternalType('array', $cache->get('core'));
+        $this->assertInternalType('array', $cache->get('mod_forum'));
+        set_config('phpunit_test_get_config_1', 'test b');
+        $this->assertFalse($cache->get('core'));
+        set_config('phpunit_test_get_config_4', 'test c', 'mod_forum');
+        $this->assertFalse($cache->get('mod_forum'));
+    }
+
+    function test_get_max_upload_sizes() {
+        // Test with very low limits so we are not affected by php upload limits.
+        // Test activity limit smallest.
+        $sitebytes = 102400;
+        $coursebytes = 51200;
+        $modulebytes = 10240;
+        $result = get_max_upload_sizes($sitebytes, $coursebytes, $modulebytes);
+
+        $this->assertEquals('Activity upload limit (10KB)', $result['0']);
+        $this->assertEquals(2, count($result));
+
+        // Test course limit smallest.
+        $sitebytes = 102400;
+        $coursebytes = 10240;
+        $modulebytes = 51200;
+        $result = get_max_upload_sizes($sitebytes, $coursebytes, $modulebytes);
+
+        $this->assertEquals('Course upload limit (10KB)', $result['0']);
+        $this->assertEquals(2, count($result));
+
+        // Test site limit smallest.
+        $sitebytes = 10240;
+        $coursebytes = 102400;
+        $modulebytes = 51200;
+        $result = get_max_upload_sizes($sitebytes, $coursebytes, $modulebytes);
+
+        $this->assertEquals('Site upload limit (10KB)', $result['0']);
+        $this->assertEquals(2, count($result));
+
+        // Test site limit not set.
+        $sitebytes = 0;
+        $coursebytes = 102400;
+        $modulebytes = 51200;
+        $result = get_max_upload_sizes($sitebytes, $coursebytes, $modulebytes);
+
+        $this->assertEquals('Activity upload limit (50KB)', $result['0']);
+        $this->assertEquals(3, count($result));
+
+        $sitebytes = 0;
+        $coursebytes = 51200;
+        $modulebytes = 102400;
+        $result = get_max_upload_sizes($sitebytes, $coursebytes, $modulebytes);
+
+        $this->assertEquals('Course upload limit (50KB)', $result['0']);
+        $this->assertEquals(3, count($result));
+
+        // Test custom bytes in range.
+        $sitebytes = 102400;
+        $coursebytes = 51200;
+        $modulebytes = 51200;
+        $custombytes = 10240;
+        $result = get_max_upload_sizes($sitebytes, $coursebytes, $modulebytes, $custombytes);
+
+        $this->assertEquals(3, count($result));
+
+        // Test custom bytes in range but non-standard.
+        $sitebytes = 102400;
+        $coursebytes = 51200;
+        $modulebytes = 51200;
+        $custombytes = 25600;
+        $result = get_max_upload_sizes($sitebytes, $coursebytes, $modulebytes, $custombytes);
+
+        $this->assertEquals(4, count($result));
+
+        // Test custom bytes out of range.
+        $sitebytes = 102400;
+        $coursebytes = 51200;
+        $modulebytes = 51200;
+        $custombytes = 102400;
+        $result = get_max_upload_sizes($sitebytes, $coursebytes, $modulebytes, $custombytes);
+
+        $this->assertEquals(3, count($result));
+
+        // Test custom bytes out of range and non-standard.
+        $sitebytes = 102400;
+        $coursebytes = 51200;
+        $modulebytes = 51200;
+        $custombytes = 256000;
+        $result = get_max_upload_sizes($sitebytes, $coursebytes, $modulebytes, $custombytes);
+
+        $this->assertEquals(3, count($result));
+
+        // Test site limit only.
+        $sitebytes = 51200;
+        $result = get_max_upload_sizes($sitebytes);
+
+        $this->assertEquals('Site upload limit (50KB)', $result['0']);
+        $this->assertEquals('50KB', $result['51200']);
+        $this->assertEquals('10KB', $result['10240']);
+        $this->assertCount(3, $result);
+
+        // Test no limit.
+        $result = get_max_upload_sizes();
+        $this->assertArrayHasKey('0', $result);
+        $this->assertArrayHasKey(get_max_upload_file_size(), $result);
+    }
+
+    /**
+     * Test function password_is_legacy_hash().
+     */
+    public function test_password_is_legacy_hash() {
+        // Well formed md5s should be matched.
+        foreach (array('some', 'strings', 'to_check!') as $string) {
+            $md5 = md5($string);
+            $this->assertTrue(password_is_legacy_hash($md5));
+        }
+        // Strings that are not md5s should not be matched.
+        foreach (array('', AUTH_PASSWORD_NOT_CACHED, 'IPW8WTcsWNgAWcUS1FBVHegzJnw5M2jOmYkmfc8z.xdBOyC4Caeum') as $notmd5) {
+            $this->assertFalse(password_is_legacy_hash($notmd5));
+        }
+    }
+
+    /**
+     * Test function validate_internal_user_password().
+     */
+    public function test_validate_internal_user_password() {
+        if (password_compat_not_supported()) {
+            // If bcrypt is not properly supported test legacy md5 hashes instead.
+            // Can't hardcode these as we don't know the site's password salt.
+            $validhashes = array(
+                'pw' => hash_internal_user_password('pw'),
+                'abc' => hash_internal_user_password('abc'),
+                'C0mP1eX_&}<?@*&%` |\"' => hash_internal_user_password('C0mP1eX_&}<?@*&%` |\"'),
+                'ĩńťėŕňăţĩōŋāĹ' => hash_internal_user_password('ĩńťėŕňăţĩōŋāĹ')
+            );
+        } else {
+            // Otherwise test bcrypt hashes.
+            $validhashes = array(
+                'pw' => '$2y$10$LOSDi5eaQJhutSRun.OVJ.ZSxQZabCMay7TO1KmzMkDMPvU40zGXK',
+                'abc' => '$2y$10$VWTOhVdsBbWwtdWNDRHSpewjd3aXBQlBQf5rBY/hVhw8hciarFhXa',
+                'C0mP1eX_&}<?@*&%` |\"' => '$2y$10$3PJf.q.9ywNJlsInPbqc8.IFeSsvXrGvQLKRFBIhVu1h1I3vpIry6',
+                'ĩńťėŕňăţĩōŋāĹ' => '$2y$10$3A2Y8WpfRAnP3czJiSv6N.6Xp0T8hW3QZz2hUCYhzyWr1kGP1yUve'
+            );
+        }
+
+        foreach ($validhashes as $password => $hash) {
+            $user = new stdClass();
+            $user->auth = 'manual';
+            $user->password = $hash;
+            // The correct password should be validated.
+            $this->assertTrue(validate_internal_user_password($user, $password));
+            // An incorrect password should not be validated.
+            $this->assertFalse(validate_internal_user_password($user, 'badpw'));
+        }
+    }
+
+    /**
+     * Test function hash_internal_user_password().
+     */
+    public function test_hash_internal_user_password() {
+        $passwords = array('pw', 'abc123', 'C0mP1eX_&}<?@*&%` |\"', 'ĩńťėŕňăţĩōŋāĹ');
+
+        // Check that some passwords that we convert to hashes can
+        // be validated.
+        foreach ($passwords as $password) {
+            $hash = hash_internal_user_password($password);
+            $fasthash = hash_internal_user_password($password, true);
+            $user = new stdClass();
+            $user->auth = 'manual';
+            $user->password = $hash;
+            $this->assertTrue(validate_internal_user_password($user, $password));
+
+            if (password_compat_not_supported()) {
+                // If bcrypt is not properly supported make sure the passwords are in md5 format.
+                $this->assertTrue(password_is_legacy_hash($hash));
+            } else {
+                // Otherwise they should not be in md5 format.
+                $this->assertFalse(password_is_legacy_hash($hash));
+
+                // Check that cost factor in hash is correctly set.
+                $this->assertRegExp('/\$10\$/', $hash);
+                $this->assertRegExp('/\$04\$/', $fasthash);
+            }
+        }
+    }
+
+    /**
+     * Test function update_internal_user_password().
+     */
+    public function test_update_internal_user_password() {
+        global $DB;
+        $this->resetAfterTest();
+        $passwords = array('password', '1234', 'changeme', '****');
+        foreach ($passwords as $password) {
+            $user = $this->getDataGenerator()->create_user(array('auth'=>'manual'));
+            update_internal_user_password($user, $password);
+            // The user object should have been updated.
+            $this->assertTrue(validate_internal_user_password($user, $password));
+            // The database field for the user should also have been updated to the
+            // same value.
+            $this->assertEquals($user->password, $DB->get_field('user', 'password', array('id' => $user->id)));
+        }
+
+        $user = $this->getDataGenerator()->create_user(array('auth'=>'manual'));
+        // Manually set the user's password to the md5 of the string 'password'.
+        $DB->set_field('user', 'password', '5f4dcc3b5aa765d61d8327deb882cf99', array('id' => $user->id));
+
+        // Update the password.
+        update_internal_user_password($user, 'password');
+
+        if (password_compat_not_supported()) {
+            // If bcrypt not properly supported the password should remain as an md5 hash.
+            $expected_hash = hash_internal_user_password('password', true);
+            $this->assertEquals($user->password, $expected_hash);
+            $this->assertTrue(password_is_legacy_hash($user->password));
+        } else {
+            // Otherwise password should have been updated to a bcrypt hash.
+            $this->assertFalse(password_is_legacy_hash($user->password));
+        }
     }
 }

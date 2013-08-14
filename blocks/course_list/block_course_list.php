@@ -1,6 +1,7 @@
 <?php
 
 include_once($CFG->dirroot . '/course/lib.php');
+include_once($CFG->libdir . '/coursecatlib.php');
 
 class block_course_list extends block_list {
     function init() {
@@ -53,13 +54,13 @@ class block_course_list extends block_list {
             }
         }
 
-        $categories = get_categories("0");  // Parent = 0   ie top-level categories only
+        $categories = coursecat::get(0)->get_children();  // Parent = 0   ie top-level categories only
         if ($categories) {   //Check we have categories
             if (count($categories) > 1 || (count($categories) == 1 && $DB->count_records('course') > 200)) {     // Just print top level category links
                 foreach ($categories as $category) {
-                    $categoryname = format_string($category->name, true, array('context' => context_coursecat::instance($category->id)));
+                    $categoryname = $category->get_formatted_name();
                     $linkcss = $category->visible ? "" : " class=\"dimmed\" ";
-                    $this->content->items[]="<a $linkcss href=\"$CFG->wwwroot/course/category.php?id=$category->id\">".$icon . $categoryname . "</a>";
+                    $this->content->items[]="<a $linkcss href=\"$CFG->wwwroot/course/index.php?categoryid=$category->id\">".$icon . $categoryname . "</a>";
                 }
             /// If we can update any course of the view all isn't hidden, show the view all courses link
                 if (has_capability('moodle/course:update', context_system::instance()) || empty($CFG->block_course_list_hideallcourseslink)) {
