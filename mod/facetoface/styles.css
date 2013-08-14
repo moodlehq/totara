@@ -59,3 +59,12 @@ body.path-mod-facetoface div#fgroup_id_recipients input[id*="id_booked_type"] {
 input.cellwidth {
     width: 90% !important;
 }
+div.mod-indent form.togglecompletion input[type="image"] {
+    left: -13px;
+}
+.dir-rtl div.mod-indent form.togglecompletion input[type="image"] {
+    right: -5px;
+}
+td.f2fwidth {
+    width: 83%;
+}
