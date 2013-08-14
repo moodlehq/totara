@@ -20,8 +20,7 @@
  * This plugin does not add any entries into the user_enrolments table,
  * the access control is granted on the fly via the tricks in require_login().
  *
- * @package    enrol
- * @subpackage guest
+ * @package    enrol_guest
  * @copyright  2010 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -52,7 +51,7 @@ class enrol_guest_plugin extends enrol_plugin {
         }
     }
 
-    public function enrol_user(stdClass $instance, $userid, $roleid = NULL, $timestart = 0, $timeend = 0, $status = NULL) {
+    public function enrol_user(stdClass $instance, $userid, $roleid = null, $timestart = 0, $timeend = 0, $status = null, $recovergrades = null) {
         // no real enrolments here!
         return;
     }

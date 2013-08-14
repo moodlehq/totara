@@ -38,9 +38,19 @@ function xmldb_enrol_self_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2012101400, 'enrol', 'self');
     }
 
+    if ($oldversion < 2012120600) {
+        // Enable new self enrolments everywhere.
+        $DB->execute("UPDATE {enrol} SET customint6 = 1 WHERE enrol = 'self'");
+        upgrade_plugin_savepoint(true, 2012120600, 'enrol', 'self');
+    }
+
 
     // Moodle v2.4.0 release upgrade line
     // Put any upgrade step following this
+
+
+    // Moodle v2.5.0 release upgrade line.
+    // Put any upgrade step following this.
 
 
     return true;

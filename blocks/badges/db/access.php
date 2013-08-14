@@ -28,7 +28,7 @@ $capabilities = array(
         'block/badges:addinstance' => array(
                 'captype'      => 'read',
                 'contextlevel' => CONTEXT_BLOCK,
-                'archetypes'   => array(
+                'archetypes' => array(
                     'editingteacher' => CAP_ALLOW,
                     'manager' => CAP_ALLOW
                 ),

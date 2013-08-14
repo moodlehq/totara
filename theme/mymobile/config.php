@@ -17,8 +17,7 @@
 /**
  * Config file for mymobile theme
  *
- * @package    theme
- * @subpackage mymobile
+ * @package    theme_mymobile
  * @copyright  John Stabinger
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -153,13 +152,6 @@ if ($thisdevice == "default" || $thisdevice == "tablet" || optional_param('mymob
         $THEME->layouts[$layout]['defaultregion'] = 'myblocks';
     }
 }
-
-// Add the required JavaScript to the page
-$THEME->javascripts = array(
-    'jquery-1.7.1.min',
-    'custom',
-    'jquery.mobile-1.1.1'
-);
 
 // Sets a custom render factory to use with the theme, used when working with custom renderers.
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';

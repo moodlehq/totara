@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,8 +17,7 @@
 /**
  * Authorize.Net enrol plugin implementation.
  *
- * @package    enrol
- * @subpackage authorize
+ * @package    enrol_authorize
  * @copyright  2010 Eugene Venter
  * @author     Eugene Venter
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -127,7 +125,7 @@ class enrol_authorize_form extends moodleform
             }
 
             if ($plugin->get_config('an_avs')) {
-                $mform->addElement('header', '', '&nbsp;&nbsp;' . get_string('address'), '');
+                $mform->addElement('header', 'addressheader', '&nbsp;&nbsp;' . get_string('address'), '');
 
                 $mform->addElement('text', 'ccaddress', get_string('address'), 'size="30"');
                 $mform->setType('ccaddress', PARAM_ALPHANUM);

@@ -155,6 +155,7 @@ function useredit_shared_definition(&$mform, $editoroptions = null, $filemanager
     } else {
         $mform->addElement('text', 'email', get_string('email'), 'maxlength="100" size="30"');
         $mform->addRule('email', $strrequired, 'required', null, 'client');
+        $mform->setType('email', PARAM_EMAIL);
     }
 
     $choices = array();
@@ -259,7 +260,7 @@ function useredit_shared_definition(&$mform, $editoroptions = null, $filemanager
     $mform->setType('description_editor', PARAM_CLEANHTML);
     $mform->addHelpButton('description_editor', 'userdescription');
 
-    if (!empty($CFG->gdversion) and empty($USER->newadminuser)) {
+    if (empty($USER->newadminuser)) {
         $mform->addElement('header', 'moodle_picture', get_string('pictureofuser'));
 
         if (!empty($CFG->enablegravatar)) {

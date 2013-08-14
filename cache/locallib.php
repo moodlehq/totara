@@ -188,6 +188,68 @@ class cache_config_writer extends cache_config {
     }
 
     /**
+     * Adds a new lock instance to the config file.
+     *
+     * @param string $name The name the user gave the instance. PARAM_ALHPANUMEXT
+     * @param string $plugin The plugin we are creating an instance of.
+     * @param string $configuration Configuration data from the config instance.
+     * @throws cache_exception
+     */
+    public function add_lock_instance($name, $plugin, $configuration = array()) {
+        if (array_key_exists($name, $this->configlocks)) {
+            throw new cache_exception('Duplicate name specificed for cache lock instance. You must provide a unique name.');
+        }
+        $class = 'cachelock_'.$plugin;
+        if (!class_exists($class)) {
+            $plugins = get_plugin_list_with_file('cachelock', 'lib.php');
+            if (!array_key_exists($plugin, $plugins)) {
+                throw new cache_exception('Invalid lock name specified. The plugin does not exist or is not valid.');
+            }
+            $file = $plugins[$plugin];
+            if (file_exists($file)) {
+                require_once($file);
+            }
+            if (!class_exists($class)) {
+                throw new cache_exception('Invalid lock plugin specified. The plugin does not contain the required class.');
+            }
+        }
+        $reflection = new ReflectionClass($class);
+        if (!$reflection->implementsInterface('cache_lock_interface')) {
+            throw new cache_exception('Invalid lock plugin specified. The plugin does not implement the required interface.');
+        }
+        $this->configlocks[$name] = array_merge($configuration, array(
+            'name' => $name,
+            'type' => 'cachelock_'.$plugin,
+            'default' => false
+        ));
+        $this->config_save();
+    }
+
+    /**
+     * Deletes a lock instance given its name.
+     *
+     * @param string $name The name of the plugin, PARAM_ALPHANUMEXT.
+     * @return bool
+     * @throws cache_exception
+     */
+    public function delete_lock_instance($name) {
+        if (!array_key_exists($name, $this->configlocks)) {
+            throw new cache_exception('The requested store does not exist.');
+        }
+        if ($this->configlocks[$name]['default']) {
+            throw new cache_exception('You can not delete the default lock.');
+        }
+        foreach ($this->configstores as $store) {
+            if (isset($store['lock']) && $store['lock'] === $name) {
+                throw new cache_exception('You cannot delete a cache lock that is being used by a store.');
+            }
+        }
+        unset($this->configlocks[$name]);
+        $this->config_save();
+        return true;
+    }
+
+    /**
      * Sets the mode mappings.
      *
      * These determine the default caches for the different modes.
@@ -326,10 +388,11 @@ class cache_config_writer extends cache_config {
      * This function calls config_save, however it is safe to continue using it afterwards as this function should only ever
      * be called when there is no configuration file already.
      *
+     * @param bool $forcesave If set to true then we will forcefully save the default configuration file.
      * @return true|array Returns true if the default configuration was successfully created.
      *     Returns a configuration array if it could not be saved. This is a bad situation. Check your error logs.
      */
-    public static function create_default_configuration() {
+    public static function create_default_configuration($forcesave = false) {
         // HACK ALERT.
         // We probably need to come up with a better way to create the default stores, or at least ensure 100% that the
         // default store plugins are protected from deletion.
@@ -365,7 +428,7 @@ class cache_config_writer extends cache_config {
         $factory = cache_factory::instance();
         // We expect the cache to be initialising presently. If its not then something has gone wrong and likely
         // we are now in a loop.
-        if ($factory->get_state() !== cache_factory::STATE_INITIALISING) {
+        if (!$forcesave && $factory->get_state() !== cache_factory::STATE_INITIALISING) {
             return $writer->generate_configuration_array();
         }
         $factory->set_state(cache_factory::STATE_SAVING);
@@ -489,6 +552,20 @@ class cache_config_writer extends cache_config {
      * @param array $definitions
      */
     private function write_definitions_to_cache(array $definitions) {
+
+        // Preserve the selected sharing option when updating the definitions.
+        // This is set by the user and should never come from caches.php.
+        foreach ($definitions as $key => $definition) {
+            unset($definitions[$key]['selectedsharingoption']);
+            unset($definitions[$key]['userinputsharingkey']);
+            if (isset($this->configdefinitions[$key]) && isset($this->configdefinitions[$key]['selectedsharingoption'])) {
+                $definitions[$key]['selectedsharingoption'] = $this->configdefinitions[$key]['selectedsharingoption'];
+            }
+            if (isset($this->configdefinitions[$key]) && isset($this->configdefinitions[$key]['userinputsharingkey'])) {
+                $definitions[$key]['userinputsharingkey'] = $this->configdefinitions[$key]['userinputsharingkey'];
+            }
+        }
+
         $this->configdefinitions = $definitions;
         foreach ($this->configdefinitionmappings as $key => $mapping) {
             if (!array_key_exists($mapping['definition'], $definitions)) {
@@ -557,6 +634,29 @@ class cache_config_writer extends cache_config {
         $this->config_save();
         return $this->siteidentifier;
     }
+
+    /**
+     * Sets the selected sharing options and key for a definition.
+     *
+     * @param string $definition The name of the definition to set for.
+     * @param int $sharingoption The sharing option to set.
+     * @param string|null $userinputsharingkey The user input key or null.
+     * @throws coding_exception
+     */
+    public function set_definition_sharing($definition, $sharingoption, $userinputsharingkey = null) {
+        if (!array_key_exists($definition, $this->configdefinitions)) {
+            throw new coding_exception('Invalid definition name passed when updating sharing options.');
+        }
+        if (!($this->configdefinitions[$definition]['sharingoptions'] & $sharingoption)) {
+            throw new coding_exception('Invalid sharing option passed when updating definition.');
+        }
+        $this->configdefinitions[$definition]['selectedsharingoption'] = (int)$sharingoption;
+        if (!empty($userinputsharingkey)) {
+            $this->configdefinitions[$definition]['userinputsharingkey'] = (string)$userinputsharingkey;
+        }
+        $this->config_save();
+    }
+
 }
 
 /**
@@ -578,9 +678,11 @@ abstract class cache_administration_helper extends cache_helper {
         $default = array();
         $instance = cache_config::instance();
         $stores = $instance->get_all_stores();
+        $locks = $instance->get_locks();
         foreach ($stores as $name => $details) {
             $class = $details['class'];
             $store = new $class($details['name'], $details['configuration']);
+            $lock = (isset($details['lock'])) ? $locks[$details['lock']] : $instance->get_default_lock();
             $record = array(
                 'name' => $name,
                 'plugin' => $details['plugin'],
@@ -588,6 +690,7 @@ abstract class cache_administration_helper extends cache_helper {
                 'isready' => $store->is_ready(),
                 'requirementsmet' => $store->are_requirements_met(),
                 'mappings' => 0,
+                'lock' => $lock,
                 'modes' => array(
                     cache_store::MODE_APPLICATION =>
                         ($store->get_supported_modes($return) & cache_store::MODE_APPLICATION) == cache_store::MODE_APPLICATION,
@@ -725,10 +828,38 @@ abstract class cache_administration_helper extends cache_helper {
                 'mode' => $definition['mode'],
                 'component' => $definition['component'],
                 'area' => $definition['area'],
-                'mappings' => $mappings
+                'mappings' => $mappings,
+                'sharingoptions' => self::get_definition_sharing_options($definition['sharingoptions'], false),
+                'selectedsharingoption' => self::get_definition_sharing_options($definition['selectedsharingoption'], true),
+                'userinputsharingkey' => $definition['userinputsharingkey']
             );
         }
         return $return;
+    }
+
+    /**
+     * Given a sharing option hash this function returns an array of strings that can be used to describe it.
+     *
+     * @param int $sharingoption The sharing option hash to get strings for.
+     * @param bool $isselectedoptions Set to true if the strings will be used to view the selected options.
+     * @return array An array of lang_string's.
+     */
+    public static function get_definition_sharing_options($sharingoption, $isselectedoptions = true) {
+        $options = array();
+        $prefix = ($isselectedoptions) ? 'sharingselected' : 'sharing';
+        if ($sharingoption & cache_definition::SHARING_ALL) {
+            $options[cache_definition::SHARING_ALL] = new lang_string($prefix.'_all', 'cache');
+        }
+        if ($sharingoption & cache_definition::SHARING_SITEID) {
+            $options[cache_definition::SHARING_SITEID] = new lang_string($prefix.'_siteid', 'cache');
+        }
+        if ($sharingoption & cache_definition::SHARING_VERSION) {
+            $options[cache_definition::SHARING_VERSION] = new lang_string($prefix.'_version', 'cache');
+        }
+        if ($sharingoption & cache_definition::SHARING_INPUT) {
+            $options[cache_definition::SHARING_INPUT] = new lang_string($prefix.'_input', 'cache');
+        }
+        return $options;
     }
 
     /**
@@ -736,14 +867,27 @@ abstract class cache_administration_helper extends cache_helper {
      * @param context $context
      * @return array
      */
-    public static function get_definition_actions(context $context) {
+    public static function get_definition_actions(context $context, array $definition) {
         if (has_capability('moodle/site:config', $context)) {
-            return array(
-                array(
-                    'text' => get_string('editmappings', 'cache'),
-                    'url' => new moodle_url('/cache/admin.php', array('action' => 'editdefinitionmapping', 'sesskey' => sesskey()))
-                )
+            $actions = array();
+            // Edit mappings.
+            $actions[] = array(
+                'text' => get_string('editmappings', 'cache'),
+                'url' => new moodle_url('/cache/admin.php', array('action' => 'editdefinitionmapping', 'sesskey' => sesskey()))
             );
+            // Edit sharing.
+            if (count($definition['sharingoptions']) > 1) {
+                $actions[] = array(
+                    'text' => get_string('editsharing', 'cache'),
+                    'url' => new moodle_url('/cache/admin.php', array('action' => 'editdefinitionsharing', 'sesskey' => sesskey()))
+                );
+            }
+            // Purge.
+            $actions[] = array(
+                'text' => get_string('purge', 'cache'),
+                'url' => new moodle_url('/cache/admin.php', array('action' => 'purgedefinition', 'sesskey' => sesskey()))
+            );
+            return $actions;
         }
         return array();
     }
@@ -771,7 +915,7 @@ abstract class cache_administration_helper extends cache_helper {
             }
             $actions[] = array(
                 'text' => get_string('purge', 'cache'),
-                'url' => new moodle_url($baseurl, array('action' => 'purge'))
+                'url' => new moodle_url($baseurl, array('action' => 'purgestore'))
             );
         }
         return $actions;
@@ -866,6 +1010,9 @@ abstract class cache_administration_helper extends cache_helper {
 
         $url = new moodle_url('/cache/admin.php', array('action' => 'editstore', 'plugin' => $plugin, 'store' => $store));
         $editform = new $class($url, array('plugin' => $plugin, 'store' => $store, 'locks' => $locks));
+        if (isset($stores[$store]['lock'])) {
+            $editform->set_data(array('lock' => $stores[$store]['lock']));
+        }
         // See if the cachestore is going to want to load data for the form.
         // If it has a customised add instance form then it is going to want to.
         $storeclass = 'cachestore_'.$plugin;
@@ -1026,10 +1173,86 @@ abstract class cache_administration_helper extends cache_helper {
             $lockdata = array(
                 'name' => $name,
                 'default' => $default,
-                'uses' => $uses
+                'uses' => $uses,
+                'type' => get_string('pluginname', $lock['type'])
             );
-            $locks[] = $lockdata;
+            $locks[$lock['name']] = $lockdata;
         }
         return $locks;
+    }
+
+    /**
+     * Returns an array of lock plugins for which we can add an instance.
+     *
+     * Suitable for use within an mform select element.
+     *
+     * @return array
+     */
+    public static function get_addable_lock_options() {
+        $plugins = get_plugin_list_with_class('cachelock', '', 'lib.php');
+        $options = array();
+        $len = strlen('cachelock_');
+        foreach ($plugins as $plugin => $class) {
+            $method = "$class::can_add_instance";
+            if (is_callable($method) && !call_user_func($method)) {
+                // Can't add an instance of this plugin.
+                continue;
+            }
+            $options[substr($plugin, $len)] = get_string('pluginname', $plugin);
+        }
+        return $options;
+    }
+
+    /**
+     * Gets the form to use when adding a lock instance.
+     *
+     * @param string $plugin
+     * @param array $lockplugin
+     * @return cache_lock_form
+     * @throws coding_exception
+     */
+    public static function get_add_lock_form($plugin, array $lockplugin = null) {
+        global $CFG; // Needed for includes.
+        $plugins = get_plugin_list('cachelock');
+        if (!array_key_exists($plugin, $plugins)) {
+            throw new coding_exception('Invalid cache lock plugin requested when trying to create a form.');
+        }
+        $plugindir = $plugins[$plugin];
+        $class = 'cache_lock_form';
+        if (file_exists($plugindir.'/addinstanceform.php') && in_array('cache_is_configurable', class_implements($class))) {
+            require_once($plugindir.'/addinstanceform.php');
+            if (class_exists('cachelock_'.$plugin.'_addinstance_form')) {
+                $class = 'cachelock_'.$plugin.'_addinstance_form';
+                if (!array_key_exists('cache_lock_form', class_parents($class))) {
+                    throw new coding_exception('Cache lock plugin add instance forms must extend cache_lock_form');
+                }
+            }
+        }
+        return new $class(null, array('lock' => $plugin));
+    }
+
+    /**
+     * Gets configuration data from a new lock instance form.
+     *
+     * @param string $plugin
+     * @param stdClass $data
+     * @return array
+     * @throws coding_exception
+     */
+    public static function get_lock_configuration_from_data($plugin, $data) {
+        global $CFG;
+        $file = $CFG->dirroot.'/cache/locks/'.$plugin.'/lib.php';
+        if (!file_exists($file)) {
+            throw new coding_exception('Invalid cache plugin provided. '.$file);
+        }
+        require_once($file);
+        $class = 'cachelock_'.$plugin;
+        if (!class_exists($class)) {
+            throw new coding_exception('Invalid cache plugin provided.');
+        }
+        if (array_key_exists('cache_is_configurable', class_implements($class))) {
+            return $class::config_get_configuration_array($data);
+        }
+        return array();
     }
 }

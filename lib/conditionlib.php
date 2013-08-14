@@ -777,6 +777,7 @@ abstract class condition_info_base {
 
         $information = '';
 
+
         // Completion conditions
         if (count($this->item->conditionscompletion) > 0) {
             if ($this->item->course == $COURSE->id) {
@@ -792,9 +793,11 @@ abstract class condition_info_base {
                 if (empty($modinfo->cms[$cmid])) {
                     continue;
                 }
+                $information .= html_writer::start_tag('li');
                 $information .= get_string(
                         'requires_completion_' . $expectedcompletion,
                         'condition', $modinfo->cms[$cmid]->name) . ' ';
+                $information .= html_writer::end_tag('li');
             }
         }
 
@@ -813,7 +816,9 @@ abstract class condition_info_base {
                 } else {
                     $string = 'range';
                 }
+                $information .= html_writer::start_tag('li');
                 $information .= get_string('requires_grade_'.$string, 'condition', $minmax->name).' ';
+                $information .= html_writer::end_tag('li');
             }
         }
 
@@ -827,7 +832,9 @@ abstract class condition_info_base {
                 $translatedfieldname = get_user_field_name($details->fieldname);
                 $a->field = format_string($translatedfieldname, true, array('context' => $context));
                 $a->value = s($details->value);
+                $information .= html_writer::start_tag('li');
                 $information .= get_string('requires_user_field_'.$details->operator, 'condition', $a) . ' ';
+                $information .= html_writer::end_tag('li');
             }
         }
 
@@ -878,22 +885,41 @@ abstract class condition_info_base {
 
         if ($this->item->availablefrom && $this->item->availableuntil) {
             if ($shortfrom && $shortuntil && $daybeforeuntil == $this->item->availablefrom) {
+                $information .= html_writer::start_tag('li');
                 $information .= get_string('requires_date_both_single_day', 'condition',
                         self::show_time($this->item->availablefrom, true));
+                $information .= html_writer::end_tag('li');
             } else {
+                $information .= html_writer::start_tag('li');
                 $information .= get_string('requires_date_both', 'condition', (object)array(
                          'from' => self::show_time($this->item->availablefrom, $shortfrom),
                          'until' => self::show_time($displayuntil, $shortuntil)));
+                $information .= html_writer::end_tag('li');
             }
         } else if ($this->item->availablefrom) {
+            $information .= html_writer::start_tag('li');
             $information .= get_string('requires_date', 'condition',
                 self::show_time($this->item->availablefrom, $shortfrom));
+            $information .= html_writer::end_tag('li');
         } else if ($this->item->availableuntil) {
+            $information .= html_writer::start_tag('li');
             $information .= get_string('requires_date_before', 'condition',
                 self::show_time($displayuntil, $shortuntil));
+            $information .= html_writer::end_tag('li');
         }
 
-        $information = trim($information);
+        // The information is in <li> tags, but to avoid taking up more space
+        // if there is only a single item, we strip out the list tags so that it
+        // is plain text in that case.
+        if (!empty($information)) {
+            $li = strpos($information, '<li>', 4);
+            if ($li === false) {
+                $information = preg_replace('~^<li>(.*)</li>$~', '$1', $information);
+            } else {
+                $information = html_writer::tag('ul', $information);
+            }
+            $information = trim($information);
+        }
         return $information;
     }
 
@@ -990,9 +1016,11 @@ abstract class condition_info_base {
                 }
                 if (!$thisisok) {
                     $available = false;
+                    $information .= html_writer::start_tag('li');
                     $information .= get_string(
                         'requires_completion_' . $expectedcompletion,
                         'condition', $modinfo->cms[$cmid]->name) . ' ';
+                    $information .= html_writer::end_tag('li');
                 }
             }
         }
@@ -1018,7 +1046,9 @@ abstract class condition_info_base {
                     } else {
                         $string = 'range';
                     }
+                    $information .= html_writer::start_tag('li');
                     $information .= get_string('requires_grade_' . $string, 'condition', $minmax->name) . ' ';
+                    $information .= html_writer::end_tag('li');
                 }
             }
         }
@@ -1034,7 +1064,9 @@ abstract class condition_info_base {
                     $a = new stdClass();
                     $a->field = format_string($details->fieldname, true, array('context' => $context));
                     $a->value = s($details->value);
+                    $information .= html_writer::start_tag('li');
                     $information .= get_string('requires_user_field_'.$details->operator, 'condition', $a) . ' ';
+                    $information .= html_writer::end_tag('li');
                 }
             }
         }
@@ -1044,9 +1076,11 @@ abstract class condition_info_base {
             if (time() < $this->item->availablefrom) {
                 $available = false;
 
+                $information .= html_writer::start_tag('li');
                 $information .= get_string('requires_date', 'condition',
                         self::show_time($this->item->availablefrom,
                             self::is_midnight($this->item->availablefrom)));
+                $information .= html_writer::end_tag('li');
             }
         }
 
@@ -1075,7 +1109,18 @@ abstract class condition_info_base {
             $information = '';
         }
 
-        $information = trim($information);
+        // The information is in <li> tags, but to avoid taking up more space
+        // if there is only a single item, we strip out the list tags so that it
+        // is plain text in that case.
+        if (!empty($information)) {
+            $li = strpos($information, '<li>', 4);
+            if ($li === false) {
+                $information = preg_replace('~^<li>(.*)</li>$~', '$1', $information);
+            } else {
+                $information = html_writer::tag('ul', $information);
+            }
+            $information = trim($information);
+        }
         return $available;
     }
 

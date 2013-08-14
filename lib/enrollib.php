@@ -1244,9 +1244,10 @@ abstract class enrol_plugin {
      * @param int $timestart 0 means unknown
      * @param int $timeend 0 means forever
      * @param int $status default to ENROL_USER_ACTIVE for new enrolments, no change by default in updates
+     * @param bool $recovergrades restore grade history
      * @return void
      */
-    public function enrol_user(stdClass $instance, $userid, $roleid = NULL, $timestart = 0, $timeend = 0, $status = NULL) {
+    public function enrol_user(stdClass $instance, $userid, $roleid = null, $timestart = 0, $timeend = 0, $status = null, $recovergrades = null) {
         global $DB, $USER, $CFG; // CFG necessary!!!
 
         if ($instance->courseid == SITEID) {
@@ -1260,6 +1261,9 @@ abstract class enrol_plugin {
             throw new coding_exception('invalid enrol instance!');
         }
         $context = context_course::instance($instance->courseid, MUST_EXIST);
+        if (!isset($recovergrades)) {
+            $recovergrades = $CFG->recovergradesdefault;
+        }
 
         $inserted = false;
         $updated  = false;
@@ -1312,6 +1316,12 @@ abstract class enrol_plugin {
             } else {
                 role_assign($roleid, $userid, $context->id);
             }
+        }
+
+        // Recover old grades if present.
+        if ($recovergrades) {
+            require_once("$CFG->libdir/gradelib.php");
+            grade_recover_history_grades($userid, $courseid);
         }
 
         // reset current user enrolment caching
@@ -1715,7 +1725,7 @@ abstract class enrol_plugin {
             return NULL;
         }
 
-        return new moodle_url("/enrol/$name/unenrolself.php", array('enrolid'=>$instance->id));;
+        return new moodle_url("/enrol/$name/unenrolself.php", array('enrolid'=>$instance->id));
     }
 
     /**
@@ -2005,6 +2015,125 @@ abstract class enrol_plugin {
     }
 
     /**
+     * Do any enrolments need expiration processing.
+     *
+     * Plugins that want to call this functionality must implement 'expiredaction' config setting.
+     *
+     * @param progress_trace $trace
+     * @param int $courseid one course, empty mean all
+     * @return bool true if any data processed, false if not
+     */
+    public function process_expirations(progress_trace $trace, $courseid = null) {
+        global $DB;
+
+        $name = $this->get_name();
+        if (!enrol_is_enabled($name)) {
+            $trace->finished();
+            return false;
+        }
+
+        $processed = false;
+        $params = array();
+        $coursesql = "";
+        if ($courseid) {
+            $coursesql = "AND e.courseid = :courseid";
+        }
+
+        // Deal with expired accounts.
+        $action = $this->get_config('expiredaction', ENROL_EXT_REMOVED_KEEP);
+
+        if ($action == ENROL_EXT_REMOVED_UNENROL) {
+            $instances = array();
+            $sql = "SELECT ue.*, e.courseid, c.id AS contextid
+                      FROM {user_enrolments} ue
+                      JOIN {enrol} e ON (e.id = ue.enrolid AND e.enrol = :enrol)
+                      JOIN {context} c ON (c.instanceid = e.courseid AND c.contextlevel = :courselevel)
+                     WHERE ue.timeend > 0 AND ue.timeend < :now $coursesql";
+            $params = array('now'=>time(), 'courselevel'=>CONTEXT_COURSE, 'enrol'=>$name, 'courseid'=>$courseid);
+
+            $rs = $DB->get_recordset_sql($sql, $params);
+            foreach ($rs as $ue) {
+                if (!$processed) {
+                    $trace->output("Starting processing of enrol_$name expirations...");
+                    $processed = true;
+                }
+                if (empty($instances[$ue->enrolid])) {
+                    $instances[$ue->enrolid] = $DB->get_record('enrol', array('id'=>$ue->enrolid));
+                }
+                $instance = $instances[$ue->enrolid];
+                if (!$this->roles_protected()) {
+                    // Let's just guess what extra roles are supposed to be removed.
+                    if ($instance->roleid) {
+                        role_unassign($instance->roleid, $ue->userid, $ue->contextid);
+                    }
+                }
+                // The unenrol cleans up all subcontexts if this is the only course enrolment for this user.
+                $this->unenrol_user($instance, $ue->userid);
+                $trace->output("Unenrolling expired user $ue->userid from course $instance->courseid", 1);
+            }
+            $rs->close();
+            unset($instances);
+
+        } else if ($action == ENROL_EXT_REMOVED_SUSPENDNOROLES or $action == ENROL_EXT_REMOVED_SUSPEND) {
+            $instances = array();
+            $sql = "SELECT ue.*, e.courseid, c.id AS contextid
+                      FROM {user_enrolments} ue
+                      JOIN {enrol} e ON (e.id = ue.enrolid AND e.enrol = :enrol)
+                      JOIN {context} c ON (c.instanceid = e.courseid AND c.contextlevel = :courselevel)
+                     WHERE ue.timeend > 0 AND ue.timeend < :now
+                           AND ue.status = :useractive $coursesql";
+            $params = array('now'=>time(), 'courselevel'=>CONTEXT_COURSE, 'useractive'=>ENROL_USER_ACTIVE, 'enrol'=>$name, 'courseid'=>$courseid);
+            $rs = $DB->get_recordset_sql($sql, $params);
+            foreach ($rs as $ue) {
+                if (!$processed) {
+                    $trace->output("Starting processing of enrol_$name expirations...");
+                    $processed = true;
+                }
+                if (empty($instances[$ue->enrolid])) {
+                    $instances[$ue->enrolid] = $DB->get_record('enrol', array('id'=>$ue->enrolid));
+                }
+                $instance = $instances[$ue->enrolid];
+
+                if ($action == ENROL_EXT_REMOVED_SUSPENDNOROLES) {
+                    if (!$this->roles_protected()) {
+                        // Let's just guess what roles should be removed.
+                        $count = $DB->count_records('role_assignments', array('userid'=>$ue->userid, 'contextid'=>$ue->contextid));
+                        if ($count == 1) {
+                            role_unassign_all(array('userid'=>$ue->userid, 'contextid'=>$ue->contextid, 'component'=>'', 'itemid'=>0));
+
+                        } else if ($count > 1 and $instance->roleid) {
+                            role_unassign($instance->roleid, $ue->userid, $ue->contextid, '', 0);
+                        }
+                    }
+                    // In any case remove all roles that belong to this instance and user.
+                    role_unassign_all(array('userid'=>$ue->userid, 'contextid'=>$ue->contextid, 'component'=>'enrol_'.$name, 'itemid'=>$instance->id), true);
+                    // Final cleanup of subcontexts if there are no more course roles.
+                    if (0 == $DB->count_records('role_assignments', array('userid'=>$ue->userid, 'contextid'=>$ue->contextid))) {
+                        role_unassign_all(array('userid'=>$ue->userid, 'contextid'=>$ue->contextid, 'component'=>'', 'itemid'=>0), true);
+                    }
+                }
+
+                $this->update_user_enrol($instance, $ue->userid, ENROL_USER_SUSPENDED);
+                $trace->output("Suspending expired user $ue->userid in course $instance->courseid", 1);
+            }
+            $rs->close();
+            unset($instances);
+
+        } else {
+            // ENROL_EXT_REMOVED_KEEP means no changes.
+        }
+
+        if ($processed) {
+            $trace->output("...finished processing of enrol_$name expirations");
+        } else {
+            $trace->output("No expired enrol_$name enrolments detected");
+        }
+        $trace->finished();
+
+        return $processed;
+    }
+
+    /**
      * Send expiry notifications.
      *
      * Plugin that wants to have expiry notification MUST implement following:
@@ -2016,10 +2145,16 @@ abstract class enrol_plugin {
      * - upgrade code that sets default thresholds for existing courses (should be 1 day),
      * - something that calls this method, such as cron.
      *
-     * @param bool $verbose verbose CLI output
+     * @param progress_trace $trace (accepts bool for backwards compatibility only)
      */
-    public function send_expiry_notifications($verbose = false) {
+    public function send_expiry_notifications($trace) {
         global $DB, $CFG;
+
+        $name = $this->get_name();
+        if (!enrol_is_enabled($name)) {
+            $trace->finished();
+            return;
+        }
 
         // Unfortunately this may take a long time, it should not be interrupted,
         // otherwise users get duplicate notification.
@@ -2027,33 +2162,35 @@ abstract class enrol_plugin {
         @set_time_limit(0);
         raise_memory_limit(MEMORY_HUGE);
 
-        $name = $this->get_name();
 
         $expirynotifylast = $this->get_config('expirynotifylast', 0);
         $expirynotifyhour = $this->get_config('expirynotifyhour');
         if (is_null($expirynotifyhour)) {
             debugging("send_expiry_notifications() in $name enrolment plugin needs expirynotifyhour setting");
+            $trace->finished();
             return;
+        }
+
+        if (!($trace instanceof progress_trace)) {
+            $trace = $trace ? new text_progress_trace() : new null_progress_trace();
+            debugging('enrol_plugin::send_expiry_notifications() now expects progress_trace instance as parameter!', DEBUG_DEVELOPER);
         }
 
         $timenow = time();
         $notifytime = usergetmidnight($timenow, $CFG->timezone) + ($expirynotifyhour * 3600);
 
         if ($expirynotifylast > $notifytime) {
-            if ($verbose) {
-                mtrace($name.' enrolment expiry notifications were already sent today at '.userdate($expirynotifylast, '', $CFG->timezone).'.');
-            }
+            $trace->output($name.' enrolment expiry notifications were already sent today at '.userdate($expirynotifylast, '', $CFG->timezone).'.');
+            $trace->finished();
             return;
+
         } else if ($timenow < $notifytime) {
-            if ($verbose) {
-                mtrace($name.' enrolment expiry notifications will be sent at '.userdate($notifytime, '', $CFG->timezone).'.');
-            }
+            $trace->output($name.' enrolment expiry notifications will be sent at '.userdate($notifytime, '', $CFG->timezone).'.');
+            $trace->finished();
             return;
         }
 
-        if ($verbose) {
-            mtrace('Processing '.$name.' enrolment expiration notifications...');
-        }
+        $trace->output('Processing '.$name.' enrolment expiration notifications...');
 
         // Notify users responsible for enrolment once every day.
         $sql = "SELECT ue.*, e.expirynotify, e.notifyall, e.expirythreshold, e.courseid, c.fullname
@@ -2072,7 +2209,7 @@ abstract class enrol_plugin {
 
         foreach($rs as $ue) {
             if ($lastenrollid and $lastenrollid != $ue->enrolid) {
-                $this->notify_expiry_enroller($lastenrollid, $users, $verbose);
+                $this->notify_expiry_enroller($lastenrollid, $users, $trace);
                 $users = array();
             }
             $lastenrollid = $ue->enrolid;
@@ -2090,23 +2227,21 @@ abstract class enrol_plugin {
 
             if ($ue->timeend - $ue->expirythreshold + 86400 < $timenow) {
                 // Notify enrolled users only once at the start of the threshold.
-                if ($verbose) {
-                    mtrace("  user $ue->userid was already notified that enrolment in course $ue->courseid expires on ".userdate($ue->timeend, '', $CFG->timezone));
-                }
+                $trace->output("user $ue->userid was already notified that enrolment in course $ue->courseid expires on ".userdate($ue->timeend, '', $CFG->timezone), 1);
                 continue;
             }
 
-            $this->notify_expiry_enrolled($user, $ue, $verbose);
+            $this->notify_expiry_enrolled($user, $ue, $trace);
         }
         $rs->close();
 
         if ($lastenrollid and $users) {
-            $this->notify_expiry_enroller($lastenrollid, $users, $verbose);
+            $this->notify_expiry_enroller($lastenrollid, $users, $trace);
         }
 
-        if ($verbose) {
-            mtrace('...notification processing finished.');
-        }
+        $trace->output('...notification processing finished.');
+        $trace->finished();
+
         $this->set_config('expirynotifylast', $timenow);
     }
 
@@ -2131,9 +2266,9 @@ abstract class enrol_plugin {
      *
      * @param stdClass $user
      * @param stdClass $ue
-     * @param bool $verbose
+     * @param progress_trace $trace
      */
-    protected function notify_expiry_enrolled($user, $ue, $verbose) {
+    protected function notify_expiry_enrolled($user, $ue, progress_trace $trace) {
         global $CFG, $SESSION;
 
         $name = $this->get_name();
@@ -2172,13 +2307,9 @@ abstract class enrol_plugin {
         $message->contexturl        = (string)new moodle_url('/course/view.php', array('id'=>$ue->courseid));
 
         if (message_send($message)) {
-            if ($verbose) {
-                mtrace("  notifying user $ue->userid that enrolment in course $ue->courseid expires on ".userdate($ue->timeend, '', $CFG->timezone));
-            }
+            $trace->output("notifying user $ue->userid that enrolment in course $ue->courseid expires on ".userdate($ue->timeend, '', $CFG->timezone), 1);
         } else {
-            if ($verbose) {
-                mtrace("  error notifying user $ue->userid that enrolment in course $ue->courseid expires on ".userdate($ue->timeend, '', $CFG->timezone));
-            }
+            $trace->output("error notifying user $ue->userid that enrolment in course $ue->courseid expires on ".userdate($ue->timeend, '', $CFG->timezone), 1);
         }
 
         if ($SESSION->lang !== $sessionlang) {
@@ -2196,9 +2327,9 @@ abstract class enrol_plugin {
      *
      * @param int $eid
      * @param array $users
-     * @param bool $verbose
+     * @param progress_trace $trace
      */
-    protected function notify_expiry_enroller($eid, $users, $verbose) {
+    protected function notify_expiry_enroller($eid, $users, progress_trace $trace) {
         global $DB, $SESSION;
 
         $name = $this->get_name();
@@ -2245,13 +2376,9 @@ abstract class enrol_plugin {
         $message->contexturl        = $a->extendurl;
 
         if (message_send($message)) {
-            if ($verbose) {
-                mtrace("  notifying user $enroller->id about all expiring $name enrolments in course $instance->courseid");
-            }
+            $trace->output("notifying user $enroller->id about all expiring $name enrolments in course $instance->courseid", 1);
         } else {
-            if ($verbose) {
-                mtrace("  error notifying user $enroller->id about all expiring $name enrolments in course $instance->courseid");
-            }
+            $trace->output("error notifying user $enroller->id about all expiring $name enrolments in course $instance->courseid", 1);
         }
 
         if ($SESSION->lang !== $sessionlang) {

@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,15 +17,17 @@
 /**
  * version for mymobile theme
  *
- * @package    theme
- * @subpackage mymobile
+ * @package    theme_mymobile
  * @copyright  John Stabinger
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version = 2012112900;              // The current module version (Date: YYYYMMDDXX)
-$plugin->requires = 2012112900;             // Requires this Moodle version
+$plugin->version = 2013050100;              // The current module version (Date: YYYYMMDDXX)
+$plugin->requires = 2013050100;             // Requires this Moodle version
 $plugin->component = 'theme_mymobile';
 $plugin->maturity = MATURITY_STABLE;
+$plugin->dependencies = array(
+    'theme_canvas'  => 2013050100,
+);

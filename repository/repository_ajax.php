@@ -57,7 +57,6 @@ require_login($course, false, $cm);
 $PAGE->set_context($context);
 
 echo $OUTPUT->header(); // send headers
-@header('Content-type: text/html; charset=utf-8');
 
 // If uploaded file is larger than post_max_size (php.ini) setting, $_POST content will be empty.
 if (empty($_POST) && !empty($action)) {
@@ -267,7 +266,7 @@ switch ($action) {
                     $event['existingfile'] = new stdClass;
                     $event['existingfile']->filepath = $saveas_path;
                     $event['existingfile']->filename = $saveas_filename;
-                    $event['existingfile']->url      = moodle_url::make_draftfile_url($itemid, $saveas_path, $saveas_filename)->out();;
+                    $event['existingfile']->url      = moodle_url::make_draftfile_url($itemid, $saveas_path, $saveas_filename)->out();
                 } else {
 
                     $storedfile = $fs->create_file_from_reference($record, $repo_id, $reference);
@@ -302,14 +301,14 @@ switch ($action) {
                     die(json_encode($err));
                 }
 
-                // Check if we exceed the max bytes of the area.
-                if (file_is_draft_area_limit_reached($itemid, $areamaxbytes, filesize($downloadedfile['path']))) {
-                    throw new file_exception('maxareabytes');
-                }
-
                 // Check if exceed maxbytes.
                 if ($maxbytes != -1 && filesize($downloadedfile['path']) > $maxbytes) {
                     throw new file_exception('maxbytes');
+                }
+
+                // Check if we exceed the max bytes of the area.
+                if (file_is_draft_area_limit_reached($itemid, $areamaxbytes, filesize($downloadedfile['path']))) {
+                    throw new file_exception('maxareabytes');
                 }
 
                 $info = repository::move_to_filepool($downloadedfile['path'], $record);

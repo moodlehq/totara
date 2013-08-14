@@ -121,10 +121,14 @@ unset($enrolledselected);
 
 // Prepare course and the editor
 $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 'noclean'=>true);
+$overviewfilesoptions = course_overviewfiles_options($course);
 if (!empty($course)) {
     //add context for editor
     $editoroptions['context'] = $coursecontext;
     $course = file_prepare_standard_editor($course, 'summary', $editoroptions, $coursecontext, 'course', 'summary', 0);
+    if ($overviewfilesoptions) {
+        file_prepare_standard_filemanager($course, 'overviewfiles', $overviewfilesoptions, $coursecontext, 'course', 'overviewfiles', 0);
+    }
 
     // Inject current aliases
     $aliases = $DB->get_records('role_names', array('contextid'=>$coursecontext->id));
@@ -136,6 +140,9 @@ if (!empty($course)) {
     //editor should respect category context if course context is not set.
     $editoroptions['context'] = $catcontext;
     $course = file_prepare_standard_editor($course, 'summary', $editoroptions, null, 'course', 'summary', null);
+    if ($overviewfilesoptions) {
+        file_prepare_standard_filemanager($course, 'overviewfiles', $overviewfilesoptions, null, 'course', 'overviewfiles', 0);
+    }
 }
 
 // first create the form
@@ -143,7 +150,13 @@ $editform = new course_edit_form(NULL, array('course'=>$course, 'category'=>$cat
 if ($editform->is_cancelled()) {
         switch ($returnto) {
             case 'category':
-                $url = new moodle_url($CFG->wwwroot.'/course/category.php', array('id'=>$categoryid));
+                $url = new moodle_url($CFG->wwwroot.'/course/index.php', array('categoryid' => $categoryid));
+                break;
+            case 'catmanage':
+                $url = new moodle_url($CFG->wwwroot.'/course/manage.php', array('categoryid' => $categoryid));
+                break;
+            case 'topcatmanage':
+                $url = new moodle_url($CFG->wwwroot.'/course/manage.php');
                 break;
             case 'topcat':
                 $url = new moodle_url($CFG->wwwroot.'/course/');

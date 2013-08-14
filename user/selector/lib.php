@@ -70,13 +70,15 @@ abstract class user_selector_base {
     protected static $jsmodule = array(
                 'name' => 'user_selector',
                 'fullpath' => '/user/selector/module.js',
-                'requires'  => array('node', 'event-custom', 'datasource', 'json'),
+                'requires'  => array('node', 'event-custom', 'datasource', 'json', 'moodle-core-notification'),
                 'strings' => array(
                     array('previouslyselectedusers', 'moodle', '%%SEARCHTERM%%'),
                     array('nomatchingusers', 'moodle', '%%SEARCHTERM%%'),
                     array('none', 'moodle')
                 ));
 
+    /** @var int this is used to define maximum number of users visible in list */
+    public $maxusersperpage = 100;
 
     // Public API ==============================================================
 
@@ -120,6 +122,10 @@ abstract class user_selector_base {
         $this->preserveselected = $this->initialise_option('userselector_preserveselected', $this->preserveselected);
         $this->autoselectunique = $this->initialise_option('userselector_autoselectunique', $this->autoselectunique);
         $this->searchanywhere = $this->initialise_option('userselector_searchanywhere', $this->searchanywhere);
+
+        if (!empty($CFG->maxusersperpage)) {
+            $this->maxusersperpage = $CFG->maxusersperpage;
+        }
     }
 
     /**
@@ -428,63 +434,8 @@ abstract class user_selector_base {
      *      this uses ? style placeholders.
      */
     protected function search_sql($search, $u) {
-        global $DB, $CFG;
-        $params = array();
-        $tests = array();
-
-        if ($u) {
-            $u .= '.';
-        }
-
-        // If we have a $search string, put a field LIKE '$search%' condition on each field.
-        if ($search) {
-            $conditions = array(
-                $DB->sql_fullname($u . 'firstname', $u . 'lastname'),
-                $conditions[] = $u . 'lastname'
-            );
-            foreach ($this->extrafields as $field) {
-                $conditions[] = $u . $field;
-            }
-            if ($this->searchanywhere) {
-                $searchparam = '%' . $search . '%';
-            } else {
-                $searchparam = $search . '%';
-            }
-            $i = 0;
-            foreach ($conditions as $key=>$condition) {
-                $conditions[$key] = $DB->sql_like($condition, ":con{$i}00", false, false);
-                $params["con{$i}00"] = $searchparam;
-                $i++;
-            }
-            $tests[] = '(' . implode(' OR ', $conditions) . ')';
-        }
-
-        // Add some additional sensible conditions
-        $tests[] = $u . "id <> :guestid";
-        $params['guestid'] = $CFG->siteguest;
-        $tests[] = $u . 'deleted = 0';
-        $tests[] = $u . 'confirmed = 1';
-
-        // If we are being asked to exclude any users, do that.
-        if (!empty($this->exclude)) {
-            list($usertest, $userparams) = $DB->get_in_or_equal($this->exclude, SQL_PARAMS_NAMED, 'ex', false);
-            $tests[] = $u . 'id ' . $usertest;
-            $params = array_merge($params, $userparams);
-        }
-
-        // If we are validating a set list of userids, add an id IN (...) test.
-        if (!empty($this->validatinguserids)) {
-            list($usertest, $userparams) = $DB->get_in_or_equal($this->validatinguserids, SQL_PARAMS_NAMED, 'val');
-            $tests[] = $u . 'id ' . $usertest;
-            $params = array_merge($params, $userparams);
-        }
-
-        if (empty($tests)) {
-            $tests[] = '1 = 1';
-        }
-
-        // Combing the conditions and return.
-        return array(implode(' AND ', $tests), $params);
+        return users_search_sql($search, $u, $this->searchanywhere, $this->extrafields,
+                $this->exclude, $this->validatinguserids);
     }
 
     /**
@@ -751,8 +702,6 @@ class group_members_selector extends groups_user_selector_base {
  * Used on the add group members page.
  */
 class group_non_members_selector extends groups_user_selector_base {
-    const MAX_USERS_PER_PAGE = 100;
-
     /**
      * An array of user ids populated by find_users() used in print_user_summaries()
      */
@@ -860,7 +809,7 @@ class group_non_members_selector extends groups_user_selector_base {
 
         if (!$this->is_validating()) {
             $potentialmemberscount = $DB->count_records_sql("SELECT COUNT(DISTINCT u.id) $sql", $params);
-            if ($potentialmemberscount > group_non_members_selector::MAX_USERS_PER_PAGE) {
+            if ($potentialmemberscount > $this->maxusersperpage) {
                 return $this->too_many_results($search, $potentialmemberscount);
             }
         }

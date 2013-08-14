@@ -507,7 +507,15 @@ if (!isset($forum->maxattachments)) {  // TODO - delete this once we add a field
 
 require_once('post_form.php');
 
-$mform_post = new mod_forum_post_form('post.php', array('course'=>$course, 'cm'=>$cm, 'coursecontext'=>$coursecontext, 'modcontext'=>$modcontext, 'forum'=>$forum, 'post'=>$post), 'post', '', array('id' => 'mformforum'));
+$thresholdwarning = forum_check_throttling($forum, $cm);
+$mform_post = new mod_forum_post_form('post.php', array('course' => $course,
+                                                        'cm' => $cm,
+                                                        'coursecontext' => $coursecontext,
+                                                        'modcontext' => $modcontext,
+                                                        'forum' => $forum,
+                                                        'post' => $post,
+                                                        'thresholdwarning' => $thresholdwarning,
+                                                        'edit' => $edit), 'post', '', array('id' => 'mformforum'));
 
 $draftitemid = file_get_submitted_draft_itemid('attachments');
 file_prepare_draft_area($draftitemid, $modcontext->id, 'mod_forum', 'attachment', empty($post->id)?null:$post->id, mod_forum_post_form::attachment_options($forum));
@@ -681,10 +689,9 @@ if ($fromform = $mform_post->get_data()) {
 
     } else if ($fromform->discussion) { // Adding a new post to an existing discussion
         // Before we add this we must check that the user will not exceed the blocking threshold.
-        forum_check_throttling($forum, $cm, false);
+        forum_check_blocking_threshold($thresholdwarning);
 
         unset($fromform->groupid);
-
         $message = '';
         $addpost = $fromform;
         $addpost->forum=$forum->id;
@@ -734,7 +741,7 @@ if ($fromform = $mform_post->get_data()) {
 
     } else { // Adding a new discussion.
         // Before we add this we must check that the user will not exceed the blocking threshold.
-        forum_check_throttling($forum, $cm, false);
+        forum_check_blocking_threshold($thresholdwarning);
 
         if (!forum_user_can_post_discussion($forum, $fromform->groupid, -1, $cm, $modcontext)) {
             print_error('cannotcreatediscussion', 'forum');
@@ -871,13 +878,14 @@ if ($forum->type == 'qanda'
     echo $OUTPUT->notification(get_string('qandanotify','forum'));
 }
 
-// If we are not editing a post we need to check the posting threshold.
-if (!$edit) {
-    forum_check_throttling($forum, $cm);
+// If there is a warning message and we are not editing a post we need to handle the warning.
+if (!empty($thresholdwarning) && !$edit) {
+    // Here we want to throw an exception if they are no longer allowed to post.
+    forum_check_blocking_threshold($thresholdwarning);
 }
 
 if (!empty($parent)) {
-    if (! $discussion = $DB->get_record('forum_discussions', array('id' => $parent->discussion))) {
+    if (!$discussion = $DB->get_record('forum_discussions', array('id' => $parent->discussion))) {
         print_error('notpartofdiscussion', 'forum');
     }
 

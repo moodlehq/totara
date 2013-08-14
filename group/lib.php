@@ -254,6 +254,9 @@ function groups_create_group($data, $editform = false, $editoroptions = false) {
         groups_update_group_icon($group, $data, $editform);
     }
 
+    // Invalidate the grouping cache for the course
+    cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($course->id));
+
     //trigger groups events
     events_trigger('groups_group_created', $group);
 
@@ -298,6 +301,9 @@ function groups_create_grouping($data, $editoroptions=null) {
         $DB->update_record('groupings', $description);
     }
 
+    // Invalidate the grouping cache for the course
+    cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($data->courseid));
+
     events_trigger('groups_grouping_created', $data);
 
     return $id;
@@ -318,18 +324,18 @@ function groups_update_group_icon($group, $data, $editform) {
     $context = context_course::instance($group->courseid, MUST_EXIST);
 
     //TODO: it would make sense to allow picture deleting too (skodak)
-    if (!empty($CFG->gdversion)) {
-        if ($iconfile = $editform->save_temp_file('imagefile')) {
-            if (process_new_icon($context, 'group', 'icon', $group->id, $iconfile)) {
-                $DB->set_field('groups', 'picture', 1, array('id'=>$group->id));
-                $group->picture = 1;
-            } else {
-                $fs->delete_area_files($context->id, 'group', 'icon', $group->id);
-                $DB->set_field('groups', 'picture', 0, array('id'=>$group->id));
-                $group->picture = 0;
-            }
-            @unlink($iconfile);
+    if ($iconfile = $editform->save_temp_file('imagefile')) {
+        if (process_new_icon($context, 'group', 'icon', $group->id, $iconfile)) {
+            $DB->set_field('groups', 'picture', 1, array('id'=>$group->id));
+            $group->picture = 1;
+        } else {
+            $fs->delete_area_files($context->id, 'group', 'icon', $group->id);
+            $DB->set_field('groups', 'picture', 0, array('id'=>$group->id));
+            $group->picture = 0;
         }
+        @unlink($iconfile);
+        // Invalidate the group data as we've updated the group record.
+        cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($group->courseid));
     }
 }
 
@@ -360,6 +366,9 @@ function groups_update_group($data, $editform = false, $editoroptions = false) {
     }
 
     $DB->update_record('groups', $data);
+
+    // Invalidate the group data.
+    cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($data->courseid));
 
     $group = $DB->get_record('groups', array('id'=>$data->id));
 
@@ -395,6 +404,10 @@ function groups_update_grouping($data, $editoroptions=null) {
         $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $editoroptions['context'], 'grouping', 'description', $data->id);
     }
     $DB->update_record('groupings', $data);
+
+    // Invalidate the group data.
+    cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($data->courseid));
+
     //trigger groups events
     events_trigger('groups_grouping_updated', $data);
 
@@ -438,6 +451,9 @@ function groups_delete_group($grouporid) {
     $fs->delete_area_files($context->id, 'group', 'description', $groupid);
     $fs->delete_area_files($context->id, 'group', 'icon', $groupid);
 
+    // Invalidate the grouping cache for the course
+    cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($group->courseid));
+
     //trigger groups events
     events_trigger('groups_group_deleted', $group);
 
@@ -479,6 +495,9 @@ function groups_delete_grouping($groupingorid) {
     foreach ($files as $file) {
         $file->delete();
     }
+
+    // Invalidate the grouping cache for the course
+    cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($grouping->courseid));
 
     //trigger groups events
     events_trigger('groups_grouping_deleted', $grouping);
@@ -582,6 +601,9 @@ function groups_delete_groupings_groups($courseid, $showfeedback=false) {
     $groupssql = "SELECT id FROM {groups} g WHERE g.courseid = ?";
     $DB->delete_records_select('groupings_groups', "groupid IN ($groupssql)", array($courseid));
 
+    // Invalidate the grouping cache for the course
+    cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($courseid));
+
     //trigger groups events
     events_trigger('groups_groupings_groups_removed', $courseid);
 
@@ -620,6 +642,9 @@ function groups_delete_groups($courseid, $showfeedback=false) {
 
     $DB->delete_records('groups', array('courseid'=>$courseid));
 
+    // Invalidate the grouping cache for the course
+    cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($courseid));
+
     // trigger groups events
     events_trigger('groups_groups_deleted', $courseid);
 
@@ -656,6 +681,9 @@ function groups_delete_groupings($courseid, $showfeedback=false) {
     $fs->delete_area_files($context->id, 'grouping');
 
     $DB->delete_records('groupings', array('courseid'=>$courseid));
+
+    // Invalidate the grouping cache for the course
+    cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($courseid));
 
     // trigger groups events
     events_trigger('groups_groupings_deleted', $courseid);
@@ -756,9 +784,10 @@ function groups_parse_name($format, $groupnumber) {
  * @param int groupingid
  * @param int groupid
  * @param int $timeadded  The time the group was added to the grouping.
+ * @param bool $invalidatecache If set to true the course group cache will be invalidated as well.
  * @return bool true or exception
  */
-function groups_assign_grouping($groupingid, $groupid, $timeadded = null) {
+function groups_assign_grouping($groupingid, $groupid, $timeadded = null, $invalidatecache = true) {
     global $DB;
 
     if ($DB->record_exists('groupings_groups', array('groupingid'=>$groupingid, 'groupid'=>$groupid))) {
@@ -774,19 +803,32 @@ function groups_assign_grouping($groupingid, $groupid, $timeadded = null) {
     }
     $DB->insert_record('groupings_groups', $assign);
 
+    if ($invalidatecache) {
+        // Invalidate the grouping cache for the course
+        $courseid = $DB->get_field('groupings', 'courseid', array('id' => $groupingid));
+        cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($courseid));
+    }
+
     return true;
 }
 
 /**
- * Unassigns group grom grouping
+ * Unassigns group from grouping
  *
  * @param int groupingid
  * @param int groupid
+ * @param bool $invalidatecache If set to true the course group cache will be invalidated as well.
  * @return bool success
  */
-function groups_unassign_grouping($groupingid, $groupid) {
+function groups_unassign_grouping($groupingid, $groupid, $invalidatecache = true) {
     global $DB;
     $DB->delete_records('groupings_groups', array('groupingid'=>$groupingid, 'groupid'=>$groupid));
+
+    if ($invalidatecache) {
+        // Invalidate the grouping cache for the course
+        $courseid = $DB->get_field('groupings', 'courseid', array('id' => $groupingid));
+        cache_helper::invalidate_by_definition('core', 'groupdata', array(), array($courseid));
+    }
 
     return true;
 }

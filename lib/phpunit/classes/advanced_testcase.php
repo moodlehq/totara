@@ -97,7 +97,7 @@ abstract class advanced_testcase extends PHPUnit_Framework_TestCase {
                 phpunit_util::reset_all_database_sequences();
                 phpunit_util::$lastdbwrites = $DB->perf_get_writes(); // no db reset necessary
             }
-            phpunit_util::reset_all_data();
+            phpunit_util::reset_all_data(null);
 
         } else if ($this->resetAfterTest === false) {
             if ($this->testdbtransaction) {
@@ -387,7 +387,7 @@ abstract class advanced_testcase extends PHPUnit_Framework_TestCase {
     /**
      * Get data generator
      * @static
-     * @return phpunit_data_generator
+     * @return testing_data_generator
      */
     public static function getDataGenerator() {
         return phpunit_util::get_data_generator();

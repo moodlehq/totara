@@ -521,15 +521,6 @@ class core_backup_renderer extends plugin_renderer_base {
         $url = $component->get_url();
 
         $output = html_writer::start_tag('div', array('class' => 'restore-course-search'));
-
-        $countstr = '';
-        if ($component->has_more_results()) {
-            $countstr = get_string('morecoursesearchresults', 'backup', $component->get_count());
-        } else {
-            $countstr = get_string('totalcoursesearchresults', 'backup', $component->get_count());
-        }
-
-        $output .= html_writer::tag('div', $countstr, array('class'=>'rcs-totalresults'));
         $output .= html_writer::start_tag('div', array('class' => 'rcs-results'));
 
         $table = new html_table();

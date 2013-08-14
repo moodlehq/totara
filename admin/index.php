@@ -31,7 +31,7 @@ if (!file_exists('../config.php')) {
 }
 
 // Check that PHP is of a sufficient version as soon as possible
-if (version_compare(phpversion(), '5.3.2') < 0) {
+if (version_compare(phpversion(), '5.3.3') < 0) {
     $phpversion = phpversion();
     // do NOT localise - lang strings would not work here and we CAN NOT move it to later place
     echo "Totara 2.2 or later requires at least PHP 5.3.2 (currently using version $phpversion).<br />";
@@ -48,6 +48,13 @@ if (!function_exists('iconv')) {
 
 define('NO_OUTPUT_BUFFERING', true);
 
+if (empty($_GET['cache']) and empty($_POST['cache'])) {
+    // Prevent caching at all cost when visiting this page directly,
+    // we redirect to self once we known no upgrades are necessary.
+    // Note: $_GET and $_POST are used here intentionally because our param cleaning is not loaded yet.
+    define('CACHE_DISABLE_ALL', true);
+}
+
 require('../config.php');
 require_once($CFG->libdir . '/adminlib.php');    // various admin-only functions
 require_once($CFG->libdir . '/upgradelib.php');  // general upgrade/install related functions
@@ -62,12 +69,28 @@ $showallplugins = optional_param('showallplugins', 0, PARAM_BOOL);
 $agreelicense   = optional_param('agreelicense', 0, PARAM_BOOL);
 $geterrors = optional_param('geterrors', 0, PARAM_BOOL);
 $fetchupdates   = optional_param('fetchupdates', 0, PARAM_BOOL);
+$newaddonreq    = optional_param('installaddonrequest', null, PARAM_RAW);
+$cache          = optional_param('cache', 0, PARAM_BOOL);
 
-// Check some PHP server settings
-$PAGE->set_url('/admin/index.php');
+// Set up PAGE.
+$url = new moodle_url('/admin/index.php');
+if (!is_null($newaddonreq)) {
+    // We need to set the eventual add-on installation request in the $PAGE's URL
+    // so that it is stored in $SESSION->wantsurl and the admin is redirected
+    // correctly once they are logged-in.
+    $url->param('installaddonrequest', $newaddonreq);
+}
+if ($cache) {
+    $url->param('cache', $cache);
+}
+$PAGE->set_url($url);
+unset($url);
+
 $PAGE->set_pagelayout('admin'); // Set a default pagelayout
 
 $documentationlink = '<a href="http://docs.moodle.org/en/Installation">Installation docs</a>';
+
+// Check some PHP server settings
 
 if (ini_get_bool('session.auto_start')) {
     print_error('phpvaroff', 'debug', '', (object)array('name'=>'session.auto_start', 'link'=>$documentationlink));
@@ -222,9 +245,23 @@ if (empty($CFG->version)) {
     print_error('missingconfigversion', 'debug');
 }
 
-if ($version > $CFG->version
-            || (isset($CFG->totara_build) && version_compare($a->newtotaraversion, $a->existingtotaraversion, '>'))) {  // upgrade
+// Detect config cache inconsistency, this happens when you switch branches on dev servers.
+if ($cache) {
+    if ($CFG->version != $DB->get_field('config', 'value', array('name'=>'version'))) {
+        purge_all_caches();
+        redirect(new moodle_url('/admin/index.php'), 'Config cache inconsistency detected, resetting caches...');
+    }
+}
 
+if ($version > $CFG->version
+        || (isset($CFG->totara_build) && version_compare($a->newtotaraversion, $a->existingtotaraversion, '>'))) {  // upgrade
+    // We purge all of MUC's caches here.
+    // Caches are disabled for upgrade by CACHE_DISABLE_ALL so we must set the first arg to true.
+    // This ensures a real config object is loaded and the stores will be purged.
+    // This is the only way we can purge custom caches such as memcache or APC.
+    // Note: all other calls to caches will still used the disabled API.
+    cache_helper::purge_all(true);
+    // We then purge the regular caches.
     purge_all_caches();
 
     $PAGE->set_pagelayout('maintenance');
@@ -442,6 +479,12 @@ if (during_initial_install()) {
     upgrade_finished('upgradesettings.php');
 }
 
+// Now we can be sure everything was upgraded and caches work fine,
+// redirect if necessary to make sure caching is enabled.
+if (!$cache) {
+    redirect(new moodle_url($PAGE->url, array('cache' => 1)));
+}
+
 // Check for valid admin user - no guest autologin
 require_login(0, false);
 $context = context_system::instance();
@@ -454,6 +497,17 @@ if (empty($site->shortname)) {
     // remove settings that we want uninitialised
     unset_config('registerauth');
     redirect('upgradesettings.php?return=site');
+}
+
+// Check if we are returning from an add-on installation request at moodle.org/plugins
+if (!is_null($newaddonreq)) {
+    if (!empty($CFG->disableonclickaddoninstall)) {
+        // The feature is disabled in config.php, ignore the request.
+    } else {
+        redirect(new moodle_url('/admin/tool/installaddon/index.php', array(
+            'installaddonrequest' => $newaddonreq,
+            'confirm' => 0)));
+    }
 }
 
 // setup critical warnings before printing admin tree block
@@ -516,7 +570,7 @@ admin_externalpage_setup('adminnotifications');
 if ($fetchupdates) {
     require_sesskey();
     $updateschecker->fetch();
-    redirect($PAGE->url);
+    redirect(new moodle_url('/admin/index.php'));
 }
 
 //get Totara specific info

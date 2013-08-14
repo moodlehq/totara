@@ -98,6 +98,23 @@ class plugin_defective_exception extends moodle_exception {
 }
 
 /**
+ * @package    core
+ * @subpackage upgrade
+ * @copyright  2009 Petr Skoda {@link http://skodak.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class plugin_misplaced_exception extends moodle_exception {
+    function __construct($component, $expected, $current) {
+        global $CFG;
+        $a = new stdClass();
+        $a->component = $component;
+        $a->expected  = $expected;
+        $a->current   = $current;
+        parent::__construct('detectedmisplacedplugin', 'core_plugin', "$CFG->wwwroot/$CFG->admin/index.php", $a);
+    }
+}
+
+/**
  * Sets maximum expected time needed for upgrade task.
  * Please always make sure that upgrade will not run longer!
  *
@@ -320,6 +337,10 @@ function upgrade_stale_php_files_present() {
     global $CFG;
 
     $someexamplesofremovedfiles = array(
+        // removed in 2.5dev
+        '/backup/lib.php',
+        '/backup/bb/README.txt',
+        '/lib/excel/test.php',
         // removed in 2.4dev
         '/admin/tool/unittest/simpletestlib.php',
         // removed in 2.3dev
@@ -379,12 +400,19 @@ function upgrade_plugins($type, $startcallback, $endcallback, $verbose) {
         }
 
         $plugin = new stdClass();
+        $module = new stdClass(); // Prevent some notices when plugin placed in wrong directory.
         require($fullplug.'/version.php');  // defines $plugin with version etc
+
+        if (!isset($plugin->version) and isset($module->version)) {
+            $plugin = $module;
+        }
 
         // if plugin tells us it's full name we may check the location
         if (isset($plugin->component)) {
             if ($plugin->component !== $component) {
-                throw new plugin_defective_exception($component, 'Plugin installed in wrong folder.');
+                $current = str_replace($CFG->dirroot, '$CFG->dirroot', $fullplug);
+                $expected = str_replace($CFG->dirroot, '$CFG->dirroot', get_component_directory($plugin->component));
+                throw new plugin_misplaced_exception($component, $expected, $current);
             }
         }
 
@@ -458,7 +486,7 @@ function upgrade_plugins($type, $startcallback, $endcallback, $verbose) {
                 message_update_processors($plug);
             }
             upgrade_plugin_mnet_functions($component);
-
+            cache_helper::purge_all(true);
             purge_all_caches();
             $endcallback($component, true, $verbose);
 
@@ -491,7 +519,7 @@ function upgrade_plugins($type, $startcallback, $endcallback, $verbose) {
                 message_update_processors($plug);
             }
             upgrade_plugin_mnet_functions($component);
-
+            cache_helper::purge_all(true);
             purge_all_caches();
             $endcallback($component, false, $verbose);
 
@@ -530,12 +558,19 @@ function upgrade_plugins_modules($startcallback, $endcallback, $verbose) {
         }
 
         $module = new stdClass();
+        $plugin = new stdClass(); // Prevent some notices when plugin placed in wrong directory.
         require($fullmod .'/version.php');  // defines $module with version etc
+
+        if (!isset($module->version) and isset($plugin->version)) {
+            $module = $plugin;
+        }
 
         // if plugin tells us it's full name we may check the location
         if (isset($module->component)) {
             if ($module->component !== $component) {
-                throw new plugin_defective_exception($component, 'Plugin installed in wrong folder.');
+                $current = str_replace($CFG->dirroot, '$CFG->dirroot', $fullmod);
+                $expected = str_replace($CFG->dirroot, '$CFG->dirroot', get_component_directory($module->component));
+                throw new plugin_misplaced_exception($component, $expected, $current);
             }
         }
 
@@ -701,15 +736,21 @@ function upgrade_plugins_blocks($startcallback, $endcallback, $verbose) {
             throw new plugin_defective_exception('block/'.$blockname, 'Missing version.php file.');
         }
         $plugin = new stdClass();
+        $module = new stdClass(); // Prevent some notices when module placed in wrong directory.
         $plugin->version = NULL;
         $plugin->cron    = 0;
         include($fullblock.'/version.php');
+        if (!isset($plugin->version) and isset($module->version)) {
+            $plugin = $module;
+        }
         $block = $plugin;
 
         // if plugin tells us it's full name we may check the location
         if (isset($block->component)) {
             if ($block->component !== $component) {
-                throw new plugin_defective_exception($component, 'Plugin installed in wrong folder.');
+                $current = str_replace($CFG->dirroot, '$CFG->dirroot', $fullblock);
+                $expected = str_replace($CFG->dirroot, '$CFG->dirroot', get_component_directory($block->component));
+                throw new plugin_misplaced_exception($component, $expected, $current);
             }
         }
 
@@ -786,7 +827,7 @@ function upgrade_plugins_blocks($startcallback, $endcallback, $verbose) {
                 require_once($fullblock.'/db/install.php');
                 // Set installation running flag, we need to recover after exception or error
                 set_config('installrunning', 1, 'block_'.$blockname);
-                $post_install_function = 'xmldb_block_'.$blockname.'_install';;
+                $post_install_function = 'xmldb_block_'.$blockname.'_install';
                 $post_install_function();
                 unset_config('installrunning', 'block_'.$blockname);
             }
@@ -1258,6 +1299,12 @@ function upgrade_finished($continueurl=null) {
 
     if (!empty($CFG->upgraderunning)) {
         unset_config('upgraderunning');
+        // We have to forcefully purge the caches using the writer here.
+        // This has to be done after we unset the config var. If someone hits the site while this is set they will
+        // cause the config values to propogate to the caches.
+        // Caches are purged after the last step in an upgrade but there is several code routines that exceute between
+        // then and now that leaving a window for things to fall out of sync.
+        cache_helper::purge_all(true);
         upgrade_setup_debug(false);
         ignore_user_abort(false);
         if ($continueurl) {
@@ -1417,11 +1464,15 @@ function upgrade_language_pack($lang = null) {
 function install_core($version, $verbose) {
     global $CFG, $DB;
 
-    try {
-        // Disable the use of cache stores here. We will reset the factory after we've performed the installation.
-        // This ensures that we don't permanently cache anything during installation.
-        cache_factory::disable_stores();
+    // We can not call purge_all_caches() yet, make sure the temp and cache dirs exist and are empty.
+    make_cache_directory('', true);
+    remove_dir($CFG->cachedir.'', true);
+    make_temp_directory('', true);
+    remove_dir($CFG->tempdir.'', true);
+    make_writable_directory($CFG->dataroot.'/muc', true);
+    remove_dir($CFG->dataroot.'/muc', true);
 
+    try {
         set_time_limit(600);
         print_upgrade_part_start('moodle', true, $verbose); // does not store upgrade running flag
 
@@ -1471,9 +1522,7 @@ function upgrade_core($version, $verbose) {
     try {
         // Reset caches before any output
         purge_all_caches();
-        // Disable the use of cache stores here. We will reset the factory after we've performed the installation.
-        // This ensures that we don't permanently cache anything during installation.
-        cache_factory::disable_stores();
+        cache_helper::purge_all(true);
 
         print_upgrade_part_start('moodle', false, $verbose);
         // Upgrade current language pack if we can
@@ -1489,6 +1538,17 @@ function upgrade_core($version, $verbose) {
             }
         }
 
+        print_upgrade_part_start('moodle', false, $verbose);
+
+        // Pre-upgrade scripts for local hack workarounds.
+        $preupgradefile = "$CFG->dirroot/local/preupgrade.php";
+        if (file_exists($preupgradefile)) {
+            set_time_limit(0);
+            require($preupgradefile);
+            // Reset upgrade timeout to default.
+            upgrade_set_timeout();
+        }
+
         //double-check version numbers when upgrading a Totara installation
         if (isset($CFG->totara_release)){
             if (substr($CFG->totara_release,0,3) == '1.0' || substr($CFG->totara_release,0,3) == '1.1') {
@@ -1497,6 +1557,8 @@ function upgrade_core($version, $verbose) {
                 $a->attemptedversion = $TOTARA->release;
                 $a->required = get_string('totararequiredupgradeversion', 'totara_core');
                 throw new moodle_exception('totaraunsupportedupgradepath', 'totara_core', '', $a);
+            } else if (substr($CFG->totara_release,0,3) == '2.4') {
+                totara_fix_existing_capabilities();
             }
         }
 
@@ -1515,10 +1577,9 @@ function upgrade_core($version, $verbose) {
         // Update core definitions.
         cache_helper::update_definitions(true);
 
-        // Reset the cache, this returns it to a normal operation state.
-        cache_factory::reset();
         // Purge caches again, just to be sure we arn't holding onto old stuff now.
         purge_all_caches();
+        cache_helper::purge_all(true);
 
         // Clean up contexts - more and more stuff depends on existence of paths and contexts
         context_helper::cleanup_instances();
@@ -1551,10 +1612,6 @@ function upgrade_noncore($verbose) {
     print_upgrade_part_end('Totara', false, $verbose);
     // upgrade all plugins types
     try {
-        // Disable the use of cache stores here.
-        // We don't reset this, the site can live without proper caching for life of this request.
-        cache_factory::disable_stores();
-
         $plugintypes = get_plugin_types();
         foreach ($plugintypes as $type=>$location) {
             upgrade_plugins($type, 'print_upgrade_part_start', 'print_upgrade_part_end', $verbose);
@@ -1568,12 +1625,16 @@ function upgrade_noncore($verbose) {
 
 /**
  * Checks if the main tables have been installed yet or not.
+ *
+ * Note: we can not use caches here because they might be stale,
+ *       use with care!
+ *
  * @return bool
  */
 function core_tables_exist() {
     global $DB;
 
-    if (!$tables = $DB->get_tables() ) {    // No tables yet at all.
+    if (!$tables = $DB->get_tables(false) ) {    // No tables yet at all.
         return false;
 
     } else {                                 // Check for missing main tables

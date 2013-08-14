@@ -463,26 +463,39 @@ function file_rewrite_pluginfile_urls($text, $file, $contextid, $component, $fil
  * @global stdClass $CFG
  * @global stdClass $USER
  * @param int $draftitemid the draft area item id.
+ * @param string $filepath path to the directory from which the information have to be retrieved.
  * @return array with the following entries:
  *      'filecount' => number of files in the draft area.
- *      'filesize' => total size of the area.
+ *      'filesize' => total size of the files in the draft area.
+ *      'foldercount' => number of folders in the draft area.
  *      'filesize_without_references' => total size of the area excluding file references.
  * (more information will be added as needed).
  */
-function file_get_draft_area_info($draftitemid) {
+function file_get_draft_area_info($draftitemid, $filepath = '/') {
     global $CFG, $USER;
 
     $usercontext = context_user::instance($USER->id);
     $fs = get_file_storage();
 
-    $results = array();
+    $results = array(
+        'filecount' => 0,
+        'foldercount' => 0,
+        'filesize' => 0,
+        'filesize_without_references' => 0
+    );
 
-    // The number of files.
-    $draftfiles = $fs->get_area_files($usercontext->id, 'user', 'draft', $draftitemid, 'id', false);
-    $results['filecount'] = count($draftfiles);
-    $results['filesize'] = 0;
-    $results['filesize_without_references'] = 0;
+    if ($filepath != '/') {
+        $draftfiles = $fs->get_directory_files($usercontext->id, 'user', 'draft', $draftitemid, $filepath, true, true);
+    } else {
+        $draftfiles = $fs->get_area_files($usercontext->id, 'user', 'draft', $draftitemid, 'id', true);
+    }
     foreach ($draftfiles as $file) {
+        if ($file->is_directory()) {
+            $results['foldercount'] += 1;
+        } else {
+            $results['filecount'] += 1;
+        }
+
         $filesize = $file->get_filesize();
         $results['filesize'] += $filesize;
         if (!$file->is_external_file()) {
@@ -545,11 +558,11 @@ function file_get_user_used_space() {
  * @param string $str
  * @return string path
  */
-function file_correct_filepath($str) { //TODO: what is this? (skodak)
+function file_correct_filepath($str) { //TODO: what is this? (skodak) - No idea (Fred)
     if ($str == '/' or empty($str)) {
         return '/';
     } else {
-        return '/'.trim($str, './@#$ ').'/';
+        return '/'.trim($str, '/').'/';
     }
 }
 
@@ -1190,6 +1203,10 @@ function download_file_content($url, $headers=null, $postdata=null, $fullrespons
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $connecttimeout);
 
+    if ($cacert = curl::get_cacert()) {
+        curl_setopt($ch, CURLOPT_CAINFO, $cacert);
+    }
+
     if (!ini_get('open_basedir') and !ini_get('safe_mode')) {
         // TODO: add version test for '7.10.5'
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -1325,7 +1342,7 @@ function download_file_content($url, $headers=null, $postdata=null, $fullrespons
             $response->error         = 'Unknown cURL error';
 
         } else {
-            $response = new stdClass();;
+            $response = new stdClass();
             $response->status        = (string)$info['http_code'];
             $response->headers       = $received->headers;
             $response->response_code = $received->headers[0];
@@ -1499,6 +1516,7 @@ function &get_mimetypes_array() {
         'mpeg' => array ('type'=>'video/mpeg', 'icon'=>'mpeg', 'groups'=>array('video','web_video'), 'string'=>'video'),
         'mpe'  => array ('type'=>'video/mpeg', 'icon'=>'mpeg', 'groups'=>array('video','web_video'), 'string'=>'video'),
         'mpg'  => array ('type'=>'video/mpeg', 'icon'=>'mpeg', 'groups'=>array('video','web_video'), 'string'=>'video'),
+        'mpr'  => array ('type'=>'application/vnd.moodle.profiling', 'icon'=>'moodle'),
 
         'nbk'       => array ('type'=>'application/x-smarttech-notebook', 'icon'=>'archive'),
         'notebook'  => array ('type'=>'application/x-smarttech-notebook', 'icon'=>'archive'),
@@ -2743,7 +2761,7 @@ function file_modify_html_header($text) {
     }*/
 
     $ufo = '';
-    if (filter_is_enabled('filter/mediaplugin')) {
+    if (filter_is_enabled('mediaplugin')) {
         // this script is needed by most media filter plugins.
         $attributes = array('type'=>'text/javascript', 'src'=>$CFG->httpswwwroot . '/lib/ufo.js');
         $ufo = html_writer::tag('script', '', $attributes) . "\n";
@@ -2919,6 +2937,39 @@ class curl {
         $this->options['CURLOPT_SSL_VERIFYPEER']    = 0;
         $this->options['CURLOPT_SSL_VERIFYHOST']    = 2;
         $this->options['CURLOPT_CONNECTTIMEOUT']    = 30;
+
+        if ($cacert = self::get_cacert()) {
+            $this->options['CURLOPT_CAINFO'] = $cacert;
+        }
+    }
+
+    /**
+     * Get the location of ca certificates.
+     * @return string absolute file path or empty if default used
+     */
+    public static function get_cacert() {
+        global $CFG;
+
+        // Bundle in dataroot always wins.
+        if (is_readable("$CFG->dataroot/moodleorgca.crt")) {
+            return realpath("$CFG->dataroot/moodleorgca.crt");
+        }
+
+        // Next comes the default from php.ini
+        $cacert = ini_get('curl.cainfo');
+        if (!empty($cacert) and is_readable($cacert)) {
+            return realpath($cacert);
+        }
+
+        // Windows PHP does not have any certs, we need to use something.
+        if ($CFG->ostype === 'WINDOWS') {
+            if (is_readable("$CFG->libdir/cacert.pem")) {
+                return realpath("$CFG->libdir/cacert.pem");
+            }
+        }
+
+        // Use default, this should work fine on all properly configured *nix systems.
+        return null;
     }
 
     /**
@@ -2937,14 +2988,22 @@ class curl {
     }
 
     /**
-     * Set curl options
+     * Set curl options.
      *
-     * @param array $options If array is null, this function will
-     * reset the options to default value.
+     * Do not use the curl constants to define the options, pass a string
+     * corresponding to that constant. Ie. to set CURLOPT_MAXREDIRS, pass
+     * array('CURLOPT_MAXREDIRS' => 10) or array('maxredirs' => 10) to this method.
+     *
+     * @param array $options If array is null, this function will reset the options to default value.
+     * @return void
+     * @throws coding_exception If an option uses constant value instead of option name.
      */
     public function setopt($options = array()) {
         if (is_array($options)) {
-            foreach($options as $name => $val){
+            foreach ($options as $name => $val){
+                if (!is_string($name)) {
+                    throw new coding_exception('Curl options should be defined using strings, not constant values.');
+                }
                 if (stripos($name, 'CURLOPT_') === false) {
                     $name = strtoupper('CURLOPT_'.$name);
                 }
@@ -3074,11 +3133,9 @@ class curl {
             var_dump($this->header);
         }
 
-        // set options
+        // Set options.
         foreach($this->options as $name => $val) {
-            if (is_string($name)) {
-                $name = constant(strtoupper($name));
-            }
+            $name = constant(strtoupper($name));
             curl_setopt($curl, $name, $val);
         }
         return $curl;
@@ -3740,7 +3797,7 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null) {
         } else {
             send_file_not_found();
         }
-        // ========================================================================================================================
+    // ========================================================================================================================
     } else if ($component === 'badges') {
         require_once($CFG->libdir . '/badgeslib.php');
 
@@ -4082,14 +4139,14 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null) {
             send_file_not_found();
         }
 
-        if ($filearea === 'summary') {
+        if ($filearea === 'summary' || $filearea === 'overviewfiles') {
             if ($CFG->forcelogin) {
                 require_login();
             }
 
             $filename = array_pop($args);
             $filepath = $args ? '/'.implode('/', $args).'/' : '/';
-            if (!$file = $fs->get_file($context->id, 'course', 'summary', 0, $filepath, $filename) or $file->is_directory()) {
+            if (!$file = $fs->get_file($context->id, 'course', $filearea, 0, $filepath, $filename) or $file->is_directory()) {
                 send_file_not_found();
             }
 
@@ -4298,19 +4355,6 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null) {
             session_get_instance()->write_close(); // unlock session during fileserving
             send_stored_file($file, 60*60, 0, $forcedownload, array('preview' => $preview));
         }
-
-        // ========================================================================================================================
-    } else if ($component === 'theme') {
-        $filename = array_pop($args);
-        $filepath = $args ? '/'.implode('/', $args).'/' : '/';
-
-        $file = $fs->get_file($context->id, 'theme', $filearea, $args[0], '/', $filename);
-
-        if (empty($file)) {
-            send_file_not_found();
-        }
-
-        send_stored_file($file, 60*60*24, 0, false); //enable long cache and disable forcedownload
 
         // ========================================================================================================================
     } else if (strpos($component, 'mod_') === 0) {

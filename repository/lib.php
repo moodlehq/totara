@@ -52,7 +52,7 @@ define('RENAME_SUFFIX', '_2');
  * @copyright 2009 Jerome Mouneyrac
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class repository_type {
+class repository_type implements cacheable_object {
 
 
     /**
@@ -260,6 +260,7 @@ class repository_type {
                 }
             }
 
+            cache::make('core', 'repositories')->purge();
             if(!empty($plugin_id)) {
                 // return plugin_id if create successfully
                 return $plugin_id;
@@ -307,6 +308,7 @@ class repository_type {
             set_config($name, $value, $this->_typename);
         }
 
+        cache::make('core', 'repositories')->purge();
         return true;
     }
 
@@ -329,6 +331,7 @@ class repository_type {
             throw new repository_exception('updateemptyvisible', 'repository');
         }
 
+        cache::make('core', 'repositories')->purge();
         return $DB->set_field('repository', 'visible', $this->_visible, array('type'=>$this->_typename));
     }
 
@@ -353,6 +356,7 @@ class repository_type {
             $this->_sortorder = 1 + $DB->get_field_sql($sql);
         }
 
+        cache::make('core', 'repositories')->purge();
         return $DB->set_field('repository', 'sortorder', $this->_sortorder, array('type'=>$this->_typename));
     }
 
@@ -444,12 +448,36 @@ class repository_type {
             set_config($name, null, $this->_typename);
         }
 
+        cache::make('core', 'repositories')->purge();
         try {
             $DB->delete_records('repository', array('type' => $this->_typename));
         } catch (dml_exception $ex) {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Prepares the repository type to be cached. Implements method from cacheable_object interface.
+     *
+     * @return array
+     */
+    public function prepare_to_cache() {
+        return array(
+            'typename' => $this->_typename,
+            'typeoptions' => $this->_options,
+            'visible' => $this->_visible,
+            'sortorder' => $this->_sortorder
+        );
+    }
+
+    /**
+     * Restores repository type from cache. Implements method from cacheable_object interface.
+     *
+     * @return array
+     */
+    public static function wake_from_cache($data) {
+        return new repository_type($data['typename'], $data['typeoptions'], $data['visible'], $data['sortorder']);
     }
 }
 
@@ -463,7 +491,7 @@ class repository_type {
  * @copyright 2009 Dongsheng Cai {@link http://dongsheng.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class repository {
+abstract class repository implements cacheable_object {
     /** Timeout in seconds for downloading the external file into moodle */
     const GETFILE_TIMEOUT = 30;
     /** Timeout in seconds for syncronising the external file size */
@@ -487,8 +515,8 @@ abstract class repository {
     public $returntypes;
     /** @var stdClass repository instance database record */
     public $instance;
-    /** @var string Type of repository (webdav, google_docs, dropbox, ...). */
-    public $type;
+    /** @var string Type of repository (webdav, google_docs, dropbox, ...). Read from $this->get_typename(). */
+    protected $typename;
 
     /**
      * Constructor
@@ -506,7 +534,13 @@ abstract class repository {
         } else {
             $this->context = context::instance_by_id($context);
         }
-        $this->instance = $DB->get_record('repository_instances', array('id'=>$this->id));
+        $cache = cache::make('core', 'repositories');
+        if (($this->instance = $cache->get('i:'. $this->id)) === false) {
+            $this->instance = $DB->get_record_sql("SELECT i.*, r.type AS repositorytype, r.sortorder, r.visible
+                      FROM {repository} r, {repository_instances} i
+                     WHERE i.typeid = r.id and i.id = ?", array('id' => $this->id));
+            $cache->set('i:'. $this->id, $this->instance);
+        }
         $this->readonly = $readonly;
         $this->options = array();
 
@@ -522,53 +556,80 @@ abstract class repository {
         $this->name = $this->get_name();
         $this->returntypes = $this->supported_returntypes();
         $this->super_called = true;
-
-        // Determining the type of repository if not set.
-        if (empty($this->type)) {
-            $matches = array();
-            if (!preg_match("/^repository_(.*)$/", get_class($this), $matches)) {
-                throw new coding_exception('The class name of a repository should be repository_<typeofrepository>, '.
-                        'e.g. repository_dropbox');
-            }
-            $this->type = $matches[1];
-        }
     }
 
     /**
      * Get repository instance using repository id
      *
-     * @param int $repositoryid repository ID
-     * @param stdClass|int $context context instance or context ID
+     * Note that this function does not check permission to access repository contents
+     *
+     * @throws repository_exception
+     *
+     * @param int $repositoryid repository instance ID
+     * @param context|int $context context instance or context ID where this repository will be used
      * @param array $options additional repository options
      * @return repository
      */
     public static function get_repository_by_id($repositoryid, $context, $options = array()) {
         global $CFG, $DB;
-
-        $sql = 'SELECT i.name, i.typeid, r.type FROM {repository} r, {repository_instances} i WHERE i.id=? AND i.typeid=r.id';
-
-        if (!$record = $DB->get_record_sql($sql, array($repositoryid))) {
-            throw new repository_exception('invalidrepositoryid', 'repository');
-        } else {
-            $type = $record->type;
-            if (file_exists($CFG->dirroot . "/repository/$type/lib.php")) {
-                require_once($CFG->dirroot . "/repository/$type/lib.php");
-                $classname = 'repository_' . $type;
-                $contextid = $context;
-                if (is_object($context)) {
-                    $contextid = $context->id;
-                }
-                $options['type'] = $type;
-                $options['typeid'] = $record->typeid;
-                if (empty($options['name'])) {
-                    $options['name'] = $record->name;
-                }
-                $repository = new $classname($repositoryid, $contextid, $options);
-                return $repository;
-            } else {
-                throw new repository_exception('invalidplugin', 'repository');
-            }
+        $cache = cache::make('core', 'repositories');
+        if (!is_object($context)) {
+            $context = context::instance_by_id($context);
         }
+        $cachekey = 'rep:'. $repositoryid. ':'. $context->id. ':'. serialize($options);
+        if ($repository = $cache->get($cachekey)) {
+            return $repository;
+        }
+
+        if (!$record = $cache->get('i:'. $repositoryid)) {
+            $sql = "SELECT i.*, r.type AS repositorytype, r.visible, r.sortorder
+                      FROM {repository_instances} i
+                      JOIN {repository} r ON r.id = i.typeid
+                     WHERE i.id = ?";
+            if (!$record = $DB->get_record_sql($sql, array($repositoryid))) {
+                throw new repository_exception('invalidrepositoryid', 'repository');
+            }
+            $cache->set('i:'. $record->id, $record);
+        }
+
+        $type = $record->repositorytype;
+        if (file_exists($CFG->dirroot . "/repository/$type/lib.php")) {
+            require_once($CFG->dirroot . "/repository/$type/lib.php");
+            $classname = 'repository_' . $type;
+            $options['type'] = $type;
+            $options['typeid'] = $record->typeid;
+            $options['visible'] = $record->visible;
+            if (empty($options['name'])) {
+                $options['name'] = $record->name;
+            }
+            $repository = new $classname($repositoryid, $context, $options, $record->readonly);
+            if (empty($repository->super_called)) {
+                // to make sure the super construct is called
+                debugging('parent::__construct must be called by '.$type.' plugin.');
+            }
+            $cache->set($cachekey, $repository);
+            return $repository;
+        } else {
+            throw new repository_exception('invalidplugin', 'repository');
+        }
+    }
+
+    /**
+     * Returns the type name of the repository.
+     *
+     * @return string type name of the repository.
+     * @since  2.5
+     */
+    public function get_typename() {
+        if (empty($this->typename)) {
+            $matches = array();
+            if (!preg_match("/^repository_(.*)$/", get_class($this), $matches)) {
+                throw new coding_exception('The class name of a repository should be repository_<typeofrepository>, '.
+                        'e.g. repository_dropbox');
+            }
+            $this->typename = $matches[1];
+        }
+        return $this->typename;
     }
 
     /**
@@ -580,12 +641,16 @@ abstract class repository {
      */
     public static function get_type_by_typename($typename) {
         global $DB;
-
-        if (!$record = $DB->get_record('repository',array('type' => $typename))) {
-            return false;
+        $cache = cache::make('core', 'repositories');
+        if (($repositorytype = $cache->get('typename:'. $typename)) === false) {
+            $repositorytype = null;
+            if ($record = $DB->get_record('repository', array('type' => $typename))) {
+                $repositorytype = new repository_type($record->type, (array)get_config($record->type), $record->visible, $record->sortorder);
+                $cache->set('typeid:'. $record->id, $repositorytype);
+            }
+            $cache->set('typename:'. $typename, $repositorytype);
         }
-
-        return new repository_type($typename, (array)get_config($typename), $record->visible, $record->sortorder);
+        return $repositorytype;
     }
 
     /**
@@ -597,12 +662,16 @@ abstract class repository {
      */
     public static function get_type_by_id($id) {
         global $DB;
-
-        if (!$record = $DB->get_record('repository',array('id' => $id))) {
-            return false;
+        $cache = cache::make('core', 'repositories');
+        if (($repositorytype = $cache->get('typeid:'. $id)) === false) {
+            $repositorytype = null;
+            if ($record = $DB->get_record('repository', array('id' => $id))) {
+                $repositorytype = new repository_type($record->type, (array)get_config($record->type), $record->visible, $record->sortorder);
+                $cache->set('typename:'. $record->type, $repositorytype);
+            }
+            $cache->set('typeid:'. $id, $repositorytype);
         }
-
-        return new repository_type($record->type, (array)get_config($record->type), $record->visible, $record->sortorder);
+        return $repositorytype;
     }
 
     /**
@@ -615,20 +684,42 @@ abstract class repository {
      */
     public static function get_types($visible=null) {
         global $DB, $CFG;
-
-        $types = array();
-        $params = null;
-        if (!empty($visible)) {
-            $params = array('visible' => $visible);
+        $cache = cache::make('core', 'repositories');
+        if (!$visible) {
+            $typesnames = $cache->get('types');
+        } else {
+            $typesnames = $cache->get('typesvis');
         }
-        if ($records = $DB->get_records('repository',$params,'sortorder')) {
-            foreach($records as $type) {
-                if (file_exists($CFG->dirroot . '/repository/'. $type->type .'/lib.php')) {
-                    $types[] = new repository_type($type->type, (array)get_config($type->type), $type->visible, $type->sortorder);
+        $types = array();
+        if ($typesnames === false) {
+            $typesnames = array();
+            $vistypesnames = array();
+            if ($records = $DB->get_records('repository', null ,'sortorder')) {
+                foreach($records as $type) {
+                    if (($repositorytype = $cache->get('typename:'. $type->type)) === false) {
+                        // Create new instance of repository_type.
+                        if (file_exists($CFG->dirroot . '/repository/'. $type->type .'/lib.php')) {
+                            $repositorytype = new repository_type($type->type, (array)get_config($type->type), $type->visible, $type->sortorder);
+                            $cache->set('typeid:'. $type->id, $repositorytype);
+                            $cache->set('typename:'. $type->type, $repositorytype);
+                        }
+                    }
+                    if ($repositorytype) {
+                        if (empty($visible) || $repositorytype->get_visible()) {
+                            $types[] = $repositorytype;
+                            $vistypesnames[] = $repositorytype->get_typename();
+                        }
+                        $typesnames[] = $repositorytype->get_typename();
+                    }
                 }
             }
+            $cache->set('types', $typesnames);
+            $cache->set('typesvis', $vistypesnames);
+        } else {
+            foreach ($typesnames as $typename) {
+                $types[] = self::get_type_by_typename($typename);
+            }
         }
-
         return $types;
     }
 
@@ -645,19 +736,14 @@ abstract class repository {
         $currentcontext = $this->context;
 
         // Ensure that the user can view the repository in the current context.
-        $can = has_capability('repository/'.$this->type.':view', $currentcontext);
+        $can = has_capability('repository/'.$this->get_typename().':view', $currentcontext);
 
         // Context in which the repository has been created.
         $repocontext = context::instance_by_id($this->instance->contextid);
 
         // Prevent access to private repositories when logged in as.
-        if (session_is_loggedinas()) {
-            $allowed = array('coursefiles', 'equella', 'filesystem', 'flickr_public', 'local', 'merlot', 'recent',
-                's3', 'upload', 'url', 'user', 'webdav', 'wikimedia', 'youtube');
-            // Are only accessible the repositories which do not contain private data (any data
-            // that is not part of Moodle, "Private files" is not considered "Pivate"). And if they
-            // do not contain private data, then it should not be a user instance, which is private by definition.
-            if (!in_array($this->type, $allowed) || $repocontext->contextlevel == CONTEXT_USER) {
+        if ($can && session_is_loggedinas()) {
+            if ($this->contains_private_data() || $repocontext->contextlevel == CONTEXT_USER) {
                 $can = false;
             }
         }
@@ -696,23 +782,19 @@ abstract class repository {
     }
 
     /**
-     * Check if file already exists in draft area
+     * Check if file already exists in draft area.
      *
      * @static
-     * @param int $itemid
-     * @param string $filepath
-     * @param string $filename
+     * @param int $itemid of the draft area.
+     * @param string $filepath path to the file.
+     * @param string $filename file name.
      * @return bool
      */
     public static function draftfile_exists($itemid, $filepath, $filename) {
         global $USER;
         $fs = get_file_storage();
         $usercontext = context_user::instance($USER->id);
-        if ($fs->get_file($usercontext->id, 'user', 'draft', $itemid, $filepath, $filename)) {
-            return true;
-        } else {
-            return false;
-        }
+        return $fs->file_exists($usercontext->id, 'user', 'draft', $itemid, $filepath, $filename);
     }
 
     /**
@@ -829,31 +911,34 @@ abstract class repository {
     }
 
     /**
-     * Get unused filename by appending suffix
+     * Get an unused filename from the current draft area.
+     *
+     * Will check if the file ends with ([0-9]) and increase the number.
      *
      * @static
-     * @param int $itemid
-     * @param string $filepath
-     * @param string $filename
-     * @return string
+     * @param int $itemid draft item ID.
+     * @param string $filepath path to the file.
+     * @param string $filename name of the file.
+     * @return string an unused file name.
      */
     public static function get_unused_filename($itemid, $filepath, $filename) {
         global $USER;
+        $contextid = context_user::instance($USER->id)->id;
         $fs = get_file_storage();
-        while (repository::draftfile_exists($itemid, $filepath, $filename)) {
-            $filename = repository::append_suffix($filename);
-        }
-        return $filename;
+        return $fs->get_unused_filename($contextid, 'user', 'draft', $itemid, $filepath, $filename);
     }
 
     /**
-     * Append a suffix to filename
+     * Append a suffix to filename.
      *
      * @static
      * @param string $filename
      * @return string
+     * @deprecated since 2.5
      */
     public static function append_suffix($filename) {
+        debugging('The function repository::append_suffix() has been deprecated. Use repository::get_unused_filename() instead.',
+            DEBUG_DEVELOPER);
         $pathinfo = pathinfo($filename);
         if (empty($pathinfo['extension'])) {
             return $filename . RENAME_SUFFIX;
@@ -894,72 +979,96 @@ abstract class repository {
      *
      * @static
      * @param array $args Array containing the following keys:
-     *           currentcontext
-     *           context
-     *           onlyvisible
-     *           type
-     *           accepted_types
-     *           return_types
-     *           userid
+     *           currentcontext : instance of context (default system context)
+     *           context : array of instances of context (default empty array)
+     *           onlyvisible : bool (default true)
+     *           type : string return instances of this type only
+     *           accepted_types : string|array return instances that contain files of those types (*, web_image, .pdf, ...)
+     *           return_types : int combination of FILE_INTERNAL & FILE_EXTERNAL & FILE_REFERENCE.
+     *                          0 means every type. The default is FILE_INTERNAL | FILE_EXTERNAL.
+     *           userid : int if specified, instances belonging to other users will not be returned
      *
      * @return array repository instances
      */
     public static function get_instances($args = array()) {
         global $DB, $CFG, $USER;
 
-        if (isset($args['currentcontext'])) {
+        // Fill $args attributes with default values unless specified
+        if (!isset($args['currentcontext']) || !($args['currentcontext'] instanceof context)) {
+            $current_context = context_system::instance();
+        } else {
             $current_context = $args['currentcontext'];
-        } else {
-            $current_context = null;
         }
-
+        $args['currentcontext'] = $current_context->id;
+        $contextids = array();
         if (!empty($args['context'])) {
-            $contexts = $args['context'];
-        } else {
-            $contexts = array();
+            foreach ($args['context'] as $context) {
+                $contextids[] = $context->id;
+            }
+        }
+        $args['context'] = $contextids;
+        if (!isset($args['onlyvisible'])) {
+            $args['onlyvisible'] = true;
+        }
+        if (!isset($args['return_types'])) {
+            $args['return_types'] = FILE_INTERNAL | FILE_EXTERNAL;
+        }
+        if (!isset($args['type'])) {
+            $args['type'] = null;
+        }
+        if (empty($args['disable_types']) || !is_array($args['disable_types'])) {
+            $args['disable_types'] = null;
+        }
+        if (empty($args['userid']) || !is_numeric($args['userid'])) {
+            $args['userid'] = null;
+        }
+        if (!isset($args['accepted_types']) || (is_array($args['accepted_types']) && in_array('*', $args['accepted_types']))) {
+            $args['accepted_types'] = '*';
+        }
+        ksort($args);
+        $cachekey = 'all:'. serialize($args);
+
+        // Check if we have cached list of repositories with the same query
+        $cache = cache::make('core', 'repositories');
+        if (($cachedrepositories = $cache->get($cachekey)) !== false) {
+            // convert from cacheable_object_array to array
+            $repositories = array();
+            foreach ($cachedrepositories as $repository) {
+                $repositories[$repository->id] = $repository;
+            }
+            return $repositories;
         }
 
-        $onlyvisible = isset($args['onlyvisible']) ? $args['onlyvisible'] : true;
-        $returntypes = isset($args['return_types']) ? $args['return_types'] : 3;
-        $type        = isset($args['type']) ? $args['type'] : null;
-
+        // Prepare DB SQL query to retrieve repositories
         $params = array();
         $sql = "SELECT i.*, r.type AS repositorytype, r.sortorder, r.visible
                   FROM {repository} r, {repository_instances} i
                  WHERE i.typeid = r.id ";
 
-        if (!empty($args['disable_types']) && is_array($args['disable_types'])) {
-            list($types, $p) = $DB->get_in_or_equal($args['disable_types'], SQL_PARAMS_QM, 'param', false);
+        if ($args['disable_types']) {
+            list($types, $p) = $DB->get_in_or_equal($args['disable_types'], SQL_PARAMS_NAMED, 'distype', false);
             $sql .= " AND r.type $types";
             $params = array_merge($params, $p);
         }
 
-        if (!empty($args['userid']) && is_numeric($args['userid'])) {
-            $sql .= " AND (i.userid = 0 or i.userid = ?)";
-            $params[] = $args['userid'];
+        if ($args['userid']) {
+            $sql .= " AND (i.userid = 0 or i.userid = :userid)";
+            $params['userid'] = $args['userid'];
         }
 
-        foreach ($contexts as $context) {
-            if (empty($firstcontext)) {
-                $firstcontext = true;
-                $sql .= " AND ((i.contextid = ?)";
-            } else {
-                $sql .= " OR (i.contextid = ?)";
-            }
-            $params[] = $context->id;
+        if ($args['context']) {
+            list($ctxsql, $p2) = $DB->get_in_or_equal($args['context'], SQL_PARAMS_NAMED, 'ctx');
+            $sql .= " AND i.contextid $ctxsql";
+            $params = array_merge($params, $p2);
         }
 
-        if (!empty($firstcontext)) {
-           $sql .=')';
+        if ($args['onlyvisible'] == true) {
+            $sql .= " AND r.visible = 1";
         }
 
-        if ($onlyvisible == true) {
-            $sql .= " AND (r.visible = 1)";
-        }
-
-        if (isset($type)) {
-            $sql .= " AND (r.type = ?)";
-            $params[] = $type;
+        if ($args['type'] !== null) {
+            $sql .= " AND r.type = :type";
+            $params['type'] = $args['type'];
         }
         $sql .= " ORDER BY r.sortorder, i.name";
 
@@ -968,105 +1077,61 @@ abstract class repository {
         }
 
         $repositories = array();
-        if (isset($args['accepted_types'])) {
-            $accepted_types = $args['accepted_types'];
-            if (is_array($accepted_types) && in_array('*', $accepted_types)) {
-                $accepted_types = '*';
-            }
-        } else {
-            $accepted_types = '*';
-        }
         // Sortorder should be unique, which is not true if we use $record->sortorder
         // and there are multiple instances of any repository type
         $sortorder = 1;
         foreach ($records as $record) {
+            $cache->set('i:'. $record->id, $record);
             if (!file_exists($CFG->dirroot . '/repository/'. $record->repositorytype.'/lib.php')) {
                 continue;
             }
-            require_once($CFG->dirroot . '/repository/'. $record->repositorytype.'/lib.php');
-            $options['visible'] = $record->visible;
-            $options['type']    = $record->repositorytype;
-            $options['typeid']  = $record->typeid;
-            $options['sortorder'] = $sortorder++;
-            // tell instance what file types will be accepted by file picker
-            $classname = 'repository_' . $record->repositorytype;
-
-            $repository = new $classname($record->id, $record->contextid, $options, $record->readonly);
+            $repository = self::get_repository_by_id($record->id, $current_context);
+            $repository->options['sortorder'] = $sortorder++;
 
             $is_supported = true;
 
-            if (empty($repository->super_called)) {
-                // to make sure the super construct is called
-                debugging('parent::__construct must be called by '.$record->repositorytype.' plugin.');
-            } else {
-                // check mimetypes
-                if ($accepted_types !== '*' and $repository->supported_filetypes() !== '*') {
-                    $accepted_ext = file_get_typegroup('extension', $accepted_types);
-                    $supported_ext = file_get_typegroup('extension', $repository->supported_filetypes());
-                    $valid_ext = array_intersect($accepted_ext, $supported_ext);
-                    $is_supported = !empty($valid_ext);
-                }
-                // check return values
-                if ($returntypes !== 3 and $repository->supported_returntypes() !== 3) {
-                    $type = $repository->supported_returntypes();
-                    if ($type & $returntypes) {
-                        //
-                    } else {
-                        $is_supported = false;
-                    }
-                }
+            // check mimetypes
+            if ($args['accepted_types'] !== '*' and $repository->supported_filetypes() !== '*') {
+                $accepted_ext = file_get_typegroup('extension', $args['accepted_types']);
+                $supported_ext = file_get_typegroup('extension', $repository->supported_filetypes());
+                $valid_ext = array_intersect($accepted_ext, $supported_ext);
+                $is_supported = !empty($valid_ext);
+            }
+            // Check return values.
+            if (!empty($args['return_types']) && !($repository->supported_returntypes() & $args['return_types'])) {
+                $is_supported = false;
+            }
 
-                if (!$onlyvisible || ($repository->is_visible() && !$repository->disabled)) {
-                    // check capability in current context
-                    if (!empty($current_context)) {
-                        $capability = has_capability('repository/'.$record->repositorytype.':view', $current_context);
-                    } else {
-                        $capability = has_capability('repository/'.$record->repositorytype.':view', get_system_context());
-                    }
-                    if ($record->repositorytype == 'coursefiles') {
-                        // coursefiles plugin needs managefiles permission
-                        if (!empty($current_context)) {
-                            $capability = $capability && has_capability('moodle/course:managefiles', $current_context);
-                        } else {
-                            $capability = $capability && has_capability('moodle/course:managefiles', get_system_context());
-                        }
-                    }
-                    if ($is_supported && $capability) {
-                        $repositories[$repository->id] = $repository;
-                    }
+            if (!$args['onlyvisible'] || ($repository->is_visible() && !$repository->disabled)) {
+                // check capability in current context
+                $capability = has_capability('repository/'.$record->repositorytype.':view', $current_context);
+                if ($record->repositorytype == 'coursefiles') {
+                    // coursefiles plugin needs managefiles permission
+                    $capability = $capability && has_capability('moodle/course:managefiles', $current_context);
+                }
+                if ($is_supported && $capability) {
+                    $repositories[$repository->id] = $repository;
                 }
             }
         }
+        $cache->set($cachekey, new cacheable_object_array($repositories));
         return $repositories;
     }
 
     /**
-     * Get single repository instance
+     * Get single repository instance for administrative actions
+     *
+     * Do not use this function to access repository contents, because it
+     * does not set the current context
+     *
+     * @see repository::get_repository_by_id()
      *
      * @static
-     * @param integer $id repository id
-     * @return object repository instance
+     * @param integer $id repository instance id
+     * @return repository
      */
     public static function get_instance($id) {
-        global $DB, $CFG;
-        $sql = "SELECT i.*, r.type AS repositorytype, r.visible
-                  FROM {repository} r
-                  JOIN {repository_instances} i ON i.typeid = r.id
-                 WHERE i.id = ?";
-
-        if (!$instance = $DB->get_record_sql($sql, array($id))) {
-            return false;
-        }
-        require_once($CFG->dirroot . '/repository/'. $instance->repositorytype.'/lib.php');
-        $classname = 'repository_' . $instance->repositorytype;
-        $options['typeid'] = $instance->typeid;
-        $options['type']   = $instance->repositorytype;
-        $options['name']   = $instance->name;
-        $obj = new $classname($instance->id, $instance->contextid, $options, $instance->readonly);
-        if (empty($obj->super_called)) {
-            debugging('parent::__construct must be called by '.$classname.' plugin.');
-        }
-        return $obj;
+        return self::get_repository_by_id($id, context_system::instance());
     }
 
     /**
@@ -1391,7 +1456,7 @@ abstract class repository {
             $event['existingfile'] = new stdClass;
             $event['existingfile']->filepath = $record->filepath;
             $event['existingfile']->filename = $old_filename;
-            $event['existingfile']->url      = moodle_url::make_draftfile_url($draftitemid, $record->filepath, $old_filename)->out();;
+            $event['existingfile']->url      = moodle_url::make_draftfile_url($draftitemid, $record->filepath, $old_filename)->out();
             return $event;
         }
         if ($file = $fs->create_file_from_pathname($record, $thefile)) {
@@ -1520,13 +1585,14 @@ abstract class repository {
         $pluginstr = get_string('plugin', 'repository');
         $settingsstr = get_string('settings');
         $deletestr = get_string('delete');
-        //retrieve list of instances. In administration context we want to display all
-        //instances of a type, even if this type is not visible. In course/user context we
-        //want to display only visible instances, but for every type types. The repository::get_instances()
-        //third parameter displays only visible type.
+        // Retrieve list of instances. In administration context we want to display all
+        // instances of a type, even if this type is not visible. In course/user context we
+        // want to display only visible instances, but for every type types. The repository::get_instances()
+        // third parameter displays only visible type.
         $params = array();
         $params['context'] = array($context);
         $params['currentcontext'] = $context;
+        $params['return_types'] = 0;
         $params['onlyvisible'] = !$admin;
         $params['type']        = $typename;
         $instances = repository::get_instances($params);
@@ -1819,7 +1885,7 @@ abstract class repository {
 
         if ($type->get_visible()) {
             //if the instance is unique so it's visible, otherwise check if the instance has a enabled context
-            if (empty($instanceoptions) || $type->get_contextvisibility($this->context)) {
+            if (empty($instanceoptions) || $type->get_contextvisibility(context::instance_by_id($this->instance->contextid))) {
                 return true;
             }
         }
@@ -1828,17 +1894,74 @@ abstract class repository {
     }
 
     /**
+     * Can the instance be edited by the current user?
+     *
+     * The property $readonly must not be used within this method because
+     * it only controls if the options from self::get_instance_option_names()
+     * can be edited.
+     *
+     * @return bool true if the user can edit the instance.
+     * @since 2.5
+     */
+    public final function can_be_edited_by_user() {
+        global $USER;
+
+        // We need to be able to explore the repository.
+        try {
+            $this->check_capability();
+        } catch (repository_exception $e) {
+            return false;
+        }
+
+        $repocontext = context::instance_by_id($this->instance->contextid);
+        if ($repocontext->contextlevel == CONTEXT_USER && $repocontext->instanceid != $USER->id) {
+            // If the context of this instance is a user context, we need to be this user.
+            return false;
+        } else if ($repocontext->contextlevel == CONTEXT_MODULE && !has_capability('moodle/course:update', $repocontext)) {
+            // We need to have permissions on the course to edit the instance.
+            return false;
+        } else if ($repocontext->contextlevel == CONTEXT_SYSTEM && !has_capability('moodle/site:config', $repocontext)) {
+            // Do not meet the requirements for the context system.
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Return the name of this instance, can be overridden.
      *
      * @return string
      */
     public function get_name() {
-        global $DB;
-        if ( $name = $this->instance->name ) {
+        if ($name = $this->instance->name) {
             return $name;
         } else {
-            return get_string('pluginname', 'repository_' . $this->options['type']);
+            return get_string('pluginname', 'repository_' . $this->get_typename());
         }
+    }
+
+    /**
+     * Is this repository accessing private data?
+     *
+     * This function should return true for the repositories which access external private
+     * data from a user. This is the case for repositories such as Dropbox, Google Docs or Box.net
+     * which authenticate the user and then store the auth token.
+     *
+     * Of course, many repositories store 'private data', but we only want to set
+     * contains_private_data() to repositories which are external to Moodle and shouldn't be accessed
+     * to by the users having the capability to 'login as' someone else. For instance, the repository
+     * 'Private files' is not considered as private because it's part of Moodle.
+     *
+     * You should not set contains_private_data() to true on repositories which allow different types
+     * of instances as the levels other than 'user' are, by definition, not private. Also
+     * the user instances will be protected when they need to.
+     *
+     * @return boolean True when the repository accesses private external data.
+     * @since  2.5
+     */
+    public function contains_private_data() {
+        return true;
     }
 
     /**
@@ -1873,7 +1996,7 @@ abstract class repository {
         $meta = new stdClass();
         $meta->id   = $this->id;
         $meta->name = format_string($this->get_name());
-        $meta->type = $this->options['type'];
+        $meta->type = $this->get_typename();
         $meta->icon = $OUTPUT->pix_url('icon', 'repository_'.$meta->type)->out(false);
         $meta->supported_types = file_get_typegroup('extension', $this->supported_filetypes());
         $meta->return_types = $this->supported_returntypes();
@@ -1907,6 +2030,7 @@ abstract class repository {
             $record->readonly = $readonly;
             $record->userid    = $userid;
             $id = $DB->insert_record('repository_instances', $record);
+            cache::make('core', 'repositories')->purge();
             $options = array();
             $configs = call_user_func($classname . '::get_instance_option_names');
             if (!empty($configs)) {
@@ -1943,6 +2067,7 @@ abstract class repository {
         if ($downloadcontents) {
             $this->convert_references_to_local();
         }
+        cache::make('core', 'repositories')->purge();
         try {
             $DB->delete_records('repository_instances', array('id'=>$this->id));
             $DB->delete_records('repository_instance_config', array('instanceid'=>$this->id));
@@ -2007,6 +2132,7 @@ abstract class repository {
                 $DB->insert_record('repository_instance_config', $config);
             }
         }
+        cache::make('core', 'repositories')->purge();
         return true;
     }
 
@@ -2018,7 +2144,11 @@ abstract class repository {
      */
     public function get_option($config = '') {
         global $DB;
-        $entries = $DB->get_records('repository_instance_config', array('instanceid'=>$this->id));
+        $cache = cache::make('core', 'repositories');
+        if (($entries = $cache->get('ops:'. $this->id)) === false) {
+            $entries = $DB->get_records('repository_instance_config', array('instanceid' => $this->id));
+            $cache->set('ops:'. $this->id, $entries);
+        }
         $ret = array();
         if (empty($entries)) {
             return $ret;
@@ -2692,6 +2822,31 @@ abstract class repository {
         $sourcefield->source = $source;
         return serialize($sourcefield);
     }
+
+    /**
+     * Prepares the repository to be cached. Implements method from cacheable_object interface.
+     *
+     * @return array
+     */
+    public function prepare_to_cache() {
+        return array(
+            'class' => get_class($this),
+            'id' => $this->id,
+            'ctxid' => $this->context->id,
+            'options' => $this->options,
+            'readonly' => $this->readonly
+        );
+    }
+
+    /**
+     * Restores the repository from cache. Implements method from cacheable_object interface.
+     *
+     * @return array
+     */
+    public static function wake_from_cache($data) {
+        $classname = $data['class'];
+        return new $classname($data['id'], $data['ctxid'], $data['options'], $data['readonly']);
+    }
 }
 
 /**
@@ -2877,12 +3032,14 @@ final class repository_type_form extends moodleform {
                 $component .= ('_' . $this->plugin);
             }
             $mform->addElement('checkbox', 'enablecourseinstances', get_string('enablecourseinstances', $component));
+            $mform->setType('enablecourseinstances', PARAM_BOOL);
 
             $component = 'repository';
             if ($sm->string_exists('enableuserinstances', 'repository_' . $this->plugin)) {
                 $component .= ('_' . $this->plugin);
             }
             $mform->addElement('checkbox', 'enableuserinstances', get_string('enableuserinstances', $component));
+            $mform->setType('enableuserinstances', PARAM_BOOL);
         }
 
         // set the data if we have some.

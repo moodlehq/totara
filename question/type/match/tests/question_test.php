@@ -17,10 +17,9 @@
 /**
  * Unit tests for the matching question definition classes.
  *
- * @package    qtype
- * @subpackage match
- * @copyright  2009 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   qtype_match
+ * @copyright 2009 The Open University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 
@@ -33,8 +32,8 @@ require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
 /**
  * Unit tests for the matching question definition class.
  *
- * @copyright  2009 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright 2009 The Open University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_match_question_test extends advanced_testcase {
 
@@ -134,12 +133,12 @@ class qtype_match_question_test extends advanced_testcase {
         $match = test_question_maker::make_a_matching_question();
         $match->start_attempt(new question_attempt_step(), 1);
         $qsummary = $match->get_question_summary();
-        $this->assertRegExp('/' . preg_quote($match->questiontext) . '/', $qsummary);
+        $this->assertRegExp('/' . preg_quote($match->questiontext, '/') . '/', $qsummary);
         foreach ($match->stems as $stem) {
-            $this->assertRegExp('/' . preg_quote($stem) . '/', $qsummary);
+            $this->assertRegExp('/' . preg_quote($stem, '/') . '/', $qsummary);
         }
         foreach ($match->choices as $choice) {
-            $this->assertRegExp('/' . preg_quote($choice) . '/', $qsummary);
+            $this->assertRegExp('/' . preg_quote($choice, '/') . '/', $qsummary);
         }
     }
 

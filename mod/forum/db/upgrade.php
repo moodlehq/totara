@@ -44,29 +44,48 @@
 function xmldb_forum_upgrade($oldversion) {
     global $CFG, $DB, $OUTPUT;
 
-    $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
+    $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
+    // Moodle v2.2.0 release upgrade line.
+    // Put any upgrade step following this.
 
-    // Moodle v2.2.0 release upgrade line
-    // Put any upgrade step following this
+    // Moodle v2.3.0 release upgrade line.
+    // Put any upgrade step following this.
 
-    // Moodle v2.3.0 release upgrade line
-    // Put any upgrade step following this
+    // Moodle v2.4.0 release upgrade line.
+    // Put any upgrade step following this.
 
+    if ($oldversion < 2013020500) {
 
-    // Moodle v2.4.0 release upgrade line
-    // Put any upgrade step following this
+        // Define field displaywordcount to be added to forum.
+        $table = new xmldb_table('forum');
+        $field = new xmldb_field('displaywordcount', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'completionposts');
+
+        // Conditionally launch add field displaywordcount.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Forum savepoint reached.
+        upgrade_mod_savepoint(true, 2013020500, 'forum');
+    }
 
     // Forcefully assign mod/forum:allowforcesubscribe to frontpage role, as we missed that when
     // capability was introduced.
-    if ($oldversion < 2012112901) {
+    if ($oldversion < 2013021200) {
         // If capability mod/forum:allowforcesubscribe is defined then set it for frontpage role.
         if (get_capability_info('mod/forum:allowforcesubscribe')) {
             assign_legacy_capabilities('mod/forum:allowforcesubscribe', array('frontpage' => CAP_ALLOW));
         }
         // Forum savepoint reached.
-        upgrade_mod_savepoint(true, 2012112901, 'forum');
+        upgrade_mod_savepoint(true, 2013021200, 'forum');
     }
+
+
+    // Moodle v2.5.0 release upgrade line.
+    // Put any upgrade step following this.
+
+
     return true;
 }
 

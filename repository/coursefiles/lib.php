@@ -65,7 +65,7 @@ class repository_coursefiles extends repository {
         if (!empty($encodedpath)) {
             $params = unserialize(base64_decode($encodedpath));
             if (is_array($params)) {
-                $filepath  = is_null($params['filepath']) ? NULL : clean_param($params['filepath'], PARAM_PATH);;
+                $filepath  = is_null($params['filepath']) ? NULL : clean_param($params['filepath'], PARAM_PATH);
                 $filename  = is_null($params['filename']) ? NULL : clean_param($params['filename'], PARAM_FILE);
                 $context = context::instance_by_id(clean_param($params['contextid'], PARAM_INT));
             }
@@ -155,7 +155,7 @@ class repository_coursefiles extends repository {
         $contextid  = clean_param($params['contextid'], PARAM_INT);
         $fileitemid = clean_param($params['itemid'], PARAM_INT);
         $filename = clean_param($params['filename'], PARAM_FILE);
-        $filepath = clean_param($params['filepath'], PARAM_PATH);;
+        $filepath = clean_param($params['filepath'], PARAM_PATH);
         $filearea = clean_param($params['filearea'], PARAM_AREA);
         $component = clean_param($params['component'], PARAM_COMPONENT);
         $context = context::instance_by_id($contextid);
@@ -215,5 +215,14 @@ class repository_coursefiles extends repository {
     public function get_reference_file_lifetime($ref) {
         // this should be realtime
         return 0;
+    }
+
+    /**
+     * Is this repository accessing private data?
+     *
+     * @return bool
+     */
+    public function contains_private_data() {
+        return false;
     }
 }

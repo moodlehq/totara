@@ -40,7 +40,9 @@ a.dimmed_text:visited,
 .usersuspended a:link,
 .usersuspended a:visited,
 .dimmed_category,
-.dimmed_category a {
+.dimmed_category a,
+.dimmed_category a:link,
+.dimmed_category a:visited {
     color: #AAA;
 }
 .activity.label .dimmed_text {
@@ -56,6 +58,8 @@ a.dimmed_text:visited,
 .block .list li,
 .sitetopic .section li.activity,
 .course-content .section li.activity,
+.sitetopic .section li.movehere,
+.course-content .section li.movehere,
 .tabtree li {list-style: none;margin:0;padding:0;}
 
 .course-content .current {background:#E3E3E3;}
@@ -106,7 +110,6 @@ img.iconkbhelp {height:17px;width:49px;}
 img.icon-pre, .dir-rtl img.icon-post { padding-right: 3px; padding-left: 0; }
 img.icon-post, .dir-rtl img.icon-pre { padding-left: 3px; padding-right: 0; }
 
-.categorybox .category {font-size:1.2em;font-weight:bold;}
 .generalbox {border:1px solid;}
 .boxaligncenter {margin-left:auto;margin-right:auto;}
 .boxalignright {margin-left:auto;margin-right:0;}
@@ -204,11 +207,16 @@ a.skip:active {position: static;display: block;}
 #page-footer .validators ul {margin:0px;padding:0px;list-style-type:none;}
 #page-footer .validators ul li {display:inline;margin-right:10px;margin-left:10px;}
 
-.performanceinfo .cachesused {margin-top:1em;}
-.performanceinfo .cachesused .cache-stats-heading {font-weight: bold;text-decoration: underline;font-size:110%;}
-.performanceinfo .cachesused .cache-definition-stats {font-weight:bold;margin-top:0.3em;}
-.performanceinfo .cachesused .cache-store-stats {text-indent: 1em;}
-.performanceinfo .cachesused .cache-total-stats {font-weight:bold;margin-top:0.3em;}
+#page-footer .performanceinfo .cachesused {margin-top:1em;}
+#page-footer .performanceinfo .cachesused .cache-stats-heading {font-weight:bold;display:block;}
+#page-footer .performanceinfo .cachesused .cache-definition-stats {margin:0.3em;padding:0px;border:1px solid #999;display:inline-block;vertical-align:top;min-height:4em;color:#000;background-color:#eee;}
+#page-footer .performanceinfo .cachesused .cache-definition-stats span {padding-left:0.5em;padding-right:0.5em;display:block;}
+#page-footer .performanceinfo .cachesused .cache-definition-stats .cache-definition-stats-heading {background-color:#eee;}
+#page-footer .performanceinfo .cachesused .cache-store-stats {text-indent: 1em;}
+#page-footer .performanceinfo .cachesused .cache-store-stats.nohits {background-color:#ffd3d9;}
+#page-footer .performanceinfo .cachesused .cache-store-stats.lowhits {background-color:#f3f2aa;}
+#page-footer .performanceinfo .cachesused .cache-store-stats.hihits {background-color:#e7f1c3;}
+#page-footer .performanceinfo .cachesused .cache-total-stats {display:block;font-weight:bold;margin-top:0.3em;}
 
 #course-footer {clear:both;}
 
@@ -225,24 +233,39 @@ a.skip:active {position: static;display: block;}
  * Mforms
  */
 .mform fieldset {border:1px solid;}
-.mform fieldset fieldset {border-width:0px;}
-.mform fieldset legend {font-weight:bold;margin-left:0.5em;}
+.mform fieldset fieldset {border-width:0;}
+.mform fieldset legend {font-weight:bold;margin-left:0.5em;padding: 0 0.35em;}
 .mform fieldset div {margin:10px;margin-top:0;}
 .mform fieldset div div {margin:0;}
 .mform fieldset .advancedbutton {text-align:right;}
 .mform fieldset.hidden {border-width:0;}
 .mform fieldset.group {margin-bottom: 0}
 .mform fieldset.error {border: 1px solid #A00;}
+.mform .collapsible-actions {display: none;}
+.jsenabled .mform .collapsible-actions {text-align: right; display: block;}
+.dir-rtl .mform .collapsible-actions {text-align: left;}
+.mform .collapseexpand {background: url([[pix:t/collapsed]]) left center no-repeat; padding-left: 18px;}
+.dir-rtl .mform .collapseexpand {background-image: url([[pix:t/collapsed_rtl]]); background-position: right center; padding-left: 0; padding-right: 18px;}
+.mform .collapse-all,
+.dir-rtl .mform .collapse-all {background-image: url([[pix:t/expanded]]);}
+.mform fieldset legend {padding: 0 0.35em;}
+.mform fieldset.collapsible legend a.fheader {padding-left: 18px; background: url([[pix:t/expanded]]) left center no-repeat;}
+.mform fieldset.collapsed legend a.fheader {background-image: url([[pix:t/collapsed]]);}
+.jsenabled .mform fieldset.collapsed {border-width: 1px 0 0 1px; padding: 0; border-color: transparent;}
+.jsenabled .mform fieldset.collapsed div.fcontainer {display: none;}
 .mform .fitem {width:100%;overflow:hidden;margin-top:5px;margin-bottom:1px;clear:right;}
+.jsenabled .mform .containsadvancedelements .advanced {display: none;}
+.mform .containsadvancedelements .advanced.show {display: block;}
 .mform .fitem .fitemtitle {width:15%;text-align:right;float:left;}
+.dir-rtl .mform .fitem .fitemtitle {text-align:left;}
 .mform .fitem .fitemtitle div {display: inline;}
 .mform .fitem .felement {border-width: 0;width:80%;margin-left:16%;}
 .mform .fitem fieldset.felement {margin-left:15%;padding-left:1%;margin-bottom:0}
-.dir-rtl .mform .fitem fieldset.felement {padding-right: 1%;margin-right: 15%;}
 .mform .error,
 .mform .required {color:#A00;}
 .mform .required .fgroup span label {color:#000;}
 .mform .fdescription.required {color:#A00;text-align:right;}
+.dir-rtl .mform .fdescription.required {text-align:left;}
 .mform .fpassword .unmask {display:inline;margin-left:0.5em;}
 .mform .ftextarea #id_alltext {width: 100%;}
 .mform .fitem fieldset.fscheduler { margin: 0px; }
@@ -250,12 +273,23 @@ a.skip:active {position: static;display: block;}
 .mform label .req,
 .mform label .adv {cursor: help;}
 .mform .fcheckbox input {margin-left: 0;}
+.mform .fcheckbox label,
+.mform .fduration label,
 .mform .fitem fieldset.fgroup label,
 .mform .fradio label,
-.mform .fcheckbox label,
-.mform fieldset.fdate_selector label {display:inline;float: none;width: auto;}
+.mform fieldset.fdate_selector label,
+.mform fieldset.fdate_time_selector label {display:inline; float:none; margin-left:.3em; vertical-align:baseline;}
+.dir-rtl .mform .fcheckbox label,
+.dir-rtl .mform .fduration label,
+.dir-rtl .mform .fitem fieldset.fgroup label,
+.dir-rtl .mform .fradio label,
+.dir-rtl .mform fieldset.fdate_selector label,
+.dir-rtl .mform fieldset.fdate_time_selector label {margin-right: .3em; margin-left: 0;}
 .mform .ftags label.accesshide {display: block;position: static;}
 .mform .ftags select {margin-bottom: 0.7em;min-width: 22em;}
+.mform .moreless-toggler {background: url([[pix:t/more]]) left center no-repeat; padding-left: 16px;}
+.dir-rtl .moreless-toggler {padding-left: 0; padding-right: 16px; background-position: right center; }
+.mform .moreless-less {background-image: url([[pix:t/less]]);}
 .mform .helplink img { margin: 0 0 0 .45em; padding: 0;}
 .dir-rtl .mform .helplink img { margin: 0 .45em 0 0; padding: 0;}
 .mform legend .helplink img { margin-right: .2em; }
@@ -264,6 +298,17 @@ a.skip:active {position: static;display: block;}
 .singleselect label { margin-right: .3em; }
 .dir-rtl .urlselect label,
 .dir-rtl .singleselect label { margin-left: .3em; margin-right: 0; }
+
+.dir-rtl .mform fieldset legend {margin-right:0.5em; margin-left: 0;}
+.dir-rtl .mform fieldset.collapsible legend a.fheader {background-position: right center; padding-right: 18px; padding-left: 0;}
+.dir-rtl .mform fieldset.collapsed legend a.fheader {background-image: url([[pix:t/collapsed_rtl]]); }
+.dir-rtl.jsenabled .mform fieldset.collapsed {border-width: 1px 1px 0 0; }
+.dir-rtl .mform .fitem fieldset.felement {padding-right: 1%;margin-right: 15%;}
+
+.mform .btn-cancel, .mform .btn-cancel:active, .mform .btn-cancel[disabled] { background-color: transparent; background-image: none; box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; -o-box-shadow: none; -ms-box-shadow: none; margin-left: .5em;}
+.mform .btn-cancel { border-color: transparent; border-radius: 0 0 0 0; -moz-border-radius: 0 0 0 0; -webkit-border-radius: 0 0 0 0; -o-border-radius: 0 0 0 0; -ms-border-radius: 0 0 0 0; color: #0088CC; cursor: pointer; }
+.mform .btn-cancel:hover, .mform .btn-cancel:focus { background-color: transparent; color: #005580; text-decoration: underline; }
+.mform .btn-cancel[disabled]:hover, .mform .btn-cancel[disabled]:focus { color: #333333; text-decoration: none; }
 
 input#id_externalurl {direction:ltr;}
 #portfolio-add-button {display:inline;}
@@ -360,19 +405,6 @@ input#id_externalurl {direction:ltr;}
  */
 .mod_introbox {border:1px solid;padding:10px;}
 table.mod_index {width:100%;}
-
-/**
- * Help
- */
-#help_icon_tooltip div.bd {width: 35em;}
-#help hr {border: none;height: 1px;background: #ccc;}
-#help .center {text-align: center;}
-#help .moreinfo {text-align: right;}
-#help .indent {margin-left: 40px;}
-#help .indent-big {margin-left: 160px;margin-right: 160px;}
-#help #emoticons{text-align: center;clear:both;width: 300px;margin-right: auto;margin-left:auto;}
-#help #emoticons ul{list-style-type: none;}
-#help #emoticons li{margin-bottom: 3px;width: 120px;border-left: 3px solid gray;padding-left: 7px;float: left;}
 
 /**
  * Comments
@@ -513,18 +545,6 @@ body.tag .managelink {padding: 5px;}
 #webservice-doc-generator td {text-align: left;border: 0px solid black;}
 
 /**
- * Help Content (pop-up)
- */
-#helppopupbox {background-color: #eee; border: 1px solid #848484;z-index: 10000 !important;}
-#helppopupbox .yui3-widget-hd {float:right;margin:3px 3px 0 0;}
-#helppopupbox .yui3-widget-bd {margin:0 1em 1em 1em;border-top:1px solid #eee;}
-#helppopupbox .yui3-widget-ft {text-align: center;}
-#helppopupbox .yui3-widget-ft .closebtn {margin:0 1em 1em 1em;}
-#helppopupbox .helpheading {font-size: 1em;}
-#helppopupbox .spinner {margin:1em;}
-.dir-rtl #helppopupbox .yui3-widget-hd {float:left;margin:3px 0 0 3px;}
-
-/**
  * Custom menu
  */
 #custommenu {clear:both;}
@@ -614,11 +634,22 @@ body.tag .managelink {padding: 5px;}
 .userenrolment .col_enrol .enrolment {float:left;padding:3px;margin:3px;}
 .userenrolment .col_enrol .enrolment a {float:right;margin-left:3px;}
 #page-enrol-users .enrol_user_buttons {float:right;}
+#page-enrol-users .enrol_user_buttons .singlebutton {margin-top: 2px; line-height: 2;}
 #page-enrol-users .enrol_user_buttons .enrolusersbutton {margin-left:1em;display:inline;}
 #page-enrol-users .enrol_user_buttons .enrolusersbutton div,
 #page-enrol-users .enrol_user_buttons .enrolusersbutton form {display:inline;}
 #page-enrol-users .enrol_user_buttons .enrolusersbutton input {padding-left:6px;padding-right:6px;}
 #page-enrol-users.dir-rtl .col_userdetails .subfield_picture {float: right;}
+#page-enrol-users #filterform div,
+#page-enrol-users #filterform fieldset {display:inline;float:none;clear:none;width:auto;margin:0;line-height:2;}
+#page-enrol-users #filterform .fitem {white-space:nowrap;}
+#page-enrol-users #filterform fieldset > div {display:block;float:left;background:#f2f2f2;padding:2px;}
+#page-enrol-users #filterform select,
+#page-enrol-users #filterform .ftext input {width:8em;}
+#page-enrol-users #filterform #fitem_id_role,
+#page-enrol-users #filterform #fitem_id_ifilter,
+#page-enrol-users #filterform #fgroup_id_buttons {margin-left:0.5em;}
+#page-enrol-users .paging { clear: right; }
 
 /**
 * Overide for RTL layout
@@ -857,8 +888,184 @@ sup {vertical-align: super;}
 #page-admin-grade-edit-scale-edit.dir-rtl .error input#id_name {margin-right: 170px;}
 .initialbar a {padding-right: 2px;}
 
+/* Moodle Dialogue Settings (moodle-core-dialogue)  */
+.moodle-dialogue-base .moodle-dialogue-lightbox {
+    background-color:#AAA;
+}
+
+.moodle-dialogue-base .hidden,
+.moodle-dialogue-base .moodle-dialogue-hidden {display:none;}
+.moodle-dialogue-base .moodle-dialogue {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    /* Override the z-index set incorrectly by the YUI dialogue */
+    z-index: 600;
+}
+
+
+.moodle-dialogue-base .moodle-dialogue-wrap {
+    margin-top:-3px;
+    margin-left:-3px;
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius:10px;
+    box-shadow: 5px 5px 20px 0px #666666;
+    -webkit-box-shadow: 5px 5px 20px 0px #666666;
+    -moz-box-shadow: 5px 5px 20px 0px #666666;
+}
+
+.moodle-dialogue-base .moodle-dialogue-wrap .moodle-dialogue-hd {
+    margin:0;
+    padding:5px;
+    font-size:12px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    color:#333333;
+    text-align: center;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    border-radius: 10px 10px 0px 0px;
+    border-bottom: 1px solid #BBBBBB;
+    background: #CCCCCC;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#CCCCCC));
+    background: -moz-linear-gradient(top,  #FFFFFF,  #CCCCCC);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#CCCCCC')!important;
+    filter: dropshadow(color=#FFFFFF, offx=1, offy=1);
+}
+
+.moodle-dialogue-base .moodle-dialogue-wrap .moodle-dialogue-hd h1 {
+    margin:0;
+    padding:0;
+    display:inline;
+    font-size: 100%;
+    font-weight: bold;
+}
+.moodle-dialogue-base .moodle-dialogue-wrap .moodle-dialogue-hd .yui3-widget-buttons {
+    padding: 5px;
+}
+.moodle-dialogue-base .closebutton {
+    width:25px;
+    height:15px;
+    float:right;
+    vertical-align:middle;
+    display:inline-block;
+    cursor:pointer;
+    padding:0px;
+    background-image:url([[pix:theme|sprite]]);
+    background-repeat:no-repeat;
+    border-style:none;
+}
+.dir-rtl .moodle-dialogue-base .moodle-dialogue-wrap .moodle-dialogue-hd .yui3-widget-buttons {
+    left: 0px;
+    right: auto;
+}
+
+.moodle-dialogue-base .moodle-dialogue .moodle-dialogue-bd {
+    overflow: auto;
+    padding: 1em;
+    line-height: 2em;
+    color: #555;
+    font-size: 12px;
+}
+
+.moodle-dialogue-base .moodle-dialogue-wrap .moodle-dialogue-content {
+  padding:0px;
+  background:#FFF;
+}
+
+.moodle-dialogue-confirm .confirmation-dialogue {text-align:center;}
+.moodle-dialogue-confirm .confirmation-dialogue input {text-align:center;}
+.moodle-dialogue-exception .moodle-exception-message {text-align:center}
+.moodle-dialogue-exception .moodle-exception-param label {font-weight:bold;}
+.moodle-dialogue-exception .param-stacktrace label {
+    background-color:#EEE;
+    border:1px solid #ccc;
+    border-bottom-width:0;
+}
+
+.moodle-dialogue-exception .param-stacktrace pre {
+    border:1px solid #ccc;
+    background-color:#fff;
+}
+
+.moodle-dialogue-exception .param-stacktrace .stacktrace-file {
+    color:navy;
+    font-size:80%;
+}
+.moodle-dialogue-exception .param-stacktrace .stacktrace-line {
+    color:#AA0000;
+    font-size:80%;
+}
+.moodle-dialogue-exception .param-stacktrace .stacktrace-call {
+    color:#333;
+    font-size:90%;
+    border-bottom:1px solid #eee;
+}
+
+.moodle-dialogue-base .moodle-dialogue .moodle-dialogue-content .moodle-dialogue-ft {
+    padding:0px;
+    margin: 0.7em 1em;
+    text-align: right;
+    background-color: #FFF;
+    font-size: 12px;
+}
+
+.moodle-dialogue-confirm .confirmation-message {margin:0.5em 1em;}
+.moodle-dialogue-confirm .confirmation-dialogue input {min-width:80px}
+.moodle-dialogue-exception .moodle-exception-message {margin:1em;}
+.moodle-dialogue-exception .moodle-exception-param {margin-bottom:0.5em;}
+.moodle-dialogue-exception .moodle-exception-param label {width:150px;}
+.moodle-dialogue-exception .param-stacktrace label {
+    display:block;
+    margin:0;
+    padding:4px 1em;
+}
+.moodle-dialogue-exception .param-stacktrace pre {
+    display:block;
+    height:200px;
+    overflow:auto;
+}
+
+.moodle-dialogue-exception .param-stacktrace .stacktrace-file {
+    display:inline-block;
+    margin:4px 0;
+}
+.moodle-dialogue-exception .param-stacktrace .stacktrace-line {
+    display:inline-block;
+    width:50px;
+    margin:4px 1em;
+}
+.moodle-dialogue-exception .param-stacktrace .stacktrace-call {
+    padding-left:25px;
+    margin-bottom:4px;
+    padding-bottom:4px;
+}
+
+.moodle-dialogue .moodle-dialogue-bd .content-lightbox {
+    opacity: .75;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: white;
+    text-align: center;
+    padding: 10% 0;
+}
+
+/* Apply a default max-height on tooltip text */
+.moodle-dialogue .tooltiptext {
+    max-height: 300px;
+}
+.moodle-dialogue-base .moodle-dialogue.moodle-dialogue-tooltip {
+    z-index: 3001;
+}
+
+/* Question Bank - Question Chooser "Close" button */
+#page-question-edit.dir-rtl a.container-close {right:auto;left:6px;}
+
 /**
- * Chooser Dialogue
+ * Chooser Dialogues (moodle-core-chooserdialogue)
  *
  * This CSS belong to the chooser dialogue which should work both with, and
  * without javascript enabled
@@ -868,47 +1075,11 @@ sup {vertical-align: super;}
 .choosertitle {
     display:none;
 }
-
-.moodle-dialogue-base .moodle-dialogue {
-    background: none!important;
-    border: 0 none!important;
+.moodle-dialogue.chooserdialogue .moodle-dialogue-content .moodle-dialogue-ft {
+    margin: 0;
 }
-
-.chooserdialogue .moodle-dialogue-wrap {
-    height: auto;
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC!important;
-    border-radius:10px;
-    box-shadow: 5px 5px 20px 0px #666666;
-    -webkit-box-shadow: 5px 5px 20px 0px #666666;
-    -moz-box-shadow: 5px 5px 20px 0px #666666;
-}
-
-.chooserdialogue .moodle-dialogue-wrap .moodle-dialogue-hd {
-    font-size:12px!important;
-    font-weight: normal!important;
-    letter-spacing: 1px;
-    color:#333333!important;
-    text-align: center!important;
-    text-shadow: 1px 1px 1px #FFFFFF;
-    padding:5px 5px 5px 5px;
-    border-radius: 10px 10px 0px 0px;
-    border-bottom: 1px solid #BBBBBB!important;
-    background: #CCCCCC!important;
-    background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#CCCCCC))!important;
-    background: -moz-linear-gradient(top,  #FFFFFF,  #CCCCCC)!important;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#CCCCCC')!important;
-    filter: dropshadow(color=#FFFFFF, offx=1, offy=1);
-}
-/* Activity Chooser "Close" button */
-.dir-rtl .moodle-dialogue-base .closebutton {float: left;}
-/* Question Bank - Question Chooser "Close" button */
-#page-question-edit.dir-rtl a.container-close {right:auto;left:6px;}
 
 .chooserdialogue .moodle-dialogue-wrap .moodle-dialogue-bd {
-    font-size: 12px;
-    color: #555555;
-    overflow: auto;
     padding: 0px;
     background: #F2F2F2;
     border-bottom-left-radius: 10px;
@@ -1070,6 +1241,71 @@ html[dir=rtl] .configphp {direction:ltr;text-align:left;}
 table.flexible .r0, table.generaltable .r0 {background-color: #F0F0F0;}
 table.flexible .r1, table.generaltable .r1 {background-color: #FAFAFA;}
 
+/* Form element: listing */
+.formlistingradio {padding-bottom: 25px; padding-right: 10px;}
+.formlistinginputradio {float: left;}
+.formlistingmain {min-height: 225px;}
+.formlistingradiocontent {}
+.formlisting {
+    position: relative;
+    margin: 15px 0;
+    padding: 1px 19px 14px;
+    background-color: white;
+    border: 1px solid #DDD;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.formlistingmore {
+    position: absolute;
+    cursor: pointer;
+    bottom: -1px;
+    right: -1px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: whiteSmoke;
+    border: 1px solid #DDD;
+    color: #9DA0A4;
+    -webkit-border-radius: 4px 0 4px 0;
+    -moz-border-radius: 4px 0 4px 0;
+    border-radius: 4px 0 4px 0;
+}
+
+.formlistingall {
+    margin: 15px 0;
+    padding: 0px 0px 0px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.formlistingrow {
+    cursor: pointer;
+    border-bottom: 1px solid;
+    border-color: #E1E1E8;
+    border-left: 1px solid #E1E1E8;
+    border-right: 1px solid #E1E1E8;
+    background-color: #F7F7F9;
+    -webkit-border-radius: 0px 0px 4px 4px;
+    -moz-border-radius: 0px 0px 4px 4px;
+    padding: 6px;
+    top: 50%;
+    left: 50%;
+    min-height: 34px;
+    float:left;
+    width: 150px;
+}
+
+body.jsenabled .formlistingradio {
+    display: none;
+}
+
+body.jsenabled .formlisting {
+    display: block;
+}
+
 /**
  * Badges styles
  */
@@ -1121,6 +1357,7 @@ div.badge .expireimage { width: 100px; height: 100px; left: 20px; top: 0px; }
 #page-badges-award .recipienttable tr td.actions .actionbutton { margin: 0.3em 0; padding: 0.5em 0; width: 100%; }
 #page-badges-award .recipienttable tr td.existing,
 #page-badges-award .recipienttable tr td.potential { width: 42%; }
+#page-badges-criteria_settings .selectcourse { min-width: 200px; max-width: 600px; }
 
 .statustable { margin-bottom: 0px; }
 .statusbox { border-color: #BBBBBB; }
@@ -1128,4 +1365,12 @@ div.badge .expireimage { width: 100px; height: 100px; left: 20px; top: 0px; }
 .statusbox.inactive { background-color: #FFEBA8; }
 .activatebadge { margin: 0px; text-align: left; vertical-align: middle; }
 .addcourse { float: right; }
-#page-badges-criteria_settings .selectcourse { min-width: 200px; max-width: 600px; }
+
+/**
+ * The date selector popup.
+ */
+ div#dateselector-calendar-panel {
+     z-index: 3100; /* Set higher than the z-index of the filemanager - see MDL-39047. */
+ }
+
+.path-mod-lesson .centerpadded { padding: 5px; text-align: center; }

@@ -186,9 +186,9 @@
         }
         redirect($returnurl);
 
-
     } else if ($unlock and confirm_sesskey()) {
         require_capability('moodle/user:update', $sitecontext);
+
         if ($user = $DB->get_record('user', array('id'=>$unlock, 'mnethostid'=>$CFG->mnet_localhost_id, 'deleted'=>0))) {
             login_unlock_account($user);
         }
@@ -246,18 +246,10 @@
     }
 
     list($extrasql, $params) = $ufiltering->get_sql_filter();
-    $usercount = get_users(false, '', false, null, 'firstname ASC', '', '', '', '', '*', '', null, $excludedeleted);
-    $usersearchcount = get_users(false, '', false, null, "", '', '', '', '', '*', $extrasql, $params, $excludedeleted);
-
-    // Exclude guest user from list.
-    $noguestsql = '';
-    if (!empty($extrasql)) {
-        $noguestsql .= ' AND';
-    }
-    $noguestsql .= " id <> :guestid";
-    $params['guestid'] = $CFG->siteguest;
     $users = get_users_listing($sort, $dir, $page*$perpage, $perpage, '', '', '',
-            $extrasql.$noguestsql, $params, $context, $excludedeleted);
+            $extrasql, $params, $context);
+    $usercount = get_users(false);
+    $usersearchcount = get_users(false, '', false, null, "", '', '', '', '', '*', $extrasql, $params);
 
     if ($extrasql !== '') {
         echo $OUTPUT->heading("$usersearchcount / $usercount ".get_string('users'));
@@ -305,30 +297,27 @@
 
         $table = new html_table();
         $table->head = array ();
-        $table->align = array();
+        $table->colclasses = array();
         $table->head[] = $fullnamedisplay;
-        $table->align[] = 'left';
+        $table->attributes['class'] = 'admintable generaltable';
+        $table->colclasses[] = 'leftalign';
         foreach ($extracolumns as $field) {
             $table->head[] = ${$field};
-            $table->align[] = 'left';
+            $table->colclasses[] = 'leftalign';
         }
         $table->head[] = $city;
-        $table->align[] = 'left';
+        $table->colclasses[] = 'leftalign';
         $table->head[] = $country;
-        $table->align[] = 'left';
+        $table->colclasses[] = 'leftalign';
         $table->head[] = $lastaccess;
-        $table->align[] = 'left';
+        $table->colclasses[] = 'leftalign';
         $table->head[] = get_string('edit');
-        $table->align[] = 'center';
+        $table->colclasses[] = 'centeralign';
         $table->head[] = "";
-        $table->align[] = 'center';
+        $table->colclasses[] = 'centeralign';
 
-        $table->width = "95%";
+        $table->id = "users";
         foreach ($users as $user) {
-            if (isguestuser($user) || ($user->deleted && preg_match($preg_emailhash, $user->email))) {
-                continue; // do not display guests or legacy-deleted (hash in email) users here
-            }
-
             $buttons = array();
             $lastcolumn = '';
 

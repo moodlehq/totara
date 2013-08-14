@@ -80,13 +80,6 @@ function feedback_add_instance($feedback) {
     $feedback->timemodified = time();
     $feedback->id = '';
 
-    //check if openenable and/or closeenable is set and set correctly to save in db
-    if (empty($feedback->openenable)) {
-        $feedback->timeopen = 0;
-    }
-    if (empty($feedback->closeenable)) {
-        $feedback->timeclose = 0;
-    }
     if (empty($feedback->site_after_submit)) {
         $feedback->site_after_submit = '';
     }
@@ -133,13 +126,6 @@ function feedback_update_instance($feedback) {
     $feedback->timemodified = time();
     $feedback->id = $feedback->instance;
 
-    //check if openenable and/or closeenable is set and set correctly to save in db
-    if (empty($feedback->openenable)) {
-        $feedback->timeopen = 0;
-    }
-    if (empty($feedback->closeenable)) {
-        $feedback->timeclose = 0;
-    }
     if (empty($feedback->site_after_submit)) {
         $feedback->site_after_submit = '';
     }
@@ -3170,4 +3156,25 @@ function feedback_init_feedback_session() {
 function feedback_page_type_list($pagetype, $parentcontext, $currentcontext) {
     $module_pagetype = array('mod-feedback-*'=>get_string('page-mod-feedback-x', 'feedback'));
     return $module_pagetype;
+}
+
+/**
+ * Move save the items of the given $feedback in the order of $itemlist.
+ * @param string $itemlist a comma separated list with item ids
+ * @param stdClass $feedback
+ * @return bool true if success
+ */
+function feedback_ajax_saveitemorder($itemlist, $feedback) {
+    global $DB;
+
+    $result = true;
+    $position = 0;
+    foreach ($itemlist as $itemid) {
+        $position++;
+        $result = $result && $DB->set_field('feedback_item',
+                                            'position',
+                                            $position,
+                                            array('id'=>$itemid, 'feedback'=>$feedback->id));
+    }
+    return $result;
 }

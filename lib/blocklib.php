@@ -341,7 +341,7 @@ class block_manager {
      * output the blocks anyway, so we are not doing wasted effort.)
      *
      * @param string $region a block region that exists on this page.
-     * @param object $output a core_renderer. normally the global $OUTPUT.
+     * @param core_renderer $output a core_renderer. normally the global $OUTPUT.
      * @return boolean Whether there is anything in this region.
      */
     public function region_has_content($region, $output) {
@@ -587,8 +587,8 @@ class block_manager {
             'pagetype' => $this->page->pagetype,
         );
         if ($this->page->subpage === '') {
-            $params['subpage1'] = $DB->sql_empty();
-            $params['subpage2'] = $DB->sql_empty();
+            $params['subpage1'] = '';
+            $params['subpage2'] = '';
         }
         $sql = "SELECT
                     bi.id,
@@ -945,8 +945,6 @@ class block_manager {
             if ($first) {
                 $lastweight = $first->instance->weight - 2;
             }
-
-            $strmoveblockhere = get_string('moveblockhere', 'block');
         }
 
         foreach ($instances as $instance) {
@@ -957,7 +955,7 @@ class block_manager {
 
             if ($this->movingblock && $lastweight != $instance->instance->weight &&
                     $content->blockinstanceid != $this->movingblock && $lastblock != $this->movingblock) {
-                $results[] = new block_move_target($strmoveblockhere, $this->get_move_target_url($region, ($lastweight + $instance->instance->weight)/2));
+                $results[] = new block_move_target($this->get_move_target_url($region, ($lastweight + $instance->instance->weight)/2));
             }
 
             if ($content->blockinstanceid == $this->movingblock) {
@@ -972,7 +970,7 @@ class block_manager {
         }
 
         if ($this->movingblock && $lastblock != $this->movingblock) {
-            $results[] = new block_move_target($strmoveblockhere, $this->get_move_target_url($region, $lastweight + 1));
+            $results[] = new block_move_target($this->get_move_target_url($region, $lastweight + 1));
         }
         return $results;
     }
@@ -1027,25 +1025,29 @@ class block_manager {
 
         $controls = array();
         $actionurl = $this->page->url->out(false, array('sesskey'=> sesskey()));
+        $blocktitle = $block->title;
+        if (empty($blocktitle)) {
+            $blocktitle = $block->arialabel;
+        }
 
         if ($this->page->user_can_edit_blocks()) {
             // Move icon.
             $controls[] = array('url' => $actionurl . '&bui_moveid=' . $block->instance->id,
-                    'icon' => 't/move', 'caption' => get_string('moveblock', 'block', $block->title),
+                    'icon' => 't/move', 'caption' => get_string('moveblock', 'block', $blocktitle),
                     'class' => 'editing_move');
         }
 
         if ($this->page->user_can_edit_blocks() || $block->user_can_edit()) {
             // Edit config icon - always show - needed for positioning UI.
             $controls[] = array('url' => $actionurl . '&bui_editid=' . $block->instance->id,
-                    'icon' => 't/edit', 'caption' => get_string('configureblock', 'block', $block->title),
+                    'icon' => 't/edit', 'caption' => get_string('configureblock', 'block', $blocktitle),
                     'class' => 'editing_edit');
         }
 
         if ($this->user_can_delete_block($block)) {
             // Delete icon.
             $controls[] = array('url' => $actionurl . '&bui_deleteid=' . $block->instance->id,
-                    'icon' => 't/delete', 'caption' => get_string('deleteblock', 'block', $block->title),
+                    'icon' => 't/delete', 'caption' => get_string('deleteblock', 'block', $blocktitle),
                     'class' => 'editing_delete');
         }
 
@@ -1053,11 +1055,11 @@ class block_manager {
             // Show/hide icon.
             if ($block->instance->visible) {
                 $controls[] = array('url' => $actionurl . '&bui_hideid=' . $block->instance->id,
-                        'icon' => 't/hide', 'caption' => get_string('hideblock', 'block', $block->title),
+                        'icon' => 't/hide', 'caption' => get_string('hideblock', 'block', $blocktitle),
                         'class' => 'editing_hide');
             } else {
                 $controls[] = array('url' => $actionurl . '&bui_showid=' . $block->instance->id,
-                        'icon' => 't/show', 'caption' => get_string('showblock', 'block', $block->title),
+                        'icon' => 't/show', 'caption' => get_string('showblock', 'block', $blocktitle),
                         'class' => 'editing_show');
             }
         }
@@ -1072,7 +1074,7 @@ class block_manager {
 
             $controls[] = array('url' => $CFG->wwwroot . '/' . $CFG->admin .
                     '/roles/assign.php?contextid=' . $block->context->id . '&returnurl=' . urlencode($return),
-                    'icon' => 't/assignroles', 'caption' => get_string('assignrolesinblock', 'block', $block->title),
+                    'icon' => 't/assignroles', 'caption' => get_string('assignrolesinblock', 'block', $blocktitle),
                     'class' => 'editing_roles');
         }
 

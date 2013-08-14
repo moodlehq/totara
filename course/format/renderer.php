@@ -38,6 +38,20 @@ defined('MOODLE_INTERNAL') || die();
  */
 abstract class format_section_renderer_base extends plugin_renderer_base {
 
+    /** @var contains instance of core course renderer */
+    protected $courserenderer;
+
+    /**
+     * Constructor method, calls the parent constructor
+     *
+     * @param moodle_page $page
+     * @param string $target one of rendering target constants
+     */
+    public function __construct(moodle_page $page, $target) {
+        parent::__construct($page, $target);
+        $this->courserenderer = $this->page->get_renderer('core', 'course');
+    }
+
     /**
      * Generate the starting container html for a list of sections
      * @return string HTML to output.
@@ -549,6 +563,39 @@ abstract class format_section_renderer_base extends plugin_renderer_base {
     }
 
     /**
+     * Generate the html for the 'Jump to' menu on a single section page.
+     *
+     * @param stdClass $course The course entry from DB
+     * @param array $sections The course_sections entries from the DB
+     * @param $displaysection the current displayed section number.
+     *
+     * @return string HTML to output.
+     */
+    protected function section_nav_selection($course, $sections, $displaysection) {
+        global $CFG;
+        $o = '';
+        $sectionmenu = array();
+        $sectionmenu[course_get_url($course)->out(false)] = get_string('maincoursepage');
+        $modinfo = get_fast_modinfo($course);
+        $section = 1;
+        while ($section <= $course->numsections) {
+            $thissection = $modinfo->get_section_info($section);
+            $showsection = $thissection->uservisible or !$course->hiddensections;
+            if (($showsection) && ($section != $displaysection) && ($url = course_get_url($course, $section))) {
+                $sectionmenu[$url->out(false)] = get_section_name($course, $section);
+            }
+            $section++;
+        }
+
+        $select = new url_select($sectionmenu, '', array('' => get_string('jumpto')));
+        $select->class = 'jumpmenu';
+        $select->formid = 'sectionmenu';
+        $o .= $this->output->render($select);
+
+        return $o;
+    }
+
+    /**
      * Output the html for a single section page .
      *
      * @param stdClass $course The course entry from DB
@@ -587,10 +634,8 @@ abstract class format_section_renderer_base extends plugin_renderer_base {
         if ($thissection->summary or !empty($modinfo->sections[0]) or $PAGE->user_is_editing()) {
             echo $this->start_section_list();
             echo $this->section_header($thissection, $course, true, $displaysection);
-            print_section($course, $thissection, null, null, true, "100%", false, $displaysection);
-            if ($PAGE->user_is_editing()) {
-                print_section_add_menus($course, 0, null, false, false, $displaysection);
-            }
+            echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
+            echo $this->courserenderer->course_section_add_cm_control($course, 0, $displaysection);
             echo $this->section_footer();
             echo $this->end_section_list();
         }
@@ -624,24 +669,22 @@ abstract class format_section_renderer_base extends plugin_renderer_base {
         $completioninfo = new completion_info($course);
         echo $completioninfo->display_help_icon();
 
-        print_section($course, $thissection, null, null, true, '100%', false, $displaysection);
-        if ($PAGE->user_is_editing()) {
-            print_section_add_menus($course, $displaysection, null, false, false, $displaysection);
-        }
+        echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
+        echo $this->courserenderer->course_section_add_cm_control($course, $displaysection, $displaysection);
         echo $this->section_footer();
         echo $this->end_section_list();
 
         // Display section bottom navigation.
-        $courselink = html_writer::link(course_get_url($course), get_string('returntomaincoursepage'));
         $sectionbottomnav = '';
         $sectionbottomnav .= html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
         $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
         $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-        $sectionbottomnav .= html_writer::tag('div', $courselink, array('class' => 'mdl-align'));
+        $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection),
+            array('class' => 'mdl-align'));
         $sectionbottomnav .= html_writer::end_tag('div');
         echo $sectionbottomnav;
 
-        // close single-section div.
+        // Close single-section div.
         echo html_writer::end_tag('div');
     }
 
@@ -677,10 +720,8 @@ abstract class format_section_renderer_base extends plugin_renderer_base {
                 // 0-section is displayed a little different then the others
                 if ($thissection->summary or !empty($modinfo->sections[0]) or $PAGE->user_is_editing()) {
                     echo $this->section_header($thissection, $course, false, 0);
-                    print_section($course, $thissection, null, null, true, "100%", false, 0);
-                    if ($PAGE->user_is_editing()) {
-                        print_section_add_menus($course, 0, null, false, false, 0);
-                    }
+                    echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                    echo $this->courserenderer->course_section_add_cm_control($course, 0, 0);
                     echo $this->section_footer();
                 }
                 continue;
@@ -710,10 +751,8 @@ abstract class format_section_renderer_base extends plugin_renderer_base {
             } else {
                 echo $this->section_header($thissection, $course, false, 0);
                 if ($thissection->uservisible) {
-                    print_section($course, $thissection, null, null, true, "100%", false, 0);
-                    if ($PAGE->user_is_editing()) {
-                        print_section_add_menus($course, $section, null, false, false, 0);
-                    }
+                    echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                    echo $this->courserenderer->course_section_add_cm_control($course, $section, 0);
                 }
                 echo $this->section_footer();
             }
@@ -727,7 +766,7 @@ abstract class format_section_renderer_base extends plugin_renderer_base {
                     continue;
                 }
                 echo $this->stealth_section_header($section);
-                print_section($course, $thissection, null, null, true, "100%", false, 0);
+                echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
                 echo $this->stealth_section_footer();
             }
 

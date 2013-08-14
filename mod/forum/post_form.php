@@ -65,18 +65,30 @@ class mod_forum_post_form extends moodleform {
     }
 
     function definition() {
+        global $CFG, $OUTPUT;
 
-        global $CFG;
-        $mform    =& $this->_form;
+        $mform =& $this->_form;
 
-        $course        = $this->_customdata['course'];
-        $cm            = $this->_customdata['cm'];
+        $course = $this->_customdata['course'];
+        $cm = $this->_customdata['cm'];
         $coursecontext = $this->_customdata['coursecontext'];
-        $modcontext    = $this->_customdata['modcontext'];
-        $forum         = $this->_customdata['forum'];
-        $post          = $this->_customdata['post'];
+        $modcontext = $this->_customdata['modcontext'];
+        $forum = $this->_customdata['forum'];
+        $post = $this->_customdata['post'];
+        $edit = $this->_customdata['edit'];
+        $thresholdwarning = $this->_customdata['thresholdwarning'];
 
         $mform->addElement('header', 'general', '');//fill in the data depending on page params later using set_data
+
+        // If there is a warning message and we are not editing a post we need to handle the warning.
+        if (!empty($thresholdwarning) && !$edit) {
+            // Here we want to display a warning if they can still post but have reached the warning threshold.
+            if ($thresholdwarning->canpost) {
+                $message = get_string($thresholdwarning->errorcode, $thresholdwarning->module, $thresholdwarning->additional);
+                $mform->addElement('html', $OUTPUT->notification($message));
+            }
+        }
+
         $mform->addElement('text', 'subject', get_string('subject', 'forum'), 'size="48"');
         $mform->setType('subject', PARAM_TEXT);
         $mform->addRule('subject', get_string('required'), 'required', null, 'client');
@@ -119,7 +131,7 @@ class mod_forum_post_form extends moodleform {
         }
 
         if (!empty($CFG->forum_enabletimedposts) && !$post->parent && has_capability('mod/forum:viewhiddentimedposts', $coursecontext)) { // hack alert
-            $mform->addElement('header', '', get_string('displayperiod', 'forum'));
+            $mform->addElement('header', 'displayperiod', get_string('displayperiod', 'forum'));
 
             $mform->addElement('date_selector', 'timestart', get_string('displaystart', 'forum'), array('optional'=>true));
             $mform->addHelpButton('timestart', 'displaystart', 'forum');

@@ -497,6 +497,11 @@ define('USER_CAN_IGNORE_FILE_SIZE_LIMITS', -1);
 define('COURSE_DISPLAY_SINGLEPAGE', 0); // display all sections on one page
 define('COURSE_DISPLAY_MULTIPAGE', 1); // split pages into a page per section
 
+/**
+ * Authentication constants.
+ */
+define('AUTH_PASSWORD_NOT_CACHED', 'not cached'); // String used in password field when password is not stored.
+
 /// PARAMETER HANDLING ////////////////////////////////////////////////////
 
 /**
@@ -921,8 +926,7 @@ function clean_param($param, $type) {
         case PARAM_FILE:         // Strip all suspicious characters from filename
             $param = fix_utf8($param);
             $param = preg_replace('~[[:cntrl:]]|[&<>"`\|\':\\\\/]~u', '', $param);
-            $param = preg_replace('~\.\.+~', '', $param);
-            if ($param === '.') {
+            if ($param === '.' || $param === '..') {
                 $param = '';
             }
             return $param;
@@ -930,10 +934,23 @@ function clean_param($param, $type) {
         case PARAM_PATH:         // Strip all suspicious characters from file path
             $param = fix_utf8($param);
             $param = str_replace('\\', '/', $param);
-            $param = preg_replace('~[[:cntrl:]]|[&<>"`\|\':]~u', '', $param);
-            $param = preg_replace('~\.\.+~', '', $param);
+
+            // Explode the path and clean each element using the PARAM_FILE rules.
+            $breadcrumb = explode('/', $param);
+            foreach ($breadcrumb as $key => $crumb) {
+                if ($crumb === '.' && $key === 0) {
+                    // Special condition to allow for relative current path such as ./currentdirfile.txt.
+                } else {
+                    $crumb = clean_param($crumb, PARAM_FILE);
+                }
+                $breadcrumb[$key] = $crumb;
+            }
+            $param = implode('/', $breadcrumb);
+
+            // Remove multiple current path (./././) and multiple slashes (///).
             $param = preg_replace('~//+~', '/', $param);
-            return preg_replace('~/(\./)+~', '/', $param);
+            $param = preg_replace('~/(\./)+~', '/', $param);
+            return $param;
 
         case PARAM_HOST:         // allow FQDN or IPv4 dotted quad
             $param = preg_replace('/[^\.\d\w-]/','', $param ); // only allowed chars
@@ -1307,7 +1324,10 @@ function set_config($name, $value, $plugin=NULL) {
                 $DB->insert_record('config', $config, false);
             }
         }
-
+        if ($name === 'siteidentifier') {
+            cache_helper::update_site_identifier($value);
+        }
+        cache_helper::invalidate_by_definition('core', 'config', array(), 'core');
     } else { // plugin scope
         if ($id = $DB->get_field('config_plugins', 'id', array('name'=>$name, 'plugin'=>$plugin))) {
             if ($value===null) {
@@ -1324,6 +1344,7 @@ function set_config($name, $value, $plugin=NULL) {
                 $DB->insert_record('config_plugins', $config, false);
             }
         }
+        cache_helper::invalidate_by_definition('core', 'config', array(), $plugin);
     }
 
     return true;
@@ -1339,6 +1360,8 @@ function set_config($name, $value, $plugin=NULL) {
  * If called with 2 parameters it will return a string single
  * value or false if the value is not found.
  *
+ * @static $siteidentifier The site identifier is not cached. We use this static cache so
+ *     that we need only fetch it once per request.
  * @param string $plugin full component name
  * @param string $name default NULL
  * @return mixed hash-like object or single value, return false no config found
@@ -1346,63 +1369,78 @@ function set_config($name, $value, $plugin=NULL) {
 function get_config($plugin, $name = NULL) {
     global $CFG, $DB;
 
-    // normalise component name
-    if ($plugin === 'moodle' or $plugin === 'core') {
-        $plugin = NULL;
-    }
+    static $siteidentifier = null;
 
-    if (!empty($name)) { // the user is asking for a specific value
-        if (!empty($plugin)) {
-            if (isset($CFG->forced_plugin_settings[$plugin]) and array_key_exists($name, $CFG->forced_plugin_settings[$plugin])) {
-                // setting forced in config file
-                return $CFG->forced_plugin_settings[$plugin][$name];
-            } else {
-                return $DB->get_field('config_plugins', 'value', array('plugin'=>$plugin, 'name'=>$name));
-            }
-        } else {
-            if (array_key_exists($name, $CFG->config_php_settings)) {
-                // setting force in config file
-                return $CFG->config_php_settings[$name];
-            } else {
-                return $DB->get_field('config', 'value', array('name'=>$name));
-            }
-        }
-    }
-
-    // the user is after a recordset
-    if ($plugin) {
-        $localcfg = $DB->get_records_menu('config_plugins', array('plugin'=>$plugin), '', 'name,value');
-        if (isset($CFG->forced_plugin_settings[$plugin])) {
-            foreach($CFG->forced_plugin_settings[$plugin] as $n=>$v) {
-                if (is_null($v) or is_array($v) or is_object($v)) {
-                    // we do not want any extra mess here, just real settings that could be saved in db
-                    unset($localcfg[$n]);
-                } else {
-                    //convert to string as if it went through the DB
-                    $localcfg[$n] = (string)$v;
-                }
-            }
-        }
-        if ($localcfg) {
-            return (object)$localcfg;
-        } else {
-            return new stdClass();
-        }
-
+    if ($plugin === 'moodle' || $plugin === 'core' || empty($plugin)) {
+        $forced =& $CFG->config_php_settings;
+        $iscore = true;
+        $plugin = 'core';
     } else {
-        // this part is not really used any more, but anyway...
-        $localcfg = $DB->get_records_menu('config', array(), '', 'name,value');
-        foreach($CFG->config_php_settings as $n=>$v) {
-            if (is_null($v) or is_array($v) or is_object($v)) {
-                // we do not want any extra mess here, just real settings that could be saved in db
-                unset($localcfg[$n]);
-            } else {
-                //convert to string as if it went through the DB
-                $localcfg[$n] = (string)$v;
-            }
+        if (array_key_exists($plugin, $CFG->forced_plugin_settings)) {
+            $forced =& $CFG->forced_plugin_settings[$plugin];
+        } else {
+            $forced = array();
         }
-        return (object)$localcfg;
+        $iscore = false;
     }
+
+    if ($siteidentifier === null) {
+        try {
+            // This may fail during installation.
+            // If you have a look at {@link initialise_cfg()} you will see that this is how we detect the need to
+            // install the database.
+            $siteidentifier = $DB->get_field('config', 'value', array('name' => 'siteidentifier'));
+        } catch (dml_exception $ex) {
+            // Set siteidentifier to false. We don't want to trip this continually.
+            $siteidentifier = false;
+            throw $ex;
+        }
+    }
+
+    if (!empty($name)) {
+        if (array_key_exists($name, $forced)) {
+            return (string)$forced[$name];
+        } else if ($name === 'siteidentifier' && $plugin == 'core') {
+            return $siteidentifier;
+        }
+    }
+
+    $cache = cache::make('core', 'config');
+    $result = $cache->get($plugin);
+    if ($result === false) {
+        // the user is after a recordset
+        $result = new stdClass;
+        if (!$iscore) {
+            $result = $DB->get_records_menu('config_plugins', array('plugin'=>$plugin), '', 'name,value');
+        } else {
+            // this part is not really used any more, but anyway...
+            $result = $DB->get_records_menu('config', array(), '', 'name,value');;
+        }
+        $cache->set($plugin, $result);
+    }
+
+    if (!empty($name)) {
+        if (array_key_exists($name, $result)) {
+            return $result[$name];
+        }
+        return false;
+    }
+
+    if ($plugin === 'core') {
+        $result['siteidentifier'] = $siteidentifier;
+    }
+
+    foreach ($forced as $key => $value) {
+        if (is_null($value) or is_array($value) or is_object($value)) {
+            // we do not want any extra mess here, just real settings that could be saved in db
+            unset($result[$key]);
+        } else {
+            //convert to string as if it went through the DB
+            $result[$key] = (string)$value;
+        }
+    }
+
+    return (object)$result;
 }
 
 /**
@@ -1419,8 +1457,10 @@ function unset_config($name, $plugin=NULL) {
     if (empty($plugin)) {
         unset($CFG->$name);
         $DB->delete_records('config', array('name'=>$name));
+        cache_helper::invalidate_by_definition('core', 'config', array(), 'core');
     } else {
         $DB->delete_records('config_plugins', array('name'=>$name, 'plugin'=>$plugin));
+        cache_helper::invalidate_by_definition('core', 'config', array(), $plugin);
     }
 
     return true;
@@ -1434,10 +1474,15 @@ function unset_config($name, $plugin=NULL) {
  */
 function unset_all_config_for_plugin($plugin) {
     global $DB;
+    // Delete from the obvious config_plugins first
     $DB->delete_records('config_plugins', array('plugin' => $plugin));
+    // Next delete any suspect settings from config
     $like = $DB->sql_like('name', '?', true, true, false, '|');
     $params = array($DB->sql_like_escape($plugin.'_', '|') . '%');
     $DB->delete_records_select('config', $like, $params);
+    // Finally clear both the plugin cache and the core cache (suspect settings now removed from core).
+    cache_helper::invalidate_by_definition('core', 'config', array(), array('core', $plugin));
+
     return true;
 }
 
@@ -2137,8 +2182,7 @@ function userdate($date, $format = '', $timezone = 99, $fixday = true, $fixhour 
 function date_format_string($date, $format, $tz = 99) {
     global $CFG;
     if (abs($tz) > 13) {
-        if ($CFG->ostype == 'WINDOWS') {
-            $localewincharset = get_string('localewincharset', 'langconfig');
+        if ($CFG->ostype == 'WINDOWS' and $localewincharset = get_string('localewincharset', 'langconfig')) {
             $format = textlib::convert($format, 'utf-8', $localewincharset);
             $datestring = strftime($format, $date);
             $datestring = textlib::convert($datestring, $localewincharset, 'utf-8');
@@ -2146,8 +2190,7 @@ function date_format_string($date, $format, $tz = 99) {
             $datestring = strftime($format, $date);
         }
     } else {
-        if ($CFG->ostype == 'WINDOWS') {
-            $localewincharset = get_string('localewincharset', 'langconfig');
+        if ($CFG->ostype == 'WINDOWS' and $localewincharset = get_string('localewincharset', 'langconfig')) {
             $format = textlib::convert($format, 'utf-8', $localewincharset);
             $datestring = gmstrftime($format, $date);
             $datestring = textlib::convert($datestring, $localewincharset, 'utf-8');
@@ -2775,6 +2818,11 @@ function get_login_url() {
  */
 function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $setwantsurltome = true, $preventredirect = false) {
     global $CFG, $SESSION, $USER, $PAGE, $SITE, $DB, $OUTPUT;
+
+    // Must not redirect when byteserving already started.
+    if (!empty($_SERVER['HTTP_RANGE'])) {
+        $preventredirect = true;
+    }
 
     // setup global $COURSE, themes, language and locale
     if (!empty($courseorid)) {
@@ -3863,6 +3911,7 @@ function create_user_record($username, $password, $auth = 'manual') {
     if (!empty($CFG->{'auth_'.$newuser->auth.'_forcechangepassword'})){
         set_user_preference('auth_forcepasswordchange', 1, $user);
     }
+    // Set the password.
     update_internal_user_password($user, $password);
 
     // fetch full user record for the event, the complete user data contains too much info
@@ -4178,7 +4227,7 @@ function authenticate_user_login($username, $password, $ignorelockout=false, &$f
         if ($auth=='nologin' or !is_enabled_auth($auth)) {
             add_to_log(SITEID, 'login', 'error', 'index.php', $username);
             error_log('[client '.getremoteaddr()."]  $CFG->wwwroot  Disabled Login:  $username  ".$_SERVER['HTTP_USER_AGENT']);
-            $failurereason = AUTH_LOGIN_SUSPENDED; // Legacy way to suspend user
+            $failurereason = AUTH_LOGIN_SUSPENDED; // Legacy way to suspend user.
             return false;
         }
         $auths = array($auth);
@@ -4196,13 +4245,6 @@ function authenticate_user_login($username, $password, $ignorelockout=false, &$f
             add_to_log(SITEID, 'login', 'error', 'index.php', $username);
             error_log('[client '.getremoteaddr()."]  $CFG->wwwroot  Unknown user, can not create new accounts:  $username  ".$_SERVER['HTTP_USER_AGENT']);
             $failurereason = AUTH_LOGIN_NOUSER;
-            return false;
-        }
-
-        // Do not try to authenticate non-existent accounts when user creation is not disabled.
-        if (!empty($CFG->authpreventaccountcreation)) {
-            add_to_log(SITEID, 'login', 'error', 'index.php', $username);
-            error_log('[client '.getremoteaddr()."]  $CFG->wwwroot  Unknown user, can not create new accounts:  $username  ".$_SERVER['HTTP_USER_AGENT']);
             return false;
         }
 
@@ -4250,7 +4292,10 @@ function authenticate_user_login($username, $password, $ignorelockout=false, &$f
                 events_trigger('user_firstaccess', $user);
             }
 
-            update_internal_user_password($user, $password); // just in case salt or encoding were changed (magic quotes too one day)
+            // If the existing hash is using an out-of-date algorithm (or the
+            // legacy md5 algorithm), then we should update to the current
+            // hash algorithm while we have access to the user's password.
+            update_internal_user_password($user, $password);
 
             if ($authplugin->is_synchronised_with_external()) { // update user record from external DB
                 $user = update_user_record($username);
@@ -4360,28 +4405,81 @@ function complete_user_login($user) {
 }
 
 /**
- * Compare password against hash stored in internal user table.
- * If necessary it also updates the stored hash to new format.
+ * Check a password hash to see if it was hashed using the
+ * legacy hash algorithm (md5).
  *
- * @param stdClass $user (password property may be updated)
- * @param string $password plain text password
- * @return bool is password valid?
+ * @param string $password String to check.
+ * @return boolean True if the $password matches the format of an md5 sum.
+ */
+function password_is_legacy_hash($password) {
+    return (bool) preg_match('/^[0-9a-f]{32}$/', $password);
+}
+
+/**
+ * Checks whether the password compatibility library will work with the current
+ * version of PHP. This cannot be done using PHP version numbers since the fix
+ * has been backported to earlier versions in some distributions.
+ *
+ * See https://github.com/ircmaxell/password_compat/issues/10 for
+ * more details.
+ *
+ * @return bool True if the library is NOT supported.
+ */
+function password_compat_not_supported() {
+
+    $hash = '$2y$04$usesomesillystringfore7hnbRJHxXVLeakoG8K30oukPsA.ztMG';
+
+    // Create a one off application cache to store bcrypt support status as
+    // the support status doesn't change and crypt() is slow.
+    $cache = cache::make_from_params(cache_store::MODE_APPLICATION, 'core', 'password_compat');
+
+    if (!$bcryptsupport = $cache->get('bcryptsupport')) {
+        $test = crypt('password', $hash);
+        // Cache string instead of boolean to avoid MDL-37472.
+        if ($test == $hash) {
+            $bcryptsupport = 'supported';
+        } else {
+            $bcryptsupport = 'not supported';
+        }
+        $cache->set('bcryptsupport', $bcryptsupport);
+    }
+
+    // Return true if bcrypt *not* supported.
+    return ($bcryptsupport !== 'supported');
+}
+
+/**
+ * Compare password against hash stored in user object to determine if it is valid.
+ *
+ * If necessary it also updates the stored hash to the current format.
+ *
+ * @param stdClass $user (Password property may be updated).
+ * @param string $password Plain text password.
+ * @return bool True if password is valid.
  */
 function validate_internal_user_password($user, $password) {
     global $CFG;
+    require_once($CFG->libdir.'/password_compat/lib/password.php');
 
-    if (!isset($CFG->passwordsaltmain)) {
-        $CFG->passwordsaltmain = '';
+    if ($user->password === AUTH_PASSWORD_NOT_CACHED) {
+        // Internal password is not used at all, it can not validate.
+        return false;
     }
 
+    // If hash isn't a legacy (md5) hash, validate using the library function.
+    if (!password_is_legacy_hash($user->password)) {
+        return password_verify($password, $user->password);
+    }
+
+    // Otherwise we need to check for a legacy (md5) hash instead. If the hash
+    // is valid we can then update it to the new algorithm.
+
+    $sitesalt = isset($CFG->passwordsaltmain) ? $CFG->passwordsaltmain : '';
     $validated = false;
 
-    if ($user->password === 'not cached') {
-        // internal password is not used at all, it can not validate
-
-    } else if ($user->password === md5($password.$CFG->passwordsaltmain)
+    if ($user->password === md5($password.$sitesalt)
             or $user->password === md5($password)
-            or $user->password === md5(addslashes($password).$CFG->passwordsaltmain)
+            or $user->password === md5(addslashes($password).$sitesalt)
             or $user->password === md5(addslashes($password))) {
         // note: we are intentionally using the addslashes() here because we
         //       need to accept old password hashes of passwords with magic quotes
@@ -4400,7 +4498,8 @@ function validate_internal_user_password($user, $password) {
     }
 
     if ($validated) {
-        // force update of password hash using latest main password salt and encoding if needed
+        // If the password matches the existing md5 hash, update to the
+        // current hash algorithm while we have access to the user's password.
         update_internal_user_password($user, $password);
     }
 
@@ -4408,39 +4507,85 @@ function validate_internal_user_password($user, $password) {
 }
 
 /**
- * Calculate hashed value from password using current hash mechanism.
+ * Calculate hash for a plain text password.
  *
- * @param string $password
- * @return string password hash
+ * @param string $password Plain text password to be hashed.
+ * @param bool $fasthash If true, use a low cost factor when generating the hash
+ *                       This is much faster to generate but makes the hash
+ *                       less secure. It is used when lots of hashes need to
+ *                       be generated quickly.
+ * @return string The hashed password.
+ *
+ * @throws moodle_exception If a problem occurs while generating the hash.
  */
-function hash_internal_user_password($password) {
+function hash_internal_user_password($password, $fasthash = false) {
     global $CFG;
+    require_once($CFG->libdir.'/password_compat/lib/password.php');
 
-    if (isset($CFG->passwordsaltmain)) {
-        return md5($password.$CFG->passwordsaltmain);
-    } else {
-        return md5($password);
+    // Use the legacy hashing algorithm (md5) if PHP is not new enough
+    // to support bcrypt properly
+    if (password_compat_not_supported()) {
+        if (isset($CFG->passwordsaltmain)) {
+            return md5($password.$CFG->passwordsaltmain);
+        } else {
+            return md5($password);
+        }
     }
+
+    // Set the cost factor to 4 for fast hashing, otherwise use default cost.
+    $options = ($fasthash) ? array('cost' => 4) : array();
+
+    $generatedhash = password_hash($password, PASSWORD_DEFAULT, $options);
+
+    if ($generatedhash === false || $generatedhash === null) {
+        throw new moodle_exception('Failed to generate password hash.');
+    }
+
+    return $generatedhash;
 }
 
 /**
- * Update password hash in user object.
+ * Update password hash in user object (if necessary).
  *
- * @param stdClass $user (password property may be updated)
- * @param string $password plain text password
- * @return bool always returns true
+ * The password is updated if:
+ * 1. The password has changed (the hash of $user->password is different
+ *    to the hash of $password).
+ * 2. The existing hash is using an out-of-date algorithm (or the legacy
+ *    md5 algorithm).
+ *
+ * Updating the password will modify the $user object and the database
+ * record to use the current hashing algorithm.
+ *
+ * @param stdClass $user User object (password property may be updated).
+ * @param string $password Plain text password.
+ * @return bool Always returns true.
  */
 function update_internal_user_password($user, $password) {
-    global $DB;
+    global $CFG, $DB;
+    require_once($CFG->libdir.'/password_compat/lib/password.php');
 
+    // Use the legacy hashing algorithm (md5) if PHP doesn't support
+    // bcrypt properly.
+    $legacyhash = password_compat_not_supported();
+
+    // Figure out what the hashed password should be.
     $authplugin = get_auth_plugin($user->auth);
     if ($authplugin->prevent_local_passwords()) {
-        $hashedpassword = 'not cached';
+        $hashedpassword = AUTH_PASSWORD_NOT_CACHED;
     } else {
         $hashedpassword = hash_internal_user_password($password);
     }
 
-    if ($user->password !== $hashedpassword) {
+    if ($legacyhash) {
+        $passwordchanged = ($user->password !== $hashedpassword);
+        $algorithmchanged = false;
+    } else {
+        // If verification fails then it means the password has changed.
+        $passwordchanged = !password_verify($password, $user->password);
+        $algorithmchanged = password_needs_rehash($user->password, PASSWORD_DEFAULT);
+    }
+
+    if ($passwordchanged || $algorithmchanged) {
         $DB->set_field('user', 'password',  $hashedpassword, array('id'=>$user->id));
         $user->password = $hashedpassword;
     }
@@ -5666,9 +5811,10 @@ function generate_email_supportuser() {
  * @global object
  * @global object
  * @param user $user A {@link $USER} object
+ * @param boolean $fasthash If true, use a low cost factor when generating the hash for speed.
  * @return boolean|string Returns "true" if mail was sent OK and "false" if there was an error
  */
-function setnew_password_and_mail($user) {
+function setnew_password_and_mail($user, $fasthash = false) {
     global $CFG, $DB;
 
     // we try to send the mail in language the user understands,
@@ -5682,7 +5828,8 @@ function setnew_password_and_mail($user) {
 
     $newpassword = generate_password();
 
-    $DB->set_field('user', 'password', hash_internal_user_password($newpassword), array('id'=>$user->id));
+    $hashedpassword = hash_internal_user_password($newpassword, $fasthash);
+    $DB->set_field('user', 'password', $hashedpassword, array('id'=>$user->id));
 
     $a = new stdClass();
     $a->firstname   = fullname($user, true);
@@ -5977,7 +6124,7 @@ function get_file_browser() {
 function get_file_packer($mimetype='application/zip') {
     global $CFG;
 
-    static $fp = array();;
+    static $fp = array();
 
     if (isset($fp[$mimetype])) {
         return $fp[$mimetype];
@@ -5986,6 +6133,7 @@ function get_file_packer($mimetype='application/zip') {
     switch ($mimetype) {
         case 'application/zip':
         case 'application/vnd.moodle.backup':
+        case 'application/vnd.moodle.profiling':
             $classname = 'zip_packer';
             break;
         case 'application/x-tar':
@@ -6103,7 +6251,10 @@ function get_user_max_upload_file_size($context, $sitebytes=0, $coursebytes=0, $
  * array of possible sizes in an array, translated to the
  * local language.
  *
- * @todo Finish documenting this function
+ * The list of options will go up to the minimum of $sitebytes, $coursebytes or $modulebytes.
+ *
+ * If $coursebytes or $sitebytes is not 0, an option will be included for "Course/Site upload limit (X)"
+ * with the value set to 0. This option will be the first in the list.
  *
  * @global object
  * @uses SORT_NUMERIC
@@ -6121,9 +6272,12 @@ function get_max_upload_sizes($sitebytes = 0, $coursebytes = 0, $modulebytes = 0
         return array();
     }
 
-    $filesize = array();
-    $filesize[intval($maxsize)] = display_size($maxsize);
+    if ($sitebytes == 0) {
+        // Will get the minimum of upload_max_filesize or post_max_size.
+        $sitebytes = get_max_upload_file_size();
+    }
 
+    $filesize = array();
     $sizelist = array(10240, 51200, 102400, 512000, 1048576, 2097152,
                       5242880, 10485760, 20971520, 52428800, 104857600);
 
@@ -6144,12 +6298,36 @@ function get_max_upload_sizes($sitebytes = 0, $coursebytes = 0, $modulebytes = 0
     }
 
     foreach ($sizelist as $sizebytes) {
-       if ($sizebytes < $maxsize) {
-           $filesize[intval($sizebytes)] = display_size($sizebytes);
+       if ($sizebytes < $maxsize && $sizebytes > 0) {
+           $filesize[(string)intval($sizebytes)] = display_size($sizebytes);
        }
     }
 
+    $limitlevel = '';
+    $displaysize = '';
+    if ($modulebytes &&
+        (($modulebytes < $coursebytes || $coursebytes == 0) &&
+         ($modulebytes < $sitebytes || $sitebytes == 0))) {
+        $limitlevel = get_string('activity', 'core');
+        $displaysize = display_size($modulebytes);
+        $filesize[$modulebytes] = $displaysize; // Make sure the limit is also included in the list.
+
+    } else if ($coursebytes && ($coursebytes < $sitebytes || $sitebytes == 0)) {
+        $limitlevel = get_string('course', 'core');
+        $displaysize = display_size($coursebytes);
+        $filesize[$coursebytes] = $displaysize; // Make sure the limit is also included in the list.
+
+    } else if ($sitebytes) {
+        $limitlevel = get_string('site', 'core');
+        $displaysize = display_size($sitebytes);
+        $filesize[$sitebytes] = $displaysize; // Make sure the limit is also included in the list.
+    }
+
     krsort($filesize, SORT_NUMERIC);
+    if ($limitlevel) {
+        $params = (object) array('contextname'=>$limitlevel, 'displaysize'=>$displaysize);
+        $filesize  = array('0'=>get_string('uploadlimitwithsize', 'core', $params)) + $filesize;
+    }
 
     return $filesize;
 }
@@ -6556,10 +6734,6 @@ class core_string_manager implements string_manager {
     protected $cache;
     /** @var int get_string() counter */
     protected $countgetstring = 0;
-    /** @var int in-memory cache hits counter */
-    protected $countmemcache = 0;
-    /** @var int on-disk cache hits counter */
-    protected $countdiskcache = 0;
     /** @var bool use disk cache */
     protected $usecache;
     /** @var array limit list of translations */
@@ -6635,7 +6809,6 @@ class core_string_manager implements string_manager {
         if (!$disablecache and !$disablelocal) {
             $string = $this->cache->get($cachekey);
             if ($string) {
-                $this->countdiskcache++;
                 return $string;
             }
         }
@@ -6868,12 +7041,8 @@ class core_string_manager implements string_manager {
     public function get_performance_summary() {
         return array(array(
             'langcountgetstring' => $this->countgetstring,
-            'langcountmemcache' => $this->countmemcache,
-            'langcountdiskcache' => $this->countdiskcache,
         ), array(
             'langcountgetstring' => 'get_string calls',
-            'langcountmemcache' => 'strings mem cache hits',
-            'langcountdiskcache' => 'strings disk cache hits',
         ));
     }
 
@@ -8146,10 +8315,25 @@ function get_core_subsystems() {
 function get_plugin_types($fullpaths=true) {
     global $CFG;
 
-    static $info     = null;
-    static $fullinfo = null;
+    $cache = cache::make('core', 'plugintypes');
 
-    if (!$info) {
+    if ($fullpaths) {
+        // First confirm that dirroot and the stored dirroot match.
+        if ($CFG->dirroot === $cache->get('dirroot')) {
+            // They match we can use it.
+            $cached = $cache->get(1);
+        } else {
+            // Oops they didn't match. The moodle directory has been moved on us.
+            $cached = false;
+        }
+    } else {
+        $cached = $cache->get(0);
+    }
+
+    if ($cached !== false) {
+        return $cached;
+
+    } else {
         $info = array('qtype'         => 'question/type',
                       'mod'           => 'mod',
                       'auth'          => 'auth',
@@ -8199,9 +8383,15 @@ function get_plugin_types($fullpaths=true) {
         foreach ($info as $type => $dir) {
             $fullinfo[$type] = $CFG->dirroot.'/'.$dir;
         }
-    }
 
-    return ($fullpaths ? $fullinfo : $info);
+        $cache->set(0, $info);
+        $cache->set(1, $fullinfo);
+        // We cache the dirroot as well so that we can compare it when we
+        // retrieve full info from the cache.
+        $cache->set('dirroot', $CFG->dirroot);
+
+        return ($fullpaths ? $fullinfo : $info);
+    }
 }
 
 /**
@@ -8220,6 +8410,14 @@ function is_valid_plugin_name($name) {
  */
 function get_plugin_list($plugintype) {
     global $CFG;
+
+    // We use the dirroot as an identifier here because if it has changed the whole cache
+    // can be considered invalid.
+    $cache = cache::make('core', 'pluginlist', array('dirroot' => $CFG->dirroot));
+    $cached = $cache->get($plugintype);
+    if ($cached !== false) {
+        return $cached;
+    }
 
     $ignored = array('CVS', '_vti_cnf', 'simpletest', 'db', 'yui', 'tests');
     if ($plugintype == 'auth') {
@@ -8254,10 +8452,12 @@ function get_plugin_list($plugintype) {
     } else {
         $types = get_plugin_types(true);
         if (!array_key_exists($plugintype, $types)) {
+            $cache->set($plugintype, array());
             return array();
         }
         $fulldir = $types[$plugintype];
         if (!file_exists($fulldir)) {
+            $cache->set($plugintype, array());
             return array();
         }
         $fulldirs[] = $fulldir;
@@ -8289,6 +8489,7 @@ function get_plugin_list($plugintype) {
 
     //TODO: implement better sorting once we migrated all plugin names to 'pluginname', ksort does not work for unicode, that is why we have to sort by the dir name, not the strings!
     ksort($result);
+    $cache->set($plugintype, $result);
     return $result;
 }
 
@@ -9034,48 +9235,6 @@ function can_use_rotated_text() {
 }
 
 /**
- * Hack to find out the GD version by parsing phpinfo output
- *
- * @return int GD version (1, 2, or 0)
- */
-function check_gd_version() {
-    $gdversion = 0;
-
-    if (function_exists('gd_info')){
-        $gd_info = gd_info();
-        if (substr_count($gd_info['GD Version'], '2.')) {
-            $gdversion = 2;
-        } else if (substr_count($gd_info['GD Version'], '1.')) {
-            $gdversion = 1;
-        }
-
-    } else {
-        ob_start();
-        phpinfo(INFO_MODULES);
-        $phpinfo = ob_get_contents();
-        ob_end_clean();
-
-        $phpinfo = explode("\n", $phpinfo);
-
-
-        foreach ($phpinfo as $text) {
-            $parts = explode('</td>', $text);
-            foreach ($parts as $key => $val) {
-                $parts[$key] = trim(strip_tags($val));
-            }
-            if ($parts[0] == 'GD Version') {
-                if (substr_count($parts[1], '2.0')) {
-                    $parts[1] = '2.0';
-                }
-                $gdversion = intval($parts[1]);
-            }
-        }
-    }
-
-    return $gdversion;   // 1, 2 or 0
-}
-
-/**
  * Determine if moodle installation requires update
  *
  * Checks version numbers of main code and all modules to see
@@ -9091,7 +9250,18 @@ function moodle_needs_upgrading() {
         return true;
     }
 
-    // main versio nfirst
+    // We have to purge plugin related caches now to be sure we have fresh data
+    // and new plugins can be detected.
+    cache::make('core', 'plugintypes')->purge();
+    cache::make('core', 'pluginlist')->purge();
+    cache::make('core', 'plugininfo_base')->purge();
+    cache::make('core', 'plugininfo_mod')->purge();
+    cache::make('core', 'plugininfo_block')->purge();
+    cache::make('core', 'plugininfo_filter')->purge();
+    cache::make('core', 'plugininfo_repository')->purge();
+    cache::make('core', 'plugininfo_portfolio')->purge();
+
+    // Check the main version first.
     $version = null;
     include($CFG->dirroot.'/version.php');  // defines $version and upgrades
     if ($version > $CFG->version) {
@@ -9106,10 +9276,14 @@ function moodle_needs_upgrading() {
             continue;
         }
         $module = new stdClass();
+        $plugin = new stdClass();
         if (!is_readable($fullmod.'/version.php')) {
             continue;
         }
         include($fullmod.'/version.php');  // defines $module with version etc
+        if (!isset($module->version) and isset($plugin->version)) {
+            $module = $plugin;
+        }
         if (empty($installed[$mod])) {
             return true;
         } else if ($module->version > $installed[$mod]->version) {
@@ -10650,24 +10824,33 @@ function get_performance_info() {
 
     if ($stats = cache_helper::get_stats()) {
         $html = '<span class="cachesused">';
-        $html .= '<span class="cache-stats-heading">Caches interaction by definition then store</span>';
+        $html .= '<span class="cache-stats-heading">Caches used (hits/misses/sets)</span>';
         $text = 'Caches used (hits/misses/sets): ';
         $hits = 0;
         $misses = 0;
         $sets = 0;
         foreach ($stats as $definition => $stores) {
-            $html .= '<span class="cache-definition-stats">'.$definition.'</span>';
+            $html .= '<span class="cache-definition-stats">';
+            $html .= '<span class="cache-definition-stats-heading">'.$definition.'</span>';
             $text .= "$definition {";
             foreach ($stores as $store => $data) {
                 $hits += $data['hits'];
                 $misses += $data['misses'];
                 $sets += $data['sets'];
+                if ($data['hits'] == 0 and $data['misses'] > 0) {
+                    $cachestoreclass = 'nohits';
+                } else if ($data['hits'] < $data['misses']) {
+                    $cachestoreclass = 'lowhits';
+                } else {
+                    $cachestoreclass = 'hihits';
+                }
                 $text .= "$store($data[hits]/$data[misses]/$data[sets]) ";
-                $html .= "<span class='cache-store-stats'>$store: $data[hits] / $data[misses] / $data[sets]</span>";
+                $html .= "<span class=\"cache-store-stats $cachestoreclass\">$store: $data[hits] / $data[misses] / $data[sets]</span>";
             }
+            $html .= '</span>';
             $text .= '} ';
         }
-        $html .= "<span class='cache-total-stats'>Total Hits / Misses / Sets : $hits / $misses / $sets</span>";
+        $html .= "<span class='cache-total-stats'>Total: $hits / $misses / $sets</span>";
         $html .= '</span> ';
         $info['cachesused'] = "$hits / $misses / $sets";
         $info['html'] .= $html;
@@ -11211,12 +11394,15 @@ function function_or_method_exists($function) {
  * Gets the name of a course to be displayed when showing a list of courses.
  * By default this is just $course->fullname but user can configure it. The
  * result of this function should be passed through print_string.
- * @param object $course Moodle course object
+ * @param stdClass|course_in_list $course Moodle course object
  * @return string Display name of course (either fullname or short + fullname)
  */
 function get_course_display_name_for_list($course) {
     global $CFG;
     if (!empty($CFG->courselistshortnames)) {
+        if (!($course instanceof stdClass)) {
+            $course = (object)convert_to_array($course);
+        }
         return get_string('courseextendednamedisplay', '', $course);
     } else {
         return $course->fullname;

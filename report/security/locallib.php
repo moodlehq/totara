@@ -48,7 +48,6 @@ function report_security_get_issue_list() {
         'report_security_check_openprofiles',
         'report_security_check_google',
         'report_security_check_passwordpolicy',
-        'report_security_check_passwordsaltmain',
         'report_security_check_emailchangeconfirmation',
         'report_security_check_cookiesecure',
         'report_security_check_configrw',
@@ -218,7 +217,7 @@ function report_security_check_mediafilterswf($detailed=false) {
 
     $activefilters = filter_get_globally_enabled();
 
-    if (array_search('filter/mediaplugin', $activefilters) !== false and !empty($CFG->filter_mediaplugin_enable_swf)) {
+    if (array_search('mediaplugin', $activefilters) !== false and !empty($CFG->filter_mediaplugin_enable_swf)) {
         $result->status = REPORT_SECURITY_CRITICAL;
         $result->info   = get_string('check_mediafilterswf_error', 'report_security');
     } else {
@@ -471,35 +470,6 @@ function report_security_check_configrw($detailed=false) {
     return $result;
 }
 
-function report_security_check_passwordsaltmain($detailed=false) {
-    global $CFG;
-
-    $result = new stdClass();
-    $result->issue   = 'report_security_check_passwordsaltmain';
-    $result->name    = get_string('check_passwordsaltmain_name', 'report_security');
-    $result->info    = null;
-    $result->details = null;
-    $result->status  = null;
-    $result->link    = null;
-
-    if (empty($CFG->passwordsaltmain)) {
-        $result->status = REPORT_SECURITY_WARNING;
-        $result->info   = get_string('check_passwordsaltmain_warning', 'report_security');
-    } else if ($CFG->passwordsaltmain === 'some long random string here with lots of characters'
-            || trim($CFG->passwordsaltmain) === '' || preg_match('/^([a-z0-9]{0,10})$/i', $CFG->passwordsaltmain)) {
-        $result->status = REPORT_SECURITY_WARNING;
-        $result->info   = get_string('check_passwordsaltmain_weak', 'report_security');
-    } else {
-        $result->status = REPORT_SECURITY_OK;
-        $result->info   = get_string('check_passwordsaltmain_ok', 'report_security');
-    }
-
-    if ($detailed) {
-        $result->details = get_string('check_passwordsaltmain_details', 'report_security', get_docs_url('report/security/report_security_check_passwordsaltmain'));
-    }
-
-    return $result;
-}
 
 /**
  * Lists all users with XSS risk, it would be great to combine this with risk trusts in user table,
@@ -563,7 +533,7 @@ function report_security_check_defaultuserrole($detailed=false) {
     $result->info    = null;
     $result->details = null;
     $result->status  = null;
-    $result->link    = "<a href=\"$CFG->wwwroot/$CFG->admin/settings.php?section=userpolicies\">".get_string('userpolicies', 'admin').'</a>';;
+    $result->link    = "<a href=\"$CFG->wwwroot/$CFG->admin/settings.php?section=userpolicies\">".get_string('userpolicies', 'admin').'</a>';
 
     if (!$default_role = $DB->get_record('role', array('id'=>$CFG->defaultuserroleid))) {
         $result->status  = REPORT_SECURITY_WARNING;
@@ -621,7 +591,7 @@ function report_security_check_guestrole($detailed=false) {
     $result->info    = null;
     $result->details = null;
     $result->status  = null;
-    $result->link    = "<a href=\"$CFG->wwwroot/$CFG->admin/settings.php?section=userpolicies\">".get_string('userpolicies', 'admin').'</a>';;
+    $result->link    = "<a href=\"$CFG->wwwroot/$CFG->admin/settings.php?section=userpolicies\">".get_string('userpolicies', 'admin').'</a>';
 
     if (!$guest_role = $DB->get_record('role', array('id'=>$CFG->guestroleid))) {
         $result->status  = REPORT_SECURITY_WARNING;
@@ -679,7 +649,7 @@ function report_security_check_frontpagerole($detailed=false) {
     $result->info    = null;
     $result->details = null;
     $result->status  = null;
-    $result->link    = "<a href=\"$CFG->wwwroot/$CFG->admin/settings.php?section=frontpagesettings\">".get_string('frontpagesettings','admin').'</a>';;
+    $result->link    = "<a href=\"$CFG->wwwroot/$CFG->admin/settings.php?section=frontpagesettings\">".get_string('frontpagesettings','admin').'</a>';
 
     if (!$frontpage_role = $DB->get_record('role', array('id'=>$CFG->defaultfrontpageroleid))) {
         $result->status  = REPORT_SECURITY_INFO;

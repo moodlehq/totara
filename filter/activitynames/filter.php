@@ -36,8 +36,6 @@ class filter_activitynames extends moodle_text_filter {
     static $cachedcourseid;
 
     function filter($text, array $options = array()) {
-        global $CFG, $COURSE, $DB;
-
         if (!$courseid = get_courseid_from_context($this->context)) {
             return $text;
         }
@@ -53,38 +51,28 @@ class filter_activitynames extends moodle_text_filter {
         if (is_null(self::$activitylist)) {
             self::$activitylist = array();
 
-            if ($COURSE->id == $courseid) {
-                $course = $COURSE;
-            } else {
-                $course = $DB->get_record("course", array("id"=>$courseid));
-            }
-
-            if (!isset($course->modinfo)) {
-                return $text;
-            }
-
-        /// Casting $course->modinfo to string prevents one notice when the field is null
-            $modinfo = unserialize((string)$course->modinfo);
-
-            if (!empty($modinfo)) {
-
+            $modinfo = get_fast_modinfo($courseid);
+            if (!empty($modinfo->cms)) {
                 self::$activitylist = array();      /// We will store all the activities here
 
                 //Sort modinfo by name length
-                usort($modinfo, 'filter_activitynames_comparemodulenamesbylength');
+                $sortedactivities = fullclone($modinfo->cms);
+                usort($sortedactivities, 'filter_activitynames_comparemodulenamesbylength');
 
-                foreach ($modinfo as $activity) {
+                foreach ($sortedactivities as $cm) {
                     //Exclude labels, hidden activities and activities for group members only
-                    if ($activity->mod != "label" and $activity->visible and empty($activity->groupmembersonly)) {
-                        $title = s(trim(strip_tags($activity->name)));
-                        $currentname = trim($activity->name);
+                    if ($cm->visible and empty($cm->groupmembersonly) and $cm->has_view()) {
+                        $title = s(trim(strip_tags($cm->name)));
+                        $currentname = trim($cm->name);
                         $entitisedname  = s($currentname);
                         /// Avoid empty or unlinkable activity names
                         if (!empty($title)) {
-                            $href_tag_begin = "<a class=\"autolink\" title=\"$title\" href=\"$CFG->wwwroot/mod/$activity->mod/view.php?id=$activity->cm\">";
-                            self::$activitylist[] = new filterobject($currentname, $href_tag_begin, '</a>', false, true);
+                            $href_tag_begin = html_writer::start_tag('a',
+                                    array('class' => 'autolink', 'title' => $title,
+                                        'href' => $cm->get_url()));
+                            self::$activitylist[$cm->id] = new filterobject($currentname, $href_tag_begin, '</a>', false, true);
                             if ($currentname != $entitisedname) { /// If name has some entity (&amp; &quot; &lt; &gt;) add that filter too. MDL-17545
-                                self::$activitylist[] = new filterobject($entitisedname, $href_tag_begin, '</a>', false, true);
+                                self::$activitylist[$cm->id.'-e'] = new filterobject($entitisedname, $href_tag_begin, '</a>', false, true);
                             }
                         }
                     }
@@ -92,8 +80,19 @@ class filter_activitynames extends moodle_text_filter {
             }
         }
 
+        $filterslist = array();
         if (self::$activitylist) {
-            return $text = filter_phrases ($text, self::$activitylist);
+            $cmid = $this->context->instanceid;
+            if ($this->context->contextlevel == CONTEXT_MODULE && isset(self::$activitylist[$cmid])) {
+                // remove filterobjects for the current module
+                $filterslist = array_values(array_diff_key(self::$activitylist, array($cmid => 1, $cmid.'-e' => 1)));
+            } else {
+                $filterslist = array_values(self::$activitylist);
+            }
+        }
+
+        if ($filterslist) {
+            return $text = filter_phrases($text, $filterslist);
         } else {
             return $text;
         }

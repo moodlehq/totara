@@ -34,7 +34,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2013 Jerome Mouneyrac
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_label_generator extends phpunit_module_generator {
+class mod_label_generator extends testing_module_generator {
 
     /**
      * Create new label module instance

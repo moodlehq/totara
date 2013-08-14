@@ -127,14 +127,14 @@ if (function_exists('date_default_timezone_set') and function_exists('date_defau
 /** Used by library scripts to check they are being called by Moodle */
 define('MOODLE_INTERNAL', true);
 
-// Disables caching.. just in case.
+// Disables all caching.
 define('CACHE_DISABLE_ALL', true);
 
 // Check that PHP is of a sufficient version
-if (version_compare(phpversion(), "5.3.2") < 0) {
+if (version_compare(phpversion(), "5.3.3") < 0) {
     $phpversion = phpversion();
     // do NOT localise - lang strings would not work here and we CAN NOT move it after installib
-    fwrite(STDERR, "Moodle 2.1 or later requires at least PHP 5.3.2 (currently using version $phpversion).\n");
+    fwrite(STDERR, "Moodle 2.5 or later requires at least PHP 5.3.3 (currently using version $phpversion).\n");
     fwrite(STDERR, "Please upgrade your server software or install older Moodle version.\n");
     exit(1);
 }
@@ -149,6 +149,7 @@ $CFG->httpswwwroot         = $CFG->wwwroot;
 $CFG->docroot              = 'http://docs.moodle.org';
 $CFG->running_installer    = true;
 $CFG->early_install_lang   = true;
+$CFG->ostype               = (stristr(PHP_OS, 'win') && !stristr(PHP_OS, 'darwin')) ? 'WINDOWS' : 'UNIX';
 
 $parts = explode('/', str_replace('\\', '/', dirname(dirname(__FILE__))));
 $CFG->admin                = array_pop($parts);

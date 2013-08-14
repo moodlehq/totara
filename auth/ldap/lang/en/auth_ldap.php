@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'auth_ldap', language 'en', branch 'MOODLE_20_STABLE'
+ * Strings for component 'auth_ldap', language 'en'.
  *
  * @package   auth_ldap
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
@@ -135,6 +134,8 @@ $string['pluginname'] = 'LDAP server';
 $string['pluginnotenabled'] = 'Plugin not enabled!';
 $string['renamingnotallowed'] = 'User renaming not allowed in LDAP';
 $string['rootdseerror'] = 'Error querying rootDSE for Active Directory';
+$string['start_tls'] = 'Use regular LDAP service (port 389) with TLS encryption';
+$string['start_tls_key'] = 'Use TLS';
 $string['updateremfail'] = 'Error updating LDAP record. Error code: {$a->errno}; Error string: {$a->errstring}<br/>Key ({$a->key}) - old moodle value: \'{$a->ouvalue}\' new value: \'{$a->nuvalue}\'';
 $string['updateremfailamb'] = 'Failed to update LDAP with ambiguous field {$a->key}; old moodle value: \'{$a->ouvalue}\', new value: \'{$a->nuvalue}\'';
 $string['updatepasserror'] = 'Error in user_update_password(). Error code: {$a->errno}; Error string: {$a->errstring}';

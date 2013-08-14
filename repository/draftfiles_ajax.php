@@ -181,8 +181,8 @@ switch ($action) {
 
         $zipper = get_file_packer('application/zip');
         $fs = get_file_storage();
-        $area = file_get_draft_area_info($draftid);
-        if ($area['filecount'] == 0) {
+        $area = file_get_draft_area_info($draftid, $filepath);
+        if ($area['filecount'] == 0 && $area['foldercount'] == 0) {
             echo json_encode(false);
             die;
         }
@@ -218,15 +218,7 @@ switch ($action) {
         $file = $fs->get_file($user_context->id, 'user', 'draft', $draftid, $filepath, $filename);
 
         // Find unused name for directory to extract the archive.
-        $temppath = $filepath. pathinfo($filename, PATHINFO_FILENAME). '/';
-        if ($fs->file_exists($user_context->id, 'user', 'draft', $draftid, $temppath, '.')) {
-            for ($i=0; $i<1000; $i++) {
-                if (!$fs->file_exists($user_context->id, 'user', 'draft', $draftid, rtrim($temppath, '/'). " ($i)/", '.')) {
-                    $temppath = rtrim($temppath, '/'). " ($i)/";
-                    break;
-                }
-            }
-        }
+        $temppath = $fs->get_unused_dirname($user_context->id, 'user', 'draft', $draftid, $filepath. pathinfo($filename, PATHINFO_FILENAME). '/');
         $donotremovedirs = array();
         $doremovedirs = array($temppath);
         // Extract archive and move all files from $temppath to $filepath

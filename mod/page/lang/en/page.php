@@ -26,7 +26,7 @@
 $string['configdisplayoptions'] = 'Select all options that should be available, existing settings are not modified. Hold CTRL key to select multiple fields.';
 $string['content'] = 'Page content';
 $string['contentheader'] = 'Content';
-$string['createpage'] = 'Create a new page';
+$string['createpage'] = 'Create a new page resource';
 $string['displayoptions'] = 'Available display options';
 $string['displayselect'] = 'Display';
 $string['displayselectexplain'] = 'Select display type.';
@@ -47,7 +47,7 @@ A page may be used
 $string['modulename_link'] = 'mod/page/view';
 $string['modulenameplural'] = 'Pages';
 $string['neverseen'] = 'Never seen';
-$string['optionsheader'] = 'Options';
+$string['optionsheader'] = 'Display options';
 $string['page-mod-page-x'] = 'Any page module page';
 $string['page:addinstance'] = 'Add a new page resource';
 $string['page:view'] = 'View page content';

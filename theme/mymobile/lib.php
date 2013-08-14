@@ -17,8 +17,7 @@
 /**
  * Lib file for mymobile theme
  *
- * @package    theme
- * @subpackage mymobile
+ * @package    theme_mymobile
  * @copyright  John Stabinger
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -63,4 +62,11 @@ function mymobile_set_customcss($css, $customcss) {
     $tag = '[[setting:customcss]]';
     $css = str_replace($tag, $customcss, $css);
     return $css;
+}
+
+function theme_mymobile_page_init(moodle_page $page) {
+    $page->requires->jquery();
+    $page->requires->jquery_plugin('migrate');
+    $page->requires->jquery_plugin('mymobile', 'theme_mymobile');
+    $page->requires->jquery_plugin('mobile', 'theme_mymobile');
 }

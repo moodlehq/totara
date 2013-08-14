@@ -17,8 +17,7 @@
 /**
  * Renderers for the mymobile theme
  *
- * @package    theme
- * @subpackage mymobile
+ * @package    theme_mymobile
  * @copyright  John Stabinger
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,8 +25,7 @@
 /**
  * A custom renderer for the mymobile theme to produce snippets of content.
  *
- * @package    theme
- * @subpackage mymobile
+ * @package    theme_mymobile
  * @copyright  John Stabinger
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -105,8 +103,7 @@ class theme_mymobile_renderer extends plugin_renderer_base {
 /**
  * Overridden core renderer for the mymobile theme
  *
- * @package    theme
- * @subpackage mymobile
+ * @package    theme_mymobile
  * @copyright  John Stabinger
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -635,6 +632,9 @@ class theme_mymobile_core_renderer extends core_renderer {
             $this->page->add_body_class('userloggedinas');
         }
 
+        // Give themes a chance to init/alter the page object.
+        $this->page->theme->init_page($this->page);
+
         $this->page->set_state(moodle_page::STATE_PRINTING_HEADER);
 
         // Find the appropriate page layout file, based on $this->page->pagelayout.
@@ -694,16 +694,23 @@ class theme_mymobile_core_renderer extends core_renderer {
      */
     public function blocks_for_region($region) {
         $blockcontents = $this->page->blocks->get_content_for_region($region, $this);
+        $blocks = $this->page->blocks->get_blocks_for_region($region);
+        $lastblock = null;
+        $zones = array();
+        foreach ($blocks as $block) {
+            $zones[] = $block->title;
+        }
 
         $output = '';
         foreach ($blockcontents as $bc) {
             if ($bc instanceof block_contents) {
+                $lastblock = $bc->title;
                 // We don't want to print navigation and settings blocks here.
                 if ($bc->attributes['class'] != 'block_settings  block' && $bc->attributes['class'] != 'block_navigation  block') {
                     $output .= $this->block($bc, $region);
                 }
             } else if ($bc instanceof block_move_target) {
-                $output .= $this->block_move_target($bc);
+                $output .= $this->block_move_target($bc, $zones, $lastblock);
             } else {
                 throw new coding_exception('Unexpected type of thing (' . get_class($bc) . ') found in list of block contents.');
             }
@@ -758,8 +765,6 @@ class theme_mymobile_core_renderer extends core_renderer {
 
         if ($select->helpicon instanceof help_icon) {
             $output .= $this->render($select->helpicon);
-        } else if ($select->helpicon instanceof old_help_icon) {
-            $output .= $this->render($select->helpicon);
         }
 
         $output .= html_writer::select($select->options, $select->name, $select->selected, $select->nothing, $select->attributes);
@@ -794,8 +799,7 @@ class theme_mymobile_core_renderer extends core_renderer {
 /**
  * Overridden choice module renderer for the mymobile theme
  *
- * @package    theme
- * @subpackage mymobile
+ * @package    theme_mymobile
  * @copyright  John Stabinger
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

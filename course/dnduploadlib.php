@@ -67,7 +67,7 @@ function dndupload_add_to_course($course, $modnames) {
             array('upload', 'moodle'),
             array('cancel', 'moodle')
         ),
-        'requires' => array('node', 'event', 'panel', 'json', 'anim')
+        'requires' => array('node', 'event', 'json', 'anim')
     );
     $vars = array(
         array('courseid' => $course->id,
@@ -107,17 +107,17 @@ class dndupload_handler {
      * @param object $course The course this is being added to (to check course_allowed_module() )
      */
     public function __construct($course, $modnames = null) {
-        global $CFG;
+        global $CFG, $PAGE;
 
         // Add some default types to handle.
         // Note: 'Files' type is hard-coded into the Javascript as this needs to be ...
         // ... treated a little differently.
-        $this->add_type('url', array('url', 'text/uri-list', 'text/x-moz-url'), get_string('addlinkhere', 'moodle'),
-                        get_string('nameforlink', 'moodle'), 10);
-        $this->add_type('text/html', array('text/html'), get_string('addpagehere', 'moodle'),
-                        get_string('nameforpage', 'moodle'), 20);
-        $this->add_type('text', array('text', 'text/plain'), get_string('addpagehere', 'moodle'),
-                        get_string('nameforpage', 'moodle'), 30);
+        $this->register_type('url', array('url', 'text/uri-list', 'text/x-moz-url'), get_string('addlinkhere', 'moodle'),
+                        get_string('nameforlink', 'moodle'), get_string('whatforlink', 'moodle'), 10);
+        $this->register_type('text/html', array('text/html'), get_string('addpagehere', 'moodle'),
+                        get_string('nameforpage', 'moodle'), get_string('whatforpage', 'moodle'), 20);
+        $this->register_type('text', array('text', 'text/plain'), get_string('addpagehere', 'moodle'),
+                        get_string('nameforpage', 'moodle'), get_string('whatforpage', 'moodle'), 30);
 
         // Loop through all modules to find handlers.
         $mods = get_plugin_list_with_function('mod', 'dndupload_register');
@@ -135,7 +135,7 @@ class dndupload_handler {
             }
             if (isset($resp['files'])) {
                 foreach ($resp['files'] as $file) {
-                    $this->add_file_handler($file['extension'], $modname, $file['message']);
+                    $this->register_file_handler($file['extension'], $modname, $file['message']);
                 }
             }
             if (isset($resp['addtypes'])) {
@@ -145,16 +145,37 @@ class dndupload_handler {
                     } else {
                         $priority = 100;
                     }
-                    $this->add_type($type['identifier'], $type['datatransfertypes'],
-                                    $type['addmessage'], $type['namemessage'], $priority);
+                    if (!isset($type['handlermessage'])) {
+                        $type['handlermessage'] = '';
+                    }
+                    $this->register_type($type['identifier'], $type['datatransfertypes'],
+                                    $type['addmessage'], $type['namemessage'], $type['handlermessage'], $priority);
                 }
             }
             if (isset($resp['types'])) {
                 foreach ($resp['types'] as $type) {
-                    $this->add_type_handler($type['identifier'], $modname, $type['message']);
+                    $noname = !empty($type['noname']);
+                    $this->register_type_handler($type['identifier'], $modname, $type['message'], $noname);
                 }
             }
+            $PAGE->requires->string_for_js('pluginname', $modname);
         }
+    }
+
+    /**
+     * No external code should be directly adding new types - they should be added via a 'addtypes' array, returned
+     * by MODNAME_dndupload_register.
+     *
+     * @deprecated deprecated since Moodle 2.5
+     * @param string $identifier
+     * @param array $datatransfertypes
+     * @param string $addmessage
+     * @param string $namemessage
+     * @param int $priority
+     */
+    public function add_type($identifier, $datatransfertypes, $addmessage, $namemessage, $priority=100) {
+        debugging('add_type() is deprecated. Plugins should be using the MODNAME_dndupload_register callback.');
+        $this->register_type($identifier, $datatransfertypes, $addmessage, $namemessage, '', $priority);
     }
 
     /**
@@ -168,10 +189,11 @@ class dndupload_handler {
      *                           dragged onto the page
      * @param string $namemessage The message to pop up when asking for the name to give the
      *                            course module instance when it is created
+     * @param string $handlermessage The message to pop up when asking which module should handle this type
      * @param int $priority Controls the order in which types are checked by the browser (mainly
      *                      needed to check for 'text' last as that is usually given as fallback)
      */
-    public function add_type($identifier, $datatransfertypes, $addmessage, $namemessage, $priority=100) {
+    protected function register_type($identifier, $datatransfertypes, $addmessage, $namemessage, $handlermessage, $priority=100) {
         if ($this->is_known_type($identifier)) {
             throw new coding_exception("Type $identifier is already registered");
         }
@@ -181,6 +203,7 @@ class dndupload_handler {
         $add->datatransfertypes = $datatransfertypes;
         $add->addmessage = $addmessage;
         $add->namemessage = $namemessage;
+        $add->handlermessage = $handlermessage;
         $add->priority = $priority;
         $add->handlers = array();
 
@@ -188,15 +211,34 @@ class dndupload_handler {
     }
 
     /**
-     * Used to declare that a particular module will handle a particular type
-     * of dropped data
+     * No external code should be directly adding new type handlers - they should be added via a 'addtypes' array, returned
+     * by MODNAME_dndupload_register.
      *
+     * @deprecated deprecated since Moodle 2.5
      * @param string $type The name of the type (as declared in add_type)
      * @param string $module The name of the module to handle this type
      * @param string $message The message to show the user if more than one handler is registered
      *                        for a type and the user needs to make a choice between them
+     * @param bool $noname If true, the 'name' dialog should be disabled in the pop-up.
+     * @throws coding_exception
      */
-    public function add_type_handler($type, $module, $message) {
+    public function add_type_handler($type, $module, $message, $noname) {
+        debugging('add_type_handler() is deprecated. Plugins should be using the MODNAME_dndupload_register callback.');
+        $this->register_type_handler($type, $module, $message, $noname);
+    }
+
+    /**
+     * Used to declare that a particular module will handle a particular type
+     * of dropped data
+     *
+     * @param string $type The name of the type (as declared in register_type)
+     * @param string $module The name of the module to handle this type
+     * @param string $message The message to show the user if more than one handler is registered
+     *                        for a type and the user needs to make a choice between them
+     * @param bool $noname If true, the 'name' dialog should be disabled in the pop-up.
+     * @throws coding_exception
+     */
+    protected function register_type_handler($type, $module, $message, $noname) {
         if (!$this->is_known_type($type)) {
             throw new coding_exception("Trying to add handler for unknown type $type");
         }
@@ -205,8 +247,24 @@ class dndupload_handler {
         $add->type = $type;
         $add->module = $module;
         $add->message = $message;
+        $add->noname = $noname ? 1 : 0;
 
         $this->types[$type]->handlers[] = $add;
+    }
+
+    /**
+     * No external code should be directly adding new file handlers - they should be added via a 'files' array, returned
+     * by MODNAME_dndupload_register.
+     *
+     * @deprecated deprecated since Moodle 2.5
+     * @param string $extension The file extension to handle ('*' for all types)
+     * @param string $module The name of the module to handle this type
+     * @param string $message The message to show the user if more than one handler is registered
+     *                        for a type and the user needs to make a choice between them
+     */
+    public function add_file_handler($extension, $module, $message) {
+        debugging('add_file_handler() is deprecated. Plugins should be using the MODNAME_dndupload_register callback.');
+        $this->register_file_handler($extension, $module, $message);
     }
 
     /**
@@ -218,7 +276,7 @@ class dndupload_handler {
      * @param string $message The message to show the user if more than one handler is registered
      *                        for a type and the user needs to make a choice between them
      */
-    public function add_file_handler($extension, $module, $message) {
+    protected function register_file_handler($extension, $module, $message) {
         $extension = strtolower($extension);
 
         $add = new stdClass;
@@ -616,7 +674,7 @@ class dndupload_ajax_processor {
 
         if (!$instanceid) {
             // Something has gone wrong - undo everything we can.
-            delete_course_module($this->cm->id);
+            course_delete_module($this->cm->id);
             throw new moodle_exception('errorcreatingactivity', 'moodle', '', $this->module->name);
         }
 
@@ -639,7 +697,7 @@ class dndupload_ajax_processor {
         $info = get_fast_modinfo($this->course);
         if (!isset($info->cms[$this->cm->id])) {
             // The course module has not been properly created in the course - undo everything.
-            delete_course_module($this->cm->id);
+            course_delete_module($this->cm->id);
             throw new moodle_exception('errorcreatingactivity', 'moodle', '', $this->module->name);
         }
         $mod = $info->get_cm($this->cm->id);
@@ -671,15 +729,22 @@ class dndupload_ajax_processor {
      * @param cm_info $mod details of the mod just created
      */
     protected function send_response($mod) {
-        global $OUTPUT;
+        global $OUTPUT, $PAGE;
+        $courserenderer = $PAGE->get_renderer('core', 'course');
 
         $resp = new stdClass();
         $resp->error = self::ERROR_OK;
         $resp->icon = $mod->get_icon_url()->out();
         $resp->name = $mod->name;
-        $resp->link = $mod->get_url()->out();
+        if ($mod->has_view()) {
+            $resp->link = $mod->get_url()->out();
+        } else {
+            $resp->link = null;
+        }
+        $resp->content = $mod->get_content();
         $resp->elementid = 'module-'.$mod->id;
-        $resp->commands = make_editing_buttons($mod, true, true, 0, $mod->sectionnum);
+        $actions = course_get_cm_edit_actions($mod, 0, $mod->sectionnum);
+        $resp->commands = ' '. $courserenderer->course_section_cm_edit_actions($actions);
         $resp->onclick = $mod->get_on_click();
         $resp->visible = $mod->visible;
 

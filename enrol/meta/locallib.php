@@ -17,8 +17,7 @@
 /**
  * Local stuff for meta course enrolment plugin.
  *
- * @package    enrol
- * @subpackage meta
+ * @package    enrol_meta
  * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -634,7 +633,7 @@ function enrol_meta_sync($courseid = NULL, $verbose = false) {
         }
         $enabled[$k] = 'enrol_'.$v;
     }
-    $enabled[] = $DB->sql_empty(); // manual assignments are replicated too
+    $enabled[] = ''; // manual assignments are replicated too
 
     $onecourse = $courseid ? "AND e.courseid = :courseid" : "";
     list($enabled, $params) = $DB->get_in_or_equal($enabled, SQL_PARAMS_NAMED, 'e');

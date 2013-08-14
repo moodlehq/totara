@@ -17,8 +17,7 @@
 /**
  * settings file for mymobile theme
  *
- * @package    theme
- * @subpackage mymobile
+ * @package    theme_mymobile
  * @copyright  John Stabinger
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -42,12 +41,14 @@ if ($ADMIN->fulltree) {
         'grey' => get_string('grey', 'theme_mymobile')
     );
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
+    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
     $name = 'theme_mymobile/showmobileintro';
     $title = get_string('showmobileintro','theme_mymobile');
     $description = get_string('showmobileintro_desc', 'theme_mymobile');
     $setting = new admin_setting_confightmleditor($name, $title, $description, '');
+    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
     $name = 'theme_mymobile/showsitetopic';
@@ -56,6 +57,7 @@ if ($ADMIN->fulltree) {
     $default = 'topicshow';
     $choices = array('topicshow' => $yesstr, 'topicnoshow' => $nostr);
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
+    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
     $name = 'theme_mymobile/showfullsizeimages';
@@ -64,6 +66,7 @@ if ($ADMIN->fulltree) {
     $default = 'ithumb';
     $choices = array('ithumb' => $nostr, 'ithumbno' => $yesstr);
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
+    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
     $name = 'theme_mymobile/usetableview';
@@ -72,6 +75,7 @@ if ($ADMIN->fulltree) {
     $default = 'tabshow';
     $choices = array('tabshow' => $yesstr, 'tabnoshow' => $nostr);
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
+    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
     $name = 'theme_mymobile/customcss';
@@ -79,6 +83,7 @@ if ($ADMIN->fulltree) {
     $description = get_string('customcssdesc', 'theme_mymobile');
     $default = '';
     $setting = new admin_setting_configtextarea($name, $title, $description, $default);
+    $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
     unset($yesstr);

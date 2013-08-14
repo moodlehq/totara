@@ -58,10 +58,10 @@ if (function_exists('date_default_timezone_set') and function_exists('date_defau
 @ini_set('display_errors', '1');
 
 // Check that PHP is of a sufficient version.
-if (version_compare(phpversion(), '5.3.2') < 0) {
+if (version_compare(phpversion(), '5.3.3') < 0) {
     $phpversion = phpversion();
     // do NOT localise - lang strings would not work here and we CAN not move it after installib
-    echo "Totara 2.2.0 or later requires at least PHP 5.3.2 (currently using version $phpversion).<br />";
+    echo "Totara 2.5 or later requires at least PHP 5.3.3 (currently using version $phpversion).<br />";
     echo "Please upgrade your server software or install older Totara version.";
     die;
 }
@@ -151,7 +151,7 @@ if (!empty($_POST)) {
     $config->dataroot = empty($distro->dataroot) ? null  : $distro->dataroot; // initialised later after including libs or by distro
 }
 
-// Fake some settings so that we can use selected functions from moodlelib.php and weblib.php
+// Fake some settings so that we can use selected functions from moodlelib.php, weblib.php and filelib.php.
 $CFG = new stdClass();
 $CFG->lang                 = $config->lang;
 $CFG->dirroot              = dirname(__FILE__);
@@ -168,6 +168,7 @@ $CFG->langlocalroot        = $CFG->dataroot.'/lang';
 $CFG->directorypermissions = isset($distro->directorypermissions) ? $distro->directorypermissions : 00777; // let distros set dir permissions
 $CFG->running_installer    = true;
 $CFG->early_install_lang   = true;
+$CFG->ostype               = (stristr(PHP_OS, 'win') && !stristr(PHP_OS, 'darwin')) ? 'WINDOWS' : 'UNIX';
 
 // Require all needed libs
 require_once($CFG->libdir.'/setuplib.php');
@@ -491,7 +492,7 @@ if ($config->stage == INSTALL_DATABASETYPE) {
 
 
 if ($config->stage == INSTALL_ENVIRONMENT or $config->stage == INSTALL_PATHS) {
-    $version_fail = (version_compare(phpversion(), "5.3.2") < 0);
+    $version_fail = (version_compare(phpversion(), "5.3.3") < 0);
     $curl_fail    = ($lang !== 'en' and !extension_loaded('curl')); // needed for lang pack download
     $zip_fail     = ($lang !== 'en' and !extension_loaded('zip'));  // needed for lang pack download
 
@@ -504,7 +505,7 @@ if ($config->stage == INSTALL_ENVIRONMENT or $config->stage == INSTALL_PATHS) {
 
         echo '<div id="envresult"><dl>';
         if ($version_fail) {
-            $a = (object)array('needed'=>'5.3.2', 'current'=>phpversion());
+            $a = (object)array('needed'=>'5.3.3', 'current'=>phpversion());
             echo '<dt>'.get_string('phpversion', 'install').'</dt><dd>'.get_string('environmentrequireversion', 'admin', $a).'</dd>';
         }
         if ($curl_fail) {

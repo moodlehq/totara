@@ -488,7 +488,11 @@ class moodle_url {
                     $arr[] = rawurlencode($key.'['.$index.']')."=".rawurlencode($value);
                 }
             } else {
-                $arr[] = rawurlencode($key)."=".rawurlencode($val);
+                if (isset($val) && $val !== '') {
+                    $arr[] = rawurlencode($key)."=".rawurlencode($val);
+                } else {
+                    $arr[] = rawurlencode($key);
+                }
             }
         }
         if ($escaped) {
@@ -905,20 +909,37 @@ function close_window($delay = 0, $reloadopener = false) {
  * @return string The link to user documentation for this current page
  */
 function page_doc_link($text='') {
-    global $CFG, $PAGE, $OUTPUT;
-
-    if (empty($CFG->docroot) || during_initial_install()) {
-        return '';
-    }
-    if (!has_capability('moodle/site:doclinks', $PAGE->context)) {
-        return '';
-    }
-
-    $path = $PAGE->docspath;
+    global $OUTPUT, $PAGE;
+    $path = page_get_doc_link_path($PAGE);
     if (!$path) {
         return '';
     }
     return $OUTPUT->doc_link($path, $text);
+}
+
+/**
+ * Returns the path to use when constructing a link to the docs.
+ *
+ * @since 2.5.1 2.6
+ * @global stdClass $CFG
+ * @param moodle_page $page
+ * @return string
+ */
+function page_get_doc_link_path(moodle_page $page) {
+    global $CFG;
+
+    if (empty($CFG->docroot) || during_initial_install()) {
+        return '';
+    }
+    if (!has_capability('moodle/site:doclinks', $page->context)) {
+        return '';
+    }
+
+    $path = $page->docspath;
+    if (!$path) {
+        return '';
+    }
+    return $path;
 }
 
 
@@ -1070,7 +1091,7 @@ function format_text($text, $format = FORMAT_MOODLE, $options = NULL, $courseid_
     }
 
     // Calculate best context
-    if (empty($CFG->version) or $CFG->version < 2010072800 or during_initial_install()) {
+    if (empty($CFG->version) or $CFG->version < 2013051400 or during_initial_install()) {
         // do not filter anything during installation or before upgrade completes
         $context = null;
 
@@ -1269,7 +1290,7 @@ function format_string($string, $striplinks = true, $options = NULL) {
     //We'll use a in-memory cache here to speed up repeated strings
     static $strcache = false;
 
-    if (empty($CFG->version) or $CFG->version < 2010072800 or during_initial_install()) {
+    if (empty($CFG->version) or $CFG->version < 2013051400 or during_initial_install()) {
         // do not filter anything during installation or before upgrade completes
         return $string = strip_tags($string);
     }
@@ -2576,19 +2597,20 @@ function redirect($url, $message='', $delay=-1) {
 function obfuscate_text($plaintext) {
 
     $i=0;
-    $length = strlen($plaintext);
+    $length = textlib::strlen($plaintext);
     $obfuscated='';
     $prev_obfuscated = false;
     while ($i < $length) {
-        $c = ord($plaintext{$i});
-        $numerical = ($c >= ord('0')) && ($c <= ord('9'));
+        $char = textlib::substr($plaintext, $i, 1);
+        $ord = textlib::utf8ord($char);
+        $numerical = ($ord >= ord('0')) && ($ord <= ord('9'));
         if ($prev_obfuscated and $numerical ) {
-            $obfuscated.='&#'.ord($plaintext{$i}).';';
+            $obfuscated.='&#'.$ord.';';
         } else if (rand(0,2)) {
-            $obfuscated.='&#'.ord($plaintext{$i}).';';
+            $obfuscated.='&#'.$ord.';';
             $prev_obfuscated = true;
         } else {
-            $obfuscated.=$plaintext{$i};
+            $obfuscated.=$char;
             $prev_obfuscated = false;
         }
       $i++;
@@ -2674,184 +2696,54 @@ function print_maintenance_message() {
 }
 
 /**
- * A class for tabs, Some code to print tabs
- *
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @package moodlecore
- */
-class tabobject {
-    /**
-     * @var string
-     */
-    var $id;
-    var $link;
-    var $text;
-    /**
-     * @var bool
-     */
-    var $linkedwhenselected;
-
-    /**
-     * A constructor just because I like constructors
-     *
-     * @param string $id
-     * @param string $link
-     * @param string $text
-     * @param string $title
-     * @param bool $linkedwhenselected
-     */
-    function tabobject ($id, $link='', $text='', $title='', $linkedwhenselected=false) {
-        $this->id   = $id;
-        $this->link = $link;
-        $this->text = $text;
-        $this->title = $title ? $title : $text;
-        $this->linkedwhenselected = $linkedwhenselected;
-    }
-}
-
-
-
-/**
  * Returns a string containing a nested list, suitable for formatting into tabs with CSS.
  *
- * @global object
+ * It is not recommended to use this function in Moodle 2.5 but it is left for backward
+ * compartibility.
+ *
+ * Example how to print a single line tabs:
+ * $rows = array(
+ *    new tabobject(...),
+ *    new tabobject(...)
+ * );
+ * echo $OUTPUT->tabtree($rows, $selectedid);
+ *
+ * Multiple row tabs may not look good on some devices but if you want to use them
+ * you can specify ->subtree for the active tabobject.
+ *
  * @param array $tabrows An array of rows where each row is an array of tab objects
  * @param string $selected  The id of the selected tab (whatever row it's on)
  * @param array  $inactive  An array of ids of inactive tabs that are not selectable.
  * @param array  $activated An array of ids of other tabs that are currently activated
  * @param bool $return If true output is returned rather then echo'd
  **/
-function print_tabs($tabrows, $selected=NULL, $inactive=NULL, $activated=NULL, $return=false) {
-    global $CFG;
-
-/// $inactive must be an array
-    if (!is_array($inactive)) {
-        $inactive = array();
-    }
-
-/// $activated must be an array
-    if (!is_array($activated)) {
-        $activated = array();
-    }
-
-/// Convert the tab rows into a tree that's easier to process
-    if (!$tree = convert_tabrows_to_tree($tabrows, $selected, $inactive, $activated)) {
-        return false;
-    }
-
-/// Print out the current tree of tabs (this function is recursive)
-
-    $output = convert_tree_to_html($tree);
-
-    $output = "\n\n".'<div class="tabtree">'.$output.'</div><div class="clearer"> </div>'."\n\n";
-
-/// We're done!
-
-    if ($return) {
-        return $output;
-    }
-    echo $output;
-}
-
-/**
- * Converts a nested array tree into HTML ul:li [recursive]
- *
- * @param array $tree A tree array to convert
- * @param int $row Used in identifying the iteration level and in ul classes
- * @return string HTML structure
- */
-function convert_tree_to_html($tree, $row=0) {
-
-    $str = "\n".'<ul class="tabrow'.$row.'">'."\n";
-
-    $first = true;
-    $count = count($tree);
-
-    foreach ($tree as $tab) {
-        $count--;   // countdown to zero
-
-        $liclass = '';
-
-        if ($first && ($count == 0)) {   // Just one in the row
-            $liclass = 'first last';
-            $first = false;
-        } else if ($first) {
-            $liclass = 'first';
-            $first = false;
-        } else if ($count == 0) {
-            $liclass = 'last';
-        }
-
-        if ((empty($tab->subtree)) && (!empty($tab->selected))) {
-            $liclass .= (empty($liclass)) ? 'onerow' : ' onerow';
-        }
-
-        if ($tab->inactive || $tab->active || $tab->selected) {
-            if ($tab->selected) {
-                $liclass .= (empty($liclass)) ? 'here selected' : ' here selected';
-            } else if ($tab->active) {
-                $liclass .= (empty($liclass)) ? 'here active' : ' here active';
-            }
-        }
-
-        $str .= (!empty($liclass)) ? '<li class="'.$liclass.'">' : '<li>';
-
-        if ($tab->inactive || $tab->active || ($tab->selected && !$tab->linkedwhenselected)) {
-            // The a tag is used for styling
-            $str .= '<a class="nolink"><span>'.$tab->text.'</span></a>';
-        } else {
-            $str .= '<a href="'.$tab->link.'" title="'.$tab->title.'"><span>'.$tab->text.'</span></a>';
-        }
-
-        if (!empty($tab->subtree)) {
-            $str .= convert_tree_to_html($tab->subtree, $row+1);
-        } else if ($tab->selected) {
-            $str .= '<div class="tabrow'.($row+1).' empty">&nbsp;</div>'."\n";
-        }
-
-        $str .= ' </li>'."\n";
-    }
-    $str .= '</ul>'."\n";
-
-    return $str;
-}
-
-/**
- * Convert nested tabrows to a nested array
- *
- * @param array $tabrows A [nested] array of tab row objects
- * @param string $selected The tabrow to select (by id)
- * @param array $inactive An array of tabrow id's to make inactive
- * @param array $activated An array of tabrow id's to make active
- * @return array The nested array
- */
-function convert_tabrows_to_tree($tabrows, $selected, $inactive, $activated) {
-
-/// Work backwards through the rows (bottom to top) collecting the tree as we go.
+function print_tabs($tabrows, $selected = null, $inactive = null, $activated = null, $return = false) {
+    global $OUTPUT;
 
     $tabrows = array_reverse($tabrows);
-
     $subtree = array();
-
     foreach ($tabrows as $row) {
         $tree = array();
 
         foreach ($row as $tab) {
-            $tab->inactive = in_array((string)$tab->id, $inactive);
-            $tab->active = in_array((string)$tab->id, $activated);
+            $tab->inactive = is_array($inactive) && in_array((string)$tab->id, $inactive);
+            $tab->activated = is_array($activated) && in_array((string)$tab->id, $activated);
             $tab->selected = (string)$tab->id == $selected;
 
-            if ($tab->active || $tab->selected) {
-                if ($subtree) {
-                    $tab->subtree = $subtree;
-                }
+            if ($tab->activated || $tab->selected) {
+                $tab->subtree = $subtree;
             }
             $tree[] = $tab;
         }
         $subtree = $tree;
     }
-
-    return $subtree;
+    $output = $OUTPUT->tabtree($subtree);
+    if ($return) {
+        return $output;
+    } else {
+        print $output;
+        return !empty($output);
+    }
 }
 
 /**
@@ -2921,7 +2813,7 @@ function debugging($message = '', $level = DEBUG_NORMAL, $backtrace = null) {
             if (CLI_SCRIPT) {
                 echo "++ $message ++\n$from";
             } else {
-                echo '<div class="notifytiny">' . $message . $from . '</div>';
+                echo '<div class="notifytiny debuggingmessage">' . $message . $from . '</div>';
             }
 
         } else {
@@ -3168,7 +3060,8 @@ EOT;
  */
 abstract class progress_trace {
     /**
-     * Ouput an progress message in whatever format.
+     * Output an progress message in whatever format.
+     *
      * @param string $message the message to output.
      * @param integer $depth indent depth for this message.
      */
@@ -3207,7 +3100,7 @@ class null_progress_trace extends progress_trace {
  */
 class text_progress_trace extends progress_trace {
     /**
-     * Output the trace message
+     * Output the trace message.
      *
      * @param string $message
      * @param int $depth
@@ -3227,7 +3120,7 @@ class text_progress_trace extends progress_trace {
  */
 class html_progress_trace extends progress_trace {
     /**
-     * Output the trace message
+     * Output the trace message.
      *
      * @param string $message
      * @param int $depth
@@ -3290,6 +3183,150 @@ class html_list_progress_trace extends progress_trace {
 }
 
 /**
+ * This subclass of progress_trace outputs to error log.
+ *
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package moodlecore
+ */
+class error_log_progress_trace extends progress_trace {
+    /** @var string log prefix */
+    protected $prefix;
+
+    /**
+     * Constructor.
+     * @param string $prefix optional log prefix
+     */
+    public function __construct($prefix = '') {
+        $this->prefix = $prefix;
+    }
+
+    /**
+     * Output the trace message.
+     *
+     * @param string $message
+     * @param int $depth
+     * @return void Output is sent to error log.
+     */
+    public function output($message, $depth = 0) {
+        error_log($this->prefix . str_repeat('  ', $depth) . $message);
+    }
+}
+
+/**
+ * Special type of trace that can be used for catching of
+ * output of other traces.
+ *
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package moodlecore
+ */
+class progress_trace_buffer extends progress_trace {
+    /** @var progres_trace */
+    protected $trace;
+    /** @var bool do we pass output out */
+    protected $passthrough;
+    /** @var string output buffer */
+    protected $buffer;
+
+    /**
+     * Constructor.
+     *
+     * @param progress_trace $trace
+     * @param bool $passthrough true means output and buffer, false means just buffer and no output
+     */
+    public function __construct(progress_trace $trace, $passthrough = true) {
+        $this->trace       = $trace;
+        $this->passthrough = $passthrough;
+        $this->buffer      = '';
+    }
+
+    /**
+     * Output the trace message.
+     *
+     * @param string $message the message to output.
+     * @param int $depth indent depth for this message.
+     * @return void output stored in buffer
+     */
+    public function output($message, $depth = 0) {
+        ob_start();
+        $this->trace->output($message, $depth);
+        $this->buffer .= ob_get_contents();
+        if ($this->passthrough) {
+            ob_end_flush();
+        } else {
+            ob_end_clean();
+        }
+    }
+
+    /**
+     * Called when the processing is finished.
+     */
+    public function finished() {
+        ob_start();
+        $this->trace->finished();
+        $this->buffer .= ob_get_contents();
+        if ($this->passthrough) {
+            ob_end_flush();
+        } else {
+            ob_end_clean();
+        }
+    }
+
+    /**
+     * Reset internal text buffer.
+     */
+    public function reset_buffer() {
+        $this->buffer = '';
+    }
+
+    /**
+     * Return internal text buffer.
+     * @return string buffered plain text
+     */
+    public function get_buffer() {
+        return $this->buffer;
+    }
+}
+
+/**
+ * Special type of trace that can be used for redirecting to multiple
+ * other traces.
+ *
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package moodlecore
+ */
+class combined_progress_trace extends progress_trace {
+    protected $traces;
+
+    /**
+     * @param array $traces multiple traces
+     */
+    public function __construct(array $traces) {
+        $this->traces = $traces;
+    }
+
+    /**
+     * Output an progress message in whatever format.
+     *
+     * @param string $message the message to output.
+     * @param integer $depth indent depth for this message.
+     */
+    public function output($message, $depth = 0) {
+        foreach($this->traces as $trace) {
+            $trace->output($message, $depth);
+        }
+    }
+
+    /**
+     * Called when the processing is finished.
+     */
+    public function finished() {
+        foreach($this->traces as $trace) {
+            $trace->finished();
+        }
+    }
+}
+
+/**
  * Returns a localized sentence in the current language summarizing the current password policy
  *
  * @todo this should be handled by a function/method in the language pack library once we have a support for it
@@ -3320,4 +3357,73 @@ function print_password_policy() {
         $message = get_string('informpasswordpolicy', 'auth', $messages);
     }
     return $message;
+}
+
+/**
+ * Get the value of a help string fully prepared for display in the current language.
+ *
+ * @param string $identifier The identifier of the string to search for.
+ * @param string $component The module the string is associated with.
+ * @param boolean $ajax Whether this help is called from an AJAX script.
+ *                This is used to influence text formatting and determines
+ *                which format to output the doclink in.
+ * @return Object An object containing:
+ * - heading: Any heading that there may be for this help string.
+ * - text: The wiki-formatted help string.
+ * - doclink: An object containing a link, the linktext, and any additional
+ *            CSS classes to apply to that link. Only present if $ajax = false.
+ * - completedoclink: A text representation of the doclink. Only present if $ajax = true.
+ */
+function get_formatted_help_string($identifier, $component, $ajax = false) {
+    global $CFG, $OUTPUT;
+    $sm = get_string_manager();
+
+    if (!$sm->string_exists($identifier, $component) ||
+        !$sm->string_exists($identifier . '_help', $component)) {
+        // Strings in the on-disk cache may be dirty - try to rebuild it and check again.
+        $sm->load_component_strings($component, current_language(), true);
+    }
+
+    $data = new stdClass();
+
+    if ($sm->string_exists($identifier, $component)) {
+        $data->heading = format_string(get_string($identifier, $component));
+    } else {
+        // Gracefully fall back to an empty string.
+        $data->heading = '';
+    }
+
+    if ($sm->string_exists($identifier . '_help', $component)) {
+        $options = new stdClass();
+        $options->trusted = false;
+        $options->noclean = false;
+        $options->smiley = false;
+        $options->filter = false;
+        $options->para = true;
+        $options->newlines = false;
+        $options->overflowdiv = !$ajax;
+
+        // Should be simple wiki only MDL-21695.
+        $data->text =  format_text(get_string($identifier.'_help', $component), FORMAT_MARKDOWN, $options);
+
+        $helplink = $identifier . '_link';
+        if ($sm->string_exists($helplink, $component)) {  // Link to further info in Moodle docs
+            $link = get_string($helplink, $component);
+            $linktext = get_string('morehelp');
+
+            $data->doclink = new stdClass();
+            $url = new moodle_url(get_docs_url($link));
+            if ($ajax) {
+                $data->doclink->link = $url->out();
+                $data->doclink->linktext = $linktext;
+                $data->doclink->class = ($CFG->doctonewwindow) ? 'helplinkpopup' : '';
+            } else {
+                $data->completedoclink = html_writer::tag('div', $OUTPUT->doc_link($link, $linktext), array('class' => 'helpdoclink'));
+            }
+        }
+    } else {
+        $data->text = html_writer::tag('p',
+                html_writer::tag('strong', 'TODO') . ": missing help string [{$identifier}_help, {$component}]");
+    }
+    return $data;
 }

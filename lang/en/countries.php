@@ -30,7 +30,6 @@ $string['AG'] = 'Antigua And Barbuda';
 $string['AI'] = 'Anguilla';
 $string['AL'] = 'Albania';
 $string['AM'] = 'Armenia';
-$string['AN'] = 'Netherlands Antilles';
 $string['AO'] = 'Angola';
 $string['AQ'] = 'Antarctica';
 $string['AR'] = 'Argentina';
