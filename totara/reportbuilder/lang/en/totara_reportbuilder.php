@@ -757,3 +757,11 @@ $string['enrolledprogramcohortids'] = 'Enrolled program audience IDs';
 $string['userincohort'] = 'User is a member of audience';
 $string['courseenrolledincohort'] = 'Course is enrolled in by audience';
 $string['programenrolledincohort'] = 'Program is enrolled in by audience';
+
+// Date filter strings
+$string['dateisbetween'] = 'Is between today and ';
+$string['datelabelisdaysafter'] = 'After today\'s date and before {$a->daysafter}';
+$string['datelabelisdaysbefore'] = 'Before today\'s date and after {$a->daysbefore}.';
+$string['datelabelisdaysbetween'] = '{$a->label} is after {$a->daysbefore} and before {$a->daysafter}';
+$string['isaftertoday'] = 'days after today (date of report generation)';
+$string['isbeforetoday'] = 'days before today (date of report generation)';

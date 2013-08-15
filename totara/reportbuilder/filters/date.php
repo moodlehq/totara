@@ -75,6 +75,18 @@ class rb_filter_date extends rb_filter_type {
         } else {
             $objs[] =& $mform->createElement('date_selector', $this->name.'_edt', null);
         }
+        $objs[] =& $mform->createElement('static', null, null, html_writer::empty_tag('br'));
+        $objs[] =& $mform->createElement('checkbox', $this->name.'daysbeforechkbox', null, null);
+        $objs[] =& $mform->createElement('static', null, null, get_string('dateisbetween', 'totara_reportbuilder'));
+        $objs[] =& $mform->createElement('text', $this->name.'daysbefore', null, 'size="2"');
+        $mform->setType($this->name.'daysbefore', PARAM_INT);
+        $objs[] =& $mform->createElement('static', null, null, get_string('isbeforetoday', 'totara_reportbuilder'));
+        $objs[] =& $mform->createElement('static', null, null, html_writer::empty_tag('br'));
+        $objs[] =& $mform->createElement('checkbox', $this->name.'daysafterchkbox', null, null);
+        $objs[] =& $mform->createElement('static', null, null, get_string('dateisbetween', 'totara_reportbuilder'));
+        $objs[] =& $mform->createElement('text', $this->name.'daysafter', null, 'size="2"');
+        $mform->setType($this->name.'daysafter', PARAM_INT);
+        $objs[] =& $mform->createElement('static', null, null, get_string('isaftertoday', 'totara_reportbuilder'));
         $grp =& $mform->addElement('group', $this->name.'_grp', $label, $objs, '', false);
         $mform->addHelpButton($grp->_name, 'filterdate', 'filters');
 
@@ -82,6 +94,30 @@ class rb_filter_date extends rb_filter_type {
             $mform->setAdvanced($this->name.'_grp');
         }
 
+        // Restrict the days before/after fields to 4 characters.
+        $mform->addGroupRule($this->name.'_grp', array(
+            "{$this->name}daysbefore" => array(array(get_string('maximumchars', '', 4), 'maxlength', 4, 'client')),
+            "{$this->name}daysafter" => array(array(get_string('maximumchars', '', 4), 'maxlength', 4, 'client'))
+        ));
+
+        $mform->disabledIf($this->name.'daysbefore', $this->name.'daysbeforechkbox', 'notchecked');
+        $mform->disabledIf($this->name.'daysafter', $this->name.'daysafterchkbox', 'notchecked');
+        $mform->disabledIf($this->name.'_sdt[day]', $this->name.'daysbeforechkbox', 'checked');
+        $mform->disabledIf($this->name.'_sdt[month]', $this->name.'daysbeforechkbox', 'checked');
+        $mform->disabledIf($this->name.'_sdt[year]', $this->name.'daysbeforechkbox', 'checked');
+        $mform->disabledIf($this->name.'_edt[day]', $this->name.'daysbeforechkbox', 'checked');
+        $mform->disabledIf($this->name.'_edt[month]', $this->name.'daysbeforechkbox', 'checked');
+        $mform->disabledIf($this->name.'_edt[year]', $this->name.'daysbeforechkbox', 'checked');
+        $mform->disabledIf($this->name.'_sck', $this->name.'daysbeforechkbox', 'checked');
+        $mform->disabledIf($this->name.'_eck', $this->name.'daysbeforechkbox', 'checked');
+        $mform->disabledIf($this->name.'_sdt[day]', $this->name.'daysafterchkbox', 'checked');
+        $mform->disabledIf($this->name.'_sdt[month]', $this->name.'daysafterchkbox', 'checked');
+        $mform->disabledIf($this->name.'_sdt[year]', $this->name.'daysafterchkbox', 'checked');
+        $mform->disabledIf($this->name.'_edt[day]', $this->name.'daysafterchkbox', 'checked');
+        $mform->disabledIf($this->name.'_edt[month]', $this->name.'daysafterchkbox', 'checked');
+        $mform->disabledIf($this->name.'_edt[year]', $this->name.'daysafterchkbox', 'checked');
+        $mform->disabledIf($this->name.'_sck', $this->name.'daysafterchkbox', 'checked');
+        $mform->disabledIf($this->name.'_eck', $this->name.'daysafterchkbox', 'checked');
         $mform->disabledIf($this->name.'_sdt[day]', $this->name.'_sck', 'notchecked');
         $mform->disabledIf($this->name.'_sdt[month]', $this->name.'_sck', 'notchecked');
         $mform->disabledIf($this->name.'_sdt[year]', $this->name.'_sck', 'notchecked');
@@ -107,6 +143,15 @@ class rb_filter_date extends rb_filter_type {
             $mform->setDefault($this->name.'_eck', 1);
             $mform->setDefault($this->name.'_edt', $defaults['before']);
         }
+        if (isset($defaults['daysafter']) && $defaults['daysafter'] != 0) {
+            $mform->setDefault($this->name.'daysafterchkbox', 1);
+            $mform->setDefault($this->name.'daysafter', ceil(abs(($defaults['daysafter'] - time()) / 86400)));
+        }
+        if (isset($defaults['daysbefore']) && $defaults['daysbefore'] != 0) {
+            $mform->setDefault($this->name.'daysbeforechkbox', 1);
+            $mform->setDefault($this->name.'daysbefore', floor(abs(($defaults['daysbefore'] - time()) / 86400)));
+        }
+
     }
 
     /**
@@ -119,8 +164,14 @@ class rb_filter_date extends rb_filter_type {
         $sdt = $this->name.'_sdt';
         $eck = $this->name.'_eck';
         $edt = $this->name.'_edt';
+        $daysafterck = $this->name.'daysafterchkbox';
+        $daysafterdt = $this->name.'daysafter';
+        $daysbeforeck = $this->name.'daysbeforechkbox';
+        $daysbeforedt = $this->name.'daysbefore';
+        $durationday = 60 * 60 * 24; // Seconds * Minutes * Hours = Days.
 
-        if (!isset($formdata->$sck) and !isset($formdata->$eck)) {
+        if ((!isset($formdata->$sck) and !isset($formdata->$eck))
+                and (!isset($formdata->$daysafterck) and !isset($formdata->$daysbeforeck))) {
             return false;
         }
 
@@ -135,6 +186,18 @@ class rb_filter_date extends rb_filter_type {
         } else {
             $data['before'] = 0;
         }
+        if (isset($formdata->$daysafterck) and !isset($formdata->daysafterdt)) {
+            $data['daysafter'] = ((mktime(0, 0, 0, gmdate('n'), gmdate('j'), gmdate('Y'))
+                + ($formdata->$daysafterdt * $durationday)));
+        } else {
+            $data['daysafter'] = 0;
+        }
+        if (isset($formdata->$daysbeforeck) and !isset($formdata->daysbeforedt)) {
+            $data['daysbefore'] = ((mktime(0, 0, 0, gmdate('n'), gmdate('j'), gmdate('Y'))
+                - ($formdata->$daysbeforedt * $durationday)));
+        } else {
+            $data['daysbefore'] = 0;
+        }
         return $data;
     }
 
@@ -146,14 +209,19 @@ class rb_filter_date extends rb_filter_type {
     function get_sql_filter($data) {
         $after  = $data['after'];
         $before = $data['before'];
+        $daysafter = $data['daysafter'];
+        $daysbefore = $data['daysbefore'];
+        $datetoday = time();
         $query  = $this->get_field();
 
-        if (empty($after) and empty($before)) {
+        if (empty($after) and empty($before) and empty($daysafter) and empty($daysbefore)) {
             return array('', array());
         }
 
         $params = array();
         $res = "$query > 0" ;
+        $resdaysbefore = "$query <= $datetoday";
+        $resdaysafter = "$query >= $datetoday";
 
         if ($after) {
             $uniqueparam = rb_unique_param('fdafter');
@@ -164,6 +232,25 @@ class rb_filter_date extends rb_filter_type {
             $uniqueparam = rb_unique_param('fdbefore');
             $res .= " AND {$query} <= :{$uniqueparam}";
             $params[$uniqueparam] = $before;
+        }
+        if ($daysafter and $daysbefore) {
+            $uniqueparamdaysafter = rb_unique_param('fdaysafter');
+            $uniqueparamdaysbefore = rb_unique_param('fdaysbefore');
+            $result = "$resdaysafter AND {$query} <= :{$uniqueparamdaysafter}
+                OR $resdaysbefore AND {$query} >= :{$uniqueparamdaysbefore}";
+            $params[$uniqueparamdaysafter] = $daysafter;
+            $params[$uniqueparamdaysbefore] = $daysbefore;
+            return array($result, $params);
+        } else if (!$daysbefore and $daysafter) {
+            $uniqueparam = rb_unique_param('fdaysafter');
+            $resdaysafter .= " AND {$query} <= :{$uniqueparam}";
+            $params[$uniqueparam] = $daysafter;
+            return array($resdaysafter, $params);
+        } else if (!$daysafter and $daysbefore) {
+            $uniqueparam = rb_unique_param('fdaysbefore');
+            $resdaysbefore .= " AND {$query} >= :{$uniqueparam}";
+            $params[$uniqueparam] = $daysbefore;
+            return array($resdaysbefore, $params);
         }
         return array($res, $params);
     }
@@ -176,12 +263,16 @@ class rb_filter_date extends rb_filter_type {
     function get_label($data) {
         $after  = $data['after'];
         $before = $data['before'];
+        $daysafter = $data['daysafter'];
+        $daysbefore = $data['daysbefore'];
         $label  = $this->label;
 
         $a = new stdClass();
         $a->label  = $label;
         $a->after  = userdate($after);
         $a->before = userdate($before);
+        $a->daysafter = userdate($daysafter);
+        $a->daysbefore = userdate($daysbefore);
 
         if ($after and $before) {
             return get_string('datelabelisbetween', 'filters', $a);
@@ -191,6 +282,15 @@ class rb_filter_date extends rb_filter_type {
 
         } else if ($before) {
             return get_string('datelabelisbefore', 'filters', $a);
+        }
+        if ($daysafter and $daysbefore) {
+            return get_string('datelabelisdaysbetween', 'totara_reportbuilder', $a);
+
+        } else if ($daysafter) {
+            return get_string('datelabelisdaysafter', 'totara_reportbuilder', $a);
+
+        } else if ($daysbefore) {
+            return get_string('datelabelisdaysbefore', 'totara_reportbuilder', $a);
         }
         return '';
     }

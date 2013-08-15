@@ -300,7 +300,9 @@ class rb_findcourses_embedded_cache_test extends reportcache_advanced_testcase {
         // Filter criteria
         $form = array(
             'course-name_and_summary' => array('operator' => 0, 'value' => 'Big'),
-            'course-startdate' => array('operator' => 1, 'after' => mktime(0, 0, 0, date("n"), date('j')-1, date('Y')), 'before' => 0),
+            'course-startdate' => array('operator' => 1,
+                    'after' => mktime(0, 0, 0, date("n"), date('j')-1, date('Y')), 'before' => 0,
+                    'daysafter' => 0, 'daysbefore' => 0),
             'course_category-id' => array('operator' => 0, 'value' => '1'),
             'course-visible' => 1,
             'course-shortname' => array('operator' => 0, 'value' => 'big'),
