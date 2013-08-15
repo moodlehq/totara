@@ -40,6 +40,11 @@ function quiz_edit_init(Y) {
         Y.YUI2.util.Dom.get(document.body).appendChild(randomquestiondialog);
     }
 
+    var repaginatedialog = Y.YUI2.util.Dom.get('repaginatedialog');
+    if (repaginatedialog) {
+        Y.YUI2.util.Dom.get(document.body).appendChild(repaginatedialog);
+    }
+
     quiz_edit.randomquestiondialog = new Y.YUI2.widget.Dialog('randomquestiondialog', {
             modal: true,
             width: '100%',
@@ -97,15 +102,15 @@ function quiz_edit_init(Y) {
             postmethod: 'form'
     });
     quiz_edit.repaginatedialog.render();
-    quiz_edit.randomquestiondialog.render();
     var div = document.getElementById('repaginatedialog');
     if (div) {
         div.style.display = 'block';
     }
 
     // Show the form on button click.
-    Y.YUI2.util.Event.addListener('repaginatecommand', 'click', function() {
+    Y.YUI2.util.Event.addListener('repaginatecommand', 'click', function(e) {
         quiz_edit.repaginatedialog.show();
+        Y.YUI2.util.Event.stopEvent(e);
     });
 
     // Reposition the dialogue when the window resizes. For some reason this was not working automatically.
