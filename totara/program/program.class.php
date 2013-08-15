@@ -258,6 +258,7 @@ class program {
 
         $assigned_user_ids = array();
         $active_assignments = array();
+        $message_queue = array();
 
         if ($prog_assignments) {
             foreach ($prog_assignments as $assign) {
@@ -336,7 +337,8 @@ class program {
                         $newassigncount++;
                         $newassignusers[$user->id] = array('timedue' => $timedue, 'exceptions' => $exceptions);
                         if ($newassigncount == BATCH_INSERT_MAX_ROW_COUNT) {
-                            $this->assign_learners_bulk($newassignusers, $assign);
+                            $new_queue = $this->assign_learners_bulk($newassignusers, $assign);
+                            $message_queue = array_merge($message_queue, $new_queue);
                             $newassigncount = 0;
                             $newassignusers = array();
                         }
@@ -349,9 +351,18 @@ class program {
                 }
                 if (!empty($newassignusers)) {
                     // bulk assign remaining users
-                    $this->assign_learners_bulk($newassignusers, $assign);
+                    $new_queue = $this->assign_learners_bulk($newassignusers, $assign);
+                    $message_queue = array_merge($message_queue, $new_queue);
                     unset($newassignusers, $newassigncount);
                 }
+
+            }
+        }
+
+        if (!empty($message_queue)) {
+            // Send all the queued messages.
+            foreach ($message_queue as $userid => $eventdata) {
+                events_trigger('program_assigned', $eventdata);
             }
         }
 
@@ -455,13 +466,14 @@ class program {
      * @param int $timedue The date the the program should be completed by
      * @param object $assignment_record A record from mdl_prog_assignment
      * @param bool $exceptions True if there are exceptions for this learner
-     * @return bool
+     *
+     * @return array list of users to send messages to, empty if insert fails
      */
     public function assign_learners_bulk($users, $assignment_record) {
         global $DB;
 
         if (empty($users)) {
-            return true;
+            return array();
         }
 
         $now = time();
@@ -513,18 +525,17 @@ class program {
         // This is what identifies the program as required learning.
         role_assign_bulk($this->studentroleid, array_keys($users), $this->context->id);
 
+        $message_queue = array();
         foreach ($users as $userid => $assigndata) {
-            // TODO: implement a bulk message queue for program_assigned_bulk?
             if (!$assigndata['exceptions']) {
-                // trigger this event for any listening handlers to catch
                 $eventdata = new stdClass();
                 $eventdata->programid = $this->id;
                 $eventdata->userid = $userid;
-                events_trigger('program_assigned', $eventdata);
+                $message_queue["new:{$userid}"] = $eventdata; // Key has to be string to avoid duplicates.
             }
         }
 
-        return true;
+        return $message_queue;
     }
 
     /**
