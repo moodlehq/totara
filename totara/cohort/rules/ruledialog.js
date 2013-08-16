@@ -86,6 +86,91 @@ M.totara_cohortrules = M.totara_cohortrules || {
         fdialog.cohort_base_url = url;
         totaraDialogs['cohortruleform'] = fdialog;
 
+        // Hide update operators buttons
+        $('#fgroup_id_buttonar').hide();
+
+        // Update AND/OR operators
+        $(document).on('click', 'input:radio', function(event) {
+
+             var selected = $(this);
+             var radioname = selected.attr('name');
+             var opvalue  = selected.val();
+             var cohortid = M.totara_cohortrules.config.cohortid;
+             var type = radioname;
+             var id = '';
+
+             if (radioname === 'cohortoperator') {
+                id = cohortid;
+             } else {
+                 type = 'resultsetoperator';
+                 // Pattern for ruleset operators. e.g. rulesetoperator[422]
+                 var match = radioname.match(/\[(\d+)\]/);
+                 if (match) {
+                     id = match[1];
+                 }
+             }
+             // Updating operators via AJAX
+             $.ajax({
+                 type: "POST",
+                 url: M.cfg.wwwroot + '/totara/cohort/rules/updateoperator.php',
+                 data: ({
+                     id: id,
+                     type: type,
+                     value: opvalue,
+                     cohortid : cohortid
+                 }),
+                 success: function(o) {
+                     // If sucess, update operators description in the client side
+                     if (o.length > 0) {
+                         o = JSON.parse(o);
+                         var operator = null;
+                         if (o.action === 'updcohortop') {
+                             operator = M.util.get_string('andcohort', 'totara_cohort');
+                             if (o.value !== 0) {
+                                 operator = M.util.get_string('orcohort', 'totara_cohort');
+                             }
+                             // Change cohort operator
+                             $("div .cohort-oplabel").html(operator);
+                             // Enable approve - cancel options and notify success
+                             show_notifications(o.action, id);
+                         } else {
+                             operator = M.util.get_string('and', 'totara_cohort');
+                             if (o.value !== 0) {
+                                 operator = M.util.get_string('or', 'totara_cohort');
+                             }
+                             var divid = '#cohort-ruleset-header' + id + " td.operator ";
+                             $(divid).each(function (index, value) {
+                                 if (index !== 0) {
+                                     // Change ruleset operator
+                                      $(this).text(operator);
+                                      // Enable approve - cancel options and notify success
+                                      show_notifications(o.action, id);
+                                 }
+                             });
+                         }
+                     }
+                 }
+             });
+         });
+
+        function show_notifications(type, id) {
+            // Show approve - cancel options
+            $('div#cohort_rules_action_box').removeAttr("style");
+
+            // Notify success
+            var notice = "<div id='notifysuccess"+ id +"' class='notifysuccess'>" +
+                M.util.get_string('rulesupdatesuccess', 'totara_cohort') + "<div>";
+
+            if ($('div#notifysuccess' + id).length === 0) {
+                if (type === 'updcohortop') {
+                    $('#fgroup_id_cohortoperator').prepend(notice);
+                } else {
+                    $('#fgroup_id_rulesetoperator_' + id).prepend(notice);
+                }
+            }
+            $('div#notifysuccess' + id).fadeOut(600).fadeIn(600);
+        }
+
         // Dialog & handler for hierarchy picker
         var url = M.cfg.wwwroot + '/totara/cohort/rules/ruledetail.php';
         var thandler = new totaraDialog_handler_cohortruletreeview();

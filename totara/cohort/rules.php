@@ -50,12 +50,13 @@ local_js(array(
 ));
 
 // Include cohort rule js module
-$PAGE->requires->strings_for_js(array('addrule'), 'totara_cohort');
+$args = array('args' => '{"cohortid":' . $id . '}');
+$PAGE->requires->strings_for_js(array('addrule', 'orcohort', 'andcohort', 'or', 'and', 'rulesupdatesuccess'), 'totara_cohort');
 $jsmodule = array(
         'name' => 'totara_cohortrules',
         'fullpath' => '/totara/cohort/rules/ruledialog.js',
         'requires' => array('json'));
-$PAGE->requires->js_init_call('M.totara_cohortrules.init', null, false, $jsmodule);
+$PAGE->requires->js_init_call('M.totara_cohortrules.init', $args, false, $jsmodule);
 // Include rule delete js handlers
 $PAGE->requires->strings_for_js(array('deleteruleconfirm', 'deleteruleparamconfirm', 'savingrule', 'error:noresponsefromajax',
     'error:badresponsefromajax'), 'totara_cohort');
