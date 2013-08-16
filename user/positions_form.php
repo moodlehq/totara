@@ -161,6 +161,7 @@ class user_position_assignment_form extends moodleform {
                 if ( is_array($allmanagers) && !empty($allmanagers) ){
                     $mform->addElement('select', 'managerid', get_string('choosemanager','totara_hierarchy'),
                         array(0 => get_string('choosemanager','totara_hierarchy')) + $allmanagers);
+                    $mform->setType('managerid', PARAM_INT);
                     $mform->setDefault('managerid', $manager_id);
                 } else {
                     $mform->addElement('static','managerid',get_string('choosemanager','totara_hierarchy'), get_string('error:dialognotreeitems', 'manager'));

@@ -88,6 +88,7 @@ class rb_filter_multicheck extends rb_filter_type {
         }
 
         $mform->addElement('select', $this->name . '_op', $label, $this->get_operators());
+        $mform->setType($this->name . '_op', PARAM_INT);
         $mform->addHelpButton($this->name . '_op', 'filtercheckbox', 'filters');
 
         // this class is used by the CSS to arrange the checkboxes nicely
@@ -95,6 +96,7 @@ class rb_filter_multicheck extends rb_filter_type {
         $objs = array();
         foreach ($options as $id => $name) {
             $objs[] =& $mform->createElement('advcheckbox', $this->name . '[' . $id . ']', null, $name, array_merge(array('group' => 1), $attr));
+            $mform->setType($this->name . '[' . $id . ']', PARAM_TEXT);
             $mform->disabledIf($this->name . '[' . $id . ']', $this->name . '_op', 'eq', 0);
         }
         $mform->addGroup($objs, $this->name . '_grp', '&nbsp;', '', false);

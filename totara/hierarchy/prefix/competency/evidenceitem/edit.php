@@ -24,11 +24,9 @@
 
 require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->libdir . '/coursecatlib.php');
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_courses.class.php');
-
-require_once($CFG->dirroot.'/course/lib.php');
 require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
-
 
 ///
 /// Setup / loading data
@@ -82,8 +80,7 @@ if ($nojs) {
 
     // Load categories by parent id
     $categories = array();
-    $parents = array();
-    make_categories_list($categories, $parents);
+    $categories = coursecat::make_categories_list();
 
     echo $OUTPUT->header();
     $out = html_writer::tag('h2', get_string('assignnewevidenceitem', 'totara_hierarchy'));

@@ -32,12 +32,7 @@ class editcategory_form extends moodleform {
             $strsubmit = get_string('createcategory');
         }
 
-        $attributes = array();
-        $attributes['class'] = 'totara-limited-width';
-        $attributes['onchange'] = 'if (document.all) { this.className=\'totara-limited-width\';}';
-        $attributes['onmousedown'] = 'if (document.all) this.className=\'totara-expanded-width\';';
-        $attributes['onblur'] = 'if (document.all) this.className=\'totara-limited-width\';';
-        $mform->addElement('select', 'parent', get_string('parentcategory'), $options, $attributes);
+        $mform->addElement('select', 'parent', get_string('parentcategory'), $options);
         $mform->addElement('text', 'name', get_string('categoryname'), array('size'=>'30'));
         $mform->addRule('name', get_string('required'), 'required', null);
         $mform->setType('name', PARAM_TEXT);
@@ -45,7 +40,7 @@ class editcategory_form extends moodleform {
         $mform->addHelpButton('idnumber', 'idnumbercoursecategory');
         $mform->setType('idnumber', PARAM_RAW);
         $mform->addElement('editor', 'description_editor', get_string('description'), null, $editoroptions);
-        $mform->setType('description_editor', PARAM_CLEANHTML);
+        $mform->setType('description_editor', PARAM_RAW);
         if (!empty($CFG->allowcategorythemes)) {
             $themes = array(''=>get_string('forceno'));
             $allthemes = get_list_of_themes();

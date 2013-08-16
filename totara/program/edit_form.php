@@ -22,7 +22,8 @@
  * @subpackage program
  */
 
-require_once("{$CFG->libdir}/formslib.php");
+require_once($CFG->libdir . '/formslib.php');
+require_once($CFG->libdir . '/coursecatlib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -78,13 +79,12 @@ class program_edit_form extends moodleform {
         // Must have create program capability in both categories in order to move program
         if (has_capability('totara/program:createprogram', $categorycontext)) {
             $displaylist = array();
-            $parentlist = array();
             $attributes = array();
             $attributes['class'] = 'totara-limited-width';
             $attributes['onchange'] = 'if (document.all) { this.className=\'totara-limited-width\';}';
             $attributes['onmousedown'] = 'if (document.all) this.className=\'totara-expanded-width\';';
             $attributes['onblur'] = 'if (document.all) this.className=\'totara-limited-width\';';
-            make_categories_list($displaylist, $parentlist, 'totara/program:createprogram');
+            $displaylist = coursecat::make_categories_list('totara/program:createprogram');
             $mform->addElement('select', 'category', get_string('category', 'totara_program'), $displaylist, $attributes);
             $mform->setType('category', PARAM_INT);
         } else {

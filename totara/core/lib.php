@@ -47,10 +47,6 @@ function resize_image($originalfile, $destination, $newwidth, $newheight, $force
         return false;
     }
 
-    if (empty($CFG->gdversion)) {
-        return false;
-    }
-
     $imageinfo = GetImageSize($originalfile);
     if (empty($imageinfo)) {
         return false;

@@ -24,50 +24,6 @@ class delete_category_form extends moodleform {
         // Get the list of categories we might be able to move to.
         $displaylist = $this->_category->move_content_targets_list();
 
-    /// Are there any courses in here, can they be deleted?
-        list($test, $params) = $DB->get_in_or_equal($categoryids);
-        $containedcourses = $DB->get_records_sql(
-                "SELECT id,1 FROM {course} c WHERE c.category $test", $params);
-        $containscourses = false;
-        if ($containedcourses) {
-            $containscourses = true;
-            foreach ($containedcourses as $courseid => $notused) {
-                if ($candeletecontent && !can_delete_course($courseid)) {
-                    $candeletecontent = false;
-                    break;
-                }
-            }
-        }
-
-    // Are there any programs in here, can they be deleted?
-        list($insql, $inparams) = $DB->get_in_or_equal($categoryids);
-        $containedprograms = $DB->get_records_sql(
-                "SELECT id,1 FROM {prog} p WHERE p.category $insql", $inparams);
-        $containsprograms = false;
-        if ($containedprograms) {
-            $containsprograms = true;
-        }
-
-    /// Are there any questions in the question bank here?
-        $containsquestions = question_context_has_any_questions($categorycontext);
-
-    /// Get the list of categories we might be able to move to.
-        $testcaps = array();
-        if ($containscourses) {
-            $testcaps[] = 'moodle/course:create';
-        }
-        if ($containsprograms) {
-            $testcaps[] = 'totara/program:createprogram';
-        }
-        if ($containscategories || $containsquestions) {
-            $testcaps[] = 'moodle/category:manage';
-        }
-        $displaylist = array();
-        $notused = array();
-        if (!empty($testcaps)) {
-            make_categories_list($displaylist, $notused, $testcaps, $category->id);
-        }
-
         // Now build the options.
         $options = array();
         if ($displaylist) {
@@ -83,46 +39,6 @@ class delete_category_form extends moodleform {
         // Now build the form.
         $mform->addElement('header','general', get_string('categorycurrentcontents', '', $this->_category->get_formatted_name()));
 
-/* TODO: TOTARA CODE START
-        if ($containscourses || $containscategories || $containsquestions || $containsprograms) {
-            if (empty($options)) {
-                print_error('youcannotdeletecategory', 'error', 'index.php', format_string($category->name, true, array('context' => $categorycontext)));
-            }
-
-        /// Describe the contents of this category.
-            $contents = '<ul>';
-            if ($containscategories) {
-                $contents .= '<li>' . get_string('subcategories') . '</li>';
-            }
-            if ($containscourses) {
-                $contents .= '<li>' . get_string('courses') . '</li>';
-            }
-            if ($containsprograms) {
-                $contents .= '<li>' . get_string('programs', 'totara_coursecatalog') . '</li>';
-            }
-            if ($containsquestions) {
-                $contents .= '<li>' . get_string('questionsinthequestionbank') . '</li>';
-            }
-            $contents .= '</ul>';
-            $mform->addElement('static', 'emptymessage', get_string('thiscategorycontains'), $contents);
-
-        /// Give the options for what to do.
-            $mform->addElement('select', 'fulldelete', get_string('whattodo'), $options);
-            if (count($options) == 1) {
-                $optionkeys = array_keys($options);
-                $option = reset($optionkeys);
-                $mform->hardFreeze('fulldelete');
-                $mform->setConstant('fulldelete', $option);
-            }
-
-            if ($displaylist) {
-                $mform->addElement('select', 'newparent', get_string('movecategorycontentto'), $displaylist);
-                if (in_array($category->parent, $displaylist)) {
-                    $mform->setDefault('newparent', $category->parent);
-                }
-                $mform->disabledIf('newparent', 'fulldelete', 'eq', '1');
-            }
-TODO: TOTARA CODE END */
         // Describe the contents of this category.
         $contents = '';
         if ($this->_category->has_children()) {

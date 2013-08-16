@@ -84,6 +84,7 @@ class rb_filter_hierarchy extends rb_filter_type {
         $objs[] =& $mform->createElement('select', $this->name.'_op', null, $this->get_operators(), $attr);
         $objs[] =& $mform->createElement('static', 'title'.$this->name, '',
             html_writer::tag('span', '', array('id' => $this->name . 'title', 'class' => 'dialog-result-title')));
+        $mform->setType($this->name.'_op', PARAM_TEXT);
         // can't use a button because id must be 'show-*-dialog' and
         // formslib appends 'id_' to ID
         // TODO change dialogs to bind to any id
@@ -94,6 +95,7 @@ class rb_filter_hierarchy extends rb_filter_type {
                 'value' => get_string('choose' . $type, 'totara_reportbuilder'),
                 'id' => 'show-' . $this->name . '-dialog')));
         $objs[] =& $mform->createElement('checkbox', $this->name . '_rec', '', get_string('includesubcategories', 'filters'));
+        $mform->setType($this->name . '_rec', PARAM_TEXT);
 
         $grp =& $mform->addElement('group', $this->name.'_grp', $label, $objs, '', false);
         $mform->addHelpButton($grp->_name, 'reportbuilderdialogfilter', 'totara_reportbuilder');
@@ -102,7 +104,7 @@ class rb_filter_hierarchy extends rb_filter_type {
         }
 
         $mform->addElement('hidden', $this->name);
-
+        $mform->setType($this->name, PARAM_TEXT);
 
         // set default values
         if (isset($SESSION->reportbuilder[$this->report->_id][$this->name])) {

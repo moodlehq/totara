@@ -1110,15 +1110,13 @@ function badges_process_badge_image(badge $badge, $iconfile) {
     global $CFG, $USER;
     require_once($CFG->libdir. '/gdlib.php');
 
-    if (!empty($CFG->gdversion)) {
-        process_new_icon($badge->get_context(), 'badges', 'badgeimage', $badge->id, $iconfile);
-        @unlink($iconfile);
+    process_new_icon($badge->get_context(), 'badges', 'badgeimage', $badge->id, $iconfile);
+    @unlink($iconfile);
 
-        // Clean up file draft area after badge image has been saved.
-        $context = context_user::instance($USER->id, MUST_EXIST);
-        $fs = get_file_storage();
-        $fs->delete_area_files($context->id, 'user', 'draft');
-    }
+    // Clean up file draft area after badge image has been saved.
+    $context = context_user::instance($USER->id, MUST_EXIST);
+    $fs = get_file_storage();
+    $fs->delete_area_files($context->id, 'user', 'draft');
 }
 
 /**

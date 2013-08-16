@@ -86,7 +86,7 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
         $info = $this->create_task($this->user1, $this->user2);
 
         phpunit_util::reset_debugging();
-        // Add message of different type (not alert)
+        // Add message of different type (not task).
         tm_alert_send($info);
         if (!empty($CFG->messaging)) {
             $this->assertDebuggingCalled();

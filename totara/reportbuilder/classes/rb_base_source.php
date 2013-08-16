@@ -1033,8 +1033,8 @@ abstract class rb_base_source {
 
     function rb_filter_course_categories_list() {
         global $CFG;
-        require_once($CFG->dirroot . '/course/lib.php');
-        make_categories_list($cats, $unused);
+        require_once($CFG->libdir . '/coursecatlib.php');
+        $cats = coursecat::make_categories_list();
 
         return $cats;
     }

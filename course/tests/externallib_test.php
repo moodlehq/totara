@@ -766,7 +766,7 @@ class core_course_external_testcase extends externallib_advanced_testcase {
                 }
 
                 if (completion_info::is_enabled_for_site()) {
-                    $this->assertEquals($course2['enabledcompletion'], $courseinfo->enablecompletion);
+                    $this->assertEquals($course2['enablecompletion'], $courseinfo->enablecompletion);
                 }
             } else if ($course['id'] == $course1['id']) {
                 $this->assertEquals($course1['fullname'], $courseinfo->fullname);

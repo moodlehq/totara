@@ -166,7 +166,7 @@ function enrol_cohort_sync(progress_trace $trace, $courseid = NULL) {
     raise_memory_limit(MEMORY_HUGE);
 
     // Ensure dynamic cohorts are up to date before starting.
-    totara_cohort_check_and_update_dynamic_cohort_members($courseid, true);
+    totara_cohort_check_and_update_dynamic_cohort_members($courseid, $trace);
 
     $trace->output('Starting user enrolment synchronisation...');
 

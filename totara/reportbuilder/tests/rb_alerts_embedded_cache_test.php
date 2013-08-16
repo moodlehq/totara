@@ -59,21 +59,21 @@ class rb_alerts_embedded_cache_test extends reportcache_advanced_testcase {
         $this->cleanup();
 
         // Common parts of test cases:
-        // Create report record in database
+        // Create report record in database.
         $this->loadDataSet($this->createArrayDataSet(array('report_builder' => array($this->report_builder_data),
                                                            'report_builder_columns' => $this->report_builder_columns_data)));
-        // Create three users
+        // Create three users.
         $this->user1 = $this->getDataGenerator()->create_user();
         $this->user2 = $this->getDataGenerator()->create_user();
         $this->user3 = $this->getDataGenerator()->create_user();
 
-        // Create two alerts to user1 and three to user2
+        // Create two alerts to user1 and three to user2.
         $this->create_alert($this->user3, $this->user1);
         $this->create_alert($this->user2, $this->user1);
         $this->create_alert($this->user1, $this->user2);
         $this->create_alert($this->user3, $this->user2);
         $info = $this->create_alert($this->user1, $this->user2);
-        // Add message of different type (not alert)
+        // Add message of different type (not alert).
         tm_task_send($info);
         if (!empty($CFG->messaging)) {
             $this->assertDebuggingCalled();

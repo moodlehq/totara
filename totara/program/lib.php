@@ -670,8 +670,8 @@ function prog_print_program($program, $highlightterms = '') {
  * @return <type>
  */
 function prog_print_whole_category_list($category=NULL, $displaylist=NULL, $parentslist=NULL, $depth=-1, $showprograms = true) {
-
     global $CFG;
+    require_once($CFG->libdir . '/coursecatlib.php');
 
     // maxcategorydepth == 0 meant no limit
     if (!empty($CFG->maxcategorydepth) && $depth >= $CFG->maxcategorydepth) {
@@ -679,7 +679,7 @@ function prog_print_whole_category_list($category=NULL, $displaylist=NULL, $pare
     }
 
     if (!$displaylist) {
-        make_categories_list($displaylist, $parentslist);
+        $displaylist = coursecat::make_categories_list();
     }
 
     if ($category) {

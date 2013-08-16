@@ -1748,9 +1748,6 @@ function role_assign_bulk($roleid, $userids, $contextid, $component = '', $itemi
         $timemodified = time();
     }
 
-    // TODO: Revisit this sql_empty() use once Oracle bindings are improved. MDL-29765
-    $component = ($component === '') ? $DB->sql_empty() : $component;
-
     // remove duplicates
     list($sqlin, $sqlinparams) = $DB->get_in_or_equal($userids);
     $sql = "SELECT u.id AS userid
@@ -1939,7 +1936,7 @@ function role_unassign_all_bulk(array $params, $subcontexts = false, $includeman
     }
 
     if (isset($params['component']) && $params['component'] !== '' && strpos($params['component'], '_') === false) {
-        throw new coding_exception('Invalid component paramter in role_unsassign_all_bulk() call', 'component:'.$params['component']);
+        throw new coding_exception('Invalid component parameter in role_unsassign_all_bulk() call', 'component:'.$params['component']);
     }
 
     if ($includemanual) {
@@ -1950,11 +1947,6 @@ function role_unassign_all_bulk(array $params, $subcontexts = false, $includeman
 
     if (empty($params['contextid'])) {
         throw new coding_exception('contextid parameter required in role_unsassign_all_bulk() call');
-    }
-
-    // TODO: Revisit this sql_empty() use once Oracle bindings are improved. MDL-29765
-    if (isset($params['component'])) {
-        $params['component'] = ($params['component'] === '') ? $DB->sql_empty() : $params['component'];
     }
 
     /// construct query

@@ -125,6 +125,7 @@ class totara_sync_config_form extends moodleform {
         $mform->addHelpButton('fileaccess', 'fileaccess', 'tool_totara_sync');
         if (get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
             $mform->addElement('text', 'filesdir', get_string('filesdir', 'tool_totara_sync'));
+            $mform->setType('filesdir', PARAM_TEXT);
             $mform->disabledIf('filesdir', 'fileaccess', 'eq', FILE_ACCESS_UPLOAD);
         }
         $this->add_action_buttons(false);

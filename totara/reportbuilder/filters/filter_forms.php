@@ -57,9 +57,6 @@ class add_filter_form extends moodleform {
             // clear form button
             $submitgroup[] =& $mform->createElement('submit', 'clearfilter', get_string('clearform', 'totara_reportbuilder'));
             $mform->addGroup($submitgroup, 'submitgroup', '&nbsp;', ' &nbsp; ');
-
-            // Don't use last advanced state
-            $mform->setShowAdvanced(false);
         }
     }
 

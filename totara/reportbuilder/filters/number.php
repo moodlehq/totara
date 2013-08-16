@@ -68,6 +68,8 @@ class rb_filter_number extends rb_filter_type {
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->name . '_op', null, $this->getOperators());
         $objs[] =& $mform->createElement('text', $this->name, null);
+        $mform->setType($this->name . '_op', PARAM_INT);
+        $mform->setType($this->name, PARAM_TEXT);
         $grp =& $mform->addElement('group', $this->name . '_grp', $label, $objs, '', false);
         $mform->addHelpButton($grp->_name, 'filternumber', 'filters');
         if ($advanced) {

@@ -5527,7 +5527,7 @@ function get_mailer($action='get') {
  * @return bool Returns true if mail was sent OK and false if there was an error.
  */
 function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $attachment='', $attachname='', $usetrueaddress=true, $replyto='', $replytoname='', $wordwrapwidth=79) {
-    global $CFG, $FULLME, $UNITTEST;
+    global $CFG, $FULLME;
 
     // TODO: use ical library instead
     if (substr($messagehtml, 0, 5) == 'ical:') {
@@ -5565,7 +5565,7 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
         // hidden setting for development sites, set in config.php if needed
         $noemail = 'Not sending email due to noemailever config setting';
         error_log($noemail);
-        if (CLI_SCRIPT && empty($UNITTEST->running)) {
+        if (CLI_SCRIPT) {
             mtrace('Error: lib/moodlelib.php email_to_user(): '.$noemail);
         }
         return true;
