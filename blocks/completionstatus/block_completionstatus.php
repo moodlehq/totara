@@ -246,10 +246,11 @@ class block_completionstatus extends block_base {
             // Display link to detailed view.
             $details = new moodle_url('/blocks/completionstatus/details.php', array('course' => $course->id));
             $this->content->footer = html_writer::empty_tag('br');
-            $this->content->footer = html_writer::link($details, get_string('moredetails', 'completion'));
+            $this->content->footer .= html_writer::link($details, get_string('moredetails', 'completion'));
         } else {
             // If user is not enrolled, show error.
             $this->content->text = get_string('nottracked', 'completion');
+            $this->content->footer = '';
         }
 
         if (has_capability('report/completion:view', $context)) {

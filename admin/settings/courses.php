@@ -141,7 +141,6 @@ if ($hassiteconfig
     $temp->add(new admin_setting_configselect('moodlecourse/enablecompletion', new lang_string('completion','completion'), '',
         1, array(0 => new lang_string('completiondisabled','completion'), 1 => new lang_string('completionenabled','completion'))));
 
-    $temp->add(new admin_setting_configcheckbox('moodlecourse/completionstartonenrol', new lang_string('completionstartonenrol', 'completion'), new lang_string('completionstartonenrolhelp', 'completion'), 1));
     $temp->add(new admin_setting_configcheckbox('moodlecourse/completionprogressonview', new lang_string('completionprogressonview', 'completion'), new lang_string('completionprogressonviewhelp', 'completion'), 0));
 
     $temp->add(new admin_setting_configcheckbox('moodlecourse/coursetagging', new lang_string('coursetagging','tag'), new lang_string('coursetagginghelp','tag'), 0));

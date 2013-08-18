@@ -246,11 +246,6 @@ class course_edit_form extends moodleform {
                             array(0=>get_string('completiondisabled','completion'), 1=>get_string('completionenabled','completion')));
             $mform->setDefault('enablecompletion', $courseconfig->enablecompletion);
 
-            $mform->addElement('advcheckbox', 'completionstartonenrol', get_string('completionstartonenrol', 'completion'));
-            $mform->setDefault('completionstartonenrol', $courseconfig->completionstartonenrol);
-            $mform->disabledIf('completionstartonenrol', 'enablecompletion', 'eq', 0);
-            $mform->addHelpButton('completionstartonenrol', 'completionstartonenrol', 'completion');
-
             $mform->addElement('advcheckbox', 'completionprogressonview', get_string('completionprogressonview', 'completion'));
             $mform->setDefault('completionprogressonview', $courseconfig->completionprogressonview);
             $mform->disabledIf('completionprogressonview', 'enablecompletion', 'eq', 0);
@@ -260,10 +255,6 @@ class course_edit_form extends moodleform {
             $mform->setType('enablecompletion', PARAM_INT);
             $mform->setDefault('enablecompletion', 0);
 
-            $mform->addElement('hidden', 'completionstartonenrol');
-            $mform->setType('completionstartonenrol', PARAM_INT);
-            $mform->setDefault('completionstartonenrol', 0);
-        
             $mform->addElement('hidden', 'completionprogressonview');
             $mform->setType('completionprogressonview', PARAM_INT);
             $mform->setDefault('completionprogressonview', 0);
@@ -301,6 +292,7 @@ class course_edit_form extends moodleform {
             }
 
             $mform->addElement('hidden', 'cohortsenrolled', $cohorts);
+            $mform->setType('cohortsenrolled', PARAM_SEQUENCE);
             $cohortsclass = new totara_cohort_course_cohorts(COHORT_ASSN_VALUE_ENROLLED);
             $cohortsclass->build_table(!empty($course->id) ? $course->id : 0);
             $mform->addElement('html', $cohortsclass->display(true));
@@ -332,10 +324,10 @@ class course_edit_form extends moodleform {
         $mform->addElement('header','', get_string('availability'));
 
         $choices = array();
-        $choices['0'] = get_string('courseavailablenot');
-        $choices['1'] = get_string('courseavailable');
-        $mform->addElement('select', 'visible', get_string('availability'), $choices);
-        $mform->addHelpButton('visible', 'availability');
+        $choices['0'] = get_string('hide');
+        $choices['1'] = get_string('show');
+        $mform->addElement('select', 'visible', get_string('visible'), $choices);
+        $mform->addHelpButton('visible', 'visible');
         $mform->setDefault('visible', $courseconfig->visible);
         if (!has_capability('moodle/course:visibility', $context)) {
             $mform->hardFreeze('visible');

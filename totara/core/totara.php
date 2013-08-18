@@ -71,6 +71,8 @@ function totara_version_info($version, $release) {
     $a = new stdClass();
     $a->existingtotaraversion = false;
     $a->newtotaraversion = $TOTARA->version;
+    $a->newversion = '';
+    $a->oldversion = '';
     if (!empty($CFG->totara_release)) {
         $a->canupgrade = true;
         if (isset($CFG->totara_version)) {

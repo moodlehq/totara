@@ -103,7 +103,6 @@ function completion_cron_mark_started() {
         AND crc.userid = u.id
         WHERE
             c.enablecompletion = 1
-        AND c.completionstartonenrol = 1
         AND crc.timeenrolled IS NULL
         AND ue.status = ?
         AND e.status = ?

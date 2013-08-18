@@ -26,10 +26,7 @@
  * Cron job for managing program schedules
  */
 
-require_once $CFG->dirroot.'/backup/lib.php';
-require_once $CFG->dirroot.'/backup/backuplib.php';
-require_once $CFG->dirroot.'/backup/restorelib.php';
-require_once $CFG->dirroot.'/totara/program/lib.php';
+require_once $CFG->dirroot . '/totara/program/lib.php';
 require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
 require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
 

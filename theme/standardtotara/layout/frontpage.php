@@ -88,11 +88,11 @@ if (!$hascustommenu) {
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes() ?>>
 <head>
-<title><?php echo $PAGE->title ?></title>
+<title><?php echo $OUTPUT->page_title() ?></title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="generator" content="<?php echo get_string('poweredby', 'totara_core'); ?>" />
 <meta name="description" content="<?php p(strip_tags(format_text($sitesummary, FORMAT_HTML))) ?>" />
-<link rel="shortcut icon" href="<?php echo $faviconurl; ?>" />
+<link rel="shortcut icon" href="<?php echo $OUTPUT->favicon() ?>" />
 <?php echo $OUTPUT->standard_head_html() ?>
 </head>
 <body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">

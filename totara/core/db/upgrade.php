@@ -762,7 +762,7 @@ function xmldb_totara_core_upgrade($oldversion) {
     if ($oldversion < 2013070804) {
         // Define field completionprogressonview to be added to course.
         $table = new xmldb_table('course');
-        $field = new xmldb_field('completionprogressonview', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, 'completionstartonenrol');
+        $field = new xmldb_field('completionprogressonview', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, 'enablecompletion');
 
         // Conditionally launch add field completionprogressonview.
         if (!$dbman->field_exists($table, $field)) {

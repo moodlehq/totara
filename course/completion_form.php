@@ -91,7 +91,6 @@ class course_completion_form extends moodleform {
         }
         $mform->addElement('select', 'overall_aggregation', get_string('overallaggregation', 'core_completion'), $overallaggregationmenu);
         $mform->setDefault('overall_aggregation', $completion->get_aggregation_method());
-        $mform->addHelpButton('overall_aggregation', 'aggregationmethod', 'completion');
 
         // Activity completion criteria
         $label = get_string('coursecompletioncondition', 'core_completion', get_string('activitiescompleted', 'core_completion'));

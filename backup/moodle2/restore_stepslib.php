@@ -1401,7 +1401,7 @@ class restore_course_structure_step extends restore_structure_step {
         }
         if (empty($CFG->enablecompletion)) {
             $data->enablecompletion = 0;
-            $data->completionstartonenrol = 0;
+            $data->completionprogressonview = 0;
             $data->completionnotify = 0;
         }
         $languages = get_string_manager()->get_list_of_translations(); // Get languages for quick search
