@@ -7,6 +7,7 @@ if (!defined('MOODLE_INTERNAL')) {
 require_once($CFG->libdir.'/formslib.php');
 require_once($CFG->libdir.'/questionlib.php');
 require_once($CFG->libdir. '/coursecatlib.php');
+require_once($CFG->dirroot . '/totara/program/lib.php');
 
 class delete_category_form extends moodleform {
 
@@ -46,6 +47,9 @@ class delete_category_form extends moodleform {
         }
         if ($this->_category->has_courses()) {
             $contents .= '<li>' . get_string('courses') . '</li>';
+        }
+        if (prog_has_programs($this->_category)) {
+            $contents .= '<li>' . get_string('programs', 'totara_program') . '</li>';
         }
         if (question_context_has_any_questions($categorycontext)) {
             $contents .= '<li>' . get_string('questionsinthequestionbank') . '</li>';

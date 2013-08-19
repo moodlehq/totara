@@ -4293,10 +4293,14 @@ class settings_navigation extends navigation_node {
         $categorynode = $this->add(print_context_name($this->context), null, null, null, 'categorysettings');
         $categorynode->force_open();
         $onmanagepage = $this->page->url->compare(new moodle_url('/course/manage.php'), URL_MATCH_BASE);
+        $onprogmanagepage = $this->page->url->compare(new moodle_url('/totara/program/manage.php'), URL_MATCH_BASE);
 
-        if (can_edit_in_category($this->context->instanceid) && !$onmanagepage) {
+        if (can_edit_in_category($this->context->instanceid) && !$onmanagepage && !$onprogmanagepage) {
             $url = new moodle_url('/course/manage.php', array('categoryid' => $this->context->instanceid));
-            $editstring = get_string('managecategorythis');
+            $editstring = get_string('managecourses', 'admin');
+            $categorynode->add($editstring, $url, self::TYPE_SETTING, null, null, new pix_icon('i/edit', ''));
+            $url = new moodle_url('/totara/program/manage.php', array('categoryid' => $this->context->instanceid));
+            $editstring = get_string('manageprograms', 'admin');
             $categorynode->add($editstring, $url, self::TYPE_SETTING, null, null, new pix_icon('i/edit', ''));
         }
 

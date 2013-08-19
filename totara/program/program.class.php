@@ -949,7 +949,7 @@ class program {
      * @return string
      */
     public function display($userid=null) {
-        global $CFG, $DB, $USER, $OUTPUT, $TEXTAREA_OPTIONS;
+        global $CFG, $DB, $USER, $OUTPUT, $PAGE;
 
         $out = '';
 
@@ -1017,9 +1017,13 @@ class program {
                 $out .= html_writer::end_tag('div');
             }
         }
-        $summary = file_rewrite_pluginfile_urls($this->summary, 'pluginfile.php',
-            context_program::instance($this->id)->id, 'totara_program', 'summary', 0);
-        $out .= html_writer::tag('div', $summary, array('class' => 'summary'));
+
+        // Get summary and overview files.
+        $programrenderer = $PAGE->get_renderer('totara_program');
+        $progobj = new stdClass();
+        $progobj->id = $this->id;
+        $summary = $programrenderer->coursecat_programbox_content(new programcat_helper(), new program_in_list($progobj));
+        $out .= $summary;
 
         $courseset_groups = $this->content->get_courseset_groups();
 

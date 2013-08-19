@@ -32,7 +32,6 @@ require_once('lib.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 require_once('edit_form.php');
 
-
 $categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
 
 $systemcontext = context_system::instance();
@@ -41,7 +40,7 @@ $actualurl = new moodle_url('/totara/program/add.php', array('category' => $cate
 // Integrate into the admin tree only if the user can create programs at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:createprogram', $systemcontext)) {
-    admin_externalpage_setup('manageprograms', '', null, $actualurl);
+    admin_externalpage_setup('programmgmt', '', null, $actualurl);
 } else {
     $PAGE->set_context($systemcontext);
     $PAGE->set_url($actualurl);
@@ -88,13 +87,17 @@ $item->summary = '';
 $item->summaryformat = FORMAT_HTML;
 
 $currenturl = qualified_me();
-$progindexurl = "{$CFG->wwwroot}/course/index.php?viewtype=program";
+$progindexurl = "{$CFG->wwwroot}/totara/program/index.php";
 
 $item = file_prepare_standard_editor($item, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
                                           'totara_program', 'summary', 0);
 
 $item = file_prepare_standard_editor($item, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
                                           'totara_program', 'endnote', 0);
+$overviewfilesoptions = prog_program_overviewfiles_options($item);
+if ($overviewfilesoptions) {
+    file_prepare_standard_filemanager($item, 'overviewfiles', $overviewfilesoptions, $systemcontext, 'totara_program', 'overviewfiles', 0);
+}
 $form = new program_edit_form($currenturl, array('action' => 'add', 'category' => $category, 'editoroptions' => $TEXTAREA_OPTIONS));
 
 if ($form->is_cancelled()) {
@@ -141,6 +144,10 @@ if ($data = $form->get_data()) {
 
         $data = file_postupdate_standard_editor($data, 'summary', $editoroptions, $editoroptions['context'], 'totara_program', 'summary', 0);
         $data = file_postupdate_standard_editor($data, 'endnote', $editoroptions, $editoroptions['context'], 'totara_program', 'endnote', 0);
+        if ($overviewfilesoptions = prog_program_overviewfiles_options($newid)) {
+            // Save the course overviewfiles
+            $data = file_postupdate_standard_filemanager($data, 'overviewfiles', $overviewfilesoptions, $editoroptions['context'], 'totara_program', 'overviewfiles', 0);
+        }
         $DB->set_field('prog', 'summary', $data->summary, array('id' => $newid));
         $DB->set_field('prog', 'endnote', $data->endnote, array('id' => $newid));
 

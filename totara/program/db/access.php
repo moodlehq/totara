@@ -162,6 +162,15 @@ $capabilities = array(
         )
     ),
 
+    'totara/program:visibility' => array(
+        'riskbitmask' => RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_PROGRAM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        )
+    ),
+
 );
 
 ?>

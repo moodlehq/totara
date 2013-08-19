@@ -1306,7 +1306,7 @@ function print_course_request_buttons($context) {
 function can_edit_in_category($categoryid = 0) {
     $context = get_category_or_system_context($categoryid);
     return has_any_capability(array('moodle/category:manage', 'moodle/course:create',
-                                    'moodle/course:update', 'totara/program:createprogram','totara/program:configureprogram'),
+                                    'moodle/course:update', 'totara/program:createprogram', 'totara/program:configureprogram'),
                               $context);
 }
 
@@ -2909,36 +2909,6 @@ function get_course_custom_fields($courseid) {
             ORDER BY f.sortorder";
 
     return $DB->get_records_sql($sql, array($courseid));
-}
-
-/**
- * Gets the path of breadcrumbs for a category path matching $categoryid
- *
- * @param integer $categoryid The id of the current category
- * @return array Multidimensional array containing name, link, and type of breadcrumbs
- *
- */
-function get_category_breadcrumbs($categoryid) {
-    global $CFG, $DB;
-
-    $category = $DB->get_record('course_categories', array('id' => $categoryid));
-
-    if (strpos($category->path, '/') === false) {
-        return array();
-    }
-
-    $bread = explode('/', substr($category->path, 1));
-    list($breadinsql, $params) = $DB->get_in_or_equal($bread);
-    $sql = "SELECT id, name FROM {course_categories} WHERE id {$breadinsql} ORDER BY depth";
-    $cat_bread = array();
-
-    if ($bread_info = $DB->get_records_sql($sql, $params)) {
-        foreach ($bread_info as $crumb) {
-            $cat_bread[] = array('name' => format_string($crumb->name), 'link' => new moodle_url('/course/category.php', array('id' => $crumb->id, 'viewtype' => 'program')), 'type' => 'misc');
-
-        }
-    }
-    return $cat_bread;
 }
 
 /**

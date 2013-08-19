@@ -46,7 +46,7 @@ $programcontext = $program->get_context();
 // Integrate into the admin tree only if the user can edit programs at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:configureprogram', $systemcontext)) {
-    admin_externalpage_setup('manageprograms', '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php', array('context' => $programcontext));
+    admin_externalpage_setup('programmgmt', '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php', array('context' => $programcontext));
 } else {
     $PAGE->set_url(new moodle_url('/totara/program/edit.php', array('id' => $id)));
     $PAGE->set_context($programcontext);
@@ -114,6 +114,10 @@ $program = file_prepare_standard_editor($program, 'summary', $editoroptions, $ed
 
 $program = file_prepare_standard_editor($program, 'endnote', $editoroptions, $editoroptions['context'],
                                           'totara_program', 'endnote', 0);
+$overviewfilesoptions = prog_program_overviewfiles_options($program);
+if ($overviewfilesoptions) {
+    file_prepare_standard_filemanager($program, 'overviewfiles', $overviewfilesoptions, $programcontext, 'totara_program', 'overviewfiles', 0);
+}
 $detailsform = new program_edit_form($currenturl, array('program' => $program, 'action' => $action, 'category' => $progcategory, 'editoroptions' => $TEXTAREA_OPTIONS, 'nojs' => $nojs), 'post', '', array('name'=>'form_prog_details'));
 
 if ($detailsform->is_cancelled()) {
@@ -150,10 +154,15 @@ if ($data = $detailsform->get_data()) {
             $nexturl = $viewurl;
         }
 
-        file_postupdate_standard_editor($data, 'summary', $TEXTAREA_OPTIONS, context_program::instance($program->id), 'totara_program', 'summary', 0);
+        $programcontext = context_program::instance($program->id);
+        file_postupdate_standard_editor($data, 'summary', $TEXTAREA_OPTIONS, $programcontext, 'totara_program', 'summary', 0);
         $DB->set_field('prog', 'summary', $data->summary, array('id' => $data->id));
 
-        file_postupdate_standard_editor($data, 'endnote', $TEXTAREA_OPTIONS, context_program::instance($program->id), 'totara_program', 'endnote', 0);
+        if ($overviewfilesoptions = prog_program_overviewfiles_options($data->id)) {
+            file_postupdate_standard_filemanager($data, 'overviewfiles', $overviewfilesoptions, $programcontext, 'totara_program', 'overviewfiles', 0);
+        }
+
+        file_postupdate_standard_editor($data, 'endnote', $TEXTAREA_OPTIONS, $programcontext, 'totara_program', 'endnote', 0);
         $DB->set_field('prog', 'endnote', $data->endnote, array('id' => $data->id));
 
         totara_set_notification(get_string('programdetailssaved', 'totara_program'), $nexturl, array('class' => 'notifysuccess'));
@@ -182,7 +191,7 @@ if ($action == 'edit') {
     $heading = format_string($program->fullname);
 }
 
-$category_breadcrumbs = get_category_breadcrumbs($program->category);
+$category_breadcrumbs = prog_get_category_breadcrumbs($program->category);
 
 foreach ($category_breadcrumbs as $crumb) {
         $PAGE->navbar->add($crumb['name'], $crumb['link']);

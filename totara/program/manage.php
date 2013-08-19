@@ -1,30 +1,34 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * Allows the admin to create, delete and rename course categories rearrange courses
+/*
+ * This file is part of Totara LMS
  *
- * @package   core
- * @copyright 2013 Marina Glancy
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Copyright (C) 2010-2013 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Program management page.
+ *
+ * @package    totara
+ * @subpackage program
+ * @copyright  2013 onwards Totara Learning Solutions Ltd {@link http://www.totaralms.com/}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author     Yuliya Bozhko <yuliya.bozhko@totaralms.com>
  */
 
-require_once("../config.php");
-require_once($CFG->dirroot.'/course/lib.php');
-require_once($CFG->libdir.'/coursecatlib.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once($CFG->libdir . '/coursecatlib.php');
+require_once($CFG->dirroot . '/totara/program/lib.php');
 
 // Category id.
 $id = optional_param('categoryid', 0, PARAM_INT);
@@ -32,21 +36,15 @@ $id = optional_param('categoryid', 0, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);
 // How many per page.
 $perpage = optional_param('perpage', $CFG->coursesperpage, PARAM_INT);
-
-$search    = optional_param('search', '', PARAM_RAW);  // search words
-$blocklist = optional_param('blocklist', 0, PARAM_INT);
-$modulelist= optional_param('modulelist', '', PARAM_PLUGIN);
+// Search words.
+$search    = optional_param('search', '', PARAM_RAW);
 if (!$id && !empty($search)) {
     $searchcriteria = array('search' => $search);
-} else if (!$id && !empty($blocklist)) {
-    $searchcriteria = array('blocklist' => $blocklist);
-} else if (!$id && !empty($modulelist)) {
-    $searchcriteria = array('modulelist' => $modulelist);
 } else {
     $searchcriteria = array();
 }
 
-// Actions to manage courses.
+// Actions to manage programs.
 $hide = optional_param('hide', 0, PARAM_INT);
 $show = optional_param('show', 0, PARAM_INT);
 $moveup = optional_param('moveup', 0, PARAM_INT);
@@ -71,18 +69,24 @@ $coursecat = coursecat::get($id);
 
 if ($id) {
     $PAGE->set_category_by_id($id);
-    $PAGE->set_url(new moodle_url('/course/manage.php', array('categoryid' => $id)));
+    $PAGE->set_url(new moodle_url('/totara/program/manage.php', array('categoryid' => $id)));
     // This is sure to be the category context.
     $context = $PAGE->context;
+    // Add program breadcrumbs.
+    $PAGE->navbar->add(get_string('programs', 'totara_program'), new moodle_url('/totara/program/index.php'));
+    $category_breadcrumbs = prog_get_category_breadcrumbs($id);
+    foreach ($category_breadcrumbs as $crumb) {
+        $PAGE->navbar->add($crumb['name'], $crumb['link']);
+    }
     if (!can_edit_in_category($coursecat->id)) {
-        redirect(new moodle_url('/course/index.php', array('categoryid' => $coursecat->id)));
+        redirect(new moodle_url('/totara/program/index.php'));
     }
 } else {
     $context = context_system::instance();
     $PAGE->set_context($context);
-    $PAGE->set_url(new moodle_url('/course/manage.php'));
+    $PAGE->set_url(new moodle_url('/totara/program/manage.php'));
     if (!can_edit_in_category()) {
-        redirect(new moodle_url('/course/index.php'));
+        redirect(new moodle_url('/totara/program/index.php'));
     }
 }
 
@@ -101,7 +105,7 @@ if (!empty($deletecat) and confirm_sesskey()) {
     require_once($CFG->dirroot.'/course/delete_category_form.php');
     $mform = new delete_category_form(null, $cattodelete);
     if ($mform->is_cancelled()) {
-        redirect(new moodle_url('/course/manage.php'));
+        redirect(new moodle_url('/totara/program/manage.php'));
     }
 
     // Start output.
@@ -113,17 +117,16 @@ if (!empty($deletecat) and confirm_sesskey()) {
         if ($data->fulldelete == 1 && $cattodelete->can_delete_full()) {
             $cattodeletename = $cattodelete->get_formatted_name();
             list($deletedcourses, $deletedprograms) = $cattodelete->delete_full(true);
-            foreach ($deletedcourses as $course) {
-                echo $OUTPUT->notification(get_string('coursedeleted', '', $course->shortname), 'notifysuccess');
+            foreach ($deletedprograms as $program) {
+                echo $OUTPUT->notification(get_string('programdeletesuccess', 'totara_program', $program->shortname), 'notifysuccess');
             }
-            echo $OUTPUT->notification(get_string('coursecategorydeleted', '', $cattodeletename), 'notifysuccess');
-            echo $OUTPUT->continue_button(new moodle_url('/course/manage.php'));
-
+            echo $OUTPUT->notification(get_string('coursecategorydeleted', 'moodle', $cattodeletename), 'notifysuccess');
+            echo $OUTPUT->continue_button(new moodle_url('/totara/program/manage.php'));
         } else if ($data->fulldelete == 0 && $cattodelete->can_move_content_to($data->newparent)) {
             $cattodelete->delete_move($data->newparent, true);
-            echo $OUTPUT->continue_button(new moodle_url('/course/manage.php'));
+            echo $OUTPUT->continue_button(new moodle_url('/totara/program/manage.php'));
         } else {
-            // Some error in parameters (user is cheating?)
+            // Some error in parameters (user is cheating?).
             $mform->display();
         }
     } else {
@@ -160,7 +163,7 @@ if ($hidecat and confirm_sesskey()) {
 
 if ((!empty($moveupcat) or !empty($movedowncat)) and confirm_sesskey()) {
     // Move a category up or down.
-    fix_course_sortorder();
+    prog_fix_program_sortorder();
     $swapcategory = null;
 
     if (!empty($moveupcat)) {
@@ -187,27 +190,26 @@ if ((!empty($moveupcat) or !empty($movedowncat)) and confirm_sesskey()) {
         add_to_log(SITEID, "category", "move", "editcategory.php?id=$movecategory->id", $movecategory->id);
     }
 
-    // Finally reorder courses.
-    fix_course_sortorder();
+    // Finally reorder programs.
+    prog_fix_program_sortorder();
 }
 
 if ($coursecat->id && $canmanage && $resort && confirm_sesskey()) {
     // Resort the category.
-    if ($courses = get_courses($coursecat->id, '', 'c.id,c.fullname,c.sortorder')) {
-        collatorlib::asort_objects_by_property($courses, 'fullname', collatorlib::SORT_NATURAL);
+    if ($programs = prog_get_programs($coursecat->id, '', 'p.id,p.fullname,p.sortorder')) {
+        collatorlib::asort_objects_by_property($programs, 'fullname', collatorlib::SORT_NATURAL);
         $i = 1;
-        foreach ($courses as $course) {
-            $DB->set_field('course', 'sortorder', $coursecat->sortorder + $i, array('id' => $course->id));
+        foreach ($programs as $program) {
+            $DB->set_field('prog', 'sortorder', $coursecat->sortorder + $i, array('id' => $program->id));
             $i++;
         }
         // This should not be needed but we do it just to be safe.
-        fix_course_sortorder();
-        cache_helper::purge_by_event('changesincourse');
+        prog_fix_program_sortorder();
     }
 }
 
 if (!empty($moveto) && ($data = data_submitted()) && confirm_sesskey()) {
-    // Move a specified course to a new category.
+    // Move a specified program to a new category.
     // User must have category update in both cats to perform this.
     require_capability('moodle/category:manage', $context);
     require_capability('moodle/category:manage', context_coursecat::instance($moveto));
@@ -216,68 +218,66 @@ if (!empty($moveto) && ($data = data_submitted()) && confirm_sesskey()) {
         print_error('cannotfindcategory', '', '', $data->moveto);
     }
 
-    $courses = array();
+    $programs = array();
     foreach ($data as $key => $value) {
         if (preg_match('/^c\d+$/', $key)) {
-            $courseid = substr($key, 1);
-            array_push($courses, $courseid);
-            // Check this course's category.
-            if ($movingcourse = $DB->get_record('course', array('id' => $courseid))) {
-                if ($id && $movingcourse->category != $id ) {
-                    print_error('coursedoesnotbelongtocategory');
+            $programid = substr($key, 1);
+            array_push($programs, $programid);
+            // Check this program's category.
+            if ($movingprogram = $DB->get_record('prog', array('id' => $programid))) {
+                if ($id && $movingprogram->category != $id ) {
+                    print_error('error:programdoesnotbelongtocategory', 'totara_program');
                 }
             } else {
-                print_error('cannotfindcourse');
+                print_error('error:prognotmoved', 'totara_program');
             }
         }
     }
-    move_courses($courses, $data->moveto);
+    prog_move_programs($programs, $data->moveto);
 }
 
 if ((!empty($hide) or !empty($show)) && confirm_sesskey()) {
-    // Hide or show a course.
+    // Hide or show a program.
     if (!empty($hide)) {
-        $course = $DB->get_record('course', array('id' => $hide), '*', MUST_EXIST);
+        $program = $DB->get_record('prog', array('id' => $hide), '*', MUST_EXIST);
         $visible = 0;
     } else {
-        $course = $DB->get_record('course', array('id' => $show), '*', MUST_EXIST);
+        $program = $DB->get_record('prog', array('id' => $show), '*', MUST_EXIST);
         $visible = 1;
     }
-    $coursecontext = context_course::instance($course->id);
-    require_capability('moodle/course:visibility', $coursecontext);
-    // Set the visibility of the course. we set the old flag when user manually changes visibility of course.
-    $params = array('id' => $course->id, 'visible' => $visible, 'visibleold' => $visible, 'timemodified' => time());
-    $DB->update_record('course', $params);
-    cache_helper::purge_by_event('changesincourse');
-    add_to_log($course->id, "course", ($visible ? 'show' : 'hide'), "edit.php?id=$course->id", $course->id);
+    $programcontext = context_program::instance($program->id);
+    require_capability('totara/program:visibility', $programcontext);
+    // Set the visibility of the program.
+    $params = array('id' => $program->id, 'visible' => $visible, 'timemodified' => time());
+    $DB->update_record('prog', $params);
+    add_to_log($program->id, "program", ($visible ? 'show' : 'hide'), "edit.php?id=$program->id", $program->id);
 }
 
 if ((!empty($moveup) or !empty($movedown)) && confirm_sesskey()) {
-    // Move a course up or down.
+    // Move a program up or down.
     require_capability('moodle/category:manage', $context);
 
-    // Ensure the course order has continuous ordering.
-    fix_course_sortorder();
-    $swapcourse = null;
+    // Ensure the program order has continuous ordering.
+    prog_fix_program_sortorder();
+    $swapprogram = null;
 
     if (!empty($moveup)) {
-        if ($movecourse = $DB->get_record('course', array('id' => $moveup))) {
-            $swapcourse = $DB->get_record('course', array('sortorder' => $movecourse->sortorder - 1));
+        if ($moveprogram = $DB->get_record('prog', array('id' => $moveup))) {
+            $swapprogram = $DB->get_record('prog', array('sortorder' => $moveprogram->sortorder - 1));
         }
     } else {
-        if ($movecourse = $DB->get_record('course', array('id' => $movedown))) {
-            $swapcourse = $DB->get_record('course', array('sortorder' => $movecourse->sortorder + 1));
+        if ($moveprogram = $DB->get_record('prog', array('id' => $movedown))) {
+            $swapprogram = $DB->get_record('prog', array('sortorder' => $moveprogram->sortorder + 1));
         }
     }
-    if ($swapcourse and $movecourse) {
-        // Check course's category.
-        if ($movecourse->category != $id) {
-            print_error('coursedoesnotbelongtocategory');
+    if ($swapprogram && $moveprogram) {
+        // Check program's category.
+        if ($moveprogram->category != $id) {
+            print_error('error:programdoesnotbelongtocategory', 'totara_program');
         }
-        $DB->set_field('course', 'sortorder', $swapcourse->sortorder, array('id' => $movecourse->id));
-        $DB->set_field('course', 'sortorder', $movecourse->sortorder, array('id' => $swapcourse->id));
-        cache_helper::purge_by_event('changesincourse');
-        add_to_log($movecourse->id, "course", "move", "edit.php?id=$movecourse->id", $movecourse->id);
+        $DB->set_field('prog', 'sortorder', $swapprogram->sortorder, array('id' => $moveprogram->id));
+        $DB->set_field('prog', 'sortorder', $moveprogram->sortorder, array('id' => $swapprogram->id));
+        add_to_log($moveprogram->id, "program", "move", "edit.php?id=$moveprogram->id", $moveprogram->id);
     }
 }
 
@@ -292,16 +292,16 @@ if ($perpage) {
 $urlparams += $searchcriteria;
 
 $PAGE->set_pagelayout('coursecategory');
-$courserenderer = $PAGE->get_renderer('core', 'course');
+$programrenderer = $PAGE->get_renderer('totara_program');
 
 if (can_edit_in_category()) {
     // Integrate into the admin tree only if the user can edit categories at the top level,
     // otherwise the admin block does not appear to this user, and you get an error.
     require_once($CFG->libdir . '/adminlib.php');
     if ($id) {
-        navigation_node::override_active_url(new moodle_url('/course/index.php', array('categoryid' => $id)));
+        navigation_node::override_active_url(new moodle_url('/totara/program/index.php', array('categoryid' => $id)));
     }
-    admin_externalpage_setup('coursemgmt', '', $urlparams, $CFG->wwwroot . '/course/manage.php');
+    admin_externalpage_setup('programmgmt', '', $urlparams, $CFG->wwwroot . '/totara/program/manage.php');
     $settingsnode = $PAGE->settingsnav->find_active_node();
     if ($id && $settingsnode) {
         $settingsnode->make_inactive();
@@ -312,7 +312,7 @@ if (can_edit_in_category()) {
     $site = get_site();
     $PAGE->set_title("$site->shortname: $coursecat->name");
     $PAGE->set_heading($site->fullname);
-    $PAGE->set_button($courserenderer->course_search_form('', 'navbar'));
+    $PAGE->set_button($programrenderer->program_search_form('', 'navbar'));
 }
 
 // Start output.
@@ -326,16 +326,16 @@ if (!empty($searchcriteria)) {
     $table->id = 'coursecategories';
     $table->attributes['class'] = 'admintable generaltable editcourse';
     $table->head = array(
-        get_string('categories'),
-        get_string('courses'),
-        get_string('edit'),
-        get_string('movecategoryto'),
+                    get_string('programcategories', 'totara_program'),
+                    get_string('programs', 'totara_program'),
+                    get_string('edit'),
+                    get_string('movecategoryto'),
     );
     $table->colclasses = array(
-        'leftalign name',
-        'centeralign count',
-        'centeralign icons',
-        'leftalign actions'
+                    'leftalign name',
+                    'centeralign count',
+                    'centeralign icons',
+                    'leftalign actions'
     );
     $table->data = array();
 
@@ -345,24 +345,24 @@ if (!empty($searchcriteria)) {
 } else {
     // Print the category selector.
     $displaylist = coursecat::make_categories_list();
-    $select = new single_select(new moodle_url('/course/manage.php'), 'categoryid', $displaylist, $coursecat->id, null, 'switchcategory');
-    $select->set_label(get_string('categories').':');
+    $select = new single_select(new moodle_url('/totara/program/manage.php'), 'categoryid', $displaylist, $coursecat->id, null, 'switchcategory');
+    $select->set_label(get_string('programcategories', 'totara_program').':');
 
     echo html_writer::start_tag('div', array('class' => 'categorypicker'));
     echo $OUTPUT->render($select);
     echo html_writer::end_tag('div');
 }
 
-if ($canmanage && empty($searchcriteria)) {
+if ($canmanage) {
     echo $OUTPUT->container_start('buttons');
     // Print button to update this category.
     if ($id) {
-        $url = new moodle_url('/course/editcategory.php', array('id' => $id));
+        $url = new moodle_url('/course/editcategory.php', array('id' => $id, 'type' => 'program'));
         echo $OUTPUT->single_button($url, get_string('editcategorythis'), 'get');
     }
 
     // Print button for creating new categories.
-    $url = new moodle_url('/course/editcategory.php', array('parent' => $id));
+    $url = new moodle_url('/course/editcategory.php', array('parent' => $id, 'type' => 'program'));
     if ($id) {
         $title = get_string('addsubcategory');
     } else {
@@ -370,25 +370,25 @@ if ($canmanage && empty($searchcriteria)) {
     }
     echo $OUTPUT->single_button($url, $title, 'get');
 
-    // Print button for switching to program management.
-    $url = new moodle_url('/totara/program/manage.php', array('categoryid' => $id));
-    $programcaps = array('totara/program:createprogram', 'totara/program:deleteprogram', 'totara/program:configureprogram');
-    if (has_any_capability($programcaps, $context)) {
-        $title = get_string('manageprogramsinthiscat', 'totara_program');
+    // Print button for switching to courses management.
+    $url = new moodle_url('/course/manage.php', array('categoryid' => $id));
+    $coursecaps = array('moodle/course:create', 'moodle/course:delete', 'moodle/course:update');
+    if (has_any_capability($coursecaps, $context)) {
+        $title = get_string('managecoursesinthiscat', 'totara_program');
     }
     echo $OUTPUT->single_button($url, $title, 'get');
     echo $OUTPUT->container_end();
 }
 
 if (!empty($searchcriteria)) {
-    $courses = coursecat::get(0)->search_courses($searchcriteria, array('recursive' => true,
-        'offset' => $page * $perpage, 'limit' => $perpage, 'sort' => array('fullname' => 1)));
-    $numcourses = count($courses);
-    $totalcount = coursecat::get(0)->search_courses_count($searchcriteria, array('recursive' => true));
+    $programs = coursecat::get(0)->search_programs($searchcriteria, array('offset' => $page * $perpage,
+                                                'limit' => $perpage, 'sort' => array('fullname' => 1)));
+    $numprograms = count($programs);
+    $totalcount = coursecat::get(0)->search_programs_count($searchcriteria);
 } else if ($coursecat->id) {
     // Print out all the sub-categories (plain mode).
     // In order to view hidden subcategories the user must have the viewhiddencategories.
-    // capability in the current category..
+    // capability in the current category.
     if (has_capability('moodle/category:viewhiddencategories', $context)) {
         $categorywhere = '';
     } else {
@@ -398,24 +398,24 @@ if (!empty($searchcriteria)) {
     // need it later on for formatting.
     $ctxselect = context_helper::get_preload_record_columns_sql('ctx');
     $sql = "SELECT cc.*, $ctxselect
-              FROM {course_categories} cc
-              JOIN {context} ctx ON cc.id = ctx.instanceid
-             WHERE cc.parent = :parentid AND
-                   ctx.contextlevel = :contextlevel
-                   $categorywhere
-          ORDER BY cc.sortorder ASC";
+                FROM {course_categories} cc
+                JOIN {context} ctx ON cc.id = ctx.instanceid
+                    WHERE cc.parent = :parentid AND
+                          ctx.contextlevel = :contextlevel
+                          $categorywhere
+                    ORDER BY cc.sortorder ASC";
     $subcategories = $DB->get_recordset_sql($sql, array('parentid' => $coursecat->id, 'contextlevel' => CONTEXT_COURSECAT));
     // Prepare a table to display the sub categories.
     $table = new html_table;
     $table->attributes = array(
-        'border' => '0',
-        'cellspacing' => '2',
-        'cellpadding' => '4',
-        'class' => 'generalbox boxaligncenter category_subcategories'
-    );
+                    'border' => '0',
+                    'cellspacing' => '2',
+                    'cellpadding' => '4',
+                    'class' => 'generalbox boxaligncenter category_subcategories'
+        );
     $table->head = array(new lang_string('subcategories'));
     $table->data = array();
-    $baseurl = new moodle_url('/course/manage.php');
+    $baseurl = new moodle_url('/totara/program/manage.php');
     foreach ($subcategories as $subcategory) {
         // Preload the context we will need it to format the category name shortly.
         context_helper::preload_from_record($subcategory);
@@ -424,38 +424,38 @@ if (!empty($searchcriteria)) {
         $attributes = $subcategory->visible ? array() : array('class' => 'dimmed');
         $text = format_string($subcategory->name, true, array('context' => $context));
         // Add the subcategory to the table.
-        $baseurl->param('categoryid', $subcategory->id);
-        $table->data[] = array(html_writer::link($baseurl, $text, $attributes));
-    }
-
-    $subcategorieswereshown = (count($table->data) > 0);
-    if ($subcategorieswereshown) {
-        echo html_writer::table($table);
-    }
-
-    $courses = get_courses_page($coursecat->id, 'c.sortorder ASC',
-            'c.id,c.sortorder,c.shortname,c.fullname,c.summary,c.visible',
-            $totalcount, $page*$perpage, $perpage);
-    $numcourses = count($courses);
-} else {
-    $subcategorieswereshown = true;
-    $courses = array();
-    $numcourses = $totalcount = 0;
+                        $baseurl->param('categoryid', $subcategory->id);
+                        $table->data[] = array(html_writer::link($baseurl, $text, $attributes));
 }
 
-if (!$courses) {
-    // There is no course to display.
+$subcategorieswereshown = (count($table->data) > 0);
+if ($subcategorieswereshown) {
+echo html_writer::table($table);
+}
+
+$programs = prog_get_programs_page($coursecat->id, 'p.sortorder ASC',
+            'p.id,p.sortorder,p.shortname,p.fullname,p.summary,p.visible',
+                $totalcount, $page*$perpage, $perpage);
+                $numprograms = count($programs);
+                } else {
+    $subcategorieswereshown = true;
+    $programs = array();
+    $numprograms = $totalcount = 0;
+}
+
+if (!$programs) {
+    // There is no program to display.
     if (empty($subcategorieswereshown)) {
-        echo $OUTPUT->heading(get_string("nocoursesyet"));
+        echo $OUTPUT->heading(get_string('noprogramsyet', 'totara_program'));
     }
 } else {
-    // Display a basic list of courses with paging/editing options.
+    // Display a basic list of programs with paging/editing options.
     $table = new html_table;
     $table->attributes = array('border' => 0, 'cellspacing' => 0, 'cellpadding' => '4', 'class' => 'generalbox boxaligncenter');
     $table->head = array(
-        get_string('courses'),
-        get_string('edit'),
-        get_string('select')
+                    get_string('programs', 'totara_program'),
+                    get_string('edit'),
+                    get_string('select')
     );
     $table->colclasses = array(null, null, 'mdl-align');
     if (!empty($searchcriteria)) {
@@ -466,9 +466,9 @@ if (!$courses) {
     $table->data = array();
 
     $count = 0;
-    $abletomovecourses = false;
+    $abletomoveprograms = false;
 
-    // Checking if we are at the first or at the last page, to allow courses to
+    // Checking if we are at the first or at the last page, to allow programs to
     // be moved up and down beyond the paging border.
     if ($totalcount > $perpage) {
         $atfirstpage = ($page == 0);
@@ -482,113 +482,100 @@ if (!$courses) {
         $atlastpage = true;
     }
 
-    $baseurl = new moodle_url('/course/manage.php', $urlparams + array('sesskey' => sesskey()));
-    foreach ($courses as $acourse) {
-        $coursecontext = context_course::instance($acourse->id);
+    $baseurl = new moodle_url('/totara/program/manage.php', $urlparams + array('sesskey' => sesskey()));
+    foreach ($programs as $aprogram) {
+        $programcontext = context_program::instance($aprogram->id);
 
         $count++;
         $up = ($count > 1 || !$atfirstpage);
-        $down = ($count < $numcourses || !$atlastpage);
+        $down = ($count < $numprograms || !$atlastpage);
 
-        $courseurl = new moodle_url('/course/view.php', array('id' => $acourse->id));
+        $programurl = new moodle_url('/totara/program/view.php', array('id' => $aprogram->id));
         $attributes = array();
-        $attributes['class'] = $acourse->visible ? '' : 'dimmed';
-        $coursename = get_course_display_name_for_list($acourse);
-        $coursename = format_string($coursename, true, array('context' => $coursecontext));
-        $coursename = html_writer::link($courseurl, $coursename, $attributes);
+        $attributes['class'] = $aprogram->visible ? '' : 'dimmed';
+        $programname = format_string($aprogram->fullname);
+        $programname = html_writer::link($programurl, $programname, $attributes);
 
         $icons = array();
-        // Update course icon.
-        if (has_capability('moodle/course:update', $coursecontext)) {
-            $url = new moodle_url('/course/edit.php', array('id' => $acourse->id, 'category' => $id, 'returnto' => 'catmanage'));
+        // "Update program" icon.
+        if (has_capability('totara/program:configuredetails', $programcontext)) {
+            $url = new moodle_url('/totara/program/edit.php', array('id' => $aprogram->id, 'category' => $id));
             $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/edit', get_string('settings')));
         }
 
-        // Role assignment icon.
-        if (has_capability('moodle/course:enrolreview', $coursecontext)) {
-            $url = new moodle_url('/enrol/users.php', array('id' => $acourse->id));
+        // "Role assignment" icon.
+        if (has_capability('totara/program:configureassignments', $programcontext)) {
+            $url = new moodle_url('/totara/program/edit_assignments.php', array('id' => $aprogram->id));
             $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/enrolusers', get_string('enrolledusers', 'enrol')));
         }
 
-        // Delete course icon.
-        if (can_delete_course($acourse->id)) {
-            $url = new moodle_url('/course/delete.php', array('id' => $acourse->id));
+        // "Delete program" icon.
+        if (has_capability('totara/program:deleteprogram', $programcontext)) {
+            $url = new moodle_url('/totara/program/delete.php', array('id' => $aprogram->id, 'category' => $id));
             $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/delete', get_string('delete')));
         }
 
-        // Change visibility.
-        // Users with no capability to view hidden courses, should not be able to lock themselves out.
-        if (has_any_capability(array('moodle/course:visibility', 'moodle/course:viewhiddencourses'), $coursecontext)) {
-            if (!empty($acourse->visible)) {
-                $url = new moodle_url($baseurl, array('hide' => $acourse->id));
+        // "Change visibility" icon.
+        // Users with no capability to view hidden programs, should not be able to lock themselves out.
+        if (has_any_capability(array('totara/program:visibility', 'totara/program:viewhiddenprograms'), $programcontext)) {
+            if (!empty($aprogram->visible)) {
+                $url = new moodle_url($baseurl, array('hide' => $aprogram->id));
                 $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/hide', get_string('hide')));
             } else {
-                $url = new moodle_url($baseurl, array('show' => $acourse->id));
+                $url = new moodle_url($baseurl, array('show' => $aprogram->id));
                 $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/show', get_string('show')));
             }
         }
 
-        // Backup course icon.
-        if (has_capability('moodle/backup:backupcourse', $coursecontext)) {
-            $url = new moodle_url('/backup/backup.php', array('id' => $acourse->id));
-            $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/backup', get_string('backup')));
-        }
-
-        // Restore course icon.
-        if (has_capability('moodle/restore:restorecourse', $coursecontext)) {
-            $url = new moodle_url('/backup/restorefile.php', array('contextid' => $coursecontext->id));
-            $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/restore', get_string('restore')));
-        }
-
         if ($canmanage) {
             if ($up && empty($searchcriteria)) {
-                $url = new moodle_url($baseurl, array('moveup' => $acourse->id));
+                $url = new moodle_url($baseurl, array('moveup' => $aprogram->id));
                 $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/up', get_string('moveup')));
             }
             if ($down && empty($searchcriteria)) {
-                $url = new moodle_url($baseurl, array('movedown' => $acourse->id));
+                $url = new moodle_url($baseurl, array('movedown' => $aprogram->id));
                 $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/down', get_string('movedown')));
             }
-            $abletomovecourses = true;
+            $abletomoveprograms = true;
         }
 
         $table->data[] = new html_table_row(array(
-            new html_table_cell($coursename),
-            new html_table_cell(join('', $icons)),
-            new html_table_cell(html_writer::empty_tag('input', array('type' => 'checkbox', 'name' => 'c'.$acourse->id)))
+                        new html_table_cell($programname),
+                        new html_table_cell(join('', $icons)),
+                        new html_table_cell(html_writer::empty_tag('input', array('type' => 'checkbox', 'name' => 'c'.$aprogram->id)))
         ));
 
         if (!empty($searchcriteria)) {
             // add 'Category' column
-            $category = coursecat::get($acourse->category, IGNORE_MISSING, true);
+            $category = coursecat::get($aprogram->category, IGNORE_MISSING, true);
             $cell = new html_table_cell($category->get_formatted_name());
             $cell->attributes['class'] = $category->visible ? '' : 'dimmed_text';
             array_splice($table->data[count($table->data) - 1]->cells, 1, 0, array($cell));
         }
     }
 
-    if ($abletomovecourses) {
+    if ($abletomoveprograms) {
         $movetocategories = coursecat::make_categories_list('moodle/category:manage');
-        $movetocategories[$id] = get_string('moveselectedcoursesto');
+        $movetocategories[$id] = get_string('moveselectedprogramsto', 'totara_program');
 
         $cell = new html_table_cell();
         $cell->colspan = 3;
         $cell->attributes['class'] = 'mdl-right';
-        $cell->text = html_writer::label(get_string('moveselectedcoursesto'), 'movetoid', false, array('class' => 'accesshide'));
+        $cell->text = html_writer::label(get_string('moveselectedprogramsto', 'totara_program'), 'movetoid', false, array('class' => 'accesshide'));
         $cell->text .= html_writer::select($movetocategories, 'moveto', $id, null, array('id' => 'movetoid', 'class' => 'autosubmit'));
         $cell->text .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'categoryid', 'value' => $id));
         $PAGE->requires->yui_module('moodle-core-formautosubmit',
-            'M.core.init_formautosubmit',
-            array(array('selectid' => 'movetoid', 'nothing' => $id))
+                        'M.core.init_formautosubmit',
+                        array(array('selectid' => 'movetoid', 'nothing' => $id))
         );
         $table->data[] = new html_table_row(array($cell));
     }
 
-    $actionurl = new moodle_url('/course/manage.php');
-    $pagingurl = new moodle_url('/course/manage.php', array('categoryid' => $id, 'perpage' => $perpage) + $searchcriteria);
+    $actionurl = new moodle_url('/totara/program/manage.php');
+    $pagingurl = new moodle_url('/totara/program/manage.php', array('categoryid' => $id, 'perpage' => $perpage) + $searchcriteria);
 
     echo $OUTPUT->paging_bar($totalcount, $page, $perpage, $pagingurl);
-    echo html_writer::start_tag('form', array('id' => 'movecourses', 'action' => $actionurl, 'method' => 'post'));
+    echo html_writer::start_tag('form', array('id' => 'moveprograms', 'action' => $actionurl, 'method' => 'post'));
     echo html_writer::start_tag('div');
     echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
     foreach ($searchcriteria as $key => $value) {
@@ -600,30 +587,29 @@ if (!$courses) {
     echo html_writer::empty_tag('br');
 }
 
+// Add category / program buttons.
 echo html_writer::start_tag('div', array('class' => 'buttons'));
-if ($canmanage and $numcourses > 1 && empty($searchcriteria)) {
-    // Print button to re-sort courses by name.
-    $url = new moodle_url('/course/manage.php', array('categoryid' => $id, 'resort' => 'name', 'sesskey' => sesskey()));
-    echo $OUTPUT->single_button($url, get_string('resortcoursesbyname'), 'get');
+
+if ($canmanage && $numprograms > 1 && empty($searchcriteria)) {
+    // Print button to re-sort programs by name.
+    $url = new moodle_url('/totara/program/manage.php', array('categoryid' => $id, 'resort' => 'name', 'sesskey' => sesskey()));
+    echo $OUTPUT->single_button($url, get_string('resortprogramsbyname', 'totara_program'), 'get');
 }
 
-if (has_capability('moodle/course:create', $context) && empty($searchcriteria)) {
-    // Print button to create a new course.
-    $url = new moodle_url('/course/edit.php');
+if (has_capability('totara/program:createprogram', $context) && empty($searchcriteria)) {
+    // Print button to create a new program.
+    $url = new moodle_url('/totara/program/add.php');
     if ($coursecat->id) {
-        $url->params(array('category' => $coursecat->id, 'returnto' => 'catmanage'));
+        $url->params(array('category' => $coursecat->id));
     } else {
-        $url->params(array('category' => $CFG->defaultrequestcategory, 'returnto' => 'topcatmanage'));
+        $url->params(array('category' => $CFG->defaultrequestcategory));
     }
-    echo $OUTPUT->single_button($url, get_string('addnewcourse'), 'get');
+    echo $OUTPUT->single_button($url, get_string('addnewprogram', 'totara_program'), 'get');
 }
 
-if (!empty($CFG->enablecourserequests) && $id == $CFG->defaultrequestcategory) {
-    print_course_request_buttons(context_system::instance());
-}
 echo html_writer::end_tag('div');
 
-echo $courserenderer->course_search_form();
+echo $programrenderer->program_search_form();
 
 echo $OUTPUT->footer();
 
@@ -661,7 +647,7 @@ function print_category_edit(html_table $table, coursecat $category, $depth = -1
         $attributes = array();
         $attributes['class'] = $category->visible ? '' : 'dimmed';
         $attributes['title'] = $str->edit;
-        $categoryurl = new moodle_url('/course/manage.php', array('categoryid' => $category->id, 'sesskey' => sesskey()));
+        $categoryurl = new moodle_url('/totara/program/manage.php', array('categoryid' => $category->id, 'sesskey' => sesskey()));
         $categoryname = $category->get_formatted_name();
         $categorypadding = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $depth);
         $categoryname = $categorypadding . html_writer::link($categoryurl, $categoryname, $attributes);
@@ -670,53 +656,53 @@ function print_category_edit(html_table $table, coursecat $category, $depth = -1
         if (has_capability('moodle/category:manage', $categorycontext)) {
             // Edit category.
             $icons[] = $OUTPUT->action_icon(
-                new moodle_url('/course/editcategory.php', array('id' => $category->id)),
-                new pix_icon('t/edit', $str->edit, 'moodle', array('class' => 'iconsmall')),
-                null, array('title' => $str->edit)
+                            new moodle_url('/course/editcategory.php', array('id' => $category->id, 'type' => 'program')),
+                            new pix_icon('t/edit', $str->edit, 'moodle', array('class' => 'iconsmall')),
+                            null, array('title' => $str->edit)
             );
             // Delete category.
             $icons[] = $OUTPUT->action_icon(
-                new moodle_url('/course/manage.php', array('deletecat' => $category->id, 'sesskey' => sesskey())),
-                new pix_icon('t/delete', $str->delete, 'moodle', array('class' => 'iconsmall')),
-                null, array('title' => $str->delete)
+                            new moodle_url('/totara/program/manage.php', array('deletecat' => $category->id, 'sesskey' => sesskey())),
+                            new pix_icon('t/delete', $str->delete, 'moodle', array('class' => 'iconsmall')),
+                            null, array('title' => $str->delete)
             );
             // Change visibility.
             if (!empty($category->visible)) {
                 $icons[] = $OUTPUT->action_icon(
-                    new moodle_url('/course/manage.php', array('hidecat' => $category->id, 'sesskey' => sesskey())),
-                    new pix_icon('t/hide', $str->hide, 'moodle', array('class' => 'iconsmall')),
-                    null, array('title' => $str->hide)
+                                new moodle_url('/totara/program/manage.php', array('hidecat' => $category->id, 'sesskey' => sesskey())),
+                                new pix_icon('t/hide', $str->hide, 'moodle', array('class' => 'iconsmall')),
+                                null, array('title' => $str->hide)
                 );
             } else {
                 $icons[] = $OUTPUT->action_icon(
-                    new moodle_url('/course/manage.php', array('showcat' => $category->id, 'sesskey' => sesskey())),
-                    new pix_icon('t/show', $str->show, 'moodle', array('class' => 'iconsmall')),
-                    null, array('title' => $str->show)
+                                new moodle_url('/totara/program/manage.php', array('showcat' => $category->id, 'sesskey' => sesskey())),
+                                new pix_icon('t/show', $str->show, 'moodle', array('class' => 'iconsmall')),
+                                null, array('title' => $str->show)
                 );
             }
             // Cohorts.
             if (has_any_capability(array('moodle/cohort:manage', 'moodle/cohort:view'), $categorycontext)) {
                 $icons[] = $OUTPUT->action_icon(
-                    new moodle_url('/cohort/index.php', array('contextid' => $categorycontext->id)),
-                    new pix_icon('t/cohort', $str->cohorts, 'moodle', array('class' => 'iconsmall')),
-                    null, array('title' => $str->cohorts)
+                                new moodle_url('/cohort/index.php', array('contextid' => $categorycontext->id)),
+                                new pix_icon('t/cohort', $str->cohorts, 'moodle', array('class' => 'iconsmall')),
+                                null, array('title' => $str->cohorts)
                 );
             }
             // Move up/down.
             if ($up) {
                 $icons[] = $OUTPUT->action_icon(
-                    new moodle_url('/course/manage.php', array('moveupcat' => $category->id, 'sesskey' => sesskey())),
-                    new pix_icon('t/up', $str->moveup, 'moodle', array('class' => 'iconsmall')),
-                    null, array('title' => $str->moveup)
+                                new moodle_url('/totara/program/manage.php', array('moveupcat' => $category->id, 'sesskey' => sesskey())),
+                                new pix_icon('t/up', $str->moveup, 'moodle', array('class' => 'iconsmall')),
+                                null, array('title' => $str->moveup)
                 );
             } else {
                 $icons[] = $str->spacer;
             }
             if ($down) {
                 $icons[] = $OUTPUT->action_icon(
-                    new moodle_url('/course/manage.php', array('movedowncat' => $category->id, 'sesskey' => sesskey())),
-                    new pix_icon('t/down', $str->movedown, 'moodle', array('class' => 'iconsmall')),
-                    null, array('title' => $str->movedown)
+                                new moodle_url('/totara/program/manage.php', array('movedowncat' => $category->id, 'sesskey' => sesskey())),
+                                new pix_icon('t/down', $str->movedown, 'moodle', array('class' => 'iconsmall')),
+                                null, array('title' => $str->movedown)
                 );
             } else {
                 $icons[] = $str->spacer;
@@ -725,7 +711,7 @@ function print_category_edit(html_table $table, coursecat $category, $depth = -1
 
         $actions = '';
         if (has_capability('moodle/category:manage', $categorycontext)) {
-            $popupurl = new moodle_url('/course/manage.php', array('movecat' => $category->id, 'sesskey' => sesskey()));
+            $popupurl = new moodle_url('/totara/program/manage.php', array('movecat' => $category->id, 'sesskey' => sesskey()));
             $tempdisplaylist = array(0 => get_string('top')) + coursecat::make_categories_list('moodle/category:manage', $category->id);
             $select = new single_select($popupurl, 'movetocat', $tempdisplaylist, $category->parent, null, "moveform$category->id");
             $select->set_label(get_string('frontpagecategorynames'), array('class' => 'accesshide'));
@@ -733,14 +719,14 @@ function print_category_edit(html_table $table, coursecat $category, $depth = -1
         }
 
         $table->data[] = new html_table_row(array(
-            // Category name.
-            new html_table_cell($categoryname),
-            // Course count.
-            new html_table_cell($category->coursecount),
-            // Icons.
-            new html_table_cell(join(' ', $icons)),
-            // Actions.
-            new html_table_cell($actions)
+                        // Category name.
+                        new html_table_cell($categoryname),
+                        // Program count.
+                        new html_table_cell($category->programcount),
+                        // Icons.
+                        new html_table_cell(join(' ', $icons)),
+                        // Actions.
+                        new html_table_cell($actions)
         ));
     }
 

@@ -6,3 +6,16 @@
     color: #333;
 }
 
+#page-admin-totara-program-manage .addcategory {padding: 10px;}
+#page-admin-totara-program-manage .buttons {margin-bottom: 15px;}
+#page-admin-totara-program-manage .editcourse {margin:20px auto;}
+#page-admin-totara-program-manage .editcourse th,
+#page-admin-totara-program-manage .editcourse td {padding-left:10px;padding-right:10px;}
+#page-admin-totara-program-manage .editcourse .count {text-align:right;}
+#page-admin-totara-program-manage.dir-rtl .editcourse td[align="left"] {text-align: right;}
+#page-admin-totara-program-manage.dir-rtl .editcourse td[align="right"] {text-align: left;}
+
+#page-admin-totara-program-manage .buttons {
+  display: inline;
+  padding: 5px;
+}

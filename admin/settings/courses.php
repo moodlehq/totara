@@ -12,20 +12,14 @@ if ($hassiteconfig
  or has_capability('totara/program:createprogram', $systemcontext)
 ) { // speedup for non-admins, add all caps used on this page
 
-    $ADMIN->add('courses', new admin_externalpage('managecourses', new lang_string('managecourses', 'admin'), $CFG->wwwroot . '/course/categorylist.php?viewtype=course&amp;categoryedit=on',
-            array('moodle/course:create', 'moodle/course:update')));
+    $ADMIN->add('courses', new admin_externalpage('coursemgmt', new lang_string('managecourses', 'admin'), $CFG->wwwroot . '/course/manage.php',
+            array('moodle/category:manage', 'moodle/course:create')));
 
-    $ADMIN->add('courses', new admin_externalpage('manageprograms', new lang_string('manageprograms', 'admin'), $CFG->wwwroot . '/course/categorylist.php?viewtype=program&amp;categoryedit=on',
-            array('totara/program:createprogram', 'totara/program:configureprogram')));
-
-    $ADMIN->add('courses', new admin_externalpage('managecategories', new lang_string('managecategories'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
-            array('moodle/category:manage')));
+    $ADMIN->add('courses', new admin_externalpage('programmgmt', new lang_string('manageprograms', 'admin'), $CFG->wwwroot . '/totara/program/manage.php',
+                    array('totara/program:createprogram', 'totara/program:configureprogram')));
 
     $ADMIN->add('courses', new admin_externalpage('coursecustomfields', new lang_string('customfields', 'totara_customfield'), $CFG->wwwroot . '/totara/customfield/index.php?prefix=course',
-            array('totara/core:createcoursecustomfield', 'totara/core:updatecoursecustomfield', 'totara/core:deletecoursecustomfield')));
-
-    $ADMIN->add('courses', new admin_externalpage('coursemgmt', new lang_string('coursemgmt', 'admin'), $CFG->wwwroot . '/course/manage.php',
-            array('moodle/category:manage', 'moodle/course:create')));
+                    array('totara/core:createcoursecustomfield', 'totara/core:updatecoursecustomfield', 'totara/core:deletecoursecustomfield')));
 
     // Course Default Settings Page.
     // NOTE: these settings must be applied after all other settings because they depend on them.

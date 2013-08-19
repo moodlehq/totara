@@ -115,6 +115,13 @@ class course_edit_form extends moodleform {
             }
         }
 
+        //Course type
+        $coursetypeoptions = array();
+        foreach($TOTARA_COURSE_TYPES as $k => $v) {
+            $coursetypeoptions[$v] = get_string($k, 'totara_core');
+        }
+        $mform->addElement('select', 'coursetype', get_string('coursetype', 'totara_core'), $coursetypeoptions);
+
         $mform->addElement('date_selector', 'startdate', get_string('startdate'));
         $mform->addHelpButton('startdate', 'startdate');
         $mform->setDefault('startdate', time() + 3600 * 24);
@@ -241,10 +248,10 @@ class course_edit_form extends moodleform {
 
         // Completion tracking.
         if (completion_info::is_enabled_for_site()) {
-            $mform->addElement('header','', get_string('progress','completion'));
-            $mform->addElement('select', 'enablecompletion', get_string('completion','completion'),
-                            array(0=>get_string('completiondisabled','completion'), 1=>get_string('completionenabled','completion')));
+            $mform->addElement('header', 'completionhdr', get_string('completion', 'completion'));
+            $mform->addElement('selectyesno', 'enablecompletion', get_string('enablecompletion', 'completion'));
             $mform->setDefault('enablecompletion', $courseconfig->enablecompletion);
+            $mform->addHelpButton('enablecompletion', 'enablecompletion', 'completion');
 
             $mform->addElement('advcheckbox', 'completionprogressonview', get_string('completionprogressonview', 'completion'));
             $mform->setDefault('completionprogressonview', $courseconfig->completionprogressonview);
@@ -259,13 +266,6 @@ class course_edit_form extends moodleform {
             $mform->setType('completionprogressonview', PARAM_INT);
             $mform->setDefault('completionprogressonview', 0);
         }
-
-        //Course type
-        $coursetypeoptions = array();
-        foreach($TOTARA_COURSE_TYPES as $k => $v) {
-            $coursetypeoptions[$v] = get_string($k, 'totara_core');
-        }
-        $mform->addElement('select', 'coursetype', get_string('coursetype', 'totara_core'), $coursetypeoptions);
 
         // Course Icons
         if (empty($course->id)) {
@@ -321,31 +321,6 @@ class course_edit_form extends moodleform {
         $mform->addElement('select', 'defaultgroupingid', get_string('defaultgrouping', 'group'), $options);
 
 //--------------------------------------------------------------------------------
-        $mform->addElement('header','', get_string('availability'));
-
-        $choices = array();
-        $choices['0'] = get_string('hide');
-        $choices['1'] = get_string('show');
-        $mform->addElement('select', 'visible', get_string('visible'), $choices);
-        $mform->addHelpButton('visible', 'visible');
-        $mform->setDefault('visible', $courseconfig->visible);
-        if (!has_capability('moodle/course:visibility', $context)) {
-            $mform->hardFreeze('visible');
-            if (!empty($course->id)) {
-                $mform->setConstant('visible', $course->visible);
-            } else {
-                $mform->setConstant('visible', $courseconfig->visible);
-            }
-        }
-
-//--------------------------------------------------------------------------------
-        $mform->addElement('header','', get_string('language'));
-
-        $languages=array();
-        $languages[''] = get_string('forceno');
-        $languages += get_string_manager()->get_list_of_translations();
-        $mform->addElement('select', 'lang', get_string('forcelanguage'), $languages);
-        $mform->setDefault('lang', $courseconfig->lang);
 
 /// customizable role names in this course
 //--------------------------------------------------------------------------------

@@ -18,9 +18,6 @@
     font-size: 1em;
     font-weight: bold;
     line-height: 1.4em;
-    margin: 0;
-    padding: 3px 0 0 20px;
-    background: transparent url([[pix:core|i/course]]) no-repeat left 3px;
 }
 
 .dir-rtl .course-content ul.section li.activity span.autocompletion,
@@ -41,3 +38,6 @@
 .dir-rtl .mform fieldset .advancedbutton {
     text-align:left;
 }
+.courses .coursebox:hover,
+.course_category_tree .courses > .paging.paging-morelink:hover {background-color:inherit;}
+.coursebox > .info > .name a {display:block;background-repeat:no-repeat;padding-left:40px;background-position:left top;line-height:2em;}

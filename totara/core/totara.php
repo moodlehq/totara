@@ -1292,21 +1292,21 @@ function totara_build_menu() {
         'name' => 'findcourses',
         'linktext' => get_string('findcourses', 'totara_core'),
         'parent' => null,
-        'url' => '/course/categorylist.php?viewtype=' . $findcourse_type
+        'url' => '/course/index.php'
     );
 
     $tree[] = (object)array(
         'name' => 'course',
         'linktext' => get_string('courses'),
         'parent' => 'findcourses',
-        'url' => '/course/categorylist.php?viewtype=course'
+        'url' => '/course/index.php'
     );
 
     $tree[] = (object)array(
         'name' => 'program',
         'linktext' => get_string('programs', 'totara_program'),
         'parent' => 'findcourses',
-        'url' => '/course/categorylist.php?viewtype=program'
+        'url' => '/totara/program/index.php'
     );
 
     $tree[] = (object)array(
@@ -1646,4 +1646,21 @@ function totara_fix_existing_capabilities() {
             }
         }
     }
+}
+
+/**
+ * Get course icon for displaying in course page.
+ *
+ * @return string Course icon URL.
+ */
+function totara_get_course_icon($courseid) {
+    global $DB, $OUTPUT;
+
+    $icon = $DB->get_field('course', 'icon', array('id' => $courseid));
+    if (!empty($icon)) {
+        $courseicon = $OUTPUT->pix_url('/courseicons/' . $icon, 'totara_core');
+    } else {
+        $courseicon = $OUTPUT->pix_url('/courseicons/default', 'totara_core');
+    }
+    return $courseicon->out();
 }

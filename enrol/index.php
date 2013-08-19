@@ -95,7 +95,7 @@ if (!$forms) {
     if (isguestuser()) {
         notice(get_string('noguestaccess', 'enrol'), get_login_url());
     } else {
-        $destination = new moodle_url("/course/categorylist.php", array('viewtype' => 'course'));
+        $destination = new moodle_url("/course/index.php");
         notice(get_string('notenrollable', 'enrol'), $destination->out());
     }
 }

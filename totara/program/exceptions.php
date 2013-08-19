@@ -97,7 +97,7 @@ add_to_log(SITEID, 'program', 'view exceptions', "exceptions.php?id={$program->i
 ///
 /// Display
 ///
-$category_breadcrumbs = get_category_breadcrumbs($program->category);
+$category_breadcrumbs = prog_get_category_breadcrumbs($program->category);
 
 $heading = $program->fullname;
 $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);

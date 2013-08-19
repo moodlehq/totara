@@ -45,7 +45,7 @@ $programcontext = $program->get_context();
 // Integrate into the admin tree only if the user can edit program messages at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:configuremessages', $systemcontext)) {
-    admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_messages.php', array('context' => $programcontext));
+    admin_externalpage_setup('programmgmt', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_messages.php', array('context' => $programcontext));
 } else {
     $PAGE->set_context($programcontext);
     $PAGE->set_url(new moodle_url('/totara/program/edit_messages.php', array('id' => $id)));
@@ -53,7 +53,7 @@ if (has_capability('totara/program:configuremessages', $systemcontext)) {
     $PAGE->set_heading($program->fullname);
 }
 
-$category_breadcrumbs = get_category_breadcrumbs($program->category);
+$category_breadcrumbs = prog_get_category_breadcrumbs($program->category);
 foreach ($category_breadcrumbs as $crumb) {
     $PAGE->navbar->add($crumb['name'], $crumb['link']);
 }

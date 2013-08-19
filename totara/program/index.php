@@ -17,13 +17,52 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Ben Lobo <ben.lobo@kineo.com>
+ * @author Yuliya Bozhko <yuliya.bozhko@totaralms.com>
  * @package totara
  * @subpackage program
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot . '/totara/program/lib.php');
+require_once($CFG->libdir. '/coursecatlib.php');
 
-// redirect to the course index page whih has been modified to display programs
-redirect($CFG->wwwroot.'/course/index.php?viewtype=program');
+$categoryid = optional_param('categoryid', 0, PARAM_INT); // Category id
+$site = get_site();
+
+if ($categoryid) {
+    $PAGE->set_category_by_id($categoryid);
+    $PAGE->set_url(new moodle_url('/totara/program/index.php', array('categoryid' => $categoryid)));
+    $PAGE->set_pagetype('course-index-category');
+    $category = $PAGE->category;
+    // Add program breadcrumbs.
+    $PAGE->navbar->add(get_string('programs', 'totara_program'), new moodle_url('/totara/program/index.php'));
+    $category_breadcrumbs = prog_get_category_breadcrumbs($categoryid);
+    foreach ($category_breadcrumbs as $crumb) {
+        $PAGE->navbar->add($crumb['name'], $crumb['link']);
+    }
+} else {
+    $categoryid = 0;
+    $PAGE->set_url('/totara/program/index.php');
+    $PAGE->set_context(context_system::instance());
+}
+
+$PAGE->set_pagelayout('coursecategory');
+$programrenderer = $PAGE->get_renderer('totara_program');
+
+if ($CFG->forcelogin) {
+    require_login();
+}
+
+if ($categoryid && !$category->visible && !has_capability('moodle/category:viewhiddencategories', $PAGE->context)) {
+    throw new moodle_exception('unknowncategory');
+}
+
+$PAGE->set_totara_menu_selected('findcourses');
+$PAGE->set_heading($site->fullname);
+$content = $programrenderer->program_category($categoryid);
+
+echo $OUTPUT->header();
+echo $OUTPUT->skip_link_target();
+echo $content;
+
+echo $OUTPUT->footer();

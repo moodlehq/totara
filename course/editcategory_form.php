@@ -13,6 +13,7 @@ class editcategory_form extends moodleform {
         $mform =& $this->_form;
         $category = $this->_customdata['category'];
         $editoroptions = $this->_customdata['editoroptions'];
+        $type = $this->_customdata['type'];
 
         // get list of categories to use as parents, with site as the first one
         $options = array();
@@ -55,6 +56,9 @@ class editcategory_form extends moodleform {
         $mform->addElement('hidden', 'id', 0);
         $mform->setType('id', PARAM_INT);
         $mform->setDefault('id', $category->id);
+
+        $mform->addElement('hidden', 'type', $type);
+        $mform->setType('type', PARAM_TEXT);
 
         $this->add_action_buttons(true, $strsubmit);
     }

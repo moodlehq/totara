@@ -113,31 +113,32 @@ class program_edit_form extends moodleform {
         }
 
         $mform->addElement('text','fullname', get_string('fullname', 'totara_program'),'maxlength="254" size="50"');
+        $mform->setType('fullname', PARAM_TEXT);
         if ($action == 'view') {
             $mform->hardFreeze('fullname');
         } else {
             $mform->addHelpButton('fullname', 'programfullname', 'totara_program');
             $mform->setDefault('fullname', get_string('defaultprogramfullname', 'totara_program'));
             $mform->addRule('fullname', get_string('missingfullname'), 'required', null, 'client');
-            $mform->setType('fullname', PARAM_MULTILANG);
+
         }
 
         $mform->addElement('text','shortname', get_string('shortname', 'totara_program'),'maxlength="100" size="20"');
+        $mform->setType('shortname', PARAM_TEXT);
         if ($action=='view') {
             $mform->hardFreeze('shortname');
         } else {
             $mform->addHelpButton('shortname', 'programshortname', 'totara_program');
             $mform->setDefault('shortname', get_string('defaultprogramshortname', 'totara_program'));
             $mform->addRule('shortname', get_string('missingshortname', 'totara_program'), 'required', null, 'client');
-            $mform->setType('shortname', PARAM_MULTILANG);
         }
 
         $mform->addElement('text','idnumber', get_string('idnumberprogram', 'totara_program'),'maxlength="100"  size="10"');
+        $mform->setType('idnumber', PARAM_TEXT);
         if ($action == 'view') {
             $mform->hardFreeze('idnumber');
         } else {
             $mform->addHelpButton('idnumber', 'programidnumber', 'totara_program');
-            $mform->setType('idnumber', PARAM_MULTILANG);
         }
 
         $availabilityoptions = array(
@@ -154,22 +155,23 @@ class program_edit_form extends moodleform {
         }
 
         $mform->addElement('text', 'availablefromselector', get_string('availablefrom', 'totara_program'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $mform->setType('availablefromselector', PARAM_TEXT);
         if ($action == 'view') {
             $mform->hardFreeze('availablefromselector');
         } else {
             $mform->addHelpButton('availablefromselector', 'programavailability', 'totara_program');
-            $mform->setType('availablefromselector', PARAM_MULTILANG);
         }
 
         $mform->addElement('hidden', 'availablefrom');
         $mform->setType('availablefrom', PARAM_INT);
 
         $mform->addElement('text', 'availableuntilselector', get_string('availableuntil', 'totara_program'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $mform->setType('availableuntilselector', PARAM_TEXT);
         if ($action == 'view') {
             $mform->hardFreeze('availableuntilselector');
         } else {
             $mform->addHelpButton('availableuntilselector', 'programavailability', 'totara_program');
-            $mform->setType('availableuntilselector', PARAM_MULTILANG);
+
         }
 
         $mform->addElement('hidden', 'availableuntil');
@@ -181,6 +183,15 @@ class program_edit_form extends moodleform {
         } else {
             $mform->addHelpButton('summary_editor', 'summary', 'totara_program');
             $mform->setType('summary_editor', PARAM_RAW);
+        }
+
+        if ($overviewfilesoptions = prog_program_overviewfiles_options($program)) {
+            $mform->addElement('filemanager', 'overviewfiles_filemanager', get_string('programoverviewfiles', 'totara_program'), null, $overviewfilesoptions);
+            if ($action == 'view') {
+                $mform->hardFreeze('overviewfiles_filemanager');
+            } else {
+                $mform->addHelpButton('overviewfiles_filemanager', 'programoverviewfiles', 'totara_program');
+            }
         }
 
         $mform->addElement('editor', 'endnote_editor', get_string('endnote', 'totara_program'), null, $editoroptions);

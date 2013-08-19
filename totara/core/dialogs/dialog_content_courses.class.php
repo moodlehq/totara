@@ -149,7 +149,7 @@ class totara_dialog_content_courses extends totara_dialog_content {
         }
 
         // Load child categories
-        $categories = get_child_categories($parent->id);
+        $categories = coursecat::get($parent->id)->get_children();
 
         $category_ids = array();
         foreach ($categories as $cat) {

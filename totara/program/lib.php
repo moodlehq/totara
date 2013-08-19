@@ -22,9 +22,10 @@
  * @subpackage program
  */
 
+require_once($CFG->libdir . '/coursecatlib.php');
+require_once($CFG->libdir . '/datalib.php');
+require_once($CFG->libdir . '/ddllib.php');
 require_once($CFG->dirroot . '/course/lib.php');
-require_once($CFG->dirroot . '/lib/datalib.php');
-require_once($CFG->dirroot . '/lib/ddllib.php');
 require_once($CFG->dirroot . '/totara/program/program.class.php');
 
 /**
@@ -222,7 +223,7 @@ function prog_display_user_message_box($programuser) {
 function prog_add_base_navlinks() {
     global $PAGE;
 
-    $PAGE->navbar->add(get_string('browsecategories', 'totara_program'), new moodle_url('/course/index.php', array('viewtype' => 'program')));
+    $PAGE->navbar->add(get_string('browsecategories', 'totara_program'), new moodle_url('/totara/program/index.php'));
 }
 
 /**
@@ -260,11 +261,12 @@ function prog_add_required_learning_base_navlinks($userid) {
 
 /**
  * Returns list of programs, for whole site, or category
- * (This is the counterpart to get_courses in /lib/datalib.php)
+ *
  */
-function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="p.*") {
-
+function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="p.*", $options = array()) {
     global $USER, $DB;
+    $offset = !empty($options['offset']) ? $options['offset'] : 0;
+    $limit = !empty($options['limit']) ? $options['limit'] : null;
 
     $params = array(CONTEXT_PROGRAM);
     if ($categoryid != "all" && is_numeric($categoryid)) {
@@ -291,7 +293,7 @@ function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="
                                       ON (p.id = ctx.instanceid
                                           AND ctx.contextlevel = ?)
                                     $categoryselect
-                                    $sortstatement", $params);
+                                    $sortstatement", $params, $offset, $limit);
 
     // loop through them
     foreach ($programs as $program) {
@@ -306,7 +308,38 @@ function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="
     }
 
     return $visibleprograms;
+}
 
+/**
+ * Gets the path of breadcrumbs for a category path matching $categoryid
+ *
+ * @param integer $categoryid The id of the current category
+ * @return array Multidimensional array containing name, link, and type of breadcrumbs
+ *
+ */
+function prog_get_category_breadcrumbs($categoryid) {
+    global $CFG, $DB;
+
+    $category = $DB->get_record('course_categories', array('id' => $categoryid));
+
+    if (strpos($category->path, '/') === false) {
+        return array();
+    }
+
+    $bread = explode('/', substr($category->path, 1));
+    list($breadinsql, $params) = $DB->get_in_or_equal($bread);
+    $sql = "SELECT id, name FROM {course_categories} WHERE id {$breadinsql} ORDER BY depth";
+    $cat_bread = array();
+
+    if ($bread_info = $DB->get_records_sql($sql, $params)) {
+        foreach ($bread_info as $crumb) {
+            $cat_bread[] = array('name' => format_string($crumb->name),
+                                 'link' => new moodle_url('/totara/program/index.php', array('categoryid' => $crumb->id)),
+                                 'type' => 'misc');
+
+        }
+    }
+    return $cat_bread;
 }
 
 /**
@@ -380,8 +413,7 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
  * $programids is an array of program ids
  *
  **/
-function prog_move_programs ($programids, $categoryid) {
-
+function prog_move_programs($programids, $categoryid) {
     global $DB, $OUTPUT;
 
     if (!empty($programids)) {
@@ -420,56 +452,6 @@ function prog_move_programs ($programids, $categoryid) {
             prog_fix_program_sortorder();
         }
     return true;
-}
-
-/**
- * (This is the counterpart to print_courses in /course/lib.php)
- *
- * @global <type> $CFG
- * @param <type> $category
- */
-function prog_print_programs($category) {
-/// Category is 0 (for all programs) or an object
-
-    global $OUTPUT, $USER;
-
-    $fields = "p.id,p.sortorder,p.shortname,p.fullname,p.summary,p.visible";
-
-    if (!is_object($category) && $category==0) {
-        $categories = get_child_categories(0);  // Parent = 0   ie top-level categories only
-        if (is_array($categories) && count($categories) == 1) {
-            $category = array_shift($categories);
-            $programs = prog_get_programs($category->id, 'p.sortorder ASC', $fields);
-        } else {
-            $programs = prog_get_programs('all', 'p.sortorder ASC', $fields);
-        }
-        unset($categories);
-    } else {
-        $programs = prog_get_programs($category->id, 'p.sortorder ASC', $fields);
-    }
-
-    if ($programs) {
-        foreach ($programs as $program) {
-            $prog = new program($program->id);
-            if (!$prog->is_accessible($USER)) {
-                continue;
-            }
-            if ($program->visible == 1
-                || has_capability('totara/program:viewhiddenprograms', program_get_context($program->id))) {
-                prog_print_program($program);
-            }
-        }
-    } else {
-        echo $OUTPUT->heading(get_string("noprogramsyet", 'totara_program'));
-        $context = context_system::instance();
-        if (has_capability('totara/program:createprogram', $context)) {
-            $options = array();
-            $options['category'] = $category->id;
-            echo html_writer::start_tag('div', array('class' => 'addprogrambutton'));
-            echo $OUTPUT->single_button(new moodle_url('/totara/program/add.php', $options), get_string("addnewprogram", 'totara_program'), 'get');
-            echo html_writer::end_tag('div');
-        }
-    }
 }
 
 /**
@@ -609,181 +591,13 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
         $n = $max;
     }
 
-    if ($categories = get_categories($categoryid)) {
+    if ($categories = coursecat::get($categoryid)->get_children()) {
         foreach ($categories as $category) {
             $n = prog_fix_program_sortorder($category->id, $n, $safe, $depth, $path);
         }
     }
 
     return $n+1;
-}
-
-/**
- * Print a description of a program, suitable for browsing in a list.
- * (This is the counterpart to print_course in /course/lib.php)
- *
- * @param object $program the program object.
- * @param string $highlightterms (optional) some search terms that should be highlighted in the display.
- */
-function prog_print_program($program, $highlightterms = '') {
-    global $PAGE;
-    $prog = new program($program->id);
-
-    $accessible = false;
-    if ($prog->is_accessible()) {
-        $accessible = true;
-    }
-
-    if (isset($program->context)) {
-        $context = $program->context;
-    } else {
-        $context = context_program::instance($program->id);
-    }
-
-    //object for all info required by renderer
-    $data = new stdClass();
-
-    $data->accessible = $accessible;
-    $data->visible = $program->visible;
-    $data->icon = (empty($prog->icon)) ? 'default' : $prog->icon;
-    $data->progid = $program->id;
-    $data->fullname = $program->fullname;
-    $data->summary = file_rewrite_pluginfile_urls($program->summary, 'pluginfile.php',
-        context_program::instance($program->id)->id, 'totara_program', 'summary', 0);
-    $data->highlightterms = $highlightterms;
-
-    $renderer = $PAGE->get_renderer('totara_program');
-    echo $renderer->print_program($data);
-}
-
-/**
- * Recursive function to print out all the categories in a nice format
- * with or without programs included
- * (This is the counterpart to print_whole_category_list in /course/lib.php)
- *
- * @global <type> $CFG
- * @param <type> $category
- * @param <type> $displaylist
- * @param <type> $parentslist
- * @param <type> $depth
- * @param <type> $showprograms
- * @return <type>
- */
-function prog_print_whole_category_list($category=NULL, $displaylist=NULL, $parentslist=NULL, $depth=-1, $showprograms = true) {
-    global $CFG;
-    require_once($CFG->libdir . '/coursecatlib.php');
-
-    // maxcategorydepth == 0 meant no limit
-    if (!empty($CFG->maxcategorydepth) && $depth >= $CFG->maxcategorydepth) {
-        return;
-    }
-
-    if (!$displaylist) {
-        $displaylist = coursecat::make_categories_list();
-    }
-
-    if ($category) {
-        if ($category->visible or has_capability('moodle/category:viewhiddencategories', context_system::instance())) {
-            echo prog_print_category_info($category, $depth, $showprograms);
-        } else {
-            return;  // Don't bother printing children of invisible categories
-        }
-
-    } else {
-        $category->id = "0";
-    }
-
-    if ($categories = get_child_categories($category->id)) {   // Print all the children recursively
-        $countcats = count($categories);
-        $count = 0;
-        $first = true;
-        $last = false;
-        foreach ($categories as $cat) {
-            $count++;
-            if ($count == $countcats) {
-                $last = true;
-            }
-            $up = $first ? false : true;
-            $down = $last ? false : true;
-            $first = false;
-
-            prog_print_whole_category_list($cat, $displaylist, $parentslist, $depth + 1, $showprograms);
-        }
-    }
-}
-
-/**
- * Prints the category info in indented fashion
- * This function is only used by prog_print_whole_category_list() above
- * (This is the counterpart to print_category_info in /course/lib.php)
- *
- * @global <type> $CFG
- * @staticvar <type> $strallowguests
- * @staticvar <type> $strrequireskey
- * @staticvar <type> $strsummary
- * @staticvar <type> $coursecount
- * @param <type> $category
- * @param <type> $depth
- * @param <type> $showprograms
- */
-function prog_print_category_info($category, $depth, $showprograms = false) {
-    global $CFG, $DB, $PAGE;
-
-    static $programcount = null;
-    if (null === $programcount) {
-        // only need to check this once
-        $programcount = $DB->count_records('prog') <= FRONTPAGECOURSELIMIT;
-    }
-
-    $programs = prog_get_programs($category->id, 'p.sortorder ASC',
-                'p.id,p.sortorder,p.visible,p.fullname,p.shortname,p.summary,p.icon');
-
-    // does the depth exceed maxcategorydepth
-    // maxcategorydepth == 0 or unset meant no limit
-    $limit = ($CFG->maxcategorydepth == 0) || (!(isset($CFG->maxcategorydepth) && ($depth >= $CFG->maxcategorydepth-1)));
-
-    $renderer = $PAGE->get_renderer('totara_program');
-    return $renderer->prog_print_category_info($category, $programs, $depth, $limit, $showprograms, $programcount);
-}
-
-/**
- * Print links to page view type
- *
- * @param string $pagetype The type of page the tabs are being displayed on
- * @param string $viewtype Should be either 'program' or 'course'
- * @param array $options
- */
-function prog_print_viewtype_selector($pagetype, $viewtype, $options=null) {
-    global $CFG;
-
-    switch($pagetype) {
-        case 'categoryindex':
-            $courselink = $CFG->wwwroot.'/course/category.php?id='.$options->id.'&amp;viewtype=course';
-            $programlink = $CFG->wwwroot.'/course/category.php?id='.$options->id.'&amp;viewtype=program';
-        break;
-
-        case 'courseindex':
-            $courselink = $CFG->wwwroot.'/course/index.php?viewtype=course';
-            $programlink = $CFG->wwwroot.'/course/index.php?viewtype=program';
-        break;
-    }
-
-    if ($viewtype=='course') {
-        $currenttab = 'courses';
-    } else {
-        $currenttab = 'programs';
-    }
-
-    $row = array();
-    $row[] = new tabobject('courses', $courselink, get_string('courses', 'totara_program'));
-    $row[] = new tabobject('programs', $programlink, get_string('programs', 'totara_program'));
-
-    $tabs = array($row);
-
-    echo html_writer::start_tag('div', array('id' => 'viewtypepicker'));
-    print_tabs($tabs, $currenttab);
-    echo html_writer::end_tag('div');
-
 }
 
 /**
@@ -882,18 +696,14 @@ function prog_can_enter_course($user, $course) {
  * A list of programs that match a search
  *
  * @uses $DB, $USER
- * @param array $searchterms ?
- * @param string $sort ?
- * @param int $page ?
- * @param int $recordsperpage ?
- * @param int $totalcount Passed in by reference. ?
- * @param string $whereclause Addition where clause
- * @param array $whereparams Parameters needed for $whereclause
+ * @param array $searchterms Terms to search
+ * @param string $sort Sort order of the records
+ * @param int $page
+ * @param int $recordsperpage
+ * @param int $totalcount Passed in by reference.
  * @return object {@link $COURSE} records
  */
-// TODO: Fix this function to work in Moodle 2 way
-// See lib/datalib.php -> get_courses_search for example
-function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount, $whereclause, $whereparams) {
+function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount) {
     global $DB, $USER;
 
     $REGEXP    = $DB->sql_regex(true);
@@ -951,7 +761,7 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
         }
     }
 
-    // If search terms supplied, include in where
+    // If search terms supplied, include in where.
     if (count($searchterms)) {
         $where = "
             WHERE (( $fullnamesearch ) OR ( $summarysearch ) OR ( $idnumbersearch ) OR ( $shortnamesearch ))
@@ -959,14 +769,8 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
         ";
         $params = array_merge($params, $fullnamesearchparams, $summarysearchparams, $idnumbersearchparams, $shortnamesearchparams);
     } else {
-        // Otherwise return everything
+        // Otherwise return everything.
         $where = " WHERE category > 0 ";
-    }
-
-    // Add any additional sql supplied to where clause
-    if ($whereclause) {
-        $where .= " AND {$whereclause}";
-        $params = array_merge($params, $whereparams);
     }
 
     $sql = "SELECT p.*,
@@ -980,16 +784,15 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
 
     $programs = array();
 
-    // Tiki pagination
     $limitfrom = $page * $recordsperpage;
     $limitto   = $limitfrom + $recordsperpage;
-    $c = 0; // counts how many visible programs we've seen
+    $c = 0; // Counts how many visible programs we've seen.
 
     $rs = $DB->get_recordset_sql($sql, $params);
 
     foreach ($rs as $program) {
         if (!is_siteadmin($USER->id)) {
-            // Check if this program is not available, if it's not then deny access
+            // Check if this program is not available, if it's not then deny access.
             if ($program->available == 0) {
                 continue;
             }
@@ -1000,21 +803,19 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
                 $now = usertime(time());
             }
 
-            // Check if the programme isn't accessible yet
+            // Check if the programme isn't accessible yet.
             if ($program->availablefrom > 0 && $program->availablefrom > $now) {
                 continue;
             }
 
-            // Check if the programme isn't accessible anymore
+            // Check if the programme isn't accessible anymore.
             if ($program->availableuntil > 0 && $program->availableuntil < $now) {
                 continue;
             }
         }
 
         if ($program->visible || has_capability('totara/program:viewhiddenprograms', program_get_context($program->id))) {
-            // Don't exit this loop till the end
-            // we need to count all the visible courses
-            // to update $totalcount
+            // Don't exit this loop till the end we need to count all the visible programs to update $totalcount.
             if ($c >= $limitfrom && $c < $limitto) {
                 $programs[] = $program;
             }
@@ -1024,8 +825,7 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
 
     $rs->close();
 
-    // our caller expects 2 bits of data - our return
-    // array, and an updated $totalcount
+    // Our caller expects 2 bits of data - our return array, and an updated $totalcount.
     $totalcount = $c;
     return $programs;
 }
@@ -1469,4 +1269,257 @@ function totara_program_pluginfile($course, $cm, $context, $filearea, $args, $fo
     }
 
     send_stored_file($file, 60*60*24, 0, false, $options); //enable long cache and disable forcedownload
+}
+
+/**
+ * Returns options to use in program overviewfiles filemanager
+ *
+ * @param null|stdClass|course_in_list|int $program either object that has 'id' property or just the course id;
+ *     may be empty if course does not exist yet (course create form)
+ * @return array|null array of options such as maxfiles, maxbytes, accepted_types, etc.
+ *     or null if overviewfiles are disabled
+ */
+function prog_program_overviewfiles_options($program) {
+    global $CFG;
+    if (empty($CFG->courseoverviewfileslimit)) {
+        return null;
+    }
+    $accepted_types = preg_split('/\s*,\s*/', trim($CFG->courseoverviewfilesext), -1, PREG_SPLIT_NO_EMPTY);
+    if (in_array('*', $accepted_types) || empty($accepted_types)) {
+        $accepted_types = '*';
+    } else {
+        // Since config for $CFG->courseoverviewfilesext is a text box, human factor must be considered.
+        // Make sure extensions are prefixed with dot unless they are valid typegroups
+        foreach ($accepted_types as $i => $type) {
+            if (substr($type, 0, 1) !== '.') {
+                require_once($CFG->libdir. '/filelib.php');
+                if (!count(file_get_typegroup('extension', $type))) {
+                    // It does not start with dot and is not a valid typegroup, this is most likely extension.
+                    $accepted_types[$i] = '.'. $type;
+                    $corrected = true;
+                }
+            }
+        }
+        if (!empty($corrected)) {
+            set_config('courseoverviewfilesext', join(',', $accepted_types));
+        }
+    }
+    $options = array(
+                    'maxfiles' => $CFG->courseoverviewfileslimit,
+                    'maxbytes' => $CFG->maxbytes,
+                    'subdirs' => 0,
+                    'accepted_types' => $accepted_types
+    );
+    if (!empty($program->id)) {
+        $options['context'] = context_program::instance($program->id);
+    } else if (is_int($program) && $program > 0) {
+        $options['context'] = context_program::instance($program);
+    }
+    return $options;
+}
+
+/**
+ * Returns true if the category has programs in it (count does not include programs
+ * in child categories)
+ *
+ * @param coursecat $category
+ * @return bool
+ */
+function prog_has_programs($category) {
+    global $DB;
+    return $DB->record_exists_sql("SELECT 1 FROM {prog} WHERE category = :category",
+            array('category' => $category->id));
+}
+
+/** Returns number of programs visible to the user
+ *
+ * @param coursecat $category
+ * @param array $options Program display options
+ * @return int
+ */
+function prog_get_programs_count($category, $options = array()) {
+    // We have no programs at site level.
+    if ($category->id == 0) {
+        return 0;
+    }
+    $programs = prog_get_programs($category->id, 'p.sortorder ASC', 'p.*', $options);
+    return count($programs);
+}
+
+/**
+ * Can the current user delete programs in this category?
+ *
+ * @param int $categoryid
+ * @return boolean
+ */
+function prog_can_delete_programs($categoryid) {
+    global $DB;
+
+    $context = context_coursecat::instance($categoryid);
+    $sql = context_helper::get_preload_record_columns_sql('ctx');
+    $programcontexts = $DB->get_records_sql('SELECT ctx.instanceid AS progid, '.
+                    $sql. ' FROM {context} ctx '.
+                    'WHERE ctx.path like :pathmask and ctx.contextlevel = :programlevel',
+                    array('pathmask' => $context->path. '/%',
+                          'programlevel' => CONTEXT_PROGRAM));
+    foreach ($programcontexts as $ctxrecord) {
+        context_helper::preload_from_record($ctxrecord);
+        $programcontext = context_program::instance($ctxrecord->progid);
+        if (!has_capability('totara/program:deleteprogram', $programcontext)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Class to store information about one program in a list of programs
+ *
+ * Written to resemble {@link course_in_list} class in coursecatlib.php
+ */
+class program_in_list implements IteratorAggregate {
+
+    /** @var stdClass record retrieved from DB, may have additional calculated property such as managers and hassummary */
+    protected $record;
+
+    /**
+     * Creates an instance of the class from record
+     *
+     * @param stdClass $record except fields from prog table it may contain
+     *     field hassummary indicating that summary field is not empty.
+     *     Also it is recommended to have context fields here ready for
+     *     context preloading
+     */
+    public function __construct(stdClass $record) {
+        context_instance_preload($record);
+        $this->record = new stdClass();
+        foreach ($record as $key => $value) {
+            $this->record->$key = $value;
+        }
+    }
+
+    /**
+     * Indicates if the program has non-empty summary field
+     *
+     * @return bool
+     */
+    public function has_summary() {
+        if (isset($this->record->hassummary)) {
+            return !empty($this->record->hassummary);
+        }
+        if (!isset($this->record->summary)) {
+            // We need to retrieve summary.
+            $this->__get('summary');
+        }
+        return !empty($this->record->summary);
+    }
+
+    /**
+     * Checks if program has any associated overview files
+     *
+     * @return bool
+     */
+    public function has_program_overviewfiles() {
+        global $CFG;
+        if (empty($CFG->courseoverviewfileslimit)) {
+            return 0;
+        }
+        require_once($CFG->libdir. '/filestorage/file_storage.php');
+        $fs = get_file_storage();
+        $context = context_program::instance($this->id);
+        return $fs->is_area_empty($context->id, 'program', 'overviewfiles');
+    }
+
+    /**
+     * Returns all program overview files
+     *
+     * @return array array of stored_file objects
+     */
+    public function get_program_overviewfiles() {
+        global $CFG;
+        if (empty($CFG->courseoverviewfileslimit)) {
+            return array();
+        }
+        require_once($CFG->libdir . '/filestorage/file_storage.php');
+        $fs = get_file_storage();
+        $context = context_program::instance($this->id);
+        $files = $fs->get_area_files($context->id, 'totara_program', 'overviewfiles', false, 'filename', false);
+        if (count($files)) {
+            $overviewfilesoptions = prog_program_overviewfiles_options($this->id);
+            $acceptedtypes = $overviewfilesoptions['accepted_types'];
+            if ($acceptedtypes !== '*') {
+                // Filter only files with allowed extensions.
+                require_once($CFG->libdir . '/filelib.php');
+                foreach ($files as $key => $file) {
+                    if (!file_extension_in_typegroup($file->get_filename(), $acceptedtypes)) {
+                        unset($files[$key]);
+                    }
+                }
+            }
+            if (count($files) > $CFG->courseoverviewfileslimit) {
+                $files = array_slice($files, 0, $CFG->courseoverviewfileslimit, true);
+            }
+        }
+        return $files;
+    }
+
+    public function __isset($name) {
+        return isset($this->record->$name);
+    }
+
+    /**
+     * Magic method to get a program property
+     *
+     * Returns any field from table prog (from cache or from DB) and/or special field 'hassummary'
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function __get($name) {
+        global $DB;
+        if (property_exists($this->record, $name)) {
+            return $this->record->$name;
+        } else if ($name === 'summary') {
+            // retrieve fields summary and summaryformat together because they are most likely to be used together
+            $record = $DB->get_record('prog', array('id' => $this->record->id), 'summary', MUST_EXIST);
+            $this->record->summary = $record->summary;
+            return $this->record->$name;
+        } else if (array_key_exists($name, $DB->get_columns('prog'))) {
+            // another field from table 'prog' that was not retrieved
+            $this->record->$name = $DB->get_field('prog', $name, array('id' => $this->record->id), MUST_EXIST);
+            return $this->record->$name;
+        }
+        debugging('Invalid program property accessed! ' . $name);
+        return null;
+    }
+
+    /**
+     * ALl properties are read only, sorry.
+     * @param string $name
+     */
+    public function __unset($name) {
+        debugging('Can not unset ' . get_class($this) . ' instance properties!');
+    }
+
+    /**
+     * Magic setter method, we do not want anybody to modify properties from the outside
+     * @param string $name
+     * @param mixed $value
+     */
+    public function __set($name, $value) {
+        debugging('Can not change ' . get_class($this) . ' instance properties!');
+    }
+
+    /**
+     * Create an iterator because magic vars can't be seen by 'foreach'.
+     * Exclude context fields
+     */
+    public function getIterator() {
+        $ret = array('id' => $this->record->id);
+        foreach ($this->record as $property => $value) {
+            $ret[$property] = $value;
+        }
+        return new ArrayIterator($ret);
+    }
 }

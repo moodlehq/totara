@@ -93,7 +93,7 @@ class enrol_totara_learningplan_plugin extends enrol_plugin {
                 $destination = new moodle_url('/course/view.php', array('id' => $course->id));
                 $form .= get_string('guestaccess', 'enrol_totara_learningplan', $destination);
             } else {
-                $destination = new moodle_url("/course/categorylist.php", array('viewtype' => 'course'));
+                $destination = new moodle_url("/course/index.php");
             }
             return $OUTPUT->container($form, 'plan_box plan_box_action') . $OUTPUT->continue_button($destination);
         }

@@ -37,7 +37,7 @@ if (!has_capability('totara/program:deleteprogram', $program->get_context())) {
     print_error('error:nopermissions', 'local_program');
 }
 
-admin_externalpage_setup('manageprograms', '', array('id' => $id, 'delete' => $delete), $CFG->wwwroot.'/totara/program/delete.php');
+admin_externalpage_setup('programmgmt', '', array('id' => $id, 'delete' => $delete), $CFG->wwwroot.'/totara/program/delete.php');
 
 $returnurl = "{$CFG->wwwroot}/totara/program/edit.php?id={$program->id}";
 $deleteurl = "{$CFG->wwwroot}/totara/program/delete.php?id={$program->id}&amp;sesskey={$USER->sesskey}&amp;category={$category}&amp;delete=".md5($program->timemodified);
@@ -81,7 +81,7 @@ if ($program->delete()) {
     } else {
         throw new Exception(get_string('error:failfixprogsortorder', 'totara_program'));
     }
-    $notification_url = "{$CFG->wwwroot}/course/category.php?id={$category}&amp;viewtype=program&amp;categoryedit=on";
+    $notification_url = "{$CFG->wwwroot}/totara/program/manage.php?categoryid={$category}";
     totara_set_notification(get_string('programdeletesuccess', 'totara_program', $program->fullname), $notification_url, array('class' => 'notifysuccess'));
 }
 ?>

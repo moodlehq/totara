@@ -34,6 +34,7 @@ require_once($CFG->libdir.'/coursecatlib.php');
 require_login();
 
 $id = optional_param('id', 0, PARAM_INT);
+$type = optional_param('type', 'course', PARAM_TEXT); // Type of the page to know where we need to return to.
 $itemid = 0; //initalise itemid, as all files in category description has item id 0
 
 if ($id) {
@@ -81,16 +82,26 @@ $editoroptions = array(
 );
 $category = file_prepare_standard_editor($category, 'description', $editoroptions, $editorcontext, 'coursecat', 'description', $itemid);
 
-$mform = new editcategory_form('editcategory.php', compact('category', 'editoroptions'));
+$mform = new editcategory_form('editcategory.php', compact('category', 'editoroptions', 'type'));
 $mform->set_data($category);
 
 if ($mform->is_cancelled()) {
-    if ($id) {
-        redirect($CFG->wwwroot . '/course/manage.php?categoryid=' . $id);
-    } else if ($parent) {
-        redirect($CFG->wwwroot .'/course/manage.php?categoryid=' . $parent);
+    if ($type != 'program') {
+        if ($id) {
+            redirect($CFG->wwwroot . '/course/manage.php?categoryid=' . $id);
+        } else if ($parent) {
+            redirect($CFG->wwwroot .'/course/manage.php?categoryid=' . $parent);
+        } else {
+            redirect($CFG->wwwroot .'/course/manage.php');
+        }
     } else {
-        redirect($CFG->wwwroot .'/course/manage.php');
+        if ($id) {
+            redirect($CFG->wwwroot . '/totara/program/manage.php?categoryid=' . $id);
+        } else if ($parent) {
+            redirect($CFG->wwwroot .'/totara/program/manage.php?categoryid=' . $parent);
+        } else {
+            redirect($CFG->wwwroot .'/totara/program/manage.php');
+        }
     }
 } else if ($data = $mform->get_data()) {
     if ($id) {
@@ -103,13 +114,19 @@ if ($mform->is_cancelled()) {
         $newcategory = coursecat::create($data, $editoroptions);
     }
 
-    redirect('manage.php?categoryid='.$newcategory->id);
+    if ($type != 'program') {
+        redirect('manage.php?categoryid='.$newcategory->id);
+    } else {
+        redirect(new moodle_url('/totara/program/manage.php', array('categoryid' => $newcategory->id)));
+    }
 }
 
 // Page "Add new category" (with "Top" as a parent) does not exist in navigation.
 // We pretend we are on course management page.
-if (empty($id) && empty($parent)) {
+if (empty($id) && empty($parent) && $type != 'program') {
     navigation_node::override_active_url(new moodle_url('/course/manage.php'));
+} else if (empty($id) && empty($parent)) {
+    navigation_node::override_active_url(new moodle_url('/totara/program/manage.php'));
 }
 
 $PAGE->set_title($title);

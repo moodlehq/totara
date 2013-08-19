@@ -64,16 +64,16 @@ $PAGE->requires->js_init_call('M.totara_programview.init',$args, false, $jsmodul
 /// Display
 ///
 
-$adminediting = !empty($USER->categoryedit);
+$isadmin = has_capability('moodle/category:manage', context_coursecat::instance($program->category));
 
-$category_breadcrumbs = get_category_breadcrumbs($program->category);
+$category_breadcrumbs = prog_get_category_breadcrumbs($program->category);
 
 $heading = $program->fullname;
 $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
-if ($adminediting) {
-    $PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
+if ($isadmin) {
+    $PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/totara/program/manage.php'));
 } else {
-    $PAGE->navbar->add(get_string('findprograms', 'totara_program'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
+    $PAGE->navbar->add(get_string('findprograms', 'totara_program'), new moodle_url('/totara/program/index.php'));
 }
 
 foreach ($category_breadcrumbs as $crumb) {
@@ -85,6 +85,11 @@ $PAGE->navbar->add($heading);
 $PAGE->set_title($pagetitle);
 $PAGE->set_heading('');
 echo $OUTPUT->header();
+
+if ($isadmin) {
+    echo $OUTPUT->single_button(new moodle_url('/totara/program/edit.php', array('id' => $program->id)),
+        get_string('editprogramdetails', 'totara_program'), 'GET', array('class' => 'navbutton'));
+}
 
 // Program page content
 echo $OUTPUT->container_start('', 'view-program-content');

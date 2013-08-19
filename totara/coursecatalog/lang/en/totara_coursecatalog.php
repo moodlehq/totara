@@ -31,7 +31,6 @@ $string['searchallcategories'] = 'Search all categories';
 $string['searchallprograms'] = 'Search all programs';
 $string['searchcategories'] = 'Search categories';
 $string['viewallcourses'] = 'View all courses';
-$string['viewallprograms'] = 'View all programs';
 $string['viewallcategories'] = 'View all categories';
 $string['orviewcourses'] = 'or view courses in this category ({$a})';
 $string['orviewprograms'] = 'or view programs in this category ({$a})';
