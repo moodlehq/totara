@@ -3,6 +3,41 @@
 
 Totara LMS Changelog
 
+Release 2.4.8 (20th August 2013):
+==================================================
+
+Improvements:
+    T-10960    Improved error messages when field character length limit is exceeded in Totara Sync
+    T-10929    Added custom field mappings for user sources in Totara Sync
+    T-10921    Send decline notification when manager declines user session request in Facetoface
+    T-10935    Improved Facetoface session status display for learners
+    T-10404    Expanded options for text input fields in dynamic audience rules
+    T-10997    Added suspended user field to the list of fields that can be imported via Totara Sync
+    T-11040    Modified plugin settings load order to better support local plugins
+    T-11020    Added suppress email setting to bulk user uploads in Facetoface
+
+Bug Fixes:
+    T-11068    Fixed the error message when trying to enrol an audience to a course multiple times
+    T-10894    Fixed sending emails to a 3rd party in Facetoface
+    T-10281    Created a queue for program assignment messages to avoid duplicate emails to users
+    T-10714    Fixed display of images in course, program, and plan description columns in reports
+    T-11090    Fixed the repaginate button and style issues in quiz module
+    T-10319    Added a check for duplicated idnumbers/usernames/emails when importing users in Totara Sync
+    T-11091    Removed entries in prog_pos_assignment table when deleting a position
+    T-11083    Fixed overlapping page elements in Kiwifruit theme
+    T-11059    Fixed error with plain text messages being sent as html messages
+    T-11056    Replaced deprecated live() function in MyMobile Totara theme
+    T-11022    Fixed activity completion and course progress reports headers display in Internet Explorer 8
+    T-10533    Fixed error when creating a wiki page using the same tag twice
+    T-11060    Fixed "records shown" language string in tasks and alerts embedded reports
+    T-11061    Fixed managers not getting Factoface session requests in their tasks
+    T-11058    Updated facetoface cron to use mtrace rather than echo
+    T-10919    Fixed empty emails being sent out when messaging system is used
+    T-10824    Fixed badge image url breaking when slasharguments is not supported
+    T-5734     Fixed string encoding issue in session signup form
+    T-5734     Fixed undefined variable warnings in Totara Task and Alert blocks
+
+
 Release 2.4.7 (6th August 2013):
 ==================================================
 
