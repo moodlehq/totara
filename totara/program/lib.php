@@ -1149,6 +1149,47 @@ function prog_eventhandler_courseset_completed($eventdata) {
     return true;
 }
 
+/**
+ * Event that is triggered when a user is deleted.
+ *
+ * Cancels a user from any programs they are associated with, tables to clear are
+ * prog_assignment
+ * prog_future_user_assignment
+ * prog_user_assignment
+ * prog_exception
+ * prog_extension
+ * prog_messagelog
+ *
+ * @param object $user
+ *
+ */
+function prog_eventhandler_user_deleted($user) {
+    global $DB;
+
+    // We don't want to send messages or anything so just wipe the records from the DB.
+    $transaction = $DB->start_delegated_transaction();
+
+    // Delete all the individual assignments for the user.
+    $DB->delete_records('prog_assignment', array('assignmenttype' => ASSIGNTYPE_INDIVIDUAL, 'assignmenttypeid' => $user->id));
+
+    // Delete any future assignments for the user.
+    $DB->delete_records('prog_future_user_assignment', array('userid' => $user->id));
+
+    // Delete all the program user assignments for the user.
+    $DB->delete_records('prog_user_assignment', array('userid' => $user->id));
+
+    // Delete all the program exceptions for the user.
+    $DB->delete_records('prog_exception', array('userid' => $user->id));
+
+    // Delete all the program extensions for the user.
+    $DB->delete_records('prog_extension', array('userid' => $user->id));
+
+    // Delete all the program message logs for the user.
+    $DB->delete_records('prog_messagelog', array('userid' => $user->id));
+
+    $transaction->allow_commit();
+}
+
 function prog_store_position_assignment($assignment) {
     global $DB;
     // Need to check this since this is not necessarily set now.

@@ -47,5 +47,10 @@ $handlers = array (
          'handlerfile'      => '/totara/program/lib.php',
          'handlerfunction'  => 'prog_assignments_firstlogin',
          'schedule'         => 'instant'
-     )
+     ),
+     'user_deleted' => array(
+         'handlerfile'       => '/totara/program/lib.php',
+         'handlerfunction'   => 'prog_eventhandler_user_deleted',
+         'schedule'          => 'instant'
+     ),
 );
