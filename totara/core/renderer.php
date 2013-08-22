@@ -711,14 +711,16 @@ class totara_core_renderer extends plugin_renderer_base {
         if ($currentuser || totara_is_manager($userid) || is_siteadmin()) {
             $strrol = get_string('recordoflearning', 'totara_core');
             $urlrol = new moodle_url('/totara/plan/record/index.php', array('userid' => $userid));
-            print_row($strrol . ':', html_writer::link($urlrol, $strrol));
+            echo html_writer::tag('dt', $strrol);
+            echo html_writer::tag('dd', html_writer::link($urlrol, $strrol));
         }
 
         // Learning plans.
         if (dp_can_view_users_plans($userid)) {
             $strplans = get_string('learningplans', 'totara_plan');
             $urlplans = new moodle_url('/totara/plan/index.php', array('userid' => $userid));
-            print_row($strplans . ':', html_writer::link($urlplans, $strplans));
+            echo html_writer::tag('dt', $strplans);
+            echo html_writer::tag('dd', html_writer::link($urlplans, $strplans));
         }
     }
 }
