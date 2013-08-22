@@ -259,7 +259,6 @@ h2.headingblock {
     background: transparent;
 }
 .errorbox,
-.loginerrors,
 .notifyproblem {
     color: #BF2C11;
     border-color:#EED3D7;
@@ -407,7 +406,14 @@ select {
 .ie7 input[type="radio"] {
     margin: 0;
 }
-
+.mform .btn-cancel {
+    color: #087BB1;
+    text-decoration: none;
+}
+.mform .btn-cancel:hover,
+.mform .btn-cancel:focus {
+    text-decoration: none;
+}
 
 /**
  * Buttons and button-like links
@@ -470,7 +476,6 @@ input[type="checkbox"] {
 }
 .mform fieldset legend {
     width:100%;
-    font-size:1.3em;
     color:#333333;
     padding-bottom:3px;
     border-bottom:1px solid #BFBFBF;
