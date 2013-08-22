@@ -163,6 +163,15 @@ class totara_program_renderer extends plugin_renderer_base {
         $out .= html_writer::start_tag('form', array('name' => 'form_prog_assignments', 'method' => 'post'));
         $out .= html_writer::start_tag('fieldset', array('id' => 'programassignments'));
         $out .= html_writer::tag('legend', get_string('programassignments', 'totara_program'), array('class' => 'ftoggler'));
+
+        // Show the program time required so people know the minimum to set completion to.
+        $program = new program($id);
+        $programtime = $program->content->get_total_time_allowance();
+
+        if ($programtime > 0) {
+            $out .= prog_format_seconds($programtime);
+        }
+
         $out .= html_writer::tag('p', get_string('instructions:programassignments', 'totara_program'));
         $out .= html_writer::start_tag('div', array('id' => 'assignment_categories'));
 

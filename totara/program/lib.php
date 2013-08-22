@@ -1511,3 +1511,34 @@ function totara_program_pluginfile($course, $cm, $context, $filearea, $args, $fo
 
     send_stored_file($file, 60*60*24, 0, false, $options); //enable long cache and disable forcedownload
 }
+
+function prog_format_seconds($seconds) {
+
+    $years = floor($seconds / DURATION_YEAR);
+    $str_years = get_string('xyears', 'totara_program', $years);
+    $seconds = $seconds % DURATION_YEAR;
+
+    $months = floor($seconds / DURATION_MONTH);
+    $str_months = get_string('xmonths', 'totara_program', $months);
+    $seconds = $seconds % DURATION_MONTH;
+
+    $weeks = floor($seconds / DURATION_WEEK);
+    $str_weeks = get_string('xweeks', 'totara_program', $weeks);
+    $seconds = $seconds % DURATION_WEEK;
+
+    $days = floor($seconds / DURATION_DAY);
+    $str_days = get_string('xdays', 'totara_program', $days);
+
+    $output = '';
+    $output .= html_writer::start_tag('div', array('id' => 'programtimerequired'));
+    $output .= html_writer::start_tag('p');
+    $output .= get_string('minprogramtimerequired', 'totara_program');
+    $output .= !empty($years) ? ' ' . $str_years : '';
+    $output .= !empty($months) ? ' ' . $str_months : '';
+    $output .= !empty($weeks) ? ' ' . $str_weeks : '';
+    $output .= !empty($days) ? ' ' . $str_days : '';
+    $output .= html_writer::end_tag('p');
+    $output .= html_writer::end_tag('div');
+
+    return $output;
+}

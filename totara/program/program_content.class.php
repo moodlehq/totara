@@ -788,6 +788,15 @@ class prog_content {
 
         $templatehtml .= html_writer::start_tag('fieldset', array('id' => 'programcontent'));
         $templatehtml .= html_writer::start_tag('legend', array('class' => 'ftoggler')) . get_string('programcontent', 'totara_program') . html_writer::end_tag('legend');
+
+        // Show the program total minimum time required.
+        $program = new program($this->programid);
+        $programtime = $program->content->get_total_time_allowance();
+
+        if ($programtime > 0) {
+            $templatehtml .= prog_format_seconds($programtime);
+        }
+
         $templatehtml .= html_writer::start_tag('p') . get_string('instructions:programcontent', 'totara_program') . html_writer::end_tag('p');
 
         $templatehtml .= html_writer::start_tag('div', array('id' => 'course_sets'));
