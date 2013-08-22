@@ -179,10 +179,12 @@ echo $OUTPUT->doctype() ?>
 
       <div id="page-footer">
         <div class="footer-content">
+    <?php if ($showmenu) { ?>
           <?php if ($hascustommenu) { ?>
           <div id="custommenu"><?php echo $custommenu; ?></div>
           <?php } else { ?>
           <div id="totaramenu"><?php echo $totaramenu; ?>
+  <?php } ?>
       <div class="clear"></div>
       </div>
           <?php } ?>

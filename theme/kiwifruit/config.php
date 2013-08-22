@@ -72,7 +72,8 @@ $THEME->layouts = array(
     'login' => array(
         'file' => 'login.php',
         'regions' => array(),
-        'options' => array('langmenu' => true, 'nocourseheaderfooter' => true)
+        'options' => array('langmenu' => true, 'nologininfo' => true, 'nocustommenu' => true,
+            'nonavbar' => true, 'nocourseheaderfooter' => true)
     ),
     'report' => array(
         'file' => 'general.php',
