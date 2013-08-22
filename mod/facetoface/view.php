@@ -77,6 +77,7 @@ echo $OUTPUT->heading(get_string('allsessionsin', 'facetoface', $facetoface->nam
 
 if ($facetoface->intro) {
     echo $OUTPUT->box_start('generalbox','description');
+    $facetoface->intro = file_rewrite_pluginfile_urls($facetoface->intro, 'pluginfile.php', $context->id, 'mod_facetoface', 'intro', null);
     echo format_text($facetoface->intro, $facetoface->introformat);
     echo $OUTPUT->box_end();
 }

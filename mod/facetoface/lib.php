@@ -2902,18 +2902,24 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
     if (!empty($session->discountcost)) {
         $table->data[] = array(get_string('discountcost', 'facetoface'), format_string($session->discountcost));
     }
+
+    // Display trainers.
+    $courseid = $DB->get_field('facetoface', 'course', array('id' => $session->facetoface));
+    $coursecontext = context_course::instance($courseid);
+
     if (!empty($session->details)) {
-        $details = clean_text($session->details, FORMAT_HTML);
+        if ($cm = get_coursemodule_from_instance('facetoface', $facetoface->id, $courseid)) {
+            $context = context_module::instance($cm->id);
+            $session->details = file_rewrite_pluginfile_urls($session->details, 'pluginfile.php', $context->id, 'mod_facetoface', 'session', $session->id);
+        }
+        $details = format_text($session->details, FORMAT_HTML);
         $table->data[] = array(get_string('details', 'facetoface'), $details);
     }
 
-    // Display trainers
-    $courseid = $DB->get_field('facetoface', 'course', array('id' => $session->facetoface));
-    $coursecontext = context_course::instance($courseid);
     $trainerroles = facetoface_get_trainer_roles($coursecontext);
 
     if ($trainerroles) {
-        // Get trainers
+        // Get trainers.
         $trainers = facetoface_get_trainers($session->id);
 
         foreach ($trainerroles as $role => $rolename) {
@@ -4467,4 +4473,50 @@ function facetoface_get_session_room($sessionid) {
         WHERE s.id = ?";
 
     return $DB->get_record_sql($sql, array($sessionid));
+}
+
+/**
+ * Serves the facetoface and sessions details.
+ *
+ * @param stdClass $course course object
+ * @param cm_info $cm course module object
+ * @param context $context context object
+ * @param string $filearea file area
+ * @param array $args extra arguments
+ * @param bool $forcedownload whether or not force download
+ * @param array $options additional options affecting the file serving
+ * @return bool false if file not found, does not return if found - just send the file
+ */
+function facetoface_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+    global $DB;
+
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        return false;
+    }
+
+    require_course_login($course, true, $cm);
+
+    if ($filearea !== 'session') {
+        return false;
+    }
+
+    $sessionid = (int)array_shift($args);
+
+    if (!$session = $DB->get_record('facetoface_sessions', array('id' => $sessionid))) {
+        return false;
+    }
+
+    if (!$facetoface = $DB->get_record('facetoface', array('id' => $cm->instance))) {
+        return false;
+    }
+
+    $fs = get_file_storage();
+    $relativepath = implode('/', $args);
+    $fullpath = "/$context->id/mod_facetoface/$filearea/$sessionid/$relativepath";
+    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+        return false;
+    }
+
+    // finally send the file
+    send_stored_file($file, 360, 0, $forcedownload, $options);
 }

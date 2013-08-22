@@ -464,6 +464,11 @@ abstract class rb_base_source {
             $context = context_system::instance();
         } else {
             $rowcontext = $row->context;
+            if ($rowcontext == 'context_module') {
+                $component = str_replace('mod_', '', $row->component);
+                $cm = get_coursemodule_from_instance($component, $row->recordid);
+                $row->recordid = $cm->id;
+            }
             $context = $rowcontext::instance($row->recordid);
         }
 
