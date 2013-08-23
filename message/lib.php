@@ -1969,12 +1969,8 @@ function message_format_message($message, $format='', $keywords='', $class='othe
     } else {
         $messagetext = $message->fullmessage;
     }
-    if ($message->fullmessageformat == FORMAT_HTML) {
-        //dont escape html tags by calling s() if html format or they will display in the UI
-        $messagetext = html_to_text(format_text($messagetext, $message->fullmessageformat, $options));
-    } else {
-        $messagetext = format_text(s($messagetext), $message->fullmessageformat, $options);
-    }
+    //dont escape html tags by calling s() if html format or they will display in the UI
+    $messagetext = html_to_text(format_text(s($messagetext), FORMAT_HTML, $options));
 
     $messagetext .= message_format_contexturl($message);
 
