@@ -4,8 +4,6 @@
 # 1/ The database server e.g. oak
 # 2/ The database type e.g. postgres7
 
-DBSERVER=$1
-
 echo "Update Jenkins directory permissions"
 # when Jenkins updates via apt it resets to 750 which, makes the webroot
 # inaccessible. Resetting every build is overkill but does the job
@@ -18,7 +16,7 @@ then
 fi
 
 DBNAME="jenkins-$JOB_NAME"
-/var/lib/jenkins/internal-tools/testing/resetdb.sh $DBSERVER $DBTYPE $DBNAME
+/var/lib/jenkins/internal-tools/testing/resetdb.sh $1 $2 $DBNAME
 
 echo "Delete old moodledata"
 sudo -u www-data php build/reset_cleanmoodledata.php
@@ -70,7 +68,7 @@ sudo -u www-data php admin/cli/install.php \
     --dataroot="/var/lib/jenkins/jobs/$JOB_NAME/moodledata" \
     --dbtype="$DBTYPE" \
     --dbname="$DBNAME" \
-    --dbhost="$DBSERVER" \
+    --dbhost="$1" \
     --dbuser="jenkins" \
     --dbpass="password" \
     --prefix="tst_" \
@@ -91,6 +89,7 @@ echo "\$CFG->phpunit_dataroot = '/var/lib/jenkins/jobs/$JOB_NAME/phpunit_dataroo
 # TODO - do we want to put anything in here or are we good with upgrading a fresh/empty install?
 
 git checkout t2-release-2.4
+git reset --hard origin/t2-release-2.4
 
 echo "Upgrade to Totara"
 sudo -u www-data php /var/lib/jenkins/jobs/${JOB_NAME}/workspace/admin/cli/upgrade.php --non-interactive
