@@ -59,8 +59,6 @@ echo "Install Moodle ${MOODLEVERSION}"
 git fetch moodle # Update the moodle repo for this job.
 git checkout "v${MOODLEVERSION}"
 
-sudo -u www-data php /var/lib/jenkins/jobs/${JOB_NAME}/workspace/admin/cli/install.php --non-interactive
-
 sudo -u www-data php admin/cli/install.php \
     --chmod=755 \
     --lang=en_utf8 \
