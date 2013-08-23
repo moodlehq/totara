@@ -36,6 +36,7 @@ $string['cacheadmin'] = 'Cache administration';
 $string['cacheconfig'] = 'Configuration';
 $string['cachedef_databasemeta'] = 'Database meta information';
 $string['cachedef_eventinvalidation'] = 'Event invalidation';
+$string['cachedef_externalbadges'] = 'External badges for particular user';
 $string['cachedef_htmlpurifier'] = 'HTML Purifier - cleaned content';
 $string['cachedef_locking'] = 'Locking';
 $string['cachedef_questiondata'] = 'Question definitions';

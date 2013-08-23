@@ -83,5 +83,11 @@ $definitions = array(
     // cleaned text which is shareable.
     'htmlpurifier' => array(
         'mode' => cache_store::MODE_APPLICATION,
+    ),
+    // Used to store external badges.
+    'externalbadges' => array(
+        'mode' => cache_store::MODE_APPLICATION,
+        'simplekeys' => true,
+        'ttl' => 3600,
     )
 );
