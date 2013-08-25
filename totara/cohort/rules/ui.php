@@ -168,6 +168,7 @@ abstract class cohort_rule_ui_form extends cohort_rule_ui {
 
             // Add hidden variables
             $mform->addElement('hidden', 'update', 1);
+            $mform->setType('update', PARAM_INT);
 
             $this->form->set_data($this->addFormData());
             $this->addFormFields($mform);

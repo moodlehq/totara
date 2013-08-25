@@ -140,6 +140,7 @@ class plan_edit_form extends moodleform {
             $mform->setType('description_editor', PARAM_CLEANHTML);
         }
         $mform->addElement('text', 'enddate', get_string('completiondate', 'totara_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $mform->setType('enddate', PARAM_TEXT);
         $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         if ($action == 'add' && isset($template->enddate)) {
             $mform->setDefault('enddate', userdate($template->enddate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false));

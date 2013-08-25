@@ -66,6 +66,7 @@ class plan_reactivate_form extends moodleform {
             $mform->addElement('static', 'instructions', null, 'This plan was completed because the end date elapsed, please enter a new end date.');
 
             $mform->addElement('text', 'enddate', get_string('completiondate', 'totara_plan'));
+            $mform->setType('enddate', PARAM_TEXT);
             $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
             $mform->setDefault('enddate', userdate(time(), get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false));
         }

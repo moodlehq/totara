@@ -199,6 +199,7 @@ class rb_role_access extends rb_base_access {
 
         //TODO replace with checkbox once there is more than one option
         $mform->addElement('hidden', 'role_enable', 1);
+        $mform->setType('role_enable', PARAM_INT);
 
         $systemcontext = context_system::instance();
         $roles = role_fix_names(get_all_roles(), $systemcontext);

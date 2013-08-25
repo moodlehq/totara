@@ -41,6 +41,7 @@ class dp_template_general_settings_form extends moodleform {
         $enddate = $template->enddate == 0 ? '' : date(get_string('datepickerparseformat', 'totara_core'), $template->enddate);
 
         $mform->addElement('hidden', 'id', $id);
+        $mform->setType('id', PARAM_INT);
 
         $mform->addElement('header', 'generalsettings', get_string('generalsettings', 'totara_plan'));
 
@@ -158,6 +159,7 @@ class dp_template_workflow_form extends moodleform {
         $mform->disabledIf('advancedsubmitbutton', 'workflow', 'neq', 'custom');
 
         $mform->addElement('hidden', 'id', $id);
+        $mform->setType('id', PARAM_INT);
 
         $this->add_action_buttons();
     }
@@ -199,7 +201,9 @@ class dp_template_advanced_workflow_form extends moodleform {
         $build_form($mform, $this->_customdata);
 
         $mform->addElement('hidden', 'id', $id);
+        $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'component', $component);
+        $mform->setType('component', PARAM_TEXT);
         $this->add_action_buttons();
     }
 }

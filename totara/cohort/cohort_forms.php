@@ -39,6 +39,7 @@ class cohort_rules_form extends moodleform {
         $rulesets = $this->_customdata['rulesets'];
 
         $mform->addElement('hidden', 'id', $cohort->id);
+        $mform->setType('id', PARAM_INT);
 
         // The menu for the operator between rulesets
         $radiogroup = array();
@@ -171,6 +172,7 @@ class cohort_learning_plan_settings_form extends moodleform {
         $cohort = $this->_customdata['data'];
 
         $mform->addElement('hidden', 'cohortid', $cohort->id);
+        $mform->setType('cohortid', PARAM_INT);
 
         $templates = dp_get_templates();
 

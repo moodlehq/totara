@@ -11,27 +11,28 @@ class mod_facetoface_signup_form extends moodleform {
         $showdiscountcode = $this->_customdata['showdiscountcode'];
 
         $mform->addElement('hidden', 's', $this->_customdata['s']);
+        $mform->setType('s', PARAM_INT);
         $mform->addElement('hidden', 'backtoallsessions', $this->_customdata['backtoallsessions']);
+        $mform->setType('backtoallsessions', PARAM_TEXT);
 
         if ($manageremail === false) {
             $mform->addElement('hidden', 'manageremail', '');
-        }
-        else {
+        } else {
             $mform->addElement('html', get_string('manageremailinstructionconfirm', 'facetoface')); // instructions
 
             $mform->addElement('text', 'manageremail', get_string('manageremail', 'facetoface'), 'size="35"');
             $mform->addRule('manageremail', null, 'required', null, 'client');
             $mform->addRule('manageremail', null, 'email', null, 'client');
-            $mform->setType('manageremail', PARAM_TEXT);
         }
+        $mform->setType('manageremail', PARAM_TEXT);
 
         if ($showdiscountcode) {
             $mform->addElement('text', 'discountcode', get_string('discountcode', 'facetoface'), 'size="6"');
             $mform->addHelpButton('discountcode', 'discountcodelearner', 'facetoface');
-            $mform->setType('discountcode', PARAM_TEXT);
         } else {
             $mform->addElement('hidden', 'discountcode', '');
         }
+        $mform->setType('discountcode', PARAM_TEXT);
 
         $options = array(MDL_F2F_BOTH => get_string('notificationboth', 'facetoface'),
                          MDL_F2F_TEXT => get_string('notificationemail', 'facetoface'),

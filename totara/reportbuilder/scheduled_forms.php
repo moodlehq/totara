@@ -51,7 +51,9 @@ class scheduled_reports_new_form extends moodleform {
         $reportname = $DB->get_field('report_builder', 'fullname', array('id' => $reportid));
 
         $mform->addElement('hidden', 'id', $id);
+        $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'reportid', $reportid);
+        $mform->setType('reportid', PARAM_INT);
 
         $savedsearchselect = array();
         $savedsearchselect[0] = get_string('alldata', 'totara_reportbuilder');

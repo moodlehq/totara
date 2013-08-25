@@ -67,6 +67,7 @@ class item_edit_form extends moodleform {
 
         $mform->addElement('text', 'framework', get_string($prefix.'framework', 'totara_hierarchy'));
         $mform->hardFreeze('framework');
+        $mform->setType('framework', PARAM_TEXT);
 
         $parents = $hierarchy->get_parent_list($items, $item->id);
         // If we only have one possible parent, it must be the top level, so hide the
@@ -77,6 +78,7 @@ class item_edit_form extends moodleform {
             $mform->addElement('select', 'parentid', get_string('parent', 'totara_hierarchy'), $parents, totara_select_width_limiter());
             $mform->addHelpButton('parentid', $prefix.'parent', 'totara_hierarchy');
         }
+        $mform->setType('parentid', PARAM_INT);
 
         $mform->addElement('text', 'fullname', get_string('name'), 'maxlength="1024" size="50"');
         $mform->addRule('fullname', get_string($prefix.'missingname', 'totara_hierarchy'), 'required', null);
@@ -114,6 +116,7 @@ class item_edit_form extends moodleform {
 
             // store the actual type ID
             $mform->addElement('hidden', 'typeid', $item->typeid);
+            $mform->setType('typeid', PARAM_INT);
 
         } else {
             // new item
@@ -129,6 +132,7 @@ class item_edit_form extends moodleform {
                 // no types exist
                 // default to 'unclassified'
                 $mform->addElement('hidden', 'typeid', '0');
+                $mform->setType('typeid', PARAM_INT);
             }
         }
 
