@@ -337,7 +337,7 @@ abstract class dp_base_component {
     public function display_list($restrict = null) {
         // If no items, return message instead of table
         if (!$count = $this->count_assigned_items($restrict)) {
-            $plural = strtolower(get_string($this->component.'plural', 'totara_plan'));
+            $plural = mb_strtolower(get_string($this->component.'plural', 'totara_plan'), "UTF-8");
             return html_writer::tag('span', get_string('nox', 'totara_plan', $plural), array('class' => 'noitems-assign'.$this->component));
         }
 
