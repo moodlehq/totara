@@ -361,7 +361,7 @@ function dp_get_rol_tabs_visible($userid) {
         }
     }
 
-    $course_count = enrol_get_my_courses();
+    $course_count = enrol_get_users_courses($userid);
     if (!empty($course_count) || $show_course_tab) {
         $visible[] = 'courses';
     }
@@ -375,7 +375,8 @@ function dp_get_rol_tabs_visible($userid) {
         $visible[] = 'objectives';
     }
 
-    $assigned_progs = prog_get_required_programs($userid, '', '', '', true);
+    $sql = 'SELECT COUNT(id) FROM {prog_user_assignment} WHERE userid = :uid AND exceptionstatus != :eid';
+    $assigned_progs = $DB->count_records_sql($sql, array('uid' => $userid, 'eid' => PROGRAM_EXCEPTION_RAISED));
     if ($assigned_progs > 0 || $show_program_tab) {
         $visible[] = 'programs';
     }
