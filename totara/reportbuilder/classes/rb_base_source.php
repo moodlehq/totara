@@ -2066,6 +2066,13 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'user',
+            'organisationidnumber',
+            get_string('usersorgidnumber', 'totara_reportbuilder'),
+            "$org.idnumber",
+            array('joins' => $org, 'selectable' => true)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
             'organisationpath',
             get_string('usersorgpathids', 'totara_reportbuilder'),
             "$org.path",
@@ -2100,6 +2107,13 @@ abstract class rb_base_source {
             get_string('usersposid', 'totara_reportbuilder'),
             "$posassign.positionid",
             array('joins' => $posassign, 'selectable' => false)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'positionidnumber',
+            get_string('usersposidnumber', 'totara_reportbuilder'),
+            "$pos.idnumber",
+            array('joins' => $pos, 'selectable' => true)
         );
         $columnoptions[] = new rb_column_option(
             'user',
