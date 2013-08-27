@@ -624,7 +624,7 @@ class prog_content {
 
     /**
      * Receives an array containing the course sets in a course group and determines
-     * the time allowance for the group based on the shortest time allowance of
+     * the time allowance for the group based on the greatest time allowance of
      * all the course sets. A record is then added to the prog_completion table
      * setting the timedue property as the current time + time allowance.
      *
@@ -643,9 +643,9 @@ class prog_content {
         $now = time();
         $courseset_selected = $courseset_group[0];
 
-        // select the course set with the shortest time allowance
+        // select the course set with the greatest time allowance
         foreach ($courseset_group as $courseset) {
-            $courseset_selected = ($courseset->timeallowed < $courseset_selected->timeallowed) ? $courseset : $courseset_selected;
+            $courseset_selected = ($courseset->timeallowed > $courseset_selected->timeallowed) ? $courseset : $courseset_selected;
         }
 
         $timeallowance = $courseset_selected->timeallowed;
@@ -670,7 +670,7 @@ class prog_content {
 
     /**
      * Receives an array containing the course sets in a course group and determines
-     * the time allowance for the group based on the shortest time allowance of
+     * the time allowance for the group based on the greatest time allowance of
      * all the course sets. Records are then added to the prog_completion table
      * setting the timedue property as the current time + time allowance.
      *
@@ -690,9 +690,9 @@ class prog_content {
         $now = time();
         $courseset_selected = $courseset_group[0];
 
-        // select the course set with the shortest time allowance
+        // select the course set with the greatest time allowance
         foreach ($courseset_group as $courseset) {
-            $courseset_selected = ($courseset->timeallowed < $courseset_selected->timeallowed) ? $courseset : $courseset_selected;
+            $courseset_selected = ($courseset->timeallowed > $courseset_selected->timeallowed) ? $courseset : $courseset_selected;
         }
 
         $timeallowance = $courseset_selected->timeallowed;
