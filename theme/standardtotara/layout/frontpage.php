@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$hasheading = $PAGE->heading;
+$hasheading = $OUTPUT->page_heading();
 $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
 $hasfooter = (empty($PAGE->layout_options['nofooter']));
 $haslogininfo = (empty($PAGE->layout_options['nologininfo']));
@@ -70,7 +70,7 @@ if (!empty($PAGE->theme->settings->frontpagelogo)) {
 if (!empty($PAGE->theme->settings->favicon)) {
     $faviconurl = $PAGE->theme->settings->favicon;
 } else {
-    $faviconurl = $OUTPUT->pix_url('favicon', 'theme');
+    $faviconurl = $OUTPUT->favicon();
 }
 
 $sitesummary = isset($SITE->summary) ? $SITE->summary : '';
@@ -95,7 +95,7 @@ echo $OUTPUT->doctype() ?>
 <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon() ?>" />
 <?php echo $OUTPUT->standard_head_html() ?>
 </head>
-<body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">
+<body <?php echo $OUTPUT->body_attributes($bodyclasses); ?>>
 <?php echo $OUTPUT->standard_top_of_body_html() ?>
 <div id="page">
   <div id="wrapper" class="clearfix">
@@ -153,9 +153,9 @@ echo $OUTPUT->doctype() ?>
               <div class="region-content">
                 <?php
                     if (!right_to_left()) {
-                        echo $OUTPUT->blocks_for_region('side-pre');
+                        echo $OUTPUT->blocks('side-pre');
                     } else if ($hassidepost) {
-                        echo $OUTPUT->blocks_for_region('side-post');
+                        echo $OUTPUT->blocks('side-post');
                     }
                 ?>
               </div>
@@ -166,9 +166,9 @@ echo $OUTPUT->doctype() ?>
               <div class="region-content">
                 <?php
                     if (!right_to_left()) {
-                        echo $OUTPUT->blocks_for_region('side-post');
+                        echo $OUTPUT->blocks('side-post');
                     } else if ($hassidepre) {
-                        echo $OUTPUT->blocks_for_region('side-pre');
+                        echo $OUTPUT->blocks('side-pre');
                     }
                 ?>
               </div>

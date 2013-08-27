@@ -28,7 +28,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$hasheading = $PAGE->heading;
+$hasheading = $OUTPUT->page_heading();
 $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
 $hasfooter = (empty($PAGE->layout_options['nofooter']));
 $haslogininfo = (empty($PAGE->layout_options['nologininfo']));
@@ -96,7 +96,7 @@ if (!empty($PAGE->theme->settings->frontpagelogo)) {
 if (!empty($PAGE->theme->settings->favicon)) {
     $faviconurl = $PAGE->theme->settings->favicon;
 } else {
-    $faviconurl = $OUTPUT->pix_url('favicon', 'theme');
+    $faviconurl = $OUTPUT->favicon();
 }
 
 $sitesummary = isset($SITE->summary) ? $SITE->summary : '';
@@ -106,7 +106,7 @@ $hasframe = !isset($PAGE->theme->settings->noframe) || !$PAGE->theme->settings->
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes() ?>>
 <head>
-<title><?php echo $PAGE->title ?></title>
+<title><?php echo $OUTPUT->page_title(); ?></title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="generator" content="<?php echo get_string('poweredby', 'totara_core'); ?>" />
 <meta name="description" content="<?php p(strip_tags(format_text($sitesummary, FORMAT_HTML))) ?>" />
@@ -114,7 +114,7 @@ echo $OUTPUT->doctype() ?>
 <?php echo $OUTPUT->standard_head_html() ?>
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans|Open+Sans:300|Open+Sans:400|Open+Sans:700">
 </head>
-<body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">
+<body <?php echo $OUTPUT->body_attributes($bodyclasses); ?>>
 <?php echo $OUTPUT->standard_top_of_body_html() ?>
 <div id="page">
   <div id="wrapper" class="clearfix">
@@ -167,7 +167,7 @@ echo $OUTPUT->doctype() ?>
         <div class="navbar clearfix">
           <?php if ($hasnavbar) { ?>
           <div class="breadcrumb"><?php echo $OUTPUT->navbar(); ?></div>
-          <div class="navbutton"> <?php echo $PAGE->button; ?></div>
+          <div class="navbutton"> <?php echo $OUTPUT->page_heading_button(); ?></div>
           <?php } ?>
         </div>
         <div id="region-main-box">
@@ -184,9 +184,9 @@ echo $OUTPUT->doctype() ?>
               <div class="region-content">
                 <?php
                 if (!right_to_left()) {
-                    echo $OUTPUT->blocks_for_region('side-pre');
+                    echo $OUTPUT->blocks('side-pre');
                 } else if ($hassidepost) {
-                    echo $OUTPUT->blocks_for_region('side-post');
+                    echo $OUTPUT->blocks('side-post');
                 } ?>
               </div>
             </div>
@@ -196,9 +196,9 @@ echo $OUTPUT->doctype() ?>
               <div class="region-content">
                 <?php
                 if (!right_to_left()) {
-                    echo $OUTPUT->blocks_for_region('side-post');
+                    echo $OUTPUT->blocks('side-post');
                 } else if ($hassidepre) {
-                    echo $OUTPUT->blocks_for_region('side-pre');
+                    echo $OUTPUT->blocks('side-pre');
                 }
                 ?>
               </div>

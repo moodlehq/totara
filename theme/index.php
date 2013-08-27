@@ -59,8 +59,8 @@ if ($reset and confirm_sesskey()) {
     $confirmpage->set_url($PAGE->url);
     $confirmpage->set_pagelayout($PAGE->pagelayout);
     $confirmpage->set_pagetype($PAGE->pagetype);
-    $confirmpage->set_title($PAGE->title);
-    $confirmpage->set_heading($PAGE->heading);
+    $confirmpage->set_title($OUTPUT->page_title());
+    $confirmpage->set_heading($OUTPUT->page_heading());
 
     // Get the core renderer for the new theme.
     $output = $confirmpage->get_renderer('core');

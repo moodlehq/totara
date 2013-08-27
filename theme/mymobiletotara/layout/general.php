@@ -89,7 +89,7 @@ if ($mypagetype == 'course-view-topics' || $mypagetype == 'course-view-weeks') {
 $urlblocks = new moodle_url($PAGE->url, array('mymobile_blocks' => 'true'));
 $urlsettings = new moodle_url($PAGE->url, array('mymobile_settings' => 'true'));
 
-$hasheading = ($PAGE->heading);
+$hasheading = $OUTPUT->page_heading();
 $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
 $hasfooter = (empty($PAGE->layout_options['nofooter']));
 $hasmyblocks = $PAGE->blocks->region_has_content('myblocks', $OUTPUT);
@@ -117,7 +117,7 @@ $totaramenu = $totara_core_renderer->print_totara_menu($menudata, null, null);
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes() ?>>
 <head>
-    <title><?php echo $PAGE->title ?></title>
+    <title><?php echo $OUTPUT->page_title(); ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->pix_url('favicon', 'theme')?>" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo $OUTPUT->pix_url('m2m2x', 'theme')?>" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo $OUTPUT->pix_url('m2m', 'theme')?>" />
@@ -128,12 +128,12 @@ echo $OUTPUT->doctype() ?>
 
     <?php echo $OUTPUT->standard_head_html() ?>
 </head>
-<body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">
+<body <?php echo $OUTPUT->body_attributes($bodyclasses); ?>>
     <?php echo $OUTPUT->standard_top_of_body_html() ?>
     <div id="<?php p($PAGE->bodyid) ?>PAGE" data-role="page" class="generalpage <?php echo 'ajaxedclass '; p($PAGE->bodyclasses.' '.join(' ', $bodyclasses));  ?> <?php if ($hasmyblocks && $usercol) { echo 'has-myblocks'; } ?> " data-title="<?php p($SITE->shortname) ?>">
         <!-- start header -->
         <div data-role="header" <?php echo($datatheme);?> class="mymobileheader">
-            <h1><?php echo $PAGE->heading ?></h1>
+            <h1><?php echo $OUTPUT->page_heading(); ?></h1>
             <?php if (isloggedin() && $mypagetype != 'site-index') { ?>
             <a class="ui-btn-right" data-icon="home" href="<?php p($CFG->wwwroot) ?>" data-iconpos="notext" data-ajax="false"><?php p(get_string('home')); ?></a>
             <?php } else if (!isloggedin()) {
@@ -193,13 +193,13 @@ echo $OUTPUT->doctype() ?>
             //if we get the true, that means load/show blocks only for tablet views only ?>
             <div class="content-secondary">
                 <div class="tablets">
-                    <h1><?php echo $PAGE->heading ?></h1>
+                    <h1><?php echo $OUTPUT->page_heading(); ?></h1>
                     <span><?php echo $PAGE->course->summary; ?></span>
                 </div>
 
                 <?php if ($hasmyblocks) { ?>
                 <div data-role="collapsible-set" data-theme="<?php echo $dthemeb;?>">
-                    <?php echo $OUTPUT->blocks_for_region('myblocks') ?>
+                    <?php echo $OUTPUT->blocks('myblocks') ?>
                 </div>
                 <?php } ?>
 
@@ -240,7 +240,7 @@ echo $OUTPUT->doctype() ?>
                     ?><div class="headingwrap ui-bar-<?php echo $dtheme;?> ui-footer jsetsbar">
                         <h2 class="jsets ui-title"><?php p(get_string('blocks')); ?></h2>
                     </div>
-                    <div data-role="collapsible-set"><?php echo $OUTPUT->blocks_for_region('myblocks') ?></div><?php
+                    <div data-role="collapsible-set"><?php echo $OUTPUT->blocks('myblocks') ?></div><?php
                 }
             }
             ?>

@@ -34,13 +34,13 @@ $bodyclasses = array('popup','content-only', $modname);
 if (!empty($PAGE->theme->settings->favicon)) {
     $faviconurl = $PAGE->theme->settings->favicon;
 } else {
-    $faviconurl = $OUTPUT->pix_url('favicon', 'theme');
+    $faviconurl = $OUTPUT->favicon();
 }
 
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes() ?>>
 <head>
-    <title><?php echo $PAGE->title ?></title>
+    <title><?php echo $OUTPUT->page_title(); ?></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="generator" content="<?php echo get_string('poweredby', 'totara_core'); ?>" />
     <meta name="description" content="<?php p(strip_tags(format_text($sitesummary, FORMAT_HTML))) ?>" />
@@ -48,7 +48,7 @@ echo $OUTPUT->doctype() ?>
     <?php echo $OUTPUT->standard_head_html(); ?>
 </head>
 
-<body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">
+<body <?php echo $OUTPUT->body_attributes($bodyclasses); ?>>
 <?php echo $OUTPUT->standard_top_of_body_html() ?>
 <?php if ($modname != 'scorm') {echo("<div id='popup-page'>");} ?> <!--for adding additional formatting div for non scorm pages-->
     <!-- END OF HEADER -->
