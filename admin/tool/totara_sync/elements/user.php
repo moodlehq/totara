@@ -333,23 +333,22 @@ class totara_sync_element_user extends totara_sync_element {
             return false;
         }
         $posdata = new stdClass;
-        $posdata->fullname = '';
-        $posdata->shortname = '';
-        $posdata->positionid = 0;
-        $posdata->organisationid = 0;
-        $posdata->managerid = 0;
+        $posdata->fullname = $pos_assignment->fullname;
+        $posdata->shortname = $pos_assignment->shortname;
+        $posdata->positionid = $pos_assignment->positionid;
+        $posdata->organisationid = $pos_assignment->organisationid;
+        $posdata->managerid = $pos_assignment->managerid;
         if (isset($suser->postitle)) {
             $posdata->fullname = $suser->postitle;
             $posdata->shortname = empty($suser->postitleshortname) ? $suser->postitle : $suser->postitleshortname;
         }
-        if (!empty($suser->posidnumber)) {
-            $pos = $DB->get_record('pos', array('idnumber' => $suser->posidnumber));
-            $posdata->positionid = $pos->id;
-
-            if (!isset($suser->postitle)) {
-                // Set title and shortname based on position
-                $posdata->fullname = $pos->fullname;
-                $posdata->shortname = $pos->shortname;
+        if (isset($suser->posidnumber)) {
+            if (empty($suser->posidnumber)) {
+                // Reset values.
+                $posdata->positionid = 0;
+            } else {
+                $pos = $DB->get_record('pos', array('idnumber' => $suser->posidnumber));
+                $posdata->positionid = $pos->id;
             }
         }
         if (isset($suser->posstartdate)) {
@@ -366,15 +365,22 @@ class totara_sync_element_user extends totara_sync_element {
                 $posdata->timevalidto = $suser->posenddate;
             }
         }
-        if (!empty($suser->orgidnumber)) {
-            $posdata->organisationid = $DB->get_field('org', 'id', array('idnumber' => $suser->orgidnumber));
+        if (isset($suser->orgidnumber)) {
+            if (empty($suser->orgidnumber)) {
+                $posdata->organisationid = 0;
+            } else {
+                $posdata->organisationid = $DB->get_field('org', 'id', array('idnumber' => $suser->orgidnumber));
+            }
         }
-        $posdata->managerid = null;
-        if (!empty($suser->manageridnumber)) {
-            try {
-                $posdata->managerid = $DB->get_field('user', 'id', array('idnumber' => $suser->manageridnumber, 'deleted' => 0), MUST_EXIST);
-            } catch (dml_missing_record_exception $e) {
+        if (isset($suser->manageridnumber)) {
+            if (empty($suser->manageridnumber)) {
                 $posdata->managerid = null;
+            } else {
+                try {
+                    $posdata->managerid = $DB->get_field('user', 'id', array('idnumber' => $suser->manageridnumber, 'deleted' => 0), MUST_EXIST);
+                } catch (dml_missing_record_exception $e) {
+                    $posdata->managerid = null;
+                }
             }
         }
 
