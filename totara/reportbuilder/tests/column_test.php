@@ -34,1097 +34,497 @@ require_once($CFG->dirroot . '/totara/reportbuilder/tests/reportcache_advanced_t
 
 class columns_test extends reportcache_advanced_testcase {
 
+    // Warning: Massive amount oftest data ahead.
+    protected $rb_data = array(
+        'id' => 1,
+        'fullname' => 'Test Report', 'shortname' => 'test_report', 'source' => 'competency_evidence','hidden' => 0,
+        'accessmode' => '0', 'contentmode' => 0, 'description' => '', 'recordsperpage' => 40, 'defaultsortcolumn' => 'user_fullname',
+        'defaultsortorder' => 4, 'embedded' => 0);
+
+    protected $rb_col_data = array(
+        'id' => 1, 'reportid' => 1, 'type' => 'user', 'value' => 'namelink', 'heading' => 'Participant',
+        'sortorder' => 1, 'hidden' => 0, 'customheading' => 0,
+    );
+
+    protected $rb_filter_data = array(
+        'id' => 1, 'reportid' => 1, 'type' => 'user', 'value' => 'fullname', 'advanced' => 0, 'sortorder' => 1,
+    );
+
+    protected $rb_settings_data = array(
+       array('id' => 1, 'reportid' => 1, 'type' => 'rb_role_access', 'name' => 'activeroles', 'value' => '1|2',),
+       array('id' => 2, 'reportid' => 1, 'type' => 'rb_role_access', 'name' => 'enable', 'value' => 1,),
+    );
+
+    protected $rb_group_data = array(
+       'id' => 1, 'name' => 'My Group', 'preproc' => 'test', 'baseitem' => 'something', 'assigntype' => 'else', 'assignvalue' => 1,
+    );
+
+    protected $user_info_field_data = array(
+       'id' => 1, 'shortname' => 'datejoined', 'name' => 'Date Joined', 'datatype' => 'text', 'description' => '', 'categoryid' => 1,
+       'sortorder' => 1, 'required' => 0, 'locked' => 0, 'visible' => 1, 'forceunique' => 0, 'signup' => 0, 'defaultdata' => '',
+       'param1' => 30, 'param2' => 2048, 'param3' => 0, 'param4' => '', 'param5' => '',
+    );
+
+    protected $user_info_data_data = array(
+         'id' => 1, 'userid' => 2, 'fieldid' => 1, 'data' => 'test',
+    );
+
+    protected $org_framework_data = array(
+        array(
+            'id' => 1, 'fullname' => 'Organisation Framework 1', 'shortname' => 'OFW1', 'idnumber' => 'ID1', 'description' => 'Description 1',
+            'sortorder' => 1, 'visible' => 1, 'hidecustomfields' => 0, 'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+    );
+
+    protected $org_data = array(
+        'id' => 1, 'fullname' => 'Distric Office', 'shortname' => 'DO', 'description' => '', 'idnumber' => '', 'frameworkid' => 1, 'path' => '/1',
+        'depthlevel' => 1, 'parentid' => 0, 'sortthread' => '01', 'visible' => 1, 'timecreated' => 0, 'timemodified' => 0, 'usermodified' => 2,
+    );
+
+    protected $pos_framework_data = array(
+        'id' => 1, 'fullname' => 'Postion Framework 1', 'shortname' => 'PFW1', 'idnumber' => 'ID1', 'description' => 'Description 1',
+        'sortorder' => 1, 'visible' => 1, 'hidecustomfields' => 0, 'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+    );
+
+    protected $pos_data = array(
+        'id' => 1, 'fullname' => 'Data Analyst', 'shortname' => 'Data Analyst', 'idnumber' => '', 'description' => '', 'frameworkid' => 1,
+        'path' => '/1', 'depthlevel' => 1, 'parentid' => 0, 'sortthread' => '01', 'visible' => 1, 'timevalidfrom' => 0, 'timevalidto' => 0,
+        'timecreated' => 0, 'timemodified' => 0, 'usermodified' => 2,
+    );
+
+    protected $pos_assignment_data = array(
+        'id' => 1, 'fullname' => 'Title', 'shortname' => 'Title', 'organisationid' => 1, 'positionid' => 1,
+        'userid' => 2, 'type' => 1, 'timecreated' => 1, 'timemodified' => 1, 'usermodified' => 1,
+    );
+
+    protected $f2f_session_data_data = array(
+        'id' => 1, 'fieldid' => 1, 'sessionid' => 1, 'data' => 'Training Centre',
+    );
+
+    protected $course_completions_data = array(
+        'id' => 1, 'userid' => 2, 'course' => 1, 'organisationid' => 1, 'positionid' => 1, 'deleted' => 0, 'timenotified' => 0,
+        'timestarted' => 1140606000, 'timeenrolled' => 1140606000, 'timecompleted' => 1140606000, 'reaggregate' => 0, 'rpl' => '', 'status' => 0,
+    );
+
+    protected $course_completion_criteria_data = array(
+        'id' => 1, 'course' => 2, 'criteriatype' => 6, 'gradepass' => 2,
+    );
+
+    protected $course_completion_crit_compl_data = array(
+        'id' => 1, 'userid' => 2, 'course' => 2, 'criteriaid' => 1, 'gradefinal' => 2, 'deleted' => 0,
+    );
+
+    protected $log_data = array(
+        'id' => 1, 'time' => 1140606000, 'userid' => 2, 'ip' => '192.168.2.133', 'course' => 1,
+        'module' => 'user', 'cmid' => 0, 'action' => 'update', 'url' => 'view.php', 'info' => 1,
+    );
+
+    protected $course_data = array(
+        'id' => 2, 'fullname' => 'Test Course 1', 'shortname' => 'TC1', 'category' => 1, 'idnumber' => 'ID1',
+        'startdate' => 1140606000, 'icon' => '', 'visible' => 1, 'summary' => 'Course Summary', 'coursetype' => 0, 'lang' => 'en',
+    );
+
+    protected $feedback_data = array(
+        'id' => 1, 'course' => 1, 'name' => 'Feedback', 'intro' => 'introduction', 'page_after_submit' => 'final_page',
+    );
+
+    protected $feedback_item_data = array(
+        'id' => 1, 'feedback' => 1, 'template' => 0, 'name' => 'Question',
+        'presentation' => 'A\r|B\r|C\r', 'type' => 'radio', 'hasvalue' => 1, 'position' => 1, 'required' => 0,
+    );
+
+    protected $feedback_completed_data = array(
+        'id' => 1, 'feedback' => 1, 'userid' => 2, 'timemodified' => 1140606000,
+    );
+
+    protected $feedback_value_data = array(
+        'id' => 1, 'course_id' => 0, 'item' => 1, 'completed' => 1, 'value' => 2,
+    );
+
+    protected $tag_instance_data = array(
+        'id' => 1, 'tagid' => 1, 'itemtype' => 'feedback', 'itemid' => 1,
+    );
+
+    protected $tag_data = array(
+        'id' => 1, 'userid' => 2, 'name' => 'Tag', 'tagtype' => 'official',
+    );
+
+    protected $grade_items_data = array(
+        'id' => 1, 'courseid' => 2, 'itemtype' => 'course', 'gradepass' => 2, 'itemmodule' => 'assignment', 'iteminstance' => 1, 'scaleid' => 1,
+    );
+
+    protected $grade_grades_data = array(
+        'id' => 1, 'itemid' => 1, 'userid' => 2, 'finalgrade' => 2, 'rawgrademin' => 2, 'rawgrademax' => 2,
+    );
+
+    protected $framework_data = array(
+        array(
+            'id' => 1, 'fullname' => 'Framework 1', 'shortname' => 'FW1', 'idnumber' => 'ID1', 'description' => 'Description 1', 'sortorder' => 1,
+            'visible' => 1, 'hidecustomfields' => 0, 'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+        array(
+            'id' => 2, 'fullname' => 'Framework 2', 'shortname' => 'FW2', 'idnumber' => 'ID2', 'description' => 'Description 2', 'sortorder' => 2,
+            'visible' => 1, 'hidecustomfields' => 0, 'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+    );
+
+    protected $type_data = array(
+        array(
+            'id' => 1, 'fullname' => 'Hierarchy Type 1', 'shortname' => 'Type 1', 'description' => 'Description 1',
+            'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+        array(
+            'id' => 2, 'fullname' => 'Hierarchy Type 2', 'shortname' => 'Type 2', 'description' => 'Description 2',
+            'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+        array(
+            'id' => 3, 'fullname' => 'F2 Hierarchy Type 1', 'shortname' => 'F2 Type 1', 'description' => 'F2 Description 1',
+            'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+    );
+
+    protected $comp_data = array(
+        array(
+            'id' => 1, 'fullname' => 'Competency 1', 'shortname' =>  'Comp 1', 'description' => 'Competency Description 1', 'idnumber' => 'C1',
+            'frameworkid' => 1, 'path' => '/1', 'depthlevel' => 1, 'parentid' => 0, 'sortthread' => '01', 'visible' => 1, 'aggregationmethod' => 1,
+            'proficiencyexpected' => 1, 'evidencecount' => 0, 'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+        array(
+            'id' => 2, 'fullname' => 'Competency 2', 'shortname' => 'Comp 2', 'description' => 'Competency Description 2', 'idnumber' => 'C2',
+            'frameworkid' => 1,  'path' => '/1/2', 'depthlevel' => 2, 'parentid' => 1, 'sortthread' => '01.01', 'visible' => 1, 'aggregationmethod' => 1,
+            'proficiencyexpected' => 1, 'evidencecount' => 0, 'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+        array(
+            'id' => 3, 'fullname' => 'F2 Competency 1', 'shortname' => 'F2 Comp 1', 'description' => 'F2 Competency Description 1', 'idnumber' => 'F2 C1',
+            'frameworkid' => 2, 'path' => '/3', 'depthlevel' => 1, 'parentid' => 0, 'sortthread' => '01', 'visible' => 1, 'aggregationmethod' => 1,
+            'proficiencyexpected' => 1, 'evidencecount' => 0, 'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+        array(
+            'id' => 4, 'fullname' => 'Competency 3', 'shortname' => 'Comp 3', 'description' => 'Competency Description 3', 'idnumber' => 'C3',
+            'frameworkid' => 1, 'path' => '/1/4', 'depthlevel' => 2, 'parentid' => 1, 'sortthread' => '01.02', 'visible' => 1, 'aggregationmethod' => 1,
+            'proficiencyexpected' => 1, 'evidencecount' => 0, 'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+        array(
+            'id' => 5, 'fullname' => 'Competency 4', 'shortname' => 'Comp 4', 'description' => 'Competency Description 4', 'idnumber' => 'C4',
+            'frameworkid' => 1, 'path' => '/5', 'depthlevel' => 1, 'parentid' => 0, 'sortthread' => '02', 'visible' => 1, 'aggregationmethod' => 1,
+            'proficiencyexpected' => 1, 'evidencecount' => 0, 'timecreated' => 1265963591, 'timemodified' => 1265963591, 'usermodified' => 2,
+        ),
+    );
+
+    protected $type_field_data = array(
+        'id' => 1, 'fullname' => 'Custom Field', 'shortname' => 'CF1', 'classid' => 2, 'datatype' => 'checkbox', 'description' => 'Custom Field Description 1',
+        'sortorder' => 1, 'categoryid' => 1, 'hidden' => 0, 'locked' => 0, 'required' => 0, 'forceunique' => 0, 'defaultdata' => 0,
+        'param1' => null, 'param2' => null, 'param3' => null, 'param4' => null, 'param5' => null, 'typeid' => 1,
+    );
+
+    protected $type_data_data = array(
+        'id' => 1, 'data' => 1, 'fieldid' => 1, 'competencyid' => 2, 'typeid' => 1,
+    );
+
+    protected $f2f_data = array(
+        'id' => 1, 'course' => 1, 'name' => 'F2F name', 'shortname' => 'f2f', 'details' => 'details',
+    );
+
+    protected $f2f_session_data = array(
+        'id' => 1, 'facetoface' => 1, 'capacity' => 10, 'details' => 'details', 'duration' => 60,
+        'datetimeknown' => 1, 'normalcost' => 100, 'discountcost' => 90, 'usermodified' => 2,
+    );
+
+    protected $f2f_session_dates_data = array(
+        'id' => 1, 'sessionid' => 1, 'timestart' => 1140519599, 'timefinish' => 114051960,
+    );
+
+    protected $f2f_signups_data = array(
+        'id' => 1, 'sessionid' => 1, 'userid' => 2, 'discountcode' => '', 'mailedreminder' => 0, 'notificationtype' => 0,
+    );
+
+    protected $f2f_signup_status_data = array(
+        'id' => 1, 'signupid' => 1, 'statuscode' => 2, 'superceded' => 0, 'grade' => 2, 'note' => 'test note', 'createdby' => 1, 'timecreated' => 1205445539,
+    );
+
+    protected $f2f_session_roles_data = array(
+        'id' => 1, 'sessionid' => 1, 'roleid' => 1, 'userid' => 2,
+    );
+
+    protected $scorm_data = array(
+        'id' => 1, 'course' => 1, 'name' => 'Scorm', 'intro' => 'Hi there, this is a scorm.',
+    );
+
+    protected $scorm_scoes_data = array(
+        'id' => 1, 'scorm' => 1, 'title' => 'SCO', 'launch' => 'launch',
+    );
+
+    protected $scorm_scoes_track_data = array(
+        array(
+            'id' => 1, 'userid' => 2, 'scormid' => 1, 'scoid' => 1, 'attempt' => 1, 'element' => 'cmi.core.lesson_status',
+            'value' => 'done', 'timemodified' => 1205445539,
+        ),
+        array(
+            'id' => 2, 'userid' => 2, 'scormid' => 1, 'scoid' => 1, 'attempt' => 1, 'element' => 'cmi.core.score.raw',
+            'value' => '100', 'timemodified' => 1205445539,
+        ),
+        array(
+            'id' => 3, 'userid' => 2, 'scormid' => 1, 'scoid' => 1, 'attempt' => 1, 'element' => 'cmi.core.score.min',
+            'value' => '10', 'timemodified' => 1205445539,
+        ),
+        array(
+            'id' => 4, 'userid' => 2, 'scormid' => 1, 'scoid' => 1, 'attempt' => 1, 'element' => 'cmi.core.score.max',
+            'value' => '90', 'timemodified' => 1205445539,
+        ),
+    );
+
+    protected $course_info_field_data = array(
+        'id' => 1, 'fullname' => 'Field Name', 'shortname' => 'Field', 'datatype' => 'text', 'description' => 'Description',
+        'sortorder' => 1, 'categoryid' => 1, 'hidden' => 0, 'locked' => 0, 'required' => 0, 'forceunique' => 0, 'defaultdata' => 'default',
+        'param1' => 'text', 'param2' => 'text', 'param3' => 'text', 'param4' => 'text', 'param5' => 'text',
+    );
+
+    protected $course_info_data_data = array(
+        'id' => 1, 'fieldid' => 1, 'courseid' => 1, 'data' => 'test',
+    );
+
+    protected $course_modules_data = array(
+        'id' => 1, 'course' => 1, 'module' => 8, 'instance' => 1,
+    );
+
+    protected $block_totara_stats_data = array(
+        'id' => 1, 'userid' => 2, 'timestamp' => 0, 'eventtype' => 1, 'data' => 1, 'data2' => 1,
+    );
+
+    protected $message_working_data = array(
+        'id' => 1, 'unreadmessageid' => 1, 'processorid' => 1,
+    );
+
+    protected $message_data = array(
+        'id' => 1, 'useridfrom' => 1, 'useridto' => 3, 'subject' => 'subject', 'fullmessage' => 'message', 'fullmessageformat' => 1,
+        'fullmessagehtml' => 'message', 'smallmessage' => 'msg', 'notification' => 1, 'contexturl' => '', 'contexturlname' => '', 'timecreated' => 0,
+    );
+
+    protected $message_metadata_data = array(
+        'id' => 1, 'messageid' => 1, 'msgtype' => 1, 'msgstatus' => 1, 'processorid' => 1, 'urgency' => 1,
+        'roleid' => 1, 'onaccept' => '', 'onreject' => '', 'icon' => 'competency-regular',
+    );
+
+    protected $dp_plan_data = array(
+        'id' => 1, 'templateid' => 1, 'userid' => 2, 'name' => 'DP', 'description' => '', 'startdate' => 0, 'enddate' => 0, 'status' => 1,
+    );
+
+    protected $dp_plan_competency_assign_data = array(
+        'id' => 1, 'planid' => 1, 'competencyid' => 1, 'priority' => 1, 'duedate' => 1, 'approved' => 1, 'scalevalueid' => 1,
+    );
+
+    protected $dp_plan_course_assign_data = array(
+        'id' => 1, 'planid' => 1, 'courseid' => 1, 'priority' => 1, 'duedate' => 1, 'approved' => 1, 'completionstatus' => 1, 'grade' => 2,
+    );
+
+    protected $dp_plan_objective_data = array(
+        'id' => 1, 'planid' => 1, 'fullname' => 'Objective', 'shortname' => 'obj', 'description' => 'Objective description',
+        'priority' => 10, 'duedate' => 1234567890, 'scalevalueid' => 1, 'approved' => 10,
+    );
+
+    protected $dp_plan_evidence_type_data = array(
+        'id' => 1, 'name' => 'plan evidence type', 'description' => 'plan evidence description', 'timemodified' => 0, 'usermodified' => 2, 'sortorder' => 1,
+    );
+
+    protected $dp_plan_evidence_data = array(
+        'name' => 'plan evidence', 'description' => 'plan evidence description', 'timecreated' => 0, 'timemodified' => 0, 'usermodified' => 2,
+        'evidencetypeid' => 1, 'evidencelink' => 1, 'institution' => 'plan evidence institution', 'datecompleted' => 0, 'userid' => 2,
+    );
+
+    protected $dp_plan_evidence_relation_data = array(
+        'id' => 1, 'evidenceid' => 1, 'planid' => 1, 'component' => 'competency', 'itemid' => 1,
+    );
+
+    protected $dp_plan_component_relation_data = array(
+        'id' => 1, 'itemid1' => 1, 'component1' => 'competency', 'itemid2' => 1, 'component2' => 'course',
+    );
+
+    protected $cohort_data = array(
+        'id' => 1, 'name' => 'cohort', 'contextid' => 0, 'descriptionformat' => 0, 'timecreated' => 0, 'timemodified' => 0, 'cohorttype' => 0,
+    );
+
+    protected $cohort_members_data = array(
+        'id' => 1, 'cohortid' => 1, 'userid' => 1,
+    );
+
+    protected $prog_data = array(
+        'id' => 1, 'category' => 1, 'fullname' => 'program', 'shortname' => 'prog', 'idnumber' => '123',
+        'icon' => 'default.png', 'summary' => 'summary', 'availablefrom' => 123456789, 'availableuntil' => 123456789,
+    );
+
+    protected $prog_extension_data = array(
+        'id' => 1, 'programid' => 1, 'userid' => 2, 'status' => 0,
+    );
+
+    protected $prog_completion_data = array(
+        'id' => 2, 'programid' => 1, 'userid' => 2, 'coursesetid' => 0, 'status' => 1, 'timedue' => 1205445539,
+        'timecompleted' => 1205445539, 'timestarted' => 1205445539, 'positionid' => 1, 'organisationid' => 1,
+    );
+
+    protected $prog_completion_history_data = array(
+        'id' => 2, 'programid' => 1, 'userid' => 2, 'coursesetid' => 0, 'status' => 1, 'timestarted' => 1205445539,
+        'timedue' => 1205445539, 'timecompleted' => 1205445539, 'recurringcourseid' => 1, 'positionid' => 1, 'organisationid' => 1,
+    );
+
+    protected $prog_user_assignment_data = array(
+        'id' => 1, 'programid' => 1, 'userid' => 2,
+    );
+
+    protected $pos_type_info_data_data = array(
+        'id' => 1, 'fieldid' => 1, 'positionid' => 1, 'data' => 'test',
+    );
+
+    protected $org_type_info_data_data = array(
+        'id' => 1, 'fieldid' => 1, 'organisationid' => 1, 'data' => 'test',
+    );
+
+    protected $pos_type_info_field_data = array(
+        'id' => 1, 'fullname' => 'Field Name', 'shortname' => 'Field', 'datatype' => 'text', 'description' => 'Description',
+        'sortorder' => 1, 'categoryid' => 1, 'hidden' => 0, 'locked' => 0, 'required' => 0, 'forceunique' => 0, 'defaultdata' => 'default',
+        'param1' => 'text', 'param2' => 'text', 'param3' => 'text', 'param4' => 'text', 'param5' => 'text',
+    );
+
+    protected $org_type_info_field_data = array(
+        'id' => 1, 'fullname' => 'Field Name', 'shortname' => 'Field', 'datatype' => 'text', 'description' => 'Description',
+        'sortorder' => 1, 'typeid' => 1, 'categoryid' => 1, 'hidden' => 0, 'locked' => 0, 'required' => 0, 'forceunique' => 0, 'defaultdata' => 'default',
+        'param1' => 'text', 'param2' => 'text', 'param3' => 'text', 'param4' => 'text', 'param5' => 'text',
+    );
+
+    protected $assignment_data = array(
+        'id' => 1, 'course' => 2, 'name' => 'Assignment 001', 'description' => 'Assignment description 001', 'format' => 0, 'assignmenttype' => 'uploadsingle',
+        'resubmit' => 0, 'preventlate' => 0, 'emailteachers' => 0, 'var1' => 0, 'var2' => 0, 'var3' => 0, 'var4' => 0, 'var5' => 0, 'maxbytes' => 1048576,
+        'timedue' => 1332758400, 'timeavailable' => 1332153600, 'grade' => 2, 'timemodified' => 1332153673, 'intro' => 'introduction',
+    );
+
+    protected $assignment_submissions_data = array(
+        'id' => 1, 'assignment' => 1, 'userid' => 2, 'timecreated' => 0, 'timemodified' => 1332166933, 'numfiles' => 1, 'data1' => '', 'data2' => '',
+        'grade' => 2, 'submissioncomment' => 'well done', 'format' => 0, 'teacher' => 0, 'timemarked' => 0, 'mailed' => 1,
+    );
+
+    protected $scale_data = array(
+        array(
+            'id' => 1, 'courseid' => 0, 'userid' => 2, 'name' => 'Scale 001', 'scale' =>'Bad,Average,Good', 'description' => '', 'timemodified' => 1332243112,
+        ),
+        array(
+            'id' => 2, 'courseid' => 0, 'userid' => 2, 'name' => 'Scale 002', 'scale' =>'Awful,Satisfactory,Good,Excellent', 'description' => '', 'timemodified' => 1332243112,
+        ),
+    );
+
+    protected $filter_config_data = array(
+        'id' => 1, 'filter' => 'filter/tidy', 'contextid' => 2, 'name' => 'filter_data_config',
+    );
+
+    protected $filter_active_data = array(
+        'id' => 1, 'filter' => 'filter/tidy', 'contextid' => 2, 'active' => 1, 'sortorder' => '1',
+    );
+
+    protected $files_data = array(
+        'id' => 1, 'contextid' => 1, 'itemid' => 1, 'filepath' => '/totara/', 'filename' => 'icon.gif', 'filesize' => 8,
+        'filearea' => 'course', 'status' => 1, 'timecreated' => 0, 'timemodified' => 0, 'sortorder' => 1,
+    );
+
+    protected $sync_log_data = array(
+        'id' => 1, 'runid' => 1, 'time' => 1, 'element' => 'user', 'logtype' => 'info', 'action' => 'user sync', 'info' => 'sync started',
+    );
+
+    protected $filler_data = array(
+        'id' => 1, 'courseid' => 1, 'programid' => 1, 'competencyid' => 1, 'templateid' => 1, 'enabled' => 1,
+        'sortorder' => 1, 'manualcomplete' => 1, 'component' => 'prgram', 'enrol' => 'cohort', 'customint1' => 1,
+    );
+
+    protected $dummy_data = array(
+        'id' => 1, 'userid' => 2, 'frameworkid' => 1, 'competency' => 1, 'competencyid' => 1, 'competencycount' => 1, 'instanceid' => 1, 'iteminstance' => 1,
+        'itemid' => 1, 'templateid' => 1, 'id1' => 1, 'id2' => 1, 'proficiency' => 1, 'timecreated' => 1, 'timemodified' => 1, 'usermodified' => 1,
+        'organisationid' => 1, 'positionid' => 1, 'assessorid' => 1, 'assessorname' => 'Name', 'fullname' => 'fullname', 'visible' => 1, 'type' => 1,
+    );
+
+
     protected function setUp() {
-        global $DB,$CFG;
         parent::setup();
 
-        //Warning: Massive amount oftest data ahead
-        $this->rb_data = new stdclass();
-        $this->rb_data->id = 1;
-        $this->rb_data->fullname = 'Test Report';
-        $this->rb_data->shortname = 'test_report';
-        $this->rb_data->source = 'competency_evidence';
-        $this->rb_data->hidden = 0;
-        $this->rb_data->accessmode = 0;
-        $this->rb_data->contentmode = 0;
-        $this->rb_data->description = '';
-        $this->rb_data->recordsperpage = 40;
-        $this->rb_data->defaultsortcolumn = 'user_fullname';
-        $this->rb_data->defaultsortorder = 4;
-        $this->rb_data->embedded = 0;
-
-        $this->rb_col_data = new stdClass();
-        $this->rb_col_data->id = 1;
-        $this->rb_col_data->reportid = 1;
-        $this->rb_col_data->type = 'user';
-        $this->rb_col_data->value = 'namelink';
-        $this->rb_col_data->heading = 'Participant';
-        $this->rb_col_data->sortorder = 1;
-        $this->rb_col_data->hidden = 0;
-        $this->rb_col_data->customheading = 0;
-
-        $this->rb_filter_data = new stdClass();
-        $this->rb_filter_data->id = 1;
-        $this->rb_filter_data->reportid = 1;
-        $this->rb_filter_data->type = 'user';
-        $this->rb_filter_data->value = 'fullname';
-        $this->rb_filter_data->advanced = 0;
-        $this->rb_filter_data->sortorder = 1;
-
-        $this->rb_settings_data = array();
-
-        $this->rb_settings_data1 = new stdClass();
-        $this->rb_settings_data1->id = 1;
-        $this->rb_settings_data1->reportid = 1;
-        $this->rb_settings_data1->type = 'rb_role_access';
-        $this->rb_settings_data1->name = 'activeroles';
-        $this->rb_settings_data1->value = '1|2';
-        $this->rb_settings_data[] = $this->rb_settings_data1;
-
-        $this->rb_settings_data2 = new stdClass();
-        $this->rb_settings_data2->id = 2;
-        $this->rb_settings_data2->reportid = 1;
-        $this->rb_settings_data2->type = 'rb_role_access';
-        $this->rb_settings_data2->name = 'enable';
-        $this->rb_settings_data2->value = 1;
-        $this->rb_settings_data[] = $this->rb_settings_data2;
-
-        $this->rb_group_data = new stdClass();
-        $this->rb_group_data->id = 1;
-        $this->rb_group_data->name = 'My Group';
-        $this->rb_group_data->preproc = 'test';
-        $this->rb_group_data->baseitem = 'something';
-        $this->rb_group_data->assigntype = 'else';
-        $this->rb_group_data->assignvalue = 1;
-
-        $this->user_info_field_data = new stdClass();
-        $this->user_info_field_data->id = 1;
-        $this->user_info_field_data->shortname = 'datejoined';
-        $this->user_info_field_data->name = 'Date Joined';
-        $this->user_info_field_data->datatype = 'text';
-        $this->user_info_field_data->description = '';
-        $this->user_info_field_data->categoryid = 1;
-        $this->user_info_field_data->sortorder = 1;
-        $this->user_info_field_data->required = 0;
-        $this->user_info_field_data->locked = 0;
-        $this->user_info_field_data->visible = 1;
-        $this->user_info_field_data->forceunique = 0;
-        $this->user_info_field_data->signup = 0;
-        $this->user_info_field_data->defaultdata = '';
-        $this->user_info_field_data->param1 = 30;
-        $this->user_info_field_data->param2 = 2048;
-        $this->user_info_field_data->param3 = 0;
-        $this->user_info_field_data->param4 = '';
-        $this->user_info_field_data->param5 = '';
-
-        $this->user_info_data_data = new stdClass();
-        $this->user_info_data_data->id = 1;
-        $this->user_info_data_data->userid = 2;
-        $this->user_info_data_data->fieldid = 1;
-        $this->user_info_data_data->data = 'test';
-
-        $this->org_framework_data = array();
-        $this->org_framework_data1 = new stdClass();
-        $this->org_framework_data1->id = 1;
-        $this->org_framework_data1->fullname = 'Organisation Framework 1';
-        $this->org_framework_data1->shortname = 'OFW1';
-        $this->org_framework_data1->idnumber = 'ID1';
-        $this->org_framework_data1->description = 'Description 1';
-        $this->org_framework_data1->sortorder = 1;
-        $this->org_framework_data1->visible = 1;
-        $this->org_framework_data1->hidecustomfields = 0;
-        $this->org_framework_data1->timecreated = 1265963591;
-        $this->org_framework_data1->timemodified = 1265963591;
-        $this->org_framework_data1->usermodified = 2;
-        $this->org_framework_data[] = $this->org_framework_data1;
-
-        $this->org_data = new stdClass();
-        $this->org_data->id = 1;
-        $this->org_data->fullname = 'Distric Office';
-        $this->org_data->shortname = 'DO';
-        $this->org_data->description = '';
-        $this->org_data->idnumber = '';
-        $this->org_data->frameworkid = 1;
-        $this->org_data->path = '/1';
-        $this->org_data->depthlevel = 1;
-        $this->org_data->parentid = 0;
-        $this->org_data->sortthread = '01';
-        $this->org_data->visible = 1;
-        $this->org_data->timecreated = 0;
-        $this->org_data->timemodified = 0;
-        $this->org_data->usermodified = 2;
-
-        $this->pos_framework_data = array();
-        $this->pos_framework_data1 = new stdClass();
-        $this->pos_framework_data1->id = 1;
-        $this->pos_framework_data1->fullname = 'Postion Framework 1';
-        $this->pos_framework_data1->shortname = 'PFW1';
-        $this->pos_framework_data1->idnumber = 'ID1';
-        $this->pos_framework_data1->description = 'Description 1';
-        $this->pos_framework_data1->sortorder = 1;
-        $this->pos_framework_data1->visible = 1;
-        $this->pos_framework_data1->hidecustomfields = 0;
-        $this->pos_framework_data1->timecreated = 1265963591;
-        $this->pos_framework_data1->timemodified = 1265963591;
-        $this->pos_framework_data1->usermodified = 2;
-        $this->pos_framework_data[] = $this->pos_framework_data1;
-
-        $this->pos_data = new stdClass();
-        $this->pos_data->id = 1;
-        $this->pos_data->fullname = 'Data Analyst';
-        $this->pos_data->shortname = 'Data Analyst';
-        $this->pos_data->idnumber = '';
-        $this->pos_data->description = '';
-        $this->pos_data->frameworkid = 1;
-        $this->pos_data->path = '/1';
-        $this->pos_data->depthlevel = 1;
-        $this->pos_data->parentid = 0;
-        $this->pos_data->sortthread = '01';
-        $this->pos_data->visible = 1;
-        $this->pos_data->timevalidfrom = 0;
-        $this->pos_data->timevalidto = 0;
-        $this->pos_data->timecreated = 0;
-        $this->pos_data->timemodified = 0;
-        $this->pos_data->usermodified = 2;
-
-        $this->pos_assignment_data = new stdClass();
-        $this->pos_assignment_data->id = 1;
-        $this->pos_assignment_data->fullname = 'Title';
-        $this->pos_assignment_data->shortname = 'Title';
-        $this->pos_assignment_data->organisationid = 1;
-        $this->pos_assignment_data->positionid = 1;
-        $this->pos_assignment_data->userid = 2;
-        $this->pos_assignment_data->type = 1;
-        $this->pos_assignment_data->timecreated = 1;
-        $this->pos_assignment_data->timemodified = 1;
-        $this->pos_assignment_data->usermodified = 1;
-
-        $this->f2f_session_data_data = new stdClass();
-        $this->f2f_session_data_data->id = 1;
-        $this->f2f_session_data_data->fieldid = 1;
-        $this->f2f_session_data_data->sessionid = 1;
-        $this->f2f_session_data_data->data = 'Training Centre';
-
-        $this->course_completions_data = new stdClass();
-        $this->course_completions_data->id = 1;
-        $this->course_completions_data->userid = 2;
-        $this->course_completions_data->course = 1;
-        $this->course_completions_data->organisationid = 1;
-        $this->course_completions_data->positionid = 1;
-        $this->course_completions_data->deleted = 0;
-        $this->course_completions_data->timenotified = 0;
-        $this->course_completions_data->timestarted = 1140606000;
-        $this->course_completions_data->timeenrolled = 1140606000;
-        $this->course_completions_data->timecompleted = 1140606000;
-        $this->course_completions_data->reaggregate = 0;
-        $this->course_completions_data->rpl = '';
-        $this->course_completions_data->status = 0;
-
-        $this->course_completion_criteria_data = new stdClass();
-        $this->course_completion_criteria_data->id = 1;
-        $this->course_completion_criteria_data->course = 2;
-        $this->course_completion_criteria_data->criteriatype = 6;
-        $this->course_completion_criteria_data->gradepass = 2;
-
-        $this->course_completion_crit_compl_data = new stdClass();
-        $this->course_completion_crit_compl_data->id = 1;
-        $this->course_completion_crit_compl_data->userid = 2;
-        $this->course_completion_crit_compl_data->course = 2;
-        $this->course_completion_crit_compl_data->criteriaid = 1;
-        $this->course_completion_crit_compl_data->gradefinal = 2;
-        $this->course_completion_crit_compl_data->deleted = 0;
-
-        $this->log_data = new stdClass();
-        $this->log_data->id = 1;
-        $this->log_data->time = 1140606000;
-        $this->log_data->userid = 2;
-        $this->log_data->ip = '192.168.2.133';
-        $this->log_data->course = 1;
-        $this->log_data->module = 'user';
-        $this->log_data->cmid = 0;
-        $this->log_data->action = 'update';
-        $this->log_data->url = 'view.php';
-        $this->log_data->info = 1;
-
-        $this->course_data = new stdClass();
-        $this->course_data->id = 2;
-        $this->course_data->fullname = 'Test Course 1';
-        $this->course_data->shortname = 'TC1';
-        $this->course_data->category = 1;
-        $this->course_data->idnumber = 'ID1';
-        $this->course_data->startdate = 1140606000;
-        $this->course_data->icon = '';
-        $this->course_data->visible = 1;
-        $this->course_data->summary = 'Course Summary';
-        $this->course_data->coursetype = 0;
-        $this->course_data->lang = 'en';
-
-        $this->feedback_data = new stdClass();
-        $this->feedback_data->id = 1;
-        $this->feedback_data->course = 1;
-        $this->feedback_data->name = 'Feedback';
-        $this->feedback_data->intro = 'introduction';
-        $this->feedback_data->page_after_submit = 'final_page';
-
-        $this->feedback_item_data = new stdClass();
-        $this->feedback_item_data->id = 1;
-        $this->feedback_item_data->feedback = 1;
-        $this->feedback_item_data->template = 0;
-        $this->feedback_item_data->name = 'Question';
-        $this->feedback_item_data->presentation = 'A\r|B\r|C\r';
-        $this->feedback_item_data->type = 'radio';
-        $this->feedback_item_data->hasvalue = 1;
-        $this->feedback_item_data->position = 1;
-        $this->feedback_item_data->required = 0;
-
-        $this->feedback_completed_data = new stdClass();
-        $this->feedback_completed_data->id = 1;
-        $this->feedback_completed_data->feedback = 1;
-        $this->feedback_completed_data->userid = 2;
-        $this->feedback_completed_data->timemodified = 1140606000;
-
-        $this->feedback_value_data = new stdClass();
-        $this->feedback_value_data->id = 1;
-        $this->feedback_value_data->course_id = 0;
-        $this->feedback_value_data->item = 1;
-        $this->feedback_value_data->completed = 1;
-        $this->feedback_value_data->value = 2;
-
-        $this->tag_instance_data = new stdClass();
-        $this->tag_instance_data->id = 1;
-        $this->tag_instance_data->tagid = 1;
-        $this->tag_instance_data->itemtype = 'feedback';
-        $this->tag_instance_data->itemid = 1;
-
-        $this->tag_data = new stdClass();
-        $this->tag_data->id = 1;
-        $this->tag_data->userid = 2;
-        $this->tag_data->name = 'Tag';
-        $this->tag_data->tagtype = 'official';
-
-        $this->grade_items_data = new stdClass();
-        $this->grade_items_data->id = 1;
-        $this->grade_items_data->courseid = 2;
-        $this->grade_items_data->itemtype = 'course';
-        $this->grade_items_data->gradepass = 2;
-        $this->grade_items_data->itemmodule = 'assignment';
-        $this->grade_items_data->iteminstance  = 1;
-        $this->grade_items_data->scaleid = 1;
-
-        $this->grade_grades_data = new stdClass();
-        $this->grade_grades_data->id = 1;
-        $this->grade_grades_data->itemid = 1;
-        $this->grade_grades_data->userid = 2;
-        $this->grade_grades_data->finalgrade = 2;
-        $this->grade_grades_data->rawgrademin = 2;
-        $this->grade_grades_data->rawgrademax = 2;
-
-        $this->framework_data = array();
-
-        $this->framework_data1 = new stdClass();
-        $this->framework_data1->id = 1;
-        $this->framework_data1->fullname = 'Framework 1';
-        $this->framework_data1->shortname = 'FW1';
-        $this->framework_data1->idnumber = 'ID1';
-        $this->framework_data1->description = 'Description 1';
-        $this->framework_data1->sortorder = 1;
-        $this->framework_data1->visible = 1;
-        $this->framework_data1->hidecustomfields = 0;
-        $this->framework_data1->timecreated = 1265963591;
-        $this->framework_data1->timemodified = 1265963591;
-        $this->framework_data1->usermodified = 2;
-        $this->framework_data[] = $this->framework_data1;
-
-        $this->framework_data2 = new stdClass();
-        $this->framework_data2->id = 2;
-        $this->framework_data2->fullname = 'Framework 2';
-        $this->framework_data2->shortname = 'FW2';
-        $this->framework_data2->idnumber = 'ID2';
-        $this->framework_data2->description = 'Description 2';
-        $this->framework_data2->sortorder = 2;
-        $this->framework_data2->visible = 1;
-        $this->framework_data2->hidecustomfields = 0;
-        $this->framework_data2->timecreated = 1265963591;
-        $this->framework_data2->timemodified = 1265963591;
-        $this->framework_data2->usermodified = 2;
-        $this->framework_data[] = $this->framework_data2;
-
-        $this->type_data = array();
-
-        $this->type_data1 = new stdClass();
-        $this->type_data1->id = 1;
-        $this->type_data1->fullname = 'Hierarchy Type 1';
-        $this->type_data1->shortname = 'Type 1';
-        $this->type_data1->description = 'Description 1';
-        $this->type_data1->timecreated = 1265963591;
-        $this->type_data1->timemodified = 1265963591;
-        $this->type_data1->usermodified = 2;
-        $this->type_data[] = $this->type_data1;
-
-        $this->type_data2 = new stdClass();
-        $this->type_data2->id = 2;
-        $this->type_data2->fullname = 'Hierarchy Type 2';
-        $this->type_data2->shortname = 'Type 2';
-        $this->type_data2->description = 'Description 2';
-        $this->type_data2->timecreated = 1265963591;
-        $this->type_data2->timemodified = 1265963591;
-        $this->type_data2->usermodified = 2;
-        $this->type_data[] = $this->type_data2;
-
-        $this->type_data3 = new stdClass();
-        $this->type_data3->id = 3;
-        $this->type_data3->fullname = 'F2 Hierarchy Type 1';
-        $this->type_data3->shortname = 'F2 Type 1';
-        $this->type_data3->description = 'F2 Description 1';
-        $this->type_data3->timecreated = 1265963591;
-        $this->type_data3->timemodified = 1265963591;
-        $this->type_data3->usermodified = 2;
-        $this->type_data[] = $this->type_data3;
-
-        $this->comp_data = array();
-
-        $this->comp_data1 = new stdClass();
-        $this->comp_data1->id = 1;
-        $this->comp_data1->fullname = 'Competency 1';
-        $this->comp_data1->shortname =  'Comp 1';
-        $this->comp_data1->description = 'Competency Description 1';
-        $this->comp_data1->idnumber = 'C1';
-        $this->comp_data1->frameworkid = 1;
-        $this->comp_data1->path = '/1';
-        $this->comp_data1->depthlevel = 1;
-        $this->comp_data1->parentid = 0;
-        $this->comp_data1->sortthread = '01';
-        $this->comp_data1->visible = 1;
-        $this->comp_data1->aggregationmethod = 1;
-        $this->comp_data1->proficiencyexpected = 1;
-        $this->comp_data1->evidencecount = 0;
-        $this->comp_data1->timecreated = 1265963591;
-        $this->comp_data1->timemodified = 1265963591;
-        $this->comp_data1->usermodified = 2;
-        $this->comp_data[] = $this->comp_data1;
-
-        $this->comp_data2 = new stdClass();
-        $this->comp_data2->id = 2;
-        $this->comp_data2->fullname = 'Competency 2';
-        $this->comp_data2->shortname = 'Comp 2';
-        $this->comp_data2->description = 'Competency Description 2';
-        $this->comp_data2->idnumber = 'C2';
-        $this->comp_data2->frameworkid = 1;
-        $this->comp_data2->path = '/1/2';
-        $this->comp_data2->depthlevel = 2;
-        $this->comp_data2->parentid = 1;
-        $this->comp_data2->sortthread = '01.01';
-        $this->comp_data2->visible = 1;
-        $this->comp_data2->aggregationmethod = 1;
-        $this->comp_data2->proficiencyexpected = 1;
-        $this->comp_data2->evidencecount = 0;
-        $this->comp_data2->timecreated = 1265963591;
-        $this->comp_data2->timemodified = 1265963591;
-        $this->comp_data2->usermodified = 2;
-        $this->comp_data[] = $this->comp_data2;
-
-        $this->comp_data3 = new stdClass();
-        $this->comp_data3->id = 3;
-        $this->comp_data3->fullname = 'F2 Competency 1';
-        $this->comp_data3->shortname = 'F2 Comp 1';
-        $this->comp_data3->description = 'F2 Competency Description 1';
-        $this->comp_data3->idnumber = 'F2 C1';
-        $this->comp_data3->frameworkid = 2;
-        $this->comp_data3->path = '/3';
-        $this->comp_data3->depthlevel = 1;
-        $this->comp_data3->parentid = 0;
-        $this->comp_data3->sortthread = '01';
-        $this->comp_data3->visible = 1;
-        $this->comp_data3->aggregationmethod = 1;
-        $this->comp_data3->proficiencyexpected = 1;
-        $this->comp_data3->evidencecount = 0;
-        $this->comp_data3->timecreated = 1265963591;
-        $this->comp_data3->timemodified = 1265963591;
-        $this->comp_data3->usermodified = 2;
-        $this->comp_data[] = $this->comp_data3;
-
-        $this->comp_data4 = new stdClass();
-        $this->comp_data4->id = 4;
-        $this->comp_data4->fullname = 'Competency 3';
-        $this->comp_data4->shortname = 'Comp 3';
-        $this->comp_data4->description = 'Competency Description 3';
-        $this->comp_data4->idnumber = 'C3';
-        $this->comp_data4->frameworkid = 1;
-        $this->comp_data4->path = '/1/4';
-        $this->comp_data4->depthlevel = 2;
-        $this->comp_data4->parentid = 1;
-        $this->comp_data4->sortthread = '01.02';
-        $this->comp_data4->visible = 1;
-        $this->comp_data4->aggregationmethod = 1;
-        $this->comp_data4->proficiencyexpected = 1;
-        $this->comp_data4->evidencecount = 0;
-        $this->comp_data4->timecreated = 1265963591;
-        $this->comp_data4->timemodified = 1265963591;
-        $this->comp_data4->usermodified = 2;
-        $this->comp_data[] = $this->comp_data4;
-
-        $this->comp_data5 = new stdClass();
-        $this->comp_data5->id = 5;
-        $this->comp_data5->fullname = 'Competency 4';
-        $this->comp_data5->shortname = 'Comp 4';
-        $this->comp_data5->description = 'Competency Description 4';
-        $this->comp_data5->idnumber = 'C4';
-        $this->comp_data5->frameworkid = 1;
-        $this->comp_data5->path = '/5';
-        $this->comp_data5->depthlevel = 1;
-        $this->comp_data5->parentid = 0;
-        $this->comp_data5->sortthread = '02';
-        $this->comp_data5->visible = 1;
-        $this->comp_data5->aggregationmethod = 1;
-        $this->comp_data5->proficiencyexpected = 1;
-        $this->comp_data5->evidencecount = 0;
-        $this->comp_data5->timecreated = 1265963591;
-        $this->comp_data5->timemodified = 1265963591;
-        $this->comp_data5->usermodified = 2;
-        $this->comp_data[] = $this->comp_data5;
-
-        $this->type_field_data = new stdClass();
-        $this->type_field_data->id = 1;
-        $this->type_field_data->fullname = 'Custom Field';
-        $this->type_field_data->shortname = 'CF1';
-        $this->type_field_data->classid = 2;
-        $this->type_field_data->datatype = 'checkbox';
-        $this->type_field_data->description = 'Custom Field Description 1';
-        $this->type_field_data->sortorder = 1;
-        $this->type_field_data->categoryid = 1;
-        $this->type_field_data->hidden = 0;
-        $this->type_field_data->locked = 0;
-        $this->type_field_data->required = 0;
-        $this->type_field_data->forceunique = 0;
-        $this->type_field_data->defaultdata = 0;
-        $this->type_field_data->param1 = null;
-        $this->type_field_data->param2 = null;
-        $this->type_field_data->param3 = null;
-        $this->type_field_data->param4 = null;
-        $this->type_field_data->param5 = null;
-        $this->type_field_data->typeid = 1;
-
-        $this->type_data_data = new stdClass();
-        $this->type_data_data->id = 1;
-        $this->type_data_data->data = 1;
-        $this->type_data_data->fieldid = 1;
-        $this->type_data_data->competencyid = 2;
-        $this->type_data_data->typeid = 1;
-
-        $this->f2f_data = new stdClass();
-        $this->f2f_data->id = 1;
-        $this->f2f_data->course = 1;
-        $this->f2f_data->name = 'F2F name';
-        $this->f2f_data->shortname = 'f2f';
-        $this->f2f_data->details = 'details';
-
-        $this->f2f_session_data = new stdClass();
-        $this->f2f_session_data->id = 1;
-        $this->f2f_session_data->facetoface = 1;
-        $this->f2f_session_data->capacity = 10;
-        $this->f2f_session_data->details = 'details';
-        $this->f2f_session_data->duration = 60;
-        $this->f2f_session_data->datetimeknown = 1;
-        $this->f2f_session_data->normalcost = 100;
-        $this->f2f_session_data->discountcost = 90;
-        $this->f2f_session_data->usermodified = 2;
-
-        $this->f2f_session_dates_data = new stdClass();
-        $this->f2f_session_dates_data->id = 1;
-        $this->f2f_session_dates_data->sessionid = 1;
-        $this->f2f_session_dates_data->timestart = 1140519599;
-        $this->f2f_session_dates_data->timefinish = 114051960;
-
-        $this->f2f_signups_data = new stdClass();
-        $this->f2f_signups_data->id = 1;
-        $this->f2f_signups_data->sessionid = 1;
-        $this->f2f_signups_data->userid = 2;
-        $this->f2f_signups_data->discountcode = '';
-        $this->f2f_signups_data->mailedreminder = 0;
-        $this->f2f_signups_data->notificationtype = 0;
-
-        $this->f2f_signup_status_data = new stdClass();
-        $this->f2f_signup_status_data->id = 1;
-        $this->f2f_signup_status_data->signupid = 1;
-        $this->f2f_signup_status_data->statuscode = 2;
-        $this->f2f_signup_status_data->superceded = 0;
-        $this->f2f_signup_status_data->grade = 2;
-        $this->f2f_signup_status_data->note = 'test note';
-        $this->f2f_signup_status_data->createdby = 1;
-        $this->f2f_signup_status_data->timecreated = 1205445539;
-
-        $this->f2f_session_roles_data = new stdClass();
-        $this->f2f_session_roles_data->id = 1;
-        $this->f2f_session_roles_data->sessionid = 1;
-        $this->f2f_session_roles_data->roleid = 1;
-        $this->f2f_session_roles_data->userid = 2;
-
-        $this->scorm_data = new stdClass();
-        $this->scorm_data->id = 1;
-        $this->scorm_data->course = 1;
-        $this->scorm_data->name = 'Scorm';
-        $this->scorm_data->intro = 'Hi there, this is a scorm.';
-
-        $this->scorm_scoes_data = new stdClass();
-        $this->scorm_scoes_data->id = 1;
-        $this->scorm_scoes_data->scorm = 1;
-        $this->scorm_scoes_data->title = 'SCO';
-        $this->scorm_scoes_data->launch = 'launch';
-
-        $this->scorm_scoes_track_data = array();
-
-        $this->scorm_scoes_track_data1 = new stdClass();
-        $this->scorm_scoes_track_data1->id = 1;
-        $this->scorm_scoes_track_data1->userid = 2;
-        $this->scorm_scoes_track_data1->scormid = 1;
-        $this->scorm_scoes_track_data1->scoid = 1;
-        $this->scorm_scoes_track_data1->attempt = 1;
-        $this->scorm_scoes_track_data1->element = 'cmi.core.lesson_status';
-        $this->scorm_scoes_track_data1->value = 'done';
-        $this->scorm_scoes_track_data1->timemodified = 1205445539;
-        $this->scorm_scoes_track_data[] = $this->scorm_scoes_track_data1;
-
-        $this->scorm_scoes_track_data2 = new stdClass();
-        $this->scorm_scoes_track_data2->id = 1;
-        $this->scorm_scoes_track_data2->userid = 2;
-        $this->scorm_scoes_track_data2->scormid = 1;
-        $this->scorm_scoes_track_data2->scoid = 1;
-        $this->scorm_scoes_track_data2->attempt = 1;
-        $this->scorm_scoes_track_data2->element = 'cmi.core.score.raw';
-        $this->scorm_scoes_track_data2->value = '100';
-        $this->scorm_scoes_track_data2->timemodified = 1205445539;
-        $this->scorm_scoes_track_data[] = $this->scorm_scoes_track_data2;
-
-        $this->scorm_scoes_track_data3 = new stdClass();
-        $this->scorm_scoes_track_data3->id = 1;
-        $this->scorm_scoes_track_data3->userid = 2;
-        $this->scorm_scoes_track_data3->scormid = 1;
-        $this->scorm_scoes_track_data3->scoid = 1;
-        $this->scorm_scoes_track_data3->attempt = 1;
-        $this->scorm_scoes_track_data3->element = 'cmi.core.score.min';
-        $this->scorm_scoes_track_data3->value = '10';
-        $this->scorm_scoes_track_data3->timemodified = 1205445539;
-        $this->scorm_scoes_track_data[] = $this->scorm_scoes_track_data3;
-
-        $this->scorm_scoes_track_data4 = new stdClass();
-        $this->scorm_scoes_track_data4->id = 1;
-        $this->scorm_scoes_track_data4->userid = 2;
-        $this->scorm_scoes_track_data4->scormid = 1;
-        $this->scorm_scoes_track_data4->scoid = 1;
-        $this->scorm_scoes_track_data4->attempt = 1;
-        $this->scorm_scoes_track_data4->element = 'cmi.core.score.max';
-        $this->scorm_scoes_track_data4->value = '90';
-        $this->scorm_scoes_track_data4->timemodified = 1205445539;
-        $this->scorm_scoes_track_data[] = $this->scorm_scoes_track_data4;
-
-        $this->course_info_field_data = new stdClass();
-        $this->course_info_field_data->id = 1;
-        $this->course_info_field_data->fullname = 'Field Name';
-        $this->course_info_field_data->shortname = 'Field';
-        $this->course_info_field_data->datatype = 'text';
-        $this->course_info_field_data->description = 'Description';
-        $this->course_info_field_data->sortorder = 1;
-        $this->course_info_field_data->categoryid = 1;
-        $this->course_info_field_data->hidden = 0;
-        $this->course_info_field_data->locked = 0;
-        $this->course_info_field_data->required = 0;
-        $this->course_info_field_data->forceunique = 0;
-        $this->course_info_field_data->defaultdata = 'default';
-        $this->course_info_field_data->param1 = 'text';
-        $this->course_info_field_data->param2 = 'text';
-        $this->course_info_field_data->param3 = 'text';
-        $this->course_info_field_data->param4 = 'text';
-        $this->course_info_field_data->param5 = 'text';
-
-        $this->course_info_data_data = new stdClass();
-        $this->course_info_data_data->id = 1;
-        $this->course_info_data_data->fieldid = 1;
-        $this->course_info_data_data->courseid = 1;
-        $this->course_info_data_data->data = 'test';
-
-        $this->course_modules_data = new stdClass();
-        $this->course_modules_data->id = 1;
-        $this->course_modules_data->course = 1;
-        $this->course_modules_data->module = 8;
-        $this->course_modules_data->instance = 1;
-
-        $this->block_totara_stats_data = new stdClass();
-        $this->block_totara_stats_data->id = 1;
-        $this->block_totara_stats_data->userid = 2;
-        $this->block_totara_stats_data->timestamp = 0;
-        $this->block_totara_stats_data->eventtype = 1;
-        $this->block_totara_stats_data->data = 1;
-        $this->block_totara_stats_data->data2 = 1;
-
-        $this->message_working_data = new stdClass();
-        $this->message_working_data->id = 1;
-        $this->message_working_data->unreadmessageid = 1;
-        $this->message_working_data->processorid = 1;
-
-        $this->message_data = new stdClass();
-        $this->message_data->id = 1;
-        $this->message_data->useridfrom = 1;
-        $this->message_data->useridto = 3;
-        $this->message_data->subject = 'subject';
-        $this->message_data->fullmessage = 'message';
-        $this->message_data->fullmessageformat = 1;
-        $this->message_data->fullmessagehtml = 'message';
-        $this->message_data->smallmessage = 'msg';
-        $this->message_data->notification = 1;
-        $this->message_data->contexturl = '';
-        $this->message_data->contexturlname = '';
-        $this->message_data->timecreated = 0;
-
-        $this->message_metadata_data = new stdClass();
-        $this->message_metadata_data->id = 1;
-        $this->message_metadata_data->messageid = 1;
-        $this->message_metadata_data->msgtype = 1;
-        $this->message_metadata_data->msgstatus = 1;
-        $this->message_metadata_data->processorid = 1;
-        $this->message_metadata_data->urgency = 1;
-        $this->message_metadata_data->roleid = 1;
-        $this->message_metadata_data->onaccept = '';
-        $this->message_metadata_data->onreject = '';
-        $this->message_metadata_data->icon = 'competency-regular';
-
-        $this->dp_template_data = new stdClass();
-        $this->dp_template_data->id = 1;
-        $this->dp_template_data->fullname = 'plan';
-        $this->dp_template_data->shortname = 'plan';
-        $this->dp_template_data->startdate = 0;
-        $this->dp_template_data->enddate = 0;
-        $this->dp_template_data->sortorder = 1;
-        $this->dp_template_data->visible = 1;
-        $this->dp_template_data->workflow = 'user';
-
-        $this->dp_plan_data = new stdClass();
-        $this->dp_plan_data->id = 1;
-        $this->dp_plan_data->templateid = 1;
-        $this->dp_plan_data->userid = 2;
-        $this->dp_plan_data->name = 'DP';
-        $this->dp_plan_data->description = '';
-        $this->dp_plan_data->startdate = 0;
-        $this->dp_plan_data->enddate = 0;
-        $this->dp_plan_data->status = 1;
-
-        $this->dp_plan_competency_assign_data = new stdClass();
-        $this->dp_plan_competency_assign_data->id = 1;
-        $this->dp_plan_competency_assign_data->planid = 1;
-        $this->dp_plan_competency_assign_data->competencyid = 1;
-        $this->dp_plan_competency_assign_data->priority = 1;
-        $this->dp_plan_competency_assign_data->duedate = 1;
-        $this->dp_plan_competency_assign_data->approved = 1;
-        $this->dp_plan_competency_assign_data->scalevalueid = 1;
-
-        $this->dp_plan_course_assign_data = new stdClass();
-        $this->dp_plan_course_assign_data->id = 1;
-        $this->dp_plan_course_assign_data->planid = 1;
-        $this->dp_plan_course_assign_data->courseid = 1;
-        $this->dp_plan_course_assign_data->priority = 1;
-        $this->dp_plan_course_assign_data->duedate = 1;
-        $this->dp_plan_course_assign_data->approved = 1;
-        $this->dp_plan_course_assign_data->completionstatus = 1;
-        $this->dp_plan_course_assign_data->grade = 2;
-
-        $this->dp_priority_scale_value_data = new stdClass();
-        $this->dp_priority_scale_value_data->id = 1;
-        $this->dp_priority_scale_value_data->name = 'scale';
-        $this->dp_priority_scale_value_data->idnumber = 1;
-        $this->dp_priority_scale_value_data->description = '';
-        $this->dp_priority_scale_value_data->priorityscaleid = 1;
-        $this->dp_priority_scale_value_data->numericscore = 1;
-        $this->dp_priority_scale_value_data->sortorder = 1;
-        $this->dp_priority_scale_value_data->timemodified = 1;
-        $this->dp_priority_scale_value_data->usermodified = 1;
-
-        $this->dp_plan_objective_data = new stdClass();
-        $this->dp_plan_objective_data->id = 1;
-        $this->dp_plan_objective_data->planid = 1;
-        $this->dp_plan_objective_data->fullname = 'Objective';
-        $this->dp_plan_objective_data->shortname = 'obj';
-        $this->dp_plan_objective_data->description = 'Objective description';
-        $this->dp_plan_objective_data->priority = 10;
-        $this->dp_plan_objective_data->duedate = 1234567890;
-        $this->dp_plan_objective_data->scalevalueid = 1;
-        $this->dp_plan_objective_data->approved = 10;
-
-        $this->dp_plan_evidence_type_data = new stdClass();
-        $this->dp_plan_evidence_type_data->id = 1;
-        $this->dp_plan_evidence_type_data->name = 'plan evidence type';
-        $this->dp_plan_evidence_type_data->description = 'plan evidence description';
-        $this->dp_plan_evidence_type_data->timemodified = 0;
-        $this->dp_plan_evidence_type_data->usermodified = 2;
-        $this->dp_plan_evidence_type_data->sortorder = 1;
-
-        $this->dp_plan_evidence_data = new stdClass();
-        $this->dp_plan_evidence_data->name = 'plan evidence';
-        $this->dp_plan_evidence_data->description = 'plan evidence description';
-        $this->dp_plan_evidence_data->timecreated = 0;
-        $this->dp_plan_evidence_data->timemodified = 0;
-        $this->dp_plan_evidence_data->usermodified = 2;
-        $this->dp_plan_evidence_data->evidencetypeid = 1;
-        $this->dp_plan_evidence_data->evidencelink = 1;
-        $this->dp_plan_evidence_data->institution = 'plan evidence institution';
-        $this->dp_plan_evidence_data->datecompleted = 0;
-        $this->dp_plan_evidence_data->userid = 2;
-
-        $this->dp_plan_evidence_relation_data = new stdClass();
-        $this->dp_plan_evidence_relation_data->id = 1;
-        $this->dp_plan_evidence_relation_data->evidenceid = 1;
-        $this->dp_plan_evidence_relation_data->planid = 1;
-        $this->dp_plan_evidence_relation_data->component = 'competency';
-        $this->dp_plan_evidence_relation_data->itemid = 1;
-
-        $this->dp_objective_scale_value_data = new stdClass();
-        $this->dp_objective_scale_value_data->id = 1;
-        $this->dp_objective_scale_value_data->objscaleid = 1;
-        $this->dp_objective_scale_value_data->name = 'Objective Scale Value';
-        $this->dp_objective_scale_value_data->idnumber = 'ID1';
-        $this->dp_objective_scale_value_data->description = 'Objective scale value description';
-        $this->dp_objective_scale_value_data->numericscore = 1;
-        $this->dp_objective_scale_value_data->sortorder = 1;
-        $this->dp_objective_scale_value_data->timemodified = 1234567890;
-        $this->dp_objective_scale_value_data->usermodified = 2;
-        $this->dp_objective_scale_value_data->achieved = 1;
-
-        $this->dp_plan_component_relation_data = new stdClass();
-        $this->dp_plan_component_relation_data->id = 1;
-        $this->dp_plan_component_relation_data->itemid1 = 1;
-        $this->dp_plan_component_relation_data->component1 = 'competency';
-        $this->dp_plan_component_relation_data->itemid2 = 1;
-        $this->dp_plan_component_relation_data->component2 = 'course';
-
-        $this->cohort_data = new stdClass();
-        $this->cohort_data->id = 1;
-        $this->cohort_data->name = 'cohort';
-        $this->cohort_data->contextid = 0;
-        $this->cohort_data->descriptionformat = 0;
-        $this->cohort_data->timecreated = 0;
-        $this->cohort_data->timemodified = 0;
-        $this->cohort_data->cohorttype = 0;
-
-        $this->cohort_members_data = new stdClass();
-        $this->cohort_members_data->id = 1;
-        $this->cohort_members_data->cohortid = 1;
-        $this->cohort_members_data->userid = 1;
-
-        $this->prog_data = new stdClass();
-        $this->prog_data->id = 1;
-        $this->prog_data->category = 1;
-        $this->prog_data->fullname = 'program';
-        $this->prog_data->shortname = 'prog';
-        $this->prog_data->idnumber = '123';
-        $this->prog_data->icon = 'default.png';
-        $this->prog_data->summary = 'summary';
-        $this->prog_data->availablefrom = 123456789;
-        $this->prog_data->availableuntil = 123456789;
-
-        $this->prog_extension_data = new stdClass();
-        $this->prog_extension_data->id = 1;
-        $this->prog_extension_data->programid = 1;
-        $this->prog_extension_data->userid = 2;
-        $this->prog_extension_data->status = 0;
-
-        $this->prog_completion_data = new stdClass();
-        $this->prog_completion_data->id = 2;
-        $this->prog_completion_data->programid = 1;
-        $this->prog_completion_data->userid = 2;
-        $this->prog_completion_data->coursesetid = 0;
-        $this->prog_completion_data->status = 1;
-        $this->prog_completion_data->timedue = 1205445539;
-        $this->prog_completion_data->timecompleted = 1205445539;
-        $this->prog_completion_data->timestarted = 1205445539;
-        $this->prog_completion_data->positionid = 1;
-        $this->prog_completion_data->organisationid = 1;
-
-        $this->prog_completion_history_data = new stdClass();
-        $this->prog_completion_history_data->id = 2;
-        $this->prog_completion_history_data->programid = 1;
-        $this->prog_completion_history_data->userid = 2;
-        $this->prog_completion_history_data->coursesetid = 0;
-        $this->prog_completion_history_data->status = 1;
-        $this->prog_completion_history_data->timestarted = 1205445539;
-        $this->prog_completion_history_data->timedue = 1205445539;
-        $this->prog_completion_history_data->timecompleted = 1205445539;
-        $this->prog_completion_history_data->recurringcourseid = 1;
-        $this->prog_completion_history_data->positionid = 1;
-        $this->prog_completion_history_data->organisationid = 1;
-
-        $this->prog_user_assignment_data = new stdClass();
-        $this->prog_user_assignment_data->id = 1;
-        $this->prog_user_assignment_data->programid = 1;
-        $this->prog_user_assignment_data->userid = 2;
-
-        $this->pos_type_info_data_data = new stdClass();
-        $this->pos_type_info_data_data->id = 1;
-        $this->pos_type_info_data_data->fieldid = 1;
-        $this->pos_type_info_data_data->positionid = 1;
-        $this->pos_type_info_data_data->data = 'test';
-
-        $this->org_type_info_data_data = new stdClass();
-        $this->org_type_info_data_data->id = 1;
-        $this->org_type_info_data_data->fieldid = 1;
-        $this->org_type_info_data_data->organisationid = 1;
-        $this->org_type_info_data_data->data = 'test';
-
-        $this->pos_type_info_field_data = new stdClass();
-        $this->pos_type_info_field_data->id = 1;
-        $this->pos_type_info_field_data->fullname = 'Field Name';
-        $this->pos_type_info_field_data->shortname = 'Field';
-        $this->pos_type_info_field_data->datatype = 'text';
-        $this->pos_type_info_field_data->description = 'Description';
-        $this->pos_type_info_field_data->sortorder = 1;
-        $this->pos_type_info_field_data->categoryid = 1;
-        $this->pos_type_info_field_data->hidden = 0;
-        $this->pos_type_info_field_data->locked = 0;
-        $this->pos_type_info_field_data->required = 0;
-        $this->pos_type_info_field_data->forceunique = 0;
-        $this->pos_type_info_field_data->defaultdata = 'default';
-        $this->pos_type_info_field_data->param1 = 'text';
-        $this->pos_type_info_field_data->param2 = 'text';
-        $this->pos_type_info_field_data->param3 = 'text';
-        $this->pos_type_info_field_data->param4 = 'text';
-        $this->pos_type_info_field_data->param5 = 'text';
-
-        $this->org_type_info_field_data = new stdClass();
-        $this->org_type_info_field_data->id = 1;
-        $this->org_type_info_field_data->fullname = 'Field Name';
-        $this->org_type_info_field_data->shortname = 'Field';
-        $this->org_type_info_field_data->datatype = 'text';
-        $this->org_type_info_field_data->description = 'Description';
-        $this->org_type_info_field_data->sortorder = 1;
-        $this->org_type_info_field_data->typeid = 1;
-        $this->org_type_info_field_data->categoryid = 1;
-        $this->org_type_info_field_data->hidden = 0;
-        $this->org_type_info_field_data->locked = 0;
-        $this->org_type_info_field_data->required = 0;
-        $this->org_type_info_field_data->forceunique = 0;
-        $this->org_type_info_field_data->defaultdata = 'default';
-        $this->org_type_info_field_data->param1 = 'text';
-        $this->org_type_info_field_data->param2 = 'text';
-        $this->org_type_info_field_data->param3 = 'text';
-        $this->org_type_info_field_data->param4 = 'text';
-        $this->org_type_info_field_data->param5 = 'text';
-
-        $this->assignment_data = new stdClass();
-        $this->assignment_data->id = 1;
-        $this->assignment_data->course = 2;
-        $this->assignment_data->name = 'Assignment 001';
-        $this->assignment_data->description = 'Assignment description 001';
-        $this->assignment_data->format = 0;
-        $this->assignment_data->assignmenttype = 'uploadsingle';
-        $this->assignment_data->resubmit = 0;
-        $this->assignment_data->preventlate = 0;
-        $this->assignment_data->emailteachers = 0;
-        $this->assignment_data->var1 = 0;
-        $this->assignment_data->var2 = 0;
-        $this->assignment_data->var3 = 0;
-        $this->assignment_data->var4 = 0;
-        $this->assignment_data->var5 = 0;
-        $this->assignment_data->maxbytes = 1048576;
-        $this->assignment_data->timedue = 1332758400;
-        $this->assignment_data->timeavailable = 1332153600;
-        $this->assignment_data->grade = 2;
-        $this->assignment_data->timemodified = 1332153673;
-        $this->assignment_data->intro = 'introduction';
-
-        $this->assignment_submissions_data = new stdClass();
-        $this->assignment_submissions_data->id = 1;
-        $this->assignment_submissions_data->assignment = 1;
-        $this->assignment_submissions_data->userid = 2;
-        $this->assignment_submissions_data->timecreated = 0;
-        $this->assignment_submissions_data->timemodified = 1332166933;
-        $this->assignment_submissions_data->numfiles = 1;
-        $this->assignment_submissions_data->data1 = '';
-        $this->assignment_submissions_data->data2 = '';
-        $this->assignment_submissions_data->grade = 2;
-        $this->assignment_submissions_data->submissioncomment = 'well done';
-        $this->assignment_submissions_data->format = 0;
-        $this->assignment_submissions_data->teacher = 0;
-        $this->assignment_submissions_data->timemarked = 0;
-        $this->assignment_submissions_data->mailed = 1;
-
-        $this->scale_data = array();
-
-        $this->scale_data1 = new stdClass();
-        $this->scale_data1->id = 1;
-        $this->scale_data1->courseid = 0;
-        $this->scale_data1->userid = 2;
-        $this->scale_data1->name = 'Scale 001';
-        $this->scale_data1->scale ='Bad,Average,Good';
-        $this->scale_data1->description = '';
-        $this->scale_data1->timemodified = 1332243112;
-        $this->scale_data[] = $this->scale_data1;
-
-        $this->scale_data2 = new stdClass();
-        $this->scale_data2->id = 2;
-        $this->scale_data2->courseid = 0;
-        $this->scale_data2->userid = 2;
-        $this->scale_data2->name = 'Scale 002';
-        $this->scale_data2->scale ='Awful,Satisfactory,Good,Excellent';
-        $this->scale_data2->description = '';
-        $this->scale_data2->timemodified = 1332243112;
-        $this->scale_data[] = $this->scale_data2;
-
-        $this->filter_config_data = new stdClass();
-        $this->filter_config_data->id = 1;
-        $this->filter_config_data->filter = 'filter/tidy';
-        $this->filter_config_data->contextid = 2;
-        $this->filter_config_data->name = 'filter_data_config';
-
-        $this->filter_active_data = new stdClass();
-        $this->filter_active_data->id = 1;
-        $this->filter_active_data->filter = 'filter/tidy';
-        $this->filter_active_data->contextid = 2;
-        $this->filter_active_data->active = 1;
-        $this->filter_active_data->sortorder = '1';
-
-        $this->files_data = new stdClass();
-        $this->files_data->id = 1;
-        $this->files_data->contextid = 1;
-        $this->files_data->itemid = 1;
-        $this->files_data->filepath = '/totara/';
-        $this->files_data->filename = 'icon.gif';
-        $this->files_data->filesize = 8;
-        $this->files_data->filearea = 'course';
-        $this->files_data->status = 1;
-        $this->files_data->timecreated = 0;
-        $this->files_data->timemodified = 0;
-        $this->files_data->sortorder = 1;
-
-        $this->sync_log_data = new stdClass();
-        $this->sync_log_data->id = 1;
-        $this->sync_log_data->runid = 1;
-        $this->sync_log_data->time = 1;
-        $this->sync_log_data->element = 'user';
-        $this->sync_log_data->logtype = 'info';
-        $this->sync_log_data->action = 'user sync';
-        $this->sync_log_data->info = 'sync started';
-
-        //Note most of this is just random filler, but component MUST be a valid value e.g. course/program/competency
-        $this->filler_data = new stdClass();
-        $this->filler_data->id = 1;
-        $this->filler_data->courseid = 1;
-        $this->filler_data->programid = 1;
-        $this->filler_data->competencyid = 1;
-        $this->filler_data->templateid = 1;
-        $this->filler_data->enabled = 1;
-        $this->filler_data->sortorder = 1;
-        $this->filler_data->manualcomplete = 1;
-        $this->filler_data->component = 'prgram';
-        $this->filler_data->enrol = 'cohort';
-        $this->filler_data->customint1 = 1;
-
-        $this->dummy_data = new stdClass();
-        $this->dummy_data->id = 1;
-        $this->dummy_data->userid = 2;
-        $this->dummy_data->frameworkid = 1;
-        $this->dummy_data->competency = 1;
-        $this->dummy_data->competencyid = 1;
-        $this->dummy_data->competencycount = 1;
-        $this->dummy_data->instanceid = 1;
-        $this->dummy_data->iteminstance = 1;
-        $this->dummy_data->itemid = 1;
-        $this->dummy_data->templateid = 1;
-        $this->dummy_data->id1 = 1;
-        $this->dummy_data->id2 = 1;
-        $this->dummy_data->proficiency = 1;
-        $this->dummy_data->timecreated = 1;
-        $this->dummy_data->timemodified = 1;
-        $this->dummy_data->usermodified = 1;
-        $this->dummy_data->organisationid = 1;
-        $this->dummy_data->positionid = 1;
-        $this->dummy_data->assessorid = 1;
-        $this->dummy_data->assessorname = 'Name';
-        $this->dummy_data->fullname = 'fullname';
-        $this->dummy_data->visible = 1;
-        $this->dummy_data->type = 1;
-
-        $DB->insert_record('report_builder', $this->rb_data);
-        $DB->insert_record('report_builder_columns', $this->rb_col_data);
-        $DB->insert_record('report_builder_filters', $this->rb_filter_data);
-        $DB->insert_records_via_batch('report_builder_settings', $this->rb_settings_data);
-        $DB->insert_record('user_info_field', $this->user_info_field_data);
-        $DB->insert_record('user_info_data', $this->user_info_data_data);
-        $DB->insert_records_via_batch('org_framework', $this->org_framework_data);
-        $DB->insert_records_via_batch('org_type', $this->type_data);
-        $DB->insert_record('org', $this->org_data);
-        $DB->insert_records_via_batch('pos_framework', $this->pos_framework_data);
-        $DB->insert_records_via_batch('pos_type', $this->type_data);
-        $DB->insert_record('pos', $this->pos_data);
-        $DB->insert_record('pos_assignment', $this->pos_assignment_data);
-        $DB->insert_record('facetoface_session_data', $this->f2f_session_data_data);
-        $DB->insert_record('course_completion_crit_compl', $this->course_completion_crit_compl_data);
-        $DB->insert_record('course_completion_criteria', $this->course_completion_criteria_data);
-        $DB->insert_record('course_completions', $this->course_completions_data);
-        $DB->insert_record('log', $this->log_data);
-        $DB->insert_record('course', $this->course_data);
-        $DB->insert_record('grade_items', $this->grade_items_data);
-        $DB->insert_record('grade_grades', $this->grade_grades_data);
-        $DB->insert_records_via_batch('comp_framework', $this->framework_data);
-        $DB->insert_records_via_batch('comp_type', $this->type_data);
-        $DB->insert_records_via_batch('comp', $this->comp_data);
-        $DB->insert_record('comp_type_info_field', $this->type_field_data);
-        $DB->insert_record('comp_type_info_data', $this->type_data_data);
-        $DB->insert_record('comp_record', $this->dummy_data);
-        $DB->insert_record('comp_criteria', $this->dummy_data);
-        $DB->insert_record('comp_criteria_record', $this->dummy_data);
-        $DB->insert_record('comp_template', $this->dummy_data);
-        $DB->insert_record('comp_template_assignment', $this->dummy_data);
-        $DB->insert_record('pos_competencies', $this->dummy_data);
-        $DB->insert_record('comp_relations', $this->dummy_data);
-        $DB->insert_record('facetoface', $this->f2f_data);
-        $DB->insert_record('facetoface_sessions', $this->f2f_session_data);
-        $DB->insert_record('facetoface_sessions_dates', $this->f2f_session_dates_data);
-        $DB->insert_record('facetoface_signups', $this->f2f_signups_data);
-        $DB->insert_record('facetoface_signups_status', $this->f2f_signup_status_data);
-        $DB->insert_record('facetoface_session_roles', $this->f2f_session_roles_data);
-        $DB->insert_record('scorm_scoes', $this->scorm_scoes_data);
-        $DB->insert_records_via_batch('scorm_scoes_track', $this->scorm_scoes_track_data);
-        $DB->insert_record('feedback', $this->feedback_data);
-        $DB->insert_record('feedback_item', $this->feedback_item_data);
-        $DB->insert_record('feedback_completed', $this->feedback_completed_data);
-        $DB->insert_record('feedback_value', $this->feedback_value_data);
-        $DB->insert_record('tag', $this->tag_data);
-        $DB->insert_record('tag_instance', $this->tag_instance_data);
-        $DB->insert_record('course_info_field', $this->course_info_field_data);
-        $DB->insert_record('course_info_data', $this->course_info_data_data);
-        $DB->insert_record('course_modules', $this->course_modules_data);
-        $DB->insert_record('block_totara_stats', $this->block_totara_stats_data);
-        $DB->insert_record('message', $this->message_data);
-        $DB->insert_record('message_working', $this->message_working_data);
-        $DB->insert_record('message_metadata', $this->message_metadata_data);
-        $DB->insert_record('dp_template', $this->dp_template_data);
-        $DB->insert_record('dp_plan', $this->dp_plan_data);
-        $DB->insert_record('dp_plan_competency_assign', $this->dp_plan_competency_assign_data);
-        $DB->insert_record('dp_plan_course_assign', $this->dp_plan_course_assign_data);
-        $DB->insert_record('dp_priority_scale_value', $this->dp_priority_scale_value_data);
-        $DB->insert_record('dp_plan_objective', $this->dp_plan_objective_data);
-        $DB->insert_record('dp_evidence_type', $this->dp_plan_evidence_type_data);
-        $DB->insert_record('dp_plan_evidence', $this->dp_plan_evidence_data);
-        $DB->insert_record('dp_plan_evidence_relation', $this->dp_plan_evidence_relation_data);
-        $DB->insert_record('dp_objective_scale_value', $this->dp_objective_scale_value_data);
-        $DB->insert_record('dp_plan_component_relation', $this->dp_plan_component_relation_data);
-        $DB->insert_record('cohort', $this->cohort_data);
-        $DB->insert_record('cohort_members', $this->cohort_members_data);
-        $DB->insert_record('prog', $this->prog_data);
-        $DB->insert_record('prog_extension', $this->prog_extension_data);
-        $DB->insert_record('prog_completion', $this->prog_completion_data);
-        $DB->insert_record('prog_completion_history', $this->prog_completion_history_data);
-        $DB->insert_record('prog_user_assignment', $this->prog_user_assignment_data);
-        $DB->insert_record('pos_type_info_field', $this->pos_type_info_field_data);
-        $DB->insert_record('org_type_info_field', $this->org_type_info_field_data);
-        $DB->insert_record('pos_type_info_data', $this->pos_type_info_data_data);
-        $DB->insert_record('org_type_info_data', $this->org_type_info_data_data);
-        $DB->insert_record('assignment', $this->assignment_data);
-        $DB->insert_record('assignment_submissions', $this->assignment_submissions_data);
-        $DB->insert_records_via_batch('scale', $this->scale_data);
-        $DB->insert_record('filter_config', $this->filter_config_data);
-        $DB->insert_record('filter_active', $this->filter_active_data);
-        $DB->insert_record('files', $this->files_data);
-        $DB->insert_record('enrol', $this->filler_data);
-        $DB->insert_record('prog_assignment', $this->filler_data);
-        $DB->insert_record('totara_sync_log', $this->sync_log_data);
+        $this->loadDataSet($this->createArrayDataset(array(
+            'report_builder' => array($this->rb_data),
+            'report_builder_columns' => array($this->rb_col_data),
+            'report_builder_filters' => array($this->rb_filter_data),
+            'report_builder_settings' => $this->rb_settings_data,
+            'user_info_field' => array($this->user_info_field_data),
+            'user_info_data' => array($this->user_info_data_data),
+            'org_framework' => $this->org_framework_data,
+            'org_type' => $this->type_data,
+            'org' => array($this->org_data),
+            'pos_framework' => array($this->pos_framework_data),
+            'pos_type' => $this->type_data,
+            'pos' => array($this->pos_data),
+            'pos_assignment' => array($this->pos_assignment_data),
+            'facetoface_session_data' => array($this->f2f_session_data_data),
+            'course_completion_crit_compl' => array($this->course_completion_crit_compl_data),
+            'course_completion_criteria' => array($this->course_completion_criteria_data),
+            'course_completions' => array($this->course_completions_data),
+            'log' => array($this->log_data),
+            'course' => array($this->course_data),
+            'grade_items' => array($this->grade_items_data),
+            'grade_grades' => array($this->grade_grades_data),
+            'comp_framework' => $this->framework_data,
+            'comp_type' => $this->type_data,
+            'comp' => $this->comp_data,
+            'comp_type_info_field' => array($this->type_field_data),
+            'comp_type_info_data' => array($this->type_data_data),
+            'comp_record' => array($this->dummy_data),
+            'comp_criteria' => array($this->dummy_data),
+            'comp_criteria_record' => array($this->dummy_data),
+            'comp_template' => array($this->dummy_data),
+            'comp_template_assignment' => array($this->dummy_data),
+            'pos_competencies' => array($this->dummy_data),
+            'comp_relations' => array($this->dummy_data),
+            'facetoface' => array($this->f2f_data),
+            'facetoface_sessions' => array($this->f2f_session_data),
+            'facetoface_sessions_dates' => array($this->f2f_session_dates_data),
+            'facetoface_signups' => array($this->f2f_signups_data),
+            'facetoface_signups_status' => array($this->f2f_signup_status_data),
+            'facetoface_session_roles' => array($this->f2f_session_roles_data),
+            'scorm_scoes' => array($this->scorm_scoes_data),
+            'scorm_scoes_track' => $this->scorm_scoes_track_data,
+            'feedback' => array($this->feedback_data),
+            'feedback_item' => array($this->feedback_item_data),
+            'feedback_completed' => array($this->feedback_completed_data),
+            'feedback_value' => array($this->feedback_value_data),
+            'tag' => array($this->tag_data),
+            'tag_instance' => array($this->tag_instance_data),
+            'course_info_field' => array($this->course_info_field_data),
+            'course_info_data' => array($this->course_info_data_data),
+            'course_modules' => array($this->course_modules_data),
+            'block_totara_stats' => array($this->block_totara_stats_data),
+            'message' => array($this->message_data),
+            'message_working' => array($this->message_working_data),
+            'message_metadata' => array($this->message_metadata_data),
+            'dp_plan' => array($this->dp_plan_data),
+            'dp_plan_competency_assign' => array($this->dp_plan_competency_assign_data),
+            'dp_plan_course_assign' => array($this->dp_plan_course_assign_data),
+            'dp_plan_objective' => array($this->dp_plan_objective_data),
+            'dp_evidence_type' => array($this->dp_plan_evidence_type_data),
+            'dp_plan_evidence' => array($this->dp_plan_evidence_data),
+            'dp_plan_evidence_relation' => array($this->dp_plan_evidence_relation_data),
+            'dp_plan_component_relation' => array($this->dp_plan_component_relation_data),
+            'cohort' => array($this->cohort_data),
+            'cohort_members' => array($this->cohort_members_data),
+            'prog' => array($this->prog_data),
+            'prog_extension' => array($this->prog_extension_data),
+            'prog_completion' => array($this->prog_completion_data),
+            'prog_completion_history' => array($this->prog_completion_history_data),
+            'prog_user_assignment' => array($this->prog_user_assignment_data),
+            'pos_type_info_field' => array($this->pos_type_info_field_data),
+            'org_type_info_field' => array($this->org_type_info_field_data),
+            'pos_type_info_data' => array($this->pos_type_info_data_data),
+            'org_type_info_data' => array($this->org_type_info_data_data),
+            'assignment' => array($this->assignment_data),
+            'assignment_submissions' => array($this->assignment_submissions_data),
+            'scale' => $this->scale_data,
+            'filter_config' => array($this->filter_config_data),
+            'files' => array($this->files_data),
+            'enrol' => array($this->filler_data),
+            'prog_assignment' => array($this->filler_data),
+            'totara_sync_log' => array($this->sync_log_data),
+        )));
 
         // db version of report
         $this->rb = new reportbuilder(1);
