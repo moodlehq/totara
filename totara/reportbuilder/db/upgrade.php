@@ -212,5 +212,18 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2013061000, 'totara_reportbuilder');
     }
 
+    if ($oldversion < 2013092400) {
+        $table = new xmldb_table('report_builder_filters');
+        $namefield = new xmldb_field('filtername', XMLDB_TYPE_CHAR, '255', null, null, null, '', 'value');
+        $customnamefield = new xmldb_field('customname', XMLDB_TYPE_INTEGER, '4', null, null, null, '0');
+        if (!$dbman->field_exists($table, $namefield)) {
+            $dbman->add_field($table, $namefield);
+        }
+        if (!$dbman->field_exists($table, $customnamefield)) {
+            $dbman->add_field($table, $customnamefield);
+        }
+        totara_upgrade_mod_savepoint(true, 2013092400, 'totara_reportbuilder');
+    }
+
     return true;
 }

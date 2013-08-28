@@ -240,6 +240,7 @@ class report_builder_edit_filters_form extends moodleform {
 
             $mform->addElement('html', $OUTPUT->container_start('reportbuilderform') . html_writer::start_tag('table') .
                 html_writer::start_tag('tr') . html_writer::tag('th', get_string('searchfield', 'totara_reportbuilder')) .
+                html_writer::tag('th', get_string('customisename', 'totara_reportbuilder'), array('colspan' => 2)) .
                 html_writer::tag('th', get_string('advanced', 'totara_reportbuilder')) .
                 html_writer::tag('th', get_string('options', 'totara_reportbuilder')) . html_writer::end_tag('tr'));
 
@@ -259,12 +260,20 @@ class report_builder_edit_filters_form extends moodleform {
 
                     $mform->addElement('html', html_writer::start_tag('tr', array('fid' => $filterid)) .
                         html_writer::start_tag('td'));
-                    $mform->addElement('selectgroups', "filter{$filterid}", '', $filtersselect, array('class' => 'filter_selector'));
+                    $mform->addElement('selectgroups', "filter{$filterid}", '', $filtersselect,
+                        array('class' => 'filter_selector'));
                     $mform->setDefault("filter{$filterid}", $field);
                     $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
-                    $mform->addElement('checkbox', "advanced{$filterid}", '');
-                    $mform->setDefault("advanced{$filterid}", $advanced);
-
+                    $mform->addElement('advcheckbox', "customname{$filterid}", '', '',
+                        array('class' => 'filter_custom_name_checkbox', 'group' => 0), array(0, 1));
+                    $mform->setDefault("customname{$filterid}", $filter->customname);
+                    $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+                    $mform->addElement('text', "filtername{$filterid}", '', 'class="filter_name_text"');
+                    $mform->setType("filtername{$filterid}", PARAM_TEXT);
+                    $mform->setDefault("filtername{$filterid}", (empty($filter->filtername) ? $filter->label : $filter->filtername));
+                    $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+                    $mform->addElement('advcheckbox', "advanced{$filterid}");
+                    $mform->setDefault("advanced{$filterid}", $filter->advanced);
                     $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
                     $deleteurl = new moodle_url('/totara/reportbuilder/filters.php',
                         array('d' => '1', 'id' => $id, 'fid' => $filterid));
@@ -302,7 +311,7 @@ class report_builder_edit_filters_form extends moodleform {
             // Remove already-added filters from the new filter selector
             $cleanedfilterselect = $newfilterselect;
             foreach ($newfilterselect as $okey => $optgroup) {
-                foreach ($optgroup as $typeval => $heading) {
+                foreach ($optgroup as $typeval => $filtername) {
                     $typevalarr = explode('-', $typeval);
                     foreach ($report->filters as $curfilter) {
                         if ($curfilter->type == $typevalarr[0] && $curfilter->value == $typevalarr[1]) {
@@ -314,9 +323,17 @@ class report_builder_edit_filters_form extends moodleform {
             $newfilterselect = $cleanedfilterselect;
             unset($cleanednewfilterselect);
 
-            $mform->addElement('selectgroups', 'newfilter', '', $newfilterselect, array('class' => 'new_filter_selector filter_selector'));
+            $mform->addElement('selectgroups', 'newfilter', '', $newfilterselect,
+                array('class' => 'new_filter_selector filter_selector'));
             $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
-            $mform->addElement('checkbox', 'newadvanced', '');
+            $mform->addElement('advcheckbox', "newcustomname", '', '',
+                array('id' => 'id_newcustomname', 'class' => 'filter_custom_name_checkbox', 'group' => 0), array(0, 1));
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+            $mform->setDefault("newcustomname", 0);
+            $mform->addElement('text', 'newfiltername', '', 'class="filter_name_text"');
+            $mform->setType('newfiltername', PARAM_TEXT);
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+            $mform->addElement('advcheckbox', 'newadvanced', '', '');
             $mform->disabledIf('newadvanced', 'newfilter', 'eq', 0);
             $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
             $mform->addElement('html', html_writer::end_tag('td') . html_writer::end_tag('tr'));
@@ -333,14 +350,19 @@ class report_builder_edit_filters_form extends moodleform {
 
         // remove the labels from the form elements
         $renderer =& $mform->defaultRenderer();
-        $select_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'fselectgroups'), 'fitem');
-        $check_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'fcheckbox'), 'fitem');
-        $renderer->setElementTemplate($select_elementtemplate, 'newfilter');
-        $renderer->setElementTemplate($check_elementtemplate, 'newadvanced');
+        $selectelementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'fselectgroups'), 'fitem');
+        $checkelementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'fcheckbox'), 'fitem');
+        $textelementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'ftext'), 'fitem');
+        $renderer->setElementTemplate($selectelementtemplate, 'newfilter');
+        $renderer->setElementTemplate($checkelementtemplate, 'newadvanced');
+        $renderer->setElementTemplate($textelementtemplate, 'newfiltername');
+        $renderer->setElementTemplate($checkelementtemplate, 'newcustomname');
         foreach ($filters as $index => $filter) {
             $filterid = $filter->filterid;
-            $renderer->setElementTemplate($select_elementtemplate, 'filter' . $filterid);
-            $renderer->setElementTemplate($check_elementtemplate, 'advanced' . $filterid);
+            $renderer->setElementTemplate($selectelementtemplate, 'filter' . $filterid);
+            $renderer->setElementTemplate($checkelementtemplate, 'advanced' . $filterid);
+            $renderer->setElementTemplate($textelementtemplate, 'filtername' . $filterid);
+            $renderer->setElementTemplate($checkelementtemplate, 'customname' . $filterid);
         }
     }
 
@@ -548,9 +570,8 @@ class report_builder_edit_columns_form extends moodleform {
             $mform->addGroup($radiogroup, 'radiogroup', get_string('defaultsortorder', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
             $mform->setDefault('defaultsortorder', $report->defaultsortorder);
         } else {
-
-                $mform->addElement('html', get_string('error:nocolumns', 'totara_reportbuilder', $report->source));
-            }
+            $mform->addElement('html', get_string('error:nocolumns', 'totara_reportbuilder', $report->source));
+        }
 
         $mform->addElement('hidden', 'id', $id);
         $mform->setType('id', PARAM_INT);

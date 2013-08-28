@@ -58,44 +58,95 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
     },
 
     rb_init_filter_rows: function() {
+
         var module = this;
 
-        // handle changes to the 'Add another filter...' selector
-        $('select.new_filter_selector').bind('change', function() {
-            var addbutton = module.rb_init_addbutton($(this));
-            var advancedCheck = $(this).closest('td').next('td').find('input[type=checkbox]');
-            var selectedval = $(this).val();
+        // Disable the new filer name field on page load.
+        $('#id_newfiltername').prop('disabled', true);
+        $('#id_newcustomname').prop('disabled', true);
 
-            if (selectedval == 0) {
-                advancedCheck.prop('disabled', true);
-                // Clean out the selections
-                addbutton.remove();
+        // Disable uncustomised headers on page load.
+        $('input.filter_custom_name_checkbox').not(':checked').each(function() {
+            var textElement = $('input.filter_name_text', $(this).parents('tr:first'));
+            textElement.prop('disabled', true);
+        });
+
+        // Handle changes to the filter pulldowns.
+        $('select.filter_selector').unbind('change');
+        $('select.filter_selector').bind('change', function() {
+            var changedSelector = $(this).val();
+            var newContent = module.config.rb_filter_headings[changedSelector];
+            var textElement = $('input.filter_name_text', $(this).parents('tr:first'));
+
+            textElement.val(newContent);  // insert new content
+        });
+
+        // Handle changes to the customise checkbox.
+        // Use click instead of change event for IE.
+        $('input.filter_custom_name_checkbox').unbind('click');
+        $('input.filter_custom_name_checkbox').bind('click', function() {
+            var textElement = $('input.filter_name_text', $(this).parents('tr:first'));
+            if ($(this).is(':checked')) {
+                // Enable the textbox when checkbox isn't checked.
+                textElement.prop('disabled', false);
             } else {
-                advancedCheck.prop('disabled', false);
+                // Disable the textbox when checkbox is checked.
+                // And reset text contents back to default.
+                textElement.prop('disabled', true);
+                var changedSelector = $('select.filter_selector', $(this).parents('tr:first')).val();
+                var newContent = module.config.rb_filter_headings[changedSelector];
+                textElement.val(newContent);
             }
         });
 
-        // Set up delete button events
+        // Handle changes to the 'Add another filter...' selector.
+        $('select.new_filter_selector').bind('change', function() {
+            var addbutton = module.rb_init_addbutton($(this));
+            var advancedCheck = $('#id_newadvanced');
+            var newNameBox = $('input.filter_name_text', $(this).parents('tr:first'));
+            var newCheckBox = $('input.filter_custom_name_checkbox', $(this).parents('tr:first'));
+            var selectedval = $(this).val();
+
+            if (selectedval == 0) {
+                // Clean out the selections.
+                advancedCheck.prop('disabled', true);
+                advancedCheck.removeAttr('checked');
+                newNameBox.val('');
+                newNameBox.prop('disabled', true);
+                addbutton.remove();
+                newCheckBox.removeAttr('checked');
+                newCheckBox.prop('disabled', true);
+            } else {
+                // Reenable it (binding above will fill the value)
+                advancedCheck.prop('disabled', false);
+                newCheckBox.prop('disabled', false);
+            }
+        });
+
+        // Set up delete button events.
         module.rb_init_deletebuttons();
-        // Set up 'move' button events
+        // Set up 'move' button events.
         module.rb_init_movedown_btns();
         module.rb_init_moveup_btns();
     },
 
     rb_init_addbutton: function(filterselector) {
+
         var module = this;
-        var advancedCheck = filterselector.closest('td').next('td').find('input[type=checkbox]');
+        var advancedCheck = $('#id_newadvanced');
         var optionsbox = advancedCheck.closest('td').next('td');
-        var newfilterinput = filterselector.closest('tr').clone();  // clone of current 'Add new filter...' tr
+        var selector = filterselector.closest('td');
+        var newfilterinput = filterselector.closest('tr').clone();  // Clone of current 'Add new filter...' tr.
+        newfilterinput.find("input:text").val(""); // Reset value.
         var addbutton = optionsbox.find('.addfilterbtn');
         if (addbutton.length == 0) {
             addbutton = module.rb_get_btn_add(module.config.rb_reportid);
         } else {
-            // Button already initialised
+            // Button already initialised.
             return addbutton;
         }
 
-        // Add save button to options
+        // Add save button to options.
         optionsbox.prepend(addbutton);
         addbutton.unbind('click');
         addbutton.bind('click', function(e) {
@@ -109,14 +160,14 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
                 },
                 success: function(o) {
                     if (o.length > 0) {
-                        // Add action buttons to row
+                        // Add action buttons to row.
                         var fid = parseInt(o);
                         var deletebutton = module.rb_get_btn_delete(module.config.rb_reportid, fid);
 
                         var upbutton = '';
                         var uppersibling = filterselector.closest('tr').prev('tr');
                         if (uppersibling.find('select.filter_selector').length > 0) {
-                            // Create an up button for the newly added filter, to be added below
+                            // Create an up button for the newly added filter, to be added below.
                             var upbutton = module.rb_get_btn_up(module.config.rb_reportid, fid);
                         }
 
@@ -124,12 +175,18 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
                         optionsbox.prepend(deletebutton, upbutton);
                         module.config.rb_filters++;
 
-                        // Set row atts
+                        // Set row atts.
                         $('#id_newfilter').removeClass('new_filter_selector');
-                        var filterbox = optionsbox.prev('td').prev('td');
+                        var filterbox = selector;
+                        var customname = $('#id_newcustomname');
+                        var nametext = $('#id_newfiltername');
                         filterbox.find('select.filter_selector').attr('name', 'filter'+fid);
                         filterbox.find('select optgroup[label=New]').remove();
                         filterbox.find('select.filter_selector').attr('id', 'id_filter'+fid);
+                        customname.attr('id', 'id_customname'+fid);
+                        customname.attr('name', 'customname'+fid);
+                        nametext.attr('id', 'id_filtername'+fid);
+                        nametext.attr('name', 'filtername'+fid);
                         advancedCheck.attr('name', 'filter'+fid);
                         advancedCheck.attr('id', 'id_filter'+fid);
                         advancedCheck.closest('tr').attr('fid', fid);
@@ -139,7 +196,7 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
 
                         module.rb_reload_option_btns(uppersibling);
 
-                        // Remove added filter from the new filter selector
+                        // Remove added filter from the new filter selector.
                         var filtertype = filterselector.val().split('-')[0];
                         var filterval = filterselector.val().split('-')[1];
                         $('.new_filter_selector optgroup option[value='+filtertype+'-'+filterval+']').remove();
@@ -148,18 +205,18 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
 
                     } else {
                         alert('Error');
-                        // Reload the broken page
+                        // Reload the broken page.
                         location.reload();
                     }
 
                 },
                 error: function(h, t, e) {
                     alert('Error');
-                    // Reload the broken page
+                    // Reload the broken page.
                     location.reload();
                 }
-            }); // ajax
-        }); // click event
+            }); // Ajax.
+        }); // Click event.
 
         return addbutton;
     },
@@ -199,10 +256,10 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
                         var uppersibling = filterrow.prev('tr');
                         var lowersibling = filterrow.next('tr');
 
-                        // Remove filter row
+                        // Remove filter row.
                         filterrow.remove();
 
-                        // Fix sibling buttons
+                        // Fix sibling buttons.
                         if (uppersibling.find('select.filter_selector').length > 0) {
                             module.rb_reload_option_btns(uppersibling);
                         }
@@ -210,12 +267,12 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
                             module.rb_reload_option_btns(lowersibling);
                         }
 
-                        // Add deleted filter to new filter selector
-                        var nlabel = o.type.replace(/[-_]/g, ' ');  // Determine the optgroup label
+                        // Add deleted filter to new filter selector.
+                        var nlabel = o.type.replace(/[-_]/g, ' ');  // Determine the optgroup label.
                         nlabel = rb_ucwords(nlabel);
                         var optgroup = $(".new_filter_selector optgroup[label='"+nlabel+"']");
                         if (optgroup.length == 0) {
-                            // Create optgroup and append to select
+                            // Create optgroup and append to select.
                             optgroup = $('<optgroup label="'+nlabel+'"></optgroup>');
                             $('.new_filter_selector').append(optgroup);
                         }
@@ -227,17 +284,17 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
 
                     } else {
                         alert('Error');
-                        // Reload the broken page
+                        // Reload the broken page.
                         location.reload();
                     }
 
                 },
                 error: function(h, t, e) {
                     alert('Error');
-                    // Reload the broken page
+                    // Reload the broken page.
                     location.reload();
                 }
-            }); // ajax
+            }); // Ajax.
 
         });
 
@@ -286,7 +343,7 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
                         filterrowclone.find('td *').fadeIn();
                         lowersiblingclone.find('td *').fadeIn();
 
-                        // Fix option buttons
+                        // Fix option buttons.
                         module.rb_reload_option_btns(filterrowclone);
                         module.rb_reload_option_btns(lowersiblingclone);
 
@@ -294,17 +351,17 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
 
                     } else {
                         alert('Error');
-                        // Reload the broken page
+                        // Reload the broken page.
                         location.reload();
                     }
 
                 },
                 error: function(h, t, e) {
                     alert('Error');
-                    // Reload the broken page
+                    // Reload the broken page.
                     location.reload();
                 }
-            }); // ajax
+            }); // Ajax.
 
         });
     },
@@ -348,7 +405,7 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
                         filterrowclone.find('td *').fadeIn();
                         uppersiblingclone.find('td *').fadeIn();
 
-                        // Fix option buttons
+                        // Fix option buttons.
                         module.rb_reload_option_btns(filterrowclone);
                         module.rb_reload_option_btns(uppersiblingclone);
 
@@ -356,17 +413,17 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
 
                     } else {
                         alert('Error');
-                        // Reload the broken page
+                        // Reload the broken page.
                         location.reload();
                     }
 
                 },
                 error: function(h, t, e) {
                     alert('Error');
-                    // Reload the broken page
+                    // Reload the broken page.
                     location.reload();
                 }
-            }); // ajax
+            }); // Ajax.
 
         });
     },
@@ -375,11 +432,11 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
         var module = this;
         var optionbox = filterrow.children('td').filter(':last');
 
-        // Remove all option buttons
+        // Remove all option buttons.
         optionbox.find('a').remove();
         optionbox.find('img').remove();
 
-        // Replace btns with updated ones
+        // Replace btns with updated ones.
         var fid = filterrow.attr('fid');
         var deletebtn = module.rb_get_btn_delete(module.config.rb_reportid, fid);
         var upbtn = '<img src="'+M.util.image_url('spacer')+'" class="iconsmall" alt="" />';

@@ -51,6 +51,8 @@
         <FIELD NAME="value" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Value of filter, used with type to identify the filter option"/>
         <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Determines the order that the filters appear in the report"/>
         <FIELD NAME="advanced" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="If none zero then the filter is an advanced option"/>
+        <FIELD NAME="filtername" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Visible name describing the filter to report users"/>
+        <FIELD NAME="customname" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Indicates whether the user has customised a name or if they are still using the default filter name value"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

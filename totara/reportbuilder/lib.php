@@ -714,9 +714,25 @@ class reportbuilder {
             $advanced = $filter->advanced;
             $name = "{$filter->type}-{$filter->value}";
 
-            // only include filter if a valid object is returned
+            // To properly support multiple languages - only use value in database if it's different from the default.
+            // If it's the same as the default for that filter, use the default string directly.
+            if (isset($filter->customname)) {
+                // Use value from database.
+                $filtername = $filter->filtername;
+            } else {
+                // Use default value.
+                $defaultnames = $this->get_default_headings_array();
+                $filtername = isset($defaultnames[$filter->type . '-' . $filter->value]) ?
+                    $defaultnames[$filter->type . '-' . $filter->value] : null;
+            }
+            // Only include filter if a valid object is returned.
             if ($filterobj = rb_filter_type::get_filter($type, $value, $advanced, $this)) {
                 $filterobj->filterid = $filter->id;
+                $filterobj->filtername = $filtername;
+                $filterobj->customname = isset($filter->customname) ? $filter->customname : 0;
+                $filterobj->advanced = $advanced;
+                // Change label if there is a customname for this filter.
+                $filterobj->label = ($filter->customname == 1) ? $filtername : $filterobj->label;
                 $out[$name] = $filterobj;
 
                 // enabled report grouping if any filters are grouped
@@ -1105,7 +1121,6 @@ class reportbuilder {
         $mform = new report_builder_search_form($this->get_current_url(), array('fields' => $this->filters));
         $mform->display();
     }
-
 
     /** Returns true if the current user has permission to view this report
      *
@@ -2176,6 +2191,8 @@ class reportbuilder {
             $filter->value = $filterinfo->value;
             $filter->advanced = $filterinfo->advanced;
             $filter->id = $filterinfo->id;
+            $filter->filtername = $filterinfo->filtername;
+            $filter->customname = $filterinfo->customname;
             $filters[] = $filter;
         }
         // save columns
@@ -5076,7 +5093,7 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
         $transaction = $DB->start_delegated_transaction();
 
         $newid = $DB->insert_record('report_builder', $todb);
-        // add columns
+        // Add columns.
         $so = 1;
         foreach ($embed->columns as $column) {
             $todb = new stdClass();
@@ -5085,12 +5102,12 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
             $todb->value = $column['value'];
             $todb->heading = $column['heading'];
             $todb->sortorder = $so;
-            $todb->customheading = 0; // initially no columns are customised
+            $todb->customheading = 0; // Initially no columns are customised.
             $todb->hidden = isset($column['hidden']) ? $column['hidden'] : 0;
             $DB->insert_record('report_builder_columns', $todb);
             $so++;
         }
-        // add filters
+        // Add filters.
         $so = 1;
         foreach ($embed->filters as $filter) {
             $todb = new stdClass();
@@ -5098,6 +5115,8 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
             $todb->type = $filter['type'];
             $todb->value = $filter['value'];
             $todb->advanced = $filter['advanced'];
+            $todb->filtername = '';
+            $todb->customname = 0; // Initially no filters are customised.
             $todb->sortorder = $so;
             $DB->insert_record('report_builder_filters', $todb);
             $so++;

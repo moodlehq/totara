@@ -27,11 +27,11 @@ require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/report_forms.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
-$id = required_param('id', PARAM_INT); // report builder id
-$d = optional_param('d', null, PARAM_TEXT); // delete
-$m = optional_param('m', null, PARAM_TEXT); // move
-$fid = optional_param('fid', null, PARAM_INT); //filter id
-$confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
+$id = required_param('id', PARAM_INT); // Report builder id.
+$d = optional_param('d', null, PARAM_TEXT); // Delete.
+$m = optional_param('m', null, PARAM_TEXT); // Move.
+$fid = optional_param('fid', null, PARAM_INT); // Filter id.
+$confirm = optional_param('confirm', 0, PARAM_INT); // Confirm delete.
 
 admin_externalpage_setup('rbmanagereports');
 
@@ -41,11 +41,20 @@ $returnurl = new moodle_url('/totara/reportbuilder/filters.php', array('id' => $
 
 $report = new reportbuilder($id, null, false, null, null, true);
 
-// include jquery
+
+$headings = array();
+foreach ($report->src->filteroptions as $option) {
+    $key = $option->type . '-' . $option->value;
+    $headings[$key] = $option->label;
+}
+
+// Include jquery.
 local_js();
-$PAGE->requires->strings_for_js(array('saving', 'confirmfilterdelete', 'delete', 'moveup', 'movedown', 'add', 'initialdisplay_error'), 'totara_reportbuilder');
+$PAGE->requires->strings_for_js(array('saving', 'confirmfilterdelete', 'delete', 'moveup',
+    'movedown', 'add', 'initialdisplay_error'), 'totara_reportbuilder');
 $args = array('args' => '{"user_sesskey":"'.$USER->sesskey.'", "rb_reportid":'.$id.',
-    "rb_filters":'.sizeof($report->filters).', "rb_initial_display":'.$report->initialdisplay.'}');
+    "rb_filters":'.count($report->filters).', "rb_initial_display":'.$report->initialdisplay.',
+    "rb_filter_headings":'.json_encode($headings).'}');
 $jsmodule = array(
     'name' => 'totara_reportbuilderfilters',
     'fullpath' => '/totara/reportbuilder/filters.js',
@@ -53,19 +62,20 @@ $jsmodule = array(
 $PAGE->requires->js_init_call('M.totara_reportbuilderfilters.init', $args, false, $jsmodule);
 
 
-// delete fields or columns
+// Delete fields or columns.
 if ($d and $confirm) {
     if (!confirm_sesskey()) {
         totara_set_notification(get_string('error:bad_sesskey', 'totara_reportbuilder'), $returnurl);
     }
     if (isset($fid)) {
-        if ($report->initialdisplay && sizeof($report->filters) <= 1) {
+        if ($report->initialdisplay && count($report->filters) <= 1) {
                 totara_set_notification(get_string('initialdisplay_error', 'totara_reportbuilder'), $returnurl);
         } else {
             if ($report->delete_filter($fid)) {
                 add_to_log(SITEID, 'reportbuilder', 'update report', 'filters.php?id='. $id,
                     'Delete Filter: Report ID=' . $id . ', Filter ID=' . $fid);
-                totara_set_notification(get_string('filter_deleted', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
+                totara_set_notification(get_string('filter_deleted', 'totara_reportbuilder'), $returnurl,
+                    array('class' => 'notifysuccess'));
             } else {
                 totara_set_notification(get_string('error:filter_not_deleted', 'totara_reportbuilder'), $returnurl);
             }
@@ -73,8 +83,7 @@ if ($d and $confirm) {
     }
 }
 
-
-// confirm deletion of field or column
+// Confirm deletion of field or column.
 if ($d) {
     echo $output->header();
 
@@ -88,7 +97,7 @@ if ($d) {
     exit;
 }
 
-// move filter
+// Move filter.
 if ($m && isset($fid)) {
     if ($report->move_filter($fid, $m)) {
         add_to_log(SITEID, 'reportbuilder', 'update report', 'filters.php?id='. $id,
@@ -99,10 +108,10 @@ if ($m && isset($fid)) {
     }
 }
 
-// form definition
+// Form definition.
 $mform = new report_builder_edit_filters_form(null, compact('id', 'report'));
 
-// form results check
+// Form results check.
 if ($mform->is_cancelled()) {
     redirect(new moodle_url('/totara/reportbuilder/index.php'));
 }
@@ -115,7 +124,8 @@ if ($fromform = $mform->get_data()) {
         reportbuilder_set_status($id);
         add_to_log(SITEID, 'reportbuilder', 'update report', 'filters.php?id='. $id,
             'Filter Settings: Report ID=' . $id);
-        totara_set_notification(get_string('filters_updated', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
+        totara_set_notification(get_string('filters_updated', 'totara_reportbuilder'), $returnurl,
+            array('class' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:filters_not_updated', 'totara_reportbuilder'), $returnurl);
     }
@@ -136,17 +146,12 @@ if (reportbuilder_get_status($id)) {
 }
 
 $currenttab = 'filters';
-include_once('tabs.php');
+require_once('tabs.php');
 
-// display the form
+// Display the form.
 $mform->display();
 
-// include JS vars
-$headings = array();
-foreach ($report->src->filteroptions as $option) {
-    $key = $option->type . '-' . $option->value;
-    $headings[$key] = $option->label;
-}
+// Include JS vars.
 $js = "var rb_reportid = {$id}; var rb_filter_headings = " . json_encode($headings) . ';';
 echo html_writer::script($js);
 
@@ -165,31 +170,41 @@ function build_filters($id, $fromform) {
 
     $transaction = $DB->start_delegated_transaction();
     $oldfilters = $DB->get_records('report_builder_filters', array('reportid' => $id));
-    // See if existing filters have changed
+    // See if existing filters have changed.
     foreach ($oldfilters as $fid => $oldfilter) {
         $filtername = "filter{$fid}";
         $advancedname = "advanced{$fid}";
-        // Update db only if filter has changed
+        $headingname = "filtername{$fid}";
+        $customheadingname = "customname{$fid}";
+        // Update db only if filter has changed.
         if (isset($fromform->$filtername) &&
-            ($fromform->$filtername == $oldfilter->type.'-'.$oldfilter->value ||
-            $fromform->$advancedname != $oldfilter->advanced)) {
+            ($fromform->$filtername != $oldfilter->type.'-'.$oldfilter->value ||
+            $fromform->$advancedname != $oldfilter->advanced ||
+            $fromform->$headingname != $oldfilter->filtername ||
+            $fromform->$customheadingname != $oldfilter->customname)) {
+            $name = isset($fromform->$headingname) ? $fromform->$headingname : '';
             $todb = new stdClass();
             $todb->id = $fid;
-            $todb->advanced = isset($fromform->$advancedname) ? 1 : 0;
+            $todb->advanced = $fromform->$advancedname;
             $parts = explode('-', $fromform->$filtername);
             $todb->type = $parts[0];
             $todb->value = $parts[1];
+            $todb->filtername = $name;
+            $todb->customname = $fromform->$customheadingname;
             $DB->update_record('report_builder_filters', $todb);
         }
     }
-    // Add any new filters
+    // Add any new filters.
     if (isset($fromform->newfilter) && $fromform->newfilter != '0') {
+        $name = isset($fromform->newfiltername) ? $fromform->newfiltername : '';
         $todb = new stdClass();
         $todb->reportid = $id;
         $todb->advanced = isset($fromform->newadvanced) ? 1 : 0;
         $parts = explode('-', $fromform->newfilter);
         $todb->type = $parts[0];
         $todb->value = $parts[1];
+        $todb->filtername = $name;
+        $todb->customname = $fromform->newcustomname;
         $sortorder = $DB->get_field('report_builder_filters', 'MAX(sortorder) + 1', array('reportid' => $id));
         if (!$sortorder) {
             $sortorder = 1;
@@ -201,4 +216,3 @@ function build_filters($id, $fromform) {
     return true;
 }
 
-?>

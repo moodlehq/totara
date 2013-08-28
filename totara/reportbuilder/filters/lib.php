@@ -32,7 +32,7 @@ class rb_filter_type {
     public $value;
     public $advanced;
     public $filtertype;
-    protected $label;
+    public $label;
     /**
      * @var mixed $field string|array Direct access to this field is @deprecated and prohibited.
      *
