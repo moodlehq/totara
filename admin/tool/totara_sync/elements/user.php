@@ -230,6 +230,8 @@ class totara_sync_element_user extends totara_sync_element {
                 $this->addlog(get_string('updateduserx', 'tool_totara_sync', $suser->idnumber), 'info', 'updateusers');
 
                 $transaction->allow_commit();
+
+                events_trigger('user_updated', $user);
             }
             $rs->close();
             unset($user, $pos_assignment, $posdata); // free memory
@@ -306,6 +308,8 @@ class totara_sync_element_user extends totara_sync_element {
         }
 
         $transaction->allow_commit();
+
+        events_trigger('user_created', $user);
 
         return true;
     }
