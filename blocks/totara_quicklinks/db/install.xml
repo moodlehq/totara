@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/quicklinks/db" VERSION="2012061500" COMMENT="XMLDB file for Totara quicklinks block"
+<XMLDB PATH="blocks/quicklinks/db" VERSION="2013082800" COMMENT="XMLDB file for Totara quicklinks block"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
     <TABLE NAME="block_quicklinks" COMMENT="Holds information on the defined links of a block">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="block_instance_id"/>
-        <FIELD NAME="block_instance_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="title"/>
-        <FIELD NAME="title" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" PREVIOUS="block_instance_id" NEXT="url"/>
-        <FIELD NAME="url" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="title" NEXT="displaypos"/>
-        <FIELD NAME="displaypos" TYPE="int" LENGTH="3" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="url"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="block_instance_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="title" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="url" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="displaypos" TYPE="int" LENGTH="3" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
 
       <KEYS>

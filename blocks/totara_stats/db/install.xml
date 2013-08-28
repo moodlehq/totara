@@ -6,20 +6,20 @@
     <TABLES>
         <TABLE NAME="block_totara_stats" COMMENT="Holds stats information">
             <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="userid"/>
-                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="timestamp"/>
-                <FIELD NAME="timestamp" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="eventtype"/>
-                <FIELD NAME="eventtype" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="timestamp" NEXT="data"/>
-                <FIELD NAME="data" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" PREVIOUS="eventtype" NEXT="data2"/>
-                <FIELD NAME="data2" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="data"/>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="timestamp" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="eventtype" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="data" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="data2" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
             <INDEXES>
-                <INDEX NAME="user-time-type" UNIQUE="false" FIELDS="userid,timestamp,eventtype" NEXT="time"/>
-                <INDEX NAME="time" UNIQUE="false" FIELDS="timestamp" PREVIOUS="user-time-type" NEXT="time-type"/>
-                <INDEX NAME="time-type" UNIQUE="false" FIELDS="timestamp,eventtype" PREVIOUS="time"/>
+                <INDEX NAME="user-time-type" UNIQUE="false" FIELDS="userid,timestamp,eventtype"/>
+                <INDEX NAME="time" UNIQUE="false" FIELDS="timestamp"/>
+                <INDEX NAME="time-type" UNIQUE="false" FIELDS="timestamp,eventtype"/>
             </INDEXES>
         </TABLE>
     </TABLES>
