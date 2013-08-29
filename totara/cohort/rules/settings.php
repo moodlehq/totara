@@ -168,7 +168,7 @@ function cohort_rules_list(){
                         get_string('usersx', 'totara_cohort', $field->name),
                         array_combine($options, $options)
                     );
-                    $sqlhandler = new cohort_rule_sqlhandler_in_usercustomfield($id);
+                    $sqlhandler = new cohort_rule_sqlhandler_in_usercustomfield($id, $field->datatype);
                     break;
                 case 'text':
                     // text input
@@ -178,7 +178,7 @@ function cohort_rules_list(){
                     );
                     $dialogui->selectoptionstr = s($field->name) . ' (' . get_string('text', 'totara_cohort') . ')';
                     $dialogs[] = $dialogui;
-                    $sqlhandler_text = new cohort_rule_sqlhandler_in_usercustomfield($field->name);
+                    $sqlhandler_text = new cohort_rule_sqlhandler_in_usercustomfield($field->name, $field->datatype);
 
                     // choose from distinct customfield values
                     $sql = new stdClass;
@@ -195,7 +195,7 @@ function cohort_rules_list(){
                     $dialogui->selectoptionstr = s($field->name) . ' (' . get_string('choose', 'totara_cohort') . ')';
                     $dialogs[] = $dialogui;
 
-                    $sqlhandler = new cohort_rule_sqlhandler_in_usercustomfield($id);
+                    $sqlhandler = new cohort_rule_sqlhandler_in_usercustomfield($id, $field->datatype);
                     unset($dialogui);
                     break;
                 case 'datetime':
@@ -212,7 +212,7 @@ function cohort_rules_list(){
                             0 => get_string('checkboxno', 'totara_cohort')
                         )
                     );
-                    $sqlhandler = new cohort_rule_sqlhandler_in_usercustomfield($id);
+                    $sqlhandler = new cohort_rule_sqlhandler_in_usercustomfield($id, $field->datatype);
                     break;
                 default:
                     // Skip fields that we haven't defined a rule type for
