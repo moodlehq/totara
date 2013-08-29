@@ -253,7 +253,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="notificationid_fk"/>
-        <KEY NAME="notificationid_fk" TYPE="foreign" FIELDS="notificationid" REFTABLE="notification" REFFIELDS="id" PREVIOUS="primary" NEXT="sessionid_fk"/>
+        <KEY NAME="notificationid_fk" TYPE="foreign" FIELDS="notificationid" REFTABLE="facetoface_notification" REFFIELDS="id" PREVIOUS="primary" NEXT="sessionid_fk"/>
         <KEY NAME="sessionid_fk" TYPE="foreign" FIELDS="sessionid" REFTABLE="facetoface_sessions" REFFIELDS="id" PREVIOUS="notificationid_fk" NEXT="sessiondateid_fk"/>
         <KEY NAME="sessiondateid_fk" TYPE="foreign" FIELDS="sessiondateid" REFTABLE="facetoface_sessions_dates" REFFIELDS="id" PREVIOUS="sessionid_fk"/>
       </KEYS>
