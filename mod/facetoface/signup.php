@@ -143,17 +143,17 @@ if ($session->datetimeknown && facetoface_has_session_started($session, $timenow
 
     $errorstring = facetoface_is_session_in_progress($session, $timenow) ? $inprogress_str : $over_str;
 
-    echo html_writer::empty_tag('br') . $errorstring;
+    echo $OUTPUT->notification($errorstring, 'notifyproblem');
     echo $OUTPUT->box_end();
     echo $OUTPUT->footer($course);
-    exit;
+    exit();
 }
 
 if (!$signedup && !facetoface_session_has_capacity($session, $context) && (!$session->allowoverbook)) {
-    print_error('sessionisfull', 'facetoface', $returnurl);
+    echo $OUTPUT->notification(get_string('sessionisfull', 'facetoface'), 'notifyproblem');
     echo $OUTPUT->box_end();
     echo $OUTPUT->footer($course);
-    exit;
+    exit();
 }
 
 echo facetoface_print_session($session, $viewattendees);

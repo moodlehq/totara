@@ -2077,7 +2077,7 @@ function message_post_message($userfrom, $userto, $message, $format) {
         $eventdata->fullmessage = html_to_text($eventdata->fullmessagehtml);
     } else {
         $eventdata->fullmessage      = $message;
-        $eventdata->fullmessagehtml  = '';
+        $eventdata->fullmessagehtml  = $message;
     }
 
     $eventdata->fullmessageformat = $format;

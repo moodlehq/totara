@@ -186,7 +186,7 @@ M.totara_f2f_attendees = M.totara_f2f_attendees || {
                     {
                         buttons: buttonsObj,
                         title: '<h2>' + M.util.get_string('bulkaddattendeesfromfile', 'facetoface') + '</h2>',
-                        height: 300
+                        height: 340
                     },
                     M.cfg.wwwroot + '/mod/facetoface/bulkadd_attendees.php?s=' + M.totara_f2f_attendees.config.sessionid + '&type=file&dialog=1',
                     handler
@@ -211,7 +211,7 @@ M.totara_f2f_attendees = M.totara_f2f_attendees || {
                 {
                     buttons: buttonsObj,
                     title: '<h2>' + M.util.get_string('bulkaddattendeesfrominput', 'facetoface') + '</h2>',
-                    height: 300
+                    height: 340
                 },
                 M.cfg.wwwroot + '/mod/facetoface/bulkadd_attendees.php?s=' + M.totara_f2f_attendees.config.sessionid + '&type=input&dialog=1',
                 handler

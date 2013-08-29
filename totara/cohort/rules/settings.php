@@ -178,6 +178,7 @@ function cohort_rules_list(){
                     );
                     $dialogui->selectoptionstr = s($field->name) . ' (' . get_string('text', 'totara_cohort') . ')';
                     $dialogs[] = $dialogui;
+                    $sqlhandler_text = new cohort_rule_sqlhandler_in_usercustomfield($field->name);
 
                     // choose from distinct customfield values
                     $sql = new stdClass;
@@ -224,7 +225,7 @@ function cohort_rules_list(){
                     'usercustomfields',
                     "customfield{$id}_{$i}",
                     $dialog,
-                    $sqlhandler,
+                    (get_class($dialog) == 'cohort_rule_ui_text' ) ? $sqlhandler_text : $sqlhandler,
                     !empty($dialog->selectoptionstr) ? $dialog->selectoptionstr : s($field->name)
                 );
             }

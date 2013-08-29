@@ -54,6 +54,7 @@ define('MDL_F2F_CONDITION_BEFORE_SESSION',              1);
 define('MDL_F2F_CONDITION_AFTER_SESSION',               2);
 define('MDL_F2F_CONDITION_BOOKING_CONFIRMATION',        4);
 define('MDL_F2F_CONDITION_CANCELLATION_CONFIRMATION',   8);
+define('MDL_F2F_CONDITION_DECLINE_CONFIRMATION',        12);
 define('MDL_F2F_CONDITION_WAITLISTED_CONFIRMATION',     16);
 define('MDL_F2F_CONDITION_BOOKING_REQUEST',             32);
 define('MDL_F2F_CONDITION_SESSION_DATETIME_CHANGE',     64);
@@ -452,7 +453,7 @@ class facetoface_notification extends data_object {
      * @access  public
      * @param   object  $user       User object
      * @param   int     $sessionid
-     * @param   int     $sessiondateid The specific sessiondate which this message is for.
+     * @param   int     $sessiondate The specific sessiondate which this message is for.
      * @return  void
      */
     public function send_to_user($user, $sessionid, $sessiondate = null) {
@@ -513,6 +514,9 @@ class facetoface_notification extends data_object {
             case MDL_F2F_CONDITION_SESSION_DATETIME_CHANGE:
                 $newevent->icon = 'facetoface-update';
                 break;
+            case MDL_F2F_CONDITION_DECLINE_CONFIRMATION://KINEO #198 ad decline message
+                $newevent->icon = 'facetoface-decline';
+                break;
             }
         }
 
@@ -527,7 +531,8 @@ class facetoface_notification extends data_object {
         if (!empty($this->_ical_attachment) && $this->conditiontype != MDL_F2F_CONDITION_WAITLISTED_CONFIRMATION) {
             $newevent->attachment = $this->_ical_attachment->file;
 
-            if ($this->conditiontype == MDL_F2F_CONDITION_CANCELLATION_CONFIRMATION) {
+            if ($this->conditiontype == MDL_F2F_CONDITION_CANCELLATION_CONFIRMATION ||
+                $this->conditiontype == MDL_F2F_CONDITION_DECLINE_CONFIRMATION) {
                 $newevent->attachmentname = 'cancel.ics';
             } else {
                 $newevent->attachmentname = 'invite.ics';
@@ -603,6 +608,20 @@ class facetoface_notification extends data_object {
             }
         }
 
+        // Third-party notification.
+        if (!empty($this->_facetoface->thirdparty) && ($session->datetimeknown || !empty($this->_facetoface->thirdpartywaitlist))) {
+            $newevent->attachment = null; // Leave out the ical attachments in the third-parties notification.
+            $recipients = array_map('trim', explode(',', $this->_facetoface->thirdparty));
+            $thirdparty = $user;
+            $thirdparty->firstname = ''; $thirdparty->lastname = ''; // Avoid showing user's name to third-party recipient.
+            foreach ($recipients as $recipient) {
+                $thirdparty->email = $recipient;
+                $newevent->userto = $thirdparty;
+                $newevent->fullmessagehtml = ''; // Avoid repeating footer at the end of the email.
+                tm_alert_send($newevent);
+            }
+        }
+
         @unlink($CFG->dataroot . DIRECTORY_SEPARATOR . $this->_ical_attachment->file);
     }
 
@@ -655,6 +674,9 @@ class facetoface_notification extends data_object {
                         break;
                     case MDL_F2F_CONDITION_BOOKING_REQUEST:
                         $html .= get_string('occurswhenuserrequestssessionwithmanagerapproval', 'facetoface');
+                        break;
+                    case MDL_F2F_CONDITION_DECLINE_CONFIRMATION:
+                        $html .= get_string('occurswhenuserrequestssessionwithmanagerdecline', 'facetoface');
                         break;
                 }
 
@@ -721,7 +743,7 @@ class facetoface_notification extends data_object {
  * @param integer $userid ID of the recipient of the email
  * @param array $params The parameters for the notification
  * @param mixed $icalattachmenttype The ical attachment type, or null to disable ical attachments
- * @returns string Error message (or empty string if successful)
+ * @return string Error message (or empty string if successful)
  */
 function facetoface_send_notice($facetoface, $session, $userid, $params, $icalattachmenttype = null) {
     global $DB;
@@ -785,6 +807,27 @@ function facetoface_send_cancellation_notice($facetoface, $session, $userid) {
     return facetoface_send_notice($facetoface, $session, $userid, $params, $includeical ? MDL_F2F_CANCEL : null);
 }
 
+/**
+ * Send a confirmation email to the user and manager regarding the
+ * cancellation
+ *
+ * @param class $facetoface record from the facetoface table
+ * @param class $session record from the facetoface_sessions table
+ * @param integer $userid ID of the recipient of the email
+ * @returns string Error message (or empty string if successful)
+ */
+function facetoface_send_decline_notice($facetoface, $session, $userid) {
+    global $CFG;
+
+    $params = array(
+            'facetofaceid'  => $facetoface->id,
+            'type'          => MDL_F2F_NOTIFICATION_AUTO,
+            'conditiontype' => MDL_F2F_CONDITION_DECLINE_CONFIRMATION
+            );
+
+    $includeical = !isset($CFG->facetoface_disableicalcancel) || empty($CFG->facetoface_disableicalcancel);
+    return facetoface_send_notice($facetoface, $session, $userid, $params, $includeical ? MDL_F2F_CANCEL : null);
+}
 
 /**
  * Send a email to the user and manager regarding the

@@ -416,11 +416,11 @@ class hierarchylib_test extends advanced_testcase {
         $fw1 = $this->fw1;
 
         // specifying id should get that framework
-        $this->assertEquals($competency->get_framework(2)->fullname, 'Framework 2');
+        $this->assertEquals('Framework 2', $competency->get_framework(2)->fullname);
         // not specifying id should get first framework (by sort order)
-        $this->assertEquals($competency->get_framework()->fullname,$fw1->fullname);
+        $this->assertEquals($fw1->fullname, $competency->get_framework()->fullname);
         // the framework returned should contain all the necessary fields
-        $this->assertEquals($competency->get_framework(1), $fw1);
+        $this->assertEquals($fw1, $competency->get_framework(1));
         // clear all frameworks
         $DB->delete_records('comp_framework');
         // if no frameworks exist should return false
@@ -433,9 +433,9 @@ class hierarchylib_test extends advanced_testcase {
         $competency = $this->competency;
         $type1 = $this->type1;
         // the type returned should contain all the necessary fields
-        $this->assertEquals($competency->get_type_by_id(1), $type1);
+        $this->assertEquals($type1, $competency->get_type_by_id(1));
         // the type with the correct id should be returned
-        $this->assertEquals($competency->get_type_by_id(2)->fullname, 'type 2');
+        $this->assertEquals('type 2', $competency->get_type_by_id(2)->fullname);
         // false should be returned if the type doesn't exist
         $this->assertFalse((bool)$competency->get_type_by_id(999));
         $this->resetAfterTest(true);
@@ -448,9 +448,9 @@ class hierarchylib_test extends advanced_testcase {
         // should return an array of frameworks
         $this->assertTrue((bool)is_array($competency->get_frameworks()));
         // the array should include all frameworks
-        $this->assertEquals(count($competency->get_frameworks()), 2);
+        $this->assertEquals(2, count($competency->get_frameworks()));
         // each array element should contain a framework
-        $this->assertEquals(current($competency->get_frameworks()), $fw1);
+        $this->assertEquals($fw1, current($competency->get_frameworks()));
         // clear out the framework
         $DB->delete_records('comp_framework');
         // if no frameworks exist should return false
@@ -465,9 +465,9 @@ class hierarchylib_test extends advanced_testcase {
         // should return an array of types
         $this->assertTrue((bool)is_array($competency->get_types()));
         // the array should include all types (in this framework)
-        $this->assertEquals(count($competency->get_types()), 3);
+        $this->assertEquals(3, count($competency->get_types()));
         // each array element should contain a type
-        $this->assertEquals(current($competency->get_types()), $type1);
+        $this->assertEquals($type1, current($competency->get_types()));
         // clear out the types
         $DB->delete_records('comp_type');
         // if no types exist should return false
@@ -486,7 +486,7 @@ class hierarchylib_test extends advanced_testcase {
         $this->assertFalse((bool)empty($customfields));
 
         //Returned array contains one item
-        $this->assertEquals(count($customfields),1);
+        $this->assertEquals(1, count($customfields));
 
         //Returned array is identical to expected data
         $expected_data = array(
@@ -499,10 +499,10 @@ class hierarchylib_test extends advanced_testcase {
             'fullname' => $this->cf1->fullname
         );
         $expected = array($this->cf1->id => (object) $expected_data);
-        $this->assertEquals($customfields, $expected);
+        $this->assertEquals($expected, $customfields);
 
         //Empty array is returned for a non-existent item id
-        $this->assertEquals($competency->get_custom_fields(9000), array());
+        $this->assertEquals(array(), $competency->get_custom_fields(9000));
         $this->resetAfterTest(true);
     }
 
@@ -510,9 +510,9 @@ class hierarchylib_test extends advanced_testcase {
         $competency = $this->competency;
         $c1 = $this->c1;
         // the item returned should contain all the necessary fields
-        $this->assertEquals($competency->get_item(1), $c1);
+        $this->assertEquals($c1, $competency->get_item(1));
         // the item should match the id requested
-        $this->assertEquals($competency->get_item(2)->fullname, 'Competency 2');
+        $this->assertEquals('Competency 2', $competency->get_item(2)->fullname);
         // should return false if the item doesn't exist
         $this->assertFalse((bool)$competency->get_item(999));
         $this->resetAfterTest(true);
@@ -525,9 +525,9 @@ class hierarchylib_test extends advanced_testcase {
         // should return an array of items
         $this->assertTrue((bool)is_array($competency->get_items()));
         // the array should include all items
-        $this->assertEquals(count($competency->get_items()), 4);
+        $this->assertEquals(4, count($competency->get_items()));
         // each array element should contain an item object
-        $this->assertEquals(current($competency->get_items()), $c1);
+        $this->assertEquals($c1, current($competency->get_items()));
         // clear out the items
         $DB->delete_records('comp');
         // if no items exist should return false
@@ -542,11 +542,11 @@ class hierarchylib_test extends advanced_testcase {
         // should return an array of items belonging to specified parent
         $this->assertTrue((bool)is_array($competency->get_items_by_parent(1)));
         // should return one element per item
-        $this->assertEquals(count($competency->get_items_by_parent(1)), 2);
+        $this->assertEquals(2, count($competency->get_items_by_parent(1)));
         // each array element should contain an item
-        $this->assertEquals(current($competency->get_items_by_parent(1))->fullname, 'Competency 2');
+        $this->assertEquals('Competency 2', current($competency->get_items_by_parent(1))->fullname);
         // if no parent specified should return root level items
-        $this->assertEquals(current($competency->get_items_by_parent()), $c1);
+        $this->assertEquals($c1, current($competency->get_items_by_parent()));
         // clear out the items
         $DB->delete_records('comp');
         // if no items exist should return false for root items and parents
@@ -561,11 +561,11 @@ class hierarchylib_test extends advanced_testcase {
         $nofwid = $this->nofwid;
         $c1 = $this->c1;
         // should return root items for framework where id specified
-        $this->assertEquals(current($competency->get_all_root_items()), $c1);
+        $this->assertEquals($c1, current($competency->get_all_root_items()));
         // should return all root items (cross framework) if no fwid given
-        $this->assertEquals(count($nofwid->get_all_root_items()), 3);
+        $this->assertEquals(3, count($nofwid->get_all_root_items()));
         // should return all root items, even if fwid given, if $all set to true
-        $this->assertEquals(count($competency->get_all_root_items(true)), 3);
+        $this->assertEquals(3, count($competency->get_all_root_items(true)));
         // clear out the items
         $DB->delete_records('comp');
         // if no items exist should return false
@@ -590,13 +590,13 @@ class hierarchylib_test extends advanced_testcase {
         // should return an array of items
         $this->assertTrue((bool)is_array($competency->get_item_descendants(1)));
         // array elements should match an expected format
-        $this->assertEquals(current($competency->get_item_descendants(1)), $obj);
+        $this->assertEquals($obj, current($competency->get_item_descendants(1)));
         // should return the item with the specified ID and all its descendants
-        $this->assertEquals(count($competency->get_item_descendants(1)), 3);
+        $this->assertEquals(3, count($competency->get_item_descendants(1)));
         // should still return itself if an item has no descendants
-        $this->assertEquals(count($competency->get_item_descendants(2)), 1);
+        $this->assertEquals(1, count($competency->get_item_descendants(2)));
         // should work the same for different frameworks
-        $this->assertEquals(count($nofwid->get_item_descendants(3)), 1);
+        $this->assertEquals(1, count($nofwid->get_item_descendants(3)));
         $this->resetAfterTest(true);
     }
 
@@ -606,7 +606,7 @@ class hierarchylib_test extends advanced_testcase {
         $c2 = $this->c2;
 
         // if an adjacent peer exists, should return its id
-        $this->assertEquals($competency->get_hierarchy_item_adjacent_peer($c2, HIERARCHY_ITEM_BELOW), 4);
+        $this->assertEquals(4, $competency->get_hierarchy_item_adjacent_peer($c2, HIERARCHY_ITEM_BELOW));
         // should return false if no adjacent peer exists in the direction specified
         $this->assertFalse((bool)$competency->get_hierarchy_item_adjacent_peer($c2, HIERARCHY_ITEM_ABOVE));
         $this->assertFalse((bool)$competency->get_hierarchy_item_adjacent_peer($c1, HIERARCHY_ITEM_ABOVE));
@@ -626,20 +626,20 @@ class hierarchylib_test extends advanced_testcase {
         $competency->make_hierarchy_list($list2, null, true, true);
 
         // value should be fullname by default
-        $this->assertEquals($list[1], $c1->fullname);
+        $this->assertEquals($c1->fullname, $list[1]);
         // value should be shortname if required
-        $this->assertEquals($list2[1], $c1->shortname);
+        $this->assertEquals($c1->shortname, $list2[1]);
         // should include all children unless specified
         $this->assertFalse((bool)array_search('Comp 1 (and all children)', $list));
         // should include all children row if required
-        $this->assertEquals(array_search('Comp 1 (and all children)', $list2),'1,2,4');
+        $this->assertEquals('1,2,4', array_search('Comp 1 (and all children)', $list2));
 
         // clear out the items
         $DB->delete_records('comp');
         // if no items exist should return false
         $competency->make_hierarchy_list($list3);
         // should return empty list if no items found
-        $this->assertEquals($list3, array());
+        $this->assertEquals(array(), $list3);
         $this->resetAfterTest(true);
     }
 
@@ -658,17 +658,17 @@ class hierarchylib_test extends advanced_testcase {
         // should return an array of items
         $this->assertTrue((bool)is_array($competency->get_item_lineage(2)));
         // array elements should match an expected format
-        $this->assertEquals(current($competency->get_item_lineage(2)), $obj);
+        $this->assertEquals($obj, current($competency->get_item_lineage(2)));
         // should return the item with the specified ID and all its parents
-        $this->assertEquals(count($competency->get_item_lineage(2)), 2);
+        $this->assertEquals(2, count($competency->get_item_lineage(2)));
         // should still return itself if an item has no parents
-        $this->assertEquals(count($competency->get_item_lineage(1)), 1);
-        $this->assertEquals(current($competency->get_item_lineage(1))->fullname, 'Competency 1');
+        $this->assertEquals(1, count($competency->get_item_lineage(1)));
+        $this->assertEquals('Competency 1', current($competency->get_item_lineage(1))->fullname);
         // should work the same for different frameworks
-        $this->assertEquals(count($nofwid->get_item_lineage(3)), 1);
+        $this->assertEquals(1, count($nofwid->get_item_lineage(3)));
         // NOTE function ignores fwid of current hierarchy object
         // not sure that this is correct behaviour
-        $this->assertEquals(current($competency->get_item_lineage(3))->fullname, 'F2 Competency 1');
+        $this->assertEquals('F2 Competency 1', current($competency->get_item_lineage(3))->fullname);
         $this->resetAfterTest(true);
     }
 
@@ -684,12 +684,12 @@ class hierarchylib_test extends advanced_testcase {
         $competency->hide_item(1);
         $visible = $DB->get_field('comp', 'visible', array('id' => 1));
         // item should not be visible
-        $this->assertEquals($visible, 0);
+        $this->assertEquals(0, $visible);
         // also test show item
         $competency->show_item(1);
         $visible = $DB->get_field('comp', 'visible', array('id' => 1));
         // item should be visible again
-        $this->assertEquals($visible, 1);
+        $this->assertEquals(1, $visible);
         $this->resetAfterTest(true);
     }
 
@@ -699,18 +699,18 @@ class hierarchylib_test extends advanced_testcase {
         $competency->hide_framework(1);
         $visible =  $DB->get_field('comp_framework', 'visible', array('id' => 1));
         // framework should not be visible
-        $this->assertEquals($visible, 0);
+        $this->assertEquals(0, $visible);
         // also test show framework
         $competency->show_framework(1);
         $visible =  $DB->get_field('comp_framework', 'visible', array('id' => 1));
         // framework should be visible again
-        $this->assertEquals($visible, 1);
+        $this->assertEquals(1, $visible);
         $this->resetAfterTest(true);
     }
 
     function test_hierarchy_framework_sortorder_offset() {
         $competency = $this->competency;
-        $this->assertEquals($competency->get_framework_sortorder_offset(), 1002);
+        $this->assertEquals(1002, $competency->get_framework_sortorder_offset());
         $this->resetAfterTest(true);
     }
 
@@ -743,7 +743,7 @@ class hierarchylib_test extends advanced_testcase {
         // custom field data for items and children should also be deleted
         $this->assertFalse((bool)$DB->get_records('comp_type_info_data', array('competencyid' => 2)));
         // non descendants in same framework should not be deleted
-        $this->assertEquals(count($competency->get_items()), 1);
+        $this->assertEquals(1, count($competency->get_items()));
         $this->resetAfterTest(true);
     }
 
@@ -755,7 +755,7 @@ class hierarchylib_test extends advanced_testcase {
         // items should have been deleted
         $this->assertFalse((bool)$competency->get_items());
         // types should still all exist because they are framework independant
-        $this->assertEquals(count($competency->get_types()), 3);
+        $this->assertEquals(3, count($competency->get_types()));
         // the framework should have been deleted
         $this->assertFalse((bool)$DB->get_records('comp_framework', array('id' => 1)));
         $this->resetAfterTest(true);
@@ -796,13 +796,13 @@ class hierarchylib_test extends advanced_testcase {
         $this->assertTrue((bool)is_array($competency->get_item_data($c1)));
         // if no params requested, should return default ones (includes aggregation method which
         // is specific to competencies)
-        $this->assertEquals(count($competency->get_item_data($c1)), 6);
+        $this->assertEquals(6, count($competency->get_item_data($c1)));
         // should return the correct number of fields requested
-        $this->assertEquals(count($competency->get_item_data($c1, array('sortthread', 'description'))), 4);
+        $this->assertEquals(4, count($competency->get_item_data($c1, array('sortthread', 'description'))));
         // should return the correct information based on fields requested
         $result = current($competency->get_item_data($c1, array('description')));
-        $this->assertEquals($result['title'], 'Description');
-        $this->assertEquals($result['value'], 'Competency Description 1');
+        $this->assertEquals('Description', $result['title']);
+        $this->assertEquals('Competency Description 1', $result['value']);
         $this->resetAfterTest(true);
     }
 
@@ -811,9 +811,9 @@ class hierarchylib_test extends advanced_testcase {
         $nofwid = $this->nofwid;
         $nofwid->frameworkid = 999;
         // should return the correct maximum depth level if there are depth levels
-        $this->assertEquals($competency->get_max_depth(), 2);
+        $this->assertEquals(2, $competency->get_max_depth());
         // should return null for framework with no depth levels
-        $this->assertEquals($nofwid->get_max_depth(), null);
+        $this->assertNull($nofwid->get_max_depth());
         $this->resetAfterTest(true);
     }
 
@@ -832,7 +832,7 @@ class hierarchylib_test extends advanced_testcase {
         // clear out all items
         $DB->delete_records('comp');
         // should return an empty array if no parents found
-        $this->assertEquals($competency->get_all_parents(), array());
+        $this->assertEquals(array(), $competency->get_all_parents());
         $this->resetAfterTest(true);
     }
 
@@ -846,11 +846,11 @@ class hierarchylib_test extends advanced_testcase {
         global $DB;
         $competency = $this->competency;
 
-        $this->assertEquals($DB->get_field('comp', 'sortthread', array('id' => 2)), '01.01');
-        $this->assertEquals($DB->get_field('comp', 'sortthread', array('id' => 4)), '01.02');
+        $this->assertEquals('01.01', $DB->get_field('comp', 'sortthread', array('id' => 2)));
+        $this->assertEquals('01.02', $DB->get_field('comp', 'sortthread', array('id' => 4)));
         $this->assertTrue((bool)$competency->reorder_hierarchy_item(2, 4));
-        $this->assertEquals($DB->get_field('comp', 'sortthread', array('id' => 2)), '01.02');
-        $this->assertEquals($DB->get_field('comp', 'sortthread', array('id' => 4)), '01.01');
+        $this->assertEquals('01.02', $DB->get_field('comp', 'sortthread', array('id' => 2)));
+        $this->assertEquals('01.01', $DB->get_field('comp', 'sortthread', array('id' => 4)));
         $this->resetAfterTest(true);
     }
 
@@ -859,9 +859,9 @@ class hierarchylib_test extends advanced_testcase {
         $position = new position();
         $organisation = new organisation();
 
-        $this->assertEquals($competency->get_extrafields(), array('evidencecount'));
-        $this->assertEquals($position->get_extrafields(), null);
-        $this->assertEquals($organisation->get_extrafields(), null);
+        $this->assertEquals(array('evidencecount'), $competency->get_extrafields());
+        $this->assertNull($position->get_extrafields());
+        $this->assertNull($organisation->get_extrafields());
 
         $this->resetAfterTest(true);
     }
@@ -872,10 +872,10 @@ class hierarchylib_test extends advanced_testcase {
         $competency = $DB->get_record('comp', array('id' => 2));
         $competency->fullname = 'UPDATED2';
 
-        $this->assertEquals($this->competency->update_hierarchy_item(2, $competency), $competency);
+        $this->assertEquals($competency, $this->competency->update_hierarchy_item(2, $competency));
 
         $afterupdate = $DB->get_records('comp', array('id' => 2));
-        $this->assertEquals($afterupdate[2]->fullname, 'UPDATED2');
+        $this->assertEquals('UPDATED2', $afterupdate[2]->fullname);
 
         $this->resetAfterTest(true);
     }
@@ -884,11 +884,11 @@ class hierarchylib_test extends advanced_testcase {
         global $DB;
         $competency = $DB->get_record('comp', array('id' => 4));
 
-        $this->assertEquals($competency->parentid, 1);
+        $this->assertEquals(1, $competency->parentid);
         $this->assertTrue((bool)$this->competency->move_hierarchy_item($competency, $competency->frameworkid, 5));
 
         $competency = $DB->get_record('comp', array('id' => 4));
-        $this->assertEquals($competency->parentid, 5);
+        $this->assertEquals(5, $competency->parentid);
 
         $this->resetAfterTest(true);
     }
@@ -898,28 +898,28 @@ class hierarchylib_test extends advanced_testcase {
         $competency = $this->competency;
         $unclassified = $competency->get_unclassified_items();
 
-        $this->assertEquals(sizeOf($unclassified), 2);
-        $this->assertEquals($unclassified[4], $DB->get_record('comp', array('id' => 4)));
-        $this->assertEquals($unclassified[5], $DB->get_record('comp', array('id' => 5)));
+        $this->assertEquals(2, count($unclassified));
+        $this->assertEquals($DB->get_record('comp', array('id' => 4)), $unclassified[4]);
+        $this->assertEquals($DB->get_record('comp', array('id' => 5)), $unclassified[5]);
 
         $this->resetAfterTest(true);
     }
 
     function test_get_item_stats() {
         $info = $this->competency->get_item_stats(1);
-        $this->assertEquals($info['itemname'], 'Competency 1');
-        $this->assertEquals($info['children'], 2);
+        $this->assertEquals('Competency 1', $info['itemname']);
+        $this->assertEquals(2, $info['children']);
 
         $info = $this->competency->get_item_stats(3);
-        $this->assertEquals($info['itemname'], 'F2 Competency 1');
-        $this->assertEquals($info['children'], 0);
+        $this->assertEquals('F2 Competency 1', $info['itemname']);
+        $this->assertEquals(0, $info['children']);
 
         $this->resetAfterTest(true);
     }
 
     function test_get_items_excluding_children() {
         $excluded = $this->competency->get_items_excluding_children(array(1, 2, 3, 4, 5));
-        $this->assertEquals($excluded, array(1, 3, 5));
+        $this->assertEquals(array(1, 3, 5), $excluded);
 
         $this->resetAfterTest(true);
     }
@@ -944,13 +944,24 @@ class hierarchylib_test extends advanced_testcase {
 
         $inctop = $competency->get_parent_list($competency->get_items(), array(), true);
         $noinctop = $competency->get_parent_list($competency->get_items(), array(), false);
-        $this->assertEquals($inctop, array('0'=>'Top', '1'=>'Competency 1', '2'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 2', '4'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 3', '5'=>'Competency 4'));
-        $this->assertEquals($noinctop, array('1'=>'Competency 1', '2'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 2', '4'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 3', '5'=>'Competency 4'));
+        $expectedinctop =
+                array('0'=>'Top',
+                      '1'=>'Competency 1',
+                      '2'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 2',
+                      '4'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 3',
+                      '5'=>'Competency 4');
+        $this->assertEquals($expectedinctop, $inctop);
+        $expectednoinctop =
+                array('1'=>'Competency 1',
+                      '2'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 2',
+                      '4'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 3',
+                      '5'=>'Competency 4');
+        $this->assertEquals($expectednoinctop, $noinctop);
 
         $inctop = $competency->get_parent_list($competency->get_items(), 1, true);
         $noinctop = $competency->get_parent_list($competency->get_items(), 1, false);
-        $this->assertEquals($inctop, array('0'=>'Top', '5'=>'Competency 4'));
-        $this->assertEquals($noinctop, array('5'=>'Competency 4'));
+        $this->assertEquals(array('0'=>'Top', '5'=>'Competency 4'), $inctop);
+        $this->assertEquals(array('5'=>'Competency 4'), $noinctop);
 
         $this->resetAfterTest(true);
     }

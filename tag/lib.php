@@ -146,6 +146,7 @@ function tag_set($record_type, $record_id, $tags) {
         return true;
     }
 
+    $tags = array_unique($tags);
     foreach($tags as $ordering => $tag) {
         $tag = trim($tag);
         if (!$tag) {

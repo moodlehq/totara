@@ -128,6 +128,10 @@ abstract class totara_sync_source {
      * Add source sync log entries to the sync database with this method
      */
     function addlog($info, $type='info', $action='') {
+        // Avoid getting an error from the database trying to save a value longer than length limit (255 characters)
+        if (strlen($info) > 255) {
+            $info = substr($info, 0, 255);
+        }
         totara_sync_log($this->get_element_name(), $info, $type, $action);
     }
 
@@ -211,5 +215,30 @@ abstract class totara_sync_source {
             $realdir = $this->filesdir . $path;
         }
         return $realdir;
+    }
+
+    /**
+     * Check if length limit for a field is exceeded
+     *
+     * @param array $datarows contains all rows from the CSV file
+     * @param array $columnsinfo contains the metadata of the fields to import from the CSV file
+     * @param array $fieldmappings contains mapped fields from the CSV file
+     * @param string $source source type (user, org, pos)
+     */
+    function check_length_limit(&$datarows, $columnsinfo, $fieldmappings, $source) {
+        foreach ($datarows as $i => $datarow) {
+            $isexceeded = false;
+            foreach ($datarow as $name => $value) {
+                if ((($columnsinfo[$name]->type == 'varchar') && strlen($value)) && (strlen($value) > $columnsinfo[$name]->max_length)) {
+                    $field = in_array($name, $fieldmappings) ? array_search($name, $fieldmappings) : $name;
+                    $this->addlog(get_string('lengthlimitexceeded', 'tool_totara_sync', (object)array('idnumber' => $datarow['idnumber'], 'field' => $field,
+                        'value' => $value, 'length' => $columnsinfo[$name]->max_length, 'source' => $source)), 'error', 'populatesynctablecsv');
+                    $isexceeded = true;
+                }
+            }
+            if ($isexceeded) {
+                unset($datarows[$i]);
+            }
+        }
     }
 }

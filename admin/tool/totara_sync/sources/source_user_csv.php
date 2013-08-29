@@ -54,6 +54,12 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                 $fieldmappings[$f] = $this->config->{'fieldmapping_'.$f};
             }
         }
+        foreach ($this->customfields as $key => $f) {
+            if (!empty($this->config->{'fieldmapping_'.$key})) {
+                $fieldmappings[$key] = $this->config->{'fieldmapping_'.$key};
+            }
+        }
+
         $filestruct = array();
         foreach ($this->fields as $f) {
             if (!empty($this->config->{'import_'.$f})) {
@@ -62,7 +68,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         }
         foreach (array_keys($this->customfields) as $f) {
             if (!empty($this->config->{'import_'.$f})) {
-                $filestruct[] = '"'.$f.'"';
+                $filestruct[] = !empty($fieldmappings[$f]) ? '"'.$fieldmappings[$f].'"' : '"'.$f.'"';
             }
         }
         // Add stupid line breaks :(
@@ -137,7 +143,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
 
             // Check the file exist
             if (!$fs->file_exists($systemcontext->id, 'totara_sync', 'user', $fieldid, '/', '')) {
-                    throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofileuploaded', $this->get_element_name(), null, 'warn');
+                throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofileuploaded', $this->get_element_name(), null, 'warn');
             }
 
             // Get the file
@@ -165,6 +171,15 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         $fields = fgetcsv($file, 0, $this->config->delimiter);
         $fieldmappings = array();
         foreach ($this->fields as $f) {
+            if (empty($this->config->{'import_'.$f})) {
+                continue;
+            }
+            if (!empty($this->config->{'fieldmapping_'.$f})) {
+                $fieldmappings[$this->config->{'fieldmapping_'.$f}] = $f;
+            }
+        }
+
+        foreach (array_keys($this->customfields) as $f) {
             if (empty($this->config->{'import_'.$f})) {
                 continue;
             }
@@ -211,16 +226,6 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                 throw new totara_sync_exception($this->get_element_name(), 'importdata', 'csvnotvalidmissingfieldx', $f);
             }
         }
-        foreach (array_keys($this->customfields) as $f) {
-            if (empty($this->config->{'import_'.$f})) {
-                // Disabled custom fields can be ignored
-                continue;
-            }
-            if (!in_array($f, $fields)) {
-                throw new totara_sync_exception($this->get_element_name(), 'importdata', 'csvnotvalidmissingfieldx', $f);
-            }
-        }
-        unset($fieldmappings);
 
         // Populate temp sync table from CSV
         $now = time();
@@ -341,6 +346,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
             $rowcount++;
 
             if ($rowcount >= $dbpersist) {
+                $this->check_length_limit($datarows, $DB->get_columns($temptable), $fieldmappings, 'user');
                 // Bulk insert
                 try {
                     totara_sync_bulk_insert($temptable, $datarows);
@@ -356,13 +362,14 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
             }
         }  // while
 
-
+        $this->check_length_limit($datarows, $DB->get_columns($temptable), $fieldmappings, 'user');
         // Insert remaining rows
         try {
             totara_sync_bulk_insert($temptable, $datarows);
         } catch (dml_exception $e) {
             throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'couldnotimportallrecords', $e->getMessage());
         }
+        unset($fieldmappings);
 
         fclose($file);
         if ($badtimezones) {

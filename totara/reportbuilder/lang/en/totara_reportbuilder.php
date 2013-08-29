@@ -450,6 +450,7 @@ $string['courseid'] = 'Course ID';
 $string['coursevisible'] = 'Course Visible';
 $string['courselanguage'] = 'Course language';
 $string['coursestartdate'] = 'Course Start Date';
+$string['coursesummary'] = 'Course Summary';
 $string['coursenameandsummary'] = 'Course Name and Summary';
 $string['coursecategory'] = 'Course Category';
 $string['coursecategoryid'] = 'Course Category ID';

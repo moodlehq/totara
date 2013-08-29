@@ -478,24 +478,24 @@ if (!$csv) {
         foreach ($criteria as $criterion) {
             // Get criteria details
             $details = $criterion->get_title_detailed();
-            print '<th scope="col" class="colheader criterianame">';
-            print '<span class="completion-criterianame">'.$details.'</span>';
+            print '<th scope="col" class="colheader criterianame ie-vertical-completion"><div class="ie-vertical-completion">';
+            print '<span class="completion-criterianame ie-block-completion">'.$details.'</span>';
 
             if (in_array($criterion->id, $criteria_with_rpl)) {
-                print '<span class="completion-rplheader completion-criterianame">'.get_string('recognitionofpriorlearning', 'completion').'</span>';
+                print '<span class="completion-rplheader completion-criterianame ie-color-completion">'.get_string('recognitionofpriorlearning', 'completion').'</span>';
             }
 
-            print '</th>';
+            print '</div></th>';
         }
 
         // Overall course completion status
-        print '<th scope="col" class="colheader criterianame">';
-        print '<span class="completion-criterianame">'.get_string('coursecomplete', 'completion').'</span>';
+        print '<th scope="col" class="colheader criterianame ie-vertical-completion"><div class="ie-vertical-completion">';
+        print '<span class="completion-criterianame ie-block-completion">'.get_string('coursecomplete', 'completion').'</span>';
         if ($CFG->enablecourserpl) {
-            print '<span class="completion-rplheader completion-criterianame">'.get_string('recognitionofpriorlearning', 'completion').'</span>';
+            print '<span class="completion-rplheader completion-criterianame ie-color-completion">'.get_string('recognitionofpriorlearning', 'completion').'</span>';
         }
 
-        print '</th></tr>';
+        print '</div></th></tr>';
     }
 
     // Print user heading and icons

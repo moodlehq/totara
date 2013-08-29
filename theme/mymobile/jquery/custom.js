@@ -12,7 +12,7 @@ $(document).ready(function() {
 
 
     //function below does generic stuff before creating all pages...
-    $('div').live('pagebeforecreate', function(event, ui) {
+    $('div').on('pagebeforecreate', function(event, ui) {
         //turn off ajax on all forms for now as of beta1
         $('form').attr("data-ajax", "false");
         //lesson
@@ -20,7 +20,7 @@ $(document).ready(function() {
         $('#page-mod-lesson-viewPAGE div.fitemtitle label').addClass("afirst");
 
         //tablet column removal switch
-        $('.slider').live("change",function() {
+        $('.slider').on("change",function() {
             var slids = $(this).val();
             M.util.set_user_preference('theme_mymobile_chosen_colpos', slids);
             if (slids == "off") {
@@ -36,7 +36,7 @@ $(document).ready(function() {
         $('div.tabtree li a').attr("data-role", "button").attr("data-ajax", "false");
 
         //jump to current or bottom
-        $('a.jumptocurrent').live('tap', function() {
+        $('a.jumptocurrent').on('tap', function() {
             var position = $(".ui-page-active .section.current").position();
             if (!position) {
                 var position = $(".ui-page-active .mobilefooter").position();
@@ -47,7 +47,7 @@ $(document).ready(function() {
         });
 
         //scroll to top
-        $('a#uptotop').live('tap', function() {
+        $('a#uptotop').on('tap', function() {
             var position = $(".ui-page-active").position();
             $.mobile.silentScroll(position.top);
             $(this).removeClass("ui-btn-active");
@@ -55,7 +55,7 @@ $(document).ready(function() {
         });
 
         //remove message notifcation overlay on tap 6/21/11
-        $('a#notificationno').live('tap', function() {
+        $('a#notificationno').on('tap', function() {
             $('#newmessageoverlay').remove();
             return false;
         });
@@ -77,7 +77,7 @@ $(document).ready(function() {
         $('#surveyform').attr("action", siteurl + '/mod/survey/save.php');
 
         //nav select navigtation NEW
-        $("#navselect").live("change",function() {
+        $("#navselect").on("change",function() {
             var meb = encodeURI($(this).val());
             $(this).val("-1");
             if (meb != "" && meb != "-1") {
@@ -89,7 +89,7 @@ $(document).ready(function() {
 
 
     //course page only js
-    $('div.path-site, div.path-course-view, .path-course-view div.generalpage').live('pagebeforecreate', function(event, ui) {
+    $('div.path-site, div.path-course-view, .path-course-view div.generalpage').on('pagebeforecreate', function(event, ui) {
         //course listing
         $('.section li img.activityicon').addClass("ui-li-icon");
         $('.course-content ul.section, .sitetopic ul.section').attr("data-role", "listview").attr("data-inset", "true").attr("data-theme", mythemeb);
@@ -116,14 +116,14 @@ $(document).ready(function() {
     });
 
     //forum listing only stuff
-    $('div#page-mod-forum-viewPAGE, #page-mod-forum-view div.generalpage').live('pagebeforecreate',function(event, ui){
+    $('div#page-mod-forum-viewPAGE, #page-mod-forum-view div.generalpage').on('pagebeforecreate',function(event, ui){
         //forums listing change theme for other theme
         $('table.forumheaderlist').attr("data-role", "controlgroup");
         $('table.forumheaderlist thead tr').attr("data-role", "button").attr("data-theme", mythemeb);
         $('table.forumheaderlist td.topic a').attr("data-role", "button").attr("data-icon", "arrow-r").attr("data-iconpos", "right").attr("data-theme", mythemeb);
     });
 
-    $('div#page-mod-forum-viewPAGE').live('pageinit',function(event, ui){
+    $('div#page-mod-forum-viewPAGE').on('pageinit',function(event, ui){
         $('.forumheaderlist td.topic').each(function(index) {
             var ggg = $(this).nextAll("td.replies").text();
             $(this).find('a').append('<span class="ui-li-count ui-btn-up-a ui-btn-corner-all"> ' + ggg + '</span>');
@@ -131,7 +131,7 @@ $(document).ready(function() {
     });
 
     //forum discussion page only stuff
-    $('div#page-mod-forum-discussPAGE, #page-mod-forum-discuss div.generalpage, div.forumtype-single, .forumtype-single div.generalpage, div#page-mod-forum-postPAGE').live('pagebeforecreate',function(event, ui){
+    $('div#page-mod-forum-discussPAGE, #page-mod-forum-discuss div.generalpage, div.forumtype-single, .forumtype-single div.generalpage, div#page-mod-forum-postPAGE').on('pagebeforecreate',function(event, ui){
         //actual forum posting
         $('.forumpost div.row.header').addClass("ui-li ui-li-divider ui-btn ui-bar-" + mytheme);
         $('.options div.commands').attr("data-role", "controlgroup").attr("data-type", "horizontal");
@@ -144,7 +144,7 @@ $(document).ready(function() {
     });
 
     //frontpage only stuff
-    $('div#page-site-indexPAGE, div.pagelayout-coursecategory').live('pagebeforecreate',function(event, ui){
+    $('div#page-site-indexPAGE, div.pagelayout-coursecategory').on('pagebeforecreate',function(event, ui){
         //course boxes on category pages and front page stuff
         //forum posts on front page only
         $('.forumpost div.row.header').addClass("ui-li ui-li-divider ui-btn ui-bar-" + mytheme);
@@ -156,7 +156,7 @@ $(document).ready(function() {
         $('#shortsearchbox, #coursesearch2 #shortsearchbox').attr("data-type", "search");
     });
 
-    $('div#page-site-indexPAGE').live('pageinit',function(event, ui){
+    $('div#page-site-indexPAGE').on('pageinit',function(event, ui){
         $('div.categorylist div.category').each(function(index) {
             var ggb = $(this).find("span.numberofcourse").text().replace('(','').replace(')','');
             if (ggb != "") {
@@ -166,21 +166,21 @@ $(document).ready(function() {
     });
 
     //chat only stuff
-    $('div#chatpage, div.path-mod-chat').live('pagebeforecreate',function(event, ui){
+    $('div#chatpage, div.path-mod-chat').on('pagebeforecreate',function(event, ui){
         $('#input-message, #button-send').attr("data-role", "none");
         $('#enterlink a').attr("data-role", "button").attr("data-ajax", "false").attr("data-icon", "plus");
         $('form, input, button').attr("data-ajax", "false");
     });
 
     //login page only stuff
-    $('div#page-login-indexPAGE').live('pagebeforecreate',function(event, ui){
+    $('div#page-login-indexPAGE').on('pagebeforecreate',function(event, ui){
         //signup form fix
         $('.path-login .signupform #signup').attr("action", siteurl + '/login/signup.php');
         $('.path-login #guestlogin').attr("action", siteurl + '/login/index.php');
     });
 
     //messaging only stuff
-    $('div#page-message-indexPAGE').live('pagebeforecreate',function(event, ui){
+    $('div#page-message-indexPAGE').on('pagebeforecreate',function(event, ui){
         //below to fix form actions here and there
         $("#usergroupform").attr("action", '');
         //if (userform == "") {
@@ -192,7 +192,7 @@ $(document).ready(function() {
     });
 
     //database and glossary only stuff
-    $('div#page-mod-data-viewPAGE, div#page-mod-glossary-viewPAGE').live('pagebeforecreate',function(event, ui){
+    $('div#page-mod-data-viewPAGE, div#page-mod-glossary-viewPAGE').on('pagebeforecreate',function(event, ui){
         $('.defaulttemplate td a').attr("data-role", "button").attr("data-ajax", "false").attr("data-inline", "true");
         $('#options select, .aliases select').attr("data-native-menu", "true");
         $('#pref_search, .glossarysearchbox input[type="text"]').attr("data-type", "search");
@@ -206,7 +206,7 @@ $(document).ready(function() {
     });
 
     //mymoodle only stuff
-    $('div#page-my-indexPAGE').live('pagebeforecreate',function(event, ui){
+    $('div#page-my-indexPAGE').on('pagebeforecreate',function(event, ui){
         //my moodle page fixes
         //block_course_overview
         $('.block_course_overview div.headingwrap').attr("data-role", "none");
@@ -214,7 +214,7 @@ $(document).ready(function() {
     });
 
     //resource only stuff to help embedded PDFs, provides link to open in new window
-    $('div#page-mod-resource-viewPAGE').live('pagebeforecreate',function(event, ui){
+    $('div#page-mod-resource-viewPAGE').on('pagebeforecreate',function(event, ui){
         $('div.resourcepdf').each(function(index) {
             var thisopen = $(this).find('#resourceobject').attr("data");
             $(this).append('<a class="mobileresource" href="' +thisopen+ '" target="_blank"></a>');
@@ -222,7 +222,7 @@ $(document).ready(function() {
     });
 
     //quiz page only js
-    $('div#page-mod-quiz-viewPAGE, div#page-mod-quiz-attemptPAGE, div#page-mod-quiz-summaryPAGE, div#page-mod-quiz-reviewPAGE, #page-mod-quiz-attempt #content2').live('pagebeforecreate',function(event, ui){
+    $('div#page-mod-quiz-viewPAGE, div#page-mod-quiz-attemptPAGE, div#page-mod-quiz-summaryPAGE, div#page-mod-quiz-reviewPAGE, #page-mod-quiz-attempt #content2').on('pagebeforecreate',function(event, ui){
         //add quiz timer into quiz page
         $('#quiz-timer').remove();
         $('.mymobilecontent').prepend('<div id="quiz-timer" > <span id="quiz-time-left"></span></div>');
@@ -233,18 +233,18 @@ $(document).ready(function() {
     });
 
     //assignment page only stuff
-    $('#page-mod-assignment-viewPAGE').live('pagebeforecreate',function(event, ui){
+    $('#page-mod-assignment-viewPAGE').on('pagebeforecreate',function(event, ui){
          //below fixes the advanced upload edit notes button
          $('#page-mod-assignment-viewPAGE div[rel="upload.php"]').parent().attr("action", siteurl + '/mod/assignment/upload.php');
     });
 
     //hotpot page only stuff
-    $('div.path-mod-hotpot').live('pagebeforecreate',function(event, ui){
+    $('div.path-mod-hotpot').on('pagebeforecreate',function(event, ui){
         $('.path-mod-hotpot button').attr("data-role", "none");
     });
 
     ///// functions below does stuff after creating page for some cleaning...
-    $('div').live('pageinit',function(event, ui){
+    $('div').on('pageinit',function(event, ui){
         $('.path-calendar div.ui-radio label:first-child, .path-mod-lesson div.ui-radio label:first-child, #page-mod-wiki-createPAGE div.ui-radio label:first-child').addClass("afirst");
         $('.forumpost div.author a').removeAttr('data-role');
         //$('.questionflagimage2').removeClass("ui-btn-hidden");a#notificationyes

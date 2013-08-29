@@ -94,6 +94,7 @@ function tool_totara_sync_cron() {
         return false;
     }
 
+    $status = true;
     foreach ($elements as $element) {
         try {
             if (!method_exists($element, 'sync')) {
@@ -102,7 +103,7 @@ function tool_totara_sync_cron() {
             }
 
             // Finally, start element syncing
-            $element->sync();
+            $status = $status && $element->sync();
         } catch (totara_sync_exception $e) {
             $msg = $e->getMessage();
             $msg .= !empty($e->debuginfo) ? " - {$e->debuginfo}" : '';
@@ -118,7 +119,7 @@ function tool_totara_sync_cron() {
         $element->get_source()->drop_table();
     }
 
-    return true;
+    return $status;
 }
 
 /**
@@ -128,8 +129,9 @@ function tool_totara_sync_cron() {
  * @param string $info the log message
  * @param string $type the log message type
  * @param string $action the action which caused the log message
+ * @param boolean $showmessage shows error messages on the main page when running sync if it is true
  */
-function totara_sync_log($element, $info, $type='info', $action='') {
+function totara_sync_log($element, $info, $type='info', $action='', $showmessage=true) {
     global $DB, $OUTPUT;
 
     static $sync_runid = null;
@@ -146,7 +148,7 @@ function totara_sync_log($element, $info, $type='info', $action='') {
     $todb->time = time();
     $todb->runid = $sync_runid;
 
-    if ($type == 'warn' || $type == 'error') {
+    if ($showmessage && ($type == 'warn' || $type == 'error')) {
         $typestr = get_string($type, 'tool_totara_sync');
         $class = $type == 'warn' ? 'notifynotice' : 'notifyproblem';
         echo $OUTPUT->notification($typestr . ':' . $element . ' - ' . $info, $class);

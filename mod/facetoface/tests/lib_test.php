@@ -1002,7 +1002,7 @@ class facetofacelib_test extends advanced_testcase {
 
     function test_facetoface_cron() {
         // Test for valid case.
-        $this->assertTrue((bool)facetoface_cron(), $this->msgtrue);
+        $this->assertTrue((bool)facetoface_cron(true), $this->msgtrue);
 
         $this->resetAfterTest(true);
     }

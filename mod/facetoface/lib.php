@@ -319,6 +319,15 @@ function facetoface_add_instance($facetoface) {
     $cancellation->ccmanager = 1;
     $cancellation->save();
 
+    $decline = new facetoface_notification($defaults, false);
+    $decline->title = get_string('setting:defaultdeclinesubjectdefault', 'facetoface');
+    $decline->body = text_to_html(get_string('setting:defaultdeclinemessagedefault', 'facetoface'));
+    $decline->managerprefix = text_to_html(get_string('setting:defaultdeclineinstrmngrdefault', 'facetoface'));
+    $decline->conditiontype = MDL_F2F_CONDITION_DECLINE_CONFIRMATION;
+    $decline->ccmanager = 0;
+    $decline->status = $facetoface->approvalreqd?1:0;
+    $decline->save();
+
     $reminder = new facetoface_notification($defaults, false);
     $reminder->title = get_string('setting:defaultremindersubjectdefault', 'facetoface');
     $reminder->body = text_to_html(get_string('setting:defaultremindermessagedefault', 'facetoface'));
@@ -778,11 +787,13 @@ function facetoface_delete_session($session) {
  * Function to be run periodically according to the moodle cron
  * Finds all facetoface notifications that have yet to be mailed out, and mails them.
  */
-function facetoface_cron() {
-    global $CFG, $USER, $DB;
+function facetoface_cron($testing = false) {
+    global $DB;
 
     // Find "instant" manual notifications that haven't yet been sent
-    mtrace("Checking for instant Face-to-face notifications");
+    if (!$testing) {
+        mtrace('Checking for instant Face-to-face notifications');
+    }
     $manual = $DB->get_records_select(
         'facetoface_notification',
         'type = ? AND issent <> ? AND status = 1',
@@ -795,7 +806,9 @@ function facetoface_cron() {
     }
 
     // Find scheduled notifications that haven't yet been sent
-    mtrace("Checking for scheduled Face-to-face notifications");
+    if (!$testing) {
+        mtrace('Checking for scheduled Face-to-face notifications');
+    }
     $sched = $DB->get_records_select(
         'facetoface_notification',
         'scheduletime IS NOT NULL
@@ -1994,8 +2007,8 @@ function facetoface_approve_requests($data) {
                         $USER->id
                 );
 
-                // Send a cancellation notice to the user
-                facetoface_send_cancellation_notice($facetoface, $session, $attendee->id);
+                // Send a decline notice to the user.
+                facetoface_send_decline_notice($facetoface, $session, $attendee->id);
 
                 break;
 
@@ -2136,19 +2149,26 @@ function facetoface_print_coursemodule_info($coursemodule) {
         return '';
     }
 
-    $htmlactivitynameonly = $OUTPUT->pix_icon('icon', $facetoface->name, 'facetoface', array('class' => 'activityicon')) . $facetoface->name;
+    $htmlactivitynameonly = $OUTPUT->pix_icon('icon', $facetoface->name, 'facetoface', array('class' => 'activityicon'));
     $strviewallsessions = get_string('viewallsessions', 'facetoface');
     $sessions_url = new moodle_url('/mod/facetoface/view.php', array('f' => $facetofaceid));
     $htmlviewallsessions = html_writer::link($sessions_url, $strviewallsessions, array('class' => 'f2fsessionlinks f2fviewallsessions', 'title' => $strviewallsessions));
     //F2F name is required to be a link to nake the AJAX buttons work in 2.4
-    $htmlactivitynamelink = $OUTPUT->pix_icon('icon', $facetoface->name, 'facetoface', array('class' => 'activityicon'))
-                            . html_writer::link($sessions_url, html_writer::tag('span', $facetoface->name, array('class' => 'instancename')), array('class' => 'f2fsessionlinks f2fviewallsessions', 'title' => $facetoface->name));
+    $htmlactivitynamelink = $htmlactivitynameonly . html_writer::link($sessions_url, html_writer::tag('span', $facetoface->name, array('class' => 'instancename')), array('class' => 'f2fsessionlinks f2fviewallsessions', 'title' => $facetoface->name));
 
     if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
         // User has signedup for the instance
         $submission = array_shift($submissions);
 
         if ($session = facetoface_get_session($submission->sessionid)) {
+            if ($session->datetimeknown && facetoface_has_session_started($session, $timenow) && facetoface_is_session_in_progress($session, $timenow)) {
+                $status = get_string('sessioninprogress', 'facetoface');
+            } else if ($session->datetimeknown && facetoface_has_session_started($session, $timenow)) {
+                $status = get_string('sessionover', 'facetoface');
+            } else {
+                $status = get_string('bookingstatus', 'facetoface');
+            }
+
             $sessiondates = '';
             $sessiontimes = '';
 
@@ -2171,84 +2191,99 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 $sessiontimes = get_string('wait-listed', 'facetoface');
             }
 
+            $span = html_writer::tag('span', get_string('options', 'facetoface').':', array('class' => 'f2fsessionnotice'));
+            $options = html_writer::tag('tr', html_writer::tag('td', '&nbsp;'));
+
             // don't include the link to cancel a session if it has already occurred
+            $moreinfolink = '';
             $cancellink = '';
             if (!facetoface_has_session_started($session, $timenow)) {
+                $strmoreinfo  = get_string('moreinfo', 'facetoface');
+                $signup_url   = new moodle_url('/mod/facetoface/signup.php', array('s' => $session->id));
+                $moreinfolink = html_writer::tag('tr', html_writer::tag('td', html_writer::link($signup_url, $strmoreinfo, array('class' => 'f2fsessionlinks f2fsessioninfolink', 'title' => $strmoreinfo))));
+
                 $strcancelbooking = get_string('cancelbooking', 'facetoface');
                 $cancel_url = new moodle_url('/mod/facetoface/cancelsignup.php', array('s' => $session->id));
                 $cancellink = html_writer::tag('tr', html_writer::tag('td', html_writer::link($cancel_url, $strcancelbooking, array('class' => 'f2fsessionlinks f2fviewallsessions', 'title' => $strcancelbooking))));
+                $options    = html_writer::tag('tr', html_writer::tag('td', $span));
             }
-
-            $strmoreinfo = get_string('moreinfo', 'facetoface');
-            $strseeattendees = get_string('seeattendees', 'facetoface');
 
             $address = '&nbsp;';
             $building = '&nbsp;';
 
             // Get room data
+            $roomtext = '';
             $roomdata = $DB->get_record('facetoface_room', array('id' => $session->roomid));
-
-            $roomname = isset($roomdata->name) ? $roomdata->name . ', ' : '';
-            $building = isset($roomdata->building) ? $roomdata->building . ', ' : '';
-            $address = isset($roomdata->address) ? $roomdata->address : '';
-
-            $roomtext = $roomname . $building . $address;
+            if (!empty($roomdata)) {
+                $roomtext  = isset($roomdata->name)     ? format_string($roomdata->name)    .', '.html_writer::empty_tag('br') : '';
+                $roomtext .= isset($roomdata->building) ? format_string($roomdata->building).', '.html_writer::empty_tag('br') : '';
+                $roomtext .= isset($roomdata->address)  ? format_string($roomdata->address) .', '.html_writer::empty_tag('br') : '';
+            }
 
             // don't include the link to view attendees if user is lacking capability
             $attendeeslink = '';
             if ($viewattendees) {
+                $strseeattendees = get_string('seeattendees', 'facetoface');
                 $attendees_url = new moodle_url('/mod/facetoface/attendees.php', array('s' => $session->id));
-                $attendeeslink = html_writer::tag('tr', html_writer::tag('td', html_writer::link($attendees_url, $strseeattendees, array('class' => 'f2fsessionlinks f2fviewattendees', 'title' => $strseeattendees))));
+                $attendeeslink = html_writer::tag('tr', html_writer::tag('td', html_writer::link($attendees_url, $strseeattendees, array('class' => 'f2fsessionlinks f2fviewattendees', 'title' => $strseeattendees))));            
+                $options       = html_writer::tag('tr', html_writer::tag('td', $span));
             }
 
-            $signup_url = new moodle_url('/mod/facetoface/signup.php', array('s' => $session->id));
-
             $table = html_writer::start_tag('table', array('class' => 'table90 inlinetable'))
-                .html_writer::start_tag('tr', array('class' => 'f2factivityname'))
-                .html_writer::tag('td', $htmlactivitynamelink, array('class' => 'f2fsessionnotice', 'colspan' => '4'))
-                .html_writer::end_tag('tr')
-                .html_writer::start_tag('tr')
-                .html_writer::tag('td', get_string('bookingstatus', 'facetoface'), array('class' => 'f2fsessionnotice', 'colspan' => '3'))
-                .html_writer::tag('td', html_writer::tag('span', get_string('options', 'facetoface').':', array('class' => 'f2fsessionnotice')))
-                .html_writer::end_tag('tr')
-                .html_writer::start_tag('tr', array('class' => 'f2fsessioninfo'))
-                .html_writer::tag('td', $roomtext)
-                .html_writer::tag('td', $sessiondates)
-                .html_writer::tag('td', $sessiontimes)
-                .html_writer::tag('td', html_writer::start_tag('table', array('border' => '0')) . html_writer::start_tag('tr') . html_writer::tag('td', html_writer::link($signup_url, $strmoreinfo, array('class' => 'f2fsessionlinks f2fsessioninfolink', 'title' => $strmoreinfo))))
-                .html_writer::end_tag('tr')
-                .$attendeeslink
-                .$cancellink
-                .html_writer::start_tag('tr')
-                .html_writer::tag('td', $htmlviewallsessions)
-                .html_writer::end_tag('tr')
-                .html_writer::end_tag('table') . html_writer::end_tag('td') . html_writer::end_tag('tr')
-                .html_writer::end_tag('table');
-        }
-    } else if ($sessions = facetoface_get_sessions($facetofaceid)) {
-        if ($facetoface->display > 0) {
-            $table = html_writer::start_tag('table', array('class' => 'f2fsession inlinetable'))
                 .html_writer::start_tag('tr', array('class' => 'f2factivityname'))
                 .html_writer::tag('td', $htmlactivitynamelink, array('class' => 'f2fsessionnotice', 'colspan' => '2'))
                 .html_writer::end_tag('tr')
                 .html_writer::start_tag('tr')
-                .html_writer::tag('td', get_string('signupforsession', 'facetoface'), array('class' => 'f2fsessionnotice', 'colspan' => '2'))
+                .html_writer::tag('td', $status, array('class' => 'f2fsessionnotice', 'colspan' => '2'))
+                .html_writer::end_tag('tr')
+                .html_writer::start_tag('tr', array('class' => 'f2fsessioninfo'))
+                .html_writer::tag('td', $roomtext . $sessiondates . html_writer::empty_tag('br') . $sessiontimes, array('class' => 'f2fwidth'))
+                .html_writer::tag('td', html_writer::start_tag('table'))
+                    .$options
+                    .$moreinfolink
+                    .$attendeeslink
+                    .$cancellink
+                    .html_writer::end_tag('table')
+                .html_writer::end_tag('td')
+                .html_writer::end_tag('tr')
+                .html_writer::start_tag('tr')
+                .html_writer::tag('td', $htmlviewallsessions, array('colspan' => '2'))
+                .html_writer::end_tag('tr')
+                .html_writer::end_tag('table');
+        }
+    } else if ($sessions = facetoface_get_sessions($facetofaceid)) {
+        if ($facetoface->display > 0) {
+            $table = html_writer::start_tag('table', array('class' => 'table90 inlinetable'))
+                .html_writer::start_tag('tr', array('class' => 'f2factivityname'))
+                .html_writer::tag('td', $htmlactivitynamelink, array('class' => 'f2fsessionnotice', 'colspan' => '2'))
                 .html_writer::end_tag('tr');
 
             $i=0;
+            $j=1;
             foreach ($sessions as $session) {
-                if ($session->datetimeknown && (facetoface_has_session_started($session, $timenow))) {
+                if (!facetoface_session_has_capacity($session, $contextmodule)) {
                     continue;
                 }
 
-                if (!facetoface_session_has_capacity($session, $contextmodule)) {
-                    continue;
+                $options = '';
+                $moreinfolink = html_writer::tag('tr', html_writer::tag('td', '&nbsp;'));
+                if ($session->datetimeknown && (facetoface_has_session_started($session, $timenow)) && facetoface_is_session_in_progress($session, $timenow)) {
+                    $status = get_string('sessioninprogress', 'facetoface');
+                } else if ($session->datetimeknown && facetoface_has_session_started($session, $timenow)) {
+                    $status = get_string('sessionover', 'facetoface');
+                } else {
+                    $status = get_string('signupforsession', 'facetoface');
+                    $signup = get_string('signup', 'facetoface');
+                    $signup_url   = new moodle_url('/mod/facetoface/signup.php', array('s' => $session->id));
+                    $moreinfolink = html_writer::tag('tr', html_writer::tag('td', html_writer::link($signup_url, $signup, array('class' => 'f2fsessionlinks f2fsessioninfolink', 'title' => $signup))));
+
+                    $span = html_writer::tag('span', get_string('options', 'facetoface').':', array('class' => 'f2fsessionnotice'));
+                    $options = html_writer::tag('tr', html_writer::tag('td', $span));
                 }
 
                 $multidate = '';
                 $sessiondate = '';
                 $sessiontime = '';
-
                 if ($session->datetimeknown) {
                     if (empty($session->sessiondates)) {
                         $sessiondate = get_string('unknowndate', 'facetoface');
@@ -2269,44 +2304,35 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     $sessiondate = get_string('wait-listed', 'facetoface');
                 }
 
-                if ($i == 0) {
-                    $table .= html_writer::start_tag('tr');
-                    $i++;
-                } else if ($i++ % 2 == 0) {
-                    if ($i > $facetoface->display) {
-                        break;
-                    }
-                    $table .= html_writer::end_tag('tr');
-                    $table .= html_writer::start_tag('tr');
-                }
-
                 $locationstring = '';
                 $roomdata = $DB->get_record('facetoface_room', array('id' => $session->roomid));
                 if (!empty($roomdata)) {
-                    $locationstring = isset($roomdata->name) ? format_string($roomdata->name) . ', '. html_writer::empty_tag('br') : '';
-                    $locationstring .= isset($roomdata->building) ? format_string($roomdata->building) . ', ' . html_writer::empty_tag('br') : '';
-                    $locationstring .= isset($roomdata->address) ? format_string($roomdata->address) . ', ' . html_writer::empty_tag('br') : '';
+                    $locationstring  = isset($roomdata->name)     ? format_string($roomdata->name)    .', '.html_writer::empty_tag('br') : '';
+                    $locationstring .= isset($roomdata->building) ? format_string($roomdata->building).', '.html_writer::empty_tag('br') : '';
+                    $locationstring .= isset($roomdata->address)  ? format_string($roomdata->address) .', '.html_writer::empty_tag('br') : '';
                 }
 
-                if ($coursemodule->uservisible) {
-                    $signup_url = new moodle_url('/mod/facetoface/signup.php', array('s' => $session->id));
-                    $table .= html_writer::tag('td', html_writer::link($signup_url, $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multidate, array('class' => 'f2fsessiontime')));
-                } else {
-                    $table .= html_writer::tag('td', html_writer::tag('span', $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multidate, array('class' => 'f2fsessiontime')));
-                }
-            }
-            if ($i++ % 2 == 0) {
-                $table .= html_writer::tag('td', "&nbsp;");
-            }
+                $table .= html_writer::start_tag('tr')
+                    .html_writer::tag('td', $j.'. '.$status, array('class' => 'f2fsessionnotice', 'colspan' => '2'))
+                    .html_writer::end_tag('tr')
+                    .html_writer::start_tag('tr')
+                    .html_writer::tag('td', html_writer::tag('span', $locationstring.$sessiondate.html_writer::empty_tag('br').$sessiontime.$multidate, array('class' => 'f2fsessiontime')), array('class' => 'f2fwidth'))
+                    .html_writer::tag('td', html_writer::start_tag('table'))
+                    .$options
+                    .$moreinfolink
+                    .html_writer::end_tag('table')
+                    .html_writer::end_tag('td')
+                    .html_writer::end_tag('tr');
 
-            $table .= html_writer::end_tag('tr')
-                .html_writer::start_tag('tr')
+                $j++;
+            }
+            $table .= html_writer::start_tag('tr')
                 .html_writer::tag('td', $coursemodule->uservisible ? $htmlviewallsessions : $strviewallsessions, array('colspan' => '2'))
                 .html_writer::end_tag('tr')
                 .html_writer::end_tag('table');
         } else {
             // Show only name if session display is set to zero.
-            return html_writer::tag('span', $htmlactivitynameonly . html_writer::empty_tag('br') . $htmlviewallsessions, array('class' => 'f2fsessionnotice f2factivityname f2fonepointfive'));
+            return html_writer::tag('span', $htmlactivitynameonly.$facetoface->name.html_writer::empty_tag('br').$htmlviewallsessions, array('class' => 'f2fsessionnotice f2factivityname f2fonepointfive'));
         }
     }
     else if (has_capability('mod/facetoface:viewemptyactivities', $contextmodule)) {
@@ -2822,7 +2848,7 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
 
     if ($showcapacity) {
         if ($session->allowoverbook) {
-            $table->data[] = array(get_string('capacity', 'facetoface'), $session->capacity . ' ('.strtolower(get_string('allowoverbook', 'facetoface')).')');
+            $table->data[] = array(get_string('capacity', 'facetoface'), get_string('capacityallowoverbook', 'facetoface', $session->capacity));
         } else {
             $table->data[] = array(get_string('capacity', 'facetoface'), $session->capacity);
         }
@@ -3819,9 +3845,10 @@ function facetoface_user_import($course, $facetoface, $session, $userid, $params
     $discountcode     = (isset($params['discountcode'])     ? $params['discountcode']     : '');
     $notificationtype = (isset($params['notificationtype']) ? $params['notificationtype'] : MDL_F2F_BOTH);
 
-    $facetoface->ccmanager = (isset($params['ccmanager']) ? $params['ccmanager'] : 0);
     if (isset($params['approvalreqd'])) {
+        // Overwrite default behaviour as bulkadd_* is requested
         $facetoface->approvalreqd = $params['approvalreqd'];
+        $facetoface->ccmanager = (isset($params['ccmanager']) ? $params['ccmanager'] : 0);
     }
 
     // Check parameters.

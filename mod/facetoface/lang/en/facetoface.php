@@ -70,6 +70,7 @@ $string['cancellationsentmgr'] = 'You and your manager should immediately receiv
 $string['cancellationstablesummary'] = 'List of people who have cancelled their session signups.';
 $string['cancelreason'] = 'Reason';
 $string['capacity'] = 'Capacity';
+$string['capacityallowoverbook'] = '{$a} (allow overbooking)';
 $string['capacitycurrentofmaximum'] = '{$a->current} / {$a->maximum}';
 $string['capacityoverbooked'] = ' (Overbooked)';
 $string['capacityoverbookedlong'] = 'This session is overbooked ({$a->current} / {$a->maximum})';
@@ -347,6 +348,7 @@ $string['occuredonx'] = 'Occured on {$a}';
 $string['occurswhenenabled'] = 'Occurs when enabled';
 $string['occurswhenuserbookssession'] = 'Occurs when a learner books a session';
 $string['occurswhenuserrequestssessionwithmanagerapproval'] = 'Occurs when a user attempts to book a session with manager approval required';
+$string['occurswhenuserrequestssessionwithmanagerdecline'] = 'Occurs when a user attempts to declined a session with manager approval required';
 $string['occurswhenusersbookingiscancelled'] = 'Occurs when a learner\'s booking is cancelled';
 $string['occurswhenuserwaitlistssession'] = 'Occurs when a learner is waitlisted on a session';
 $string['occursxaftersession'] = 'Occurs {$a} after end of session';
@@ -445,7 +447,7 @@ $string['sessiondatetimeknown'] = 'Session date/time known';
 $string['sessionsdetailstablesummary'] = 'Full description of the current session.';
 $string['sessionfinishdateshort'] = 'Finish date';
 $string['sessionfinishtime'] = 'Session finish time';
-$string['sessioninprogress'] = 'session in progress';
+$string['sessioninprogress'] = 'Session in progress';
 $string['sessionisfull'] = 'This session is now full. You will need to pick another time or talk to the instructor.';
 $string['sessionnoattendeesaswaitlist'] = 'This session does not have any attendees because it does not have a known date and time.<br />See the wait-list tab for users that have signed up.';
 $string['sessionover'] = 'Session over';
@@ -496,6 +498,34 @@ Room:   [session:room]
 $string['setting:defaultcancellationsubject'] = 'Default subject line for cancellation emails.';
 $string['setting:defaultcancellationsubject_caption'] = 'Cancellation subject';
 $string['setting:defaultcancellationsubjectdefault'] = 'Course booking cancellation';
+$string['setting:defaultdeclineinstrmngr'] = 'Default decline message sent to managers.';
+$string['setting:defaultdeclineinstrmngr_caption'] = 'Decline message (managers)';
+$string['setting:defaultdeclineinstrmngrdefault'] = '*** Advice only ****
+
+This is to advise that [firstname] [lastname] is no longer signed-up for the following course and listed you as their Team Leader / Manager.
+
+';
+$string['setting:defaultdeclineinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s booking decline is copied below ****';
+$string['setting:defaultdeclinemessage'] = 'Default decline message sent to the user.';
+$string['setting:defaultdeclinemessage_caption'] = 'Decline message';
+$string['setting:defaultdeclinemessagedefault'] = 'This is to advise that your booking on the following course has been declined:
+
+***BOOKING DECLINED***
+
+Participant:   [firstname] [lastname]
+Course:   [facetofacename]
+
+Duration:   [duration]
+Date(s):
+[alldates]
+
+Location:   [session:location]
+Venue:   [session:venue]
+Room:   [session:room]
+';
+$string['setting:defaultdeclinesubject'] = 'Default subject line for decline emails.';
+$string['setting:defaultdeclinesubject_caption'] = 'Decline subject';
+$string['setting:defaultdeclinesubjectdefault'] = 'Course booking decline';
 $string['setting:defaultconfirmationinstrmngr'] = 'Default confirmation message sent to managers.';
 $string['setting:defaultconfirmationinstrmngr_caption'] = 'Confirmation message (managers)';
 $string['setting:defaultconfirmationinstrmngrdefault'] = '*** Advice only ****

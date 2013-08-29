@@ -1130,8 +1130,9 @@ function print_badge_image(badge $badge, stdClass $context, $size = 'small') {
     $fsize = ($size == 'small') ? 'f2' : 'f1';
 
     $imageurl = moodle_url::make_pluginfile_url($context->id, 'badges', 'badgeimage', $badge->id, '/', $fsize, false);
+    $imageurl->param('refresh', rand(1, 10000));
     // Appending a random parameter to image link to forse browser reload the image.
-    $attributes = array('src' => $imageurl . '?' . rand(1, 10000), 'alt' => s($badge->name), 'class' => 'activatebadge');
+    $attributes = array('src' => $imageurl, 'alt' => s($badge->name), 'class' => 'activatebadge');
 
     return html_writer::empty_tag('img', $attributes);
 }

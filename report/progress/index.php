@@ -322,12 +322,12 @@ foreach($activities as $activity) {
         print $sep.csv_quote(strip_tags($activity->name)).$sep.csv_quote($datetext);
     } else {
         $formattedactivityname = format_string($activity->name, true, array('context' => $context));
-        print '<th scope="col" class="'.$activity->datepassedclass.'">'.
-            '<a href="'.$CFG->wwwroot.'/mod/'.$activity->modname.
+        print '<th scope="col" class="ie-vertical '.$activity->datepassedclass.'">'.
+            '<div class="ie-vertical"><a href="'.$CFG->wwwroot.'/mod/'.$activity->modname.
             '/view.php?id='.$activity->id.'" title="' . $formattedactivityname . '">'.
-            '<img src="'.$OUTPUT->pix_url('icon', $activity->modname).'" alt="'.
+            '<img class="ie-size" src="'.$OUTPUT->pix_url('icon', $activity->modname).'" alt="'.
             get_string('modulename',$activity->modname).'" /> <span class="completion-activityname">'.
-            $formattedactivityname.'</span></a>';
+            $formattedactivityname.'</span></a></div>';
         if ($activity->completionexpected) {
             print '<div class="completion-expected"><span>'.$datetext.'</span></div>';
         }

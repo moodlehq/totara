@@ -262,20 +262,20 @@ class bulkaddhierarchyitems_test extends advanced_testcase {
         $this->assertTrue((bool)$item2 = $DB->get_record('org', array('id' => 12)));
 
         // check depthlevel set right
-        $this->assertEquals($item1->depthlevel, 1);
-        $this->assertEquals($item2->depthlevel, 1);
+        $this->assertEquals(1, $item1->depthlevel);
+        $this->assertEquals(1, $item2->depthlevel);
 
         // check path set right
-        $this->assertEquals($item1->path, '/11');
-        $this->assertEquals($item2->path, '/12');
+        $this->assertEquals('/11', $item1->path);
+        $this->assertEquals('/12', $item2->path);
 
         // check parentid set right
-        $this->assertEquals($item1->parentid, 0);
-        $this->assertEquals($item2->parentid, 0);
+        $this->assertEquals(0, $item1->parentid);
+        $this->assertEquals(0, $item2->parentid);
 
         // check the typeid set right
-        $this->assertEquals($item1->typeid, 0);
-        $this->assertEquals($item2->typeid, 1);
+        $this->assertEquals(0, $item1->typeid);
+        $this->assertEquals(1, $item2->typeid);
 
         $this->resetAfterTest(true);
     }
@@ -317,20 +317,20 @@ class bulkaddhierarchyitems_test extends advanced_testcase {
         $this->assertTrue((bool)$item2 = $DB->get_record('org', array('id' => 12)));
 
         // check depthlevel set right
-        $this->assertEquals($item1->depthlevel, 3);
-        $this->assertEquals($item2->depthlevel, 3);
+        $this->assertEquals(3, $item1->depthlevel);
+        $this->assertEquals(3, $item2->depthlevel);
 
         // check path set right
-        $this->assertEquals($item1->path, '/5/6/11');
-        $this->assertEquals($item2->path, '/5/6/12');
+        $this->assertEquals('/5/6/11', $item1->path);
+        $this->assertEquals('/5/6/12', $item2->path);
 
         // check parentid set right
-        $this->assertEquals($item1->parentid, 6);
-        $this->assertEquals($item2->parentid, 6);
+        $this->assertEquals(6, $item1->parentid);
+        $this->assertEquals(6, $item2->parentid);
 
         // check the typeid set right
-        $this->assertEquals($item1->typeid, 0);
-        $this->assertEquals($item2->typeid, 1);
+        $this->assertEquals(0, $item1->typeid);
+        $this->assertEquals(1, $item2->typeid);
 
         $this->resetAfterTest(true);
     }
@@ -372,20 +372,20 @@ class bulkaddhierarchyitems_test extends advanced_testcase {
         $this->assertTrue((bool)$item2 = $DB->get_record('org', array('id' => 12)));
 
         // check depthlevel set right
-        $this->assertEquals($item1->depthlevel, 4);
-        $this->assertEquals($item2->depthlevel, 4);
+        $this->assertEquals(4, $item1->depthlevel);
+        $this->assertEquals(4, $item2->depthlevel);
 
         // check path set right
-        $this->assertEquals($item1->path, '/1/2/4/11');
-        $this->assertEquals($item2->path, '/1/2/4/12');
+        $this->assertEquals('/1/2/4/11', $item1->path);
+        $this->assertEquals('/1/2/4/12', $item2->path);
 
         // check parentid set right
-        $this->assertEquals($item1->parentid, 4);
-        $this->assertEquals($item2->parentid, 4);
+        $this->assertEquals(4, $item1->parentid);
+        $this->assertEquals(4, $item2->parentid);
 
         // check the typeid set right
-        $this->assertEquals($item1->typeid, 0);
-        $this->assertEquals($item2->typeid, 1);
+        $this->assertEquals(0, $item1->typeid);
+        $this->assertEquals(1, $item2->typeid);
 
         $this->resetAfterTest(true);
     }
@@ -428,20 +428,20 @@ class bulkaddhierarchyitems_test extends advanced_testcase {
         $this->assertTrue((bool)$item2 = $DB->get_record('org', array('id' => 12)));
 
         // check depthlevel set right
-        $this->assertEquals($item1->depthlevel, 2);
-        $this->assertEquals($item2->depthlevel, 2);
+        $this->assertEquals(2, $item1->depthlevel);
+        $this->assertEquals(2, $item2->depthlevel);
 
         // check path set right
-        $this->assertEquals($item1->path, '/10/11');
-        $this->assertEquals($item2->path, '/10/12');
+        $this->assertEquals('/10/11', $item1->path);
+        $this->assertEquals('/10/12', $item2->path);
 
         // check parentid set right
-        $this->assertEquals($item1->parentid, 10);
-        $this->assertEquals($item2->parentid, 10);
+        $this->assertEquals(10, $item1->parentid);
+        $this->assertEquals(10, $item2->parentid);
 
         // check the typeid set right
-        $this->assertEquals($item1->typeid, 0);
-        $this->assertEquals($item2->typeid, 1);
+        $this->assertEquals(0, $item1->typeid);
+        $this->assertEquals(1, $item2->typeid);
 
         $this->resetAfterTest(true);
     }

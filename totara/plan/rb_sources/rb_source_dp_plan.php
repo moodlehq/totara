@@ -118,6 +118,12 @@ class rb_source_dp_plan extends rb_base_source {
                 'base.description',
                 array(
                     'defaultheading' => get_string('description', 'rb_source_dp_plan'),
+                    'displayfunc' => 'tinymce_textarea',
+                    'extrafields' => array(
+                            'filearea' => '\'dp_plan\'',
+                            'component' => '\'totara_plan\'',
+                            'fileid' => 'base.id'
+                    )
                 )
         );
         $columnoptions[] = new rb_column_option(

@@ -234,7 +234,7 @@ class getitemsexcludingchildren_test extends advanced_testcase {
         foreach ($testcases as $testcase) {
             // should match exactly without change
             $output = $org->get_items_excluding_children($testcase);
-            $this->assertEquals($output, $testcase);
+            $this->assertEquals($testcase, $output);
         }
         $this->resetAfterTest(false);
     }
@@ -253,7 +253,7 @@ class getitemsexcludingchildren_test extends advanced_testcase {
         foreach ($testcases as $testcase) {
             // should match the unique elements of the array
             $output = $org->get_items_excluding_children($testcase);
-            $this->assertEquals($output, array_unique($testcase));
+            $this->assertEquals(array_unique($testcase), $output);
         }
         $this->resetAfterTest(false);
     }
@@ -273,7 +273,7 @@ class getitemsexcludingchildren_test extends advanced_testcase {
         foreach ($testcases as $testcase) {
             // should match the 'after' state
             $output = $org->get_items_excluding_children($testcase['before']);
-            $this->assertEquals($output, $testcase['after']);
+            $this->assertEquals($testcase['after'], $output);
         }
         $this->resetAfterTest(false);
     }
@@ -292,7 +292,7 @@ class getitemsexcludingchildren_test extends advanced_testcase {
         foreach ($testcases as $testcase) {
             // should match the 'after' state
             $output = $org->get_items_excluding_children($testcase['before']);
-            $this->assertEquals($output, $testcase['after']);
+            $this->assertEquals($testcase['after'], $output);
         }
         $this->resetAfterTest(false);
     }

@@ -51,7 +51,7 @@ class block_totara_alerts extends block_base {
         return $this->content;
         }
 
-        $this->content = new stdClass;
+        $this->content = new stdClass();
 
         // initialise jquery requirements
         require_once($CFG->dirroot.'/totara/message/messagelib.php');
@@ -126,6 +126,7 @@ class block_totara_alerts extends block_base {
             }
         }
 
+        $this->content->text = '';
         $count = count($this->msgs);
         if ($count) {
             $this->content->text .= html_writer::tag('p', get_string('showingxofx', 'block_totara_alerts', array('count' => $count, 'total' => $total)));

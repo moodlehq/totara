@@ -311,6 +311,11 @@ class position extends hierarchy {
             return false;
         }
 
+        // Delete any relevant prog_pos_assignment
+        if (!$DB->delete_records_select("prog_{$this->shortprefix}_assignment", $wheresql, $items_params)) {
+            return false;
+        }
+
         // delete any relevant position relations
         $wheresql = "id1 {$items_sql} OR id2 {$items_sql}";
         if (!$DB->delete_records_select($this->shortprefix . "_relations", $wheresql, array_merge($items_params, $items_params))) {
@@ -319,7 +324,6 @@ class position extends hierarchy {
 
         // set position id to null in all these tables
         $db_data = array(
-            $this->shortprefix.'_assignment' => 'positionid',
             $this->shortprefix.'_assignment' => 'positionid',
             $this->shortprefix.'_assignment_history' => 'positionid',
             hierarchy::get_short_prefix('competency').'_record' => 'positionid',

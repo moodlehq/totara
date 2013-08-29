@@ -1176,10 +1176,10 @@ class columns_test extends reportcache_advanced_testcase {
                 }
             $records->close();
                 if ($title == "User" || $title == "Courses") {
-                    $this->assertEquals($rb->get_full_count(), '2');
+                    $this->assertEquals('2', $rb->get_full_count());
                 }
                 else{
-                    $this->assertEquals($rb->get_full_count(), '1');
+                    $this->assertEquals('1', $rb->get_full_count());
                 }
                 // remove afterwards
                 $DB->delete_records('report_builder', array('id' => $reportid));

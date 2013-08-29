@@ -1212,5 +1212,18 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         $dbman->change_field_type($table, $discountfield);
         upgrade_mod_savepoint(true, 2013070900, 'facetoface');
     }
+
+    if ($oldversion < 2013070901) {
+        // Add manager decline notification template.
+        $decline = new stdClass();
+        $decline->status = 1;
+        $decline->title = get_string('setting:defaultdeclinesubjectdefault', 'facetoface');
+        $decline->body = text_to_html(get_string('setting:defaultdeclinemessagedefault', 'facetoface'));
+        $decline->managerprefix = text_to_html(get_string('setting:defaultdeclineinstrmngrdefault', 'facetoface'));
+        $DB->insert_record('facetoface_notification_tpl', $decline);
+
+        upgrade_mod_savepoint(true, 2013070901, 'facetoface');
+    }
+
     return $result;
 }

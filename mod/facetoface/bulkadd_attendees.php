@@ -32,7 +32,8 @@ $s = required_param('s', PARAM_INT);
 
 // Upload type
 $type = required_param('type', PARAM_ALPHA);
-
+// Send email notifications
+$suppressemail  = optional_param('suppressemail', false, PARAM_BOOL);
 // Show dialog
 $dialog = optional_param('dialog', false, PARAM_BOOL);
 
@@ -64,6 +65,7 @@ if ($type === 'file') {
             $mform->addRule('userfile', null, 'required');
             $encodings = textlib::get_encodings();
             $mform->addElement('select', 'encoding', get_string('encoding', 'grades'), $encodings);
+            $mform->addElement('checkbox', 'suppressemail', '', get_string('suppressemailforattendees', 'facetoface'));
         }
     }
 
@@ -74,6 +76,7 @@ if ($type === 'file') {
     class facetoface_bulkadd_input_form extends moodleform {
         function definition() {
             $this->_form->addElement('textarea', 'csvinput', get_string('csvtextinput', 'facetoface'));
+            $this->_form->addElement('checkbox', 'suppressemail', '', get_string('suppressemailforattendees', 'facetoface'));
         }
     }
 
@@ -137,6 +140,7 @@ if ($data = $form->get_data()) {
     } else {
         $params = array();
         $params['bulkaddsource'] = $bulkaddsource;
+        $params['suppressemail'] = $suppressemail;
         // Do not need the approval, change the status
         $params['approvalreqd'] = 0;
         // If it is a list of user, do not need to notify manager
