@@ -88,25 +88,41 @@ class edit_details_form extends moodleform {
 
         $mform->addElement('header', 'issuancedetails', get_string('issuancedetails', 'badges'));
 
-        $issuancedetails = array();
-        $issuancedetails[] =& $mform->createElement('radio', 'expiry', '', get_string('never', 'badges'), 0);
-        $issuancedetails[] =& $mform->createElement('static', 'none_break', null, '<br/>');
-        $issuancedetails[] =& $mform->createElement('radio', 'expiry', '', get_string('fixed', 'badges'), 1);
-        $issuancedetails[] =& $mform->createElement('date_selector', 'expiredate', '');
-        $issuancedetails[] =& $mform->createElement('static', 'expirydate_break', null, '<br/>');
-        $issuancedetails[] =& $mform->createElement('radio', 'expiry', '', get_string('relative', 'badges'), 2);
-        $issuancedetails[] =& $mform->createElement('duration', 'expireperiod', '', array('defaultunit' => 86400, 'optional' => false));
-        $issuancedetails[] =& $mform->createElement('static', 'expiryperiods_break', null, get_string('after', 'badges'));
+        if ($badge === false || (!$badge->is_active() && !$badge->is_locked())) {
+            $issuancedetails = array();
+            $issuancedetails[] =& $mform->createElement('radio', 'expiry', '', get_string('never', 'badges'), 0);
+            $issuancedetails[] =& $mform->createElement('static', 'none_break', null, '<br/>');
+            $issuancedetails[] =& $mform->createElement('radio', 'expiry', '', get_string('fixed', 'badges'), 1);
+            $issuancedetails[] =& $mform->createElement('date_selector', 'expiredate', '');
+            $issuancedetails[] =& $mform->createElement('static', 'expirydate_break', null, '<br/>');
+            $issuancedetails[] =& $mform->createElement('radio', 'expiry', '', get_string('relative', 'badges'), 2);
+            $issuancedetails[] =& $mform->createElement('duration', 'expireperiod', '', array('defaultunit' => 86400, 'optional' => false));
+            $issuancedetails[] =& $mform->createElement('static', 'expiryperiods_break', null, get_string('after', 'badges'));
 
-        $mform->addGroup($issuancedetails, 'expirydategr', get_string('expirydate', 'badges'), array(' '), false);
-        $mform->addHelpButton('expirydategr', 'expirydate', 'badges');
-        $mform->setDefault('expiry', 0);
-        $mform->setDefault('expiredate', strtotime('+1 year'));
-        $mform->disabledIf('expiredate[day]', 'expiry', 'neq', 1);
-        $mform->disabledIf('expiredate[month]', 'expiry', 'neq', 1);
-        $mform->disabledIf('expiredate[year]', 'expiry', 'neq', 1);
-        $mform->disabledIf('expireperiod[number]', 'expiry', 'neq', 2);
-        $mform->disabledIf('expireperiod[timeunit]', 'expiry', 'neq', 2);
+            $mform->addGroup($issuancedetails, 'expirydategr', get_string('expirydate', 'badges'), array(' '), false);
+            $mform->addHelpButton('expirydategr', 'expirydate', 'badges');
+            $mform->setDefault('expiry', 0);
+            $mform->setDefault('expiredate', strtotime('+1 year'));
+            $mform->disabledIf('expiredate[day]', 'expiry', 'neq', 1);
+            $mform->disabledIf('expiredate[month]', 'expiry', 'neq', 1);
+            $mform->disabledIf('expiredate[year]', 'expiry', 'neq', 1);
+            $mform->disabledIf('expireperiod[number]', 'expiry', 'neq', 2);
+            $mform->disabledIf('expireperiod[timeunit]', 'expiry', 'neq', 2);
+        } else {
+            if (!empty($badge->expiredate)) {
+                $mform->addElement('hidden', 'expiry', 1);
+                $mform->addElement('hidden', 'expiredate', $badge->expiredate);
+                $mform->setType('expiredate', PARAM_INT);
+            } else if (!empty($badge->expireperiod)) {
+                $mform->addElement('hidden', 'expiry', 2);
+                $mform->addElement('hidden', 'expireperiod', $badge->expireperiod);
+                $mform->setType('expireperiod', PARAM_INT);
+            } else {
+                $mform->addElement('hidden', 'expiry', 0);
+            }
+            $mform->setType('expiry', PARAM_INT);
+            $mform->addElement('static', 'expirydetails', get_string('expirydate', 'badges'), $badge->get_expiry_details());
+        }
 
         // Set issuer URL.
         // Have to parse URL because badge issuer origin cannot be a subfolder in wwwroot.
@@ -127,9 +143,9 @@ class edit_details_form extends moodleform {
             $this->add_action_buttons();
             $this->set_data($badge);
 
-            // Freeze all elements if badge is active or locked.
+            // Freeze expiry and issuer elements if badge is active or locked.
             if ($badge->is_active() || $badge->is_locked()) {
-                $mform->hardFreezeAllVisibleExcept(array());
+                $mform->freeze(array('image', 'issuername', 'issuercontact'));
             }
         }
     }
