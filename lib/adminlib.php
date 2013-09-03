@@ -6050,7 +6050,11 @@ class admin_setting_managelicenses extends admin_setting {
         $table->data  = array();
 
         foreach ($licenses as $value) {
-            $displayname = html_writer::link($value->source, get_string($value->shortname, 'license'), array('target'=>'_blank'));
+            if (!empty($value->source)) {
+                $displayname = html_writer::link($value->source, get_string($value->shortname, 'license'), array('target'=>'_blank'));
+            } else {
+                $displayname = get_string($value->shortname, 'license');
+            }
 
             if ($value->enabled == 1) {
                 $hideshow = html_writer::link($url.'&action=disable&license='.$value->shortname,
