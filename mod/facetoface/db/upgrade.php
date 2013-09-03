@@ -1486,53 +1486,53 @@ function xmldb_facetoface_upgrade($oldversion=0) {
     if ($oldversion < 2013090204) {
         // Get all sessions with reminders sent that have had
         // the reminder converted to the new style notification
-        $sessions = $DB->get_records_sql(
-            "
-            SELECT
-                fs.sessionid,
-                ss.facetoface AS facetofaceid,
-                fn.id AS notificationid
-            FROM
-                {facetoface_signups} fs
-            INNER JOIN
-                {facetoface_sessions} ss
-             ON fs.sessionid = ss.id
-            INNER JOIN
-                {facetoface_notification} fn
-             ON fn.facetofaceid = ss.facetoface
-            WHERE
-                fs.mailedreminder = 1
-            AND fn.type = ".MDL_F2F_NOTIFICATION_AUTO."
-            AND fn.conditiontype = ".MDL_F2F_CONDITION_BEFORE_SESSION."
-            AND fn.scheduletime IS NOT NULL
-            GROUP BY
-                fs.sessionid,
-                ss.facetoface,
-                fn.id
-            "
-        );
-
-        // If the notification_sent table exists but is empty.
-        if ($dbman->table_exists('facetoface_notification_sent')) {
-            $count_notifications = $DB->count_records('facetoface_notification_sent');
-            if ($count_notifications == 0) {
-                // Loop through all the sessions.
-                if ($sessions) {
-                    // And add entries to sent table
-                    foreach ($sessions as $session) {
-                        $record = new stdClass();
-                        $record->sessionid = $session->sessionid;
-                        $record->notificationid = $session->notificationid;
-                        $DB->insert_record('facetoface_notification_sent', $record);
-                    }
-                }
-            }
-        }
-
-        // Drop column from signups table
         $table = new xmldb_table('facetoface_signups');
         $field = new xmldb_field('mailedreminder');
         if ($dbman->field_exists($table, $field)) {
+            $sessions = $DB->get_records_sql(
+                "
+                SELECT
+                    fs.sessionid,
+                    ss.facetoface AS facetofaceid,
+                    fn.id AS notificationid
+                FROM
+                    {facetoface_signups} fs
+                INNER JOIN
+                    {facetoface_sessions} ss
+                 ON fs.sessionid = ss.id
+                INNER JOIN
+                    {facetoface_notification} fn
+                 ON fn.facetofaceid = ss.facetoface
+                WHERE
+                    fs.mailedreminder = 1
+                AND fn.type = ".MDL_F2F_NOTIFICATION_AUTO."
+                AND fn.conditiontype = ".MDL_F2F_CONDITION_BEFORE_SESSION."
+                AND fn.scheduletime IS NOT NULL
+                GROUP BY
+                    fs.sessionid,
+                    ss.facetoface,
+                    fn.id
+                "
+            );
+
+            // If the notification_sent table exists but is empty.
+            if ($dbman->table_exists('facetoface_notification_sent')) {
+                $count_notifications = $DB->count_records('facetoface_notification_sent');
+                if ($count_notifications == 0) {
+                    // Loop through all the sessions.
+                    if ($sessions) {
+                        // And add entries to sent table
+                        foreach ($sessions as $session) {
+                            $record = new stdClass();
+                            $record->sessionid = $session->sessionid;
+                            $record->notificationid = $session->notificationid;
+                            $DB->insert_record('facetoface_notification_sent', $record);
+                        }
+                    }
+                }
+            }
+
+            // Drop column from signups table
             $dbman->drop_field($table, $field);
         }
 
