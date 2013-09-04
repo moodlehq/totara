@@ -921,6 +921,14 @@ abstract class rb_base_source {
         }
     }
 
+    public function rb_display_user_email_unobscured($email, $row, $isexport = false) {
+        if ($isexport) {
+            return $email;
+        } else {
+            // Obfuscate email to avoid spam if printing to page.
+            return obfuscate_mailto($email);
+        }
+    }
 
     function rb_display_link_program_icon($program, $row) {
         global $OUTPUT;
@@ -1243,7 +1251,7 @@ abstract class rb_base_source {
      */
     protected function add_user_fields_to_columns(&$columnoptions,
         $join='auser') {
-        global $DB;
+        global $DB, $CFG;
 
         $columnoptions[] = new rb_column_option(
             'user',
@@ -1300,6 +1308,25 @@ abstract class rb_base_source {
                 )
             )
         );
+        // Only include this column if email is among fields allowed
+        // by showuseridentity setting.
+        if (!empty($CFG->showuseridentity) &&
+            in_array('email', explode(',', $CFG->showuseridentity))) {
+            $columnoptions[] = new rb_column_option(
+                'user',
+                'emailunobscured',
+                get_string('useremailunobscured', 'totara_reportbuilder'),
+                "$join.email",
+                array(
+                    'joins' => $join,
+                    'displayfunc' => 'user_email_unobscured',
+                    'defaultheading' => get_string('useremail', 'totara_reportbuilder'),
+                    // Users must have viewuseridentity to see the
+                    // unobscured email address.
+                    'capability' => 'moodle/site:viewuseridentity',
+                )
+            );
+        }
         $columnoptions[] = new rb_column_option(
             'user',
             'lastlogin',
