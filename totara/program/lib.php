@@ -1563,6 +1563,7 @@ class program_in_list implements IteratorAggregate {
         }
         return new ArrayIterator($ret);
     }
+}
 
 function prog_format_seconds($seconds) {
 

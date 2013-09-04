@@ -378,6 +378,9 @@ hr {
 .arrow {
     font-size: 0.85em;
 }
+.calendartable a {
+    color:#087BB1;
+}
 /**
  * Fieldset class with borders shown by default
  */
