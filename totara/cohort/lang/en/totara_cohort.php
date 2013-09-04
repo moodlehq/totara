@@ -248,52 +248,12 @@ $string['learningplan'] = 'Learning Plan';
 $string['members'] = 'Members';
 $string['memberscount'] = 'Size';
 $string['msg:membersadded_toaffected_emailsubject'] = 'You have been added to the audience "{$a->cohortname}"';
-$string['msg:membersadded_toaffected_emailbody'] = 'Hello,
-
-*** This message is for your information only, no further action is required. ***
-
-You have been added to the audience "{$a->cohortname}".
-
-If you have a query about these alerts, please contact {$a->supportemail}.
-
-Thank you.';
 $string['msg:membersadded_toaffected_notice'] = 'You have been added to the audience "{$a->cohortname}"';
 $string['msg:membersadded_toall_emailsubject'] = 'New members have been added to your audience "{$a->cohortname}"';
-$string['msg:membersadded_toall_emailbody'] = 'Hello,
-
-*** This message is for your information only, no further action is required. ***
-
-The following members have recently been added to your audience, "{$a->cohortname}".
-
-{$a->cohortmembers}
-
-If you have a query about these alerts, please contact {$a->supportemail}.
-
-Thank you.';
 $string['msg:membersadded_toall_notice'] = '{$a->affectedcount} members have been recently added to your audience, "{$a->cohortname}"';
 $string['msg:membersremoved_toaffected_emailsubject'] = 'Audience membership revoked from "{$a->cohortname}"';
-$string['msg:membersremoved_toaffected_emailbody'] = 'Hello,
-
-*** This message is for your information only, no further action is required. ***
-
-You are no longer a member of the audience "{$a->cohortname}".
-
-If you have a query about these alerts, please contact {$a->supportemail}.
-
-Thank you.';
 $string['msg:membersremoved_toaffected_notice'] = 'You are no longer a member of the audience "{$a->cohortname}"';
 $string['msg:membersremoved_toall_emailsubject'] = 'Members have left your audience "{$a->cohortname}"';
-$string['msg:membersremoved_toall_emailbody'] = 'Hello,
-
-***This message is for your information only, no further action is required. ***
-
-The following members have now left your audience, "{$a->cohortname}".
-
-{$a->cohortmembers}
-
-If you have a query about these alerts, please contact {$a->supportemail}.
-
-Thank you.';
 $string['msg:membersremoved_toall_notice'] = '{$a->affectedcount} members have now left your audience "{$a->cohortname}"';
 $string['mustselectonecriteria'] = 'You must select at least one criterion';
 $string['name'] = 'Audience Name';

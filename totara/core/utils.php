@@ -27,6 +27,13 @@
  * This file contains general purpose utility functions
  */
 
+// Constants defined to be used in totara_search_for_value function.
+define('EQUAL', 0);
+define('NOTEQUAL', 1);
+define('GREATER_THAN', 2);
+define('GREATER_THAN_OR_EQUAL', 3);
+define('LESS_THAN', 4);
+define('LESS_THAN_OR_EQUAL', 5);
 
 /**
  * Pop N items off the beginning of $items and return them as an array
@@ -235,4 +242,62 @@ function totara_get_lineage($items, $itemid, $pathsofar = array()) {
         // keep going
         return totara_get_lineage($items, $items[$itemid], $pathsofar);
     }
+}
+/**
+ * Filter an array of objects whose property matches the condition of the searched word
+ *
+ * @param array $arraytosearch array of objects in which the search is performed
+ * @param string $property property that needs to be evaluated
+ * @param int $operator operator used in the search
+ * @param mixed $searchvalue the value that need to be found
+ * @return $objectsfound An array of objects filtered by the search
+ */
+function totara_search_for_value($arraytosearch, $property, $operator, $searchvalue) {
+    $objectsfound = array();
+    switch ($operator) {
+        case EQUAL:
+            $objectsfound = array_filter($arraytosearch,
+                function ($objtofind) use($searchvalue, $property) {
+                    return $objtofind->{$property} == $searchvalue;
+                }
+            );
+            break;
+        case NOTEQUAL:
+            $objectsfound = array_filter($arraytosearch,
+                function ($objtofind) use($searchvalue, $property) {
+                    return $objtofind->{$property} != $searchvalue;
+                }
+            );
+            break;
+        case GREATER_THAN:
+            $objectsfound = array_filter($arraytosearch,
+                function ($objtofind) use($searchvalue, $property) {
+                    return $objtofind->{$property} > $searchvalue;
+                }
+            );
+            break;
+        case GREATER_THAN_OR_EQUAL:
+            $objectsfound = array_filter($arraytosearch,
+                function ($objtofind) use($searchvalue, $property) {
+                    return $objtofind->{$property} >= $searchvalue;
+                }
+            );
+            break;
+        case LESS_THAN:
+            $objectsfound = array_filter($arraytosearch,
+                function ($objtofind) use($searchvalue, $property) {
+                    return $objtofind->{$property} < $searchvalue;
+                }
+            );
+            break;
+        case LESS_THAN_OR_EQUAL:
+            $objectsfound = array_filter($arraytosearch,
+                function ($objtofind) use($searchvalue, $property) {
+                    return $objtofind->{$property} <= $searchvalue;
+                }
+            );
+            break;
+    }
+
+    return $objectsfound;
 }

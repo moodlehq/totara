@@ -949,6 +949,47 @@ function prog_eventhandler_courseset_completed($eventdata) {
     return true;
 }
 
+/**
+ * Event that is triggered when a user is deleted.
+ *
+ * Cancels a user from any programs they are associated with, tables to clear are
+ * prog_assignment
+ * prog_future_user_assignment
+ * prog_user_assignment
+ * prog_exception
+ * prog_extension
+ * prog_messagelog
+ *
+ * @param object $user
+ *
+ */
+function prog_eventhandler_user_deleted($user) {
+    global $DB;
+
+    // We don't want to send messages or anything so just wipe the records from the DB.
+    $transaction = $DB->start_delegated_transaction();
+
+    // Delete all the individual assignments for the user.
+    $DB->delete_records('prog_assignment', array('assignmenttype' => ASSIGNTYPE_INDIVIDUAL, 'assignmenttypeid' => $user->id));
+
+    // Delete any future assignments for the user.
+    $DB->delete_records('prog_future_user_assignment', array('userid' => $user->id));
+
+    // Delete all the program user assignments for the user.
+    $DB->delete_records('prog_user_assignment', array('userid' => $user->id));
+
+    // Delete all the program exceptions for the user.
+    $DB->delete_records('prog_exception', array('userid' => $user->id));
+
+    // Delete all the program extensions for the user.
+    $DB->delete_records('prog_extension', array('userid' => $user->id));
+
+    // Delete all the program message logs for the user.
+    $DB->delete_records('prog_messagelog', array('userid' => $user->id));
+
+    $transaction->allow_commit();
+}
+
 function prog_store_position_assignment($assignment) {
     global $DB;
     // Need to check this since this is not necessarily set now.
@@ -1522,4 +1563,34 @@ class program_in_list implements IteratorAggregate {
         }
         return new ArrayIterator($ret);
     }
+
+function prog_format_seconds($seconds) {
+
+    $years = floor($seconds / DURATION_YEAR);
+    $str_years = get_string('xyears', 'totara_program', $years);
+    $seconds = $seconds % DURATION_YEAR;
+
+    $months = floor($seconds / DURATION_MONTH);
+    $str_months = get_string('xmonths', 'totara_program', $months);
+    $seconds = $seconds % DURATION_MONTH;
+
+    $weeks = floor($seconds / DURATION_WEEK);
+    $str_weeks = get_string('xweeks', 'totara_program', $weeks);
+    $seconds = $seconds % DURATION_WEEK;
+
+    $days = floor($seconds / DURATION_DAY);
+    $str_days = get_string('xdays', 'totara_program', $days);
+
+    $output = '';
+    $output .= html_writer::start_tag('div', array('id' => 'programtimerequired'));
+    $output .= html_writer::start_tag('p');
+    $output .= get_string('minprogramtimerequired', 'totara_program');
+    $output .= !empty($years) ? ' ' . $str_years : '';
+    $output .= !empty($months) ? ' ' . $str_months : '';
+    $output .= !empty($weeks) ? ' ' . $str_weeks : '';
+    $output .= !empty($days) ? ' ' . $str_days : '';
+    $output .= html_writer::end_tag('p');
+    $output .= html_writer::end_tag('div');
+
+    return $output;
 }

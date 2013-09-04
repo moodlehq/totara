@@ -26,7 +26,7 @@
  */
 
 if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+    die('Direct access to this script is forbidden.');    //  It must be included from a Moodle page
 }
 
 /**
@@ -63,7 +63,7 @@ abstract class cohort_rule_sqlhandler_in extends cohort_rule_sqlhandler {
      * Returns the SQL snippet for this
      * @return str
      */
-    public function get_sql_snippet(){
+    public function get_sql_snippet() {
 
         // If the list of values is empty, then this rule can't match, no matter what.
         if (count($this->listofvalues) == 0) {
@@ -157,7 +157,10 @@ class cohort_rule_sqlhandler_in_userfield_int extends cohort_rule_sqlhandler_in_
  */
 class cohort_rule_sqlhandler_in_usercustomfield extends cohort_rule_sqlhandler_in {
 
-    public function __construct($field){
+    protected $fielddatatype;
+
+    public function __construct($field, $datatype) {
+        $this->fielddatatype = $datatype;
         // Always a char field
         parent::__construct($field, true);
     }
@@ -165,17 +168,40 @@ class cohort_rule_sqlhandler_in_usercustomfield extends cohort_rule_sqlhandler_i
     protected function construct_sql_snippet($field, $not, $lov) {
         global $DB;
 
-        // If $field is int comes from a menu
+        // If $field is int comes from a menu.
         if (is_int($field)) {
             list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'icu' . $this->ruleid, ($not != 'not'));
             $sqlhandler = new stdClass();
             $sqlhandler->sql = "EXISTS (
-                                       SELECT 1
-                                         FROM {user_info_data} usinda
-                                        WHERE usinda.userid = u.id
-                                          AND usinda.fieldid = {$field}
-                                          AND {$DB->sql_compare_text('usinda.data')} {$sqlin}
+                                    SELECT 1
+                                    FROM {user_info_data} usinda
+                                    WHERE usinda.userid = u.id
+                                      AND usinda.fieldid = {$field}
+                                      AND {$DB->sql_compare_text('usinda.data')} {$sqlin}
+                               )";
+            if ($this->fielddatatype === 'checkbox') {
+                // Bring the default value of this checkbox.
+                $deafultvalue = $DB->get_field('user_info_field', 'defaultdata', array('id' => $field));
+                $rule = reset($lov);
+                // Consider unset values for checkbox custom field.
+                if ($deafultvalue != $rule) {
+                    $sqlhandler->sql = "EXISTS (
+                                            SELECT 1
+                                            FROM {user_info_data} usinda
+                                            WHERE usinda.userid = u.id
+                                              AND usinda.fieldid = {$field}
+                                              AND usinda.data = '{$rule}'
                                        )";
+                } else {
+                    $sqlhandler->sql = "NOT EXISTS (
+                                            SELECT 1
+                                            FROM {user_info_data} usinda
+                                            WHERE usinda.userid = u.id
+                                              AND usinda.fieldid = {$field}
+                                              AND usinda.data != '{$rule}'
+                                       )";
+                }
+            }
             $sqlhandler->params = $params;
         } else {
             $sql = "EXISTS (
@@ -227,7 +253,7 @@ class cohort_rule_sqlhandler_in_poscustomfield extends cohort_rule_sqlhandler_in
     /**
      * These fields are always char
      */
-    public function __construct($field){
+    public function __construct($field) {
         parent::__construct($field, true);
     }
 
@@ -257,7 +283,7 @@ class cohort_rule_sqlhandler_in_poscustomfield extends cohort_rule_sqlhandler_in
  * @author aaronw
  */
 class cohort_rule_sqlhandler_in_posorgfield extends cohort_rule_sqlhandler_in {
-    protected function construct_sql_snippet($field, $not, $lov){
+    protected function construct_sql_snippet($field, $not, $lov) {
         global $DB;
 
         $sql = "EXISTS (
@@ -285,11 +311,11 @@ class cohort_rule_sqlhandler_in_posorgcustomfield extends cohort_rule_sqlhandler
     /**
      * These fields are always char
      */
-    public function __construct($field){
+    public function __construct($field) {
         parent::__construct($field, true);
     }
 
-    protected function construct_sql_snippet($field, $not, $lov){
+    protected function construct_sql_snippet($field, $not, $lov) {
         global $DB;
 
         list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'ipoc'.$this->ruleid, ($not != 'not'));
@@ -324,7 +350,7 @@ abstract class cohort_rule_sqlhandler_in_hierarchyid extends cohort_rule_sqlhand
      * No constructor variables necessary. It's always on one particular column,
      * and the field is always an int
      */
-    public function __construct(){
+    public function __construct() {
         parent::__construct(false, false);
     }
 

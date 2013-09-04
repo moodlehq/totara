@@ -296,9 +296,9 @@ class rb_column {
         $field = $this->field;
         $type = $this->type;
         $value = $this->value;
+        $fields = array();
         $extrafields = isset($this->extrafields) ? $this->extrafields : null;
 
-        $fields = array();
         if ($this->grouping == 'none') {
             if ($field !== null) {
                 switch ($aliasmode) {
@@ -312,11 +312,6 @@ class rb_column {
                     default:
                         $fields[] = "{$field} AS {$type}_{$value}";
                         break;
-                }
-            }
-            if ($returnextrafields && $extrafields !== null) {
-                foreach ($extrafields as $alias => $extrafield) {
-                    $fields[] = ($aliasmode == self::CACHE) ? $alias : "$extrafield AS $alias";
                 }
             }
         } else {
@@ -348,6 +343,12 @@ class rb_column {
                         $fields[] = $src->$groupfunc($field) . " AS {$type}_{$value}";
                         break;
                 }
+            }
+        }
+        // Add extrafields to the array after the main fields
+        if ($returnextrafields && $extrafields !== null) {
+            foreach ($extrafields as $alias => $extrafield) {
+                $fields[] = ($aliasmode == self::CACHE) ? $alias : "$extrafield AS $alias";
             }
         }
         return $fields;

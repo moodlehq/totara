@@ -646,6 +646,7 @@ class columns_test extends reportcache_advanced_testcase {
         $this->course_modules_data->id = 1;
         $this->course_modules_data->course = 1;
         $this->course_modules_data->module = 8;
+        $this->course_modules_data->instance = 1;
 
         $this->block_totara_stats_data = new stdClass();
         $this->block_totara_stats_data->id = 1;

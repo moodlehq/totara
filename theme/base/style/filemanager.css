@@ -17,6 +17,8 @@
  */
 .yui3-panel-focused {outline: none;}
 #filesskin .yui3-panel-content {padding-bottom: 20px;background: #F2F2F2;border-radius: 8px;border: 1px solid #FFFFFF;display: inline-block;-webkit-box-shadow: 5px 5px 20px 0px #666666;-moz-box-shadow: 5px 5px 20px 0px #666666;box-shadow: 5px 5px 20px 0px #666666;}
+#filesskin .yui3-panel-content.fp-mkdir-dlg {width:323px;}
+#filesskin .yui3-panel-content.fp-folder {width:429px;}
 #filesskin .yui3-widget-hd {border-radius: 10px 10px 0px 0px;border-bottom: 1px solid #BBBBBB;padding:5px 5px 5px 5px;text-align: center;font-size:12px;letter-spacing: 1px;color:#333333; text-shadow: 1px 1px 1px #FFFFFF;filter: dropshadow(color=#FFFFFF, offx=1, offy=1);
 background: #E2E2E2;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#CCCCCC');background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#CCCCCC));background: -moz-linear-gradient(top,  #FFFFFF,  #CCCCCC);}
 .fp-panel-button {background: #FFFFFF;padding: 3px 20px 2px 20px; text-align: center;margin:10px; border-radius: 10px;display: inline-block;-webkit-box-shadow: 2px 2px 3px .1px #999999;-moz-box-shadow: 2px 2px 3px .1px #999999;box-shadow: 2px 2px 3px .1px #999999;}

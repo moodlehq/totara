@@ -153,7 +153,17 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'details',
                 get_string('sessdetails', 'rb_source_facetoface_sessions'),
                 'sessions.details',
-                array('joins' => 'sessions')
+                array(
+                    'joins' => 'sessions',
+                    'displayfunc' => 'tinymce_textarea',
+                    'extrafields' => array(
+                        'filearea' => '\'session\'',
+                        'component' => '\'mod_facetoface\'',
+                        'fileid' => 'sessions.id',
+                        'context' => '\'context_module\'',
+                        'recordid' => 'sessions.facetoface'
+                    )
+                )
             ),
             new rb_column_option(
                 'session',

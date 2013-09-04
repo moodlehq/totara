@@ -2376,15 +2376,18 @@ class reportbuilder {
             foreach ($this->columns as $column) {
                 if ($column->grouping == 'none') {
                     $allgrouped = false;
-                    //we use FIELDONLY for the GROUP BY clause because MSSQL does not allow aliases in grouping
+                    // We use FIELDONLY for the GROUP BY clause because MSSQL does not allow aliases in grouping.
                     $mode = $cache ? rb_column::CACHE : rb_column::FIELDONLY;
-                    $group = array_merge($group, $column->get_fields($this->src, $mode, false));
-                    if ($column->extrafields !== null) {
+                    $group = array_merge($group, $column->get_fields($this->src, $mode, true));
+                } else {
+                    // We still need to add extrafields to the GROUP BY if there is a displayfunc
+                    if ($column->extrafields !== null && $column->displayfunc !== null) {
                         foreach ($column->extrafields as $alias => $field) {
-                            // when referencing a column in the group by, use the alias
-                            // when caching on, otherwise repeat the full field definition
-                            // (required by MSSQL)
-                            $group[] = $cache ? $alias : $field;
+                            $gp = $cache ? $alias : $field;
+                            if (!in_array($gp, $group)) {
+                                $group[] = $gp;
+                                $allgrouped = false;
+                            }
                         }
                     }
                 }

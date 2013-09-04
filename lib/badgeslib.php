@@ -633,6 +633,28 @@ class badge {
         $this->status = BADGE_STATUS_ARCHIVED;
         $this->save();
     }
+
+    /**
+     * Use to print badge expiry details to user.
+     *
+     */
+    public function get_expiry_details() {
+        if ($this->can_expire()) {
+            if ($this->expiredate) {
+                return get_string('expiredate', 'badges', userdate($this->expiredate));
+            } else if ($this->expireperiod) {
+                if ($this->expireperiod < 60) {
+                    return get_string('expireperiods', 'badges', round($this->expireperiod, 2));
+                } else if ($this->expireperiod < 60 * 60) {
+                    return get_string('expireperiodm', 'badges', round($this->expireperiod / 60, 2));
+                } else if ($this->expireperiod < 60 * 60 * 24) {
+                    return get_string('expireperiodh', 'badges', round($this->expireperiod / 60 / 60, 2));
+                }
+                return get_string('expireperiod', 'badges', round($this->expireperiod / 60 / 60 / 24, 2));
+            }
+        }
+        return get_string('noexpiry', 'badges');
+    }
 }
 
 /**

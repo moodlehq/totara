@@ -464,6 +464,11 @@ abstract class rb_base_source {
             $context = context_system::instance();
         } else {
             $rowcontext = $row->context;
+            if ($rowcontext == 'context_module') {
+                $component = str_replace('mod_', '', $row->component);
+                $cm = get_coursemodule_from_instance($component, $row->recordid);
+                $row->recordid = $cm->id;
+            }
             $context = $rowcontext::instance($row->recordid);
         }
 
@@ -2061,6 +2066,13 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'user',
+            'organisationidnumber',
+            get_string('usersorgidnumber', 'totara_reportbuilder'),
+            "$org.idnumber",
+            array('joins' => $org, 'selectable' => true)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
             'organisationpath',
             get_string('usersorgpathids', 'totara_reportbuilder'),
             "$org.path",
@@ -2095,6 +2107,13 @@ abstract class rb_base_source {
             get_string('usersposid', 'totara_reportbuilder'),
             "$posassign.positionid",
             array('joins' => $posassign, 'selectable' => false)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'positionidnumber',
+            get_string('usersposidnumber', 'totara_reportbuilder'),
+            "$pos.idnumber",
+            array('joins' => $pos, 'selectable' => true)
         );
         $columnoptions[] = new rb_column_option(
             'user',

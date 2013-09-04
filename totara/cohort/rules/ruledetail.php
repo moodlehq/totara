@@ -165,7 +165,7 @@ if ($update) {
 
                 // The menu for the operator in this ruleset
                 $radiogroup = array();
-                $radioname = "rulesetoperator[{$id}]";
+                $radioname = "rulesetoperator[{$rulesetid}]";
                 $radiogroup[] =& $mform->createElement('radio', $radioname, '', get_string('cohortoperatorandlabel', 'totara_cohort'), COHORT_RULES_OP_AND);
                 $radiogroup[] =& $mform->createElement('radio', $radioname, '', get_string('cohortoperatororlabel', 'totara_cohort'), COHORT_RULES_OP_OR);
                 $mform->addGroup($radiogroup, $radioname, get_string('rulesetoperatorlabel', 'totara_cohort'), '<br />', false);

@@ -790,7 +790,24 @@ class dp_competency_component extends dp_base_component {
         $priorities = optional_param_array('priorities_competency', array(), PARAM_INT);
         $approved_comps = optional_param_array('approve_competency', array(), PARAM_INT);
         $evidences = optional_param_array('compprof_competency', array(), PARAM_INT);
-        $linkedcourses = optional_param_array('linkedcourses', array(), PARAM_INT);
+
+        // The parameter 'linkedcourses' is coming through as a 2D array, which is unsupported by optional_param_array.
+        // We are manually retrieving the variable and looping through cleaning all of the params.
+        $linkedcourses = array();
+        if (isset($_POST['linkedcourses'])) {
+            // We know this uses _POST not _GET.
+            foreach ($_POST['linkedcourses'] as $competency => $courses) {
+                // Clean and add each competencyid.
+                $compid = clean_param($competency, PARAM_INT);
+                $linkedcourses[$compid] = array();
+
+                // Loop through and clean/add each courseid.
+                foreach ($courses as $courseid) {
+                    $linkedcourses[$compid][] = clean_param($courseid, PARAM_INT);
+                }
+            }
+        }
+
         $currenturl = qualified_me();
 
         $oldrecords = $DB->get_records_list('dp_plan_competency_assign', 'planid', array($this->plan->id), null, 'id, planid, competencyid, approved');

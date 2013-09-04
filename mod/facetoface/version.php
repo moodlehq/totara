@@ -5,7 +5,7 @@
 //  This fragment is called by /admin/index.php
 ////////////////////////////////////////////////////////////////////////////////
 
-$module->version   = 2013070901;  // The current module version (Date: YYYYMMDDXX)
+$module->version   = 2013090206;  // The current module version (Date: YYYYMMDDXX)
 $module->requires  = 2012112900;  // Requires this Moodle version
 $module->release   = '2.4.0 (2012112900)'; // User-friendly version number
 $module->component = 'mod_facetoface';

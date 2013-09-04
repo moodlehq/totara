@@ -23,10 +23,7 @@
  * @subpackage my
  */
 
-/*
- * Displays information for the current user's team
- *
- */
+/* Displays information for the current user's team */
 
 require_once(dirname(dirname(__FILE__)).'/config.php');
 require_once($CFG->libdir.'/blocklib.php');
@@ -42,14 +39,12 @@ $PAGE->set_pagetype('my-teammembers');
 $PAGE->blocks->add_region('content');
 $PAGE->set_url(new moodle_url('/my/teammembers.php'));
 
-global $SESSION,$USER;
+global $SESSION, $USER;
 
 $edit = optional_param('edit', -1, PARAM_BOOL);
-$format = optional_param('format', '', PARAM_TEXT); // export format
+$format = optional_param('format', '', PARAM_TEXT); // Export format.
 
-/**
- * Define the "Team Members" embedded report
- */
+/* Define the "Team Members" embedded report */
 $strheading = get_string('teammembers', 'totara_core');
 
 $shortname = 'team_members';
@@ -57,11 +52,17 @@ if (!$report = reportbuilder_get_embedded_report($shortname)) {
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
-$query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
-$log_url = 'bookings.php'.$query_string;
+$querystring = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
+$logurl = 'bookings.php'.$querystring;
 
 if ($format != '') {
-    add_to_log(SITEID, 'my', 'teammembers export', $log_url, $report->fullname);
+    add_to_log(SITEID, 'my', 'teammembers export', $logurl, $report->fullname);
+    // If found 'namewithlinks' column, delete function that inserts links inside the column 'name'.
+    $namewithlinkscol = totara_search_for_value($report->columns, 'value', EQUAL, 'namewithlinks');
+    if (!empty($namewithlinkscol)) {
+        $namewithlinkscol = reset($namewithlinkscol);
+        $namewithlinkscol->displayfunc = '';
+    }
     $report->export_data($format);
     die;
 }
@@ -70,9 +71,7 @@ add_to_log(SITEID, 'my', 'teammembers report view', 'teammembers.php');
 
 $report->include_js();
 
-/**
- * End of defining the report
- */
+/* End of defining the report */
 
 $PAGE->set_totara_menu_selected('myteam');
 $PAGE->set_button($report->edit_button());
@@ -100,7 +99,7 @@ if ($PAGE->user_allowed_editing()) {
 $renderer = $PAGE->get_renderer('totara_reportbuilder');
 echo $OUTPUT->header();
 
-// Plan page content
+// Plan page content.
 echo $OUTPUT->container_start('', 'my-teammembers-content');
 
 $countfiltered = $report->get_filtered_count();
@@ -119,7 +118,7 @@ echo html_writer::empty_tag('br');
 if ($countfiltered>0) {
     $report->display_table();
     print $report->edit_button();
-    // export button
+    // Export button.
     $renderer->export_select($report->_id);
 }
 

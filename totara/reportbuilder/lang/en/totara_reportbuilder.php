@@ -481,11 +481,13 @@ $string['userstatus'] = 'User Status';
 
 // add positions
 $string['usersorgid'] = 'User\'s Organisation ID';
+$string['usersorgidnumber'] = 'User\'s Organisation ID Number';
 $string['usersorgpathids'] = 'User\'s Organisation Path IDs';
 $string['usersorgname'] = 'User\'s Organisation Name';
 $string['organisationtype'] = 'User\'s Organisation Type';
 $string['organisationtypeid'] = 'User\'s Organisation Type ID';
 $string['usersposid'] = 'User\'s Position ID';
+$string['usersposidnumber'] = 'User\'s Position ID Number';
 $string['userspospathids'] = 'User\'s Position Path IDs';
 $string['userspos'] = 'User\'s Position';
 $string['positiontype'] = 'User\'s Position Type';

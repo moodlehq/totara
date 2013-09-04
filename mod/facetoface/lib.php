@@ -2153,7 +2153,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
     $strviewallsessions = get_string('viewallsessions', 'facetoface');
     $sessions_url = new moodle_url('/mod/facetoface/view.php', array('f' => $facetofaceid));
     $htmlviewallsessions = html_writer::link($sessions_url, $strviewallsessions, array('class' => 'f2fsessionlinks f2fviewallsessions', 'title' => $strviewallsessions));
-    //F2F name is required to be a link to nake the AJAX buttons work in 2.4
+    // F2F name is required to be a link to make the AJAX buttons work in 2.4.
     $htmlactivitynamelink = $htmlactivitynameonly . html_writer::link($sessions_url, html_writer::tag('span', $facetoface->name, array('class' => 'instancename')), array('class' => 'f2fsessionlinks f2fviewallsessions', 'title' => $facetoface->name));
 
     if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
@@ -2194,7 +2194,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
             $span = html_writer::tag('span', get_string('options', 'facetoface').':', array('class' => 'f2fsessionnotice'));
             $options = html_writer::tag('tr', html_writer::tag('td', '&nbsp;'));
 
-            // don't include the link to cancel a session if it has already occurred
+            // Don't include the link to cancel a session if it has already occurred.
             $moreinfolink = '';
             $cancellink = '';
             if (!facetoface_has_session_started($session, $timenow)) {
@@ -2211,7 +2211,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
             $address = '&nbsp;';
             $building = '&nbsp;';
 
-            // Get room data
+            // Get room data.
             $roomtext = '';
             $roomdata = $DB->get_record('facetoface_room', array('id' => $session->roomid));
             if (!empty($roomdata)) {
@@ -2220,7 +2220,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 $roomtext .= isset($roomdata->address)  ? format_string($roomdata->address) .', '.html_writer::empty_tag('br') : '';
             }
 
-            // don't include the link to view attendees if user is lacking capability
+            // Don't include the link to view attendees if user is lacking capability.
             $attendeeslink = '';
             if ($viewattendees) {
                 $strseeattendees = get_string('seeattendees', 'facetoface');
@@ -2258,7 +2258,6 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 .html_writer::tag('td', $htmlactivitynamelink, array('class' => 'f2fsessionnotice', 'colspan' => '2'))
                 .html_writer::end_tag('tr');
 
-            $i=0;
             $j=1;
             foreach ($sessions as $session) {
                 if (!facetoface_session_has_capacity($session, $contextmodule)) {
@@ -2270,7 +2269,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 if ($session->datetimeknown && (facetoface_has_session_started($session, $timenow)) && facetoface_is_session_in_progress($session, $timenow)) {
                     $status = get_string('sessioninprogress', 'facetoface');
                 } else if ($session->datetimeknown && facetoface_has_session_started($session, $timenow)) {
-                    $status = get_string('sessionover', 'facetoface');
+                    continue;
                 } else {
                     $status = get_string('signupforsession', 'facetoface');
                     $signup = get_string('signup', 'facetoface');
@@ -2325,6 +2324,9 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     .html_writer::end_tag('tr');
 
                 $j++;
+                if ($j > $facetoface->display) {
+                    break;
+                }
             }
             $table .= html_writer::start_tag('tr')
                 .html_writer::tag('td', $coursemodule->uservisible ? $htmlviewallsessions : $strviewallsessions, array('colspan' => '2'))
@@ -2334,12 +2336,10 @@ function facetoface_print_coursemodule_info($coursemodule) {
             // Show only name if session display is set to zero.
             return html_writer::tag('span', $htmlactivitynameonly.$facetoface->name.html_writer::empty_tag('br').$htmlviewallsessions, array('class' => 'f2fsessionnotice f2factivityname f2fonepointfive'));
         }
-    }
-    else if (has_capability('mod/facetoface:viewemptyactivities', $contextmodule)) {
+    } else if (has_capability('mod/facetoface:viewemptyactivities', $contextmodule)) {
         return html_writer::tag('span', $htmlactivitynamelink . html_writer::empty_tag('br') . $htmlviewallsessions, array('class' => 'f2fsessionnotice f2factivityname f2fonepointfive'));
-    }
-    else {
-        // Nothing to display to this user
+    } else {
+        // Nothing to display to this user.
     }
 
     return $table;
@@ -2902,18 +2902,24 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
     if (!empty($session->discountcost)) {
         $table->data[] = array(get_string('discountcost', 'facetoface'), format_string($session->discountcost));
     }
+
+    // Display trainers.
+    $courseid = $DB->get_field('facetoface', 'course', array('id' => $session->facetoface));
+    $coursecontext = context_course::instance($courseid);
+
     if (!empty($session->details)) {
-        $details = clean_text($session->details, FORMAT_HTML);
+        if ($cm = get_coursemodule_from_instance('facetoface', $facetoface->id, $courseid)) {
+            $context = context_module::instance($cm->id);
+            $session->details = file_rewrite_pluginfile_urls($session->details, 'pluginfile.php', $context->id, 'mod_facetoface', 'session', $session->id);
+        }
+        $details = format_text($session->details, FORMAT_HTML);
         $table->data[] = array(get_string('details', 'facetoface'), $details);
     }
 
-    // Display trainers
-    $courseid = $DB->get_field('facetoface', 'course', array('id' => $session->facetoface));
-    $coursecontext = context_course::instance($courseid);
     $trainerroles = facetoface_get_trainer_roles($coursecontext);
 
     if ($trainerroles) {
-        // Get trainers
+        // Get trainers.
         $trainers = facetoface_get_trainers($session->id);
 
         foreach ($trainerroles as $role => $rolename) {
@@ -4467,4 +4473,50 @@ function facetoface_get_session_room($sessionid) {
         WHERE s.id = ?";
 
     return $DB->get_record_sql($sql, array($sessionid));
+}
+
+/**
+ * Serves the facetoface and sessions details.
+ *
+ * @param stdClass $course course object
+ * @param cm_info $cm course module object
+ * @param context $context context object
+ * @param string $filearea file area
+ * @param array $args extra arguments
+ * @param bool $forcedownload whether or not force download
+ * @param array $options additional options affecting the file serving
+ * @return bool false if file not found, does not return if found - just send the file
+ */
+function facetoface_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+    global $DB;
+
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        return false;
+    }
+
+    require_course_login($course, true, $cm);
+
+    if ($filearea !== 'session') {
+        return false;
+    }
+
+    $sessionid = (int)array_shift($args);
+
+    if (!$session = $DB->get_record('facetoface_sessions', array('id' => $sessionid))) {
+        return false;
+    }
+
+    if (!$facetoface = $DB->get_record('facetoface', array('id' => $cm->instance))) {
+        return false;
+    }
+
+    $fs = get_file_storage();
+    $relativepath = implode('/', $args);
+    $fullpath = "/$context->id/mod_facetoface/$filearea/$sessionid/$relativepath";
+    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+        return false;
+    }
+
+    // finally send the file
+    send_stored_file($file, 360, 0, $forcedownload, $options);
 }

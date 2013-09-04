@@ -74,14 +74,12 @@ class plan_evidence_edit_form extends moodleform {
             $mform->addElement('select', 'evidencetypeid', get_string('evidencetype', 'totara_plan'), $selector + $selectoptions);
             $mform->setDefault('evidencetypeid', $evidencetypeid);
             $mform->setType('evidencetypeid', PARAM_INT);
-            $mform->addHelpButton('evidencetypeid', 'planevidencetype', 'totara_plan');
         } else {
             // if evidencetypeid set but no evidence types defined, this should pass the current value
             $mform->addElement('hidden', 'evidencetypeid', $evidencetypeid);
             $mform->setType('evidencetypeid', PARAM_INT);
             $mform->addElement('static', 'evidencetypeiderror',
-                    get_string('evidencetype', 'totara_plan'), get_string('noevidencetypes', 'totara_plan'));
-            $mform->addHelpButton('evidencetypeiderror', 'planevidencetype', 'totara_plan');
+                    get_string('evidencetype', 'totara_plan'), get_string('noevidencetypesdefined', 'totara_plan'));
         }
 
         $mform->addElement('text', 'evidencelink', get_string('evidencelink', 'totara_plan'));

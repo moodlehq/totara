@@ -3,6 +3,39 @@
 
 Totara LMS Changelog
 
+Release 2.4.9 (3rd September 2013):
+==================================================
+
+Improvements:
+    T-11130    Program Course Sets: Set 'or' groups to use max not min time required
+    T-11129    Program Course Sets: Added programs total time required to the description on content and assignment tabs
+    T-10869    Badge name and description can now be edited in active or locked badges
+    T-11143    Included idnumber for positions and organisations in user report source
+    T-11151    Added triggers for user create/update events in Totara Sync
+
+Bug Fixes:
+    T-11113    Fixed deletion of associated program assignments when a user is deleted
+    T-10827    Fixed collection of extrafields for grouped columns in Reportbuilder
+    T-10876    Fixed folder/file picker modal popup widths in IE7
+    T-11041    Fixed course reminder emails and recipients
+    T-11139    Fixed learning plans manager approval process when competencies have linked courses
+    T-9873     Added ajax update for and/or options on dynamic audiences rules tab
+    T-10577    Removed text help from Evidence and changed the message description in record of learning
+    T-11082    Fixed the format of system messages when using special characters
+    T-10442    Fixed audience emails not using users email preference settings
+    T-11134    Fixed ROL tabs not showing for the manager under certain circumstances
+    T-11127    Fixed creation of manager relationships with Totara Sync
+    T-10779    Changed the language string for Face to face conflict messages
+    T-11150    Fixed position assignment data getting reset in Totara Sync
+    T-11142    Fixed name column when exporting file in My Team tab
+    T-10939    Fixed TinyMCE images in f2f description and session description
+    T-11153    Fixed rules based on custom checkboxes to use default value when null
+    T-11152    Improved session status display for user
+    T-11155    Fixed incorrect foreign key reference in install.xml
+    T-5734     Fixed string encoding/formatting on learning plans view component page
+    T-6080     Updated affected files code to handle no changes and make it a bit clearer
+
+
 Release 2.4.8 (20th August 2013):
 ==================================================
 
