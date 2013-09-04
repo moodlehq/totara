@@ -463,6 +463,7 @@ $string['userfullname'] = 'User\'s Fullname';
 $string['usernamelink'] = 'User\'s Fullname (linked to profile)';
 $string['usernamelinkicon'] = 'User\'s Fullname (linked to profile with icon)';
 $string['useremail'] = 'User\'s Email';
+$string['useremailunobscured'] = 'User\'s Email (ignoring user display setting)';
 $string['useremailprivate'] = 'Email is private';
 $string['userlastlogin'] = 'User Last Login';
 $string['userfirstaccess'] = 'User First Access';
