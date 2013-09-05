@@ -73,8 +73,11 @@ function totara_get_category_item_count($categoryids, $countcourses = true) {
 
     // get all items inside all the categories
     if (!$items = $DB->get_records_sql($sql, $params)) {
-        // sub-categories are all empty
-        return array();
+        // Sub-categories are all empty.
+        if (is_array($categoryids)) {
+            return array();
+        }
+        return 0;
     }
 
     $results = array();

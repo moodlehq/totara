@@ -1418,6 +1418,8 @@ class core_course_renderer extends plugin_renderer_base {
      * @return string
      */
     protected function coursecat_category(coursecat_helper $chelper, $coursecat, $depth) {
+        global $CFG;
+        require_once($CFG->dirroot . '/totara/coursecatalog/lib.php');
         // open category tag
         $classes = array('category');
         if (empty($coursecat->visible)) {
@@ -1446,14 +1448,12 @@ class core_course_renderer extends plugin_renderer_base {
 
         // category name
         $categoryname = $coursecat->get_formatted_name();
+        $categorycount = totara_get_category_item_count($coursecat->id, true);
         $categoryname = html_writer::link(new moodle_url('/course/index.php',
                 array('categoryid' => $coursecat->id)),
                 $categoryname);
-        if ($chelper->get_show_courses() == self::COURSECAT_SHOW_COURSES_COUNT
-                && ($coursescount = $coursecat->get_courses_count())) {
-            $categoryname .= html_writer::tag('span', ' ('. $coursescount.')',
-                    array('title' => get_string('numberofcourses'), 'class' => 'numberofcourse'));
-        }
+        $categoryname .= html_writer::tag('span', ' (' . $categorycount . ')',
+                        array('title' => get_string('numberofcourses')));
         $content .= html_writer::start_tag('div', array('class' => 'info'));
         $content .= html_writer::tag(($depth > 1) ? 'h4' : 'h3', $categoryname, array('class' => 'name'));
         $content .= html_writer::end_tag('div'); // .info

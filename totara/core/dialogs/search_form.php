@@ -67,18 +67,22 @@ class dialog_search_form extends moodleform {
             // If framework selector not shown, pass frameworkid as hidden field
             if (!$showpicker) {
                 $mform->addElement('hidden', 'frameworkid');
+                $mform->setType('frameworkid', PARAM_INT);
                 $mform->setDefault('frameworkid', $frameworkid);
             }
         }
 
         // Generic hidden values
         $mform->addElement('hidden', 'dialog_form_target', '#search-tab');
+        $mform->setType('dialog_form_target', PARAM_TEXT);
         $mform->addElement('hidden', 'search', 1);
+        $mform->setType('search', PARAM_INT);
 
         // Custom hidden values
         if (!empty($this->_customdata['hidden'])) {
             foreach ($this->_customdata['hidden'] as $key => $value) {
                 $mform->addElement('hidden', $key);
+                $mform->setType($key, PARAM_TEXT);
                 $mform->setDefault($key, $value);
             }
         }

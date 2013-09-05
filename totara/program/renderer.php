@@ -458,6 +458,9 @@ class totara_program_renderer extends plugin_renderer_base {
      * @return string
      */
     protected function coursecat_category(programcat_helper $chelper, $coursecat, $depth) {
+        global $CFG;
+        require_once($CFG->dirroot . '/totara/coursecatalog/lib.php');
+
         // Open category tag.
         $classes = array('category');
         if (empty($coursecat->visible)) {
@@ -473,7 +476,7 @@ class totara_program_renderer extends plugin_renderer_base {
                 $classes[] = 'collapsed';
             }
         } else {
-            // load category content
+            // Load category content.
             $categorycontent = $this->coursecat_category_content($chelper, $coursecat, $depth);
             $classes[] = 'loaded';
             if (!empty($categorycontent)) {
@@ -486,14 +489,12 @@ class totara_program_renderer extends plugin_renderer_base {
 
         // Category name.
         $categoryname = $coursecat->get_formatted_name();
+        $categorycount = totara_get_category_item_count($coursecat->id, false);
         $categoryname = html_writer::link(new moodle_url('/totara/program/index.php',
                         array('categoryid' => $coursecat->id)),
                         $categoryname);
-        if ($chelper->get_show_programs() == self::COURSECAT_SHOW_PROGRAMS_COUNT
-        && ($programscount = prog_get_programs_count($coursecat))) {
-            $categoryname .= html_writer::tag('span', ' (' . $programscount . ')',
-                            array('title' => get_string('numberofprograms', 'totara_program'), 'class' => 'numberofcourse'));
-        }
+        $categoryname .= html_writer::tag('span', ' (' . $categorycount . ')',
+                        array('title' => get_string('numberofprograms', 'totara_program')));
         $content .= html_writer::start_tag('div', array('class' => 'info'));
         $content .= html_writer::tag(($depth > 1) ? 'h4' : 'h3', $categoryname, array('class' => 'name'));
         $content .= html_writer::end_tag('div');
@@ -695,7 +696,7 @@ class totara_program_renderer extends plugin_renderer_base {
             $output .= html_writer::start_tag('div', array('class' => 'categorypicker'));
             $select = new single_select(new moodle_url('/totara/program/index.php'), 'categoryid',
                             coursecat::make_categories_list(), $coursecat->id, null, 'switchcategory');
-            $select->set_label(get_string('programcategories', 'totara_program').':');
+            $select->set_label(get_string('programcategories', 'totara_program') . ':');
             $output .= $this->render($select);
             $output .= html_writer::end_tag('div');
         }
@@ -730,7 +731,7 @@ class totara_program_renderer extends plugin_renderer_base {
             $catdisplayoptions['nodisplay'] = true;
             $catdisplayoptions['viewmoreurl'] = new moodle_url($baseurl, array('browse' => 'categories'));
             $catdisplayoptions['viewmoretext'] = new lang_string('viewallsubcategories');
-        } else if ($browse === 'categories' || (!prog_has_programs($coursecat) && $coursecat->id != 0)) {
+        } else if ($browse === 'categories' || !prog_has_programs($coursecat) && $coursecat->id != 0) {
             $programdisplayoptions['nodisplay'] = true;
             $catdisplayoptions['offset'] = $page * $perpage;
             $catdisplayoptions['paginationurl'] = new moodle_url($baseurl, array('browse' => 'categories'));
@@ -751,7 +752,7 @@ class totara_program_renderer extends plugin_renderer_base {
             $output .= $this->program_search_form();
         }
 
-        // Add action buttons
+        // Add action buttons.
         $output .= $this->container_start('buttons');
         $context = get_category_or_system_context($coursecat->id);
         if (has_capability('totara/program:createprogram', $context)) {
