@@ -309,72 +309,6 @@ function forum_supports($feature) {
     }
 }
 
-/**
- * Obtains the specific requirements for completion.
- *
- * @param object $cm Course-module
- * @return array Requirements for completion
- */
-function forum_get_completion_requirements($cm) {
-    global $DB;
-
-    $forum = $DB->get_record('forum', array('id' => $cm->instance));
-
-    $result = array();
-
-    if ($forum->completiondiscussions > 0) {
-        $result[] = get_string('completiondiscussionsshort', 'forum', $forum->completiondiscussions);
-    }
-
-    if ($forum->completionreplies > 0) {
-        $result[] = get_string('completionrepliesshort', 'forum', $forum->completionreplies);
-    }
-
-    if ($forum->completionposts > 0) {
-        $result[] = get_string('completionpostsshort', 'forum', $forum->completionposts);
-    }
-
-    return $result;
-}
-
-/**
- * Obtains the completion progress.
- *
- * @param object $cm      Course-module
- * @param int    $userid  User ID
- * @return string The current status of completion for the user
- */
-function forum_get_completion_progress($cm, $userid) {
-    global $DB;
-
-    // Get forum details.
-    if (!($forum = $DB->get_record('forum', array('id' => $cm->instance)))) {
-        print_error("Can't find forum {$cm->instance}");
-    }
-
-    $postcountparams = array('userid' => $userid, 'forum' => $forum->id);
-    $postcountsql="SELECT COUNT(1)
-                    FROM {forum_posts} fp
-                    INNER JOIN {forum_discussions} fd ON fp.discussion=fd.id
-                    WHERE fp.userid=:userid AND fd.forum=:forum";
-
-    $result = array();
-
-    if ($forum->completiondiscussions) {
-        $count = $DB->count_records('forum_discussions', $postcountparams);
-        $result[] = get_string('completiondiscussionscompleted', 'forum', $count);
-    }
-    if ($forum->completionreplies) {
-        $result[] = get_string('completionrepliescompleted', 'forum',
-                $DB->get_field_sql( $postcountsql.' AND fp.parent<>0', $postcountparams));
-    }
-    if ($forum->completionposts) {
-        $result[] = get_string('completionpostscompleted', 'forum',
-                $DB->get_field_sql($postcountsql, $postcountparams));
-    }
-
-    return $result;
-}
 
 /**
  * Obtains the automatic completion state for this forum based on any conditions
@@ -510,7 +444,6 @@ function forum_cron() {
     $courses         = array();
     $coursemodules   = array();
     $subscribedusers = array();
-    $lastemail       = array('userid' => 0, 'subject' => '');
 
 
     // Posts older than 2 days will not be mailed.  This is to avoid the problem where
@@ -797,12 +730,6 @@ function forum_cron() {
 
                 $eventdata->contexturl = "{$CFG->wwwroot}/mod/forum/discuss.php?d={$discussion->id}#p{$post->id}";
                 $eventdata->contexturlname = $discussion->name;
-
-                if ($lastemail['userid'] === $userto->id && $lastemail['subject'] === $eventdata->subject) {
-                    mtrace('- delaying 0.5 seconds -', '');
-                    usleep(500000); // T-10270 gmail or google apps doesn't receive all email if its the same user and subject within 0.5 seconds
-                }
-                $lastemail = array('userid' => $userto->id, 'subject' => $eventdata->subject);
 
                 $mailresult = message_send($eventdata);
                 if (!$mailresult){
@@ -1588,7 +1515,7 @@ function forum_print_recent_activity($course, $viewfullnames, $timestart) {
                     $modinfo->groups = groups_get_user_groups($course->id); // load all my groups and cache it in modinfo
                 }
 
-                if (!array_key_exists($post->groupid, $modinfo->groups[0])) {
+                if (!in_array($post->groupid, $modinfo->get_groups($cm->groupingid))) {
                     continue;
                 }
             }
@@ -6083,12 +6010,10 @@ function forum_get_recent_mod_activity(&$activities, &$index, $timestart, $cours
     }
 
     if ($groupid) {
-        $groupselect = "AND gm.groupid = ?";
-        $groupjoin   = "JOIN {groups_members} gm ON  gm.userid=u.id";
+        $groupselect = "AND d.groupid = ?";
         $params[] = $groupid;
     } else {
         $groupselect = "";
-        $groupjoin   = "";
     }
 
     if (!$posts = $DB->get_records_sql("SELECT p.*, f.type AS forumtype, d.forum, d.groupid,
@@ -6098,7 +6023,6 @@ function forum_get_recent_mod_activity(&$activities, &$index, $timestart, $cours
                                               JOIN {forum_discussions} d ON d.id = p.discussion
                                               JOIN {forum} f             ON f.id = d.forum
                                               JOIN {user} u              ON u.id = p.userid
-                                              $groupjoin
                                         WHERE p.created > ? AND f.id = ?
                                               $userselect $groupselect
                                      ORDER BY p.id ASC", $params)) { // order by initial posting date
@@ -6134,7 +6058,7 @@ function forum_get_recent_mod_activity(&$activities, &$index, $timestart, $cours
                     continue;
                 }
 
-                if (!array_key_exists($post->groupid, $modinfo->groups[0])) {
+                if (!in_array($post->groupid, $modinfo->get_groups($cm->groupingid))) {
                     continue;
                 }
             }
@@ -6289,15 +6213,6 @@ function forum_user_enrolled($cp) {
     }
 }
 
-function forum_user_enrolled_bulk($ue) {
-    foreach ($ue->userids as $uid) {
-        $cp = new stdClass;
-        $cp->userid = $uid->userid;
-        $cp->courseid = $ue->courseid;
-        forum_user_enrolled($cp);
-    }
-}
-
 /**
  * This function gets run whenever user is assigned role in course
  *
@@ -6353,26 +6268,6 @@ function forum_user_unenrolled($cp) {
         $DB->delete_records_select('forum_subscriptions', "userid = :userid AND forum $forumselect", $params);
         $DB->delete_records_select('forum_track_prefs',   "userid = :userid AND forumid $forumselect", $params);
         $DB->delete_records_select('forum_read',          "userid = :userid AND forumid $forumselect", $params);
-    }
-}
-
-/**
- * This function gets run whenever users are unenrolled from a course in a bulk way
- *
- * @param stdClass $cp
- * @return void
- */
-function forum_user_unenrolled_bulk($cp) {
-    global $DB;
-
-    $courseid = $cp->courseid;
-    $enrol = $cp->enrol;
-    $lastenrol = $cp->lastenrol;
-    foreach ($cp->ue as $ue) {
-        $ue->courseid = $courseid;
-        $ue->enrol = $enrol;
-        $ue->lastenrol = $lastenrol;
-        forum_user_unenrolled($ue);
     }
 }
 
@@ -8213,15 +8108,17 @@ function forum_get_courses_user_posted_in($user, $discussionsonly = false, $incl
     // table and join to the userid there. If we are looking for posts then we need
     // to join to the forum_posts table.
     if (!$discussionsonly) {
-        $joinsql = 'JOIN {forum_discussions} fd ON fd.course = c.id
-                    JOIN {forum_posts} fp ON fp.discussion = fd.id';
-        $wheresql = 'fp.userid = :userid';
-        $params = array('userid' => $user->id);
+        $subquery = "(SELECT DISTINCT fd.course
+                         FROM {forum_discussions} fd
+                         JOIN {forum_posts} fp ON fp.discussion = fd.id
+                        WHERE fp.userid = :userid )";
     } else {
-        $joinsql = 'JOIN {forum_discussions} fd ON fd.course = c.id';
-        $wheresql = 'fd.userid = :userid';
-        $params = array('userid' => $user->id);
+        $subquery= "(SELECT DISTINCT fd.course
+                         FROM {forum_discussions} fd
+                        WHERE fd.userid = :userid )";
     }
+
+    $params = array('userid' => $user->id);
 
     // Join to the context table so that we can preload contexts if required.
     if ($includecontexts) {
@@ -8233,19 +8130,10 @@ function forum_get_courses_user_posted_in($user, $discussionsonly = false, $incl
 
     // Now we need to get all of the courses to search.
     // All courses where the user has posted within a forum will be returned.
-    // MSSQL distinct ntext issue
     $sql = "SELECT c.* $ctxselect
-            FROM
-            {course} c
-            LEFT JOIN {context} ctx ON (ctx.instanceid = c.id AND ctx.contextlevel = 50)
-            WHERE c.id IN (
-                SELECT DISTINCT c.id
-                FROM {course} c
-                $joinsql
-                $ctxjoin
-                WHERE $wheresql
-            )";
-
+            FROM {course} c
+            $ctxjoin
+            WHERE c.id IN ($subquery)";
     $courses = $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
     if ($includecontexts) {
         array_map('context_instance_preload', $courses);

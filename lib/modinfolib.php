@@ -242,7 +242,17 @@ class course_modinfo extends stdClass {
      * @param int $userid User ID
      */
     public function __construct($course, $userid) {
-        global $CFG, $DB;
+        global $CFG, $DB, $COURSE, $SITE;
+
+        if (!isset($course->modinfo) || !isset($course->sectioncache)) {
+            if (!empty($COURSE->id) && $COURSE->id == $course->id) {
+                $course = $COURSE;
+            } else if (!empty($SITE->id) && $SITE->id == $course->id) {
+                $course = $SITE;
+            } else {
+                $course = $DB->get_record('course', array('id' => $course->id), '*', MUST_EXIST);
+            }
+        }
 
         // Check modinfo field is set. If not, build and load it.
         if (empty($course->modinfo) || empty($course->sectioncache)) {
@@ -275,7 +285,7 @@ class course_modinfo extends stdClass {
 
         // Load sectioncache field into memory as PHP object and check it's valid
         $sectioncache = unserialize($course->sectioncache);
-        if (!is_array($sectioncache) || empty($sectioncache)) {
+        if (!is_array($sectioncache)) {
             // hmm, something is wrong - let's fix it
             rebuild_course_cache($course->id);
             $course->sectioncache = $DB->get_field('course', 'sectioncache', array('id'=>$course->id));
@@ -287,8 +297,28 @@ class course_modinfo extends stdClass {
             }
         }
 
-        // If we haven't already preloaded contexts for the course, do it now
+        // If we haven't already preloaded contexts for the course, do it now.
+        // Modules are also cached here as long as it's the first time this course has been preloaded.
         preload_course_contexts($course->id);
+
+        // Quick integrity check: as a result of race conditions modinfo may not be regenerated after the change.
+        // It is especially dangerous if modinfo contains the deleted course module, as it results in fatal error.
+        // We can check it very cheap by validating the existence of module context.
+        if ($course->id == $COURSE->id || $course->id == $SITE->id) {
+            // Only verify current course (or frontpage) as pages with many courses may not have module contexts cached.
+            // (Uncached modules will result in a very slow verification).
+            foreach ($info as $mod) {
+                if (!context_module::instance($mod->cm, IGNORE_MISSING)) {
+                    debugging('Course cache integrity check failed: course module with id '. $mod->cm.
+                            ' does not have context. Rebuilding cache for course '. $course->id);
+                    rebuild_course_cache($course->id);
+                    $this->course = $DB->get_record('course', array('id' => $course->id), '*', MUST_EXIST);
+                    $info = unserialize($this->course->modinfo);
+                    $sectioncache = unserialize($this->course->sectioncache);
+                    break;
+                }
+            }
+        }
 
         // Loop through each piece of module data, constructing it
         $modexists = array();
@@ -1020,7 +1050,8 @@ class cm_info extends stdClass {
         $this->indent           = isset($mod->indent) ? $mod->indent : 0;
         $this->extra            = isset($mod->extra) ? $mod->extra : '';
         $this->extraclasses     = isset($mod->extraclasses) ? $mod->extraclasses : '';
-        $this->iconurl          = isset($mod->iconurl) ? $mod->iconurl : '';
+        // iconurl may be stored as either string or instance of moodle_url.
+        $this->iconurl          = isset($mod->iconurl) ? new moodle_url($mod->iconurl) : '';
         $this->onclick          = isset($mod->onclick) ? $mod->onclick : '';
         $this->content          = isset($mod->content) ? $mod->content : '';
         $this->icon             = isset($mod->icon) ? $mod->icon : '';
@@ -1151,7 +1182,8 @@ class cm_info extends stdClass {
         }
 
         // Check group membership.
-        if ($this->is_user_access_restricted_by_group()) {
+        if ($this->is_user_access_restricted_by_group() ||
+                $this->is_user_access_restricted_by_capability()) {
 
              $this->uservisible = false;
             // Ensure activity is completely hidden from the user.
@@ -1183,12 +1215,30 @@ class cm_info extends stdClass {
     }
 
     /**
+     * Checks whether mod/...:view capability restricts the current user's access.
+     *
+     * @return bool True if the user access is restricted.
+     */
+    public function is_user_access_restricted_by_capability() {
+        $capability = 'mod/' . $this->modname . ':view';
+        $capabilityinfo = get_capability_info($capability);
+        if (!$capabilityinfo) {
+            // Capability does not exist, no one is prevented from seeing the activity.
+            return false;
+        }
+
+        // You are blocked if you don't have the capability.
+        $userid = $this->modinfo->get_user_id();
+        return !has_capability($capability, context_module::instance($this->id), $userid);
+    }
+
+    /**
      * Checks whether the module's conditional access settings mean that the user cannot see the activity at all
      *
      * @return bool True if the user cannot see the module. False if the activity is either available or should be greyed out.
      */
     public function is_user_access_restricted_by_conditional_access() {
-        global $CFG, $USER;
+        global $CFG;
 
         if (empty($CFG->enableavailability)) {
             return false;
@@ -1297,7 +1347,7 @@ function get_fast_modinfo($courseorid, $userid = 0, $resetonly = false) {
     if (is_object($courseorid)) {
         $course = $courseorid;
     } else {
-        $course = (object)array('id' => $courseorid, 'modinfo' => null, 'sectioncache' => null);
+        $course = (object)array('id' => $courseorid);
     }
 
     // Function is called with $reset = true
@@ -1328,14 +1378,6 @@ function get_fast_modinfo($courseorid, $userid = 0, $resetonly = false) {
         }
     }
 
-    if (!property_exists($course, 'modinfo')) {
-        debugging('Coding problem - missing course modinfo property in get_fast_modinfo() call');
-    }
-
-    if (!property_exists($course, 'sectioncache')) {
-        debugging('Coding problem - missing course sectioncache property in get_fast_modinfo() call');
-    }
-
     unset($cache[$course->id]); // prevent potential reference problems when switching users
 
     $cache[$course->id] = new course_modinfo($course, $userid);
@@ -1344,8 +1386,10 @@ function get_fast_modinfo($courseorid, $userid = 0, $resetonly = false) {
     if (count($cache) > MAX_MODINFO_CACHE_SIZE) {
         reset($cache);
         $key = key($cache);
-        unset($cache[$key]->instances);
-        unset($cache[$key]->cms);
+        // Unsetting static variable in PHP is percular, it removes the reference,
+        // but data remain in memory. Prior to unsetting, the varable needs to be
+        // set to empty to remove its remains from memory.
+        $cache[$key] = '';
         unset($cache[$key]);
     }
 

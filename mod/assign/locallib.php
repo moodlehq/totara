@@ -1034,7 +1034,7 @@ class assign {
                 if ($grade < 0) {
                     $displaygrade = '';
                 } else {
-                    $displaygrade = format_float($grade);
+                    $displaygrade = format_float($grade, 2);
                 }
                 $o .= '<label class="accesshide" for="quickgrade_' . $userid . '">' . get_string('usergrade', 'assign') . '</label>';
                 $o .= '<input type="text" id="quickgrade_' . $userid . '" name="quickgrade_' . $userid . '" value="' .
@@ -3128,9 +3128,10 @@ class assign {
                 $team = groups_get_members($submission->groupid, 'u.id');
 
                 foreach ($team as $member) {
-                    $submission->groupid = 0;
-                    $submission->userid = $member->id;
-                    $this->gradebook_item_update($submission, null);
+                    $membersubmission = clone $submission;
+                    $membersubmission->groupid = 0;
+                    $membersubmission->userid = $member->id;
+                    $this->gradebook_item_update($membersubmission, null);
                 }
                 return;
             }
@@ -3303,7 +3304,15 @@ class assign {
             }
         }
 
-        if ($this->grading_disabled($userid)) {
+        // See if this user grade is locked in the gradebook.
+        $gradinginfo = grade_get_grades($this->get_course()->id,
+                                        'mod',
+                                        'assign',
+                                        $this->get_instance()->id,
+                                        array($userid));
+        if ($gradinginfo &&
+                isset($gradinginfo->items[0]->grades[$userid]) &&
+                $gradinginfo->items[0]->grades[$userid]->locked) {
             return false;
         }
 
@@ -4073,7 +4082,7 @@ class assign {
 
 
     /**
-     * Determine if this users grade is locked or overridden
+     * Determine if this users grade can be edited.
      *
      * @param int $userid - The student userid
      * @return bool $gradingdisabled
@@ -4166,11 +4175,18 @@ class assign {
         } else {
             // use simple direct grading
             if ($this->get_instance()->grade > 0) {
-                $gradingelement = $mform->addElement('text', 'grade', get_string('gradeoutof', 'assign',$this->get_instance()->grade));
-                $mform->addHelpButton('grade', 'gradeoutofhelp', 'assign');
-                $mform->setType('grade', PARAM_TEXT);
-                if ($gradingdisabled) {
-                    $gradingelement->freeze();
+                $name = get_string('gradeoutof', 'assign', $this->get_instance()->grade);
+                if (!$gradingdisabled) {
+                    $gradingelement = $mform->addElement('text', 'grade', $name);
+                    $mform->addHelpButton('grade', 'gradeoutofhelp', 'assign');
+                    $mform->setType('grade', PARAM_RAW);
+                } else {
+                    $mform->addElement('hidden', 'grade', $name);
+                    $mform->hardFreeze('grade');
+                    $mform->setType('grade', PARAM_RAW);
+                    $strgradelocked = get_string('gradelocked', 'assign');
+                    $mform->addElement('static', 'gradedisabled', $name, $strgradelocked);
+                    $mform->addHelpButton('gradedisabled', 'gradeoutofhelp', 'assign');
                 }
             } else {
                 $grademenu = make_grades_menu($this->get_instance()->grade);
@@ -4457,7 +4473,7 @@ class assign {
 
         // Give each submission plugin a chance to process the locking.
         $plugins = $this->get_submission_plugins();
-        $submission = $this->get_user_submission($userid, false);
+        $submission = $this->get_user_submission($userid, true);
         foreach ($plugins as $plugin) {
             if ($plugin->is_enabled() && $plugin->is_visible()) {
                 $plugin->lock($submission);
@@ -4493,7 +4509,7 @@ class assign {
 
         // Give each submission plugin a chance to process the locking.
         $plugins = $this->get_submission_plugins();
-        $submission = $this->get_user_submission($userid, false);
+        $submission = $this->get_user_submission($userid, true);
         foreach ($plugins as $plugin) {
             if ($plugin->is_enabled() && $plugin->is_visible()) {
                 $plugin->unlock($submission);

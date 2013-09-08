@@ -290,4 +290,93 @@ class repositorylib_testcase extends advanced_testcase {
         $this->assertTrue($notprivaterepo->check_capability());
     }
 
+    function test_delete_all_for_context() {
+        global $DB;
+        $this->resetAfterTest(true);
+
+        $this->setAdminUser();
+        $course = $this->getDataGenerator()->create_course();
+        $user = $this->getDataGenerator()->create_user();
+
+        // Enable repositories.
+        $plugintype = new repository_type('flickr_public');
+        $plugintype->create(true);
+        $plugintype = new repository_type('filesystem');
+        $plugintype->create(true);
+        $coursecontext = context_course::instance($course->id);
+        $usercontext = context_user::instance($user->id);
+        $flickrparams = array('name' => 'Flickr Public');
+        $fsparams = array('name' => 'File System');
+
+        // Creating course instances.
+        // Instance on a site level.
+        $repoid = repository::static_function('flickr_public', 'create', 'flickr_public', 0, $coursecontext, $flickrparams);
+        $courserepo1 = repository::get_repository_by_id($repoid, $coursecontext);
+        $this->assertEquals(1, $DB->count_records('repository_instances', array('contextid' => $coursecontext->id)));
+
+        $repoid = repository::static_function('filesystem', 'create', 'filesystem', 0, $coursecontext, $fsparams);
+        $courserepo2 = repository::get_repository_by_id($repoid, $coursecontext);
+        $this->assertEquals(2, $DB->count_records('repository_instances', array('contextid' => $coursecontext->id)));
+
+        // Creating user instances.
+        $repoid = repository::static_function('flickr_public', 'create', 'flickr_public', 0, $usercontext, $flickrparams);
+        $userrepo1 = repository::get_repository_by_id($repoid, $usercontext);
+        $this->assertEquals(1, $DB->count_records('repository_instances', array('contextid' => $usercontext->id)));
+
+        $repoid = repository::static_function('filesystem', 'create', 'filesystem', 0, $usercontext, $fsparams);
+        $userrepo2 = repository::get_repository_by_id($repoid, $usercontext);
+        $this->assertEquals(2, $DB->count_records('repository_instances', array('contextid' => $usercontext->id)));
+
+        // Simulation of course deletion.
+        repository::delete_all_for_context($coursecontext->id);
+        $this->assertEquals(0, $DB->count_records('repository_instances', array('contextid' => $coursecontext->id)));
+        $this->assertEquals(0, $DB->count_records('repository_instances', array('id' => $courserepo1->id)));
+        $this->assertEquals(0, $DB->count_records('repository_instances', array('id' => $courserepo2->id)));
+        $this->assertEquals(0, $DB->count_records('repository_instance_config', array('instanceid' => $courserepo1->id)));
+        $this->assertEquals(0, $DB->count_records('repository_instance_config', array('instanceid' => $courserepo2->id)));
+
+        // Simulation of user deletion.
+        repository::delete_all_for_context($usercontext->id);
+        $this->assertEquals(0, $DB->count_records('repository_instances', array('contextid' => $usercontext->id)));
+        $this->assertEquals(0, $DB->count_records('repository_instances', array('id' => $userrepo1->id)));
+        $this->assertEquals(0, $DB->count_records('repository_instances', array('id' => $userrepo2->id)));
+        $this->assertEquals(0, $DB->count_records('repository_instance_config', array('instanceid' => $userrepo1->id)));
+        $this->assertEquals(0, $DB->count_records('repository_instance_config', array('instanceid' => $userrepo2->id)));
+
+        // Checking deletion upon course context deletion.
+        $course = $this->getDataGenerator()->create_course();
+        $coursecontext = context_course::instance($course->id);
+        $repoid = repository::static_function('flickr_public', 'create', 'flickr_public', 0, $coursecontext, $flickrparams);
+        $courserepo = repository::get_repository_by_id($repoid, $coursecontext);
+        $this->assertEquals(1, $DB->count_records('repository_instances', array('contextid' => $coursecontext->id)));
+        $coursecontext->delete();
+        $this->assertEquals(0, $DB->count_records('repository_instances', array('contextid' => $coursecontext->id)));
+
+        // Checking deletion upon user context deletion.
+        $user = $this->getDataGenerator()->create_user();
+        $usercontext = context_user::instance($user->id);
+        $repoid = repository::static_function('flickr_public', 'create', 'flickr_public', 0, $usercontext, $flickrparams);
+        $userrepo = repository::get_repository_by_id($repoid, $usercontext);
+        $this->assertEquals(1, $DB->count_records('repository_instances', array('contextid' => $usercontext->id)));
+        $usercontext->delete();
+        $this->assertEquals(0, $DB->count_records('repository_instances', array('contextid' => $usercontext->id)));
+
+        // Checking deletion upon course deletion.
+        $course = $this->getDataGenerator()->create_course();
+        $coursecontext = context_course::instance($course->id);
+        $repoid = repository::static_function('flickr_public', 'create', 'flickr_public', 0, $coursecontext, $flickrparams);
+        $courserepo = repository::get_repository_by_id($repoid, $coursecontext);
+        $this->assertEquals(1, $DB->count_records('repository_instances', array('contextid' => $coursecontext->id)));
+        delete_course($course, false);
+        $this->assertEquals(0, $DB->count_records('repository_instances', array('contextid' => $coursecontext->id)));
+
+        // Checking deletion upon user deletion.
+        $user = $this->getDataGenerator()->create_user();
+        $usercontext = context_user::instance($user->id);
+        $repoid = repository::static_function('flickr_public', 'create', 'flickr_public', 0, $usercontext, $flickrparams);
+        $userrepo = repository::get_repository_by_id($repoid, $usercontext);
+        $this->assertEquals(1, $DB->count_records('repository_instances', array('contextid' => $usercontext->id)));
+        delete_user($user);
+        $this->assertEquals(0, $DB->count_records('repository_instances', array('contextid' => $usercontext->id)));
+    }
 }

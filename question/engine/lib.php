@@ -26,6 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->libdir . '/filelib.php');
 require_once(dirname(__FILE__) . '/questionusage.php');
 require_once(dirname(__FILE__) . '/questionattempt.php');
 require_once(dirname(__FILE__) . '/questionattemptstep.php');
@@ -815,6 +816,22 @@ abstract class question_utils {
     public static function optional_param_mark($parname) {
         return self::clean_param_mark(
                 optional_param($parname, null, PARAM_RAW_TRIMMED));
+    }
+
+    /**
+     * Convert part of some question content to plain text.
+     * @param string $text the text.
+     * @param int $format the text format.
+     * @param array $options formatting options. Passed to {@link format_text}.
+     * @return float|string|null cleaned mark as a float if possible. Otherwise '' or null.
+     */
+    public static function to_plain_text($text, $format, $options = array('noclean' => 'true')) {
+        // The following call to html_to_text uses the option that strips out
+        // all URLs, but format_text complains if it finds @@PLUGINFILE@@ tokens.
+        // So, we need to replace @@PLUGINFILE@@ with a real URL, but it doesn't
+        // matter what. We use http://example.com/.
+        $text = str_replace('@@PLUGINFILE@@/', 'http://example.com/', $text);
+        return html_to_text(format_text($text, $format, $options), 0, false);
     }
 }
 

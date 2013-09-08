@@ -1255,6 +1255,37 @@ abstract class moodleform {
             )
         );
     }
+
+    /**
+     * Used by tests to simulate submitted form data submission from the user.
+     *
+     * For form fields where no data is submitted the default for that field as set by set_data or setDefault will be passed to
+     * get_data.
+     *
+     * This method sets $_POST or $_GET and $_FILES with the data supplied. Our unit test code empties all these
+     * global arrays after each test.
+     *
+     * @param array  $simulatedsubmitteddata       An associative array of form values (same format as $_POST).
+     * @param array  $simulatedsubmittedfiles      An associative array of files uploaded (same format as $_FILES). Can be omitted.
+     * @param string $method                       'post' or 'get', defaults to 'post'.
+     * @param null   $formidentifier               the default is to use the class name for this class but you may need to provide
+     *                                              a different value here for some forms that are used more than once on the
+     *                                              same page.
+     */
+    public static function mock_submit($simulatedsubmitteddata, $simulatedsubmittedfiles = array(), $method = 'post',
+                                       $formidentifier = null) {
+        $_FILES = $simulatedsubmittedfiles;
+        if ($formidentifier === null) {
+            $formidentifier = get_called_class();
+        }
+        $simulatedsubmitteddata['_qf__'.$formidentifier] = 1;
+        $simulatedsubmitteddata['sesskey'] = sesskey();
+        if (strtolower($method) === 'get') {
+            $_GET = $simulatedsubmitteddata;
+        } else {
+            $_POST = $simulatedsubmitteddata;
+        }
+    }
 }
 
 /**
@@ -1950,6 +1981,8 @@ function qf_errorHandler(element, _qfMsg) {
       errorSpan.id = \'id_error_\'+element.name;
       errorSpan.className = "error";
       element.parentNode.insertBefore(errorSpan, element.parentNode.firstChild);
+      document.getElementById(errorSpan.id).setAttribute(\'TabIndex\', \'0\');
+      document.getElementById(errorSpan.id).focus();
     }
 
     while (errorSpan.firstChild) {
@@ -1957,11 +1990,14 @@ function qf_errorHandler(element, _qfMsg) {
     }
 
     errorSpan.appendChild(document.createTextNode(_qfMsg.substring(3)));
-    errorSpan.appendChild(document.createElement("br"));
 
     if (div.className.substr(div.className.length - 6, 6) != " error"
-        && div.className != "error") {
-      div.className += " error";
+      && div.className != "error") {
+        div.className += " error";
+        linebreak = document.createElement("br");
+        linebreak.className = "error";
+        linebreak.id = \'id_error_break_\'+element.name;
+        errorSpan.parentNode.insertBefore(linebreak, errorSpan.nextSibling);
     }
 
     return false;
@@ -1969,6 +2005,10 @@ function qf_errorHandler(element, _qfMsg) {
     var errorSpan = document.getElementById(\'id_error_\'+element.name);
     if (errorSpan) {
       errorSpan.parentNode.removeChild(errorSpan);
+    }
+    var linebreak = document.getElementById(\'id_error_break_\'+element.name);
+    if (linebreak) {
+      linebreak.parentNode.removeChild(linebreak);
     }
 
     if (div.className.substr(div.className.length - 6, 6) == " error") {
@@ -2017,7 +2057,7 @@ function validate_' . $this->_formName . '_' . $escapedElementName . '(element) 
   ret = validate_' . $this->_formName . '_' . $escapedElementName.'(frm.elements[\''.$elementName.'\']) && ret;
   if (!ret && !first_focus) {
     first_focus = true;
-    frm.elements[\''.$elementName.'\'].focus();
+    document.getElementById(\'id_error_'.$elementName.'\').focus();
   }
 ';
 

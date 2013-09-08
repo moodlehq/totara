@@ -241,6 +241,7 @@ a.skip:active {position: static;display: block;}
 .dir-rtl .mform .fitem fieldset.felement {padding-right: 1%;margin-right: 15%;}
 .mform .error,
 .mform .required {color:#A00;}
+.mform span.error {display: inline-block;padding: 4px;margin-bottom: 4px;background-color: #F2DEDE;border: 1px solid #EED3D7;}
 .mform .required .fgroup span label {color:#000;}
 .mform .fdescription.required {color:#A00;text-align:right;}
 .mform .fpassword .unmask {display:inline;margin-left:0.5em;}
@@ -301,6 +302,7 @@ input#id_externalurl {direction:ltr;}
 .groupmanagementtable #potentialcell {width: 42%;}
 .groupmanagementtable #buttonscell {width: 16%;}
 .groupmanagementtable #buttonscell input {width: 80%;}
+.groupmanagementtable #buttonscell p.arrow_button input {width: auto;min-width: 80%;margin: 0 auto;}
 .groupmanagementtable #removeselect_wrapper,
 .groupmanagementtable #addselect_wrapper {width: 100%;}
 .groupmanagementtable #removeselect_wrapper label,
@@ -870,6 +872,7 @@ sup {vertical-align: super;}
 }
 
 .moodle-dialogue-base .moodle-dialogue {
+    outline: #000 dotted 0;
     background: none!important;
     border: 0 none!important;
 }

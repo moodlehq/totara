@@ -176,6 +176,19 @@ function lti_view($instance) {
 
     if (!empty($key) && !empty($secret)) {
         $parms = lti_sign_parameters($requestparams, $endpoint, "POST", $key, $secret);
+
+        $endpointurl = new moodle_url($endpoint);
+        $endpointparams = $endpointurl->params();
+
+        // Strip querystring params in endpoint url from $parms to avoid duplication.
+        if (!empty($endpointparams) && !empty($parms)) {
+            foreach (array_keys($endpointparams) as $paramname) {
+                if (isset($parms[$paramname])) {
+                    unset($parms[$paramname]);
+                }
+            }
+        }
+
     } else {
         //If no key and secret, do the launch unsigned.
         $parms = $requestparams;
@@ -377,13 +390,13 @@ function lti_get_tool_table($tools, $id) {
             $updateurl = clone($baseurl);
             $updateurl->param('action', 'update');
             $updatehtml = $OUTPUT->action_icon($updateurl,
-                    new pix_icon('t/edit', $accept, '', array('class' => 'iconsmall')), null,
+                    new pix_icon('t/edit', $update, '', array('class' => 'iconsmall')), null,
                     array('title' => $update, 'class' => 'editing_update'));
 
             $deleteurl = clone($baseurl);
             $deleteurl->param('action', $deleteaction);
             $deletehtml = $OUTPUT->action_icon($deleteurl,
-                    new pix_icon('t/delete', $accept, '', array('class' => 'iconsmall')), null,
+                    new pix_icon('t/delete', $delete, '', array('class' => 'iconsmall')), null,
                     array('title' => $delete, 'class' => 'editing_delete'));
             $html .= "
             <tr>
@@ -505,7 +518,7 @@ function lti_get_type_config($typeid) {
                 FROM {lti_types_config}
                WHERE typeid = :typeid1
            UNION ALL
-              SELECT 'toolurl' AS name, baseurl AS value
+              SELECT 'toolurl' AS name, " . $DB->sql_compare_text('baseurl', 1333) . " AS value
                 FROM {lti_types}
                WHERE id = :typeid2";
 

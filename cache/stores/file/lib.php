@@ -266,7 +266,7 @@ class cachestore_file extends cache_store implements cache_is_key_aware, cache_i
         $this->definition = $definition;
         $hash = preg_replace('#[^a-zA-Z0-9]+#', '_', $this->definition->get_id());
         $this->path = $this->filestorepath.'/'.$hash;
-        make_writable_directory($this->path);
+        make_writable_directory($this->path, false);
         if ($this->prescan && $definition->get_mode() !== self::MODE_REQUEST) {
             $this->prescan = false;
         }
@@ -314,11 +314,13 @@ class cachestore_file extends cache_store implements cache_is_key_aware, cache_i
             return $this->path . '/' . $key . '.cache';
         } else {
             // We are using a single subdirectory to achieve 1 level.
-            $subdir = substr($key, 0, 3);
+           // We suffix the subdir so it does not clash with any windows
+           // reserved filenames like 'con'.
+            $subdir = substr($key, 0, 3) . '-cache';
             $dir = $this->path . '/' . $subdir;
             if ($create) {
                 // Create the directory. This function does it recursivily!
-                make_writable_directory($dir);
+                make_writable_directory($dir, false);
             }
             return $dir . '/' . $key . '.cache';
         }
@@ -350,23 +352,19 @@ class cachestore_file extends cache_store implements cache_is_key_aware, cache_i
         if (!$readfile) {
             return false;
         }
-        // Check the filesize first, likely not needed but important none the less.
-        $filesize = filesize($file);
-        if (!$filesize) {
-            return false;
-        }
-        // Open ensuring the file for writing, truncating it and setting the pointer to the start.
+        // Open ensuring the file for reading in binary format.
         if (!$handle = fopen($file, 'rb')) {
             return false;
         }
         // Lock it up!
         // We don't care if this succeeds or not, on some systems it will, on some it won't, meah either way.
         flock($handle, LOCK_SH);
-        // HACK ALERT
-        // There is a problem when reading from the file during PHPUNIT tests. For one reason or another the filesize is not correct
-        // Doesn't happen during normal operation, just during unit tests.
-        // Read it.
-        $data = fread($handle, $filesize+128);
+        $data = '';
+        // Read the data in 1Mb chunks. Small caches will not loop more than once.  We don't use filesize as it may
+        // be cached with a different value than what we need to read from the file.
+        do {
+            $data .= fread($handle, 1048576);
+        } while (!feof($handle));
         // Unlock it.
         flock($handle, LOCK_UN);
         // Return it unserialised.
