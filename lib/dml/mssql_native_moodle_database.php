@@ -648,6 +648,7 @@ class mssql_native_moodle_database extends moodle_database {
 
             } else {
                 $param = str_replace("'", "''", $param);
+                $param = str_replace("\0", "", $param);
                 $return .= "N'$param'";
             }
 
@@ -1137,7 +1138,7 @@ class mssql_native_moodle_database extends moodle_database {
         // make some default
         $this->collation = 'Latin1_General_CI_AI';
 
-        $sql = "SELECT CAST(DATABASEPROPERTYEX('$this->dbname', 'Collation') AS nvarchar(255)) AS SQLCollation";
+        $sql = "SELECT CAST(DATABASEPROPERTYEX('$this->dbname', 'Collation') AS varchar(255)) AS SQLCollation";
         $this->query_start($sql, null, SQL_QUERY_AUX);
         $result = mssql_query($sql, $this->mssql);
         $this->query_end($result);
@@ -1227,7 +1228,7 @@ class mssql_native_moodle_database extends moodle_database {
     }
 
     public function sql_order_by_text($fieldname, $numchars=32) {
-        return " CONVERT(nvarchar({$numchars}), {$fieldname})";
+        return " CONVERT(varchar({$numchars}), {$fieldname})";
     }
 
    /**
@@ -1235,31 +1236,6 @@ class mssql_native_moodle_database extends moodle_database {
      */
     public function sql_position($needle, $haystack) {
         return "CHARINDEX(($needle), ($haystack))";
-    }
-
-    /**
-     * Returns the SQL for replacing contents of a column that contains one string with another string.
-     * @param string $column the table column to search
-     * @param string $find the string that will be searched for.
-     * @param string $replace the string $find will be replaced with.
-     * @param int $type bound param type SQL_PARAMS_QM or SQL_PARAMS_NAMED
-     * @param string $prefix named parameter placeholder prefix (unique counter value is appended to each parameter name)
-     * @return array the required $sql and the $params
-     */
-    public function sql_text_replace($column, $find, $replace, $type=SQL_PARAMS_QM, $prefix='param') {
-        // Implementation using standard SQL.
-        $params = array($find, $replace);
-        if ($type == SQL_PARAMS_QM) {
-            $sql = "$column = CAST(REPLACE(CAST($column as nvarchar(max)), ?, ?) as ntext)";
-        } else if ($type == SQL_PARAMS_NAMED) {
-            if (empty($prefix)) {
-                $prefix = 'param';
-            }
-            $param1 = $prefix.$this->replacetextuniqueindex++;
-            $param2 = $prefix.$this->replacetextuniqueindex++;
-            $sql = "$column = CAST(REPLACE(CAST($column as nvarchar(max)), :$param1, :$param2) as ntext)";
-        }
-        return array($sql, $params);
     }
 
     /**

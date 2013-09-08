@@ -2169,11 +2169,17 @@ class page_wiki_confirmrestore extends page_wiki_save {
 
 class page_wiki_prettyview extends page_wiki {
 
-    function print_header() {
-        global $CFG, $PAGE, $OUTPUT;
+    function __construct($wiki, $subwiki, $cm) {
+        global $PAGE;
         $PAGE->set_pagelayout('embedded');
-        echo $OUTPUT->header();
+        parent::__construct($wiki, $subwiki, $cm);
+    }
 
+    function print_header() {
+        global $OUTPUT;
+        $this->set_url();
+
+        echo $OUTPUT->header();
         echo '<h1 id="wiki_printable_title">' . format_string($this->title) . '</h1>';
     }
 
@@ -2196,8 +2202,14 @@ class page_wiki_prettyview extends page_wiki {
 
         $content = wiki_parse_content($version->contentformat, $version->content, array('printable' => true, 'swid' => $this->subwiki->id, 'pageid' => $this->page->id, 'pretty_print' => true));
 
+        $html = $content['parsed_text'];
+        $id = $this->subwiki->wikiid;
+        if ($cm = get_coursemodule_from_instance("wiki", $id)) {
+            $context = context_module::instance($cm->id);
+            $html = file_rewrite_pluginfile_urls($html, 'pluginfile.php', $context->id, 'mod_wiki', 'attachments', $this->subwiki->id);
+        }
         echo '<div id="wiki_printable_content">';
-        echo format_text($content['parsed_text'], FORMAT_HTML);
+        echo format_text($html, FORMAT_HTML);
         echo '</div>';
     }
 }

@@ -26,6 +26,10 @@
 #chooseqtype .qtypename img {
     padding: 0 0.3em;
 }
+#chooseqtype .qtypename {
+    display: inline-table;
+    width: 16em;
+}
 #chooseqtype .qtypesummary {
     display: block;
     margin: 0 2em;
@@ -60,7 +64,7 @@
 }
 //#qtypechoicecontainer
 #chooseqtype {
-    width: 35em;
+    width: 40em;
 }
 #chooseqtypehead h3 {
     margin: 0;
@@ -95,6 +99,7 @@
     margin: 0;
     padding: 1.5em 1.6em;
     background-color: #fff;
+    overflow-y: auto;
 }
 #chooseqtype .instruction,
 #chooseqtype .selected .qtypesummary {
@@ -136,6 +141,12 @@
 #multitriesheader div.fitem_fgroup fieldset.felement label {
     margin-left: 0.3em;
     margin-right: 0.3em;
+}
+body.path-question-type .fitem_fgroup .accesshide {
+    font: inherit;
+    left: 0;
+    position: static;
+    padding-right: .3em;
 }
 .que {
     clear: left;

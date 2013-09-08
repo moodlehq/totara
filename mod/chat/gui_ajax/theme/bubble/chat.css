@@ -12,6 +12,8 @@
 #button-send {margin:0;padding:2px 8px;}
 .mdl-chat-entry,
 .mdl-chat-my-entry {clear:both;position:relative;}
+.dir-rtl .mdl-chat-entry,
+.dir-rtl .mdl-chat-my-entry {height: 90px;}
 
 .chat-message .chat-message-meta {padding-top:15px;}
 .chat-message .picture {display: block; position:absolute;right:0;top:10px;}
@@ -19,6 +21,8 @@
 .chat-message .picture img {display: block;}
 .chat-message .right {text-align:right;}
 .chat-message .left {text-align:left;}
+.dir-rtl .chat-message .right,
+.dir-rtl .chat-message .left  {direction:ltr;}
 
 #chat-input-area,
 #chat-input-area table.generaltable,

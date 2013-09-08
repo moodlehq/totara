@@ -132,8 +132,8 @@ class cachestore_memcache extends cache_store implements cache_is_configurable {
         $this->connection = new Memcache;
         foreach ($this->servers as $server) {
             $this->connection->addServer($server[0], $server[1], true, $server[2]);
-            // Test the connection to this server.
         }
+        // Test the connection to the pool of servers.
         $this->isready = @$this->connection->set($this->parse_key('ping'), 'ping', MEMCACHE_COMPRESSED, 1);
     }
 
@@ -404,7 +404,7 @@ class cachestore_memcache extends cache_store implements cache_is_configurable {
      * Generates an instance of the cache store that can be used for testing.
      *
      * @param cache_definition $definition
-     * @return false
+     * @return cachestore_memcache|false
      */
     public static function initialise_test_instance(cache_definition $definition) {
         if (!self::are_requirements_met()) {

@@ -190,8 +190,9 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
      */
     public function initialise(cache_definition $definition) {
         $this->storeid = $definition->generate_definition_hash();
-        $this->store = &self::register_store_id($definition->get_id());
+        $this->store = &self::register_store_id($this->name.'-'.$definition->get_id());
         $this->ttl = $definition->get_ttl();
+        $this->check_ttl();
     }
 
     /**
@@ -218,12 +219,14 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
      * @return mixed The data that was associated with the key, or false if the key did not exist.
      */
     public function get($key) {
-        $maxtime = cache::now() - $this->ttl;
-        if (array_key_exists($key, $this->store)) {
-            if ($this->ttl == 0) {
-                return $this->store[$key];
-            } else if ($this->store[$key][1] >= $maxtime) {
+        if (isset($this->store[$key])) {
+            if ($this->ttl === 0) {
                 return $this->store[$key][0];
+            } else if ($this->store[$key][1] >= (cache::now() - $this->ttl)) {
+                return $this->store[$key][0];
+            } else {
+                // Element is present but has expired.
+                $this->check_ttl();
             }
         }
         return false;
@@ -240,16 +243,27 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
      */
     public function get_many($keys) {
         $return = array();
-        $maxtime = cache::now() - $this->ttl;
+        $maxtime = 0;
+        if ($this->ttl != 0) {
+            $maxtime = cache::now() - $this->ttl;
+        }
+
+        $hasexpiredelements = false;
         foreach ($keys as $key) {
             $return[$key] = false;
-            if (array_key_exists($key, $this->store)) {
+            if (isset($this->store[$key])) {
                 if ($this->ttl == 0) {
-                    $return[$key] = $this->store[$key];
+                    $return[$key] = $this->store[$key][0];
                 } else if ($this->store[$key][1] >= $maxtime) {
                     $return[$key] = $this->store[$key][0];
+                } else {
+                    $hasexpiredelements = true;
                 }
             }
+        }
+        if ($hasexpiredelements) {
+            // There are some elements that are present but have expired.
+            $this->check_ttl();
         }
         return $return;
     }
@@ -262,8 +276,8 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
      * @return bool True if the operation was a success false otherwise.
      */
     public function set($key, $data) {
-        if ($this->ttl == 0) {
-            $this->store[$key] = $data;
+        if ($this->ttl === 0) {
+            $this->store[$key] = array($data, 0);
         } else {
             $this->store[$key] = array($data, cache::now());
         }
@@ -281,8 +295,14 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
     public function set_many(array $keyvaluearray) {
         $count = 0;
         foreach ($keyvaluearray as $pair) {
-            $this->set($pair['key'], $pair['value']);
+            $key = $pair['key'];
+            $data = $pair['value'];
             $count++;
+            if ($this->ttl === 0) {
+                $this->store[$key] = array($data, 0);
+            } else {
+                $this->store[$key] = array($data, cache::now());
+            }
         }
         return $count;
     }
@@ -294,11 +314,10 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
      * @return bool
      */
     public function has($key) {
-        $maxtime = cache::now() - $this->ttl;
-        if (array_key_exists($key, $this->store)) {
+        if (isset($this->store[$key])) {
             if ($this->ttl == 0) {
                 return true;
-            } else if ($this->store[$key][1] >= $maxtime) {
+            } else if ($this->store[$key][1] >= (cache::now() - $this->ttl)) {
                 return true;
             }
         }
@@ -312,9 +331,13 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
      * @return bool
      */
     public function has_all(array $keys) {
-        $maxtime = cache::now() - $this->ttl;
+        $maxtime = 0;
+        if ($this->ttl != 0) {
+            $maxtime = cache::now() - $this->ttl;
+        }
+
         foreach ($keys as $key) {
-            if (!array_key_exists($key, $this->store)) {
+            if (!isset($this->store[$key])) {
                 return false;
             }
             if ($this->ttl != 0 && $this->store[$key][1] < $maxtime) {
@@ -331,9 +354,13 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
      * @return bool
      */
     public function has_any(array $keys) {
-        $maxtime = cache::now() - $this->ttl;
+        $maxtime = 0;
+        if ($this->ttl != 0) {
+            $maxtime = cache::now() - $this->ttl;
+        }
+
         foreach ($keys as $key) {
-            if (array_key_exists($key, $this->store) && ($this->ttl == 0 || $this->store[$key][1] >= $maxtime)) {
+            if (isset($this->store[$key]) && ($this->ttl == 0 || $this->store[$key][1] >= $maxtime)) {
                 return true;
             }
         }
@@ -347,9 +374,11 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
      * @return bool Returns true if the operation was a success, false otherwise.
      */
     public function delete($key) {
-        $result = isset($this->store[$key]);
+        if (!isset($this->store[$key])) {
+            return false;
+        }
         unset($this->store[$key]);
-        return $result;
+        return true;
     }
 
     /**
@@ -359,6 +388,7 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
      * @return int The number of items successfully deleted.
      */
     public function delete_many(array $keys) {
+        // The number of items that have been successfully deleted.
         $count = 0;
         foreach ($keys as $key) {
             if (isset($this->store[$key])) {
@@ -417,11 +447,36 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
     }
 
     /**
+     * Removes expired elements.
+     * @return int number of removed elements
+     */
+    protected function check_ttl() {
+        if ($this->ttl === 0) {
+            return 0;
+        }
+        $maxtime = cache::now() - $this->ttl;
+        $count = 0;
+        for ($value = reset($this->store); $value !== false; $value = next($this->store)) {
+            if ($value[1] >= $maxtime) {
+                // We know that elements are sorted by ttl so no need to continue.
+                break;
+            }
+            $count++;
+        }
+        if ($count) {
+            // Remove first $count elements as they are expired.
+            $this->store = array_slice($this->store, $count, null, true);
+        }
+        return $count;
+    }
+
+    /**
      * Finds all of the keys being stored in the cache store instance.
      *
      * @return array
      */
     public function find_all() {
+        $this->check_ttl();
         return array_keys($this->store);
     }
 
@@ -429,6 +484,7 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
      * Finds all of the keys whose keys start with the given prefix.
      *
      * @param string $prefix
+     * @return array An array of keys.
      */
     public function find_by_prefix($prefix) {
         $return = array();
@@ -438,5 +494,13 @@ class cachestore_session extends session_data_store implements cache_is_key_awar
             }
         }
         return $return;
+    }
+
+    /**
+     * This store supports native TTL handling.
+     * @return bool
+     */
+    public function store_supports_native_ttl() {
+        return true;
     }
 }

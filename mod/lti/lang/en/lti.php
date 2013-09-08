@@ -216,15 +216,15 @@ real estate to the tool, and others provide a more integrated feel with the Mood
         It is possible that browsers will prevent the new window from opening.';
 $string['launchoptions'] = 'Launch Options';
 $string['lti'] = 'LTI';
-$string['lti:addinstance'] = 'Add a new LTI activity';
-$string['lti:addcoursetool'] = 'Grade LTI activities';
-$string['lti:grade'] = 'Grade LTI activities';
-$string['lti:manage'] = 'Edit LTI activities';
-$string['lti:requesttooladd'] = 'Submit a tool to admins for configuration';
-$string['lti:view'] = 'View LTI activities';
+$string['lti:addinstance'] = 'Add new external tool activities';
+$string['lti:addcoursetool'] = 'Add course-specific tool configurations';
+$string['lti:grade'] = 'View grades returned by the external tool';
+$string['lti:manage'] = 'Be an Instructor when the tool is launched';
+$string['lti:requesttooladd'] = 'Request a tool is configured site-wide';
+$string['lti:view'] = 'Launch external tool activities';
 $string['lti_administration'] = 'LTI Administration';
 $string['lti_errormsg'] = 'The tool returned the following error message: "{$a}"';
-$string['lti_launch_error'] = 'An error occured when launching the external tool: ';
+$string['lti_launch_error'] = 'An error occurred when launching the external tool:';
 $string['lti_launch_error_tool_request'] = '<p>
 To submit a request for an administrator to complete the tool configuration, click <a href="{$a->admin_request_url}" target="_top">here</a>.
 </p>';

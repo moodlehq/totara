@@ -670,7 +670,6 @@ class core_course_renderer extends plugin_renderer_base {
 
         //Accessibility: for files get description via icon, this is very ugly hack!
         $instancename = $mod->get_formatted_name();
-        $altname = '';
         $altname = $mod->modfullname;
         // Avoid unnecessary duplication: if e.g. a forum name already
         // includes the word forum (or Forum, etc) then it is unhelpful
@@ -706,7 +705,7 @@ class core_course_renderer extends plugin_renderer_base {
             }
             if ($mod->uservisible) {
                 // show accessibility note only if user can access the module himself
-                $accesstext = get_accesshide(get_string('hiddenfromstudents').': ');
+                $accesstext = get_accesshide(get_string('hiddenfromstudents').':'. $mod->modfullname);
             }
         }
 
@@ -723,7 +722,7 @@ class core_course_renderer extends plugin_renderer_base {
 
         // Display link itself.
         $activitylink = html_writer::empty_tag('img', array('src' => $mod->get_icon_url(),
-                'class' => 'iconlarge activityicon', 'alt' => $mod->modfullname)) . $accesstext .
+                'class' => 'iconlarge activityicon', 'alt' => ' ', 'role' => 'presentation')) . $accesstext .
                 html_writer::tag('span', $instancename . $altname, array('class' => 'instancename'));
         if ($mod->uservisible) {
             $output .= html_writer::link($url, $activitylink, array('class' => $linkclasses, 'onclick' => $onclick)) .
@@ -752,11 +751,20 @@ class core_course_renderer extends plugin_renderer_base {
             return $output;
         }
         $content = $mod->get_formatted_content(array('overflowdiv' => true, 'noclean' => true));
-        $conditionalhidden = $this->is_cm_conditionally_hidden($mod);
-        $accessiblebutdim = !$mod->visible || $conditionalhidden;
+        if ($this->page->user_is_editing()) {
+            // In editing mode, when an item is conditionally hidden from some users
+            // we show it as greyed out.
+            $conditionalhidden = $this->is_cm_conditionally_hidden($mod);
+            $dim = !$mod->visible || $conditionalhidden;
+        } else {
+            // When not in editing mode, we only show item as hidden if it is
+            // actually not available to the user
+            $conditionalhidden = false;
+            $dim = !$mod->uservisible;
+        }
         $textclasses = '';
         $accesstext = '';
-        if ($accessiblebutdim) {
+        if ($dim) {
             $textclasses .= ' dimmed_text';
             if ($conditionalhidden) {
                 $textclasses .= ' conditionalhidden';

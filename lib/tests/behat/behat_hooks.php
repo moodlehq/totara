@@ -60,6 +60,11 @@ class behat_hooks extends behat_base {
     protected static $lastbrowsersessionstart = 0;
 
     /**
+     * @var For actions that should only run once.
+     */
+    protected static $initprocessesfinished = false;
+
+    /**
      * Gives access to moodle codebase, ensures all is ready and sets up the test lock.
      *
      * Includes config.php to use moodle codebase with $CFG->behat_*
@@ -84,6 +89,7 @@ class behat_hooks extends behat_base {
 
         // Now that we are MOODLE_INTERNAL.
         require_once(__DIR__ . '/../../behat/classes/behat_command.php');
+        require_once(__DIR__ . '/../../behat/classes/behat_selectors.php');
         require_once(__DIR__ . '/../../behat/classes/util.php');
         require_once(__DIR__ . '/../../testing/classes/test_lock.php');
         require_once(__DIR__ . '/../../testing/classes/nasty_strings.php');
@@ -133,6 +139,11 @@ class behat_hooks extends behat_base {
             throw new coding_exception('Behat only can modify the test database and the test dataroot!');
         }
 
+        // We need the Mink session to do it and we do it only before the first scenario.
+        if (self::is_first_scenario()) {
+            behat_selectors::register_moodle_selectors($this->getSession());
+        }
+
         // Avoid some notices / warnings.
         $SESSION = new stdClass();
 
@@ -160,6 +171,15 @@ class behat_hooks extends behat_base {
 
         // Start always in the the homepage.
         $this->getSession()->visit($this->locate_path('/'));
+
+        // Checking that the root path is a Moodle test site.
+        if (self::is_first_scenario()) {
+            $notestsiteexception = new Exception('The base URL (' . $CFG->wwwroot . ') is not a behat test site, ' .
+                'ensure you started the built-in web server in the correct directory');
+            $this->find("xpath", "//head/child::title[normalize-space(.)='Acceptance test site']", $notestsiteexception);
+
+            self::$initprocessesfinished = true;
+        }
 
         // Closing JS dialogs if present. Otherwise they would block this scenario execution.
         if ($this->running_javascript()) {
@@ -244,7 +264,26 @@ class behat_hooks extends behat_base {
         try {
 
             // Exceptions.
-            if ($errormsg = $this->getSession()->getPage()->find('css', '.errorbox p.errormessage')) {
+            $exceptionsxpath = "//*[contains(concat(' ', normalize-space(@class), ' '), ' errorbox ')]" .
+                "/descendant::p[contains(concat(' ', normalize-space(@class), ' '), ' errormessage ')]";
+            // Debugging messages.
+            $debuggingxpath = "//*[contains(concat(' ', normalize-space(@class), ' '), ' debuggingmessage ')]";
+            // PHP debug messages.
+            $phperrorxpath = "//*[contains(concat(' ', normalize-space(@class), ' '), ' phpdebugmessage ')]";
+            // Any other backtrace.
+            $othersxpath = "(//*[contains(., ': call to ')])[1]";
+
+            $xpaths = array($exceptionsxpath, $debuggingxpath, $phperrorxpath, $othersxpath);
+            $joinedxpath = implode(' | ', $xpaths);
+
+            // Joined xpath expression. Most of the time there will be no exceptions, so this pre-check
+            // is faster than to send the 4 xpath queries for each step.
+            if (!$this->getSession()->getDriver()->find($joinedxpath)) {
+                return;
+            }
+
+            // Exceptions.
+            if ($errormsg = $this->getSession()->getPage()->find('xpath', $exceptionsxpath)) {
 
                 // Getting the debugging info and the backtrace.
                 $errorinfoboxes = $this->getSession()->getPage()->findAll('css', 'div.notifytiny');
@@ -256,7 +295,7 @@ class behat_hooks extends behat_base {
             }
 
             // Debugging messages.
-            if ($debuggingmessages = $this->getSession()->getPage()->findAll('css', '.debuggingmessage')) {
+            if ($debuggingmessages = $this->getSession()->getPage()->findAll('xpath', $debuggingxpath)) {
                 $msgs = array();
                 foreach ($debuggingmessages as $debuggingmessage) {
                     $msgs[] = $this->get_debug_text($debuggingmessage->getHtml());
@@ -266,7 +305,7 @@ class behat_hooks extends behat_base {
             }
 
             // PHP debug messages.
-            if ($phpmessages = $this->getSession()->getPage()->findAll('css', '.phpdebugmessage')) {
+            if ($phpmessages = $this->getSession()->getPage()->findAll('xpath', $phperrorxpath)) {
 
                 $msgs = array();
                 foreach ($phpmessages as $phpmessage) {
@@ -279,7 +318,7 @@ class behat_hooks extends behat_base {
             // Any other backtrace.
             // First looking through xpath as it is faster than get and parse the whole page contents,
             // we get the contents and look for matches once we found something to suspect that there is a backtrace.
-            if ($this->getSession()->getDriver()->find("(//html/descendant::*[contains(., ': call to ')])[1]")) {
+            if ($this->getSession()->getDriver()->find($othersxpath)) {
                 $backtracespattern = '/(line [0-9]* of [^:]*: call to [\->&;:a-zA-Z_\x7f-\xff][\->&;:a-zA-Z0-9_\x7f-\xff]*)/';
                 if (preg_match_all($backtracespattern, $this->getSession()->getPage()->getContent(), $backtraces)) {
                     $msgs = array();
@@ -316,4 +355,12 @@ class behat_hooks extends behat_base {
         return preg_replace("/(\n)+/s", "\n", $notags);
     }
 
+    /**
+     * Returns whether the first scenario of the suite is running
+     *
+     * @return bool
+     */
+    protected static function is_first_scenario() {
+        return !(self::$initprocessesfinished);
+    }
 }

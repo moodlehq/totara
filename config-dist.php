@@ -111,9 +111,11 @@ $CFG->directorypermissions = 02777;
 //=========================================================================
 // A very few webhosts use /admin as a special URL for you to access a
 // control panel or something.  Unfortunately this conflicts with the
-// standard location for the Moodle admin pages.  You can fix this by
-// renaming the admin directory in your installation, and putting that
-// new name here.  eg "moodleadmin".  This will fix admin links in Moodle.
+// standard location for the Moodle admin pages.  You can work around this
+// by renaming the admin directory in your installation, and putting that
+// new name here.  eg "moodleadmin".  This should fix all admin links in Moodle.
+// After any change you need to visit your new admin directory
+// and purge all caches.
 
 $CFG->admin = 'admin';
 
@@ -478,10 +480,10 @@ $CFG->admin = 'admin';
 // $CFG->debugusers = '2';
 //
 // Prevent theme caching
-// $CFG->themerev = -1; // NOT FOR PRODUCTION SERVERS!
+// $CFG->themedesignermode = true; // NOT FOR PRODUCTION SERVERS!
 //
 // Prevent JS caching
-// $CFG->jsrev = -1; // NOT FOR PRODUCTION SERVERS!
+// $CFG->cachejs = false; // NOT FOR PRODUCTION SERVERS!
 //
 // Prevent core_string_manager on-disk cache
 // $CFG->langstringcache = false; // NOT FOR PRODUCTION SERVERS!

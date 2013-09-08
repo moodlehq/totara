@@ -1152,8 +1152,8 @@ function print_badge_image(badge $badge, stdClass $context, $size = 'small') {
     $fsize = ($size == 'small') ? 'f2' : 'f1';
 
     $imageurl = moodle_url::make_pluginfile_url($context->id, 'badges', 'badgeimage', $badge->id, '/', $fsize, false);
-    $imageurl->param('refresh', rand(1, 10000));
     // Appending a random parameter to image link to forse browser reload the image.
+    $imageurl->param('refresh', rand(1, 10000));
     $attributes = array('src' => $imageurl, 'alt' => s($badge->name), 'class' => 'activatebadge');
 
     return html_writer::empty_tag('img', $attributes);
@@ -1214,13 +1214,25 @@ function badges_bake($hash, $badgeid, $userid = 0, $pathhash = false) {
 /**
  * Returns external backpack settings and badges from this backpack.
  *
+ * This function first checks if badges for the user are cached and
+ * tries to retrieve them from the cache. Otherwise, badges are obtained
+ * through curl request to the backpack.
+ *
  * @param int $userid Backpack user ID.
+ * @param boolean $refresh Refresh badges collection in cache.
  * @return null|object Returns null is there is no backpack or object with backpack settings.
  */
-function get_backpack_settings($userid) {
+function get_backpack_settings($userid, $refresh = false) {
     global $DB;
     require_once(dirname(dirname(__FILE__)) . '/badges/lib/backpacklib.php');
 
+    // Try to get badges from cache first.
+    $badgescache = cache::make('core', 'externalbadges');
+    $out = $badgescache->get($userid);
+    if ($out !== false && !$refresh) {
+        return $out;
+    }
+    // Get badges through curl request to the backpack.
     $record = $DB->get_record('badge_backpack', array('userid' => $userid));
     if ($record) {
         $backpack = new OpenBadgesBackpackHandler($record);
@@ -1245,6 +1257,7 @@ function get_backpack_settings($userid) {
             $out->totalcollections = 0;
         }
 
+        $badgescache->set($userid, $out);
         return $out;
     }
 
