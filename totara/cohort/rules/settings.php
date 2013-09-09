@@ -36,6 +36,10 @@ require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/manager.php');
 require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/cohortmember.php');
 require_once($CFG->dirroot . '/totara/cohort/rules/option.php');
 
+/* Constants to identify if the rule comes from a menu or a text input */
+define('COHORT_RULES_TYPE_MENU', 1);
+define('COHORT_RULES_TYPE_TEXT', 0);
+
 /**
  * Get the list of defined cohort rules
  */
@@ -54,7 +58,7 @@ function cohort_rules_list(){
                 get_string('ruledesc-user-idnumber', 'totara_cohort'),
                 get_string('rulehelp-user-idnumber', 'totara_cohort')
             ),
-            new cohort_rule_sqlhandler_in_userfield_char('idnumber')
+            new cohort_rule_sqlhandler_in_userfield_char('idnumber', COHORT_RULES_TYPE_TEXT)
         );
         // User's username
         $rules[] = new cohort_rule_option(
@@ -64,7 +68,7 @@ function cohort_rules_list(){
                 get_string('ruledesc-user-username', 'totara_cohort'),
                 get_string('rulehelp-user-username', 'totara_cohort')
             ),
-            new cohort_rule_sqlhandler_in_userfield_char('username')
+            new cohort_rule_sqlhandler_in_userfield_char('username', COHORT_RULES_TYPE_TEXT)
         );
         // User's email address
         $rules[] = new cohort_rule_option(
@@ -74,7 +78,7 @@ function cohort_rules_list(){
                 get_string('ruledesc-user-email', 'totara_cohort'),
                 get_string('rulehelp-user-email', 'totara_cohort')
             ),
-            new cohort_rule_sqlhandler_in_userfield_char('email')
+            new cohort_rule_sqlhandler_in_userfield_char('email', COHORT_RULES_TYPE_TEXT)
         );
         // User's lang preference
         $rules[] = new cohort_rule_option(
@@ -84,7 +88,7 @@ function cohort_rules_list(){
                 get_string('ruledesc-user-lang', 'totara_cohort'),
                 get_string_manager()->get_list_of_translations()
             ),
-            new cohort_rule_sqlhandler_in_userfield_char('lang')
+            new cohort_rule_sqlhandler_in_userfield_char('lang', COHORT_RULES_TYPE_MENU)
         );
         // User's First Name
         $rules[] = new cohort_rule_option(
@@ -94,7 +98,7 @@ function cohort_rules_list(){
                 get_string('ruledesc-user-firstname', 'totara_cohort'),
                 get_string('separatemultiplebycommas', 'totara_cohort')
             ),
-            new cohort_rule_sqlhandler_in_userfield_char('firstname')
+            new cohort_rule_sqlhandler_in_userfield_char('firstname', COHORT_RULES_TYPE_TEXT)
         );
         // User's last name
         $rules[] = new cohort_rule_option(
@@ -104,7 +108,7 @@ function cohort_rules_list(){
                 get_string('ruledesc-user-lastname', 'totara_cohort'),
                 get_string('separatemultiplebycommas', 'totara_cohort')
             ),
-            new cohort_rule_sqlhandler_in_userfield_char('lastname')
+            new cohort_rule_sqlhandler_in_userfield_char('lastname', COHORT_RULES_TYPE_TEXT)
         );
         // User's city
         $rules[] = new cohort_rule_option(
@@ -114,7 +118,7 @@ function cohort_rules_list(){
                 get_string('ruledesc-user-city', 'totara_cohort'),
                 get_string('separatemultiplebycommas', 'totara_cohort')
             ),
-            new cohort_rule_sqlhandler_in_userfield_char('city')
+            new cohort_rule_sqlhandler_in_userfield_char('city', COHORT_RULES_TYPE_TEXT)
         );
         // User's country
         $rules[] = new cohort_rule_option(
@@ -124,7 +128,7 @@ function cohort_rules_list(){
                 get_string('ruledesc-user-country', 'totara_cohort'),
                 get_string_manager()->get_list_of_countries()
             ),
-            new cohort_rule_sqlhandler_in_userfield_char('country')
+            new cohort_rule_sqlhandler_in_userfield_char('country', COHORT_RULES_TYPE_MENU)
         );
         // User's institution
         $rules[] = new cohort_rule_option(
@@ -134,7 +138,7 @@ function cohort_rules_list(){
                 get_string('ruledesc-user-institution', 'totara_cohort'),
                 get_string('separatemultiplebycommas', 'totara_cohort')
             ),
-            new cohort_rule_sqlhandler_in_userfield_char('institution')
+            new cohort_rule_sqlhandler_in_userfield_char('institution', COHORT_RULES_TYPE_TEXT)
         );
         // User's department
         $rules[] = new cohort_rule_option(
@@ -144,7 +148,7 @@ function cohort_rules_list(){
                 get_string('ruledesc-user-department', 'totara_cohort'),
                 get_string('separatemultiplebycommas', 'totara_cohort')
             ),
-            new cohort_rule_sqlhandler_in_userfield_char('department')
+            new cohort_rule_sqlhandler_in_userfield_char('department', COHORT_RULES_TYPE_TEXT)
         );
         // User custom fields
         $usercustomfields = $DB->get_records_sql(
