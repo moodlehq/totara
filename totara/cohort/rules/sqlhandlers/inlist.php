@@ -130,17 +130,27 @@ abstract class cohort_rule_sqlhandler_in extends cohort_rule_sqlhandler {
  */
 class cohort_rule_sqlhandler_in_userfield extends cohort_rule_sqlhandler_in {
     protected function construct_sql_snippet($field, $not, $lov) {
-        global $DB;
+        global $DB, $CFG;
+        require_once($CFG->dirroot.'/totara/cohort/rules/settings.php');
 
-        $query = "u.{$field}";
-        $sqlhandler = $this->get_query_base_operator($this->equal, $query, $lov);
-
+        if ($this->fielddatatype === COHORT_RULES_TYPE_MENU) {
+            $sqlhandler = new stdClass();
+            list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'iu'.$this->ruleid, ($not != 'not'));
+            $sqlhandler->sql = "u.{$field} {$sqlin}";
+            $sqlhandler->params = $params;
+        } else {
+            $query = "u.{$field}";
+            $sqlhandler = $this->get_query_base_operator($this->equal, $query, $lov);
+        }
         return $sqlhandler;
     }
 }
 
 class cohort_rule_sqlhandler_in_userfield_char extends cohort_rule_sqlhandler_in_userfield {
-    public function __construct($field) {
+    protected $fielddatatype;
+
+    public function __construct($field, $datatype) {
+        $this->fielddatatype = $datatype;
         parent::__construct($field, true);
     }
 }
