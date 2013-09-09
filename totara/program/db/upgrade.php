@@ -138,7 +138,8 @@ function xmldb_totara_program_upgrade($oldversion) {
         // Clean up exceptions where users are no longer assigned.
         $exceptionids = $DB->get_fieldset_sql("SELECT e.id
                                       FROM {prog_exception} e
-                                      LEFT JOIN {prog_user_assignment} ua ON e.assignmentid = ua.id
+                                      LEFT JOIN {prog_assignment} a ON e.assignmentid = a.id
+                                      LEFT JOIN {prog_user_assignment} ua ON ua.assignmentid = a.id AND e.userid = ua.userid
                                       WHERE ua.id IS NULL");
         if (!empty($exceptionids)) {
             list($insql, $inparams) = $DB->get_in_or_equal($exceptionids);
@@ -148,6 +149,24 @@ function xmldb_totara_program_upgrade($oldversion) {
                          ", $inparams);
         }
         totara_upgrade_mod_savepoint(true, 2012081503, 'totara_program');
+    }
+
+    // Looks like the previous update block is missing a step, fix it and add a new one.
+    if ($oldversion < 2013090900) {
+        // Clean up exceptions where users are no longer assigned.
+        $exceptionids = $DB->get_fieldset_sql("SELECT e.id
+                                      FROM {prog_exception} e
+                                      LEFT JOIN {prog_assignment} a ON e.assignmentid = a.id
+                                      LEFT JOIN {prog_user_assignment} ua ON ua.assignmentid = a.id AND e.userid = ua.userid
+                                      WHERE ua.id IS NULL");
+        if (!empty($exceptionids)) {
+            list($insql, $inparams) = $DB->get_in_or_equal($exceptionids);
+            $DB->execute("DELETE
+                          FROM {prog_exception}
+                          WHERE id {$insql}
+                         ", $inparams);
+        }
+        totara_upgrade_mod_savepoint(true, 2013090900, 'totara_program');
     }
     return true;
 }
