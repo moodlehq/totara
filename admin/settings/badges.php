@@ -32,6 +32,7 @@ if ($hassiteconfig || has_any_capability(array(
             'moodle/badges:createbadge',
             'moodle/badges:manageglobalsettings',
             'moodle/badges:awardbadge',
+            'moodle/badges:configurecriteria',
             'moodle/badges:configuremessages',
             'moodle/badges:configuredetails',
             'moodle/badges:deletebadge'), $systemcontext)) {
@@ -70,7 +71,16 @@ if ($hassiteconfig || has_any_capability(array(
         new admin_externalpage('managebadges',
             new lang_string('managebadges', 'badges'),
             new moodle_url('/badges/index.php', array('type' => BADGE_TYPE_SITE)),
-            array('moodle/badges:viewawarded'), empty($CFG->enablebadges)
+            array(
+                'moodle/badges:viewawarded',
+                'moodle/badges:createbadge',
+                'moodle/badges:awardbadge',
+                'moodle/badges:configurecriteria',
+                'moodle/badges:configuremessages',
+                'moodle/badges:configuredetails',
+                'moodle/badges:deletebadge'
+            ),
+            empty($CFG->enablebadges)
         )
     );
 
