@@ -79,16 +79,24 @@ function send_registration_data($data) {
     $options = array(
             'FOLLOWLOCATION' => true,
             'RETURNTRANSFER' => true, // RETURN THE CONTENTS OF THE CALL
+            'SSL_VERIFYPEER' => true,
+            'SSL_VERIFYHOST' => 2,
             'HEADER' => 0 // DO NOT RETURN HTTP HEADERS
     );
 
+    // Send registration data directly via curl.
     $recdata = $ch->post('https://register.totaralms.com/register/report.php', $data, $options);
-    if ($recdata === false) {
-        $recdata = send_registration_data_email($data);
+    if ($recdata === '') {
+        set_config('registered', time());
+        return;
     }
-    if ($recdata !== false) {
+
+    // Fall back to email notification.
+    $recdata = send_registration_data_email($data);
+    if ($recdata === true) {
         set_config('registered', time());
     }
+
 }
 
 /**
@@ -133,12 +141,12 @@ function send_registration_data_email($data) {
 function registration_cron() {
     global $CFG;
     $registrationdue = $oktotry = false;
-    if (empty($CFG->registered) || $CFG->registered < (time() - 60 * 60 * 24 * 30)) {
-        // Register up to once a month
+    if (empty($CFG->registered) || $CFG->registered < (time() - 7 * 60 * 60 * 24)) {
+        // Register up to once a week.
         $registrationdue = true;
     }
-    if (empty($CFG->registrationattempted) || $CFG->registrationattempted < (time() - 60 * 60 * 24 * 7)) {
-        // Try registering once a week if unsuccessful
+    if (empty($CFG->registrationattempted) || $CFG->registrationattempted < (time() - 60 * 60 * 24)) {
+        // Try registering daily if unsuccessful.
         $oktotry = true;
     }
     if ($registrationdue && $oktotry) {
