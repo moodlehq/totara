@@ -68,7 +68,7 @@ class plan_reactivate_form extends moodleform {
             $mform->addElement('text', 'enddate', get_string('completiondate', 'totara_plan'));
             $mform->setType('enddate', PARAM_TEXT);
             $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
-            $mform->setDefault('enddate', userdate(time(), get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false));
+            $mform->setDefault('enddate', userdate(time(), get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false));
         }
 
         $this->add_action_buttons(true, get_string('reactivate', 'totara_plan'));

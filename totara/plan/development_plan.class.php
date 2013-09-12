@@ -582,7 +582,7 @@ class development_plan {
         $history = $this->get_history('id DESC');
         $latestmodification = reset($history);
 
-        return ($latestmodification->status != DP_PLAN_STATUS_COMPLETE) ? get_string('notcompleted', 'totara_plan') : userdate($latestmodification->timemodified, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
+        return ($latestmodification->status != DP_PLAN_STATUS_COMPLETE) ? get_string('notcompleted', 'totara_plan') : userdate($latestmodification->timemodified, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false);
     }
 
 

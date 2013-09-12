@@ -216,8 +216,8 @@ $exceptions = $program->get_exception_count();
 require('tabs.php');
 
 // Program details
-$program->availablefromselector = $program->availablefrom > 0 ? userdate($program->availablefrom, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) : '';
-$program->availableuntilselector = $program->availableuntil > 0 ? userdate($program->availableuntil, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) : '';
+$program->availablefromselector = $program->availablefrom > 0 ? userdate($program->availablefrom, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false) : '';
+$program->availableuntilselector = $program->availableuntil > 0 ? userdate($program->availableuntil, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false) : '';
 
 $detailsform->set_data($program);
 $detailsform->display();

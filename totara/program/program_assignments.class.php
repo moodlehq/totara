@@ -592,7 +592,7 @@ abstract class prog_assignment_category {
                 // Completiontime must be a timestamp
                 if ($item->completiontime != COMPLETION_TIME_NOT_SET) {
                     // Print a date
-                    $item->completiontime = trim( userdate($item->completiontime, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) );
+                    $item->completiontime = trim( userdate($item->completiontime, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false) );
                     $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
                     $show_deletecompletionlink = true;
                 }

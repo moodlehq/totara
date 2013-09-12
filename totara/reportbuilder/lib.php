@@ -4653,7 +4653,7 @@ function create_attachment($reportid, $format, $userid, $exporttofilesystem, $si
  */
 function get_directory($report, $userid) {
     global $DB;
-    $reportfilename = format_string($report->fullname) . userdate(time(), get_string('strftimedatefullshort', 'langconfig'));
+    $reportfilename = format_string($report->fullname) . userdate(time(), get_string('strftimedatefull', 'langconfig'));
     $reportfilename = clean_param($reportfilename, PARAM_FILE);
     $username = $DB->get_field('user', 'username', array('id' => $userid));
 

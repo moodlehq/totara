@@ -41,6 +41,7 @@ $string['strfdateshortmonth'] = '%d %b %Y';
 $string['strftimeshort'] = '%H:%M';
 $string['strfdateattime'] = '%d %b %Y at %H:%M';
 $string['strftimedate'] = '%d %B %Y';
+$string['strftimedatefull'] = '%d/%m/%Y';
 $string['strftimedatefullshort'] = '%d/%m/%y';
 $string['strftimedateshort'] = '%d %B';
 $string['strftimedatetime'] = '%d %B %Y, %I:%M %p';
