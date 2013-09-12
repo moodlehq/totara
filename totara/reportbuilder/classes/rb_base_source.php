@@ -1394,6 +1394,16 @@ abstract class rb_base_source {
                 'displayfunc' => 'deleted_status'
             )
         );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'timecreated',
+            get_string('usertimecreated', 'totara_reportbuilder'),
+            "$join.timecreated",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'nice_datetime'
+            )
+        );
 
         return true;
     }
@@ -1472,6 +1482,16 @@ abstract class rb_base_source {
             'user',
             'firstaccess',
             get_string('userfirstaccess', 'totara_reportbuilder'),
+            'date',
+            array(
+                'includetime' => true
+            )
+        );
+
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'timecreated',
+            get_string('usertimecreated', 'totara_reportbuilder'),
             'date',
             array(
                 'includetime' => true

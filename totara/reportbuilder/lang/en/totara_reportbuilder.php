@@ -479,6 +479,7 @@ $string['usercity'] = 'User\'s City';
 $string['usercountry'] = 'User\'s Country';
 $string['userid'] = 'User ID';
 $string['userstatus'] = 'User Status';
+$string['usertimecreated'] = 'User Creation Time';
 
 // add positions
 $string['usersorgid'] = 'User\'s Organisation ID';
