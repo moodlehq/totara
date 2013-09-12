@@ -139,7 +139,7 @@ function display_evidence_detail($evidenceid, $delete = false) {
         $out .=  html_writer::tag('p', get_string('evidenceinstitution', 'totara_plan') . ' : ' . $item->institution);
     }
     if (!empty($item->datecompleted)) {
-        $out .=  html_writer::tag('p', get_string('evidencedatecompleted', 'totara_plan') . ' : ' . userdate($item->datecompleted, get_string('strftimedatefullshort', 'langconfig')));
+        $out .=  html_writer::tag('p', get_string('evidencedatecompleted', 'totara_plan') . ' : ' . userdate($item->datecompleted, get_string('strftimedatefull', 'langconfig')));
     }
     if (!empty($item->evidencelink)) {
         $evidencelink = $OUTPUT->action_link(new moodle_url($item->evidencelink), $item->evidencelink);

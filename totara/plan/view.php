@@ -150,7 +150,7 @@ add_to_log(SITEID, 'plan', 'view', "view.php?id={$plan->id}", $plan->name);
 if ($plan->timecompleted) {
     $plan->enddate = userdate($plan->timecompleted, get_string('strftimedate', 'langconfig'), $CFG->timezone, false);
 } else {
-    $plan->enddate = userdate($plan->enddate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
+    $plan->enddate = userdate($plan->enddate, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false);
 }
 $form->set_data($plan);
 $form->display();

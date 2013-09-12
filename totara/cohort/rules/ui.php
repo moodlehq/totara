@@ -677,7 +677,7 @@ class cohort_rule_ui_date extends cohort_rule_ui_form {
                 $formdata['beforeaftermenu'] = $this->operator;
                 if (!empty($this->date)) {
                     // todo: make this configurable!
-                    $formdata['beforeafterdate'] = userdate($this->date, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
+                    $formdata['beforeafterdate'] = userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false);
                 }
             } else if (
                     in_array(
@@ -789,7 +789,7 @@ JS;
         switch ($this->operator) {
             case COHORT_RULE_DATE_OP_BEFORE_FIXED_DATE:
             case COHORT_RULE_DATE_OP_AFTER_FIXED_DATE:
-                $a = userdate($this->date, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
+                $a = userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false);
                 break;
             case COHORT_RULE_DATE_OP_BEFORE_PAST_DURATION:
             case COHORT_RULE_DATE_OP_WITHIN_PAST_DURATION:
@@ -1342,7 +1342,7 @@ class cohort_rule_ui_picker_course_date extends cohort_rule_ui_picker_course {
             array('id' => 'id_operator', 'class' => 'cohorttreeviewsubmitfield'));
         $html .= '<fieldset><input class="cohorttreeviewsubmitfield" size="10" name="date" id="completiondate" value="';
         if (isset($this->date)) {
-            $html .= htmlspecialchars(userdate($this->date, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false));
+            $html .= htmlspecialchars(userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false));
         } else {
             $html .= get_string('datepickerplaceholder', 'totara_core');
         }
@@ -1429,7 +1429,7 @@ JS;
         $ret = get_string(
             $descstr,
             'totara_cohort',
-            userdate($this->date, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false)
+            userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false)
         );
 
         list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofids);
@@ -1766,7 +1766,7 @@ class cohort_rule_ui_picker_program_date extends cohort_rule_ui_picker_program {
             array('id' => 'id_operator', 'class' => 'cohorttreeviewsubmitfield'));
         $html .= '<fieldset><input class="cohorttreeviewsubmitfield" size="10" name="date" id="completiondate" value="';
         if (isset($this->date)) {
-            $html .= htmlspecialchars(userdate($this->date, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false));
+            $html .= htmlspecialchars(userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false));
         } else {
             $html .= get_string('datepickerplaceholder', 'totara_core');
         }
@@ -1853,7 +1853,7 @@ JS;
         $ret = get_string(
             $getstr,
             'totara_cohort',
-            userdate($this->date, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false)
+            userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false)
         );
 
         list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofids);

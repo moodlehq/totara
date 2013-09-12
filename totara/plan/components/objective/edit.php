@@ -115,7 +115,7 @@ $objective = file_prepare_standard_editor($objective, 'description', $TEXTAREA_O
                                           'totara_plan', 'dp_plan_objective', $objective->itemid);
 $mform = $component->objective_form($objectiveid);
 if (isset($objective->duedate)) {
-    $objective->duedate = userdate($objective->duedate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
+    $objective->duedate = userdate($objective->duedate, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false);
 }
 $mform->set_data($objective);
 
