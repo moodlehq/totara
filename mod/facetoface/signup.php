@@ -54,8 +54,9 @@ if (isguestuser()) {
 }
 
 $manageremail = false;
-if (get_config(NULL, 'facetoface_addchangemanageremail')) {
-    $manageremail = facetoface_get_manageremail($USER->id);
+$manager = totara_get_manager($USER->id);
+if (get_config(NULL, 'facetoface_addchangemanageremail') && !empty($manager)) {
+    $manageremail = $manager->email;
 }
 
 $showdiscountcode = ($session->discountcost > 0);
@@ -80,7 +81,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
         print_error('sessionisfull', 'facetoface', $returnurl);
     } else if (facetoface_get_user_submissions($facetoface->id, $USER->id)) {
         print_error('alreadysignedup', 'facetoface', $returnurl);
-    } else if (facetoface_manager_needed($facetoface) && !facetoface_get_manageremail($USER->id)) {
+    } else if (facetoface_manager_needed($facetoface) && empty($manager->email)) {
         print_error('error:manageremailaddressmissing', 'facetoface', $returnurl);
     }
 
@@ -114,7 +115,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
     }
 
     redirect($returnurl);
-} else if ($manageremail !== false) {
+} else if (!empty($manageremail)) {
     // Set values for the form
     $toform = new stdClass();
     $toform->manageremail = $manageremail;
@@ -172,7 +173,7 @@ if ($signedup) {
     echo html_writer::empty_tag('br') . html_writer::link($returnurl, get_string('goback', 'facetoface'), array('title' => get_string('goback', 'facetoface')));
 }
 // Don't allow signup to proceed if a manager is required
-else if (facetoface_manager_needed($facetoface) && !facetoface_get_manageremail($USER->id)) {
+else if (facetoface_manager_needed($facetoface) && empty($manager->email)) {
     // Check to see if the user has a managers email set
     echo html_writer::tag('p', html_writer::tag('strong', get_string('error:manageremailaddressmissing', 'facetoface')));
     echo html_writer::empty_tag('br') . html_writer::link($returnurl, get_string('goback', 'facetoface'), array('title' => get_string('goback', 'facetoface')));

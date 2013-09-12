@@ -1297,16 +1297,6 @@ class facetofacelib_test extends advanced_testcase {
         $this->resetAfterTest(true);
     }
 
-    function test_facetoface_get_manageremail() {
-        set_config('managerroleid', 1);
-        // find manager of user 1 -- need to set manager
-        //$this->assertEquals(facetoface_get_manageremail(1), 'user2@example.com');
-
-        // Find manager of non existant user
-        $this->assertEquals(facetoface_get_manageremail(25), '');
-        $this->resetAfterTest(true);
-    }
-
     function test_facetoface_get_manageremailformat() {
         //TODO how to run negative test?
         // Define test variables.

@@ -1820,26 +1820,6 @@ function facetoface_check_signup($facetofaceid) {
 }
 
 /**
- * Return the email address of the user's manager if it is
- * defined. Otherwise return an empty string.
- *
- * @param integer $userid User ID of the staff member
- */
-function facetoface_get_manageremail($userid) {
-    global $DB;
-
-    $sql = "SELECT managerid
-        FROM {pos_assignment} pa
-        WHERE pa.userid = ? AND pa.type = 1"; // just use primary position for now
-    $res = $DB->get_record_sql($sql, array($userid));
-    if ($res && isset($res->managerid)) {
-        return $DB->get_field('user', 'email', array('id' => $res->managerid));
-    } else {
-        return ''; // No manager set
-    }
-}
-
-/**
  * Human-readable version of the format of the manager's email address
  */
 function facetoface_get_manageremailformat() {
@@ -3480,26 +3460,6 @@ function facetoface_supports($feature) {
         case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
 
         default: return null;
-    }
-}
-
-/**
- * Return the id of the user's manager if it is
- * defined. Otherwise return false.
- *
- * @param integer $userid User ID of the staff member
- */
-function facetoface_get_manager($userid) {
-    global $DB;
-
-    $sql = "SELECT managerid
-        FROM {pos_assignment} pa
-        WHERE pa.userid = ? AND pa.type = 1"; // just use primary position for now
-    $res = $DB->get_record_sql($sql, array($userid));
-    if ($res && isset($res->managerid)) {
-        return $res->managerid;
-    } else {
-        return false; // No manager set
     }
 }
 
