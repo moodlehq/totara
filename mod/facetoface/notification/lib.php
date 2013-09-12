@@ -956,7 +956,8 @@ function facetoface_send_trainer_session_unassignment_notice($facetoface, $sessi
 function facetoface_send_request_notice($facetoface, $session, $userid) {
     global $DB;
 
-    if (!$manageremail = facetoface_get_manageremail($userid)) {
+    $manager = totara_get_manager($userid);
+    if (empty($manager->email)) {
         return 'error:nomanagersemailset';
     }
 
