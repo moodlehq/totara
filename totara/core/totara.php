@@ -365,7 +365,7 @@ function totara_upgrade_installed_languages() {
     $installer = new lang_installer();
 
     if (!$availablelangs = $installer->get_remote_list_of_languages()) {
-        echo $OUTPUT->notification(get_string('cannotdownloadlanguageupdatelist', 'error'), 'notifyproblem');
+        echo $OUTPUT->notification(get_string('cannotdownloadtotaralanguageupdatelist', 'totara_core'), 'notifyproblem');
         return;
     }
     $md5array = array();    // (string)langcode => (string)md5
