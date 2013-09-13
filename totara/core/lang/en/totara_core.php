@@ -291,4 +291,14 @@ $string['core:undeleteuser'] = 'Undelete user';
 $string['core:appearance'] = 'Configure site appearance settings';
 
 $string['ampersand'] = 'and';
+
+// Version check
+$string['unsupported_branch_text'] = 'The version you are using ({$a})  is no longer supported. That means that bugs and security issues are no longer being fixed. You should upgrade to a supported version (such as [[CURRENT_MAJOR_VERSION]]) as soon as possible';
+$string['old_release_text_singular'] = 'You are not using the most recent release available for this version. There is 1 new release available ';
+$string['old_release_text_plural'] = 'You are not using the most recent release available for this version. There are [[ALLTYPES_COUNT]] new releases available ';
+$string['old_release_security_text_singular'] = ' (including 1 new security release)';
+$string['old_release_security_text_plural'] = ' (including [[SECURITY_COUNT]] new security releases)';
+$string['supported_branch_text'] = 'You may want to consider upgrading from {$a} to the most recent version ([[CURRENT_MAJOR_VERSION]]) to benefit from the latest features';
+$string['supported_branch_old_release_text'] = 'You may also want to consider upgrading from {$a} to the most recent version ([[CURRENT_MAJOR_VERSION]]) to benefit from the latest features';
+$string['totarareleaselink'] = 'See the <a href="http://community.totaralms.com/mod/forum/view.php?id=819\" target=\"_blank\">release notes</a> for more details.';
 ?>

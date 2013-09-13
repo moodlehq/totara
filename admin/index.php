@@ -531,6 +531,9 @@ $errorrecords = $DB->get_records_sql("SELECT id, timeoccured FROM {errorlog} ORD
 
 $latesterror = array_shift($errorrecords);
 
+require_once($CFG->dirroot . '/totara/core/lib.php');
+totara_site_version_tracking();
+
 $output = $PAGE->get_renderer('core', 'admin');
 echo $output->admin_notifications_page($maturity, $insecuredataroot, $errorsdisplayed,
         $cronoverdue, $dbproblems, $maintenancemode, $availableupdates, $availableupdatesfetch, $buggyiconvnomb,

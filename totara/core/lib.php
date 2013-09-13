@@ -154,4 +154,42 @@ function local_get_sticky_pagetypes() {
 function is_ajax_request($server) {
     return (isset($server['HTTP_X_REQUESTED_WITH']) && strtolower($server['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 }
+
+/**
+ * Include code to pull in site version check code to notify the admin if
+ * their site is not on the most current release.
+ *
+ * This function should only be included on the admin notification page.
+ */
+function totara_site_version_tracking() {
+    global $CFG, $PAGE, $TOTARA;
+
+    require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+    local_js();
+
+    //Params for JS
+    $totara_version = $TOTARA->version;
+    $major_version = substr($TOTARA->version, 0, 3);
+    $siteurl = parse_url($CFG->wwwroot);
+    if (!empty($siteurl['scheme'])) {
+        $protocol = $siteurl['scheme'];
+    } else if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        $protocol = 'https';
+    } else {
+        $protocol = 'http';
+    }
+
+    $PAGE->requires->strings_for_js(array('unsupported_branch_text', 'supported_branch_text', 'supported_branch_old_release_text'), 'totara_core', $major_version);
+    $PAGE->requires->strings_for_js(array('old_release_text_singular', 'old_release_text_plural', 'old_release_security_text_singular', 'old_release_security_text_plural', 'totarareleaselink'), 'totara_core');
+
+    $args = array('args' => '{"totara_version":"'.$totara_version.'", "major_version":"'.$major_version.'", "protocol":"'.$protocol.'"}');
+
+    $jsmodule = array(
+        'name' => 'totara_version_tracking',
+        'fullpath' => '/totara/core/js/version_tracking.js',
+        'requires' => array('json'));
+    $PAGE->requires->js_init_call('M.totara_version_tracking.init', $args, false, $jsmodule);
+
+}
+
 ?>
