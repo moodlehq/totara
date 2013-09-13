@@ -57,7 +57,7 @@ step_time "2"
 
 #STEP 3
 echo "STEP 3: Run PHPUnit";
-phpunit --log-junit build/logs/xml/TEST-suite.xml
+phpunit --exclude-group=slowtest --log-junit build/logs/xml/TEST-suite.xml
 step_time "3"
 
 #STEP 4

@@ -1135,6 +1135,7 @@ class columns_test extends reportcache_advanced_testcase {
      *
      * @param bool $usecache
      * @dataProvider provider_use_cache
+     * @group slowtest
      */
     function test_columns_and_filters($usecache) {
         global $SESSION, $DB;
