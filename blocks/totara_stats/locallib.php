@@ -113,6 +113,8 @@ function totara_stats_timespent($from, $to) {
  * @return array
  */
 function totara_stats_manager_stats($user, $config=null) {
+    global $DB;
+
     //TODO - create a way of setting timeframes
     $to = time();
     $from = $to - (60*60*24*30); //30 days in the past.
@@ -124,9 +126,13 @@ function totara_stats_manager_stats($user, $config=null) {
     //might need to be careful with length of sql query limit - list of userids could be very large.
 
     // return users with this user as manager
-    $commonsql = " AND timestamp > :from AND timestamp < :to
-        AND userid IN (SELECT DISTINCT userid FROM {pos_assignment} where managerid = :userid) ";
-    $params = array('from' => $from, 'to' => $to, 'userid' => $user->id);
+    $staff = totara_get_staff($user->id);
+    list($staffsqlin, $params) = $DB->get_in_or_equal($staff, SQL_PARAMS_NAMED, 'stf');
+    $commonsql = " AND userid {$staffsqlin}
+                   AND timestamp > :from AND timestamp < :to ";
+    $params['from'] = $from;
+    $params['to'] = $to;
+    unset($staff, $staffsqlin);
 
     $statssql = array();
     if (empty($config) || !empty($config->statlearnerhours)) {
