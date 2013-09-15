@@ -856,10 +856,10 @@ function facetoface_is_session_in_progress($session, $timenow) {
     if (!$session->datetimeknown) {
         return false;
     }
-    foreach ($session->sessiondates as $date) {
-        if ($date->timefinish > $timenow && $date->timestart < $timenow) {
-            return true;
-        }
+    $startedsessions = totara_search_for_value($session->sessiondates, 'timestart', LESS_THAN, $timenow);
+    $unfinishedsessions = totara_search_for_value($session->sessiondates, 'timefinish', GREATER_THAN, $timenow);
+    if (!empty($startedsessions) && !empty($unfinishedsessions)) {
+        return true;
     }
     return false;
 }
@@ -871,7 +871,7 @@ function facetoface_get_session_dates($sessionid) {
     global $DB;
     $ret = array();
 
-    if ($dates = $DB->get_records('facetoface_sessions_dates', array('sessionid' => $sessionid),'timestart')) {
+    if ($dates = $DB->get_records('facetoface_sessions_dates', array('sessionid' => $sessionid), 'timestart')) {
         $i = 0;
         foreach ($dates as $date) {
             $ret[$i++] = $date;
@@ -2225,7 +2225,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
             if ($viewattendees) {
                 $strseeattendees = get_string('seeattendees', 'facetoface');
                 $attendees_url = new moodle_url('/mod/facetoface/attendees.php', array('s' => $session->id));
-                $attendeeslink = html_writer::tag('tr', html_writer::tag('td', html_writer::link($attendees_url, $strseeattendees, array('class' => 'f2fsessionlinks f2fviewattendees', 'title' => $strseeattendees))));            
+                $attendeeslink = html_writer::tag('tr', html_writer::tag('td', html_writer::link($attendees_url, $strseeattendees, array('class' => 'f2fsessionlinks f2fviewattendees', 'title' => $strseeattendees))));
                 $options       = html_writer::tag('tr', html_writer::tag('td', $span));
             }
 
