@@ -103,14 +103,14 @@ class totara_message_workflow_facetoface extends totara_message_workflow_plugin_
 
         $stringmanager = get_string_manager();
         $newevent = new stdClass();
-        $newevent->userfrom         = NULL;
+        $newevent->userfrom    = NULL;
         $user = $DB->get_record('user', array('id' => $userid));
-        $newevent->userto           = $user;
-        $approvedstr                = $stringmanager->get_string($langkey, 'facetoface', null, $user->lang);
+        $newevent->userto      = $user;
+        $approvedstr           = $stringmanager->get_string($langkey, 'facetoface', null, $user->lang);
         $url = new moodle_url('/mod/facetoface/view.php', array('f' => $facetoface->id));
-        $newevent->fullmessage      = $stringmanager->get_string('requestattendsession', 'facetoface', html_writer::link($url, $facetoface->name), $user->lang) . ' ' . $approvedstr;
-        $newevent->subject          = $newevent->fullmessage;
-        $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+        $newevent->fullmessage = $stringmanager->get_string('requestattendsession', 'facetoface', html_writer::link($url, $facetoface->name), $user->lang) . ' ' . $approvedstr;
+        $newevent->subject     = $stringmanager->get_string('requestattendsession', 'facetoface', $facetoface->name, $user->lang) . ' ' . $approvedstr;
+        $newevent->urgency     = TOTARA_MSG_URGENCY_NORMAL;
         return tm_alert_send($newevent);
     }
 }
