@@ -131,69 +131,6 @@ function totara_get_category_item_count($categoryids, $countcourses = true) {
 
 }
 
-function totara_print_main_subcategories($parentid, $secondarycats, $secondary_item_counts, $editingon, $viewtype = 'course', $numbertoshow = 3) {
-    //If there are no secondary items return
-    if ($secondary_item_counts <= 0) {
-        return '';
-    }
-    $subcats = array();
-    // add itemcount to the object
-    foreach ($secondarycats as $key => $category) {
-        if ($category->parent != $parentid) {
-            continue;
-        }
-        $subcats[$key] = $category;
-        if (array_key_exists($category->id, $secondary_item_counts)) {
-            $subcats[$key]->itemcount = $secondary_item_counts[$category->id];
-        } else {
-            $subcats[$key]->itemcount = 0;
-        }
-    }
-    // sort by item count
-    usort($subcats, 'totara_course_cmp_by_count');
-
-    if (empty($subcats)) {
-        return '';
-    }
-    $out = '';
-    $numdisplayed = 0;
-    $showmorelink = false;
-    $requiredcaps = ($viewtype == 'course') ? array('moodle/course:create', 'moodle/course:update') : array('totara/program:createprogram', 'totara/program:configureprogram');
-    foreach ($subcats as $subcat) {
-        $subcatcontext = context_coursecat::instance($subcat->id);
-        // don't show empty sub-categories unless viewing as admin or has course/program editing capabilities
-        if (!$editingon && $subcat->itemcount == 0 && !has_any_capability($requiredcaps, $subcatcontext)) {
-            continue;
-        }
-
-        // Check capabilities if subcategory is hidden
-        $cssclass = '';
-        if (!$subcat->visible) {
-            if (!has_capability('moodle/category:viewhiddencategories', $subcatcontext)) {
-                continue;
-            }
-            $cssclass = 'dimmed';
-        }
-
-        if ($numdisplayed < $numbertoshow) {
-            $out .= html_writer::tag('li', html_writer::link(new moodle_url('/course/category.php',
-                            array('id' => $subcat->id, 'viewtype' => $viewtype)), format_string($subcat->name).' ('.$subcat->itemcount.')', array('class' => $cssclass)));
-            $numdisplayed++;
-        } else {
-            $showmorelink = true;
-            break;
-        }
-    }
-
-    // if there are some left, print a "more" link to the parent category
-    if ($showmorelink) {
-        $out .= html_writer::tag('li', html_writer::link(new moodle_url('/course/category.php',
-                        array('id' => $parentid)), get_string('more').'&hellip;', array('class' => 'more')));
-    }
-    $out = html_writer::tag('ul', $out, array('class' => "course-subcat-listing"));
-    return $out;
-}
-
 /**
  * Sorts a pair of objects based on the itemcount property (high to low)
  *

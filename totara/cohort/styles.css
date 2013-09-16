@@ -5,3 +5,6 @@
 select#id_listofvalues {
     max-height: 300px;
 }
+.approvalform table {
+    background-color: inherit !important;
+}

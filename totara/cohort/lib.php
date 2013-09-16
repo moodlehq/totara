@@ -1227,29 +1227,3 @@ class totara_cohort_course_cohorts
         echo $html;
     }
 }
-//function called by moodlelib remove_course_contents()
-function totara_cohort_delete_course($courseid, $showfeedback) {
-    global $DB;
-
-    // Locate all course rules and see whether they've got any rule params that are based on this course
-    $courserules = $DB->get_records_select('cohort_rules', "name like 'course%'");
-    if (!empty($courserules)) {
-        $transaction = $DB->start_delegated_transaction();
-
-        foreach ($courserules as $rule) {
-            $DB->delete_records('cohort_rule_params', array('ruleid' => $rule->id, 'name' => 'listofids', 'value' => $courseid));
-
-            // Delete the rule if it has no params left after this
-            if (!$DB->count_records('cohort_rule_params', array('ruleid' => $rule->id))) {
-                $DB->delete_records('cohort_rules', array('id' => $rule->id));
-
-                // Delete the rule's ruleset if it has no params left after this
-                if (!$DB->count_records('cohort_rules', array('rulesetid' => $rule->rulesetid))) {
-                    $DB->delete_records('cohort_rulesets', array('id' => $rule->rulesetid));
-                }
-            }
-        }
-
-        $transaction->allow_commit();
-    }
-}
