@@ -129,14 +129,17 @@ abstract class totara_sync_source_user extends totara_sync_source {
         $mform->addElement('header', 'importheader', get_string('importfields', 'tool_totara_sync'));
 
         foreach ($this->fields as $f) {
+            $name = 'import_'.$f;
             if (in_array($f, array('idnumber', 'username', 'timemodified'))) {
-                $mform->addElement('hidden', 'import_'.$f, '1');
+                $mform->addElement('hidden', $name, '1');
+                $mform->setType($name, PARAM_INT);
             } elseif ($f == 'deleted') {
-                $mform->addElement('hidden', 'import_'.$f, $this->config->import_deleted);
+                $mform->addElement('hidden', $name, $this->config->import_deleted);
+                $mform->setType($name, PARAM_INT);
             } else {
-                $mform->addElement('checkbox', 'import_'.$f, get_string($f, 'tool_totara_sync'));
+                $mform->addElement('checkbox', $name, get_string($f, 'tool_totara_sync'));
                 if (in_array($f, array('country'))) {
-                    $mform->addHelpButton('import_'.$f, $f, 'tool_totara_sync');
+                    $mform->addHelpButton($name, $f, 'tool_totara_sync');
                 }
             }
         }

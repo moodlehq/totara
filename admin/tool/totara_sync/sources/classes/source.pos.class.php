@@ -83,10 +83,12 @@ abstract class totara_sync_source_pos extends totara_sync_source {
         $mform->addElement('header', 'importheader', get_string('importfields', 'tool_totara_sync'));
 
         foreach ($this->fields as $f) {
+            $name = 'import_'.$f;
             if (in_array($f, array('idnumber', 'fullname', 'frameworkidnumber', 'timemodified'))) {
-                $mform->addElement('hidden', 'import_'.$f, '1');
+                $mform->addElement('hidden', $name, '1');
+                $mform->setType($name, PARAM_INT);
             } else {
-                $mform->addElement('checkbox', 'import_'.$f, get_string($f, 'tool_totara_sync'));
+                $mform->addElement('checkbox', $name, get_string($f, 'tool_totara_sync'));
             }
         }
 
