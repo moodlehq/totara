@@ -3,6 +3,32 @@
 
 Totara LMS Changelog
 
+Release 2.4.10 (17th September 2013):
+==================================================
+
+Security issues:
+    Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_2.4.6_release_notes
+    T-10913    Added caching of external badges to avoid object injections in badges/external.php
+
+Improvements:
+    T-9250     Use totara_get_manager() in Face-to-face notifications
+    T-9390     Use totara_get_staff() in the totara statistics block
+    T-10342    Added column to display unobscured email address for users with "moodle/site:viewuseridentity" permissions
+    T-11183    Added user "Time created" column option to reportbuilder user reports
+    T-11207    Temporarily hide fusion grade export until we fix google plugins
+
+Bug Fixes:
+    T-10892    Added conflict message when session trainers are displayed in a drop-down list
+    T-11198    Changed calendar date format for Totara date pickers to 4 digit years
+    T-11195    Fixed issue with registration fallback method
+    T-11201    Fixed status for multi-date session in Facetoface
+    T-11181    Fixed wording of enrol link in my settings block
+    T-11184    Fixed Dynamic Audience rule assignments based on country and language
+    T-11188    Fixes around badge capabilities and navigation
+    T-11194    Removed unused en_us files in lang/en_us
+    T-11197    Fixed HTML tags showing in the subject of some facetoface messages
+
+
 Release 2.4.9 (3rd September 2013):
 ==================================================
 
