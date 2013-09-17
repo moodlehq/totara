@@ -65,6 +65,7 @@ $string['calendareventdescriptionsession'] = 'You have created this <a href="{$a
 $string['calendaroptions'] = 'Calendar options';
 $string['cancelbooking'] = 'Cancel booking';
 $string['cancelbookingfor'] = 'Cancel booking for {$a}';
+$string['cancellationreasoncourseunenrollment'] = '{$a->username} has been unenrolled from the course {$a->coursename}.';
 $string['cancellationsent'] = 'You should immediately receive a cancellation email.';
 $string['cancellationsentmgr'] = 'You and your manager should immediately receive a cancellation email.';
 $string['cancellationstablesummary'] = 'List of people who have cancelled their session signups.';

@@ -3468,11 +3468,10 @@ function facetoface_supports($feature) {
  * Event that is triggered when a user is deleted.
  *
  * Cancels a user from any future sessions when they are deleted
- * this make sure deleted users aren't using space is sessions when
- * there is limited capacity.
+ * this is to make sure deleted users aren't using space in sessions
+ * when there is limited capacity.
  *
  * @param object $user
- *
  */
 function facetoface_eventhandler_user_deleted($user) {
     global $DB;
@@ -3487,6 +3486,48 @@ function facetoface_eventhandler_user_deleted($user) {
     return true;
 }
 
+/**
+ * Event that is triggered when a user is unenrolled from a course
+ *
+ * Cancels a user from any future sessions when they are unenrolled from a course,
+ * this is to make sure unenrolled users aren't using space in sessions
+ * when there is limited capacity
+ *
+ * @param object $data
+ */
+function facetoface_eventhandler_user_unenrolled($data) {
+    global $DB;
+
+    $uid = $data->userid;
+    $cid = $data->courseid;
+
+    // Get all the facetofaces associated with the course.
+    $f2fs = $DB->get_fieldset_select('facetoface', 'id', 'course = :cid', array('cid' => $cid));
+
+    if (!empty($f2fs)) {
+        // Get all the sessions for the facetofaces.
+        list($insql, $inparams) = $DB->get_in_or_equal($f2fs);
+        $sql = "SELECT id FROM {facetoface_sessions} WHERE facetoface {$insql}";
+        $sessids = $DB->get_fieldset_sql($sql, $inparams);
+        $strvar = new stdClass();
+        $strvar->coursename = $DB->get_field('course', 'fullname', array('id' => $cid));
+
+        foreach ($sessids as $sessid) {
+            // Check if user is enrolled on any sessions in the future.
+            if ($user = facetoface_get_attendee($sessid, $uid)) {
+                if (empty($strvar->username)) {
+                    $strvar->username = fullname($user);
+                }
+
+                // And cancel them.
+                $sess = facetoface_get_session($sessid); // Get the proper session object, complete with dates.
+                facetoface_user_cancel($sess, $uid, false, $null, get_string('cancellationreasoncourseunenrollment', 'mod_facetoface', $strvar));
+            }
+        }
+    }
+
+    return true;
+}
 
 /**
  * Called when displaying facetoface Task to check
