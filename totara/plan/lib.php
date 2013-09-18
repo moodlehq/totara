@@ -801,6 +801,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
             }
             $progcount = 1;
             $maxprogstodisplay = 5;
+            $list = array();
             foreach ($programs as $p) {
                 if ($progcount > $maxprogstodisplay) {
                     $list[] = $OUTPUT->action_link(new moodle_url('/totara/program/required.php', $extraparams), get_string('viewallrequiredlearning', 'totara_program'));
