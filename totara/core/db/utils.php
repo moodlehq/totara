@@ -47,7 +47,7 @@ function totara_upgrade_mod_savepoint($result, $version, $modname) {
 
     if ($module->value >= $version) {
         // something really wrong is going on in upgrade script
-        throw new downgrade_exception($modname, $module->version, $version);
+        throw new downgrade_exception($modname, $module->value, $version);
     }
     $module->value = $version;
     $DB->update_record('config_plugins', $module);
