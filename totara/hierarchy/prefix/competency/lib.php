@@ -837,7 +837,9 @@ class competency extends hierarchy {
         $mform->addHelpButton('scalename', 'competencyscale', 'totara_hierarchy');
 
         $mform->addElement('hidden', 'proficiencyexpected', 1);
+        $mform->setType('proficiencyexpected', PARAM_INT);
         $mform->addElement('hidden', 'evidencecount', 0);
+        $mform->setType('evidencecount', PARAM_INT);
     }
 
 

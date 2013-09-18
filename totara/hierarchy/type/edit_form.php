@@ -51,6 +51,7 @@ class type_edit_form extends moodleform {
 
         $mform->addElement('text', 'fullname', get_string('fullnametype', 'totara_hierarchy'), 'maxlength="254" size="50"');
         $mform->addElement('text', 'idnumber', get_string($prefix.'typeidnumber', 'totara_hierarchy'), 'maxlength="100"  size="10"');
+        $mform->setType('idnumber', PARAM_TEXT);
         $mform->addHelpButton('fullname', 'fullnametype', 'totara_hierarchy', '', true);
         $mform->addRule('fullname', get_string($prefix.'missingnametype', 'totara_hierarchy'), 'required', null, 'client');
         $mform->setType('fullname', PARAM_MULTILANG);

@@ -89,6 +89,7 @@ class item_bulkadd_form extends moodleform {
             // but no types exist
             // default to 'unclassified'
             $mform->addElement('hidden', 'typeid', '0');
+            $mform->setType('typeid', PARAM_INT);
         }
 
 
