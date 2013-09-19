@@ -41,6 +41,10 @@ class mod_facetoface_session_form extends moodleform {
         $mform->addElement('hidden', 'f', $this->_customdata['f']);
         $mform->addElement('hidden', 's', $this->_customdata['s']);
         $mform->addElement('hidden', 'c', $this->_customdata['c']);
+        $mform->setType('id', PARAM_INT);
+        $mform->setType('f', PARAM_INT);
+        $mform->setType('s', PARAM_INT);
+        $mform->setType('c', PARAM_INT);
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
@@ -80,6 +84,7 @@ class mod_facetoface_session_form extends moodleform {
         $mform->setType('timestart', PARAM_INT);
         $mform->setType('timefinish', PARAM_INT);
         $mform->setType('sessiontimezone', PARAM_TEXT);
+        $mform->setType('sessiondateid', PARAM_INT);
         $this->repeat_elements($repeatarray, $repeatcount, $repeatoptions, 'date_repeats', 'date_add_fields',
                                1, get_string('dateadd', 'facetoface'), true);
 
