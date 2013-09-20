@@ -147,8 +147,10 @@ M.totara_programassignment = M.totara_programassignment || {
             var completionevent = this._dialog.item.get_completion_event();
             var completioninstance = this._dialog.item.get_completion_instance();
             // TODO SCANMSG: check datatype usage of 'COMPLETION_EVENT_NONE' and similar args stored in config
-            if (completionevent == module.config.COMPLETION_EVENT_NONE) {
-                if (completiontime != module.config.COMPLETION_TIME_NOT_SET) {
+            if (typeof completionevent === 'undefined' ||
+                completionevent == module.config.COMPLETION_EVENT_NONE) {
+                if (typeof completiontime === 'undefined' ||
+                    completiontime != module.config.COMPLETION_TIME_NOT_SET) {
                     $('.completiontime', this._container).val(completiontime);
                 }
             }
@@ -543,7 +545,7 @@ program_assignment = new function() {
         var result = true;
         $.each(this.categories, function(index, category) {
             $.each(category.items, function(index, item) {
-                if (item.completiontime.val() === '') {
+                if (item.completiontime.length == 0 || item.completiontime.val() === M.program_assignment.config.COMPLETION_TIME_NOT_SET) {
                     result = false;
                 }
             });
@@ -813,9 +815,68 @@ function item(category, element, isexistingitem) {
                     }
                 }
                 self.completionlink.html(data);
-                self.completiontime.val(completiontime);
-                self.completionevent.val(completionevent);
-                self.completioninstance.val(completioninstance);
+                if (typeof completiontime === 'undefined' || completiontime == M.totara_programassignment.config.COMPLETION_TIME_NOT_SET) {
+                    // Completion time no longer set. Remove hidden element if it exists.
+                    if (self.completiontime.length > 0) {
+                        self.completiontime.remove();
+                    }
+                } else {
+                    if (self.completiontime.length > 0) {
+                        // Hidden form element already exists - update value.
+                        self.completiontime.val(completiontime);
+                    } else {
+                        // Append new hidden element.
+                        $('<input>').attr({
+                                type: 'hidden',
+                                name: 'completiontime['+self.category.id+']['+self.itemid+']',
+                                value: completiontime
+                        }).insertBefore(self.completionlink);
+                    }
+                }
+
+                if (typeof completionevent === 'undefined' || completionevent == M.totara_programassignment.config.COMPLETION_EVENT_NONE) {
+                    // Completion event no longer set. Remove hidden element if it exists.
+                    if (self.completionevent.length > 0) {
+                        self.completionevent.remove();
+                    }
+                } else {
+                    if (self.completionevent.length > 0) {
+                        // Hidden form element already exists - update value.
+                        self.completionevent.val(completionevent);
+                    } else {
+                        // Append new hidden element.
+                        $('<input>').attr({
+                                type: 'hidden',
+                                name: 'completionevent['+self.category.id+']['+self.itemid+']',
+                                value: completionevent
+                        }).insertBefore(self.completionlink);
+                    }
+                }
+
+                if (typeof completioninstance === 'undefined' || completioninstance == 0) {
+                    // Completion instance no longer set. Remove hidden element if it exists.
+                    if (self.completioninstance.length > 0) {
+                        self.completioninstance.remove();
+                    }
+                } else {
+                    if (self.completioninstance.length > 0) {
+                        // Hidden form element already exists - update value.
+                        self.completioninstance.val(completioninstance);
+                    } else {
+                        // Append new hidden element.
+                        $('<input>').attr({
+                                type: 'hidden',
+                                name: 'completioninstance['+self.category.id+']['+self.itemid+']',
+                                value: completioninstance
+                        }).insertBefore(self.completionlink);
+                    }
+                }
+
+                // Update stored values in case multiple changes are
+                // made without reloading page.
+                self.completiontime = self.element.find('input[name^="completiontime"]');
+                self.completionevent = self.element.find('input[name^="completionevent"]');
+                self.completioninstance = self.element.find('input[name^="completioninstance"]');
 
                 // set a flag to indicate that the program assignments has been modified but not saved
                 self.category.main.is_modified = true;
@@ -885,7 +946,7 @@ function item(category, element, isexistingitem) {
     // Add handler to remove completion dates
     this.element.on('click', '.deletecompletiondatelink', function(event){
         event.preventDefault();
-        self.update_completiontime('', 0, 0);
+        self.update_completiontime(M.totara_programassignment.config.COMPLETION_TIME_NOT_SET, 0, 0);
     });
 
 

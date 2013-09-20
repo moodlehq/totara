@@ -445,30 +445,32 @@ abstract class prog_assignment_category {
                 // Let the inheriting object deal with the include children field as it's specific to them
                 $object->includechildren = $this->get_includechildren($data, $object);
 
-                // Get the completion time
-                $object->completiontime = $data->completiontime[$this->id][$itemid];
+                // Get the completion time.
+                $object->completiontime = !empty($data->completiontime[$this->id][$itemid]) ?
+                    $data->completiontime[$this->id][$itemid] : COMPLETION_TIME_NOT_SET;
 
-                $object->completionevent = $data->completionevent[$this->id][$itemid];
+                // Get the completion event.
+                $object->completionevent = isset($data->completionevent[$this->id][$itemid]) ?
+                    $data->completionevent[$this->id][$itemid] : COMPLETION_EVENT_NONE;
 
-                $object->completioninstance = $data->completioninstance[$this->id][$itemid];
-                if (empty($object->completioninstance)) {
-                    $object->completioninstance = 0;
-                }
+                // Get the completion instance.
+                $object->completioninstance = !empty($data->completioninstance[$this->id][$itemid]) ?
+                    $data->completioninstance[$this->id][$itemid] : 0;
 
-                if (empty($object->completiontime)) {
-                    $object->completiontime = COMPLETION_TIME_NOT_SET;
-                } elseif ($object->completionevent == COMPLETION_EVENT_NONE) {
-                    if ($object->completiontime != COMPLETION_TIME_NOT_SET) {
+                if ($object->completiontime != COMPLETION_TIME_NOT_SET) {
+                    if ($object->completionevent == COMPLETION_EVENT_NONE) {
+                        // Convert fixed dates.
                         $object->completiontime = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $object->completiontime);
+                    } else {
+                        // Convert relative dates.
+                        $parts = explode(' ', $object->completiontime);
+                        if (!isset($parts[0]) || !isset($parts[1])) {
+                            continue;
+                        }
+                        $num = $parts[0];
+                        $period = $parts[1];
+                        $object->completiontime = program_utilities::duration_implode($num, $period);
                     }
-                } else {
-                    $parts = explode(' ',$object->completiontime);
-                    if (!isset($parts[0]) || !isset($parts[1])) {
-                        continue;
-                    }
-                    $num = $parts[0];
-                    $period = $parts[1];
-                    $object->completiontime = program_utilities::duration_implode($num, $period);
                 }
 
                 if (isset($object->id)) {
@@ -576,7 +578,7 @@ abstract class prog_assignment_category {
 
         $show_deletecompletionlink = false;
         if (empty($item->completiontime)) {
-            $item->completiontime = '';
+            $item->completiontime = COMPLETION_TIME_NOT_SET;
         }
 
         if (!isset($item->completionevent)) {
@@ -587,25 +589,36 @@ abstract class prog_assignment_category {
             $item->completioninstance = 0;
         }
 
-        if ($item->completiontime != '') {
-            if ($item->completionevent == COMPLETION_EVENT_NONE) {
-                // Completiontime must be a timestamp
-                if ($item->completiontime != COMPLETION_TIME_NOT_SET) {
-                    // Print a date
-                    $item->completiontime = trim( userdate($item->completiontime, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false) );
-                    $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
-                    $show_deletecompletionlink = true;
-                }
-            } else {
-                $parts = program_utilities::duration_explode($item->completiontime);
-                $item->completiontime = $parts->num . ' ' . $parts->period;
+        if ($item->completionevent == COMPLETION_EVENT_NONE) {
+            // Completiontime must be a timestamp.
+            if ($item->completiontime != COMPLETION_TIME_NOT_SET) {
+                // Print a date.
+                $item->completiontime = trim(userdate($item->completiontime,
+                    get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false));
                 $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
                 $show_deletecompletionlink = true;
             }
+        } else {
+            $parts = program_utilities::duration_explode($item->completiontime);
+            $item->completiontime = $parts->num . ' ' . $parts->period;
+            $completion_string = self::build_completion_string(
+                $item->completiontime, $item->completionevent, $item->completioninstance);
+            $show_deletecompletionlink = true;
         }
-        $html = html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'completiontime['.$this->id.']['.$item->id.']', 'value' => $item->completiontime));
-        $html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'completionevent['.$this->id.']['.$item->id.']', 'value' => $item->completionevent));
-        $html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'completioninstance['.$this->id.']['.$item->id.']', 'value' => $item->completioninstance));
+
+        $html = '';
+        if ($item->completiontime != COMPLETION_TIME_NOT_SET && !empty($item->completiontime)) {
+            $html .= html_writer::empty_tag('input', array('type' => 'hidden',
+                'name' => 'completiontime['.$this->id.']['.$item->id.']', 'value' => $item->completiontime));
+        }
+        if ($item->completionevent != COMPLETION_EVENT_NONE) {
+            $html .= html_writer::empty_tag('input', array('type' => 'hidden',
+                'name' => 'completionevent['.$this->id.']['.$item->id.']', 'value' => $item->completionevent));
+        }
+        if (!empty($item->completioninstance)) {
+            $html .= html_writer::empty_tag('input', array('type' => 'hidden',
+                'name' => 'completioninstance['.$this->id.']['.$item->id.']', 'value' => $item->completioninstance));
+        }
         $html .= html_writer::link('#', $completion_string, array('class' => 'completionlink'));
         if ($show_deletecompletionlink) {
             $html .= $OUTPUT->action_icon('#', new pix_icon('t/delete', get_string('removecompletiondate', 'totara_program')), null, array('class' => 'deletecompletiondatelink'));
