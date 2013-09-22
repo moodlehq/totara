@@ -487,6 +487,7 @@ $string['usercountry'] = 'User\'s Country';
 $string['userid'] = 'User ID';
 $string['userstatus'] = 'User Status';
 $string['usertimecreated'] = 'User Creation Time';
+$string['usertimemodified'] = 'User Last Modified';
 
 // add positions
 $string['usersorgid'] = 'User\'s Organisation ID';

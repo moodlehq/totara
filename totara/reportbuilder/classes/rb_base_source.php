@@ -1418,6 +1418,16 @@ abstract class rb_base_source {
                 'displayfunc' => 'nice_datetime'
             )
         );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'timemodified',
+            get_string('usertimemodified', 'totara_reportbuilder'),
+            "$join.timemodified",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'nice_datetime'
+            )
+        );
 
         return true;
     }
@@ -1506,6 +1516,16 @@ abstract class rb_base_source {
             'user',
             'timecreated',
             get_string('usertimecreated', 'totara_reportbuilder'),
+            'date',
+            array(
+                'includetime' => true
+            )
+        );
+
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'timemodified',
+            get_string('usertimemodified', 'totara_reportbuilder'),
             'date',
             array(
                 'includetime' => true
