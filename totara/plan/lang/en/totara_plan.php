@@ -645,7 +645,7 @@ $string['thefollowingitemsrequireyourapproval_p'] = 'This plan contains new item
 $string['xitemsunapproved'] = '<a href="{$a->uri}">{$a->number} {$a->name}</a>';
 $string['plancompleted'] = 'This plan has been marked as complete. It can no longer be edited, and all status indicators show the status at the time of the plan\'s completion.';
 $string['planautocompleteditems'] = 'This plan has been automatically completed because all the items in it have been completed.';
-$string['planautocompleteddate'] = 'This plan has be automatically completed because the end date for the plan has passed.';
+$string['planautocompleteddate'] = 'This plan has been automatically completed because the end date for the plan has passed.';
 $string['plandeclinedtryagain'] = 'This plan has been declined. If desired, you can make changes and request plan approval again.';
 $string['plannotapproved'] = 'This plan has not yet been approved';
 $string['awaitingapproval'] = 'Awaiting approval';
