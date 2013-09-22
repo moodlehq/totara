@@ -203,7 +203,7 @@ class completion_completion extends data_object {
             $this->timeenrolled = $timeenrolled;
         }
 
-        if (!$this->_save()) {
+        if (!$this->aggregate()) {
             return false;
         }
 
@@ -228,9 +228,6 @@ class completion_completion extends data_object {
 
         $timenow = time();
 
-        // Set reaggregate flag
-        $this->reaggregate = $timenow;
-
         if (!$this->timestarted) {
 
             if (!$timestarted) {
@@ -242,7 +239,7 @@ class completion_completion extends data_object {
 
         $wasenrolled = $this->timeenrolled;
 
-        if (!$this->_save()) {
+        if (!$this->aggregate()) {
             return false;
         }
 
@@ -294,6 +291,12 @@ class completion_completion extends data_object {
         if ($result = $this->_save()) {
             events_trigger('course_completed', $this->get_record_data());
 
+            $eventdata = new stdClass();
+            $eventdata->criteriatype = COMPLETION_CRITERIA_TYPE_COURSE;
+            $eventdata->courseinstance = $this->course;
+            $eventdata->userid = $this->userid;
+            events_trigger('completion_criteria_calc', $eventdata);
+
             $data = array();
             $data['userid'] = $this->userid;
             $data['eventtype'] = STATS_EVENT_COURSE_COMPLETE;
@@ -304,6 +307,9 @@ class completion_completion extends data_object {
 
             //Auto plan completion hook
             dp_plan_item_updated($this->userid, 'course', $this->course);
+
+            // Program completion hook.
+            prog_update_completion($this->userid);
         }
 
         return $result;
@@ -383,4 +389,276 @@ class completion_completion extends data_object {
             return $this->insert();
         }
     }
+    /**
+     * Aggregate completion
+     *
+     * @return bool
+     */
+    public function aggregate() {
+        global $DB;
+        static $courses = array();
+
+        // Check if already complete.
+        if ($this->timecompleted) {
+            return $this->_save();
+        }
+
+        // Cached course completion enabled and aggregation method.
+        if (!isset($courses[$this->course])) {
+            $c = new stdClass();
+            $c->id = $this->course;
+            $info = new completion_info($c);
+            $courses[$this->course] = new stdClass();
+            $courses[$this->course]->enabled = $info->is_enabled();
+            $courses[$this->course]->agg = $info->get_aggregation_method();
+        }
+
+        // No need to do this if completion is disabled.
+        if (!$courses[$this->course]->enabled) {
+            return false;
+        }
+
+        // Get user's completions.
+        $sql = "
+            SELECT
+                cr.id AS criteriaid,
+                cr.criteriatype,
+                co.timecompleted,
+                a.method AS agg_method
+            FROM
+                {course_completion_criteria} cr
+            LEFT JOIN
+                {course_completion_crit_compl} co
+             ON co.criteriaid = cr.id
+            AND co.userid = :userid
+            LEFT JOIN
+                {course_completion_aggr_methd} a
+             ON a.criteriatype = cr.criteriatype
+            AND a.course = cr.course
+            WHERE
+                cr.course = :course
+        ";
+
+        $params = array(
+            'userid' => $this->userid,
+            'course' => $this->course
+        );
+
+        $completions = $DB->get_records_sql($sql, $params);
+
+        // If no criteria, no need to aggregate.
+        if (empty($completions)) {
+            return $this->_save();
+        }
+
+        // Get aggregation methods.
+        $agg_overall = $courses[$this->course]->agg;
+
+        $overall_status = null;
+        $activity_status = null;
+        $prerequisite_status = null;
+        $role_status = null;
+
+        // Get latest timecompleted.
+        $timecompleted = null;
+
+        // Check each of the criteria.
+        foreach ($completions as $completion) {
+            $timecompleted = max($timecompleted, $completion->timecompleted);
+            $iscomplete = (bool) $completion->timecompleted;
+
+            // Handle aggregation special cases.
+            switch ($completion->criteriatype) {
+                case COMPLETION_CRITERIA_TYPE_ACTIVITY:
+                    completion_status_aggregate($completion->agg_method, $iscomplete, $activity_status);
+                    break;
+
+                case COMPLETION_CRITERIA_TYPE_COURSE:
+                    completion_status_aggregate($completion->agg_method, $iscomplete, $prerequisite_status);
+                    break;
+
+                case COMPLETION_CRITERIA_TYPE_ROLE:
+                    completion_status_aggregate($completion->agg_method, $iscomplete, $role_status);
+                    break;
+
+                default:
+                    completion_status_aggregate($agg_overall, $iscomplete, $overall_status);
+            }
+        }
+
+        // Include role criteria aggregation in overall aggregation.
+        if ($role_status !== null) {
+            completion_status_aggregate($agg_overall, $role_status, $overall_status);
+        }
+
+        // Include activity criteria aggregation in overall aggregation.
+        if ($activity_status !== null) {
+            completion_status_aggregate($agg_overall, $activity_status, $overall_status);
+        }
+
+        // Include prerequisite criteria aggregation in overall aggregation.
+        if ($prerequisite_status !== null) {
+            completion_status_aggregate($agg_overall, $prerequisite_status, $overall_status);
+        }
+
+        // If overall aggregation status is true, mark course complete for user.
+        if ($overall_status) {
+            return $this->mark_complete($timecompleted);
+        } else {
+            return $this->_save();
+        }
+    }
+}
+
+
+/**
+ * Aggregate criteria status's as per configured aggregation method
+ *
+ * @param int $method COMPLETION_AGGREGATION_* constant
+ * @param bool $data Criteria completion status
+ * @param bool|null $state Aggregation state
+ */
+function completion_status_aggregate($method, $data, &$state) {
+    if ($method == COMPLETION_AGGREGATION_ALL) {
+        if ($data && $state !== false) {
+            $state = true;
+        } else {
+            $state = false;
+        }
+    } else if ($method == COMPLETION_AGGREGATION_ANY) {
+        if ($data) {
+            $state = true;
+        } else if (!$data && $state === null) {
+            $state = false;
+        }
+    }
+}
+
+
+/**
+ * This function is run when a user is enrolled in the course
+ * and creates a completion_completion record for the user if
+ * completion is enabled for this course
+ *
+ * @param   integer     $courseid       Course ID
+ * @param   integer     $userid         User ID
+ * @param   integer     $timestart      Enrolment start timestamp
+ * @return  boolean
+ */
+function completion_start_user($courseid, $userid, $timestart) {
+    global $DB;
+
+    // Load course.
+    if (!$course = $DB->get_record('course', array('id' => $courseid))) {
+        debugging('Could not load course id '.$courseid);
+        return true;
+    }
+
+    // Create completion object.
+    $cinfo = new completion_info($course);
+
+    // Check completion is enabled for this site and course.
+    if (!$cinfo->is_enabled()) {
+        return false;
+    }
+
+    // If completion not set to start on enrollment, do nothing.
+    if (empty($course->completionstartonenrol)) {
+        return false;
+    }
+
+    // Create completion record.
+    $data = array(
+        'userid'    => $userid,
+        'course'    => $course->id
+    );
+    $completion = new completion_completion($data);
+    if (!$completion->timeenrolled) {
+        $completion->timeenrolled = $timestart;
+    }
+
+    // Update record.
+    if (!empty($course->completionstartonenrol)) {
+        $completion->mark_inprogress($timestart);
+    } else {
+        $completion->mark_enrolled();
+    }
+
+    return true;
+}
+
+
+/**
+ * Triggered by changing course completion criteria, this function
+ * bulk marks users as started in the course completion system.
+ *
+ * @param   integer     $courseid       Course ID
+ * @return  bool
+ */
+function completion_start_user_bulk($courseid) {
+    global $DB;
+
+    /*
+     * A quick explaination of this horrible looking query
+     *
+     * It's purpose is to locate all the active participants
+     * of a course with course completion enabled.
+     *
+     * We want to record the user's enrolment start time for the
+     * course. This gets tricky because there can be multiple
+     * enrolment plugins active in a course, hence the fun
+     * case statement.
+     */
+    $sql = "
+        INSERT INTO
+            {course_completions}
+            (course, userid, timeenrolled, timestarted, reaggregate)
+        SELECT
+            c.id AS course,
+            ue.userid AS userid,
+            CASE
+                WHEN MIN(ue.timestart) <> 0
+                THEN MIN(ue.timestart)
+                ELSE ?
+            END,
+            CASE
+                WHEN c.completionstartonenrol = 1
+                THEN ?
+                ELSE 0
+            END,
+            0
+        FROM
+            {user_enrolments} ue
+        INNER JOIN
+            {enrol} e
+         ON e.id = ue.enrolid
+        INNER JOIN
+            {course} c
+         ON c.id = e.courseid
+        LEFT JOIN
+            {course_completions} crc
+         ON crc.course = c.id
+        AND crc.userid = ue.userid
+        WHERE
+            c.enablecompletion = 1
+        AND crc.id IS NULL
+        AND c.id = ?
+        AND ue.status = ?
+        AND e.status = ?
+        AND (ue.timeend > ? OR ue.timeend = 0)
+        GROUP BY
+            c.id,
+            ue.userid
+    ";
+
+    $now = time();
+    $params = array(
+        $now,
+        $now,
+        $courseid,
+        ENROL_USER_ACTIVE,
+        ENROL_INSTANCE_ENABLED,
+        $now
+    );
+    return $DB->execute($sql, $params, true);
 }

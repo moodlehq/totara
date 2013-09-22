@@ -50,6 +50,13 @@ $handlers = array(
         'schedule'         => 'cron',
         'internal'         => 0,
     ),
+
+    'completion_criteria_calc' => array(
+        'handlerfile'       => '/completion/completion_criteria_completion.php',
+        'handlerfunction'   => 'completion_handle_criteria_calc',
+        'schedule'          => 'instant'
+    ),
+
     'course_completed' => array (
         'handlerfile'      => '/lib/badgeslib.php',
         'handlerfunction'  => 'badges_award_handle_course_criteria_review',
@@ -101,6 +108,9 @@ user_enrolled_bulk - object record from user_enrolments table + courseid,enrol
 user_enrol_modified - object record from user_enrolments table + courseid,enrol
 user_unenrolled - object record from user_enrolments table + courseid,enrol,lastenrol
 user_unenrolled_bulk - object record from user_enrolments table + courseid,enrol,lastenrol
+
+completion_criteria_change - object containing course record and startonenrol status
+completion_criteria_calc - object containing course_completion_crit_compl record
 
 ==== cohort related events ===
 

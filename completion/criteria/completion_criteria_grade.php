@@ -81,6 +81,21 @@ class completion_criteria_grade extends completion_criteria {
     }
 
     /**
+     * Update the criteria information stored in the database
+     *
+     * @param stdClass $data Form data
+     */
+    public function update_config($data) {
+
+        // TODO validation.
+        if (!empty($data->criteria_grade) && is_numeric($data->criteria_grade_value)) {
+            $this->course = $data->id;
+            $this->gradepass = $data->criteria_grade_value;
+            $this->insert();
+        }
+    }
+
+    /**
      * Get user's course grade in this course
      *
      * @param completion_completion $completion an instance of completion_completion class
@@ -160,60 +175,6 @@ class completion_criteria_grade extends completion_criteria {
         }
 
         return $grade.' ('.$graderequired.')';
-    }
-
-    /**
-     * Find user's who have completed this criteria
-     */
-    public function cron() {
-        global $DB;
-
-        // Get all users who meet this criteria
-        $sql = '
-            SELECT DISTINCT
-                c.id AS course,
-                cr.id AS criteriaid,
-                ra.userid AS userid,
-                gg.finalgrade AS gradefinal,
-                gg.timemodified AS timecompleted
-            FROM
-                {course_completion_criteria} cr
-            INNER JOIN
-                {course} c
-             ON cr.course = c.id
-            INNER JOIN
-                {context} con
-             ON con.instanceid = c.id
-            INNER JOIN
-                {role_assignments} ra
-              ON ra.contextid = con.id
-            INNER JOIN
-                {grade_items} gi
-             ON gi.courseid = c.id
-            AND gi.itemtype = \'course\'
-            INNER JOIN
-                {grade_grades} gg
-             ON gg.itemid = gi.id
-            AND gg.userid = ra.userid
-            LEFT JOIN
-                {course_completion_crit_compl} cc
-             ON cc.criteriaid = cr.id
-            AND cc.userid = ra.userid
-            WHERE
-                cr.criteriatype = '.COMPLETION_CRITERIA_TYPE_GRADE.'
-            AND con.contextlevel = '.CONTEXT_COURSE.'
-            AND c.enablecompletion = 1
-            AND cc.id IS NULL
-            AND gg.finalgrade >= cr.gradepass
-        ';
-
-        // Loop through completions, and mark as complete
-        $rs = $DB->get_recordset_sql($sql);
-        foreach ($rs as $record) {
-            $completion = new completion_criteria_completion((array) $record, DATA_OBJECT_FETCH_BY_KEY);
-            $completion->mark_complete($record->timecompleted);
-        }
-        $rs->close();
     }
 
     /**

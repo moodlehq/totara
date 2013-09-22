@@ -168,11 +168,13 @@ class course_completion_form extends moodleform {
             }
 
             // Show multiselect box.
-            $mform->addElement('select', 'criteria_course', get_string('coursesavailable', 'completion'), $selectbox,
-                array('multiple' => 'multiple', 'size' => 6));
-
+            $mform->addElement('select', 'criteria_course_value', get_string('coursesavailable', 'completion'), $selectbox,
+                    array('multiple' => 'multiple', 'size' => 6));
+            $mform->disabledIf('criteria_course_value', 'criteria_course_none', 'eq', 1);
             // Select current criteria.
-            $mform->setDefault('criteria_course', $selected);
+            if (isset($selected)) {
+                $mform->setDefault('criteria_course', $selected);
+            }
 
             // Explain list.
             $mform->addElement('static', 'criteria_courses_explaination', '', get_string('coursesavailableexplaination', 'completion'));

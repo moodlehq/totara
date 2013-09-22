@@ -804,8 +804,20 @@ class grade_grade extends grade_object {
         // Load information about grade item
         $this->load_grade_item();
 
-        // Only course-modules have completion data
-        if ($this->grade_item->itemtype!='mod') {
+        // If course grade, notify course completion.
+        if ($this->grade_item->itemtype == 'course') {
+
+            $eventdata = new stdClass();
+            $eventdata->criteriatype = COMPLETION_CRITERIA_TYPE_GRADE;
+            $eventdata->userid = $this->userid;
+            $eventdata->course = $this->grade_item->courseid;
+            events_trigger('completion_criteria_calc', $eventdata);
+
+            return;
+        }
+
+        // If module grade, notify activityi completion.
+        if ($this->grade_item->itemtype != 'mod') {
             return;
         }
 

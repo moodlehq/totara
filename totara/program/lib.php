@@ -1250,7 +1250,84 @@ function prog_process_extensions($extensions) {
     return array();
 }
 
+/**
+ * Update program completion status for particular user
+ *
+ * @param int $userid
+ * @param program $program if not set - all programs will be updated
+ */
+function prog_update_completion($userid, program $program = null) {
+    if (!$program) {
+        $proglist = prog_get_required_programs($userid);
+        $programs = array();
+        foreach ($proglist as $progrow) {
+            $programs[] = new program($progrow->id);
+        }
+    } else {
+        $programs = array($program);
+    }
 
+    foreach ($programs as $program) {
+        // Get the program content.
+        $program_content = $program->get_content();
+
+        // Get the program course sets in the groups that they exist in the program.
+        $courseset_groups = $program_content->get_courseset_groups();
+
+        // First check if the program is already marked as complete for this user and do nothing if it is.
+        if ($program->is_program_complete($userid)) {
+            continue;
+        }
+
+        $courseset_group_completed = false;
+        $previous_courseset_group_completed = false;
+
+        // Go through the course set groups to determine the user's completion status.
+        foreach ($courseset_groups as $courseset_group) {
+
+            $courseset_group_completed = false;
+
+            // Check if the user has completed any of the course sets in the group - this constitutes completion of the group.
+            foreach ($courseset_group as $courseset) {
+
+                // First check if the course set is already marked as complete.
+                if ($courseset->is_courseset_complete($userid)) {
+                    $courseset_group_completed = true;
+                    $previous_courseset_group_completed = true;
+                    break;
+                }
+
+                // Otherwise carry out a check to see if the course set should be marked as complete and mark it as complete if so.
+                if ($courseset->check_courseset_complete($userid)) {
+                    $courseset_group_completed = true;
+                    $previous_courseset_group_completed = true;
+                    break;
+                }
+            }
+
+            // If the user has not completed the course group the program is not complete.
+            if (!$courseset_group_completed) {
+                // Set the timedue for the course set in this group with the shortest
+                // time allowance so that course set due reminders will be triggered
+                // at the appropriate time.
+                if ($previous_courseset_group_completed) {
+                    $program_content->set_courseset_group_timedue($courseset_group, $userid);
+                    $previous_courseset_group_completed = false;
+                }
+                break;
+            }
+        }
+
+        // Courseset_group_completed will be true if all the course groups in the program have been completed.
+        if ($courseset_group_completed) {
+            $completionsettings = array(
+                'status'        => STATUS_PROGRAM_COMPLETE,
+                'timecompleted' => time()
+                );
+            $program->update_program_complete($userid, $completionsettings);
+        }
+    }
+}
 /**
  * Run the program cron
  */

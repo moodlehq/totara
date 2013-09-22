@@ -164,3 +164,34 @@ class completion_criteria_completion extends data_object {
         return $this->_criteria->get_status($this);
     }
 }
+
+
+/**
+ * Triggered by the completion_criteria_calc event, this function
+ * marks a user as complete in this completion criteria if applicable
+ *
+ * @param   object      $eventdata
+ * @return  boolean
+ */
+function completion_handle_criteria_calc($eventdata) {
+    // Check if a criteria exists.
+    $criteriadata = (array)$eventdata;
+    unset($criteriadata['userid']);
+    $criteria = completion_criteria::factory($criteriadata, true);
+    if (!$criteria->id) {
+        return true;
+    }
+
+    // Load completion record.
+    $data = array(
+        'criteriaid'    => $criteria->id,
+        'userid'        => $eventdata->userid,
+        'course'        => $criteria->course
+    );
+    $completion = new completion_criteria_completion($data);
+
+    // Review and mark complete if necessary.
+    $criteria->review($completion);
+
+    return true;
+}

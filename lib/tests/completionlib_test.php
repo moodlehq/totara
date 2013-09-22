@@ -162,7 +162,7 @@ class completionlib_testcase extends basic_testcase {
         $c->update_state($cm, COMPLETION_INCOMPLETE);
 
         // Auto, change state
-        $cm = (object)array('id'=>13,'course'=>42, 'completion'=>COMPLETION_TRACKING_AUTOMATIC);
+        $cm = (object)array('id' => 13, 'course' => 42, 'module' => 1, 'completion' => COMPLETION_TRACKING_AUTOMATIC);
         $current = (object)array('completionstate'=>COMPLETION_COMPLETE);
         $c->expects($this->at(0))
             ->method('is_enabled')

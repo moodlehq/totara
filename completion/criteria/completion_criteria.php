@@ -160,9 +160,10 @@ abstract class completion_criteria extends data_object {
      * Factory method for creating correct class object
      *
      * @param array $params associative arrays varname=>value
+     * @param mixed $fetch  $fetch param to pass to data_object constructor (optional)
      * @return completion_criteria
      */
-    public static function factory($params) {
+    public static function factory($params, $fetch = false) {
         global $CFG, $COMPLETION_CRITERIA_TYPES;
 
         if (!isset($params['criteriatype']) || !isset($COMPLETION_CRITERIA_TYPES[$params['criteriatype']])) {
@@ -172,7 +173,7 @@ abstract class completion_criteria extends data_object {
         $class = 'completion_criteria_'.$COMPLETION_CRITERIA_TYPES[$params['criteriatype']];
         require_once($CFG->dirroot.'/completion/criteria/'.$class.'.php');
 
-        return new $class($params, false);
+        return new $class($params, $fetch);
     }
 
     /**
@@ -190,7 +191,7 @@ abstract class completion_criteria extends data_object {
      * @param array $data Form data
      * @return  boolean
      */
-    public static function update_config($data) {
+    public function update_config($data) {
         // Get new criteria
         $name = str_replace('completion_', '', get_called_class());
         $formval = "{$name}_value";
@@ -306,6 +307,20 @@ abstract class completion_criteria extends data_object {
         $review = $this->review($completion, false);
 
         return $review !== $completion->is_complete();
+    }
+
+    /**
+     * Return true if this criteria type is being used
+     *
+     * @return  bool
+     */
+    public function is_in_use() {
+        global $DB;
+
+        $params = array(
+            'criteriatype'  => $this->criteriatype
+        );
+        return $DB->record_exists('course_completion_criteria', $params);
     }
 
     /**

@@ -155,8 +155,7 @@ function completion_cron_mark_started() {
         else {
             // Not all enrol plugins fill out timestart correctly, so use whichever
             // is non-zero
-            $current->timeenrolled = $current->timeenrolled;
-            if (!$current->timeenrolled) {
+            if (!$current->timeenrolled && $current->timecreated) {
                 $current->timeenrolled = $current->timecreated;
             }
         }
@@ -334,29 +333,29 @@ function completion_cron_completions() {
 
                 // Handle aggregation special cases
                 if ($params->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
-                    completion_cron_aggregate($activity, $completion->is_complete(), $activity_status);
+                    completion_status_aggregate($activity, $completion->is_complete(), $activity_status);
                 } else if ($params->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
-                    completion_cron_aggregate($prerequisite, $completion->is_complete(), $prerequisite_status);
+                    completion_status_aggregate($prerequisite, $completion->is_complete(), $prerequisite_status);
                 } else if ($params->criteriatype == COMPLETION_CRITERIA_TYPE_ROLE) {
-                    completion_cron_aggregate($role, $completion->is_complete(), $role_status);
+                    completion_status_aggregate($role, $completion->is_complete(), $role_status);
                 } else {
-                    completion_cron_aggregate($overall, $completion->is_complete(), $overall_status);
+                    completion_status_aggregate($overall, $completion->is_complete(), $overall_status);
                 }
             }
 
             // Include role criteria aggregation in overall aggregation
             if ($role_status !== null) {
-                completion_cron_aggregate($overall, $role_status, $overall_status);
+                completion_status_aggregate($overall, $role_status, $overall_status);
             }
 
             // Include activity criteria aggregation in overall aggregation
             if ($activity_status !== null) {
-                completion_cron_aggregate($overall, $activity_status, $overall_status);
+                completion_status_aggregate($overall, $activity_status, $overall_status);
             }
 
             // Include prerequisite criteria aggregation in overall aggregation
             if ($prerequisite_status !== null) {
-                completion_cron_aggregate($overall, $prerequisite_status, $overall_status);
+                completion_status_aggregate($overall, $prerequisite_status, $overall_status);
             }
 
             // If aggregation status is true, mark course complete for user
@@ -395,27 +394,4 @@ function completion_cron_completions() {
     ";
 
     $DB->execute($sql, array('timestarted' => $timestarted));
-}
-
-/**
- * Aggregate criteria status's as per configured aggregation method
- *
- * @param int $method COMPLETION_AGGREGATION_* constant
- * @param bool $data Criteria completion status
- * @param bool|null $state Aggregation state
- */
-function completion_cron_aggregate($method, $data, &$state) {
-    if ($method == COMPLETION_AGGREGATION_ALL) {
-        if ($data && $state !== false) {
-            $state = true;
-        } else {
-            $state = false;
-        }
-    } elseif ($method == COMPLETION_AGGREGATION_ANY) {
-        if ($data) {
-            $state = true;
-        } else if (!$data && $state === null) {
-            $state = false;
-        }
-    }
 }

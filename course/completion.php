@@ -126,11 +126,10 @@ if ($form->is_cancelled()) {
 
     global $COMPLETION_CRITERIA_TYPES;
     foreach ($COMPLETION_CRITERIA_TYPES as $type) {
+
         $class = 'completion_criteria_'.$type;
-        if (!$class::update_config($data)) {
-            print_error('error:databaseupdatefailed', 'completion', new moodleurl('/course/view.php', array('id' => $course->id)));
-            die();
-        }
+        $criterion = new $class();
+        $criterion->update_config($data);
     }
 
     $transaction->allow_commit();

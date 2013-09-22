@@ -78,7 +78,7 @@ class completion_criteria_course extends completion_criteria {
      * @param array $data Form data
      * @return  boolean
      */
-    public static function update_config($data) {
+    public function update_config($data) {
         // Get new criteria
         $name = str_replace('completion_', '', get_called_class());
         $formval = "{$name}_value";
@@ -153,56 +153,6 @@ class completion_criteria_course extends completion_criteria {
      */
     public function get_type_title() {
         return get_string('dependencies', 'completion');
-    }
-
-    /**
-     * Find user's who have completed this criteria
-     */
-    public function cron() {
-
-        global $DB;
-
-        // Get all users who meet this criteria
-        $sql = "
-            SELECT DISTINCT
-                c.id AS course,
-                cr.id AS criteriaid,
-                ra.userid AS userid,
-                cc.timecompleted AS timecompleted
-            FROM
-                {course_completion_criteria} cr
-            INNER JOIN
-                {course} c
-             ON cr.course = c.id
-            INNER JOIN
-                {context} con
-             ON con.instanceid = c.id
-            INNER JOIN
-                {role_assignments} ra
-              ON ra.contextid = con.id
-            INNER JOIN
-                {course_completions} cc
-             ON cc.course = cr.courseinstance
-            AND cc.userid = ra.userid
-            LEFT JOIN
-                {course_completion_crit_compl} ccc
-             ON ccc.criteriaid = cr.id
-            AND ccc.userid = ra.userid
-            WHERE
-                cr.criteriatype = ".COMPLETION_CRITERIA_TYPE_COURSE."
-            AND con.contextlevel = ".CONTEXT_COURSE."
-            AND c.enablecompletion = 1
-            AND ccc.id IS NULL
-            AND cc.timecompleted IS NOT NULL
-        ";
-
-        // Loop through completions, and mark as complete
-        $rs = $DB->get_recordset_sql($sql);
-        foreach ($rs as $record) {
-            $completion = new completion_criteria_completion((array) $record, DATA_OBJECT_FETCH_BY_KEY);
-            $completion->mark_complete($record->timecompleted);
-        }
-        $rs->close();
     }
 
     /**

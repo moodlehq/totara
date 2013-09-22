@@ -192,6 +192,14 @@ class completion_criteria_duration extends completion_criteria {
     public function cron() {
         global $DB;
 
+        // Check to see if this criteria is in use.
+        if (!$this->is_in_use()) {
+            if (debugging()) {
+                mtrace('... skipping as criteria not used');
+            }
+            return;
+        }
+
         /*
          * Get all users who match meet this criteria
          *
@@ -204,16 +212,13 @@ class completion_criteria_duration extends completion_criteria {
             SELECT
                 c.id AS course,
                 cr.id AS criteriaid,
-                u.id AS userid,
+                ue.userid AS userid,
                 ue.timestart AS otimestart,
                 (ue.timestart + cr.enrolperiod) AS ctimestart,
                 ue.timecreated AS otimeenrolled,
                 (ue.timecreated + cr.enrolperiod) AS ctimeenrolled
             FROM
-                {user} u
-            INNER JOIN
                 {user_enrolments} ue
-             ON ue.userid = u.id
             INNER JOIN
                 {enrol} e
              ON e.id = ue.enrolid
@@ -226,7 +231,7 @@ class completion_criteria_duration extends completion_criteria {
             LEFT JOIN
                 {course_completion_crit_compl} cc
              ON cc.criteriaid = cr.id
-            AND cc.userid = u.id
+            AND cc.userid = ue.userid
             WHERE
                 cr.criteriatype = '.COMPLETION_CRITERIA_TYPE_DURATION.'
             AND c.enablecompletion = 1

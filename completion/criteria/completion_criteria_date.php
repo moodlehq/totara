@@ -140,31 +140,38 @@ class completion_criteria_date extends completion_criteria {
     public function cron() {
         global $DB;
 
+        // Check to see if this criteria is in use.
+        if (!$this->is_in_use()) {
+            if (debugging()) {
+                mtrace('... skipping as criteria not used');
+            }
+            return;
+        }
+
         // Get all users who match meet this criteria
         $sql = '
             SELECT DISTINCT
                 c.id AS course,
-                cr.timeend AS timeend,
                 cr.id AS criteriaid,
-                ra.userid AS userid
+                cr.timeend AS timeend,
+                ue.userid AS userid
             FROM
-                {course_completion_criteria} cr
+                {user_enrolments} ue
+            INNER JOIN
+                {enrol} e
+             ON e.id = ue.enrolid
             INNER JOIN
                 {course} c
+             ON e.courseid = c.id
+            INNER JOIN
+                {course_completion_criteria} cr
              ON cr.course = c.id
-            INNER JOIN
-                {context} con
-             ON con.instanceid = c.id
-            INNER JOIN
-                {role_assignments} ra
-             ON ra.contextid = con.id
             LEFT JOIN
                 {course_completion_crit_compl} cc
              ON cc.criteriaid = cr.id
-            AND cc.userid = ra.userid
+            AND cc.userid = ue.userid
             WHERE
                 cr.criteriatype = '.COMPLETION_CRITERIA_TYPE_DATE.'
-            AND con.contextlevel = '.CONTEXT_COURSE.'
             AND c.enablecompletion = 1
             AND cc.id IS NULL
             AND cr.timeend < ?

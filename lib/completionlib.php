@@ -630,7 +630,7 @@ class completion_info {
      * @return void
      */
     public function update_state($cm, $possibleresult=COMPLETION_UNKNOWN, $userid=0) {
-        global $USER, $SESSION;
+        global $USER, $SESSION, $DB;
 
         // Do nothing if completion is not enabled for that activity
         if (!$this->is_enabled($cm)) {
@@ -673,6 +673,17 @@ class completion_info {
             $current->completionstate = $newstate;
             $current->timemodified    = time();
             $this->internal_set_data($cm, $current);
+        }
+
+        // Notify course completion.
+        if (in_array($newstate, array(COMPLETION_COMPLETE, COMPLETION_COMPLETE_PASS))) {
+            $eventdata = new stdClass();
+            $eventdata->criteriatype = COMPLETION_CRITERIA_TYPE_ACTIVITY;
+            $eventdata->moduleinstance = $cm->id;
+            $eventdata->userid = $userid ? $userid : $USER->id;
+            $eventdata->course = $this->course->id;
+            $eventdata->module = $DB->get_field('modules', 'name', array('id' => $cm->module));
+            events_trigger('completion_criteria_calc', $eventdata);
         }
     }
 
@@ -1161,17 +1172,36 @@ class completion_info {
      * Obtains a list of activities for which completion is enabled on the
      * course. The list is ordered by the section order of those activities.
      *
+     * @param array $modinfo For unit testing only, supply the value
+     *   here. Otherwise the method calls get_fast_modinfo
      * @return array Array from $cmid => $cm of all activities with completion enabled,
      *   empty array if none
      */
-    public function get_activities() {
-        $modinfo = get_fast_modinfo($this->course);
+    public function get_activities($modinfo = null) {
+        global $DB;
+
+        // Obtain those activities which have completion turned on.
+        $withcompletion = $DB->get_records_select('course_modules', 'course='.$this->course->id.
+          ' AND completion<>'.COMPLETION_TRACKING_NONE);
+        if (!$withcompletion) {
+            return array();
+        }
+
+        // Use modinfo to get section order and also add in names.
+        if (empty($modinfo)) {
+            $modinfo = get_fast_modinfo($this->course);
+        }
         $result = array();
-        foreach ($modinfo->get_cms() as $cm) {
-            if ($cm->completion != COMPLETION_TRACKING_NONE) {
-                $result[$cm->id] = $cm;
+        foreach ($modinfo->sections as $sectioncms) {
+            foreach ($sectioncms as $cmid) {
+                if (array_key_exists($cmid, $withcompletion)) {
+                    $result[$cmid] = $withcompletion[$cmid];
+                    $result[$cmid]->modname = $modinfo->cms[$cmid]->modname;
+                    $result[$cmid]->name    = $modinfo->cms[$cmid]->name;
+                }
             }
         }
+
         return $result;
     }
 

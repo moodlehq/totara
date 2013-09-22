@@ -279,7 +279,7 @@ class course_modinfo extends stdClass {
 
         // Load sectioncache field into memory as PHP object and check it's valid
         $sectioncache = unserialize($course->sectioncache);
-        if (!is_array($sectioncache)) {
+        if (!is_array($sectioncache) || empty($sectioncache)) {
             // hmm, something is wrong - let's fix it
             rebuild_course_cache($course->id);
             $course->sectioncache = $DB->get_field('course', 'sectioncache', array('id'=>$course->id));
@@ -1393,7 +1393,7 @@ function get_fast_modinfo($courseorid, $userid = 0, $resetonly = false) {
     if (is_object($courseorid)) {
         $course = $courseorid;
     } else {
-        $course = (object)array('id' => $courseorid);
+        $course = (object)array('id' => $courseorid, 'modinfo' => null, 'sectioncache' => null);
     }
 
     // Function is called with $reset = true
@@ -1436,6 +1436,8 @@ function get_fast_modinfo($courseorid, $userid = 0, $resetonly = false) {
         // but data remain in memory. Prior to unsetting, the varable needs to be
         // set to empty to remove its remains from memory.
         $cache[$key] = '';
+        unset($cache[$key]->instances);
+        unset($cache[$key]->cms);
         unset($cache[$key]);
     }
 
