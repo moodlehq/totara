@@ -46,11 +46,17 @@ class field_form extends moodleform {
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'action', 'editfield');
+        $mform->setType('action', PARAM_TEXT);
         $mform->addElement('hidden', 'datatype', $datasent['datatype']);
+        $mform->setType('datatype', PARAM_TEXT);
         $mform->addElement('hidden', 'prefix', $datasent['prefix']);
+        $mform->setType('prefix', PARAM_TEXT);
         $mform->addElement('hidden', 'typeid', $datasent['typeid']);
+        $mform->setType('typeid', PARAM_INT);
         $mform->addElement('hidden', 'tableprefix', $datasent['tableprefix']);
+        $mform->setType('tableprefix', PARAM_TEXT);
 
         $this->field->define_form($mform, $typeid, $tableprefix);
 
