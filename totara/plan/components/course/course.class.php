@@ -202,6 +202,64 @@ class dp_course_component extends dp_base_component {
 
     }
 
+    /**
+     * Search information for search dialog box
+     *
+     * @param stdClass $search_info
+     * @param array $keywords
+     * @param int $parentid
+     * @param array $approved
+     */
+    public function get_search_info(stdClass $search_info, array $keywords, $parentid = 0, $approved = null) {
+        global $DB;
+
+        $where = "c.visible = 1 AND a.planid = :planid";
+        $params = array('planid' => $this->plan->id);
+
+        if ($approved !== null) {
+            list($approvedsql, $approvedparams) = $DB->get_in_or_equal($approved, SQL_PARAMS_NAMED, 'approved');
+            $where .= " AND a.approved {$approvedsql}";
+            $params = array_merge($params, $approvedparams);
+        }
+
+        if ($keywords) {
+            list($searchsql, $searchparams) = totara_search_get_keyword_where_clause($keywords, array('c.fullname'),
+                SQL_PARAMS_NAMED);
+            $params = array_merge($params, $searchparams);
+            $where .= ' AND '.$searchsql;
+        }
+
+        $completion_joins = '';
+        if (!$this->plan->is_complete()) {
+            $completion_joins = "LEFT JOIN
+                {course_completions} cc
+                ON ( cc.course = a.courseid
+                AND cc.userid = :planuserid )";
+            $params['planuserid'] = $this->plan->userid;
+        }
+
+        $sql = "FROM
+                {dp_plan_course_assign} a
+                {$completion_joins}
+            INNER JOIN
+                {course} c
+             ON c.id = a.courseid
+            LEFT JOIN
+                (SELECT itemid,
+                    COUNT(id) AS count
+                    FROM {dp_plan_evidence_relation}
+                    WHERE component = 'course'
+                    GROUP BY itemid) linkedevidence
+                ON linkedevidence.itemid = a.id
+            WHERE
+                $where";
+
+        $search_info->id = 'a.id';
+        $search_info->fullname = 'c.fullname';
+        $search_info->sql = $sql;
+        $search_info->order = 'ORDER BY c.fullname';
+        $search_info->params = $params;
+    }
 
     /**
      * Process an action

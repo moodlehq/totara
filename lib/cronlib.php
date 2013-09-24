@@ -534,6 +534,12 @@ function cron_run() {
     badge_cron();
     mtrace('done.');
 
+    // Appraisal notifications.
+    mtrace("Starting appraisal cron...");
+    require_once($CFG->dirroot . '/totara/appraisal/cron.php');
+    appraisal_cron();
+    mtrace('done.');
+
     // cleanup file trash - not very important
     $fs = get_file_storage();
     $fs->cron();

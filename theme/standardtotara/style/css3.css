@@ -111,7 +111,6 @@ input[disabled="disabled"]:hover,
 input#id_buttonfield[disabled="disabled"]:hover {
     color: #999999;
     cursor: not-allowed;
-    background-color: transparent;
     background-position: 0;
     background-image: -webkit-linear-gradient(top, #FFFFFF, #E6E6E6);
     background-image: -o-linear-gradient(top, #FFFFFF, #E6E6E6);

@@ -62,7 +62,7 @@ abstract class reportcache_advanced_testcase extends advanced_testcase {
         if (is_numeric($shortname)) {
             $report = new reportbuilder($shortname);
         } else {
-            $report = reportbuilder_get_embedded_report($shortname, $data);
+            $report = reportbuilder_get_embedded_report($shortname, $data, false, 0);
         }
         if ($form) {
             $SESSION->reportbuilder[$report->_id] = $form;

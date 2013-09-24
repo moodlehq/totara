@@ -325,6 +325,79 @@ class cohort {
             self::TYPE_DYNAMIC => get_string('dynamic', 'totara_cohort')
         );
     }
+
+    /**
+     * Get a cohort record.
+     *
+     * @param int $itemid
+     * @return stdClass
+     */
+    public function get_item($itemid) {
+        global $DB;
+
+        return $DB->get_record('cohort', array('id' => $itemid));
+    }
+
+    /**
+     * Display the goal table.
+     *
+     * @param stdClass $cohort
+     * @param bool $can_edit
+     * @return string
+     */
+    public static function display_goal_table($cohort, $can_edit) {
+        global $OUTPUT;
+
+        $remove = get_string('remove');
+        $out = '';
+
+        // Goals Table.
+        $table = new html_table();
+
+        // Set up the header row.
+        $cellname = new html_table_cell(get_string('name'));
+        $cellname->header = true;
+
+        // Only show the delete column if they have permissions.
+        if ($can_edit) {
+            $celldelete = new html_table_cell(get_string('delete'));
+            $celldelete->header = true;
+        } else {
+            $celldelete = null;
+        }
+
+        $titlerow = new html_table_row(array($cellname, $celldelete));
+        $table->data[] = $titlerow;
+
+        // Get all assignments.
+        $assignments = goal::get_modules_assigned_goals(GOAL_ASSIGNMENT_AUDIENCE, $cohort->id);
+
+        foreach ($assignments as $assignment) {
+            // Only show the delete column if they have permissions.
+            if ($can_edit) {
+                $params = array('goalid' => $assignment->goalid, 'assigntype' => GOAL_ASSIGNMENT_AUDIENCE, 'modid' => $cohort->id);
+                $url = new moodle_url('/totara/hierarchy/prefix/goal/assign/remove.php', $params);
+                $delete =$OUTPUT->action_icon($url, new pix_icon('t/delete', $remove), null,
+                   array('id' => 'goalassigdel', 'class' => 'iconsmall', 'title' => $remove));
+            } else {
+                $delete = null;
+            }
+
+            $nameurl = new moodle_url('/totara/hierarchy/item/view.php', array('prefix' => 'goal', 'id' => $assignment->goalid));
+            $namewithlink = html_writer::link($nameurl, format_string($assignment->fullname));
+
+            $cellname = new html_table_cell($namewithlink);
+            $celldelete = new html_table_cell($delete);
+
+            $row = new html_table_row(array($cellname, $celldelete));
+            $table->data[] = $row;
+        }
+        $out .= html_writer::start_tag('div', array('id' => 'print_assigned_goals', 'class' => 'cohort'));
+        $out .= html_writer::table($table);
+        $out .= html_writer::end_tag('div');
+
+        return $out;
+    }
 }
 
 /******************************************************************************

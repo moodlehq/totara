@@ -125,37 +125,47 @@ class totaralib_db_test extends UnitTestCaseUsingDatabase {
 
     var $userid = 1;
     var $managerid = 2;
-    var $invaliduserid = 3;
+    var $teamleader = 3;
+    var $appraiser = 4;
+    var $invaliduserid = 5;
 
     //Left out columns not needed for this test (and kept a few for code readability)
     var $user_table_data = array(
-                                    array('id', 'username', 'firstname', 'lastname', 'deleted'),
-                                    array(1, 'user1', 'user', 'one', 0),
-                                    array(2, 'manager1', 'manager', 'one', 0),
+            array('id', 'username', 'firstname', 'lastname', 'deleted'),
+            array(1, 'user1', 'user', 'one', 0),
+            array(2, 'manager1', 'manager', 'one', 0),
+            array(3, 'teamleader1', 'teamleader', 'one', 0),
+            array(4, 'appraiser1', 'appraiser', 'one', 0),
                                 );
 
     //Left out columns not needed for this test
     var $role_assignments_table_data = array(
-                                                array('id', 'roleid', 'contextid', 'userid'),
-                                                array(1, 1, 1, 2),
+            array('id', 'roleid', 'contextid', 'userid'),
+            array(1, 1, 1, 2),
+            array(2, 2, 1, 3),
+            array(3, 3, 1, 4),
                                             );
 
     //Left out columns not needed for this test
     var $role_table_data = array(
-                                    array('id', 'name', 'shortname', 'description'),
-                                    array(1, 'Manager', 'manager', 'Manager Role'),
+            array('id', 'name', 'shortname', 'description'),
+            array(1, 'Manager', 'manager', 'Manager Role'),
+            array(2, 'Teamleader', 'teamleader', 'Team Leader Role'),
+            array(3, 'Appraiser', 'appraiser', 'Appraiser Role'),
                                 );
 
     //Left out columns not needed for this test
     var $context_table_data = array(
-                                        array('id', 'contextlevel', 'instanceid'),
-                                        array('1', CONTEXT_USER, 1),
+            array('id', 'contextlevel', 'instanceid'),
+            array('1', CONTEXT_USER, 1),
                                    );
 
     //Left out columns not needed for this test
     var $pos_assignment_table_data = array(
-                                                array('id', 'fullname', 'userid', 'managerid', 'reportstoid', 'type', 'timecreated', 'timemodified', 'usermodified'),
-                                                array(1, 'pos_fullname', 1, 2, 1, POSITION_TYPE_PRIMARY, '0', '0', '1'),
+            array('id', 'fullname', 'userid', 'managerid', 'appraiserid', 'reportstoid', 'type', 'timecreated', 'timemodified',
+                'usermodified'),
+            array(1, 'pos_fullname', 1, 2, 4, 1, POSITION_TYPE_PRIMARY, '0', '0', '1'),
+            array(2, 'pos_fullname', 2, 3, null, 1, POSITION_TYPE_PRIMARY, '0', '0', '1'),
                                             );
 
     function load_test_table($table, $location, $data){
@@ -164,7 +174,6 @@ class totaralib_db_test extends UnitTestCaseUsingDatabase {
     }
 
     function setUp() {
-        global $db, $CFG;
         parent::setUp();
         $this->load_test_table('context', 'lib', $this->context_table_data);
         $this->load_test_table('user', 'lib', $this->user_table_data);
@@ -176,7 +185,6 @@ class totaralib_db_test extends UnitTestCaseUsingDatabase {
     }
 
     function tearDown() {
-        global $db, $CFG;
         $this->drop_test_table('context');
         $this->drop_test_table('role');
         $this->drop_test_table('role_assignments');
@@ -189,26 +197,44 @@ class totaralib_db_test extends UnitTestCaseUsingDatabase {
     }
 
     function test_totara_is_manager() {
-        //totara_is_manager should return true when there is a role assignment for managerid at the user context for userid
+        // Totara_is_manager should return true when there is a role assignment for managerid at the user context for userid.
         $this->assertTrue(totara_is_manager($this->userid, $this->managerid));
 
-        //totara_is_manager should return false when there is not role assignment record for managerid on userid's user context
+        // Totara_is_manager should return false when there is not role assignment record for managerid on userid's user context.
         $this->assertFalse(totara_is_manager($this->userid, $this->invaliduserid));
+        $this->assertFalse(totara_is_manager($this->userid, $this->appraiserid));
+        $this->assertFalse(totara_is_manager($this->userid, $this->teamleaderid));
     }
 
     function test_totara_get_manager() {
-        //Return value should be user object
-        $this->assertEqual(totara_get_manager($this->userid)->id,$this->managerid);
+        // Return value should be user object.
+        $this->assertEqual(totara_get_manager($this->userid)->id, $this->managerid);
 
-        //totara_get_manager returns get_record_sql. expecting false here.
-        $this->assertFalse(totara_get_manager($this->managerid));
+        // Totara_get_manager returns get_record_sql. expecting false here.
+        $this->assertFalse(totara_get_manager($this->teamleaderid));
+    }
+
+    function test_totara_get_teamleader() {
+        // Return value should be user object.
+        $this->assertEqual(totara_get_teamleader($this->userid)->id, $this->teamleaderid);
+
+        // Totara_get_manager returns get_record_sql. expecting false here.
+        $this->assertFalse(totara_get_teamleader($this->managerid));
+    }
+
+    function test_totara_get_appraiser() {
+        // Return value should be user object.
+        $this->assertEqual(totara_get_appraiser($this->userid)->id, $this->appraiserid);
+
+        // Totara_get_manager returns get_record_sql. expecting false here.
+        $this->assertFalse(totara_get_appraiser($this->managerid));
     }
 
     function test_totara_get_staff() {
-        //Expect array of id numbers
-        $this->assertEqual(totara_get_staff($this->managerid),array($this->userid));
+        // Expect array of id numbers.
+        $this->assertEqual(totara_get_staff($this->managerid), array($this->userid));
 
-        //Expect false when the 'managerid' being inspected has no staff
+        // Expect false when the 'managerid' being inspected has no staff.
         $this->assertFalse(totara_get_staff($this->userid));
     }
 }

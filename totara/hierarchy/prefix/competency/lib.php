@@ -162,6 +162,7 @@ class competency extends hierarchy {
 
         // delete rows from all these other tables:
         $db_data = array(
+            $this->shortprefix.'_record_history' => 'competencyid',
             $this->shortprefix.'_record' => 'competencyid',
             $this->shortprefix.'_criteria' => 'competencyid',
             $this->shortprefix.'_criteria_record' => 'competencyid',

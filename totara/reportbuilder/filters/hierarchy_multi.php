@@ -174,7 +174,7 @@ class rb_filter_hierarchy_multi extends rb_filter_type {
 
         $selected = array();
         list($isql, $iparams) = $DB->get_in_or_equal($value);
-        $items = $DB->get_records_select($type, "id {$isql}", $params);
+        $items = $DB->get_records_select($type, "id {$isql}", $iparams);
         foreach ($items as $item) {
             $selected[] = '"' . format_string($item->fullname) . '"';
         }

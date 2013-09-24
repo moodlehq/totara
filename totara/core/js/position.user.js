@@ -121,5 +121,22 @@ M.totara_positionuser = M.totara_positionuser || {
             );
         })();
 
+        ///
+        /// Appraiser dialog
+        ///
+        (function() {
+            var url = M.cfg.wwwroot+'/totara/hierarchy/prefix/position/assign/';
+
+            totaraSingleSelectDialog(
+                'appraiser',
+                M.util.get_string('chooseappraiser', 'totara_hierarchy') + M.totara_positionuser.config.dialog_display_appraiser,
+                url+'manager.php?userid='+M.totara_positionuser.config.userid,
+                'appraiserid',
+                'appraisertitle',
+                undefined,
+                M.totara_positionuser.config.can_edit            // Make selection deletable
+            );
+        })();
+
     }
 };

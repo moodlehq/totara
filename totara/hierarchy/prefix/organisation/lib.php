@@ -68,15 +68,18 @@ class organisation extends hierarchy {
             TOTARA_JS_TREEVIEW
         ));
 
-        $PAGE->requires->string_for_js('assigncompetencies', 'totara_hierarchy');
+        $PAGE->requires->strings_for_js(array('assigncompetencies', 'assigngoals'), 'totara_hierarchy');
 
-        $args = array('args'=>'{"id":'.$id.', "frameworkid":'.$frameworkid.'}');
+        $args = array('args'=>'{"id":' . $id . ','
+                             . '"frameworkid":' . $frameworkid . ','
+                             . '"sesskey":"' . sesskey() .'"}');
 
         $jsmodule = array(
             'name' => 'totara_organisationitem',
             'fullpath' => '/totara/core/js/organisation.item.js',
             'requires' => array('json'));
-        $PAGE->requires->js_init_call('M.totara_organisationitem.init', $args, false, $jsmodule);
+        $PAGE->requires->js_init_call('M.totara_organisationitem.init',
+            $args, false, $jsmodule);
     }
 
 
@@ -142,29 +145,44 @@ class organisation extends hierarchy {
     function display_extra_view_info($item, $frameworkid=0) {
         global $CFG, $OUTPUT, $PAGE;
 
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/goal/lib.php');
+
         $sitecontext = context_system::instance();
         $can_edit = has_capability('totara/hierarchy:updateorganisation', $sitecontext);
         $comptype = optional_param('comptype', 'competencies', PARAM_TEXT);
 
+        // Spacing.
+        echo html_writer::empty_tag('br');
+
         echo html_writer::start_tag('div', array('class' => "list-assignedcompetencies"));
         echo $OUTPUT->heading(get_string('assignedcompetencies', 'totara_hierarchy'));
+
         echo $this->print_comp_framework_picker($item->id, $frameworkid);
 
         if ($comptype == 'competencies') {
-            // Display assigned competencies
+            // Display assigned competencies.
             $items = $this->get_assigned_competencies($item, $frameworkid);
             $addurl = new moodle_url('/totara/hierarchy/prefix/organisation/assigncompetency/find.php', array('assignto' => $item->id));
             $displaytitle = 'assignedcompetencies';
-            $displayclass = true;
         } else if ($comptype == 'comptemplates') {
-            // Display assigned competencies
+            // Display assigned competencies.
             $items = $this->get_assigned_competency_templates($item, $frameworkid);
             $addurl = new moodle_url('/totara/hierarchy/prefix/organisation/assigncompetencytemplate/find.php', array('assignto' => $item->id));
             $displaytitle = 'assignedcompetencytemplates';
-            $displayclass = false;
         }
         $renderer = $PAGE->get_renderer('totara_hierarchy');
         echo $renderer->print_hierarchy_items($frameworkid, $this->prefix, $this->shortprefix, $displaytitle, $addurl, $item->id, $items, $can_edit);
+        echo html_writer::end_tag('div');
+
+        // Spacing.
+        echo html_writer::empty_tag('br');
+
+        // Display all goals assigned to this item.
+        $addgoalparam = array('assignto' => $item->id, 'assigntype' => GOAL_ASSIGNMENT_ORGANISATION, 'sesskey' => sesskey());
+        $addgoalurl = new moodle_url('/totara/hierarchy/prefix/goal/assign/find.php', $addgoalparam);
+        echo html_writer::start_tag('div', array('class' => 'list-assigned-goals'));
+        echo $OUTPUT->heading(get_string('goalsassigned', 'totara_hierarchy'));
+        echo $renderer->print_assigned_goals($this->prefix, $this->shortprefix, $addgoalurl, $item->id);
         echo html_writer::end_tag('div');
     }
 

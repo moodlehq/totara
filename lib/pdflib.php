@@ -174,4 +174,53 @@ class pdf extends TCPDF {
         return $fontfiles;
     }
 
+    /**
+     * Override Image method to work with images with restricted access
+     */
+    public function Image($file, $x = '', $y = '', $w = 0, $h = 0, $type = '', $link = '', $align = '', $resize = false,
+            $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false,
+            $fitonpage = false, $alt = false, $altimgs = array()) {
+        global $CFG;
+        static $session_cookie_data = '';
+        if ($session_cookie_data == '') {
+            $session_cookie_data = session_name().'='.session_id();
+        }
+
+        if (strpos($file, $CFG->wwwroot.'/pluginfile.php') !== false || strpos($file, $CFG->wwwroot.'/draftfile.php') !== false) {
+            if (function_exists('curl_init')) {
+                session_get_instance()->write_close();
+                $cs = curl_init();
+                curl_setopt($cs, CURLOPT_URL, $file);
+                curl_setopt($cs, CURLOPT_BINARYTRANSFER, true);
+                curl_setopt($cs, CURLOPT_FAILONERROR, true);
+                curl_setopt($cs, CURLOPT_RETURNTRANSFER, true);
+                if ((ini_get('open_basedir') == '') AND (ini_get('safe_mode') == 'Off')) {
+                    curl_setopt($cs, CURLOPT_FOLLOWLOCATION, true);
+                }
+                curl_setopt($cs, CURLOPT_CONNECTTIMEOUT, 5);
+                curl_setopt($cs, CURLOPT_TIMEOUT, 3);
+                curl_setopt($cs, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($cs, CURLOPT_SSL_VERIFYHOST, false);
+                curl_setopt($cs, CURLOPT_USERAGENT, 'TCPDF');
+
+                curl_setopt($cs, CURLOPT_VERBOSE, 1);
+                $logfile = fopen('/tmp/curl.txt', 'w+');
+                curl_setopt($cs, CURLOPT_STDERR, $logfile);
+                curl_setopt($cs, CURLOPT_COOKIE, $session_cookie_data);
+                $imgdata = curl_exec($cs);
+                fclose($logfile);
+                if (!$imgdata) {
+                    return;
+                }
+                curl_close($cs);
+
+                $file = '@'.$imgdata;
+            } else {
+                return;
+            }
+        }
+        parent::Image($file, $x, $y, $w, $h, $type, $link, $align, $resize, $dpi, $palign, $ismask, $imgmask, $border,
+                $fitbox, $hidden, $fitonpage, $alt, $altimgs);
+    }
+
 }

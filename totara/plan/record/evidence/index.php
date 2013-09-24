@@ -30,6 +30,7 @@ require_once($CFG->dirroot.'/totara/plan/lib.php'); // Is this needed?
 require_login();
 
 $userid = optional_param('userid', $USER->id, PARAM_INT); // which user to show, default to current user
+$sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT); // export format
 $rolstatus = optional_param('status', 'all', PARAM_ALPHA);
 if (!in_array($rolstatus, array('active','completed','all'))) {
@@ -62,7 +63,7 @@ $reportfilters = array('userid' => $userid);
 if ($rolstatus != 'all') {
     $reportfilters['rolstatus'] = $rolstatus;
 }
-$report = reportbuilder_get_embedded_report('plan_evidence', $reportfilters);
+$report = reportbuilder_get_embedded_report('plan_evidence', $reportfilters, false, $sid);
 
 $log_url = "record/evidence/index.php?format={$format}&amp;status={$rolstatus}&amp;userid={$userid}";
 
@@ -108,6 +109,9 @@ echo $renderer->print_description($report->description, $report->_id);
 
 $report->display_search();
 
+// Print saved search buttons if appropriate.
+echo $report->display_saved_search_options();
+
 print $OUTPUT->single_button(
         new moodle_url("/totara/plan/record/evidence/edit.php",
                 array('id' => 0, 'userid' => $userid)), get_string('addevidence', 'totara_plan'), 'get');
@@ -116,7 +120,7 @@ if ($countfiltered > 0 ) {
     echo $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
     // export button
-    $renderer->export_select($report->_id);
+    $renderer->export_select($report->_id, $sid);
 }
 
 echo $OUTPUT->container_end();

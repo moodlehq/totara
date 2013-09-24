@@ -129,3 +129,16 @@ table.hierarchy-index .depth10 {
 .available-column select, .selected-column select {
     min-width: 300px;
 }
+
+/* Mygoals page */
+.mygoals_darker {
+    background-color: #F0F0F0;
+}
+
+.mygoals_lighter {
+    background-color: #FAFAFA;
+}
+
+tr.mygoals_header {
+    border-bottom: 1px solid #D0D0D0;
+}

@@ -35,7 +35,7 @@ define('TOTARA_JS_DATEPICKER',     3);
 define('TOTARA_JS_PLACEHOLDER',    4);
 define('TOTARA_JS_ICON_PREVIEW',   5);
 define('TOTARA_JS_UI',             6);
-
+define('TOTARA_JS_DATATABLES',     7);
 /**
  * Load appropriate JS and CSS files for lightbox
  *
@@ -123,6 +123,10 @@ function local_js($options = array()) {
 
         $PAGE->requires->js('/totara/core/js/icon.preview.js');
 
+    }
+
+    if (in_array(TOTARA_JS_DATATABLES, $options)) {
+        $PAGE->requires->js('/totara/core/js/lib/jquery.dataTables.min.js');
     }
 }
 

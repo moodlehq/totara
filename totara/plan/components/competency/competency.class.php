@@ -174,6 +174,79 @@ class dp_competency_component extends dp_base_component {
 
     }
 
+    /**
+     * Search information for search dialog box
+     *
+     * @param stdClass $search_info
+     * @param array $keywords
+     * @param int $parentid
+     * @param array $approved
+     */
+    public function get_search_info(stdClass $search_info, $keywords, $parentid = 0, $approved = null) {
+        global $DB;
+
+        // Generate where clause.
+        $where = "c.visible = 1 AND a.planid = :planid";
+        $params = array('planid' => $this->plan->id);
+        if ($approved !== null) {
+            list($approvedsql, $approvedparams) = $DB->get_in_or_equal($approved, SQL_PARAMS_NAMED, 'approved');
+            $where .= " AND a.approved {$approvedsql}";
+            $params = array_merge($params, $approvedparams);
+        }
+
+        if ($keywords) {
+            list($searchsql, $searchparams) = totara_search_get_keyword_where_clause($keywords, array('c.fullname'),
+                SQL_PARAMS_NAMED);
+            $params = array_merge($params, $searchparams);
+            $where .= ' AND '.$searchsql;
+        }
+
+        // Generate status code.
+        if ($this->plan->is_complete()) {
+            // Use the 'snapshot' status value.
+            $status = "LEFT JOIN {comp_scale_values} csv ON a.scalevalueid = csv.id ";
+        } else {
+            // Use the 'live' status value.
+            $status = "
+                LEFT JOIN
+                    {comp_record} cr
+                 ON a.competencyid = cr.competencyid
+                AND cr.userid = :planuserid
+                LEFT JOIN
+                    {comp_scale_values} csv
+                 ON cr.proficiency = csv.id";
+            $params['planuserid'] = $this->plan->userid;
+        }
+
+        $sql = "FROM
+                {dp_plan_competency_assign} a
+            INNER JOIN
+                {comp} c
+                ON c.id = a.competencyid
+            LEFT JOIN
+                (SELECT itemid1 AS assignid,
+                    COUNT(id) AS count
+                    FROM {dp_plan_component_relation}
+                    WHERE component1 = 'competency'
+                    AND component2 = 'course'
+                    GROUP BY itemid1) linkedcourses
+                ON linkedcourses.assignid = a.id
+            LEFT JOIN
+                (SELECT itemid,
+                    COUNT(id) AS count
+                    FROM {dp_plan_evidence_relation}
+                    WHERE component = 'competency'
+                    GROUP BY itemid) linkedevidence
+                ON linkedevidence.itemid = a.id
+            $status
+            WHERE
+                $where";
+        $search_info->id = 'a.id';
+        $search_info->fullname = 'c.fullname';
+        $search_info->sql = $sql;
+        $search_info->order = 'ORDER BY c.fullname';
+        $search_info->params = $params;
+    }
 
     /**
      * Process an action

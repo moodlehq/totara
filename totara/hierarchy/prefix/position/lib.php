@@ -67,7 +67,7 @@ class position extends hierarchy {
      * @return void
      */
     function hierarchy_page_setup($page = '', $item) {
-        global $CFG, $PAGE;
+        global $CFG, $USER, $PAGE;
 
         if ($page !== 'item/view') {
             return;
@@ -82,16 +82,21 @@ class position extends hierarchy {
             TOTARA_JS_TREEVIEW
         ));
 
-        $args = array('args'=>'{"id":'.$item->id.',"frameworkid":'.$item->frameworkid.'}');
+        $args = array('args'=>'{"id":' . $item->id . ','
+                             . '"frameworkid":' . $item->frameworkid . ','
+                             . '"userid":' . $USER->id . ','
+                             . '"sesskey":"' . sesskey() . '",'
+                             . '"can_edit": true}');
 
-        // Include position user js modules
-        $PAGE->requires->strings_for_js(array('assigncompetencies','assigncompetencytemplate'), 'totara_hierarchy');
+        $PAGE->requires->strings_for_js(array('assigncompetencies', 'assigncompetencytemplate', 'assigngoals'), 'totara_hierarchy');
+
+        // Include position user js modules.
         $jsmodule = array(
                 'name' => 'totara_positionitem',
                 'fullpath' => '/totara/core/js/position.item.js',
                 'requires' => array('json'));
         $PAGE->requires->js_init_call('M.totara_positionitem.init',
-                 $args, false, $jsmodule);
+            $args, false, $jsmodule);
     }
 
     /**
@@ -102,9 +107,14 @@ class position extends hierarchy {
     function display_extra_view_info($item, $frameworkid=0) {
         global $CFG, $OUTPUT, $PAGE;
 
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/goal/lib.php');
+
         $sitecontext = context_system::instance();
         $can_edit = has_capability('totara/hierarchy:updateposition', $sitecontext);
         $comptype = optional_param('comptype', 'competencies', PARAM_TEXT);
+
+        // Spacing.
+        echo html_writer::empty_tag('br');
 
         echo html_writer::start_tag('div', array('class' => "list-assignedcompetencies"));
         echo $OUTPUT->heading(get_string('assignedcompetencies', 'totara_hierarchy'));
@@ -122,8 +132,20 @@ class position extends hierarchy {
             $addurl = new moodle_url('/totara/hierarchy/prefix/position/assigncompetencytemplate/find.php', array('assignto' => $item->id));
             $displaytitle = 'assignedcompetencytemplates';
         }
+
         $renderer = $PAGE->get_renderer('totara_hierarchy');
         echo $renderer->print_hierarchy_items($frameworkid, $this->prefix, $this->shortprefix, $displaytitle, $addurl, $item->id, $items, $can_edit);
+        echo html_writer::end_tag('div');
+
+        // Spacing.
+        echo html_writer::empty_tag('br');
+
+        // Display all goals assigned to this item.
+        $addgoalparam = array('assignto' => $item->id, 'assigntype' => GOAL_ASSIGNMENT_POSITION, 'sesskey' => sesskey());
+        $addgoalurl = new moodle_url('/totara/hierarchy/prefix/goal/assign/find.php', $addgoalparam);
+        echo html_writer::start_tag('div', array('class' => 'list-assigned-goals'));
+        echo $OUTPUT->heading(get_string('goalsassigned', 'totara_hierarchy'));
+        echo $renderer->print_assigned_goals($this->prefix, $this->shortprefix, $addgoalurl, $item->id);
         echo html_writer::end_tag('div');
     }
 
@@ -474,6 +496,7 @@ class position_assignment extends data_object {
         'positionid',
         'organisationid',
         'managerid',
+        'appraiserid',
         'reportstoid',
         'timecreated',
         'timemodified',
@@ -509,6 +532,7 @@ class position_assignment extends data_object {
     public $positionid;
     public $organisationid;
     public $managerid;
+    public $appraiserid;
     public $reportstoid;
     public $managerpath;
     public $timecreated;
@@ -554,6 +578,10 @@ class position_assignment extends data_object {
             $this->managerid = null;
             $this->reportstoid = null;
             $this->managerpath = null;
+        }
+
+        if (!$this->appraiserid) {
+            $this->appraiserid = null;
         }
 
         if (!$this->organisationid) {

@@ -33,6 +33,7 @@ global $SESSION,$USER;
 
 $programid  = optional_param('programid', 0, PARAM_INT);                       // which program to show
 $userid     = optional_param('userid', null, PARAM_INT);                  // which user to show
+$sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format','', PARAM_TEXT); // export format
 $rolstatus = optional_param('status', 'all', PARAM_ALPHANUM);
 // instantiate the program instance
@@ -88,7 +89,7 @@ $data = array(
     'userid' => $userid,
 );
 
-$report = reportbuilder_get_embedded_report($shortname, $data);
+$report = reportbuilder_get_embedded_report($shortname, $data, false, $sid);
 
 $query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
 $log_url = 'record/programs_recurring.php'.$query_string;
@@ -142,11 +143,14 @@ echo $renderer->print_description($report->description, $report->_id);
 
 $report->display_search();
 
+// Print saved search buttons if appropriate.
+echo $report->display_saved_search_options();
+
 if ($countfiltered > 0) {
     echo $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
     // export button
-    $renderer->export_select($report->_id);
+    $renderer->export_select($report->_id, $sid);
 }
 
 echo $OUTPUT->container_end();

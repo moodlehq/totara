@@ -650,7 +650,7 @@ class totara_core_renderer extends plugin_renderer_base {
      * Print list of icons
      */
     public function print_icons_list($type = 'course') {
-        global $CFG, $OUTPUT;
+        global $CFG;
 
         $path = $CFG->dirroot . '/totara/core/pix/' . $type . 'icons';
         $out = html_writer::start_tag('ol', array('id' => 'icon-selectable'));
@@ -660,7 +660,8 @@ class totara_core_renderer extends plugin_renderer_base {
             $replace = array('.png' => '', '_' => ' ', '-' => ' ');
             $iconname = ucwords(strtr($icon, $replace));
             $out .= html_writer::start_tag('li', array('id' => $iconid));
-            $out .= $OUTPUT->pix_icon('/' . $type . 'icons/' . $iconid, $iconname, 'totara_core', array('class' => 'course-icon'));
+            $out .= $this->output->pix_icon('/' . $type . 'icons/' . $iconid, $iconname, 'totara_core',
+                    array('class' => 'course-icon'));
             $out .= html_writer::end_tag('li');
         }
         $out .= html_writer::end_tag('ol');

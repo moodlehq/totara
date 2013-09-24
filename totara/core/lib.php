@@ -140,15 +140,96 @@ function local_get_sticky_pagetypes() {
     );
 }
 
+/**
+ * Require login for ajax supported scripts
+ *
+ * @see require_login()
+ */
+function ajax_require_login($courseorid = null, $autologinguest = true, $cm = null, $setwantsurltome = true,
+        $preventredirect = false) {
+    if (is_ajax_request($_SERVER)) {
+        try {
+            require_login($courseorid, $autologinguest, $cm, $setwantsurltome, true);
+        } catch (require_login_exception $e) {
+            ajax_result(false, $e->getMessage());
+            exit();
+        }
+    } else {
+        require_login($courseorid, $autologinguest, $cm, $setwantsurltome, $preventredirect);
+    }
+}
 
 /**
- * Determine if the current request is an ajax request
- *
- * @param array $server A $_SERVER array
- * @return boolean
+ * Return response to AJAX request
+ * @param bool $success
+ * @param string $message
  */
-function is_ajax_request($server) {
-    return (isset($server['HTTP_X_REQUESTED_WITH']) && strtolower($server['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+function ajax_result($success = true, $message = '') {
+    if ($success) {
+        echo 'success';
+    } else {
+        header('HTTP/1.0 500 Server Error');
+        echo $message;
+    }
+}
+
+/**
+ * Drop table if exists
+ *
+ * @param string $table
+ * @return bool
+ */
+function sql_drop_table_if_exists($table) {
+    global $DB;
+    switch ($DB->get_dbfamily()) {
+        case 'mssql':
+            $sql = "IF OBJECT_ID('dbo.{$table}','U') IS NOT NULL DROP TABLE dbo.{$table}";
+            break;
+        case 'mysql':
+            $sql = "DROP TABLE IF EXISTS `{$table}`";
+            break;
+        case 'postgres':
+        default:
+            $sql = "DROP TABLE IF EXISTS \"{$table}\"";
+            break;
+    }
+    return $DB->execute($sql);
+}
+
+/**
+ * Reorder elements based on order field
+ *
+ * @param int $id Element ID
+ * @param int $pos It's new relative position
+ * @param string $table Table name
+ * @param string $parentfield Field name
+ * @param string $orderfield Order field name
+ */
+function db_reorder($id, $pos, $table, $parentfield, $orderfield='sortorder') {
+    global $DB;
+    $transaction = $DB->start_delegated_transaction();
+    $sql = 'SELECT tosort.id
+              FROM {'.$table.'} tosort
+              LEFT JOIN {'.$table.'} element
+                ON (element.'.$parentfield.' = tosort.'.$parentfield.')
+             WHERE element.id = ?
+               AND tosort.id <> ?
+             ORDER BY tosort.'.$orderfield;
+    $records = $DB->get_records_sql($sql, array($id, $id));
+    $newpos = 0;
+    $todb = new stdClass();
+    $todb->id = $id;
+    $todb->$orderfield = $pos;
+    foreach ($records as $record) {
+        if ($newpos == $pos) {
+            ++$newpos;
+        }
+        $record->$orderfield = $newpos;
+        $DB->update_record($table, $record);
+        ++$newpos;
+    }
+    $DB->update_record($table, $todb);
+    $transaction->allow_commit();
 }
 
 /**

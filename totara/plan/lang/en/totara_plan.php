@@ -891,6 +891,7 @@ $string['activeprogramssubhead'] = 'Active Programs';
 
 $string['allcoursessubhead'] = 'All Courses';
 $string['allcompetenciessubhead'] = 'All Competencies';
+$string['historyforcompetencyx'] = 'History for competency "{$a}"';
 $string['allobjectivessubhead'] = 'All Objectives';
 $string['allprogramssubhead'] = 'All Programs';
 //Help title strings

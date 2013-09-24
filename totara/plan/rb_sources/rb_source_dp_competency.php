@@ -464,6 +464,17 @@ from
                 )
         );
 
+        $columnoptions[] = new rb_column_option(
+                'competency',
+                'statushistorylink',
+                get_string('statushistorylinkcolumn', 'rb_source_dp_competency'),
+                'base.userid',
+                array('defaultheading' => get_string('statushistorylinkheading', 'rb_source_dp_competency'),
+                      'displayfunc' => 'status_history_link',
+                      'extrafields' => array('competencyid' => 'base.competencyid'),
+                      'noexport' => true,
+                      'nosort' => true)
+        );
 
         $this->add_user_fields_to_columns($columnoptions);
 
@@ -587,6 +598,21 @@ from
             ),
         );
         return $defaultcolumns;
+    }
+
+    public function rb_display_status_history_link($userid, $row, $isexport = false) {
+        if ($isexport) {
+            return '';
+        }
+
+        if ($userid == 0) {
+            return '';
+        }
+
+        $url = new moodle_url('/totara/hierarchy/prefix/competency/statushistoryreport.php',
+                array('userid' => $userid, 'competencyid' => $row->competencyid));
+
+        return html_writer::link($url, get_string('statushistorylinkheading', 'rb_source_dp_competency'));
     }
 
     function rb_display_proficiency_and_approval($status, $row) {

@@ -1573,7 +1573,7 @@ abstract class moodle_database {
             }
 
             // pre-process item using user defined function
-            if (isset($processor) && function_or_method_exists($processor)) {
+            if (isset($processor) && is_callable($processor)) {
                 $pparams = $pextraparams;
                 array_unshift($pparams, $item);
                 $item = call_user_func_array($processor, $pparams);
@@ -1581,7 +1581,7 @@ abstract class moodle_database {
 
             // validate the item using a user defined function
             // If the item is not valid throw an exception
-            if (isset($validator) && function_or_method_exists($validator)) {
+            if (isset($validator) && is_callable($validator)) {
                 $vparams = $vextraparams;
                 array_unshift($vparams, $item);
                 if (!call_user_func_array($validator, $vparams)) {

@@ -31,6 +31,7 @@ class rb_plan_competencies_embedded extends rb_base_embedded {
 
     public function __construct($data) {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
+        $compid = array_key_exists('competency', $data) ? $data['competencyid'] : null;
         $rolstatus = array_key_exists('rolstatus', $data) ? $data['rolstatus'] : null;
 
         $this->url = '/totara/plan/record/competencies.php';
@@ -103,6 +104,9 @@ class rb_plan_competencies_embedded extends rb_base_embedded {
         }
         if (isset($rolstatus)) {
             $this->embeddedparams['rolstatus'] = $rolstatus;
+        }
+        if (isset($compid)) {
+            $this->embeddedparams['competencyid'] = $compid;
         }
 
         parent::__construct();

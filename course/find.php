@@ -40,8 +40,9 @@ if ($CFG->forcelogin) {
 $renderer = $PAGE->get_renderer('totara_reportbuilder');
 $strheading = get_string('searchcourses', 'totara_core');
 $shortname = 'findcourses';
+$sid = optional_param('sid', '0', PARAM_INT);
 
-if (!$report = reportbuilder_get_embedded_report($shortname)) {
+if (!$report = reportbuilder_get_embedded_report($shortname, null, false, $sid)) {
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
@@ -80,19 +81,14 @@ echo $renderer->print_description($report->description, $report->_id);
 
 $report->display_search();
 
-// print saved search buttons if appropriate
-$table = new html_table();
-$cells = array(new html_table_cell($renderer->save_button($report->_id)), new html_table_cell($report->view_saved_menu()));
-$row = new html_table_row($cells);
-$table->data[] = $row;
-echo html_writer::table($table);
-echo html_writer::empty_tag('br').html_writer::empty_tag('br');
+// Print saved search buttons if appropriate.
+echo $report->display_saved_search_options();
 
 if ($countfiltered > 0) {
     echo $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
     // export button
-    $renderer->export_select($report->_id);
+    $renderer->export_select($report->_id, $sid);
 }
 echo $OUTPUT->footer();
 

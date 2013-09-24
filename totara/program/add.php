@@ -140,7 +140,9 @@ if ($data = $form->get_data()) {
         $program_todb->icon = $data->icon;
         $program_todb->exceptionssent = 0;
         $program_todb->visible = $data->visible;
-        $program_todb->audiencevisible = $data->audiencevisible;
+        if (isset($data->audiencevisible)) {
+            $program_todb->audiencevisible = $data->audiencevisible;
+        }
         // Text editor fields will be updated later.
         $program_todb->summary = '';
         $program_todb->endnote ='';

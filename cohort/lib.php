@@ -405,6 +405,11 @@ function cohort_print_tabs($currenttab, $cohortid, $cohorttype, $cohort) {
             get_string('learningplan', 'totara_cohort'));
     }
 
+    if ($canmanage) {
+        $toprow[] = new tabobject('goals', new moodle_url('/totara/cohort/goals.php', array('id' => $cohortid)),
+            get_string('goals', 'totara_hierarchy'));
+    }
+
     $tabs = array($toprow);
     return print_tabs($tabs, $currenttab, $inactive, $activetwo, true);
 }

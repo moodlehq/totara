@@ -115,5 +115,4 @@
 <!--@plugin_suites_end@-->
 
     </testsuites>
-
 </phpunit>

@@ -64,6 +64,8 @@ abstract class rb_base_source {
             'preproc' => null,
             'grouptype' => 'none',
             'groupid' => null,
+            'selectable' => true,
+            'cacheable' => true
         );
         foreach ($defaults as $property => $default) {
             if (!property_exists($this, $property)) {
@@ -98,6 +100,9 @@ abstract class rb_base_source {
                 case '{comp}':
                     $joindata['add_custom_competency_fields'] = 'comp';
                     break;
+                case '{goal}':
+                    $joindata['add_custom_goal_fields'] = 'goal';
+                    break;
             }
         }
         //now ensure customfields fields are added if there are no joins but the base table is customfield-related
@@ -117,6 +122,8 @@ abstract class rb_base_source {
             case '{comp}':
                 $joindata['add_custom_competency_fields'] = 'base';
                 break;
+            case '{goal}':
+                $joindata['add_custom_goal_fields'] = 'base';
         }
         //and then use the flags to call the appropriate add functions
         foreach ($joindata as $joinfunction => $jointable) {
@@ -262,6 +269,7 @@ abstract class rb_base_source {
                     'grouping' => $coloption->grouping,
                     'nosort' => $coloption->nosort,
                     'style' => $coloption->style,
+                    'class' => $coloption->class,
                     'hidden' => $hidden,
                     'customheading' => $customheading,
                 )
@@ -545,6 +553,9 @@ abstract class rb_base_source {
                     case 'comp_type':
                         $prefix = 'competency';
                         break;
+                    case 'goal_type':
+                        $prefix = 'goal';
+                        break;
                     default:
                         //unknown prefix
                         return '';
@@ -592,6 +603,9 @@ abstract class rb_base_source {
                     break;
                 case 'comp_type':
                     $prefix = 'competency';
+                    break;
+                case 'goal_type':
+                    $prefix = 'goal';
                     break;
                 default:
                     //unknown prefix
@@ -2538,6 +2552,24 @@ abstract class rb_base_source {
                                             $filteroptions);
     }
 
+    /**
+     * Adds custom goal fields to the report
+     *
+     * @param array $joinlist
+     * @param array $columnoptions
+     * @param array $filteroptions
+     * @return boolean
+     */
+    protected function add_custom_goal_fields(array &$joinlist, array &$columnoptions,
+        array &$filteroptions) {
+        return $this->add_custom_fields_for('goal_type',
+                                            'goal',
+                                            'goalid',
+                                            $joinlist,
+                                            $columnoptions,
+                                            $filteroptions);
+    }
+
 
     /**
      * Adds custom position fields to the report
@@ -3153,6 +3185,23 @@ abstract class rb_base_source {
      * @return array
      */
     protected function define_requiredcolumns() {
+        return array();
+    }
+
+    /**
+     * Called after parameters have been read, allows the source to configure source title, additional tables, etc.
+     *
+     * @param array $params
+     */
+    public function post_config($params) {
+    }
+
+    /**
+     * Returns an array of js objects that need to be included with this report.
+     *
+     * @return array(object)
+     */
+    public function get_required_jss() {
         return array();
     }
 

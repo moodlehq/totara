@@ -141,15 +141,30 @@ class item_edit_form extends moodleform {
             $mform->addHelpButton('totarasync', 'totarasync', 'tool_totara_sync');
         }
 
-        /// Next show the custom fields if we're editing an existing items (otherwise we don't know the typeid)
+        // See if any hierarchy specific form definition exists.
+        $hierarchy->add_additional_item_form_fields($mform);
+
+        // Next show the custom fields if we're editing an existing items (otherwise we don't know the typeid).
         if ($item->id && $item->typeid != 0) {
             customfield_definition($mform, $item, $prefix, $item->typeid, $shortprefix.'_type');
         }
 
-        // See if any hierarchy specific form definition exists
-        $hierarchy->add_additional_item_form_fields($mform);
-
         $this->add_action_buttons();
+    }
+
+    function set_data($data) {
+        global $CFG;
+        $prefix = $this->_customdata['prefix'];
+
+        if ($prefix == 'goal') {
+            // Fix up the format of the goal target date.
+            if (!empty($data->targetdate)) {
+                    $data->targetdateselector = userdate($data->targetdate,
+                            get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
+            }
+        }
+
+        parent::set_data($data);
     }
 
     function definition_after_data() {
@@ -179,6 +194,14 @@ class item_edit_form extends moodleform {
         if ($itemnew->id) {
             /// Check custom fields
             $errors += customfield_validation($itemnew, $itemnew->prefix, $shortprefix.'_type');
+        }
+
+        $dateparseformat = get_string('datepickerparseformat', 'totara_core');
+        if (!empty($data['targetdateselector'])) {
+            $targetdate = $data['targetdateselector'];
+            if (!empty($targetdate) && !totara_date_parse_from_format($dateparseformat, $targetdate)) {
+                $errors['targetdate'] = get_string('error:invaliddate', 'totara_program');
+            }
         }
 
         return $errors;

@@ -125,6 +125,9 @@ switch ($searchtype) {
      * Hierarchy search
      */
     case 'hierarchy':
+        if (method_exists($this, 'put_search_params')) {
+            $this->put_search_params($formdata);
+        }
         // Grab data from dialog object
         $prefix = $this->hierarchy->prefix;
         $frameworkid = $this->frameworkid;
@@ -426,10 +429,14 @@ switch ($searchtype) {
         break;
 
 
+    case 'this':
+        $keywords = totara_search_parse_keywords($query);
+        $this->put_search_info($search_info, $formdata, $keywords);
+        break;
+
     default:
         print_error('invalidsearchtable', 'totara_core');
 }
-
 
 // Generate forn markup
 // Create form

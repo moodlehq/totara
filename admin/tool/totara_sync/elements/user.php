@@ -340,7 +340,8 @@ class totara_sync_element_user extends totara_sync_element {
 
         // If we have no position info at all we do not need to set a position.
         if (!isset($suser->postitle) && empty($suser->posidnumber) && !isset($suser->posstartdate)
-            && !isset($suser->posenddate) && empty($suser->orgidnumber) && empty($suser->manageridnumber)) {
+            && !isset($suser->posenddate) && empty($suser->orgidnumber) && empty($suser->manageridnumber)
+            && empty($suser->appraiseridnumber)) {
             return false;
         }
         $posdata = new stdClass;
@@ -349,6 +350,7 @@ class totara_sync_element_user extends totara_sync_element {
         $posdata->positionid = $pos_assignment->positionid;
         $posdata->organisationid = $pos_assignment->organisationid;
         $posdata->managerid = $pos_assignment->managerid;
+        $posdata->appraiserid = $pos_assignment->appraiserid;
         if (isset($suser->postitle)) {
             $posdata->fullname = $suser->postitle;
             $posdata->shortname = empty($suser->postitleshortname) ? $suser->postitle : $suser->postitleshortname;
@@ -391,6 +393,18 @@ class totara_sync_element_user extends totara_sync_element {
                     $posdata->managerid = $DB->get_field('user', 'id', array('idnumber' => $suser->manageridnumber, 'deleted' => 0), MUST_EXIST);
                 } catch (dml_missing_record_exception $e) {
                     $posdata->managerid = null;
+                }
+            }
+        }
+        if (isset($suser->appraiseridnumber)) {
+            if (empty($suser->appraiseridnumber)) {
+                $posdata->appraiserid = null;
+            } else {
+                try {
+                    $posdata->appraiserid = $DB->get_field('user', 'id',
+                            array('idnumber' => $suser->appraiseridnumber, 'deleted' => 0), MUST_EXIST);
+                } catch (dml_missing_record_exception $e) {
+                    $posdata->appraiserid = null;
                 }
             }
         }
@@ -533,9 +547,17 @@ class totara_sync_element_user extends totara_sync_element {
 
             // Get invalid managers and self-assigned users.
             if (isset($syncfields->manageridnumber)) {
-                $badids = $this->get_invalid_managers($synctable, $synctable_clone);
+                $badids = $this->get_invalid_roles($synctable, $synctable_clone, 'manager');
                 $invalidids = array_merge($invalidids, $badids);
                 $badids = $this->check_self_assignment($synctable, 'manageridnumber', 'selfassignedmanagerx');
+                $invalidids = array_merge($invalidids, $badids);
+            }
+
+            // Get invalid appraisers and self-assigned users.
+            if (isset($syncfields->appraiseridnumber)) {
+                $badids = $this->get_invalid_roles($synctable, $synctable_clone, 'appraiser');
+                $invalidids = array_merge($invalidids, $badids);
+                $badids = $this->check_self_assignment($synctable, 'appraiseridnumber', 'selfassignedappraiserx');
                 $invalidids = array_merge($invalidids, $badids);
             }
 
@@ -622,26 +644,30 @@ class totara_sync_element_user extends totara_sync_element {
     }
 
     /**
-     * Get invalid managers
+     * Get invalid roles (such as managers or appraisers)
      *
      * @param string $synctable sync table name
      * @param string $synctable_clone sync clone table name
+     * @param string $role Name of role to check e.g. 'manager' or 'appraiser'
+     *                     There must be a {$role}idnumber field in the sync db table and '{$role}notexist'
+     *                     language string in lang/en/tool_totara_sync.php
      *
-     * @return array with invalid ids from synctable for managers that do not exist in synctable nor in the database
+     * @return array with invalid ids from synctable for roles that do not exist in synctable nor in the database
      */
-    function get_invalid_managers($synctable, $synctable_clone) {
+    function get_invalid_roles($synctable, $synctable_clone, $role) {
         global $DB;
 
+        $idnumberfield = "{$role}idnumber";
         $params = array();
         $invalidids = array();
-        $sql = "SELECT s.id, s.idnumber, s.manageridnumber
+        $sql = "SELECT s.id, s.idnumber, s.{$idnumberfield}
                   FROM {{$synctable}} s
        LEFT OUTER JOIN {user} u
-                    ON s.manageridnumber = u.idnumber
-                 WHERE s.manageridnumber IS NOT NULL
-                   AND s.manageridnumber != ''
+                    ON s.{$idnumberfield} = u.idnumber
+                 WHERE s.{$idnumberfield} IS NOT NULL
+                   AND s.{$idnumberfield} != ''
                    AND u.idnumber IS NULL
-                   AND s.manageridnumber NOT IN
+                   AND s.{$idnumberfield} NOT IN
                        (SELECT idnumber FROM {{$synctable_clone}})";
         if (empty($this->config->sourceallrecords)) {
             $sql .= ' AND s.deleted = ?'; // Avoid users that will be deleted.
@@ -649,7 +675,7 @@ class totara_sync_element_user extends totara_sync_element {
         }
         $rs = $DB->get_recordset_sql($sql, $params);
         foreach ($rs as $r) {
-            $this->addlog(get_string('managerxnotexist', 'tool_totara_sync', $r), 'error', 'checksanity');
+            $this->addlog(get_string($role.'xnotexist', 'tool_totara_sync', $r), 'error', 'checksanity');
             $invalidids[] = $r->id;
         }
         $rs->close();

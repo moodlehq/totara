@@ -1021,6 +1021,64 @@ class columns_test extends reportcache_advanced_testcase {
         $this->sync_log_data->action = 'user sync';
         $this->sync_log_data->info = 'sync started';
 
+        $this->appraisal = new stdClass();
+        $this->appraisal->id = 1;
+        $this->appraisal->name = 'Appraisal 1';
+        $this->appraisal->description = 'Description';
+        $this->appraisal->status = 0;
+        $this->appraisal->timestarted = 1332243112;
+        $this->appraisal->timefinished = 1332643112;
+
+        $this->appraisal_stage = new stdClass();
+        $this->appraisal_stage->id = 2;
+        $this->appraisal_stage->appraisalid = 1;
+        $this->appraisal_stage->name = 'Stage 1';
+        $this->appraisal_stage->timedue = 1332443112;
+
+        $this->appraisal_user_assignment = new stdClass();
+        $this->appraisal_user_assignment->id = 3;
+        $this->appraisal_user_assignment->userid = 2;
+        $this->appraisal_user_assignment->appraisalid = 1;
+        $this->appraisal_user_assignment->assignedvia = 'Position 1';
+        $this->appraisal_user_assignment->activestageid = 2;
+        $this->appraisal_user_assignment->timecompleted = null;
+
+        $this->goal = new stdClass();
+        $this->goal->id = 1;
+        $this->goal->frameworkid = 2;
+        $this->goal->fullname = 'Goal 1';
+        $this->goal->parentid = 0;
+        $this->goal->visible = 1;
+        $this->goal->proficiencyexpected = 0;
+        $this->goal->timecreated = 0;
+        $this->goal->timemodified = 0;
+        $this->goal->usermodified = 0;
+
+        $this->goal_framework = new stdClass();
+        $this->goal_framework->id = 2;
+        $this->goal_framework->fullname = 'Goal Framework 1';
+        $this->goal_framework->sortorder = 1;
+        $this->goal_framework->visible = 1;
+        $this->goal_framework->hidecustomfields = 0;
+        $this->goal_framework->timecreated = 0;
+        $this->goal_framework->timemodified = 0;
+        $this->goal_framework->usermodified = 0;
+
+        $this->goal_record = new stdClass();
+        $this->goal_record->id = 3;
+        $this->goal_record->userid = 2;
+        $this->goal_record->scalevalueid = 4;
+        $this->goal_record->goalid = 1;
+        $this->goal_record->deleted = 0;
+
+        $this->goal_scale_values = new stdClass();
+        $this->goal_scale_values->id = 4;
+        $this->goal_scale_values->scaleid = 5;
+        $this->goal_scale_values->name = 'Scale value 1';
+        $this->goal_scale_values->sortorder = 1;
+        $this->goal_scale_values->timemodified = 0;
+        $this->goal_scale_values->usermodified = 0;
+
         //Note most of this is just random filler, but component MUST be a valid value e.g. course/program/competency
         $this->filler_data = new stdClass();
         $this->filler_data->id = 1;
@@ -1157,6 +1215,13 @@ class columns_test extends reportcache_advanced_testcase {
         $DB->insert_record('prog_assignment', $this->filler_data);
         $DB->insert_record('totara_sync_log', $this->sync_log_data);
         $DB->insert_record('cohort_visibility', $this->visible_cohort_data);
+        $DB->insert_record('appraisal', $this->appraisal);
+        $DB->insert_record('appraisal_stage', $this->appraisal_stage);
+        $DB->insert_record('appraisal_user_assignment', $this->appraisal_user_assignment);
+        $DB->insert_record('goal', $this->goal);
+        $DB->insert_record('goal_framework', $this->goal_framework);
+        $DB->insert_record('goal_record', $this->goal_record);
+        $DB->insert_record('goal_scale_values', $this->goal_scale_values);
 
         // db version of report
         $this->rb = new reportbuilder(1);
@@ -1172,7 +1237,7 @@ class columns_test extends reportcache_advanced_testcase {
     function test_columns_and_filters($usecache) {
         global $SESSION, $DB;
         // loop through installed sources
-        foreach (reportbuilder::get_source_list() as $sourcename => $title) {
+        foreach (reportbuilder::get_source_list(true) as $sourcename => $title) {
             //echo '<h3>Source ' . $title . ':</h3>' . "\n";
             $src = reportbuilder::get_source_object($sourcename);
             foreach ($src->columnoptions as $column) {

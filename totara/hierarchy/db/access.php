@@ -33,7 +33,7 @@
 
 $capabilities = array(
 
-        // viewing and managing a competency
+        // Viewing and managing a competency.
         'totara/hierarchy:viewcompetency' => array(
             'riskbitmask' => RISK_PERSONAL,
             'captype' => 'read',
@@ -160,7 +160,7 @@ $capabilities = array(
                     ),
                 ),
 
-        // viewing and managing positions
+        // Viewing and managing positions.
         'totara/hierarchy:viewposition' => array(
                 'riskbitmask' => RISK_PERSONAL,
                 'captype'      => 'read',
@@ -264,7 +264,7 @@ $capabilities = array(
                     ),
                 ),
 
-        // viewing and managing organisations
+        // Viewing and managing organisations.
         'totara/hierarchy:vieworganisation' => array(
                 'riskbitmask' => RISK_PERSONAL,
                 'captype'      => 'read',
@@ -368,18 +368,287 @@ $capabilities = array(
                     ),
                 ),
 
-        // Assign a position to yourself
+        // Assign a position to yourself.
         'totara/hierarchy:assignselfposition' => array(
-                'captype' => 'write',
-                'contextlevel' => CONTEXT_SYSTEM,
-                ),
+            'captype' => 'write',
+            'contextlevel' => CONTEXT_SYSTEM,
+            ),
 
-        // Assign a position to a user
+        // Assign a position to a user.
         'totara/hierarchy:assignuserposition' => array(
-                'captype' => 'write',
-                'contextlevel' => CONTEXT_SYSTEM,
+            'captype' => 'write',
+            'contextlevel' => CONTEXT_SYSTEM,
+            'archetypes' => array(
+                'manager' => CAP_ALLOW
+                ),
+            ),
+
+        // Goals permissions - Management.
+        'totara/hierarchy:viewgoal' => array(
+            'riskbitmask' => RISK_PERSONAL,
+            'captype' => 'read',
+            'contextlevel' => CONTEXT_SYSTEM,
+            'archetypes' => array(
+                'manager' => CAP_ALLOW,
+                'student' => CAP_ALLOW,
+                'user' => CAP_ALLOW
+                ),
+            'clonepermissionsfrom' => 'totara/hierarchy:viewcompetency'
+            ),
+        'totara/hierarchy:creategoal' => array(
+            'riskbitmask' => RISK_SPAM,
+            'captype'       => 'write',
+            'contextlevel'  => CONTEXT_SYSTEM,
+            'archetypes' => array(
+                'manager' => CAP_ALLOW
+                ),
+            'clonepermissionsfrom' => 'totara/hierarchy:createcompetency'
+            ),
+        'totara/hierarchy:updategoal' => array(
+            'riskbitmask'   => RISK_DATALOSS,
+            'captype'       => 'write',
+            'contextlevel'  => CONTEXT_SYSTEM,
+            'archetypes' => array(
+                'manager' => CAP_ALLOW
+                ),
+            'clonepermissionsfrom' => 'totara/hierarchy:updatecompetency'
+            ),
+        'totara/hierarchy:deletegoal' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
                 'archetypes' => array(
                     'manager' => CAP_ALLOW
                     ),
+            'clonepermissionsfrom' => 'totara/hierarchy:deletecompetency'
+                ),
+        'totara/hierarchy:creategoaltype' => array(
+            'riskbitmask' => RISK_SPAM,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+            'clonepermissionsfrom' => 'totara/hierarchy:createcompetencytype'
+                ),
+        'totara/hierarchy:updategoaltype' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+            'clonepermissionsfrom' => 'totara/hierarchy:updatecompetencytype'
+                ),
+        'totara/hierarchy:deletegoaltype' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+            'clonepermissionsfrom' => 'totara/hierarchy:deletecompetencytype'
+                ),
+        'totara/hierarchy:creategoalframeworks' => array(
+            'riskbitmask' => RISK_SPAM,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+            'clonepermissionsfrom' => 'totara/hierarchy:createcompetencyframeworks'
+                ),
+        'totara/hierarchy:updategoalframeworks' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+            'clonepermissionsfrom' => 'totara/hierarchy:updatecompetencyframeworks'
+                ),
+        'totara/hierarchy:deletegoalframeworks' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'wrireadte',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+            'clonepermissionsfrom' => 'totara/hierarchy:deletecompetencyframeworks'
+                ),
+        'totara/hierarchy:creategoalcustomfield' => array(
+            'riskbitmask' => RISK_SPAM,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+            'clonepermissionsfrom' => 'totara/hierarchy:createcompetencycustomfield'
+                ),
+        'totara/hierarchy:updategoalcustomfield' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+            'clonepermissionsfrom' => 'totara/hierarchy:updatecompetencycustomfield'
+                ),
+        'totara/hierarchy:deletegoalcustomfield' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+            'clonepermissionsfrom' => 'totara/hierarchy:deletecompetencycustomfield'
+                ),
+        'totara/hierarchy:viewgoalscale' => array(
+                'captype'       => 'read',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+                ),
+        'totara/hierarchy:creategoalscale' => array(
+                'riskbitmask'   => RISK_SPAM,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+                ),
+        'totara/hierarchy:updategoalscale' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+                ),
+        'totara/hierarchy:deletegoalscale' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+                ),
+        'totara/hierarchy:viewgoalreport' => array(
+                'riskbitmask' => RISK_PERSONAL,
+                'captype' => 'read',
+                'contextlevel' => CONTEXT_SYSTEM,
+                'archetypes' => array('manager' => CAP_ALLOW),
+                'clonepermissionsfrom' => 'totara/hierarchy:viewgoal'
+        ),
+        'totara/hierarchy:editgoalreport' => array(
+                'riskbitmask' => RISK_PERSONAL | RISK_CONFIG,
+                'captype' => 'write',
+                'contextlevel' => CONTEXT_SYSTEM,
+                'archetypes' => array('manager' => CAP_ALLOW),
+                'clonepermissionsfrom' => 'totara/hierarchy:updategoal'
+        ),
+
+        // User goals self management permissions.
+        'totara/hierarchy:viewownpersonalgoal' => array(
+            'captype' => 'read',
+            'contextlevel' => CONTEXT_USER,
+            'archetypes' => array(
+                'user' => CAP_ALLOW
                 )
+            ),
+        'totara/hierarchy:viewowncompanygoal' => array(
+            'captype' => 'read',
+            'contextlevel' => CONTEXT_USER,
+            'archetypes' => array(
+                'user' => CAP_ALLOW
+                )
+            ),
+        'totara/hierarchy:manageownpersonalgoal' => array(
+            'riskbitmask'   => RISK_DATALOSS | RISK_SPAM,
+            'captype' => 'write',
+            'contextlevel' => CONTEXT_USER,
+            'archetypes' => array(
+                'user' => CAP_ALLOW
+                )
+            ),
+        'totara/hierarchy:manageowncompanygoal' => array(
+            'riskbitmask'   => RISK_DATALOSS | RISK_SPAM,
+            'captype' => 'write',
+            'contextlevel' => CONTEXT_USER,
+            'archetypes' => array(
+                'user' => CAP_ALLOW
+                )
+            ),
+
+        // Manager team goal management permissions.
+        'totara/hierarchy:viewstaffpersonalgoal' => array(
+            'riskbitmask'   => RISK_PERSONAL,
+            'captype' => 'read',
+            'contextlevel' => CONTEXT_USER,
+                'archetypes' => array(
+                    'staffmanager' => CAP_ALLOW
+                    ),
+            ),
+        'totara/hierarchy:viewstaffcompanygoal' => array(
+            'riskbitmask'   => RISK_PERSONAL,
+            'captype' => 'read',
+            'contextlevel' => CONTEXT_USER,
+                'archetypes' => array(
+                    'staffmanager' => CAP_ALLOW
+                    ),
+            ),
+        'totara/hierarchy:managestaffpersonalgoal' => array(
+            'riskbitmask'   => RISK_PERSONAL | RISK_SPAM | RISK_DATALOSS,
+            'captype' => 'write',
+            'contextlevel' => CONTEXT_USER,
+                'archetypes' => array(
+                    'staffmanager' => CAP_ALLOW
+                    ),
+            ),
+        'totara/hierarchy:managestaffcompanygoal' => array(
+            'riskbitmask'   => RISK_SPAM | RISK_DATALOSS,
+            'captype' => 'write',
+            'contextlevel' => CONTEXT_USER,
+                'archetypes' => array(
+                    'staffmanager' => CAP_ALLOW
+                    ),
+            ),
+
+        // Admin site goal management permissions.
+        'totara/hierarchy:managegoalassignments' => array(
+            'riskbitmask'   => RISK_SPAM,
+            'captype' => 'write',
+            'contextlevel' => CONTEXT_SYSTEM,
+            'archetypes' => array(
+                'manager' => CAP_ALLOW
+                ),
+            ),
+
+        // Additional view framework permissions.
+        'totara/hierarchy:viewcompetencyframeworks' => array(
+            'captype' => 'read',
+            'contextlevel' => CONTEXT_SYSTEM,
+            'clonepermissionsfrom' => 'totara/hierarchy:editcompetencyframeworks'
+            ),
+        'totara/hierarchy:viewpositionframeworks' => array(
+            'captype' => 'read',
+            'contextlevel' => CONTEXT_SYSTEM,
+            'clonepermissionsfrom' => 'totara/hierarchy:editpositionframeworks'
+            ),
+        'totara/hierarchy:vieworganisationframeworks' => array(
+            'captype' => 'read',
+            'contextlevel' => CONTEXT_SYSTEM,
+            'clonepermissionsfrom' => 'totara/hierarchy:editorganisationframeworks'
+            ),
+        'totara/hierarchy:viewgoalframeworks' => array(
+            'captype' => 'read',
+            'contextlevel' => CONTEXT_SYSTEM,
+            'archetypes' => array(
+                'manager' => CAP_ALLOW,
+                'staffmanager' => CAP_ALLOW,
+                'user' => CAP_ALLOW
+                ),
+            'clonepermissionsfrom' => 'totara/hierarchy:editgoalframeworks'
+            ),
         );

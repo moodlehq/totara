@@ -48,6 +48,9 @@ class dialog_search_form extends moodleform {
         // Search type
         $searchtype = $this->_customdata['searchtype'];
 
+        // Other.
+        $othertree = isset($this->_customdata['othertree']) ? $this->_customdata['othertree'] : array();
+
         // Hack to get around form namespacing
         static $formcounter = 1;
         $mform->updateAttributes(array('id' => 'mform_dialog_'.$formcounter));
@@ -101,17 +104,19 @@ class dialog_search_form extends moodleform {
 
         // Hierarchy specific code
         // Show framework selector
-        if ($searchtype == 'hierarchy' && $showpicker) {
-
-            $frameworks = $hierarchy->get_frameworks(array(), $showhidden);
-            $options = array(0 => get_string('allframeworks', 'totara_hierarchy'));
-
-            if ($frameworks) {
-                foreach ($frameworks as $fw) {
-                    $options[$fw->id] = $fw->fullname;
+        if (($searchtype == 'hierarchy' && $showpicker) || !empty($othertree)) {
+            if (empty($othertree)) {
+                $frameworks = $hierarchy->get_frameworks(array(), $showhidden);
+                $options = array(0 => get_string('allframeworks', 'totara_hierarchy'));
+                if ($frameworks) {
+                    foreach ($frameworks as $fw) {
+                        $options[$fw->id] = $fw->fullname;
+                    }
                 }
+            } else {
+                $options = $othertree;
+                $frameworkid = 0;
             }
-
             $attr = array(
                 'class' => 'totara-limited-width-150',
                 'onMouseDown'=>"if(document.all) this.className='totara-expanded-width';",

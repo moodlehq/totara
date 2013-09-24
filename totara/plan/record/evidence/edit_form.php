@@ -55,7 +55,7 @@ class plan_evidence_edit_form extends moodleform {
         $fileoptions = isset($this->_customdata['fileoptions']) ? $this->_customdata['fileoptions'] : $FILEPICKER_OPTIONS;
 
         $mform->addElement('hidden', 'id', $evidenceid);
-        $mform->setType('evidence', PARAM_INT);
+        $mform->setType('id', PARAM_INT);
 
         $mform->addElement('hidden', 'userid', $userid);
         $mform->setType('userid', PARAM_INT);

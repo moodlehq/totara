@@ -217,6 +217,20 @@ class rb_column {
     public $style;
 
     /**
+     * Class to be applied to this column
+     *
+     * Array of CSS classes like this:
+     *
+     * <code>array('vertical')</code>
+     *
+     * The CSS classes are added to the column class property
+     *
+     * @access public
+     * @var array
+     */
+    public $class;
+
+    /**
      * Default visibility status for this column
      *
      * If set to true, users will not see this column by default, but they
@@ -266,8 +280,9 @@ class rb_column {
             'grouping' => 'none',
             'nosort' => false,
             'style' => null,
+            'class' => null,
             'hidden' => 0,
-            'customheading' => true,
+            'customheading' => true
         );
         $options = array_merge($defaults, $options);
 

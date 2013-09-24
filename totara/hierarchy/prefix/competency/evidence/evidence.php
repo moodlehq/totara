@@ -124,6 +124,33 @@ class competency_evidence extends data_object {
                 print_error('updateevidenceitem', 'totara_hierarchy');
             }
         }
+
+        // Insert a history record.
+        $this->insert_comp_record_history();
+    }
+
+    /**
+     * Insert a comp_record_history record.
+     * Uses the values from $this to construct the history record.
+     * This is only used to store changes to proficiency.
+     * This will only save if the proficiency has changed, so it is safe to call multiple times.
+     */
+    private function insert_comp_record_history() {
+        global $DB, $USER;
+
+        $currenthistory = $DB->get_records('comp_record_history',
+                array('userid' => $this->userid, 'competencyid' => $this->competencyid), 'timemodified DESC');
+
+        if (empty($currenthistory) || $this->proficiency != reset($currenthistory)->proficiency) {
+            $history = new stdClass();
+            $history->userid = $this->userid;
+            $history->competencyid = $this->competencyid;
+            $history->proficiency = $this->proficiency;
+            $history->timemodified = time();
+            $history->usermodified = $USER->id;
+
+            return $DB->insert_record('comp_record_history', $history);
+        }
     }
 
     /**

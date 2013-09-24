@@ -36,6 +36,7 @@ $ADMIN->add('root', new admin_category('frontpage', new lang_string('frontpage',
 $ADMIN->add('root', new admin_category('server', new lang_string('server','admin')));
 $ADMIN->add('root', new admin_category('mnet', new lang_string('net','mnet'), (isset($CFG->mnet_dispatcher_mode) and $CFG->mnet_dispatcher_mode === 'off')));
 $ADMIN->add('root', new admin_category('reports', new lang_string('reports')));
+$ADMIN->add('root', new admin_category('appraisals', new lang_string('appraisals', 'totara_appraisal')));
 $ADMIN->add('root', new admin_category('development', new lang_string('development', 'admin')));
 
 // hidden unsupported category

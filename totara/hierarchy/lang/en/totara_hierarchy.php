@@ -1,8 +1,32 @@
 <?php
-//required for unit tests
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2013 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Jonathan Newman <jonathan.newman@catalyst.net.nz>
+ * @package totara
+ * @subpackage totara_core
+ */
+
+// Required for unit tests.
 $string['sortthreadview'] = 'Sort Thread';
 
 $string['andchildren'] = ' (and children)';
+$string['appraiser'] = 'Appraiser';
 $string['availablex'] = 'Available {$a}';
 $string['selectedx'] = 'Selected {$a}';
 $string['bulkaddfailed'] = 'There was a problem adding those items to the hierarchy';
@@ -15,7 +39,7 @@ $string['description'] = 'Description';
 $string['chooseevidencetype'] = 'Choose an evidence type';
 $string['reloadpage'] = ' ~~~RELOAD PAGE~~~ ';
 $string['notset'] = 'Not Set';
-// duplication required to make help buttons work
+// Duplication required to make help buttons work.
 $string['competencyframeworkfullname'] = 'Full Name';
 $string['competencyframeworkscale'] = 'Competency Framework Scale';
 $string['competencyaggregationmethod'] = 'Aggregation Method';
@@ -129,9 +153,9 @@ $string['confirmproceed'] = 'Are you sure you want to proceed?';
 $string['missingframeworkname'] = 'Missing framework name';
 $string['missingtypename'] = 'Missing type name';
 
-// types
+// Types.
 $string['type'] = 'Type';
-// duplication required to make help buttons work
+// Duplication required to make help buttons work.
 $string['positiontype'] = 'Type';
 $string['organisationtype'] = 'Type';
 $string['competencytype'] = 'Type';
@@ -336,7 +360,11 @@ $string['itemstoadd'] = 'Items to add';
 $string['linktoscalevalues'] = '<a href="view.php?id={$a}&amp;type=competency">Click here</a> to view/edit the scale values for this competency scale.';
 $string['linktoscalevalues11'] = '<a href="view.php?id={$a}&amp;prefix=competency">Click here</a> to view/edit the scale values for this competency scale.';
 $string['locatecompetency'] = 'Locate competency';
+$string['locateposition'] = 'Locate position';
+$string['locateorganisation'] = 'Locate organisation';
 $string['locatecompetencytemplate'] = 'Locate competency template';
+$string['locatepositiontemplate'] = 'Locate position template';
+$string['locateorganisationtemplate'] = 'Locate organisation template';
 $string['managecompetencies'] = 'Manage competencies';
 $string['managecompetency'] = 'Manage competencies';
 $string['missingscale'] = 'Missing scale';
@@ -377,7 +405,7 @@ $string['notemplate'] = 'No competency templates defined';
 $string['numericalvalue'] = 'Numerical value';
 $string['options'] = 'Options';
 $string['parent'] = 'Parent';
-// duplication required to make help buttons work
+// Duplication required to make help buttons work.
 $string['competencyevidenceuser'] = 'Competency Evidence User';
 $string['competencyevidencecompetency'] = 'Evidence Competency';
 $string['competencyevidenceassessor'] = 'Evidence Assessor';
@@ -401,7 +429,7 @@ $string['removedcompetencyrelateditem'] = 'The competency <em>{$a}</em> is no lo
 $string['removedcompetencytemplatecompetency'] = 'The competency <em>{$a}</em> is no longer assigned to this template';
 $string['competencyreturntoframework'] = 'Return to competency framework';
 $string['scaleadded'] = 'Competency scale "{$a}" added';
-$string['scalescustomcreate'] = 'Add a new competency scale';
+$string['scalescompcustomcreate'] = 'Add a new competency scale';
 $string['scaleupdated'] = 'Competency scale "{$a}" updated';
 $string['scaledeleted'] = 'Competency scale "{$a}" deleted';
 $string['scaledefaultupdated'] = 'The scale\'s default value has been updated';
@@ -538,6 +566,7 @@ $string['organisationtypes'] = 'Organisation types';
 $string['addnewposition'] = 'Add new position';
 $string['addmultiplenewposition'] = 'Add multiple positions';
 $string['positionaddnewframework'] = 'Add new position framework';
+$string['chooseappraiser'] = 'Choose appraiser';
 $string['choosemanager'] = 'Choose manager';
 $string['chooseposition'] = 'Choose position';
 $string['position'] = 'Position';
@@ -631,6 +660,7 @@ $string['error:startafterfinish'] = 'Start date must not be later than finish da
 $string['entervaliddate'] = 'Enter a valid date';
 $string['positionerror:dialognotreeitems'] = 'No positions in this framework';
 $string['error:positionnotset'] = 'A position has not been set for this user';
+$string['error:userownappraiser'] = 'A user cannot be assigned as their own appraiser';
 $string['error:userownmanager'] = 'A user cannot be assigned as their own manager';
 $string['managepositiontypes'] = 'Manage types';
 $string['positiontypecustomfields'] = 'Position type custom fields';
@@ -643,15 +673,14 @@ $string['positionerror:deletedtype'] = 'Error deleting position type "{$a}".';
 $string['positionnotypes'] = 'No position types';
 $string['positiontypes'] = 'Position types';
 $string['useraspirationalposition'] = 'Aspirational Position';
-//Help strings
+// Help strings.
 $string['titlefullname_help'] = 'This is the full name of the position (job role) title';
 $string['titleshortname_help'] = 'This is the short name of the position (job role) title and can be used for display purposes. ';
 $string['chooseposition_help'] = 'Click **Choose position** to select the correct position (job role) for the user. This is useful for reporting purposes.';
 $string['useraspirationalposition_help'] = 'This is the target position the user will be progressing towards. Click **Choose position** to select the user\'s aspirational position from position framework(s) set up.';
 $string['chooseorganisation_help'] = 'Click **Choose organisation** to select where the user works in the organisation. This will be useful for reporting purposes.';
-$string['choosemanager_help'] = 'Click **Choose manager** to select the user\'s manager.
-
-If the name you are looking for does not appear in the list, a site administrator will need to ensure that the user has been assigned to the "Manager" role.';
+$string['chooseappraiser_help'] = 'Click **Choose appraiser** to select the user\'s appraiser.';
+$string['choosemanager_help'] = 'Click **Choose manager** to select the user\'s manager.';
 $string['startdate_help'] = 'Click the calendar icon to select the date the user started in that position.';
 $string['finishdate_help'] = 'Click the calendar icon to select the date the user finished in that position.';
 
@@ -842,4 +871,429 @@ $string['hierarchy:createcoursecustomfield'] = 'Create a course custom field';
 $string['hierarchy:updatecoursecustomfield'] = 'Update a course custom field';
 $string['hierarchy:deletecoursecustomfield'] = 'Delete a course custom field';
 
+// Goal strings - Some duplication required to help make buttons work.
+$string['goalassignments'] = 'Goal Assignments';
+$string['goalassigmentselector'] = 'Assign group of users';
+$string['goalframeworkfullname'] = 'Full Name';
+$string['goalframeworkscale'] = 'Goal Framework Scale';
+$string['goalaggregationmethod'] = 'Aggregation Method';
+$string['goalscaledescription'] = 'Description';
+$string['goalscaleassign'] = 'Assign Goal Scale';
+$string['goalscalevaluename'] = 'Goal Scale Value Name';
+$string['goalscalevalueidnumber'] = 'Goal Scale Value ID Number';
+$string['goalscalevaluenumeric'] = 'Goal Scale Numeric Value';
+$string['addgoal'] = 'Add Goal';
+$string['addgoals'] = 'Add Goal(s)';
+$string['goaltypedescription'] = 'Goal Type Description';
+$string['goalscalescalename'] = 'Name';
+$string['goalscalescalevalues'] = 'Values';
+$string['goaldescription'] = 'Description';
+$string['goaltype'] = 'Type';
+$string['addassignedgoals'] = 'Assign goals';
+$string['assigngoals'] = 'Assign goals';
+$string['assigngoal'] = 'Assign goal';
+$string['assigngoaltemplate'] = 'Assign goal template';
+$string['addassignedgoaltemplates'] = 'Assign goal templates';
+$string['addcourseevidencetogoals'] = 'Add course evidence to goals';
+$string['addcourseevidencetogoal'] = 'Add course evidence to goal';
+$string['allgoalscales'] = 'All goal scales';
+$string['assigncoursecompletiontogoals'] = 'Assign course completion to goals';
+$string['assigncoursecompletiontogoal'] = 'Assign course completion to goal';
+$string['addnewgoal'] = 'Add new goal';
+$string['bulkdeletegoal'] = 'Bulk delete goals';
+$string['bulkmovegoal'] = 'Bulk move goals';
+$string['addmultiplenewgoal'] = 'Add multiple goals';
+$string['goaladdnewframework'] = 'Add new goal framework';
+$string['addnewtemplate'] = 'Add new goal template';
+$string['assignrelatedgoals'] = 'Assign related goals';
+$string['assigngoaltemplates'] = 'Assign goal templates';
+$string['assignedgoals'] = 'Assigned Goals';
+$string['assignedgoaltemplates'] = 'Assigned goal templates';
+$string['assignedgoalsandtemplates'] = 'Assigned Goals and Goal Templates';
+$string['assignnewgoal'] = 'Assign new goal';
+$string['goalbacktoallframeworks'] = 'Back to all goal frameworks';
+$string['goals'] = 'Goals';
+$string['goaltemplates'] = 'Goal templates';
+$string['goaldepthlevelview'] = 'Goal depth level view';
+$string['goaldepthcustomfields'] = 'Goal depth custom fields';
+$string['goalsusedincourse'] = 'Goals used in course';
+$string['goal'] = 'Goal';
+$string['goalallframeworks'] = 'All frameworks';
+$string['goalcount'] = 'Number of goals';
+$string['goalevidence'] = 'Goal evidence';
+$string['goalplural'] = 'Goals';
+$string['goaladdnew'] = 'Add a new goal';
+$string['goalcustomfields'] = 'Custom fields';
+$string['goalframeworkmanage'] = 'Manage frameworks';
+$string['goalframework'] = 'Goal Framework';
+$string['goalframeworks'] = 'Goal Frameworks';
+$string['goalframeworkview'] = 'View framework';
+$string['goalmanage'] = 'Manage goals';
+$string['goalreports'] = 'Reports';
+$string['goalstatusreport'] = 'Status report';
+$string['goalstatusreportfor'] = 'Goal status report: ';
+$string['goalstatushistoryreportfor'] = 'Goal status history report: ';
+$string['goalsummaryreport'] = 'Summary report';
+$string['goalsummaryreportforx'] = 'Goal summary report for {$a}: ';
+$string['goalscale'] = 'Goal scale';
+$string['goalscaledefaultassigned'] = 'Goal Assigned';
+$string['goalscaledefaultstarted'] = 'Goal In Progress';
+$string['goalscaledefaultcompleted'] = 'Goal Completed';
+$string['goalscaleassign'] = 'Goal scale';
+$string['goalscaleinuse'] = 'This scale is in use (i.e. users have goals marked with values from this scale). Scale values cannot be created, re-ordered or deleted to preserve data integrity. You can still rename scale values but this may confuse users when their proficiency changes without warning.';
+$string['goalscales'] = 'Goal scales';
+$string['goalscalesgeneral'] = 'Goal Scale'; // For help button.
+$string['goalframeworkgeneral'] = 'Goal Framework';
+$string['goaltemplatemanage'] = 'Manage templates';
+$string['goaltemplates'] = 'Goal templates';
+$string['createnewgoal'] = 'Create a new goal';
+$string['goalscaledefault'] = 'Default value';
+$string['goaldeletecheck'] = 'Are you absolutely sure you want to completely delete this goal, all its children and the data they contain?';
+$string['goaldeletecheck11'] = 'Are you sure you want to delete the goal "{$a}"?
+<br /><br />
+This will remove the following data:<br />
+- The "{$a}" goal';
+$string['goaldeletecheckwithchildren'] = 'Are you sure you want to delete the goal "{$a->itemname}" and its {$a->children_string}?
+<br /><br />
+This will remove the following data: <br />
+- The "{$a->itemname}" goal and its {$a->childcount} {$a->children_string}';
+$string['goaldeletemulticheckwithchildren'] = 'Are you sure you want to delete {$a->num} goal/goals and {$a->childcount} {$a->children_string}?
+<br /><br />
+This will remove the following data: <br />
+- The {$a->num} goal/goals and {$a->childcount} {$a->children_string}';
+$string['deleteincludexrelatedgoals'] = '- {$a} link(s) to related goals';
+$string['deletecheckscale'] = 'Are you absolutely sure you want to completely delete this goal scale?';
+$string['deletecheckscalevalue'] = 'Are you absolutely sure you want to delete this goal scale value?';
+$string['deletechecktemplate'] = 'Are you absolutely sure you want to delete this goal template?';
+$string['addedgoal'] = 'The goal "{$a}" has been added';
+$string['error:addgoal'] = 'There was a problem adding the goal "{$a}"';
+$string['deletedgoal'] = 'The goal {$a} and its children have been completely deleted.';
+$string['updatedgoal'] = 'The goal "{$a}" has been updated';
+$string['error:updategoal'] = 'There was a problem updating the goal "{$a}"';
+$string['deletedgoalscale'] = 'The goal scale "{$a}" has been completely deleted.';
+$string['deletedgoalscalevalue'] = 'The goal scale value "{$a}" has been deleted.';
+$string['goaladdedframework'] = 'The goal framework "{$a}" has been added';
+$string['goaldeletedframework'] = 'The goal framework "{$a}" and its data have been completely deleted.';
+$string['goalerror:deletedframework'] = 'Error deleting goal framework "{$a}" and its data.';
+$string['error:couldnotdeletescale'] = 'There was a problem deleting the goal scale "{$a}"';
+$string['error:nodeletegoalscalevaluedefault'] = 'You cannot delete that scale value because it is the default';
+$string['error:nodeletegoalscalevalueonlyprof'] = 'You cannot delete that scale value because it is the only \'consider complete\' value in this scale. Mark another value as consider complete before deleting';
+$string['error:nodeletegoalscaleinuse'] = 'You cannot delete that goal scale because it is in use';
+$string['error:nodeletegoalscaleassigned'] = 'You cannot delete that goal scale because it is already assigned to one or more frameworks';
+$string['deletedtemplate'] = 'The goal template {$a} and its data have been completely deleted.';
+$string['selectgoal'] = 'Select goal';
+$string['selectedgoals'] = 'Selected goals:';
+$string['selectagoalframework'] = 'Select a goal framework';
+$string['clicktoassign'] = 'Click the assign button to select a goal.';
+$string['clicktoassigntemplate'] = 'Click the assign button to select a goal template.';
+$string['clicktoviewchildren'] = 'Click goal name to view child goals (if present).';
+$string['deletegoal'] = 'Delete goal';
+$string['editgoal'] = 'Edit goal';
+$string['goaleditframework'] = 'Edit goal framework';
+$string['goalnotescalevalueentry'] = 'One value per line - from most completed to least';
+$string['edittemplate'] = 'Edit goal template';
+$string['error:compevidencealreadyexists'] = 'This user already has goal evidence for the chosen goal. You can <a href=\'edit.php?id={$a}\'>edit the existing goal</a>, or add a different one.';
+$string['error:evidencealreadyexists'] = 'Could not create new goal evidence because a record already exists for that user and goal';
+$string['goalevidencecount'] = 'Evidence items';
+$string['goalfeatureplural'] = 'Goals';
+$string['goalframework'] = 'Goal framework';
+$string['goalframeworks'] = 'Goal frameworks';
+$string['goalfullname'] = 'Goal full name';
+$string['goalidnumber'] = 'Goal ID number';
+$string['goaltypeidnumber'] = 'Goal type ID number';
+$string['goalframeworkidnumber'] = 'ID Number';
+$string['includegoalevidence'] = 'Include goal evidence';
+$string['linktoscalevalues'] = '<a href="view.php?id={$a}&amp;type=goal">Click here</a> to view/edit the scale values for this goal scale.';
+$string['linktoscalevalues11'] = '<a href="view.php?id={$a}&amp;prefix=goal">Click here</a> to view/edit the scale values for this goal scale.';
+$string['locategoal'] = 'Locate goal';
+$string['locategoaltemplate'] = 'Locate goal template';
+$string['managegoals'] = 'Manage goals';
+$string['managegoal'] = 'Manage goals';
+$string['missingfullname'] = 'Missing goal full name';
+$string['goalmissingname'] = 'Missing goal name';
+$string['goalmissingnameframework'] = 'Missing goal framework name';
+$string['goalmissingnametype'] = 'Missing goal type name';
+$string['goalmissingshortname'] = 'Missing goal short name';
+$string['noassignedgoals'] = 'No goals assigned';
+$string['noassignedgoaltemplates'] = 'No goal templates assigned';
+$string['noassignedgoalstotemplate'] = 'No goals assigned to this template';
+$string['nochildgoals'] = 'No child goals';
+$string['nochildgoalsfound'] = 'No child goals found';
+$string['nogoalsinframework'] = 'No goals in this framework';
+$string['nogoal'] = 'No goals defined';
+$string['nogoalscales'] = 'You must define at least one goal scale with values before you can define a goal framework.';
+$string['nocoursegoals'] = 'No course goals';
+$string['noevidenceitems'] = 'No evidence items setup for this goal';
+$string['noevidencetypesavailable'] = 'No evidence types available in this course';
+$string['goalnoframeworks'] = 'No goal frameworks defined';
+$string['goalnoframeworkssetup'] = 'There are no goal frameworks setup for this site.';
+$string['norelatedgoals'] = 'No related goals';
+$string['notemplateinframework'] = 'No goal templates defined in this framework';
+$string['notemplate'] = 'No goal templates defined';
+$string['goalevidenceuser'] = 'Goal Evidence User';
+$string['goalevidencegoal'] = 'Evidence Goal';
+$string['goalevidenceassessor'] = 'Evidence Assessor';
+$string['goalevidenceassessorname'] = 'Evidence Assessor Name';
+$string['goalevidenceassessmenttype'] = 'Assessment Type';
+$string['goalevidenceposition'] = 'Evidence Position';
+$string['goalevidenceorganisation'] = 'Evidence Organisation';
+$string['goalevidencetimecompleted'] = 'Time Evidence Completed';
+$string['goalparent'] = 'Parent';
+$string['goalscaleproficient'] = 'Consider complete';
+$string['relatedgoals'] = 'Related Goals';
+$string['relateditemremovecheck'] = 'Are you absolutely sure you want to remove this goal relationship?';
+$string['removedgoalevidenceitem'] = 'The <em>{$a}</em> evidence item and its data have been removed';
+$string['removedgoalrelateditem'] = 'The goal <em>{$a}</em> is no longer related to this goal';
+$string['removedgoaltemplategoal'] = 'The goal <em>{$a}</em> is no longer assigned to this template';
+$string['goalreturntoframework'] = 'Return to goal framework';
+$string['scaleadded'] = 'Goal scale "{$a}" added';
+$string['scalesgoalcustomcreate'] = 'Add a new goal scale';
+$string['scaleupdated'] = 'Goal scale "{$a}" updated';
+$string['scaledeleted'] = 'Goal scale "{$a}" deleted';
+$string['goalscalevalueidnumber'] = 'Scale value ID number';
+$string['goalscalevaluename'] = 'Scale value name';
+$string['goalscalevaluedescription'] = 'Description';
+$string['goalscalevaluenumericalvalue'] = 'Scale value numerical value';
+$string['scalevalueupdated'] = 'Goal scale value "{$a}" has been updated';
+$string['scalevalueadded'] = 'Goal scale value "{$a}" has been added';
+$string['selectedgoaltemplates'] = 'Selected goal templates:';
+$string['goalshortname'] = 'Goal short name';
+$string['template'] = 'Goal template';
+$string['templategoalremovecheck'] = 'Are you absolutely sure you want to unassign this goal from this template?';
+$string['goalerror:dialognotreeitems'] = 'No goals in this framework';
+$string['error:dialognolinkedcourseitems'] = 'There are no goals in this framework with linked courses assigned to them';
+$string['goaltargetdate'] = 'Target date';
+$string['goaltypes'] = 'Goal types';
+$string['goaltypeview'] = 'Goal type view';
+$string['goaltypecustomfields'] = 'Goal type custom fields';
+$string['goaldeletedtype'] = 'The goal type "{$a}" has been completely deleted.';
+$string['goalupdatedframework'] = 'The goal framework "{$a}" has been updated';
+$string['goalupdatetype'] = 'The goal type "{$a}" has been updated';
+$string['goalerror:updatetype'] = 'Error updating goal type "{$a}"';
+$string['goalcreatetype'] = 'The goal type "{$a}" has been created';
+$string['goalerror:createtype'] = 'Error creating completency type "{$a}"';
+$string['goalerror:deletedtype'] = 'Error deleting goal type "{$a}".';
+$string['goalnotypes'] = 'No goal types';
+$string['managegoaltypes'] = 'Manage types';
+$string['organisationdeleteincludexlinkedgoals'] = '- {$a} link(s) to goals';
+$string['nounassignedgoals'] = 'No unassigned goals';
+$string['nounassignedgoaltemplates'] = 'No unassigned goal templates';
+$string['goalassigndeletecheck'] = 'Are you sure you would like to remove this goal assignment?';
+$string['organisationdeletedassignedgoal'] = 'Goal successfully unassigned from this organisation';
+$string['organisationerror:deleteassignedgoal'] = 'Error unassigning goal from this organisation';
+$string['positiondeleteincludexlinkedgoals'] = '- {$a} links to goals';
+$string['positiondeletedassignedgoal'] = 'Goal unassigned successfully from this position';
+$string['positionerror:deleteassignedgoal'] = 'Error unassigning goal from this position';
+$string['goalframeworkdescription'] = 'Description';
+$string['nogoalsassignedtoposition'] = 'No goals assigned to position';
+$string['goaltypedescription_help'] = 'A longer text description of the goal type';
+$string['goaltype_help'] = 'Administrators can create and assign types of goals. If a goal is assigned a type it inherits any custom fields that have been assigned to that type. This allows you to organise meta-data relating to your goals and only show the fields that each sort of goal needs.';
+$string['goalshortname_help'] = 'Goal short name is the quick reference name of the goal and can be used for display purposes.';
+$string['goalscalevaluenumericalvalue_help'] = 'Scale value numerical value is the numerical value associated with the scale value.';
+$string['goalscalevaluedescription_help'] = 'A longer description of the goal scale value';
+$string['goaltemplatefullname_help'] = 'Template full name is the complete title of the goal template being set up.';
+$string['goaltemplategeneral_help'] = 'A **Goal Template** is a way of grouping goals from one goal framework together.
 
+When setting up a training event, for example an induction course, this could be linked to a goal template called \'new employee goals\'; drawing automatically on a number of goals, instead of repeatedly selecting the goals one by one.';
+$string['goaltemplateshortname_help'] = 'emplate short name is a quick reference name for the goal template and can be used for display purposes.';
+$string['goalscalevaluename_help'] = '**Scale value name** is the name of the goal scale value you are adding or editing.
+
+A scale value is used to define a learner’s progress for a goal. You can add as many scale values as required.
+
+**Note:** remember to set the Default and \'considered complete\' settings.';
+$string['goalscalesgeneral_help'] = '**Goal scales** enable you to define the criteria by which a goal can be measured. For example, a scale might have three values \'Complete, In Progress, Started\'.
+
+*You must have a goal scale set up before you set up a goal framework, or any goals.*';
+$string['goalevidenceproficiency_help'] = 'This field records whether or not the user is deemed to have completed an assigned goal. The options that appear in the pulldown depend on the goal scale assigned to the chosen goal, so the goal must be selected before this field can be modified. A proficiency must be set to add or update a goal evidence record.';
+$string['goalevidenceposition_help'] = 'This option records the position the user was in at the time they completed the item of goal evidence. In most cases this will be the same as the user\'s current role. As users change roles over time this allows a record to be kept of the role they were in at time of completion. This is an optional field.';
+$string['goalevidencetimecompleted_help'] = 'A record of when the goal evidence was completed.';
+$string['goalevidenceuser_help'] = 'The user whom this item of goal evidence is assigned. It is not possible to reassign an item of goal evidence to a different user. If you have sufficient permissions you can create a new item of goal evidence for a user by clicking the button on the user\'s My Records page. You can also edit evidence for that user by finding the record in the report and clicking the edit icon.';
+$string['goalframeworkdescription_help'] = 'The framework description is a text field for storing additional information about the framework. It is displayed on the manage goals page, just above the table of goals.';
+$string['goalframework_help'] = 'Goals are grouped or categorised and stored in a ‘Goal framework’. Once a goal framework is set up, goals can be set up within it.';
+$string['goalevidenceorganisation_help'] = 'This option records the organisation the user was in at the time they completed the item of goal evidence. In most cases this will be the same as the user\'s current organisation. As users change organisation over time this allows a record to be kept of where they were in at time of completion. This is an optional field.';
+$string['goalevidencegoal_help'] = 'The goal to be assigned to the user. If you are editing an existing item of goal evidence, this cannot be changed. You can however create a new item of goal evidence (if you have permission to do so) by visiting the user\'s My Records page and clicking the \'Add goalevidence\' button.
+
+When creating a new goal evidence item you can choose between adding evidence for an existing goal or creating a new goal. If you choose \'Select a goal\' a popup will allow you to pick from the existing goals. If you choose \'Create a new goal\' a form will appear where you can choose a framework and define the new goal.
+
+Note that you cannot create two goal evidence items that refer to the same user and goal. If you try to do this you will be provided with a link to edit the original record or choose a different goal.';
+$string['goaldescription_help'] = 'A free-text field for providing more details about this goal. This data is displayed when viewing the hieararchy listing, and the individual goal page.';
+$string['goalaggregationmethod_help'] = 'The aggregation method sets how the system will calculate the goal achievement.
+
+If the aggregation method is set to All then all the child goals will have to be achieved for the parent goal to be declared achieved.
+
+If the aggregation method is set to Any then only one of the child goals needs to be met to successfully achieve the parent goal.
+
+If the aggregation method is set to Off then automatic achievement will be deactivated for this goal. (It may still be marked achieved manually.)';
+$string['goalevidenceassessmenttype_help'] = 'The assessment type field is a free text field for any additional information about the assessment of this goal. Contents may vary and the field is optional.';
+$string['goalevidenceassessor_help'] = 'You can select an assessor, which is a user who assessed that the current user completed the current goal. Assessor is an optional field so leave the pulldown on the \'Select an assessor...\' option if you do not want to assign an assessor.
+
+The pulldown lists all moodle users who are in the assessor role. If the user you wish to add is missing or no options are shown then you will need to ask an administrator to add that user to the assessor role.';
+$string['goalevidenceassessorname_help'] = 'The Assessor Name field refers to the name of the organisation that did the assessment of the user for this goal. It is an optional field so can be left blank.';
+$string['goalscalevalueidnumber_help'] = 'Scale ID number is a unique number used to represent the scale value.';
+$string['goalframeworkfullname_help'] = 'The framework full name is the complete title of the framework.';
+$string['goalscaleassign_help'] = 'A Goal scales defines the criteria by which a goal can be measured. This is the name of scale the value is being added to.';
+$string['goalscale_help'] = '**Scale** is the name of the Goal Scale that is used in the goal framework.
+
+The goal scale is set in the goal framework. Only one goal scale can be used in each framework.
+
+A new goal scale can be set up under Hierarchies/Goals/Manage Frameworks in the \'Site Administration\' menu.';
+$string['goalscaledefault_help'] = 'The **Default Value** is automatically assigned to a user when they have not yet demonstrated the proficiency required by the goal\'s specified evidence item(s) (course/activity completion, or passing course/activity grade).';
+$string['goalscaleproficient_help'] = '*considered complete* values provide a way for the system to track if a user has completed a particular goal.
+    A user is considered complete if the scale value set has consider complete checked. You can have multiple scale values set to consider complete, but you must have at least one scale value marked as consider complete. The consider complete value is edited by editing the scale value.';
+$string['goalscalescalevalues_help'] = 'Enter values for the goal scale (one per line), in order from most complete to least complete. For example:
+
+  * *Complete*
+  * *In progress*
+  * *Started*';
+$string['goalscalescalename_help'] = 'The name of the Goal Scale that will be used by Goal frameworks.';
+$string['goalframeworkgeneral_help'] = '**Goal Frameworks** are set up to hold the skills, knowledge and behavioural goals you expect staff to achieve.
+
+Goals may be grouped under different kinds of framework. For example, one framework could hold all industry national goal standards (taken from an industry body), while another framework could hold specific goals set up in-house.
+
+Before you set up a goal framework you must have a **Goal Scale** set up.';
+$string['goalparent_help'] = '**Parent goal** allows you to manage parent/child relationships between goals.
+
+Select the **Parent goal** from the dropdown menu. Select **Top** if you want the goal to sit at the top level of the hierarchy.
+
+If you change the parent goal of an item it will move to sit below its new parent, and all of its children will move with it.
+
+**Note:** to set up parent/child relationships you need to have at least one other item in the framework. Otherwise the option will not appear.';
+$string['goalframeworks_help'] = '**Goal Frameworks** are set up to hold the skills, knowledge and behavioural goals you expect staff to achieve.
+
+Goals may be grouped under different kinds of framework. For example, one framework could hold all industry national goal standards (taken from an industry body), while another framework could hold specific goals set up in-house.
+
+Before you set up a goal framework you must have a **Goal Scale** set up.';
+$string['goalframeworkidnumber_help'] = 'The framework ID number is a unique number that can be used to represent the framework.';
+$string['goalidnumber_help'] = 'Goal ID number is a unique number used to represent the goal.';
+$string['goalframeworkscale_help'] = 'Goal scales enable you to define the criteria by which a goal can be measured. For example, a scale might have three values ‘Complete, In Progress, Started’.
+
+The first step is to use the Goal scales option to add a new scale, then to add the scale values which are used to define a learner’s progress for a goal. You can add as many values as you wish. Note also the Default and \'consider complete\' value settings.';
+$string['goalframeworkshortname_help'] = 'The framework short name is a quick reference to the framework\'s full name and can be used for display purposes.';
+$string['goalfullname_help'] = 'Goal full name is the complete title of the goal.';
+$string['goaltargetdate_help'] = 'Sets the date you plan to have completed the goal by';
+
+// Goal permission strings.
+$string['hierarchy:assignselfgoal'] = 'Assign goals to self';
+$string['hierarchy:assignusergoal'] = 'Assign goals to team';
+$string['hierarchy:managegoalassignments'] = 'Assign company goals';
+$string['hierarchy:viewgoal'] = 'View a goal';
+$string['hierarchy:viewgoalreport'] = 'View embedded goal reports';
+$string['hierarchy:editgoalreport'] = 'Edit embedded goal reports';
+$string['hierarchy:creategoal'] = 'Create a goal';
+$string['hierarchy:updategoal'] = 'Update a goal';
+$string['hierarchy:deletegoal'] = 'Delete a goal';
+$string['hierarchy:creategoaltype'] = 'Create goal types';
+$string['hierarchy:updategoaltype'] = 'Update goal types';
+$string['hierarchy:deletegoaltype'] = 'Delete goal types';
+$string['hierarchy:viewgoalscale'] = 'View goal scales';
+$string['hierarchy:creategoalscale'] = 'Create goal scales';
+$string['hierarchy:updategoalscale'] = 'Update goal scales';
+$string['hierarchy:deletegoalscale'] = 'Delete goal scales';
+$string['hierarchy:creategoalframeworks'] = 'Create goal frameworks';
+$string['hierarchy:updategoalframeworks'] = 'Update goal frameworks';
+$string['hierarchy:deletegoalframeworks'] = 'Delete goal frameworks';
+$string['hierarchy:creategoaltemplate'] = 'Create goal templates';
+$string['hierarchy:updategoaltemplate'] = 'Update goal templates';
+$string['hierarchy:deletegoaltemplate'] = 'Delete goal templates';
+$string['hierarchy:creategoalcustomfield'] = 'Create goal custom fields';
+$string['hierarchy:updategoalcustomfield'] = 'Update goal custom fields';
+$string['hierarchy:deletegoalcustomfield'] = 'Delete goal custom fields';
+$string['hierarchy:manageowncompanygoal'] = 'Manage own company goals';
+$string['hierarchy:manageownpersonalgoal'] = 'Manage own personal goals';
+$string['hierarchy:managestaffcompanygoal'] = 'Manage team members company goals';
+$string['hierarchy:managestaffpersonalgoal'] = 'Manage team members personal goals';
+$string['hierarchy:viewowncompanygoal'] = 'View own company goals';
+$string['hierarchy:viewownpersonalgoal'] = 'View own personal goals';
+$string['hierarchy:viewstaffcompanygoal'] = 'View team members company goals';
+$string['hierarchy:viewstaffpersonalgoal'] = 'View team members personal goals';
+
+// Goal assignment strings.
+$string['individual'] = 'Individual';
+$string['assigngroup'] = 'Assign group of users';
+$string['addpositions'] = 'Add position(s)';
+$string['addorganisations'] = 'Add organisation(s)';
+$string['addcohorts'] = 'Add audience(s)';
+$string['assignposition'] = 'Position';
+$string['assignorganisation'] = 'Organisation';
+$string['assigncohort'] = 'Audience';
+$string['removegoal'] = 'Remove Goal';
+
+// My Goals page strings.
+$string['mygoals'] = 'My Goals';
+$string['mygoalsteam'] = '{$a}\'s Goals';
+$string['addgoalpersonal'] = 'Add personal goal';
+$string['addgoalcompany'] = 'Add company goal';
+$string['companygoal'] = 'Company Goal';
+$string['companygoaldetails'] = 'View Goal Frameworks';
+$string['companygoals'] = 'Company Goals';
+$string['findgoals'] = 'Find Goal(s)';
+$string['personalgoals'] = 'Personal Goals';
+$string['personalgoal'] = 'Personal Goal';
+$string['goaltable:name'] = 'Name';
+$string['goaltable:type'] = 'Type';
+$string['goaltable:numusers'] = 'Number of users';
+$string['goaltable:delete'] = 'Delete';
+$string['goaltable:due'] = 'Due';
+$string['goaltable:status'] = 'Status';
+$string['goaltable:assigned'] = 'Assigned via';
+$string['goaltable:assignmentlevel'] = 'Assigned at';
+$string['goaltable:scale'] = 'Scale';
+$string['goaltable:scalevalue'] = 'Scale Value';
+$string['updatescalevaluesuccess'] = 'Scale value updated';
+$string['updatescalevaluefailure'] = 'Scale value failed to update';
+
+// Goal assignments.
+$string['goalsassigned'] = 'Assigned Goals';
+$string['goalassignmentindividual'] = 'Individually by: {$a}';
+$string['goalassignmentaudience'] = 'Audience: {$a}';
+$string['goalassignmentposition'] = 'Position: {$a}';
+$string['goalassignmentorganisation'] = 'Organisation: {$a}';
+$string['goalassignmentself'] = 'Self';
+$string['goalassignmentmanager'] = 'Manager: {$a}';
+$string['goalassignmentadmin'] = 'Administrator: {$a}';
+$string['goaldeletedassignment'] = 'Successfuly deleted goal assignment';
+$string['goalassignthislevelonly'] = 'This level';
+$string['goalassignthislevelbelow'] = 'This level and below';
+$string['goalassignlevelparent'] = 'Parent: {$a}';
+$string['deletedpersonalgoal'] = 'Successfully deleted personal goal {$a}';
+$string['confirmpersonaldelete'] = 'Are you sure you want to delete {$a->username}\'s personal goal {$a->goalname}';
+$string['oldgoalassignment'] = 'Old {$a->type}: {$a->name}';
+$string['deleteincludexuserassignments'] = '- {$a} user assignment(s)';
+$string['posincludechildrenno'] = 'Ignore children';
+$string['posincludechildrenyes'] = 'Assign to child positions';
+$string['orgincludechildrenno'] = 'Ignore children';
+$string['orgincludechildrenyes'] = 'Assign to child organisations';
+
+// Goal errors.
+$string['cohortnotfound'] = 'Cohort does not exist';
+$string['error:addgoals'] = 'You do not have permission to add goals';
+$string['error:alreadyassigned'] = 'This goal has already been assigned via that method';
+$string['error:createpersonalgoal'] = 'You do not have permissions to create personal goals for this user';
+$string['error:deleteusergoals'] = 'You do not have permissions to delete this goal';
+$string['error:deletegoalassignment'] = 'You do not have permission to remove that assignment';
+$string['error:deletepersonalgoal'] = 'Failed to delete personal goal {$a}';
+$string['error:deletingindiviualassignments'] = 'Error: Can not delete user assignments from individual';
+$string['error:viewusergoals'] = 'You do not have permissions to view this users goals';
+$string['error:editgoals'] = 'You do not have permission to edit this goal';
+$string['error:findgoals'] = 'You do not have permission to find goal(s)';
+$string['error:updatingscalevalue'] = 'Error: could not update scale value';
+$string['error:includechildrencohort'] = 'can not include children of a non hierarchy item, Audiences';
+$string['error:invaliddateformat'] = 'Invalid date format, please enter the date using {$a}';
+$string['error:invaliddatepast'] = 'Invalid date, the target date must be in the future';
+$string['error:updatescalevalue'] = 'You do not have permission to update the scale for this assignment';
+$string['invalidassigntype'] = 'Unrecognised Assignment type for this {$a} goals';
+$string['invalidgoaltype'] = 'Unrecognised goal type';
+$string['invalidgoalscale'] = 'The scale you are trying to assign does not exist';
+$string['invalidtargetdate'] = 'The target date you have set is in the past';
+$string['organisationnotfound'] = 'Organisation does not exist';
+$string['positionnotfound'] = 'Position does not exist';
+
+// View{$prefix}frameworks permissions strings.
+$string['hierarchy:viewcompetencyframeworks'] = 'View competency frameworks';
+$string['hierarchy:viewpositionframeworks'] = 'View position frameworks';
+$string['hierarchy:vieworganisationframeworks'] = 'view organisation frameworks';
+$string['hierarchy:viewgoalframeworks'] = 'view goal frameworks';
+$string['competencydetails'] = 'Competency Details';
+$string['positiondetails'] = 'Position Details';
+$string['organisationdetails'] = 'Organisation Details';
+$string['goaldetails'] = 'Goal Details';

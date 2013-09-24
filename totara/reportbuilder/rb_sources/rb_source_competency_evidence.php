@@ -245,6 +245,17 @@ class rb_source_competency_evidence extends rb_base_source {
                 'competency.path',
                 array('joins' => 'competency')
             ),
+            new rb_column_option(
+                'competency',
+                'statushistorylink',
+                get_string('statushistorylinkcolumn', 'rb_source_competency_evidence'),
+                'base.userid',
+                array('defaultheading' => get_string('statushistorylinkheading', 'rb_source_competency_evidence'),
+                      'displayfunc' => 'status_history_link',
+                      'extrafields' => array('competencyid' => 'base.competencyid'),
+                      'noexport' => true,
+                      'nosort' => true)
+            )
         );
 
         // include some standard columns
@@ -522,6 +533,21 @@ class rb_source_competency_evidence extends rb_base_source {
             ),
         );
         return $defaultfilters;
+    }
+
+    public function rb_display_status_history_link($userid, $row, $isexport = false) {
+        if ($isexport) {
+            return '';
+        }
+
+        if ($userid == 0) {
+            return '';
+        }
+
+        $url = new moodle_url('/totara/hierarchy/prefix/competency/statushistoryreport.php',
+                array('userid' => $userid, 'competencyid' => $row->competencyid));
+
+        return html_writer::link($url, get_string('statushistorylinkheading', 'rb_source_competency_evidence'));
     }
 
     //

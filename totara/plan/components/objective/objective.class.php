@@ -140,6 +140,63 @@ class dp_objective_component extends dp_base_component {
         return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
 
     }
+    /**
+     * Search information for search dialog box
+     *
+     * @param stdClass $search_info
+     * @param array $keywords
+     * @param int $parentid
+     * @param array $approved
+     */
+    public function get_search_info(stdClass $search_info, array $keywords, $parentid = 0, $approved = null) {
+        global $DB;
+
+        $where = "a.planid = :planid";
+        $params = array('planid' => $this->plan->id);
+        if ($approved !== null) {
+            list($approvedsql, $approvedparams) = $DB->get_in_or_equal($approved, SQL_PARAMS_NAMED, 'approved');
+            $where .= " AND a.approved $approvedsql";
+            $params = array_merge($params, $approvedparams);
+        }
+
+        if ($keywords) {
+            list($searchsql, $searchparams) = totara_search_get_keyword_where_clause($keywords, array('a.fullname'),
+                SQL_PARAMS_NAMED);
+            $params = array_merge($params, $searchparams);
+            $where .= ' AND '.$searchsql;
+        }
+
+        // Generate status code.
+        $status = "LEFT JOIN {dp_objective_scale_value} osv ON a.scalevalueid = osv.id ";
+        $sql = "FROM
+                {dp_plan_objective} a
+            LEFT JOIN
+                (SELECT itemid2 AS assignid,
+                    count(id) AS count
+                    FROM {dp_plan_component_relation}
+                    WHERE component2 = :comp1 AND
+                        component1 = :comp2
+                    GROUP BY itemid2) linkedcourses
+                ON linkedcourses.assignid = a.id
+            LEFT JOIN
+                (SELECT itemid,
+                    COUNT(id) AS count
+                    FROM {dp_plan_evidence_relation}
+                    WHERE component = 'objective'
+                    GROUP BY itemid) linkedevidence
+                ON linkedevidence.itemid = a.id
+            $status
+            WHERE
+                $where";
+        $params['comp1'] = 'objective';
+        $params['comp2'] = 'course';
+
+        $search_info->id = 'a.id';
+        $search_info->fullname = 'a.fullname';
+        $search_info->sql = $sql;
+        $search_info->order = 'ORDER BY a.fullname';
+        $search_info->params = $params;
+    }
 
 
     /**

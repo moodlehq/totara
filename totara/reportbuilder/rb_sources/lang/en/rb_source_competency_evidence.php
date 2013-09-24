@@ -23,6 +23,8 @@ $string['competencylinkname'] = 'Competency Name (linked to competency page)';
 $string['competencyid'] = 'Competency ID';
 $string['competencypath'] = 'Competency Path';
 $string['options'] = 'Options';
+$string['statushistorylinkcolumn'] = 'User\'s Status History Link';
+$string['statushistorylinkheading'] = 'Status History';
 
 // filters
 $string['completeddate'] = 'Completed Date';

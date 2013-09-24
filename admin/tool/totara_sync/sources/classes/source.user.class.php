@@ -72,6 +72,7 @@ abstract class totara_sync_source_user extends totara_sync_source {
             'posstartdate',
             'posenddate',
             'manageridnumber',
+            'appraiseridnumber',
             'auth',
             'password',
             'suspended',
@@ -271,6 +272,9 @@ abstract class totara_sync_source_user extends totara_sync_source {
         if (!empty($this->config->import_manageridnumber)) {
             $table->add_field('manageridnumber', XMLDB_TYPE_CHAR, '100');
         }
+        if (!empty($this->config->import_appraiseridnumber)) {
+            $table->add_field('appraiseridnumber', XMLDB_TYPE_CHAR, '100');
+        }
         if (!empty($this->config->import_auth)) {
             $table->add_field('auth', XMLDB_TYPE_CHAR, '20');
         }
@@ -303,6 +307,9 @@ abstract class totara_sync_source_user extends totara_sync_source {
         }
         if (!empty($this->config->import_manageridnumber)) {
             $table->add_index('manageridnumber', XMLDB_INDEX_NOTUNIQUE, array('manageridnumber'));
+        }
+        if (!empty($this->config->import_appraiseridnumber)) {
+            $table->add_index('appraiseridnumber', XMLDB_INDEX_NOTUNIQUE, array('appraiseridnumber'));
         }
 
         /// Create and truncate the table
