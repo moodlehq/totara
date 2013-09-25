@@ -3271,8 +3271,12 @@ function compare_activities_by_time_asc($a, $b) {
 function archive_course_activities($userid, $courseid) {
     global $DB, $CFG;
 
-    // Get all modules
-    if ($modules = $DB->get_records('modules')) {
+    // Get all modules for this course.
+    $sql = "SELECT DISTINCT m.name
+            FROM {modules} m
+            JOIN {course_modules} cm ON cm.module = m.id AND course = :courseid
+            ORDER BY m.name";
+    if ($modules = $DB->get_records_sql($sql, array('courseid' => $courseid))) {
         foreach ($modules as $mod) {
             // Check if a module instance is attached to the course and it has the archive feature
             if ($DB->record_exists($mod->name, array('course' => $courseid))

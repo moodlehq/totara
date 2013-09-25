@@ -1510,7 +1510,7 @@ function scorm_archive_completion($userid, $courseid) {
             AND EXISTS (SELECT t.id
                         FROM {scorm_scoes_track} t
                         WHERE t.scormid = s.id
-                        AND t.userid = :userid';
+                        AND t.userid = :userid)';
     $scorms = $DB->get_records_sql($sql, array('courseid' => $courseid, 'userid' => $userid));
     foreach ($scorms as $scorm) {
         $DB->delete_records('scorm_scoes_track', array('userid' => $userid, 'scormid' => $scorm->id));
