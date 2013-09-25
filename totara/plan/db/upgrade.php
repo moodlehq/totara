@@ -221,5 +221,20 @@ function xmldb_totara_plan_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2013040200, 'totara', 'plan');
     }
 
+    if ($oldversion < 2013040201) {
+
+        // Define field readonly to be added to dp_plan_evidence
+        $table = new xmldb_table('dp_plan_evidence');
+        $field = new xmldb_field('readonly', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'userid');
+
+        // Conditionally launch add field readonly
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // plan savepoint reached
+        upgrade_plugin_savepoint(true, 2013040201, 'totara', 'plan');
+    }
+
     return true;
 }

@@ -32,22 +32,39 @@ require_once('lib.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 require_once($CFG->dirroot . '/totara/cohort/lib.php');
 require_once('edit_form.php');
+require_once($CFG->dirroot . '/totara/certification/lib.php');
+
+require_login();
 
 $categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
+$iscertif = optional_param('iscertif', 0, PARAM_INT); // program=0|certification=1 - passed from certification/add.php
 
 $systemcontext = context_system::instance();
-$actualurl = new moodle_url('/totara/program/add.php', array('category' => $categoryid));
+$actualurl = new moodle_url('/totara/program/add.php', array('category' => $categoryid, 'iscertif' => $iscertif));
 
 // Integrate into the admin tree only if the user can create programs at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
-if (has_capability('totara/program:createprogram', $systemcontext)) {
-    admin_externalpage_setup('programmgmt', '', null, $actualurl);
+if ($iscertif) {
+    if (has_capability('totara/certification:createcertification', $systemcontext)) {
+        admin_externalpage_setup('managecertifications', '', null, $actualurl);
+    } else {
+        $PAGE->set_context($systemcontext);
+        $PAGE->set_url($actualurl);
+        $PAGE->set_title(get_string('createnewcertification', 'totara_certification'));
+        $PAGE->set_heading(get_string('createnewcertification', 'totara_certification'));
+    }
 } else {
-    $PAGE->set_context($systemcontext);
-    $PAGE->set_url($actualurl);
-    $PAGE->set_title(get_string('createnewprogram', 'totara_program'));
-    $PAGE->set_heading(get_string('createnewprogram', 'totara_program'));
+    if (has_capability('totara/program:createprogram', $systemcontext)) {
+        admin_externalpage_setup('manageprograms', '', null, $actualurl);
+    } else {
+        $PAGE->set_context($systemcontext);
+        $PAGE->set_url($actualurl);
+        $PAGE->set_title(get_string('createnewprogram', 'totara_program'));
+        $PAGE->set_heading(get_string('createnewprogram', 'totara_program'));
+    }
 }
+
+
 //Javascript include
 local_js(array(
     TOTARA_JS_DIALOG,
@@ -83,7 +100,12 @@ if ($categoryid) { // creating new program in this category
     if (!$category = $DB->get_record('course_categories', array('id' => $categoryid))) {
         print_error('Category ID was incorrect');
     }
-    require_capability('totara/program:createprogram', context_coursecat::instance($category->id));
+    if (!$iscertif) {
+        require_capability('totara/program:createprogram', context_coursecat::instance($category->id));
+    } else {
+        require_capability('totara/certification:createcertification', context_coursecat::instance($category->id));
+    }
+
 } else {
     print_error('Program category must be specified');
 }
@@ -106,11 +128,15 @@ $item = file_prepare_standard_editor($item, 'summary', $TEXTAREA_OPTIONS, $TEXTA
 
 $item = file_prepare_standard_editor($item, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
                                           'totara_program', 'endnote', 0);
+
 $overviewfilesoptions = prog_program_overviewfiles_options($item);
 if ($overviewfilesoptions) {
     file_prepare_standard_filemanager($item, 'overviewfiles', $overviewfilesoptions, $systemcontext, 'totara_program', 'overviewfiles', 0);
 }
 $form = new program_edit_form($currenturl, array('action' => 'add', 'category' => $category, 'editoroptions' => $TEXTAREA_OPTIONS));
+
+$form = new program_edit_form($currenturl, array('action' => 'add', 'category' => $category,
+                'editoroptions' => $TEXTAREA_OPTIONS, 'iscertif' =>  $iscertif));
 
 if ($form->is_cancelled()) {
     redirect($progindexurl);
@@ -118,13 +144,16 @@ if ($form->is_cancelled()) {
 
 // Handle form submit
 if ($data = $form->get_data()) {
+
     if (isset($data->savechanges)) {
 
         $program_todb = new stdClass;
 
-        $program_todb->availablefrom = ($data->availablefromselector) ? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$data->availablefromselector) : 0;
-        $program_todb->availableuntil = ($data->availableuntilselector) ? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$data->availableuntilselector) : 0;
-        //Calcuate sortorder
+        $program_todb->availablefrom = ($data->availablefromselector) ?
+            totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->availablefromselector) : 0;
+        $program_todb->availableuntil = ($data->availableuntilselector) ?
+            totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->availableuntilselector) : 0;
+        // Calcuate sortorder
         $sortorder = $DB->get_field('prog', 'MAX(sortorder) + 1', array());
 
         $now = time();
@@ -197,17 +226,57 @@ if ($data = $form->get_data()) {
         } else {
             $viewurl = "{$CFG->wwwroot}/totara/program/view.php?id={$newid}";
         }
-        //call prog_fix_program_sortorder to ensure new program is displayed properly and category->programcount is updated
+        // call prog_fix_program_sortorder to ensure new program is displayed properly and the counts are updated
         prog_fix_program_sortorder($data->category);
-        totara_set_notification(get_string('programcreatesuccess', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));
+
+        // Certification
+        if ($data->iscertif) {
+            $certification_todb = new stdClass;
+            $certification_todb->learningcomptype = CERTIFTYPE_PROGRAM;
+            $certification_todb->activeperiod = '1 year';
+            $certification_todb->windowperiod = '1 month';
+            $certification_todb->recertifydatetype = CERTIFRECERT_EXPIRY;
+            $certification_todb->timemodified = time();
+
+            $newcertid = 0;
+
+            // TODO move to prog transaction?
+            $transaction = $DB->start_delegated_transaction();
+
+            // Set up the certification
+            $newcertifid = $DB->insert_record('certif', $certification_todb);
+            $DB->set_field('prog', 'certifid', $newcertifid , array('id' => $newid));
+
+            $transaction->allow_commit();
+
+            add_to_log(SITEID, 'certification', 'created', "edit.php?id={$newid}", '');
+
+            if (has_capability('totara/certification:configuredetails', $programcontext)) {
+                $viewurl = "{$CFG->wwwroot}/totara/program/edit.php?id={$newid}";
+            } else {
+                $viewurl = "{$CFG->wwwroot}/totara/program/view.php?id={$newid}";
+            }
+
+            $successmsg = get_string('certifprogramcreatesuccess', 'totara_certification');
+      } else {
+          $successmsg = get_string('programcreatesuccess', 'totara_program');
+      }
+
+      totara_set_notification($successmsg, $viewurl, array('class' => 'notifysuccess'));
     }
 }
 
 ///
 /// Display
 ///
-$heading = get_string('createnewprogram', 'totara_program');
-$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
+if (!$iscertif) {
+    $heading = get_string('createnewprogram', 'totara_program');
+    $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
+} else {
+    $heading = get_string('createnewcertifprog', 'totara_certification');
+    $pagetitle = format_string(get_string('certifprog', 'totara_certification').': '.$heading);
+}
+
 prog_add_base_navlinks();
 $PAGE->navbar->add($heading);
 
@@ -215,7 +284,6 @@ echo $OUTPUT->header();
 
 echo $OUTPUT->container_start('program add', 'program-add');
 
-//$id = $program->id;
 $context = context_coursecat::instance($category->id);
 $exceptions = 0;
 echo $OUTPUT->heading($heading);
@@ -231,4 +299,3 @@ echo build_datepicker_js(
 );
 
 echo $OUTPUT->footer();
-

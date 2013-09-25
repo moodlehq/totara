@@ -122,7 +122,6 @@ $string['developmentplan'] = 'Development Planner';
 $string['elementlibrary'] = 'Element Library';
 $string['errorfindingcategory'] = 'Error finding the category';
 $string['errorfindingprogram'] = 'Error finding the program';
-$string['findcourses'] = 'Find Courses';
 $string['mydevelopmentplans'] = 'My development plans';
 $string['learningplans'] = 'Learning Plans';
 $string['mylearning'] = 'My Learning';
@@ -225,6 +224,7 @@ $string['myteaminstructionaltext'] = 'Choose a team member from the table on the
 $string['error:staffmanagerroleexists'] = 'A role "staffmanager" already exists. This role must be renamed before the upgrade can proceed.';
 $string['error:importtimezonesfailed'] = 'Failed to update timezone information.';
 $string['importtimezonessuccess'] = 'Timezone information updated from source {$a}.';
+$string['importtimezonesskipped'] = 'Skipped updating timezone information.';
 // Course competencies
 $string['returntocourse'] = 'Return to the course';
 
@@ -372,3 +372,8 @@ $string['tempmanagerexpiryupdatemsgtmpmgrsubject'] = 'Temporary manager expiry u
 $string['tempmanagerexpiryupdatemsgmgr'] = 'The expiry date for {$a->staffmember}\'s temporary manager ({$a->tempmanager}) has been updated to {$a->expirytime}.<br>View details <a href="{$a->url}">here</a>.';
 $string['tempmanagerexpiryupdatemsgtmpmgr'] = 'Your expiry date as temporary manager for {$a->staffmember} has been updated to {$a->expirytime}.<br>View details <a href="{$a->url}">here</a>.';
 $string['tempmanagerexpiryupdatemsgstaff'] = 'The expiry date for {$a->tempmanager} (your temporary manager) has been updated to {$a->expirytime}.<br>View details <a href="{$a->url}">here</a>.';
+
+$string['managecertifications'] = 'Manage certifications';
+$string['archivecompletionrecords'] = 'Archive completion records';
+$string['uploadcompletionrecords'] = 'Upload completion records';
+$string['modulearchive'] = 'Activity archives';

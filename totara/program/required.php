@@ -31,6 +31,7 @@ require_login();
 
 $userid = optional_param('userid', $USER->id, PARAM_INT); // show required learning for this user
 $programid = optional_param('id', 0, PARAM_INT);
+$filter = optional_param('filter', 'all', PARAM_TEXT);
 
 $PAGE->set_context(get_system_context());
 $PAGE->set_url('/totara/program/required.php');
@@ -168,17 +169,36 @@ if ($programid) {
     echo html_writer::start_tag('div', array('style' => 'clear: both;')) . html_writer::end_tag('div');
     echo $OUTPUT->container_end();
 
-    echo $OUTPUT->container_start('', 'required-learning-list');
+    if ($filter == 'all' || $filter == 'program') {
+        echo $OUTPUT->container_start('', 'required-learning-list');
+        echo $OUTPUT->heading(get_string('programs', 'totara_program'), 4);
 
-    $requiredlearninghtml = prog_display_required_programs($userid);
+        $requiredlearninghtml = prog_display_required_programs($userid);
 
-    if (empty($requiredlearninghtml)) {
-        echo get_string('norequiredlearning', 'totara_program');
-    } else {
-        echo $requiredlearninghtml;
+        if (empty($requiredlearninghtml)) {
+            echo get_string('norequiredlearning', 'totara_program');
+        } else {
+            echo $requiredlearninghtml;
+        }
+
+        echo $OUTPUT->container_end();
     }
 
-    echo $OUTPUT->container_end();
+    if ($filter == 'all' || $filter == 'certification') {
+        echo $OUTPUT->container_start('', 'certification-learning-list');
+        echo $OUTPUT->heading(get_string('certifications', 'totara_program'), 4);
+
+        $certificationhtml = prog_display_certification_programs($userid);
+
+        if (empty($certificationhtml)) {
+            echo get_string('nocertificationlearning', 'totara_program');
+        } else {
+            echo $certificationhtml;
+        }
+
+        echo $OUTPUT->container_end();
+    }
+
     echo $OUTPUT->container_end();
     echo $OUTPUT->footer();
 }

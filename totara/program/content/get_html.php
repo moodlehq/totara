@@ -40,9 +40,10 @@ $programcontent = $program->get_content();
 if ($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
 
     $courseids_str = required_param('courseids', PARAM_TEXT); // the ids of the courses to be added to the new set
+    $suffix=  required_param('suf', PARAM_TEXT);
     $sortorder = required_param('sortorder', PARAM_INT); // the sort order of the new set
-    $setprefixes = required_param('setprefixes', PARAM_TEXT); // the prefixes of the existing course sets
-
+    $setprefixes_ce = required_param('setprefixes_ce', PARAM_TEXT); // the prefixes of the existing course sets
+    $setprefixes_rc = required_param('setprefixes_rc', PARAM_TEXT); // the prefixes of the existing course sets
     $html = '';
 
     // retrieve the courses to be added to this course set
@@ -62,17 +63,25 @@ if ($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
         }
     }
 
+    $coursesetprefix = $newcourseset->get_set_prefix();
+    if ($suffix== '_ce') {
+        $newcourseset->certifpath = CERTIFPATH_CERT;
+        $setprefixesstr_ce = empty($setprefixes_ce) ? $coursesetprefix : $setprefixes_ce.','.$coursesetprefix;
+        $setprefixesstr_rc = $setprefixes_rc;
+    } else {
+        $setprefixesstr_rc = empty($setprefixes_rc) ? $coursesetprefix : $setprefixes_rc.','.$coursesetprefix;
+        $newcourseset->certifpath = CERTIFPATH_RECERT;
+        $setprefixesstr_ce = $setprefixes_ce;
+    }
+
     // retrieve the html for the new set
     $html .= $newcourseset->print_set_minimal();
 
-    $coursesetprefix = $newcourseset->get_set_prefix();
-    $setprefixesstr = empty($setprefixes) ? $coursesetprefix : $setprefixes.','.$coursesetprefix;
-
     $data = array(
         'html'          => $html,
-        'setprefixes'   => $setprefixesstr
+        'setprefixes_ce'   => $setprefixesstr_ce,
+        'setprefixes_rc'   => $setprefixesstr_rc
     );
-
     echo json_encode($data);
 
 } else if ($htmltype == 'competencyset') {

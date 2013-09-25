@@ -3251,3 +3251,91 @@ function compare_activities_by_time_asc($a, $b) {
     }
     return ($a->timestamp < $b->timestamp) ? -1 : 1;
 }
+
+/**
+ * Archives activities, with the archive feature, for a specified user and course
+ *
+ * @global moodle_database $DB
+ * @global object $CFG
+ * @param int $userid
+ * @param int $courseid
+ */
+function archive_course_activities($userid, $courseid) {
+    global $DB, $CFG;
+
+    // Get all modules
+    if ($modules = $DB->get_records('modules')) {
+        foreach ($modules as $mod) {
+            // Check if a module instance is attached to the course and it has the archive feature
+            if ($DB->record_exists($mod->name, array('course' => $courseid))
+                    && plugin_supports('mod', $mod->name, FEATURE_ARCHIVE_COMPLETION, 0)) {
+
+                $modfile = $CFG->dirroot.'/mod/'. $mod->name . '/lib.php';
+                $modfunction = $mod->name.'_archive_completion';
+                if (!file_exists($modfile)) {
+                    debugging('feature_archive_completion is supported but lib file of the plugin is missing');
+                } else {
+                    include_once($modfile);
+                    if (!function_exists($modfunction)) {
+                        debugging('feature_archive_completion is supported but is missing the function in the plugin lib file');
+                    } else {
+                        $modfunction($userid, $courseid);
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Archives course completion
+ *
+ * @global moodle_database $DB
+ * @global object $CFG
+ * @param int $userid
+ * @param int $courseid
+ */
+function archive_course_completion($userid, $courseid) {
+    global $DB, $CFG, $COMPLETION_STATUS;
+
+    require_once($CFG->libdir . '/completionlib.php');
+    require_once($CFG->libdir . '/grade/grade_item.php');
+    require_once($CFG->libdir . '/grade/grade_grade.php');
+    require_once($CFG->dirroot . '/completion/completion_completion.php');
+
+    $status = array(COMPLETION_STATUS_COMPLETE, COMPLETION_STATUS_COMPLETEVIARPL);
+    list($statussql, $statusparams) = $DB->get_in_or_equal($status, SQL_PARAMS_NAMED, 'status');
+    $params = array_merge($statusparams, array('course' => $courseid, 'userid' => $userid));
+    $where = "course = :course AND userid = :userid AND status {$statussql}";
+    if (!$course_completion = $DB->get_record_select('course_completions', $where, $params)) {
+        return false;
+    }
+
+    $history = new StdClass();
+    $history->id = 0;
+    $history->courseid = $courseid;
+    $history->userid = $userid;
+    $history->timecompleted = $course_completion->timecompleted;
+    $history->grade = 0;
+
+    $cc = new completion_completion(array('userid' => $userid, 'course' => $courseid));
+    $completionstatus = $cc->get_status($course_completion);
+    if ($completionstatus == $COMPLETION_STATUS[COMPLETION_STATUS_COMPLETEVIARPL]) {
+        $history->grade = $cc->rplgrade;
+    } else if ($course_item = grade_item::fetch_course_item($courseid)) {
+        $grade = new grade_grade(array('itemid' => $course_item->id, 'userid' => $userid));
+        $history->grade = $grade->finalgrade;
+    }
+
+    // Copy
+    $course = $DB->get_record('course', array('id' => $courseid));
+    $completion = new completion_info($course);
+    $DB->insert_record('course_completion_history', $history);
+
+    // Reset completion
+    $completion->delete_course_completion_data($userid);
+
+    return true;
+}

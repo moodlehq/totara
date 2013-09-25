@@ -53,6 +53,7 @@ function program_cron() {
  * @return bool Success
  */
 function program_hourly_cron() {
+    global $CFG;
 
     $timenow  = time();
     $hourlycron = 60 * 60; // one hour
@@ -61,7 +62,11 @@ function program_hourly_cron() {
     if ($lasthourlycron && ($timenow - $lasthourlycron <= $hourlycron)) {
         // not enough time has elapsed to rerun hourly cron
         mtrace("No need to run program hourly cron - has already been run recently.");
-        return true;
+        if (isset($CFG->debugcron) && $CFG->debugcron) {
+            mtrace("DEBUG - running anyway");
+        } else {
+            return true;
+        }
     }
 
     if (!set_config('totara_program_lasthourlycron', $timenow)) {
@@ -79,6 +84,8 @@ function program_hourly_cron() {
  * @return bool Success
  */
 function program_daily_cron() {
+    global $CFG;
+
     $timenow  = time();
     $dailycron = 60 * 60 * 24; // one day
     $lastdailycron = get_config(null, 'totara_program_lastdailycron');
@@ -86,7 +93,11 @@ function program_daily_cron() {
     if ($lastdailycron && ($timenow - $lastdailycron <= $dailycron)) {
         // not enough time has elapsed to rerun daily cron
         mtrace("No need to run program daily cron - has already been run today.");
-        return true;
+        if (isset($CFG->debugcron) && $CFG->debugcron) {
+            mtrace("DEBUG - running anyway");
+        } else {
+            return true;
+        }
     }
 
     if (!set_config('totara_program_lastdailycron', $timenow)) {

@@ -29,6 +29,7 @@
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
+require_once($CFG->dirroot.'/totara/certification/lib.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 require_login();
@@ -37,12 +38,19 @@ $id = required_param('id', PARAM_INT); // program id
 
 $systemcontext = context_system::instance();
 $program = new program($id);
+$iscertif = $program->certifid ? true : false;
 $programcontext = $program->get_context();
 
 // Integrate into the admin tree only if the user can edit program assignments at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:configureassignments', $systemcontext)) {
-    admin_externalpage_setup('programmgmt', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_assignments.php', array('context' => $programcontext));
+    if ($iscertif) {
+        admin_externalpage_setup('managecertifications', '',
+            array('id' => $id), $CFG->wwwroot.'/totara/program/edit_assignments.php', array('context' => $programcontext));
+    } else {
+        admin_externalpage_setup('manageprograms', '',
+            array('id' => $id), $CFG->wwwroot.'/totara/program/edit_assignments.php', array('context' => $programcontext));
+    }
 } else {
     $PAGE->set_context($programcontext);
     $PAGE->set_url(new moodle_url('/totara/program/edit_assignments.php', array('id' => $id)));
@@ -77,10 +85,12 @@ $args = array('args' => '{"id":"'.$program->id.'",'.
                          '"COMPLETION_TIME_NOT_SET":"'.COMPLETION_TIME_NOT_SET.'",'.
                          '"COMPLETION_EVENT_FIRST_LOGIN":"'.COMPLETION_EVENT_FIRST_LOGIN.'",'.
                          '"display_selected_completion_event":'.$display_selected.'}');
+
 $jsmodule = array(
         'name' => 'totara_programassignment',
         'fullpath' => '/totara/program/assignment/program_assignment.js',
         'requires' => array('json', 'totara_core'));
+
 $PAGE->requires->js_init_call('M.totara_programassignment.init',$args, false, $jsmodule);
 
 // Define the categorys to appear on the page
@@ -96,8 +106,7 @@ if ($data = data_submitted()) {
         $category->update_assignments($data);
     }
 
-    // reset the assignments property to ensure it only contains the current
-    // assignments.
+    // reset the assignments property to ensure it only contains the current assignments.
     $assignments = $program->get_assignments();
     $assignments->init_assignments($program->id);
 
@@ -114,7 +123,8 @@ if ($data = data_submitted()) {
     $DB->update_record('prog', $prog_update);
 
     if (isset($data->savechanges)) {
-        totara_set_notification(get_string('programassignmentssaved', 'totara_program'), 'edit_assignments.php?id='.$id, array('class' => 'notifysuccess'));
+        totara_set_notification(get_string('programassignmentssaved', 'totara_program'), 'edit_assignments.php?id='.$id,
+                                                                                        array('class' => 'notifysuccess'));
     }
 
 }
@@ -130,9 +140,13 @@ add_to_log(SITEID, 'program', 'view assignments', "edit_assignments.php?id={$pro
 /// Display
 ///
 
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category);
+$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
 
 $heading = format_string($program->fullname);
+
+if ($iscertif) {
+    $heading .= ' ('.get_string('certification', 'totara_certification').')';
+}
 
 foreach ($category_breadcrumbs as $crumb) {
     $PAGE->navbar->add($crumb['name'], $crumb['link']);
@@ -154,7 +168,9 @@ $exceptions = $program->get_exception_count();
 $currenttab = 'assignments';
 require('tabs.php');
 
-echo $renderer->display_edit_assignment_form($id, $categories);
+$certificationpath = get_certification_path_user($program->certifid, $USER->id);
+
+echo $renderer->display_edit_assignment_form($id, $categories, $certificationpath);
 
 echo $renderer->get_cancel_button(array('id' => $program->id));
 

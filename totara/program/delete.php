@@ -81,7 +81,8 @@ if ($program->delete()) {
     } else {
         throw new Exception(get_string('error:failfixprogsortorder', 'totara_program'));
     }
-    $notification_url = "{$CFG->wwwroot}/totara/program/manage.php?categoryid={$category}";
+    $viewtype = ($program->certifid ? 'certification' : 'program');
+    $notification_url = "{$CFG->wwwroot}/course/category.php?id={$category}&amp;viewtype={$viewtype}&amp;categoryedit=on";
     totara_set_notification(get_string('programdeletesuccess', 'totara_program', $program->fullname), $notification_url, array('class' => 'notifysuccess'));
 }
 ?>

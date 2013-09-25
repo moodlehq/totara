@@ -42,6 +42,10 @@ $settings->add(new admin_setting_configmultiselect('facetoface_session_roles', n
 
 $settings->add(new admin_setting_configcheckbox('facetoface_allowschedulingconflicts', new lang_string('setting:allowschedulingconflicts_caption', 'facetoface'), new lang_string('setting:allowschedulingconflicts', 'facetoface'), 0));
 
+$settings->add(new admin_setting_heading('facetoface_multiplesessions_header', get_string('multiplesessionsheading', 'facetoface'), ''));
+
+$settings->add(new admin_setting_configcheckbox('facetoface_multiplesessions', get_string('setting:multiplesessions_caption', 'facetoface'), get_string('setting:multiplesessions', 'facetoface'), 0));
+
 $settings->add(new admin_setting_heading('facetoface_manageremail_header', new lang_string('manageremailheading', 'facetoface'), ''));
 
 $settings->add(new admin_setting_configcheckbox('facetoface_addchangemanageremail', new lang_string('setting:addchangemanageremail_caption', 'facetoface'),new lang_string('setting:addchangemanageremail', 'facetoface'), 0));

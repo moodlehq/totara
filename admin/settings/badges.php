@@ -39,8 +39,6 @@ if (($hassiteconfig || has_any_capability(array(
 
     require_once($CFG->libdir . '/badgeslib.php');
 
-    require_once($CFG->libdir . '/badgeslib.php');
-
     $globalsettings = new admin_settingpage('badgesettings', new lang_string('badgesettings', 'badges'),
             array('moodle/badges:manageglobalsettings'), empty($CFG->enablebadges));
 

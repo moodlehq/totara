@@ -28,6 +28,24 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.'); // It must be included from view.php
 }
 
+if (!isset($user) || empty($user)) {
+    $user = $USER;
+}
+if (isset($certrecord->timearchived)) {
+    // Use archived values
+    $timecompleted = certificate_get_date_completed_formatted($certificate, $certrecord->timecompleted, $user);
+    $grade = $certrecord->grade;
+    $outcome = $certrecord->outcome;
+    $code = $certrecord->code;
+} else {
+    $timecompleted = certificate_get_date($certificate, $certrecord, $course);
+    $grade = certificate_get_grade($certificate, $course);
+    $outcome = certificate_get_outcome($certificate, $course);
+    $code = certificate_get_code($certificate, $certrecord);
+}
+
+$strmgr = get_string_manager();
+
 $pdf = new PDF($certificate->orientation, 'pt', 'Letter', true, 'UTF-8', false);
 
 $pdf->SetTitle($certificate->name);
@@ -90,19 +108,19 @@ certificate_print_image($pdf, $certificate, CERT_IMAGE_SIGNATURE, $sigx, $sigy, 
 
 // Add text
 $pdf->SetTextColor(0, 0, 120);
-certificate_print_text($pdf, $x, $y, 'C', CERT_FONT_SANS, '', 30, get_string('title', 'certificate'));
+certificate_print_text($pdf, $x, $y, 'C', CERT_FONT_SANS, '', 30, $strmgr->get_string('title', 'certificate', null, $user->lang));
 $pdf->SetTextColor(0, 0, 0);
-certificate_print_text($pdf, $x, $y + 55, 'C', CERT_FONT_SERIF, '', 20, get_string('certify', 'certificate'));
-certificate_print_text($pdf, $x, $y + 105, 'C', CERT_FONT_SANS, '', 30, fullname($USER));
-certificate_print_text($pdf, $x, $y + 155, 'C', CERT_FONT_SANS, '', 20, get_string('statement', 'certificate'));
+certificate_print_text($pdf, $x, $y + 55, 'C', CERT_FONT_SERIF, '', 20, $strmgr->get_string('certify', 'certificate', null, $user->lang));
+certificate_print_text($pdf, $x, $y + 105, 'C', CERT_FONT_SANS, '', 30, fullname($user));
+certificate_print_text($pdf, $x, $y + 155, 'C', CERT_FONT_SANS, '', 20, $strmgr->get_string('statement', 'certificate', null, $user->lang));
 certificate_print_text($pdf, $x, $y + 205, 'C', CERT_FONT_SANS, '', 20, $course->fullname);
-certificate_print_text($pdf, $x, $y + 255, 'C', CERT_FONT_SANS, '', 14, certificate_get_date($certificate, $certrecord, $course));
-certificate_print_text($pdf, $x, $y + 283, 'C', CERT_FONT_SERIF, '', 10, certificate_get_grade($certificate, $course));
-certificate_print_text($pdf, $x, $y + 311, 'C', CERT_FONT_SERIF, '', 10, certificate_get_outcome($certificate, $course));
+certificate_print_text($pdf, $x, $y + 255, 'C', CERT_FONT_SANS, '', 14, $timecompleted);
+certificate_print_text($pdf, $x, $y + 283, 'C', CERT_FONT_SERIF, '', 10, $grade);
+certificate_print_text($pdf, $x, $y + 311, 'C', CERT_FONT_SERIF, '', 10, $outcome);
 if ($certificate->printhours) {
-    certificate_print_text($pdf, $x, $y + 339, 'C', CERT_FONT_SERIF, '', 10, get_string('credithours', 'certificate') . ': ' . $certificate->printhours);
+    certificate_print_text($pdf, $x, $y + 339, 'C', CERT_FONT_SERIF, '', 10, $strmgr->get_string('credithours', 'certificate', null, $user->lang) . ': ' . $certificate->printhours);
 }
-certificate_print_text($pdf, $x, $codey, 'C', CERT_FONT_SERIF, '', 10, certificate_get_code($certificate, $certrecord));
+certificate_print_text($pdf, $x, $codey, 'C', CERT_FONT_SERIF, '', 10, $code);
 $i = 0;
 if ($certificate->printteacher) {
     $context = context_module::instance($cm->id);

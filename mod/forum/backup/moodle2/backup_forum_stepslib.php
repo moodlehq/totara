@@ -51,14 +51,14 @@ class backup_forum_activity_structure_step extends backup_activity_structure_ste
         $discussion = new backup_nested_element('discussion', array('id'), array(
             'name', 'firstpost', 'userid', 'groupid',
             'assessed', 'timemodified', 'usermodified', 'timestart',
-            'timeend'));
+            'timeend', 'archived'));
 
         $posts = new backup_nested_element('posts');
 
         $post = new backup_nested_element('post', array('id'), array(
             'parent', 'userid', 'created', 'modified',
             'mailed', 'subject', 'message', 'messageformat',
-            'messagetrust', 'attachment', 'totalscore', 'mailnow'));
+            'messagetrust', 'attachment', 'totalscore', 'mailnow', 'archived'));
 
         $ratings = new backup_nested_element('ratings');
 

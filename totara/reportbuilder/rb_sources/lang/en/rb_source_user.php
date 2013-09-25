@@ -20,6 +20,7 @@ $string['coursescompleted'] = 'Courses Completed';
 $string['competenciesachieved'] = 'Competencies Achieved';
 
 $string['records'] = 'Records';
+$string['required'] = 'Required';
 $string['plans'] = 'Plans';
 $string['profile'] = 'Profile';
 $string['bookings'] = 'Bookings';

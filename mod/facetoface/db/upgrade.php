@@ -1653,5 +1653,29 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2013090206, 'facetoface');
     }
 
+    if ($oldversion < 2013092000) {
+        // Define field archived to be added to facetoface_signups.
+        $table = new xmldb_table('facetoface_signups');
+        $field = new xmldb_field('archived', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'notificationtype');
+
+        // Conditionally launch add field archived.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field multiplesessions to be added to facetoface.
+        $table = new xmldb_table('facetoface');
+        $field = new xmldb_field('multiplesessions', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'usercalentry');
+
+        // Conditionally launch add field multiplesessions.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Facetoface savepoint reached.
+        upgrade_mod_savepoint(true, 2013092000, 'facetoface');
+    }
+
     return $result;
 }
+

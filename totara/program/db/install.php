@@ -36,6 +36,17 @@ function xmldb_totara_program_install() {
         $dbman->add_field($table, $field);
     }
 
+    // Check if the 'certifcount' field has been added to the 'course_categories'
+    // table and add it if not
+    $table = new xmldb_table('course_categories');
+    $field = new xmldb_field('certifcount');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'programcount');
+
+    if (!$dbman->field_exists($table, $field)) {
+        // Launch add field certifcount
+        $dbman->add_field($table, $field);
+    }
+
     // Set a config value to ensure that the program cron tasks are included
     // in the cron schedule
     if (!isset($CFG->totara_program_cron)) {

@@ -23,7 +23,7 @@
  */
 
 /**
- * Program view page
+ * Program view/edit page
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
@@ -31,6 +31,7 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 require_once('edit_form.php');
+require_once($CFG->dirroot . '/totara/certification/lib.php');
 
 $id = required_param('id', PARAM_INT); // program id
 $action = optional_param('action', 'view', PARAM_TEXT);
@@ -41,12 +42,19 @@ require_login();
 
 $systemcontext = context_system::instance();
 $program = new program($id);
+$iscertif = $program->certifid ? true : false;
 $programcontext = $program->get_context();
 
 // Integrate into the admin tree only if the user can edit programs at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:configureprogram', $systemcontext)) {
-    admin_externalpage_setup('programmgmt', '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php', array('context' => $programcontext));
+    if ($iscertif) {
+        admin_externalpage_setup('managecertifications', '',
+            array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php', array('context' => $programcontext));
+    } else {
+        admin_externalpage_setup('manageprograms', '',
+            array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php', array('context' => $programcontext));
+    }
 } else {
     $PAGE->set_url(new moodle_url('/totara/program/edit.php', array('id' => $id)));
     $PAGE->set_context($programcontext);
@@ -105,8 +113,7 @@ if ($action == 'edit') {
             'fullpath' => '/totara/core/js/icon.picker.js',
             'requires' => array('json'));
 
-    $iconargs = array('args' => '{"selected_icon":"' . $program->icon . '",
-                            "type":"program"}');
+    $iconargs = array('args' => '{"selected_icon":"' . $program->icon . '", "type":"program"}');
 
     $PAGE->requires->js_init_call('M.totara_iconpicker.init', $iconargs, false, $iconjsmodule);
 }
@@ -123,6 +130,8 @@ $editurl = $currenturl_noquerystring."?id={$id}&action=edit";
 $editcontenturl = "{$CFG->wwwroot}/totara/program/edit_content.php?id={$program->id}";
 $editassignmentsurl = "{$CFG->wwwroot}/totara/program/edit_assignments.php?id={$program->id}";
 $editmessagesurl = "{$CFG->wwwroot}/totara/program/edit_messages.php?id={$program->id}";
+$editcertificationsurl = "{$CFG->wwwroot}/totara/certification/edit_certification.php?id={$program->id}";
+
 //set up textareas
 $program->endnoteformat = FORMAT_HTML;
 $program->summaryformat = FORMAT_HTML;
@@ -133,12 +142,16 @@ $program = file_prepare_standard_editor($program, 'summary', $editoroptions, $ed
                                           'totara_program', 'summary', 0);
 
 $program = file_prepare_standard_editor($program, 'endnote', $editoroptions, $editoroptions['context'],
-                                          'totara_program', 'endnote', 0);
+    'totara_program', 'endnote', 0);
+
 $overviewfilesoptions = prog_program_overviewfiles_options($program);
 if ($overviewfilesoptions) {
     file_prepare_standard_filemanager($program, 'overviewfiles', $overviewfilesoptions, $programcontext, 'totara_program', 'overviewfiles', 0);
 }
-$detailsform = new program_edit_form($currenturl, array('program' => $program, 'action' => $action, 'category' => $progcategory, 'editoroptions' => $TEXTAREA_OPTIONS, 'nojs' => $nojs), 'post', '', array('name'=>'form_prog_details'));
+$detailsform = new program_edit_form($currenturl,
+                array('program' => $program, 'action' => $action, 'category' => $progcategory,
+                        'editoroptions' => $TEXTAREA_OPTIONS, 'nojs' => $nojs, 'iscertif' =>  $iscertif),
+                        'post', '', array('name'=>'form_prog_details'));
 
 if ($detailsform->is_cancelled()) {
     totara_set_notification(get_string('programupdatecancelled', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));
@@ -214,7 +227,7 @@ if ($data = $detailsform->get_data()) {
 }
 
 // log this request
-add_to_log(SITEID, 'program', 'view', "edit.php?id={$program->id}", $program->fullname);
+add_to_log(SITEID, 'program', 'view', "edit.php?id={$program->id}&amp;iscertif={$iscertif}", $program->fullname);
 
 ///
 /// Display
@@ -232,10 +245,14 @@ if ($action == 'edit') {
     $heading = format_string($program->fullname);
 }
 
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category);
+if ($iscertif) {
+    $heading .= ' ('.get_string('certification', 'totara_certification').')';
+}
+
+$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
 
 foreach ($category_breadcrumbs as $crumb) {
-        $PAGE->navbar->add($crumb['name'], $crumb['link']);
+    $PAGE->navbar->add($crumb['name'], $crumb['link']);
 }
 
 $PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
@@ -280,6 +297,13 @@ if ($action == 'view') {
     $messagesform = new program_messages_nonedit_form($editmessagesurl, array('program' => $program), 'get');
     $messagesform->set_data($program);
     $messagesform->display();
+
+    if ($iscertif) {
+        // display the certifications form
+        $certificationsform = new program_certifications_nonedit_form($editcertificationsurl, array('program' => $program), 'get');
+        $certificationsform->set_data($program);
+        $certificationsform->display();
+    }
 
     // display the delete button form
     if (has_capability('totara/program:deleteprogram', $program->get_context())) {

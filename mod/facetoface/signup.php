@@ -77,9 +77,12 @@ if ($fromform = $mform->get_data()) { // Form submitted
         add_to_log($course->id, 'facetoface', 'update manageremail (FAILED)', "signup.php?s=$session->id", $facetoface->id, $cm->id);
     }
 
+    // If multiple sessions are allowed then just check against this session
+    // Otherwise check against all sessions
+    $multisessionid = ($facetoface->multiplesessions ? $session->id : null);
     if (!facetoface_session_has_capacity($session, $context) && (!$session->allowoverbook)) {
         print_error('sessionisfull', 'facetoface', $returnurl);
-    } else if (facetoface_get_user_submissions($facetoface->id, $USER->id)) {
+    } else if (facetoface_get_user_submissions($facetoface->id, $USER->id, MDL_F2F_STATUS_REQUESTED, MDL_F2F_STATUS_FULLY_ATTENDED, $multisessionid)) {
         print_error('alreadysignedup', 'facetoface', $returnurl);
     } else if (facetoface_manager_needed($facetoface) && empty($manager->email)) {
         print_error('error:manageremailaddressmissing', 'facetoface', $returnurl);
@@ -127,8 +130,8 @@ echo $OUTPUT->header();
 $heading = get_string('signupfor', 'facetoface', $facetoface->name);
 
 $viewattendees = has_capability('mod/facetoface:viewattendees', $context);
-$signedup = facetoface_check_signup($facetoface->id);
-
+$multisessionid = ($facetoface->multiplesessions ? $session->id : null);
+$signedup = facetoface_check_signup($facetoface->id, $multisessionid);
 if ($signedup and $signedup != $session->id) {
     print_error('error:signedupinothersession', 'facetoface', $returnurl);
 }

@@ -999,6 +999,7 @@ function scorm_supports($feature) {
         case FEATURE_BACKUP_MOODLE2:          return true;
         case FEATURE_SHOW_DESCRIPTION:        return true;
         case FEATURE_COMPLETION_HAS_RULES:    return true;
+        case FEATURE_ARCHIVE_COMPLETION:      return true;
 
         default: return null;
     }
@@ -1488,3 +1489,36 @@ function scorm_set_completion($scorm, $userid, $completionstate = COMPLETION_COM
     }
 }
 
+/**
+ * Deletion archive completion records
+ *
+ * @global object $DB
+ * @param int $userid
+ * @param int $courseid
+ */
+function scorm_archive_completion($userid, $courseid) {
+    global $DB, $CFG;
+
+    require_once($CFG->libdir . '/completionlib.php');
+
+    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    $completion = new completion_info($course);
+
+    $sql = 'SELECT s.*
+            FROM {scorm} s
+            WHERE s.course = :courseid
+            AND EXISTS (SELECT t.id
+                        FROM {scorm_scoes_track} t
+                        WHERE t.scormid = s.id
+                        AND t.userid = :userid';
+    $scorms = $DB->get_records_sql($sql, array('courseid' => $courseid, 'userid' => $userid));
+    foreach ($scorms as $scorm) {
+        $DB->delete_records('scorm_scoes_track', array('userid' => $userid, 'scormid' => $scorm->id));
+        // Resets the grades and completion to incomplete
+        scorm_update_grades($scorm, $userid, true);
+
+        // Reset viewed
+        $course_module = get_coursemodule_from_instance('scorm', $scorm->id, $courseid);
+        $completion->set_module_viewed_reset($course_module, $userid);
+    }
+}

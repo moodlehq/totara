@@ -292,3 +292,20 @@ $string['viewcompleted'] = 'completed feedbacks';
 $string['viewcompleted_help'] = 'You may view completed feedback forms, searchable by course and/or by question.
 Feedback responses may be exported to Excel.';
 $string['blank_responses'] = '{$a} blank responses';
+
+// Archives
+$string['error:completedhistorynotfound'] = 'Completed history not found for id : {$a}';
+$string['viewarchive'] = 'Feedback archive';
+$string['timearchived'] = 'Time archived';
+$string['coursename'] = 'Course name';
+$string['feedbackname'] = 'Feedback name';
+$string['timecompleted'] = 'Time completed';
+$string['feedback:viewarchive'] = 'View archive';
+
+// View archive form
+$string['filteroptions'] = 'Filter options';
+$string['coursenamefilter'] = 'Course name contains';
+$string['feedbacknamefilter'] = 'Feedback name contains';
+$string['usernamefilter'] = 'Username contains';
+$string['firstnamefilter'] = 'First name contains';
+$string['lastnamefilter'] = 'Last name contains';

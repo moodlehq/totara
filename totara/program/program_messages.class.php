@@ -38,6 +38,10 @@ define('MESSAGETYPE_COURSESET_DUE', 8);
 define('MESSAGETYPE_COURSESET_OVERDUE', 9);
 define('MESSAGETYPE_COURSESET_COMPLETED', 10);
 define('MESSAGETYPE_LEARNER_FOLLOWUP', 11);
+define('MESSAGETYPE_RECERT_WINDOWOPEN', 12);
+define('MESSAGETYPE_RECERT_WINDOWDUECLOSE', 13);
+define('MESSAGETYPE_RECERT_FAILRECERT', 14);
+
 
 class prog_messages_manager {
 
@@ -65,6 +69,9 @@ class prog_messages_manager {
         MESSAGETYPE_COURSESET_OVERDUE       => 'prog_courseset_overdue_message',
         MESSAGETYPE_COURSESET_COMPLETED     => 'prog_courseset_completed_message',
         MESSAGETYPE_LEARNER_FOLLOWUP        => 'prog_learner_followup_message',
+        MESSAGETYPE_RECERT_WINDOWOPEN       => 'prog_recert_windowopen_message',
+        MESSAGETYPE_RECERT_WINDOWDUECLOSE   => 'prog_recert_windowdueclose_message',
+        MESSAGETYPE_RECERT_FAILRECERT       => 'prog_recert_failrecert_message',
     );
 
     function __construct($programid) {
@@ -480,7 +487,8 @@ class prog_messages_manager {
             foreach ($this->messages as $message) {
                 $messageclassname = $this->message_classnames[$message->messagetype];
                 $styleclass = ($messagecount % 2 == 0) ? 'even' : 'odd';
-                $out .= html_writer::tag('p', get_string($messageclassname, 'totara_program'), array('class' => $styleclass));
+                $component = (substr($messageclassname, 0, 11) == 'prog_recert' ? 'totara_certification' : 'totara_program');
+                $out .= html_writer::tag('p', get_string($messageclassname, $component), array('class' => $styleclass));
                 $messagecount++;
             }
         } else {
@@ -491,6 +499,7 @@ class prog_messages_manager {
     }
 
     public function get_message_form_template(&$mform, &$template_values, $messages=null, $updateform=true) {
+        global $DB;
 
         if ($messages == null) {
             $messages = $this->messages;
@@ -595,6 +604,15 @@ class prog_messages_manager {
                     MESSAGETYPE_COURSESET_COMPLETED => get_string('coursesetcompleted', 'totara_program'),
                     MESSAGETYPE_LEARNER_FOLLOWUP => get_string('learnerfollowup', 'totara_program')
                 );
+
+                // add extra messages if a certification-program
+                $prog = $DB->get_record('prog', array('id' => $this->programid));
+                if ($prog->certifid > 0) {
+                    $messageoptions[MESSAGETYPE_RECERT_WINDOWOPEN]     = get_string('recertwindowopen', 'totara_certification');
+                    $messageoptions[MESSAGETYPE_RECERT_WINDOWDUECLOSE] = get_string('recertwindowdueclose', 'totara_certification');
+                    $messageoptions[MESSAGETYPE_RECERT_FAILRECERT]     = get_string('recertfailrecert', 'totara_certification');
+                }
+
                 $mform->addElement('select', 'messagetype', get_string('addnew', 'totara_program'), $messageoptions, array('id'=>'messagetype'));
                 $mform->setType('messagetype', PARAM_INT);
                 $template_values['%messagetype%'] = array('name'=>'messagetype', 'value'=>null);

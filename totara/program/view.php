@@ -66,7 +66,7 @@ $PAGE->requires->js_init_call('M.totara_programview.init',$args, false, $jsmodul
 
 $isadmin = has_capability('moodle/category:manage', context_coursecat::instance($program->category));
 
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category);
+$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
 
 $heading = $program->fullname;
 $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);

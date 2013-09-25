@@ -641,6 +641,12 @@ abstract class prog_eventbased_message extends prog_message {
             $this->replacementvars['setlabel'] = $setlabel;
         }
 
+        // retrieve the program fullname
+        // (easier to do whether certif or not)
+        if ($fullname = $DB->get_field('prog', 'fullname', array('id' => $this->programid))) {
+            $this->replacementvars['certificationfullname'] = $fullname;
+        }
+
         if (!empty($recipient)) {
             $this->replacementvars['userfullname'] = fullname($recipient);
         }
@@ -1109,6 +1115,147 @@ class prog_extension_request_message extends prog_noneventbased_message {
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= html_writer::end_tag('fieldset');
+
+        return $templatehtml;
+    }
+}
+
+
+/**
+ * Certifciation messages
+ *
+ * @author jonathans@catalyst-eu.net
+ *
+ */
+
+class prog_recert_windowopen_message extends prog_eventbased_message {
+
+    public function __construct($programid, $messageob=null, $uniqueid=null) {
+
+        parent::__construct($programid, $messageob, $uniqueid);
+        global $CFG;
+
+        $this->messagetype = MESSAGETYPE_RECERT_WINDOWOPEN;
+        $this->helppage = 'recertwindowopenmessage';
+        $this->locked = false;
+        $this->fieldsetlegend = get_string('legend:recertwindowopenmessage', 'totara_certification');
+        $managermessagedata = array(
+            'roleid'            => $this->managerrole,
+            'subject'           => get_string('recertwindowopen', 'totara_certification'),
+            'fullmessage'       => $this->managermessage,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
+        );
+
+        $this->managermessagedata = new prog_message_data($managermessagedata);
+    }
+
+    public function get_message_form_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
+        global $OUTPUT;
+        $prefix = $this->get_message_prefix();
+
+        $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_certification');
+
+        $templatehtml = '';
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
+
+        $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_manager_fields_template($mform, $template_values, $formdataobject, $updateform);
+
+        $templatehtml .= html_writer::end_tag('fieldset');
+
+        return $templatehtml;
+    }
+}
+
+
+class prog_recert_windowdueclose_message extends prog_eventbased_message {
+
+    public function __construct($programid, $messageob=null, $uniqueid=null) {
+
+        parent::__construct($programid, $messageob, $uniqueid);
+        global $CFG;
+
+        $this->messagetype = MESSAGETYPE_RECERT_WINDOWDUECLOSE;
+        $this->helppage = 'recertwindowdueclosemessage';
+        $this->locked = false;
+        $this->fieldsetlegend = get_string('legend:recertwindowdueclosemessage', 'totara_certification');
+        $this->triggereventstr = get_string('beforewindowduetoclose', 'totara_certification');
+        $managermessagedata = array(
+            'roleid'            => $this->managerrole,
+            'subject'           => get_string('recertwindowdueclose', 'totara_certification'),
+            'fullmessage'       => $this->managermessage,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
+        );
+
+        $this->managermessagedata = new prog_message_data($managermessagedata);
+    }
+
+    public function get_message_form_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
+        global $OUTPUT;
+        $prefix = $this->get_message_prefix();
+
+        $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_certification');
+
+        $templatehtml = '';
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
+
+        $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_trigger_fields_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_manager_fields_template($mform, $template_values, $formdataobject, $updateform);
+
+        $templatehtml .= html_writer::end_tag('fieldset');
+
+        return $templatehtml;
+    }
+}
+
+
+class prog_recert_failrecert_message extends prog_eventbased_message {
+
+    public function __construct($programid, $messageob=null, $uniqueid=null) {
+
+        parent::__construct($programid, $messageob, $uniqueid);
+        global $CFG;
+
+        $this->messagetype = MESSAGETYPE_RECERT_FAILRECERT;
+        $this->helppage = 'recertfailrecertmessage';
+        $this->locked = false;
+        $this->fieldsetlegend = get_string('legend:recertfailrecertmessage', 'totara_certification');
+        $managermessagedata = array(
+            'roleid'            => $this->managerrole,
+            'subject'           => get_string('recertfailrecert', 'totara_certification'),
+            'fullmessage'       => $this->managermessage,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
+        );
+
+        $this->managermessagedata = new prog_message_data($managermessagedata);
+    }
+
+    public function get_message_form_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
+        global $OUTPUT;
+        $prefix = $this->get_message_prefix();
+
+        $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_certification');
+
+        $templatehtml = '';
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
+
+        $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_manager_fields_template($mform, $template_values, $formdataobject, $updateform);
+
         $templatehtml .= html_writer::end_tag('fieldset');
 
         return $templatehtml;

@@ -80,8 +80,16 @@ class prog_content {
      * @return <type>
      */
     static function cmp_set_sortorder( $a, $b ) {
-        if ($a->sortorder ==  $b->sortorder) { return 0 ; }
-        return ($a->sortorder < $b->sortorder) ? -1 : 1;
+        // sort by sortorder within certifpath
+        if ($a->certifpath ==  $b->certifpath) {
+            if ($a->sortorder ==  $b->sortorder) {
+                return 0;
+            } else {
+                return ($a->sortorder < $b->sortorder) ? -1 : 1;
+            }
+        } else {
+            return ($a->certifpath < $b->certifpath) ? -1 : 1;
+        }
     }
 
     /**
@@ -91,6 +99,24 @@ class prog_content {
      */
     public function get_course_sets() {
         return $this->coursesets;
+    }
+
+    /**
+     * get coursesets for a certification pathtype
+     * @param int $pathtype
+     * @return array
+     */
+    public function get_course_sets_path($pathtype) {
+        $csc = array();
+        foreach ($this->coursesets as $cs) {
+            if (!isset($cs->certifpath)) {
+                $cs->certifpath=0;
+            }
+            if ($cs->certifpath == $pathtype) {
+                $csc[] = $cs;
+            }
+        }
+        return $csc;
     }
 
     /**
@@ -124,18 +150,22 @@ class prog_content {
      * @param <type> $coursesets
      */
     public function fix_set_sortorder(&$coursesets=null) {
-
         if ($coursesets == null) {
             $coursesets = $this->coursesets;
         }
+        if ($coursesets == null) {
+            return;
+        }
 
+        // Sort into sortorder within certifpath.
         usort($coursesets, array('prog_content', 'cmp_set_sortorder'));
 
         $pos = 1;
+
+        // Courseset(s) are in order [CERTs] [RECERTs] (CERT or RECERT coursesets may not be present).
+        $startcertifpath = $coursesets[0]->certifpath;
         foreach ($coursesets as $courseset) {
-
             $courseset->sortorder = $pos;
-
             unset($courseset->isfirstset);
             if ($pos == 1) {
                 $courseset->isfirstset = true;
@@ -144,6 +174,13 @@ class prog_content {
             unset($courseset->islastset);
             if ($pos == count($coursesets)) {
                 $courseset->islastset = true;
+            }
+
+            // check to see if now in recert group so can mark end of CERT group and start of RECERT
+            if ($courseset->certifpath != $startcertifpath) {
+                $courseset->isfirstset = true;
+                $coursesets[$pos-2]->islastset = true;
+                $startcertifpath = CERTIFPATH_RECERT;
             }
 
             $pos++;
@@ -155,47 +192,83 @@ class prog_content {
      * the course sets in an array so that they can be manipulated and/or
      * re-displayed in the form
      *
-     * @param <type> $formdata
-     * @return <type>
+     * @param StdClass $formdata
+     * @return bool
      */
     public function setup_content($formdata) {
-
         $courseset_prefixes = $this->get_courseset_prefixes($formdata);
-
         // If the form has been submitted then it's likely that some changes are
         // being made to the messages so we mark the messages as changed (this
         // is used by javascript to determine whether or not to warn te user
         // if they try to leave the page without saving first
         $this->contentchanged = true;
 
-        $this->coursesets = array();
+        $this->coursesets = array(); // clear the coursesets!
 
-        foreach ($courseset_prefixes as $prefix) {
+        foreach (array('_ce', '_rc') as $suffix) {
+            if (!isset($courseset_prefixes[$suffix]) || $courseset_prefixes[$suffix] == null) {
+                continue;
+            }
 
+            foreach ($courseset_prefixes[$suffix] as $prefix) {
+                if (isset($formdata->{$prefix.'contenttype'})) {
+                    $contenttype = $formdata->{$prefix.'contenttype'};
+                } else {
+                    continue;
+                }
+
+                if (!array_key_exists($contenttype, $this->courseset_classnames)) {
+                    throw new ProgramContentException(get_string('contenttypenotfound', 'totara_program'));
+                }
+
+                $courseset_classname = $this->courseset_classnames[$contenttype];
+                // skeleton courseset
+                $courseset = new $courseset_classname($this->programid, null, $prefix, $formdata->{'certifpath'.$suffix});
+                $courseset->certifpath = $formdata->{'certifpath'.$suffix};
+                $courseset->init_form_data($prefix, $formdata);
+                $this->coursesets[] = $courseset;
+            }
+
+        }
+
+        $this->coursesets_deleted_ids = $this->get_deleted_coursesets($formdata);
+        $this->fix_set_sortorder($this->coursesets);
+
+        return true;
+    }
+
+    /**
+     * Create copies of cert coursesets as recert coursesets
+     *
+     * store new in class
+     *
+     * @param StdClass $formdata
+     */
+    function copy_coursesets_to_recert($formdata) {
+
+        $courseset_prefixes = $this->get_courseset_prefixes($formdata);
+
+        foreach ($courseset_prefixes['_ce'] as $prefix) {
             if (isset($formdata->{$prefix.'contenttype'})) {
                 $contenttype = $formdata->{$prefix.'contenttype'};
             } else {
                 continue;
             }
 
-            if (!array_key_exists($contenttype, $this->courseset_classnames)) {
-                throw new ProgramContentException(get_string('contenttypenotfound', 'totara_program'));
-            }
-
             $courseset_classname = $this->courseset_classnames[$contenttype];
-            $courseset = new $courseset_classname($this->programid, null, $prefix);
 
+            // skeleton courseset eg 'multi_course_set' program_courseset.class.php
+            $courseset = new $courseset_classname($this->programid, null, $prefix, CERTIFPATH_RECERT);
+            $courseset->certifpath = CERTIFPATH_RECERT;
+
+            // adds courses and parent::init_form_data() adds other members
+            $formdata->{$prefix.'id'} = 0; // set courseset.id to 0 as new not created yet
             $courseset->init_form_data($prefix, $formdata);
+
             $this->coursesets[] = $courseset;
         }
-
-        $this->coursesets_deleted_ids = $this->get_deleted_coursesets($formdata);
-
-        $this->fix_set_sortorder($this->coursesets);
-
-        return true;
-
     }
+
 
     public function update_content() {
         $this->fix_set_sortorder($this->coursesets);
@@ -223,12 +296,19 @@ class prog_content {
      * @return array
      */
     public function get_courseset_prefixes($formdata) {
-        if (!isset($formdata->setprefixes) || empty($formdata->setprefixes)) {
-            return array();
-        } else {
-            return explode(',', $formdata->setprefixes);
+        $setprefs = array();
+        foreach (array('_ce','_rc') as $suffix) {
+            if (!isset($formdata->{'setprefixes'.$suffix}) || empty($formdata->{'setprefixes'.$suffix})) {
+                continue;
+            } else {
+                foreach (explode(',', $formdata->{'setprefixes'.$suffix}) as $sp) {
+                    $setprefs[$suffix][] = $sp;
+                }
+            }
         }
+        return $setprefs;
     }
+
 
     /**
      * Retrieves the ids of any deleted course sets from the submitted data and
@@ -244,6 +324,7 @@ class prog_content {
         return explode(',', $formdata->deleted_coursesets);
     }
 
+
     /**
      * Determines whether or not an action button was clicked and, if so,
      * determines which set the action refers to (based on the set sortorder)
@@ -255,13 +336,15 @@ class prog_content {
      */
     public function check_set_action($action, $formdata) {
 
-        $courseset_prefixes = $this->get_courseset_prefixes($formdata);
-
+        $courseset_certifpath_prefixes = $this->get_courseset_prefixes($formdata);
         // if a submit button was clicked, try to determine if it relates to a
         // course set and, if so, return the course set sort order
-        foreach ($courseset_prefixes as $prefix) {
-            if (isset($formdata->{$prefix.$action})) {
-                return $formdata->{$prefix.'sortorder'};
+
+        foreach ($courseset_certifpath_prefixes as $courseset_prefixes) {
+            foreach ($courseset_prefixes as $prefix) {
+                if (isset($formdata->{$prefix.$action})) {
+                    return $formdata->{$prefix.'sortorder'};
+                }
             }
         }
 
@@ -390,7 +473,6 @@ class prog_content {
      * @param <type> $contenttype
      * @return <type>
      */
-    //public function add_set($contenttype, &$mform, &$template_values) {
     public function add_set($contenttype) {
 
         $lastsetpos = $this->get_last_courseset_pos();
@@ -531,18 +613,19 @@ class prog_content {
         return false;
     }
 
+
     /**
-     * Returns the total maximum time allowance for the program by looking the
+     * Returns the total maximum time allowance for the program by looking at the
      * different content time allowances
      *
      * @return int total_time_allowance
      */
-    public function get_total_time_allowance() {
+    public function get_total_time_allowance($certifpath) {
 
         // Store the maximum time allowance to be returned
         $total_time_allowance = 0;
         // retrieve the course sets in the way that they are grouped in the program
-        $courseset_groups = $this->get_courseset_groups();
+        $courseset_groups = $this->get_courseset_groups($certifpath);
 
         if (empty($courseset_groups)) {
             return 0; // raise an exception? or give infinite time?
@@ -577,7 +660,7 @@ class prog_content {
      * when to provide 'access tokens' to a user to let them into any of the
      * courses in a subsequent course set or group of course sets.
      */
-    public function get_courseset_groups() {
+    public function get_courseset_groups($certifpath) {
 
         $courseset_groups = array();
 
@@ -590,6 +673,10 @@ class prog_content {
         $courseset_group = array();
 
         foreach ($this->coursesets as $courseset) {
+            if ($courseset->certifpath != $certifpath) {
+                continue;
+            }
+
             if ($courseset->nextsetoperator == NEXTSETOPERATOR_OR) {
                 // Add to the outstanding 'or' list
                 $last_handled_OR_operator = true;
@@ -725,49 +812,83 @@ class prog_content {
         return;
     }
 
-    public function get_content_form_template(&$mform, &$template_values, $coursesets=null, $updateform=true) {
+    public function get_content_form_template(&$mform, &$template_values, $coursesets=null, $updateform=true, $iscertif=false, $certifpath=CERTIFPATH_CERT) {
         global $OUTPUT;
 
-        if ($coursesets==null) {
-            $coursesets = $this->coursesets;
+        if ($coursesets == null) {
+            if ($iscertif) {
+                $coursesets = array();
+            } else {
+                $coursesets = $this->coursesets;
+            }
         }
 
         $templatehtml = '';
         $numcoursesets = count($coursesets);
         $recurring = false;
 
-        // This update button is at the start of the form so that it catches any
-        // 'return' key presses in text fields and acts as the default submit
-        // behaviour. This is not official browser behaviour but in most browsers
-        // this should result in this button being submitted (where a form has
-        // multiple submit buttons like this one)
-        if ($updateform) {
-            $mform->addElement('submit', 'update', get_string('update', 'totara_program'));
-            $template_values['%update%'] = array('name'=>'update', 'value'=>null);
-        }
-        $templatehtml .= '%update%'."\n";
+        // see if first half of page (or only part of page if !iscertif), as only want to do once
+        if (!$iscertif || $certifpath == CERTIFPATH_CERT) {
+            $suffix = '_ce';
+            // This update button is at the start of the form so that it catches any
+            // 'return' key presses in text fields and acts as the default submit
+            // behaviour. This is not official browser behaviour but in most browsers
+            // this should result in this button being submitted (where a form has
+            // multiple submit buttons like this one)
+            if ($updateform) {
+                $mform->addElement('submit', 'update', get_string('update', 'totara_program'));
+                $template_values['%update%'] = array('name'=>'update', 'value'=>null);
+            }
+            $templatehtml .= '%update%'."\n";
 
-        // Add the program id
-        if ($updateform) {
-            $mform->addElement('hidden', 'id');
-            $mform->setType('id', PARAM_INT);
-            $template_values['%programid%'] = array('name'=>'id', 'value'=>null);
-        }
-        $templatehtml .= '%programid%'."\n";
-        $this->formdataobject->id = $this->programid;
+            // Add the program id
+            if ($updateform) {
+                $mform->addElement('hidden', 'id');
+                $mform->setType('id', PARAM_INT);
+                $template_values['%programid%'] = array('name'=>'id', 'value'=>null);
+            }
+            $templatehtml .= '%programid%'."\n";
+            $this->formdataobject->id = $this->programid;
 
-        // Add a hidden field to show if the content has been changed
-        // (used by javascript to determine whether or not to display a
-        // dialog when the user leaves the page)
-        $contentchanged = $this->contentchanged ? '1' : '0';
-        if ($updateform) {
-            $mform->addElement('hidden', 'contentchanged', $contentchanged);
-            $mform->setType('contentchanged', PARAM_BOOL);
-            $mform->setConstant('contentchanged', $contentchanged);
-            $template_values['%contentchanged%'] = array('name'=>'contentchanged', 'value'=>null);
+            // Add a hidden field to show if the content has been changed
+            // (used by javascript to determine whether or not to display a
+            // dialog when the user leaves the page)
+            $contentchanged = $this->contentchanged ? '1' : '0';
+            if ($updateform) {
+                $mform->addElement('hidden', 'contentchanged', $contentchanged);
+                $mform->setType('contentchanged', PARAM_BOOL);
+                $mform->setConstant('contentchanged', $contentchanged);
+                $template_values['%contentchanged%'] = array('name'=>'contentchanged', 'value'=>null);
+            }
+            $templatehtml .= '%contentchanged%'."\n";
+            $this->formdataobject->contentchanged = $contentchanged;
+
+            if ($updateform) {
+                $mform->addElement('hidden', 'iscertif', $iscertif);
+                $mform->setType('iscertif', PARAM_BOOL);
+                $mform->setConstant('iscertif', $iscertif);
+                $template_values['%iscertif%'] = array('name'=>'iscertif', 'value'=>null);
+            }
+            $templatehtml .= '%iscertif%'."\n";
+            $this->formdataobject->iscertif = $iscertif;
+
+        } else {
+            $suffix = '_rc';
         }
-        $templatehtml .= '%contentchanged%'."\n";
-        $this->formdataobject->contentchanged = $contentchanged;
+
+        if (!$iscertif) {
+            $suffix = '_ce';
+        }
+
+        // Add certifpath
+        if ($updateform) {
+            $mform->addElement('hidden', 'certifpath'.$suffix);
+            $mform->setType('certifpath', PARAM_INT);
+            $mform->setConstant('certifpath'.$suffix, $certifpath);
+            $template_values['%certifpath'.$suffix.'%'] = array('name'=>'certifpath'.$suffix, 'value'=>null);
+        }
+        $templatehtml .= '%certifpath'.$suffix.'%'."\n";
+        $this->formdataobject->{'certifpath'.$suffix} = $certifpath;
 
         // Add the deleted course set ids
         if ($this->coursesets_deleted_ids) {
@@ -786,23 +907,51 @@ class prog_content {
             $this->formdataobject->deleted_coursesets = $deletedcourseidsstr;
         }
 
+        if ($iscertif) {
+            $templatehtml .= html_writer::start_tag('fieldset', array('id' => 'programcontent'));
+            $templatehtml .= html_writer::start_tag('legend', array('class' => 'ftoggler', 'id' => 'certifpath'))
+                . get_string(($certifpath == CERTIFPATH_CERT ? 'oricertpath' : 'recertpath'), 'totara_certification')
+                . html_writer::end_tag('legend');
+            $templatehtml .= html_writer::start_tag('p')
+                . get_string(($certifpath == CERTIFPATH_CERT ? 'oricertpathdesc' : 'recertpathdesc'), 'totara_certification')
+                . html_writer::end_tag('p');
+
+            if ($certifpath == CERTIFPATH_RECERT && $numcoursesets == 0) {
+                // ask for cert content to be copied to recert
+                $mform->addElement('advcheckbox', 'sameascert'.$suffix, get_string('sameascert', 'totara_certification'),
+                                '', array('disabled' => 'disabled', 'group' => 'sameascertgrp'), array(0, 1));
+                // 5th param: set disabled initially (have to add (redundent) group else get error)
+                // 6th param: checkbox settings, first value is default
+                $mform->setType('sameascert'.$suffix, PARAM_INT);
+                $template_values['%sameascert'.$suffix.'%'] = array('name'=>'sameascert'.$suffix, 'value' => 0);
+
+                $templatehtml .= html_writer::start_tag('label', array('for' => 'sameascert'.$suffix))
+                                . get_string('sameascert', 'totara_certification') . html_writer::end_tag('label');
+                $templatehtml .= '%sameascert'.$suffix.'%';
+            }
+        }
+
         $templatehtml .= html_writer::start_tag('fieldset', array('id' => 'programcontent'));
         $templatehtml .= html_writer::start_tag('legend', array('class' => 'ftoggler')) . get_string('programcontent', 'totara_program') . html_writer::end_tag('legend');
 
         // Show the program total minimum time required.
         $program = new program($this->programid);
-        $programtime = $program->content->get_total_time_allowance();
+        $programtime = $program->content->get_total_time_allowance($certifpath);
 
         if ($programtime > 0) {
             $templatehtml .= prog_format_seconds($programtime);
         }
 
-        $templatehtml .= html_writer::start_tag('p') . get_string('instructions:programcontent', 'totara_program') . html_writer::end_tag('p');
+        if ($iscertif) {
+            $templatehtml .= html_writer::start_tag('p') . get_string('certificationcontent', 'totara_certification') . html_writer::end_tag('p');
+        } else {
+            $templatehtml .= html_writer::start_tag('p') . get_string('instructions:programcontent', 'totara_program') . html_writer::end_tag('p');
+        }
 
-        $templatehtml .= html_writer::start_tag('div', array('id' => 'course_sets'));
+        $templatehtml .= html_writer::start_tag('div', array('id' => 'course_sets'.$suffix));
         $coursesetprefixesarray = array();
 
-        if ($numcoursesets==0) { // if there's no content yet
+        if ($numcoursesets == 0) { // if there's no content yet
             $templatehtml .= html_writer::start_tag('p') . get_string('noprogramcontent', 'totara_program') . html_writer::end_tag('p');
         } else {
             foreach ($coursesets as $courseset) {
@@ -815,16 +964,17 @@ class prog_content {
             }
         }
 
+
         // Add the set prefixes
         $setprefixesstr = implode(',', $coursesetprefixesarray);
         if ($updateform) {
-            $mform->addElement('hidden', 'setprefixes', $setprefixesstr);
-            $mform->setType('setprefixes', PARAM_TEXT);
-            $mform->setConstant('setprefixes', $setprefixesstr);
-            $template_values['%setprefixes%'] = array('name'=>'setprefixes', 'value'=>null);
+            $mform->addElement('hidden', 'setprefixes'.$suffix, $setprefixesstr);
+            $mform->setType('setprefixes'.$suffix, PARAM_TEXT);
+            $mform->setConstant('setprefixes'.$suffix, $setprefixesstr);
+            $template_values['%setprefixes'.$suffix.'%'] = array('name'=>'setprefixes'.$suffix, 'value'=>null);
         }
-        $templatehtml .= '%setprefixes%'."\n";
-        $this->formdataobject->setprefixes = $setprefixesstr;
+        $templatehtml .= '%setprefixes'.$suffix.'%'."\n";
+        $this->formdataobject->{'setprefixes'.$suffix} = $setprefixesstr;
 
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::end_tag('fieldset');
@@ -833,46 +983,47 @@ class prog_content {
         if (!$recurring) {
             // Add the add content drop down
             if ($updateform) {
-                $contentoptions = array(
-                    CONTENTTYPE_MULTICOURSE => get_string('setofcourses', 'totara_program'),
-                    CONTENTTYPE_COMPETENCY => get_string('competency', 'totara_program')
-                );
-                if ($numcoursesets==0) { // don't allow recurring course to be added if the program already has other content
-                    $contentoptions[CONTENTTYPE_RECURRING] = get_string('recurringcourse', 'totara_program');
+
+                if ($iscertif) {
+                    // only allow coursesets not recurring or competencies
+                    $contentoptions = array(
+                        CONTENTTYPE_MULTICOURSE => get_string('setofcourses', 'totara_program'),
+                    );
+                } else {
+                    $contentoptions = array(
+                        CONTENTTYPE_MULTICOURSE => get_string('setofcourses', 'totara_program'),
+                        CONTENTTYPE_COMPETENCY => get_string('competency', 'totara_program')
+                    );
+                    if ($numcoursesets == 0) { // don't allow recurring course to be added if the program already has other content
+                        $contentoptions[CONTENTTYPE_RECURRING] = get_string('recurringcourse', 'totara_program');
+                    }
                 }
-                $mform->addElement('select', 'contenttype', get_string('addnew', 'totara_program'), $contentoptions, array('id'=>'contenttype'));
-                $mform->setType('contenttype', PARAM_INT);
-                $template_values['%contenttype%'] = array('name'=>'contenttype', 'value'=>null);
+
+                $mform->addElement('select', 'contenttype'.$suffix, get_string('addnew', 'totara_program'), $contentoptions,
+                                array('id'=>'contenttype'.$suffix));
+                $mform->setType('contenttype'.$suffix, PARAM_INT);
+                $template_values['%contenttype'.$suffix.'%'] = array('name'=>'contenttype'.$suffix, 'value'=>null);
             }
-            $templatehtml .= html_writer::start_tag('label', array('for' => 'contenttype')) . get_string('addnew', 'totara_program') . html_writer::end_tag('label');
-            $templatehtml .= '%contenttype%';
+            $templatehtml .= html_writer::start_tag('label', array('for' => 'contenttype'.$suffix)) . get_string('addnew', 'totara_program')
+                                . html_writer::end_tag('label');
+            $templatehtml .= '%contenttype'.$suffix.'%';
             $templatehtml .= ' '.get_string('toprogram', 'totara_program').' ';
 
             // Add the add content button
             if ($updateform) {
-                $mform->addElement('submit', 'addcontent', get_string('add'), array('id'=>'addcontent'));
-                $template_values['%addcontent%'] = array('name'=>'addcontent', 'value'=>null);
+                $mform->addElement('submit', 'addcontent'.$suffix, get_string('add'), array('id'=>'addcontent'.$suffix));
+                $template_values['%addcontent'.$suffix.'%'] = array('name'=>'addcontent'.$suffix, 'value'=>null);
             }
-            $templatehtml .= '%addcontent%'."\n";
-            $helpbutton = $OUTPUT->help_icon('addprogramcontent', 'totara_program');
+            $templatehtml .= '%addcontent'.$suffix.'%'."\n";
+            if ($iscertif) {
+                $helpbutton = $OUTPUT->help_icon('addcertifprogramcontent', 'totara_certification');
+            } else {
+                $helpbutton = $OUTPUT->help_icon('addprogramcontent', 'totara_program');
+            }
             $templatehtml .= $helpbutton;
         }
 
         $templatehtml .= html_writer::empty_tag('br');
-
-        // Add the save and return button
-        if ($updateform) {
-            $mform->addElement('submit', 'savechanges', get_string('savechanges'), array('class'=>"savechanges-content program-savechanges"));
-            $template_values['%savechanges%'] = array('name'=>'savechanges', 'value'=>null);
-        }
-        $templatehtml .= '%savechanges%'."\n";
-
-        // Add the cancel button
-        if ($updateform) {
-            $mform->addElement('cancel', 'cancel', get_string('cancel', 'totara_program'));
-            $template_values['%cancel%'] = array('name'=>'cancel', 'value'=>null);
-        }
-        $templatehtml .= '%cancel%'."\n";
 
         return $templatehtml;
     }

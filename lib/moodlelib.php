@@ -431,6 +431,11 @@ define('FEATURE_BACKUP_MOODLE2', 'backup_moodle2');
 /** True if module can show description on course main page */
 define('FEATURE_SHOW_DESCRIPTION', 'showdescription');
 
+/** True if module supports archiving of completion data
+ * Chose FEATURE_ARCHIVE rather than FEATURE_RESET to avoid confusion with existing function reset_course_userdata()
+ **/
+define('FEATURE_ARCHIVE_COMPLETION', 'archive_completion');
+
 /** Unspecified module archetype */
 define('MOD_ARCHETYPE_OTHER', 0);
 /** Resource-like type module */

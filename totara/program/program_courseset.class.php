@@ -26,6 +26,8 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+require_once($CFG->dirroot . '/totara/certification/lib.php');
+
 define('COMPLETIONTYPE_ALL', 1);
 define('COMPLETIONTYPE_ANY', 2);
 
@@ -39,9 +41,9 @@ abstract class course_set {
     public $recurrencetime, $recurcreatetime;
     public $isfirstset, $islastset;
     public $uniqueid;
+    public $certifpath;
 
-    public function __construct($programid, $setob=null, $uniqueid=null) {
-
+    public function __construct($programid, $setob=null, $uniqueid=null, $certifpath=null) {
         if (is_object($setob)) {
             $this->id = $setob->id;
             $this->programid = $setob->programid;
@@ -54,6 +56,7 @@ abstract class course_set {
             $this->timeallowed = $setob->timeallowed;
             $this->recurrencetime = $setob->recurrencetime;
             $this->recurcreatetime = $setob->recurcreatetime;
+            $this->certifpath = $setob->certifpath;
         } else {
             $this->id = 0;
             $this->programid = $programid;
@@ -66,6 +69,7 @@ abstract class course_set {
             $this->timeallowed = 0;
             $this->recurrencetime = 0;
             $this->recurcreatetime = 0;
+            $this->certifpath = 0;
         }
 
         $timeallowed = program_utilities::duration_explode($this->timeallowed);
@@ -77,18 +81,17 @@ abstract class course_set {
         } else {
             $this->uniqueid = rand();
         }
-
     }
 
     public function init_form_data($formnameprefix, $formdata) {
-
         $defaultlabel = $this->get_default_label();
 
         $this->id = $formdata->{$formnameprefix.'id'};
         $this->programid = $formdata->id;
         $this->contenttype = $formdata->{$formnameprefix.'contenttype'};
         $this->sortorder = $formdata->{$formnameprefix.'sortorder'};
-        $this->label = isset($formdata->{$formnameprefix.'label'}) && ! empty($formdata->{$formnameprefix.'label'}) ? $formdata->{$formnameprefix.'label'} : $defaultlabel;
+        $this->label = isset($formdata->{$formnameprefix.'label'})
+                           && ! empty($formdata->{$formnameprefix.'label'}) ? $formdata->{$formnameprefix.'label'} : $defaultlabel;
         $this->nextsetoperator = isset($formdata->{$formnameprefix.'nextsetoperator'}) ? $formdata->{$formnameprefix.'nextsetoperator'} : 0;
         $this->timeallowednum = $formdata->{$formnameprefix.'timeallowednum'};
         $this->timeallowedperiod = $formdata->{$formnameprefix.'timeallowedperiod'};
@@ -114,6 +117,11 @@ abstract class course_set {
     public function get_set_prefix() {
         return $this->uniqueid;
     }
+
+    public function set_certifpath($c) {
+        $this->certifpath=$c;
+    }
+
 
     public function get_default_label() {
         return get_string('untitledset', 'totara_program');
@@ -145,6 +153,7 @@ abstract class course_set {
         $todb->recurcreatetime = $this->recurcreatetime;
         $todb->contenttype = $this->contenttype;
         $todb->label = $this->label;
+        $todb->certifpath = $this->certifpath;
 
         if ($this->id > 0) { // if this set already exists in the database
             $todb->id = $this->id;
@@ -203,7 +212,8 @@ abstract class course_set {
             }
         }
 
-        if ($completion = $DB->get_record('prog_completion', array('coursesetid' => $this->id, 'programid' => $this->programid, 'userid' => $userid))) {
+        if ($completion = $DB->get_record('prog_completion',
+                        array('coursesetid' => $this->id, 'programid' => $this->programid, 'userid' => $userid))) {
 
             // Do not update record if we have not received any data
             // (generally because we just want to make sure a record exists)
@@ -266,7 +276,8 @@ abstract class course_set {
         if (!$userid) {
             return false;
         }
-        $completion_status = $DB->get_field('prog_completion', 'status', array('coursesetid' => $this->id, 'programid' => $this->programid, 'userid' => $userid));
+        $completion_status = $DB->get_field('prog_completion', 'status',
+                        array('coursesetid' => $this->id, 'programid' => $this->programid, 'userid' => $userid));
         if ($completion_status === false) {
             return false;
         }
@@ -464,7 +475,7 @@ class multi_course_set extends course_set {
 
     public $courses, $courses_deleted_ids;
 
-    public function __construct($programid, $setob=null, $uniqueid=null) {
+    public function __construct($programid, $setob=null, $uniqueid=null, $certifpath=null) {
         global $DB;
         parent::__construct($programid, $setob, $uniqueid);
 
@@ -476,15 +487,14 @@ class multi_course_set extends course_set {
             $courseset_courses = $DB->get_records('prog_courseset_course', array('coursesetid' => $this->id));
             foreach ($courseset_courses as $courseset_course) {
                 $course = $DB->get_record('course', array('id' => $courseset_course->courseid));
-                if (!$course) { // if the course has been deleted before being removed from the program we remove it from the course set
+                if (!$course) {
+                    // if the course has been deleted before being removed from the program we remove it from the course set
                     $DB->delete_records('prog_courseset_course', array('id' => $courseset_course->id));
                 } else {
                     $this->courses[] = $course;
                 }
             }
-
         }
-
     }
 
     public function init_form_data($formnameprefix, $formdata) {
@@ -554,6 +564,7 @@ class multi_course_set extends course_set {
         $todb->recurcreatetime = $this->recurcreatetime;
         $todb->contenttype = $this->contenttype;
         $todb->label = $this->label;
+        $todb->certifpath = $this->certifpath;
 
         if ($this->id == 0) { // if this set doesn't already exist in the database
             $id = $DB->insert_record('prog_courseset', $todb);
@@ -577,7 +588,8 @@ class multi_course_set extends course_set {
         $program_plugin = enrol_get_plugin('totara_program');
         // then delete any courses from the database that have been marked for deletion
         foreach ($this->courses_deleted_ids as $courseid) {
-            if ($courseset_course = $DB->get_record('prog_courseset_course', array('coursesetid' => $this->id, 'courseid' => $courseid))) {
+            if ($courseset_course = $DB->get_record('prog_courseset_course',
+                            array('coursesetid' => $this->id, 'courseid' => $courseid))) {
                 $DB->delete_records('prog_courseset_course', array('coursesetid' => $this->id, 'courseid' => $courseid));
             }
         }
@@ -634,7 +646,8 @@ class multi_course_set extends course_set {
             if ($course->id != $courseid) {
                 $new_courses[] = $course;
             } else {
-                if ($courseset_course = $DB->get_record('prog_courseset_course', array('coursesetid' => $this->id, 'courseid' => $course->id))) {
+                if ($courseset_course = $DB->get_record('prog_courseset_course',
+                                array('coursesetid' => $this->id, 'courseid' => $course->id))) {
                     $this->courses_deleted_ids[] = $course->id;
                 }
                 $coursefound = true;
@@ -728,6 +741,10 @@ class multi_course_set extends course_set {
 
         require_once($CFG->dirroot . '/totara/coursecatalog/lib.php');
 
+        if ($userid) {
+            $usercontext = context_user::instance($userid);
+        }
+
         $out = '';
         $out .= html_writer::start_tag('fieldset');
         $out .= html_writer::tag('legend', $this->label);
@@ -755,6 +772,15 @@ class multi_course_set extends course_set {
             $table->attributes['class'] = 'fullwidth generaltable';
             if ($userid) {
                 $table->head[] = get_string('status', 'totara_program');
+                $completeheading = false;
+            }
+
+            // Get these variables outside loop as they are the
+            // same for all courses.
+            if (!empty($this->certifpath)) {
+                $certificationid = $DB->get_field('prog', 'certifid', array('id' => $this->programid));
+
+                $certifpath_user = get_certification_path_user($certificationid, $userid);
             }
 
             foreach ($this->courses as $course) {
@@ -771,15 +797,30 @@ class multi_course_set extends course_set {
                 // Site admin can access any course.
                 if (is_siteadmin($USER->id)) {
                     $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $coursename);
-                    $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
-                } else if ((is_enrolled($coursecontext, $userid) || totara_course_is_viewable($course->id, $userid)) &&
-                           (($userid && $accessible) || $accessible)) {
-                    // Others have to be either enrolled or have it in visible learning.
-                    $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $coursename);
-                    $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
+                    $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)),
+                                    get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
                 } else {
-                    $coursedetails .= $coursename;
-                    $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null, array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));
+                    $showcourseset = (is_enrolled($coursecontext, $userid) || totara_course_is_viewable($course->id, $userid)) && (($userid && $accessible) || $accessible);
+                    // Check if we are a certification-program by looking at the optional certif related field on the courseset.
+                    if (!empty($this->certifpath)) {
+                        if ($this->certifpath != $certifpath_user) {
+                            // If this courseset is not the one the user is on dont show.
+                             $showcourseset = false;
+                        } else if ($certifpath_user == CERTIFPATH_RECERT && !certif_iswindowopen($certificationid, $userid)) {
+                            // If it is but window is not open - don't show.
+                             $showcourseset = false;
+                        }
+                    }
+
+                    if ($showcourseset) {
+                        $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $coursename);
+                        $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)),
+                                         get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
+                    } else {
+                        $coursedetails .= $coursename;
+                        $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null,
+                                        array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));
+                    }
                 }
                 $cells[] = new html_table_cell($coursedetails);
                 $cells[] = new html_table_cell($launch);
@@ -789,6 +830,22 @@ class multi_course_set extends course_set {
                         $status = COMPLETION_STATUS_NOTYETSTARTED;
                     }
                     $cells[] = new html_table_cell(totara_display_course_progress_icon($userid, $course->id, $status));
+
+                    if ($showcourseset && totara_is_manager($userid) &&
+                            has_capability('totara/program:markstaffcoursecomplete', $usercontext)) {
+                        $completion = new completion_info($course);
+                        $indicator = ($completion->is_course_complete($userid) ? 'y' : 'n');
+                        $url = new moodle_url('/totara/program/content/completecourse.php',
+                                array('userid' => $userid, 'courseid' => $course->id, 'progid' => $this->programid));
+                        $pix = new pix_icon('i/completion-manual-' . $indicator, get_string('completion-alt-manual-' . $indicator, 'completion',
+                                format_string($course->fullname)), '', array('class' => 'iconsmall'));
+                        $link = $OUTPUT->action_icon($url, $pix);
+                        $cells[] = new html_table_cell($link);
+                        if (!$completeheading) {
+                            $table->head[] = get_string('markcompletheading', 'totara_program');
+                            $completeheading = true;
+                        }
+                    }
                 }
                 $row = new html_table_row($cells);
                 $table->data[] = $row;
@@ -806,14 +863,16 @@ class multi_course_set extends course_set {
                     $out .= html_writer::start_tag('div', array('class' => 'nextsetoperator'));
                     $out .= html_writer::tag('div', get_string('then', 'totara_program'), array('class' => 'operator-then'));
                     $out .= html_writer::tag('div', $OUTPUT->pix_icon('progress_then', get_string('then', 'totara_program'), 'totara_program'));
-                    $out .= html_writer::tag('div', $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram), array('class' => 'nextsethelp'));
+                    $out .= html_writer::tag('div', $this->get_courseset_divider_text($previous_sets, $next_sets, $userid,
+                                     $viewinganothersprogram), array('class' => 'nextsethelp'));
                     $out .= html_writer::end_tag('div');
                     break;
                 case NEXTSETOPERATOR_OR:
                     $out .= html_writer::start_tag('div', array('class' => 'nextsetoperator'));
                     $out .= html_writer::tag('div', get_string('or', 'totara_program'), array('class' => 'operator-or'));
                     $out .= html_writer::tag('div', $OUTPUT->pix_icon('progress_or', get_string('or', 'totara_program'), 'totara_program'));
-                    $out .= html_writer::tag('div', $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram), array('class' => 'nextsethelp'));
+                    $out .= html_writer::tag('div', $this->get_courseset_divider_text($previous_sets, $next_sets, $userid,
+                                     $viewinganothersprogram), array('class' => 'nextsethelp'));
                     $out .= html_writer::end_tag('div');
                     break;
             }
@@ -877,6 +936,7 @@ class multi_course_set extends course_set {
         $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => $prefix."completiontype", 'value' => COMPLETIONTYPE_ALL));
         $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => $prefix."timeallowedperiod", 'value' => TIME_SELECTOR_DAYS));
         $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => $prefix."timeallowednum", 'value' => '1'));
+        $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => $prefix."certifpath", 'value' => CERTIFPATH_CERT));
 
         if (isset($this->courses) && is_array($this->courses) && count($this->courses)>0) {
             $courseidsarray = array();
@@ -927,6 +987,7 @@ class multi_course_set extends course_set {
                 $content .= $OUTPUT->pix_icon('t/delete', get_string('delete'));
                 $content .= html_writer::end_tag('a');
                 $content .= html_writer::end_tag('div');
+                $content .= $this->get_course_warnings($course);
                 $cell = new html_table_cell($content);
                 $cell->attributes['class'] = 'course';
                 $cells[] = $cell;
@@ -982,7 +1043,8 @@ class multi_course_set extends course_set {
         $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'course_set'));
 
         $helpbutton = $OUTPUT->help_icon('multicourseset', 'totara_program');
-        $legend = ((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('untitledset', 'totara_program', $this->sortorder)) . ' ' . $helpbutton;
+        $legend = ((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('untitledset', 'totara_program',
+                         $this->sortorder)) . ' ' . $helpbutton;
         $templatehtml .= html_writer::tag('legend', $legend);
 
 
@@ -1011,7 +1073,8 @@ class multi_course_set extends course_set {
             $templatehtml .= '%'.$prefix.'movedown%'."\n";
 
             // Add the delete button for this set
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'totara_program'), array('class' => "delete fieldsetbutton setdeletebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'totara_program'),
+                             array('class' => "delete fieldsetbutton setdeletebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name' => $prefix.'delete', 'value' => null);
             $templatehtml .= '%'.$prefix.'delete%'."\n";
         }
@@ -1064,7 +1127,8 @@ class multi_course_set extends course_set {
         $helpbutton = $OUTPUT->help_icon('setlabel', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:setname', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'label'));
+        $templatehtml .= html_writer::tag('label', get_string('label:setname', 'totara_program') . ' ' . $helpbutton,
+                        array('for' => $prefix.'label'));
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::tag('div', '%'.$prefix.'label%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
@@ -1077,7 +1141,8 @@ class multi_course_set extends course_set {
                 COMPLETIONTYPE_ALL => get_string('allcourses', 'totara_program'),
             );
             $onchange = 'return M.totara_programcontent.changeCompletionTypeString(this, '.$prefix.');';
-            $mform->addElement('select', $prefix.'completiontype', get_string('label:learnermustcomplete', 'totara_program'), $completiontypeoptions, array('onchange' => $onchange));
+            $mform->addElement('select', $prefix.'completiontype', get_string('label:learnermustcomplete', 'totara_program'),
+                             $completiontypeoptions, array('onchange' => $onchange));
             $mform->setType($prefix.'completiontype', PARAM_INT);
             $mform->setDefault($prefix.'completiontype', COMPLETIONTYPE_ALL);
             $template_values['%'.$prefix.'completiontype%'] = array('name' => $prefix.'completiontype', 'value' => null);
@@ -1085,7 +1150,8 @@ class multi_course_set extends course_set {
         $helpbutton = $OUTPUT->help_icon('completiontype', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:learnermustcomplete', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'completiontype'));
+        $templatehtml .= html_writer::tag('label', get_string('label:learnermustcomplete', 'totara_program') . ' ' . $helpbutton,
+                         array('for' => $prefix.'completiontype'));
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::tag('div', '%'.$prefix.'completiontype%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
@@ -1107,7 +1173,8 @@ class multi_course_set extends course_set {
         $helpbutton = $OUTPUT->help_icon('minimumtimerequired', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:minimumtimerequired', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
+        $templatehtml .= html_writer::tag('label', get_string('label:minimumtimerequired', 'totara_program') . ' ' . $helpbutton,
+                         array('for' => $prefix.'timeallowance'));
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::tag('div', '%'.$prefix.'timeallowednum% %'.$prefix.'timeallowedperiod%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
@@ -1125,7 +1192,8 @@ class multi_course_set extends course_set {
         if (count($courseoptions) > 0) {
             if ($updateform) {
                 $mform->addElement('select',  $prefix.'courseid', '', $courseoptions);
-                $mform->addElement('submit', $prefix.'addcourse', get_string('addcourse', 'totara_program'), array('onclick' => "return M.totara_programcontent.amendCourses('$prefix')"));
+                $mform->addElement('submit', $prefix.'addcourse', get_string('addcourse', 'totara_program'),
+                                 array('onclick' => "return M.totara_programcontent.amendCourses('$prefix')"));
                 $template_values['%'.$prefix.'courseid%'] = array('name' => $prefix.'courseid', 'value' => null);
                 $template_values['%'.$prefix.'addcourse%'] = array('name' => $prefix.'addcourse', 'value' => null);
             }
@@ -1191,6 +1259,7 @@ class multi_course_set extends course_set {
                 $content .= $OUTPUT->pix_icon('t/delete', get_string('delete'));
                 $content .= html_writer::end_tag('a');
                 $content .= html_writer::end_tag('div');
+                $content .= $this->get_course_warnings($course);
                 $cell = new html_table_cell($content);
                 $cell->attributes['class'] = 'course';
                 $cells[] = $cell;
@@ -1273,6 +1342,30 @@ class multi_course_set extends course_set {
             return get_string('onecoursesfrom', 'totara_program') . ' "' . format_string($courseset->label) . '"';
         }
     }
+
+    /**
+     * Returns a html string with warnings or blank if none
+     *
+     * @global object $DB
+     * @param object $course
+     * @return string html content
+     */
+    private function get_course_warnings($course) {
+        global $DB, $OUTPUT;
+
+        $content = '';
+        $modinfo = get_fast_modinfo($course);
+        if (!empty($modinfo->instances['facetoface'])) {
+            // Is facetoface multiple session set to true?
+            $facetofaceids = array_keys($modinfo->get_instances_of('facetoface'));
+            list($sql, $params) = $DB->get_in_or_equal($facetofaceids);
+
+            if ($DB->record_exists_select('facetoface', 'multiplesessions = 0 AND id ' . $sql, $params)) {
+                $content .= $OUTPUT->notification(get_string('multiplefacetofacewarning', 'totara_program'), 'notifyproblem');
+            }
+        }
+        return $content;
+    }
 }
 
 
@@ -1333,7 +1426,8 @@ class competency_course_set extends course_set {
             $competencyid = $formdata->$competencyid_elementname;
             if ($competency = $DB->get_record('comp', array('id' => $competencyid))) {
                 $this->competencyid = $competency->id;
-                $this->completiontype = $this->get_completion_type(); // completiontype can change if the competency changes so we have to check it every time
+                $this->completiontype = $this->get_completion_type();
+                // completiontype can change if the competency changes so we have to check it every time
                 return true;
             }
         }
@@ -1468,12 +1562,15 @@ class competency_course_set extends course_set {
 
                 $cells = array();
                 $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
-                $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), format_string($course->fullname)) : format_string($course->fullname);
+                $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)),
+                                 format_string($course->fullname)) : format_string($course->fullname);
                 $cells[] = new html_table_cell($coursedetails);
                 if ($accessible && totara_course_is_viewable($course->id, $userid)) {
-                    $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
+                    $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)),
+                                     get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
                 } else {
-                    $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null, array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));
+                    $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null,
+                                     array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));
                 }
                 $cells[] = new html_table_cell($launch);
                 if ($userid) {
@@ -1498,7 +1595,8 @@ class competency_course_set extends course_set {
                     $out .= html_writer::start_tag('div', array('class' => 'nextsetoperator'));
                     $out .= html_writer::tag('div', get_string('then', 'totara_program'), array('class' => 'operator-then'));
                     $out .= html_writer::tag('div', $OUTPUT->pix_icon('progress_then', get_string('then', 'totara_program'), 'totara_program'));
-                    $out .= html_writer::tag('div', $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram), array('class' => 'nextsethelp'));
+                    $out .= html_writer::tag('div', $this->get_courseset_divider_text($previous_sets, $next_sets, $userid,
+                                    $viewinganothersprogram), array('class' => 'nextsethelp'));
                     $out .= html_writer::end_tag('div');
                     break;
                 case NEXTSETOPERATOR_OR:
@@ -1506,7 +1604,8 @@ class competency_course_set extends course_set {
                     $out .= html_writer::tag('div', get_string('or', 'totara_program'), array('class' => 'operator-or'));
                     $out .= $OUTPUT->pix_icon('progress_or', get_string('or', 'totara_program'), 'totara_program');
                     $out .= html_writer::tag('div', '', array('class' => 'clearfix'));
-                    $out .= html_writer::tag('div', $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram), array('class' => 'nextsethelp'));
+                    $out .= html_writer::tag('div', $this->get_courseset_divider_text($previous_sets, $next_sets, $userid,
+                                    $viewinganothersprogram), array('class' => 'nextsethelp'));
                     $out .= html_writer::end_tag('div');
                     break;
             }
@@ -1547,7 +1646,8 @@ class competency_course_set extends course_set {
 
         if ($this->nextsetoperator != 0) {
             $out .= html_writer::start_tag('div', array('class' => 'nextsetoperator'));
-            $operatorstr = $this->nextsetoperator == NEXTSETOPERATOR_THEN ? get_string('then', 'totara_program') : get_string('or', 'totara_program');
+            $operatorstr = $this->nextsetoperator == NEXTSETOPERATOR_THEN ?
+                                            get_string('then', 'totara_program') : get_string('or', 'totara_program');
             $out .= $operatorstr;
             $out .= html_writer::end_tag('div');
         }
@@ -1605,7 +1705,8 @@ class competency_course_set extends course_set {
         $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'course_set'));
 
         $helpbutton = $OUTPUT->help_icon('competencycourseset', 'totara_program');
-        $legend = ((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('legend:courseset', 'totara_program', $this->sortorder)) . ' ' . $helpbutton;
+        $legend = ((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('legend:courseset', 'totara_program',
+                        $this->sortorder)) . ' ' . $helpbutton;
         $templatehtml .= html_writer::tag('legend', $legend);
         $templatehtml .= html_writer::start_tag('div', array('class' => 'setbuttons'));
 
@@ -1635,7 +1736,8 @@ class competency_course_set extends course_set {
 
         // Add the delete button for this set
         if ($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'totara_program'), array('class' => "delete fieldsetbutton setdeletebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'totara_program'),
+                             array('class' => "delete fieldsetbutton setdeletebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name' => $prefix.'delete', 'value' => null);
         }
         $templatehtml .= '%'.$prefix.'delete%'."\n";
@@ -1680,7 +1782,8 @@ class competency_course_set extends course_set {
         $helpbutton = $OUTPUT->help_icon('setlabel', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:setname', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'label'));
+        $templatehtml .= html_writer::tag('label', get_string('label:setname', 'totara_program') . ' ' . $helpbutton,
+                         array('for' => $prefix.'label'));
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::tag('div', '%'.$prefix.'label%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
@@ -1714,7 +1817,8 @@ class competency_course_set extends course_set {
         $helpbutton = $OUTPUT->help_icon('minimumtimerequired', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:minimumtimerequired', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
+        $templatehtml .= html_writer::tag('label', get_string('label:minimumtimerequired', 'totara_program') . ' ' . $helpbutton,
+                        array('for' => $prefix.'timeallowance'));
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::tag('div', '%' . $prefix . 'timeallowednum% %' . $prefix . 'timeallowedperiod%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
@@ -2001,13 +2105,16 @@ class recurring_course_set extends course_set {
                 $course->icon = 'default';
             }
             $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
-            $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), format_string($course->fullname)) : format_string($course->fullname);
+            $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)),
+                            format_string($course->fullname)) : format_string($course->fullname);
             $cells[] = new html_table_cell($coursedetails);
 
             if ($accessible && totara_course_is_viewable($course->id, $userid)) {
-                $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
+                $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)),
+                                 get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
             } else {
-                $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null, array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));
+                $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null,
+                                 array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));
             }
             $cells[] = new html_table_cell($launch);
 
@@ -2073,7 +2180,8 @@ class recurring_course_set extends course_set {
         $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'course_set'));
 
         $helpbutton = $OUTPUT->help_icon('recurringcourseset', 'totara_program');
-        $legend = ((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('legend:recurringcourseset', 'totara_program', $this->sortorder)) . ' ' . $helpbutton;
+        $legend = ((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('legend:recurringcourseset', 'totara_program',
+                        $this->sortorder)) . ' ' . $helpbutton;
         $templatehtml .= html_writer::tag('legend', $legend);
 
         // Recurring programs don't need a nextsetoperator property but we must
@@ -2084,7 +2192,8 @@ class recurring_course_set extends course_set {
         $templatehtml .= html_writer::start_tag('div', array('class' => 'setbuttons'));
 
         if ($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'totara_program'), array('class' => "delete fieldsetbutton setdeletebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'totara_program'),
+                            array('class' => "delete fieldsetbutton setdeletebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name' => $prefix.'delete', 'value' => null);
         }
         $templatehtml .= '%'.$prefix.'delete%'."\n";
@@ -2130,7 +2239,8 @@ class recurring_course_set extends course_set {
         $helpbutton = $OUTPUT->help_icon('setlabel', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:setname', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'label'));
+        $templatehtml .= html_writer::tag('label', get_string('label:setname', 'totara_program') . ' ' . $helpbutton,
+                        array('for' => $prefix.'label'));
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::tag('div', '%'.$prefix.'label%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
@@ -2143,7 +2253,9 @@ class recurring_course_set extends course_set {
                 $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
                 $templatehtml .= html_writer::tag('label', get_string('coursename', 'totara_program'));
                 $templatehtml .= html_writer::end_tag('div');
-                $templatehtml .= html_writer::tag('div', html_writer::empty_tag('input', array('type' => 'text', 'disabled' => "disabled", 'name' => "", 'value' => format_string($this->course->fullname))), array('class' => 'fitem'));
+                $templatehtml .= html_writer::tag('div', html_writer::empty_tag('input',
+                                array('type' => 'text', 'disabled' => "disabled", 'name' => "",
+                                                'value' => format_string($this->course->fullname))), array('class' => 'fitem'));
                 $templatehtml .= html_writer::end_tag('div');
             }
         }
@@ -2164,7 +2276,8 @@ class recurring_course_set extends course_set {
         $helpbutton = $OUTPUT->help_icon('minimumtimerequired', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:minimumtimerequired', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
+        $templatehtml .= html_writer::tag('label', get_string('label:minimumtimerequired', 'totara_program') . ' ' . $helpbutton,
+                        array('for' => $prefix.'timeallowance'));
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::tag('div', '%' . $prefix . 'timeallowednum% %' . $prefix . 'timeallowedperiod%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
@@ -2187,9 +2300,11 @@ class recurring_course_set extends course_set {
         $helpbutton = $OUTPUT->help_icon('recurrence', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:recurrence', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'recurrencetimenum'));
+        $templatehtml .= html_writer::tag('label', get_string('label:recurrence', 'totara_program') . ' ' . $helpbutton,
+                         array('for' => $prefix.'recurrencetimenum'));
         $templatehtml .= html_writer::end_tag('div');
-        $templatehtml .= html_writer::tag('div', get_string('repeatevery', 'totara_program') . ' %' . $prefix . 'recurrencetimenum% %' . $prefix . 'recurrencetimeperiod%', array('class' => 'fitem'));
+        $templatehtml .= html_writer::tag('div', get_string('repeatevery', 'totara_program') . ' %' . $prefix . 'recurrencetimenum% %'
+                        . $prefix . 'recurrencetimeperiod%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
         $formdataobject->{$prefix.'recurrencetimenum'} = $this->recurrencetimenum;
         $formdataobject->{$prefix.'recurrencetimeperiod'} = $this->recurrencetimeperiod;
@@ -2210,9 +2325,11 @@ class recurring_course_set extends course_set {
         $helpbutton = $OUTPUT->help_icon('coursecreation', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:recurcreation', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'recurcreatetimenum'));
+        $templatehtml .= html_writer::tag('label', get_string('label:recurcreation', 'totara_program') . ' ' . $helpbutton,
+                        array('for' => $prefix.'recurcreatetimenum'));
         $templatehtml .= html_writer::end_tag('div');
-        $templatehtml .= html_writer::tag('div', get_string('createcourse', 'totara_program') . ' %' . $prefix . 'recurcreatetimenum% %' . $prefix . 'recurcreatetimeperiod% '. get_string('beforecourserepeats', 'totara_program'), array('class' => 'fitem'));
+        $templatehtml .= html_writer::tag('div', get_string('createcourse', 'totara_program') . ' %' . $prefix . 'recurcreatetimenum% %'
+                        . $prefix . 'recurcreatetimeperiod% '. get_string('beforecourserepeats', 'totara_program'), array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
         $formdataobject->{$prefix.'recurcreatetimenum'} = $this->recurcreatetimenum;
         $formdataobject->{$prefix.'recurcreatetimeperiod'} = $this->recurcreatetimeperiod;
@@ -2236,7 +2353,8 @@ class recurring_course_set extends course_set {
         $templatehtml .= html_writer::start_tag('div', array('class' => 'setbuttons'));
         // Add the update button for this set
         if ($updateform) {
-            $mform->addElement('submit', $prefix.'update', get_string('update', 'totara_program'), array('class' => "fieldsetbutton updatebutton"));
+            $mform->addElement('submit', $prefix.'update', get_string('update', 'totara_program'),
+                            array('class' => "fieldsetbutton updatebutton"));
             $template_values['%'.$prefix.'update%'] = array('name' => $prefix.'update', 'value' => null);
         }
         $templatehtml .= '%'.$prefix.'update%'."\n";

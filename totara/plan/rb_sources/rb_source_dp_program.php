@@ -47,6 +47,7 @@ class rb_source_dp_program extends rb_base_source {
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_dp_program');
+        $this->sourcewhere = 'base.certifid IS NULL';
         parent::__construct();
     }
 
@@ -57,6 +58,7 @@ class rb_source_dp_program extends rb_base_source {
     //
 
     protected function define_joinlist() {
+        global $DB;
 
         $joinlist = array(
             new rb_join(
@@ -90,7 +92,21 @@ class rb_source_dp_program extends rb_base_source {
                 'base.id = prog_plan_assignment.programid = ', //how it is joined
                 REPORT_BUILDER_RELATION_ONE_TO_MANY,
                 array('base')
-            )
+            ),
+            new rb_join(
+                'program_completion_history',
+                'LEFT',
+                '(SELECT ' . $DB->sql_concat('userid', 'programid') . ' uniqueid,
+                    userid,
+                    programid,
+                    COUNT(id) historycount
+                    FROM {prog_completion_history} program_completion_history
+                    GROUP BY userid, programid)',
+                '(base.id = program_completion_history.programid AND ' .
+                    'prog_user_assignment.userid = program_completion_history.userid)',
+                REPORT_BUILDER_RELATION_ONE_TO_MANY,
+                array('base', 'prog_user_assignment')
+            ),
         );
 
         $this->add_course_category_table_to_joinlist($joinlist, 'base', 'category');
@@ -155,6 +171,7 @@ class rb_source_dp_program extends rb_base_source {
                 'joins' => 'program_completion',
                 'displayfunc' => 'timedue_date',
                 'extrafields' => array(
+                    'program_id' => "base.id",
                     'completionstatus' => "program_completion.status"
                 )
             )
@@ -200,6 +217,30 @@ class rb_source_dp_program extends rb_base_source {
                 )
             )
         );
+        $columnoptions[] = new rb_column_option(
+            'program_completion_history',
+            'program_completion_history_link',
+            get_string('program_completion_history_link', 'rb_source_dp_program'),
+            'program_completion_history.historycount',
+            array(
+                'joins' => 'program_completion_history',
+                'defaultheading' => get_string('program_completion_history_link', 'rb_source_dp_program'),
+                'displayfunc' => 'program_completion_history_link',
+                'extrafields' => array(
+                    'program_id' => "base.id",
+                    'userid' => "program_completion.userid"
+                ),
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'program_completion_history',
+            'program_completion_history_count',
+            get_string('program_completion_history_count', 'rb_source_dp_program'),
+            'program_completion_history.historycount',
+            array(
+                'joins' => 'program_completion_history',
+            )
+        );
 
         // include some standard columns
         $this->add_course_category_fields_to_columns($columnoptions, 'course_category', 'base');
@@ -214,32 +255,8 @@ class rb_source_dp_program extends rb_base_source {
     }
 
     function rb_display_timedue_date($time,$row) {
-        global $OUTPUT;
-
-        $completionstatus = $row->completionstatus;
-
-        if ($time == 0 || $time == COMPLETION_TIME_NOT_SET) {
-            return get_string('noduedate', 'totara_plan');;
-        }
-
-        $out = userdate($time, get_string('strftimedatefull', 'langconfig'));
-
-        $days = '';
-        if ($completionstatus != STATUS_PROGRAM_COMPLETE) {
-            $days_remaining = floor(($time - time()) / 86400);
-            if ($days_remaining == 1) {
-                $days = get_string('onedayremaining', 'totara_program');
-            } else if ($days_remaining < 10 && $days_remaining > 0) {
-                $days = get_string('daysremaining', 'totara_program', $days_remaining);
-            } else if ($time < time()) {
-                $days = get_string('overdue', 'totara_plan');
-            }
-        }
-        if ($days != '') {
-            $out .= html_writer::empty_tag('br') . $OUTPUT->error_text($days);
-        }
-
-        return $out;
+        $program = new program($row->program_id);
+        return $program->display_timedue_date($row->completionstatus, $time);
     }
 
     function rb_display_mandatory_status($id) {
@@ -271,23 +288,14 @@ class rb_source_dp_program extends rb_base_source {
     }
 
     function rb_display_link_program_icon($programname, $row) {
+        $program = new program($row->program_id);
+        return $program->display_link_program_icon($programname, $row->program_id, $row->program_icon);
+    }
+
+    public function rb_display_program_completion_history_link($name, $row) {
         global $OUTPUT;
-        $programid = $row->program_id;
-        $programicon = !empty($row->program_icon) ? $row->program_icon : 'default';
-
-        $program = new program($programid);
-        $icon = $OUTPUT->pix_icon('programicons/' . $programicon, $programname, 'totara_core', array('class' => 'course_icon'));
-
-        if ($program->is_accessible()) {
-            $html = $OUTPUT->action_link(
-                new moodle_url('/totara/program/view.php', array('id' => $programid)),
-                $icon . $programname
-            );
-        } else {
-            $html = $icon . $programname;
-        }
-
-        return $html;
+        return $OUTPUT->action_link(new moodle_url('/totara/plan/record/programs.php',
+                array('program_id' => $row->program_id, 'userid' => $row->userid, 'history' => 1)), $name);
     }
 
     protected function define_filteroptions() {
@@ -298,6 +306,12 @@ class rb_source_dp_program extends rb_base_source {
                 get_string('programname', 'totara_program'),
                 'text'
             )
+        );
+        $filteroptions[] = new rb_filter_option(
+                'program_completion_history',
+                'program_completion_history_count',
+                get_string('program_completion_history_count', 'rb_source_dp_program'),
+                'number'
         );
 
         $this->add_course_category_fields_to_filters($filteroptions, 'base', 'category');

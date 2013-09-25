@@ -49,8 +49,8 @@ class backup_facetoface_activity_structure_step extends backup_activity_structur
         // Define each element separated
         $facetoface = new backup_nested_element('facetoface', array('id'), array(
             'name', 'intro', 'introformat', 'thirdparty', 'thirdpartywaitlist', 'display',
-            'timecreated', 'timemodified', 'shortname', 'showoncalendar', 'approvalreqd', 'usercalentry'));
-
+            'timecreated', 'timemodified', 'shortname', 'showoncalendar', 'approvalreqd', 'usercalentry',
+            'multiplesessions'));
         $notifications = new backup_nested_element('notifications');
 
         $notification = new backup_nested_element('notification', array('id'), array(
@@ -68,7 +68,7 @@ class backup_facetoface_activity_structure_step extends backup_activity_structur
         $signups = new backup_nested_element('signups');
 
         $signup = new backup_nested_element('signup', array('id'), array(
-            'sessionid', 'userid', 'mailedreminder', 'discountcode', 'notificationtype'));
+            'sessionid', 'userid', 'mailedreminder', 'discountcode', 'notificationtype', 'archived'));
 
         $signups_status = new backup_nested_element('signups_status');
 

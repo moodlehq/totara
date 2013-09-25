@@ -168,12 +168,11 @@ $string['configcronremotepassword'] = 'This means that the cron.php script canno
 $string['configcurlcache'] = 'Time-to-live for cURL cache, in seconds.';
 $string['configcustommenuitems'] = 'You can configure a custom menu here to be shown by themes. Each line consists of some menu text, a link URL (optional), a tooltip title (optional) and a language code or comma-separated list of codes (optional, for displaying the line to users of the specified language only), separated by pipe characters. You can specify a structure using hyphens. For example:
 <pre>
-Totara community|http://www.community.totaralms.com
+-Totara community|http://www.community.totaralms.com
 -Totara support|http://www.support.totaralms.com
--Totara development|http://www.dev.totaralms.com
+-Totara development|http://dev.totaralms.com
 --Totara help|http://www.help.totaralms.com
 -Totara News|http://www.totaralms.com/about-totara/news
-Totara Company
 -Totara Partners|http://www.totaralms.com/partners
 </pre>';
 $string['configdbsessions'] = 'If enabled, this setting will use the database to store information about current sessions.  This is especially useful for large/busy sites or sites built on cluster of servers.  For most sites this should probably be left disabled so that the server disk is used instead.  Note that changing this setting now will log out all current users (including you). If you are using MySQL please make sure that \'max_allowed_packet\' in my.cnf (or my.ini) is at least 4M.';
@@ -1215,4 +1214,3 @@ Cron Watcher is a script located in
 We recommend you set the script to run every 5 minutes.
 
 See also <a href="http://docs.moodle.org/22/en/Cron" title="Cron help" target="_blank">Cron (at Moodle Wiki)</a>, <a href="http://en.wikipedia.org/wiki/Cron" title="Cron" target="_blank">Cron (at Wikipedia)</a>';
-

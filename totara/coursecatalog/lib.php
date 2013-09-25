@@ -6,7 +6,7 @@
  * This function counts the number of items within a set of categories, only including
  * items that are visible to the user.
  *
- * By default returns the course count, but will work for programs too.
+ * By default returns the course count, but will work for programs, certifications too.
  *
  * We need to jump through some hoops to do this efficiently:
  *
@@ -17,11 +17,12 @@
  *   checks hidden courses, and only if user isn't a siteadmin
  *
  * @param integer|array $categoryids ID or IDs of the category/categories to fetch
- * @param boolean $countcourses If true count number of courses, otherwise count programs
+ * @param boolean $viewtype  - type of item to count: course,program,certification
  *
- * @return integer|array Associative array, where keys are the sub-category IDs and value is the count. If $categoryids is a single integer, just returns the count as an integer
+ * @return integer|array Associative array, where keys are the sub-category IDs and value is the count.
+ * If $categoryids is a single integer, just returns the count as an integer
  */
-function totara_get_category_item_count($categoryids, $countcourses = true) {
+function totara_get_category_item_count($categoryids, $viewtype = 'course') {
     global $CFG, $USER, $DB;
     require_once($CFG->dirroot . '/totara/cohort/lib.php');
 
@@ -31,17 +32,32 @@ function totara_get_category_item_count($categoryids, $countcourses = true) {
         return array();
     }
 
-    // What items are we counting, courses or programs?
-    if ($countcourses) {
-        $itemcap = 'moodle/course:viewhiddencourses';
-        $itemtable = "{course}";
-        $itemcontext = CONTEXT_COURSE;
-        $itemalias = 'c';
-    } else {
-        $itemcap = 'totara/program:viewhiddenprograms';
-        $itemtable = "{prog}";
-        $itemcontext = CONTEXT_PROGRAM;
-        $itemalias = 'p';
+
+    // What items are we counting, courses, programs, or certifications?
+    switch ($viewtype) {
+        case 'course':
+            $itemcap = 'moodle/course:viewhiddencourses';
+            $itemtable = "{course}";
+            $itemcontext = CONTEXT_COURSE;
+            $itemalias = 'c';
+            $extrawhere = '';
+            break;
+        case 'program':
+            $itemcap = 'totara/program:viewhiddenprograms';
+            $itemtable = "{prog}";
+            $itemcontext = CONTEXT_PROGRAM;
+            $itemalias = 'p';
+            $extrawhere = " AND certifid IS NULL";
+            break;
+        case 'certification':
+            $itemcap = 'totara/program:viewhiddenprograms';
+            $itemtable = "{prog}";
+            $itemcontext = CONTEXT_PROGRAM;
+            $itemalias = 'p';
+            $extrawhere = " AND certifid IS NOT NULL";
+            break;
+        default:
+            print_error('invalid viewtype');
     }
 
     list($insql, $inparams) = $DB->get_in_or_equal(array_keys($categories), SQL_PARAMS_NAMED);
@@ -78,18 +94,15 @@ function totara_get_category_item_count($categoryids, $countcourses = true) {
               JOIN {$itemtable} {$itemalias}
                 ON {$itemalias}.id = cx.instanceid AND contextlevel = :itemcontext
                 {$visibilitysql}
-             WHERE (" . implode(' OR ', $contextwhere) . ")";
+             WHERE (" . implode(' OR ', $contextwhere) . ")" . $extrawhere;
     $params = array('itemcontext' => $itemcontext);
     $params = array_merge($params, $contextparams);
     $params = array_merge($params, $visibilityparams);
 
     // Get all items inside all the categories.
     if (!$items = $DB->get_records_sql($sql, $params)) {
-        // Sub-categories are all empty.
-        if (is_array($categoryids)) {
-            return array();
-        }
-        return 0;
+        // sub-categories are all empty
+        return array();
     }
 
     $results = array();
@@ -111,7 +124,7 @@ function totara_get_category_item_count($categoryids, $countcourses = true) {
         }
 
         // We need to check if programs are available to students.
-        if (!$countcourses && !is_siteadmin($USER->id)) {
+        if ($viewtype == 'program'  && !is_siteadmin($USER->id)) {
             $program = new program($item->itemid);
             if (!$program->is_accessible()) {
                 continue;
@@ -141,6 +154,69 @@ function totara_get_category_item_count($categoryids, $countcourses = true) {
         return current($results);
     }
 
+}
+
+function totara_print_main_subcategories($parentid, $secondarycats, $secondary_item_counts, $editingon, $viewtype = 'course', $numbertoshow = 3) {
+    //If there are no secondary items return
+    if ($secondary_item_counts <= 0) {
+        return '';
+    }
+    $subcats = array();
+    // add itemcount to the object
+    foreach ($secondarycats as $key => $category) {
+        if ($category->parent != $parentid) {
+            continue;
+        }
+        $subcats[$key] = $category;
+        if (array_key_exists($category->id, $secondary_item_counts)) {
+            $subcats[$key]->itemcount = $secondary_item_counts[$category->id];
+        } else {
+            $subcats[$key]->itemcount = 0;
+        }
+    }
+    // sort by item count
+    usort($subcats, 'totara_course_cmp_by_count');
+
+    if (empty($subcats)) {
+        return '';
+    }
+    $out = '';
+    $numdisplayed = 0;
+    $showmorelink = false;
+    $requiredcaps = ($viewtype == 'course') ? array('moodle/course:create', 'moodle/course:update') : array('totara/program:createprogram', 'totara/program:configureprogram');
+    foreach ($subcats as $subcat) {
+        $subcatcontext = context_coursecat::instance($subcat->id);
+        // don't show empty sub-categories unless viewing as admin or has course/program editing capabilities
+        if (!$editingon && $subcat->itemcount == 0 && !has_any_capability($requiredcaps, $subcatcontext)) {
+            continue;
+        }
+
+        // Check capabilities if subcategory is hidden
+        $cssclass = '';
+        if (!$subcat->visible) {
+            if (!has_capability('moodle/category:viewhiddencategories', $subcatcontext)) {
+                continue;
+            }
+            $cssclass = 'dimmed';
+        }
+
+        if ($numdisplayed < $numbertoshow) {
+            $out .= html_writer::tag('li', html_writer::link(new moodle_url('/course/category.php',
+                            array('id' => $subcat->id, 'viewtype' => $viewtype)), format_string($subcat->name).' ('.$subcat->itemcount.')', array('class' => $cssclass)));
+            $numdisplayed++;
+        } else {
+            $showmorelink = true;
+            break;
+        }
+    }
+
+    // if there are some left, print a "more" link to the parent category
+    if ($showmorelink) {
+        $out .= html_writer::tag('li', html_writer::link(new moodle_url('/course/category.php',
+                        array('id' => $parentid)), get_string('more').'&hellip;', array('class' => 'more')));
+    }
+    $out = html_writer::tag('ul', $out, array('class' => "course-subcat-listing"));
+    return $out;
 }
 
 /**

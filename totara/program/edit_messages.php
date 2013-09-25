@@ -39,13 +39,20 @@ require_login();
 
 $systemcontext = context_system::instance();
 $program = new program($id);
+$iscertif = $program->certifid ? true : false;
 $programcontext = $program->get_context();
 
 
 // Integrate into the admin tree only if the user can edit program messages at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:configuremessages', $systemcontext)) {
-    admin_externalpage_setup('programmgmt', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_messages.php', array('context' => $programcontext));
+    if ($iscertif) {
+        admin_externalpage_setup('managecertifications', '',
+            array('id' => $id), $CFG->wwwroot.'/totara/program/edit_messages.php', array('context' => $programcontext));
+    } else {
+        admin_externalpage_setup('manageprograms', '',
+            array('id' => $id), $CFG->wwwroot.'/totara/program/edit_messages.php', array('context' => $programcontext));
+    }
 } else {
     $PAGE->set_context($programcontext);
     $PAGE->set_url(new moodle_url('/totara/program/edit_messages.php', array('id' => $id)));
@@ -53,7 +60,7 @@ if (has_capability('totara/program:configuremessages', $systemcontext)) {
     $PAGE->set_heading($program->fullname);
 }
 
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category);
+$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
 foreach ($category_breadcrumbs as $crumb) {
     $PAGE->navbar->add($crumb['name'], $crumb['link']);
 }
@@ -164,6 +171,10 @@ add_to_log(SITEID, 'program', 'view messages', "edit_messages.php?id={$program->
 ///
 
 $heading = format_string($program->fullname);
+
+if ($iscertif) {
+    $heading .= ' ('.get_string('certification','totara_certification').')';
+}
 
 //Javascript includes
 $PAGE->requires->strings_for_js(array('editmessages','saveallchanges',

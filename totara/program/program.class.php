@@ -129,6 +129,7 @@ class program {
         $this->usermodified = $program->usermodified;
         $this->icon = $program->icon;
         $this->audiencevisible = $program->audiencevisible;
+        $this->certifid = $program->certifid;
 
         $this->content = new prog_content($id);
         $this->assignments = new prog_assignments($id);
@@ -204,6 +205,11 @@ class program {
         // delete all content
         $this->content->delete();
 
+        // delete certification
+        if ($this->certifid) {
+            certif_delete(CERTIFTYPE_PROGRAM, $this->certifid);
+        }
+
         // delete the program itself
         $DB->delete_records('prog', array('id' => $this->id));
 
@@ -212,9 +218,10 @@ class program {
         return true;
     }
 
+
     /**
      * Deletes the completion records for the program for the specified user.
-     * 
+     *
      * @param int $userid
      * @param bool $deletecompleted Whether to force deletion of records for completed programs
      * @return bool Deletion true|Exception
@@ -243,8 +250,8 @@ class program {
     public function update_learner_assignments() {
         global $DB, $ASSIGNMENT_CATEGORY_CLASSNAMES;
 
-        // Get the total time allowed for this program
-        $total_time_allowed = $this->content->get_total_time_allowance();
+//         // Get the total time allowed for this program
+//         $total_time_allowed = $this->content->get_total_time_allowance(CERTIFPATH_CERT);
 
         // Get program assignments
         $prog_assignments = $this->assignments->get_assignments();
@@ -296,9 +303,10 @@ class program {
 
                         // Create user assignment object
                         $current_assignment = new user_assignment($user->id, $user_assign_data->assignmentid, $this->id);
-
-                        if (!in_array($user_assign_data->exceptionstatus, array(PROGRAM_EXCEPTION_RAISED, PROGRAM_EXCEPTION_DISMISSED, PROGRAM_EXCEPTION_RESOLVED)) &&
-                            (isset($current_assignment->completion) && $timedue != $current_assignment->completion->timedue)) {
+                        if (!in_array($user_assign_data->exceptionstatus,
+                               array(PROGRAM_EXCEPTION_RAISED, PROGRAM_EXCEPTION_DISMISSED, PROGRAM_EXCEPTION_RESOLVED)) &&
+                            (isset($current_assignment->completion)
+                                            && $timedue != $current_assignment->completion->timedue)) {
                             // there is no exception, and the timedue has changed
 
                             if ($assign->completionevent == COMPLETION_EVENT_FIRST_LOGIN && $timedue === false) {
@@ -499,13 +507,6 @@ class program {
         }
         $DB->insert_records_via_batch('prog_completion', $prog_completions);
         unset($prog_completions);
-
-        // insert a completion record to store the time due for the
-        // shortest course set in the first group of course sets in the program
-        $courseset_groups = $this->content->get_courseset_groups();
-        if (count($courseset_groups) > 0) {
-            $this->content->set_courseset_group_timedue_bulk($courseset_groups[0], array_keys($users));
-        }
 
         // insert or update a user assignment record to store the details of how this user was assigned to the program
         $user_assignments = array();
@@ -872,7 +873,9 @@ class program {
             return (float)100;
         }
 
-        $courseset_groups = $this->content->get_courseset_groups();
+        $certifpath = get_certification_path_user($this->certifid, $userid);
+        $certifpath == CERTIFPATH_UNSET && $certifpath = CERTIFPATH_CERT;
+        $courseset_groups = $this->content->get_courseset_groups($certifpath);
         $courseset_group_count = count($courseset_groups);
         $courseset_group_complete_count = 0;
 
@@ -889,7 +892,7 @@ class program {
             if ($courseset_group_complete) {
                 $courseset_group_complete_count++;
             }
-        }
+            }
 
         if ($courseset_group_count > 0) {
             return (float)($courseset_group_complete_count / $courseset_group_count) * 100;
@@ -909,7 +912,9 @@ class program {
      */
     public function can_enter_course($userid, $courseid) {
 
-        $courseset_groups = $this->content->get_courseset_groups();
+        $certifpath = get_certification_path_user($this->certifid, $userid);
+        $certifpath == CERTIFPATH_UNSET && $certifpath = CERTIFPATH_CERT;
+        $courseset_groups = $this->content->get_courseset_groups($certifpath);
 
         $courseset_group_completed = false;
 
@@ -952,6 +957,8 @@ class program {
     public function display($userid=null) {
         global $CFG, $DB, $USER, $OUTPUT, $PAGE;
 
+        $iscertif = (isset($this->certifid) && $this->certifid > 0) ? true : false;
+
         $out = '';
 
         if (!$this->is_accessible()) {
@@ -971,7 +978,6 @@ class program {
             $user->wwwroot = $CFG->wwwroot;
             $message .= html_writer::tag('p', get_string('viewingxusersprogram', 'totara_program', $user));
         }
-
 
         $userassigned = $this->user_is_assigned($userid);
 
@@ -998,7 +1004,36 @@ class program {
 
         // show message box if there are any messages
         if (!empty($message)) {
-                $out .= html_writer::tag('div', $message, array('class' => 'notifymessage'));
+            $out .= html_writer::tag('div', $message, array('class' => 'notifymessage'));
+        }
+
+        if ($iscertif) {
+            global $CERTIFPATH;
+            $userid = (($userid) ? $userid : $USER->id);
+            $certifcompletion = $DB->get_record('certif_completion', array('certifid' => $this->certifid, 'userid' =>  $userid));
+
+            if ($certifcompletion) {
+                $now = time();
+                $out .= html_writer::start_tag('p', array('class' => 'certifpath'));
+                if ($certifcompletion->certifpath == CERTIFPATH_CERT) {
+                    if ($certifcompletion->renewalstatus == CERTIFRENEWALSTATUS_EXPIRED) {
+                        $out .= get_string('certexpired', 'totara_certification');
+                    } else {
+                        $out .= get_string('certinprogress', 'totara_certification');
+                    }
+                } else {
+                    if ($now > $certifcompletion->timewindowopens) {
+                        $out .= get_string('recertwindowopen', 'totara_certification');
+                        $out .= get_string('recertwindowexpiredate', 'totara_certification',
+                                userdate($certifcompletion->timeexpires, get_string('strftimedatetime', 'langconfig')));
+                    } else {
+                        $out .= get_string('certcomplete', 'totara_certification');
+                        $out .= get_string('recertwindowopendate', 'totara_certification',
+                                userdate($certifcompletion->timewindowopens, get_string('strftimedatetime', 'langconfig')));
+                    }
+                }
+                $out .= html_writer::end_tag('p');
+            }
         }
 
         //only show time allowance and extension text if a completion time has been set
@@ -1009,12 +1044,19 @@ class program {
         // display the start date, due date and progress bar
         if ($userassigned) {
             if ($prog_completion) {
-                $startdatestr = $this->display_date_as_text($prog_completion->timestarted);
-                $duedatestr = (empty($prog_completion->timedue) || $prog_completion->timedue == COMPLETION_TIME_NOT_SET) ? get_string('duedatenotset', 'totara_program') : $this->display_date_as_text($prog_completion->timedue);
+                $startdatestr = ($prog_completion->timestarted != 0
+                                ? $this->display_date_as_text($prog_completion->timestarted)
+                                : get_string('nostartdate', 'totara_program'));
+                $duedatestr = (empty($prog_completion->timedue) || $prog_completion->timedue == COMPLETION_TIME_NOT_SET)
+                                ? get_string('duedatenotset', 'totara_program')
+                                : $this->display_date_as_text($prog_completion->timedue);
                 $out .= html_writer::start_tag('div', array('class' => 'programprogress'));
-                $out .= html_writer::tag('div', get_string('startdate', 'totara_program') . ': ' . $startdatestr, array('class' => 'item'));
-                $out .= html_writer::tag('div', get_string('duedate', 'totara_program').': ' . $duedatestr, array('class' => 'item'));
-                $out .= html_writer::tag('div', get_string('progress', 'totara_program') . ': ' . $this->display_progress($userid), array('class' => 'item'));
+                $out .= html_writer::tag('div', get_string('startdate', 'totara_program') . ': '
+                                . $startdatestr, array('class' => 'item'));
+                $out .= html_writer::tag('div', get_string('duedate', 'totara_program').': '
+                                . $duedatestr, array('class' => 'item'));
+                $out .= html_writer::tag('div', get_string('progress', 'totara_program') . ': '
+                                . $this->display_progress($userid), array('class' => 'item'));
                 $out .= html_writer::end_tag('div');
             }
         }
@@ -1025,8 +1067,64 @@ class program {
         $progobj->id = $this->id;
         $summary = $programrenderer->coursecat_programbox_content(new programcat_helper(), new program_in_list($progobj));
         $out .= $summary;
+/* TODO: This needs fixing to work with the new catalogue
+ *
+        $summary = file_rewrite_pluginfile_urls($this->summary, 'pluginfile.php',
+            context_program::instance($this->id)->id, 'totara_program', 'summary', 0);
+        $out .= html_writer::tag('div', $summary, array('class' => 'summary'));
+ t2-feature-certification */
 
-        $courseset_groups = $this->content->get_courseset_groups();
+        // course sets - for certify or recertify paths
+        if ($iscertif) {
+            if (is_siteadmin()) {
+                $out .= $OUTPUT->heading(get_string('oricertpath', 'totara_certification'), 2);
+                $out .= $this->display_courseset(CERTIFPATH_CERT, $userid, $viewinganothersprogram);
+
+                $out .= html_writer::start_tag('div', array('class' => 'programrecert'));
+                $out .= $OUTPUT->heading(get_string('recertpath', 'totara_certification'), 2);
+                $out .= html_writer::end_tag('div');
+
+                $out .= $this->display_courseset(CERTIFPATH_RECERT, $userid, $viewinganothersprogram);
+            } else if ($certifcompletion) {
+                // If on certification path OR if on recertification but not recertified before: display certification coursesset
+                // else display recert path.
+                $histcount = $DB->count_records('certif_completion_history', array('certifid' => $this->certifid, 'userid' =>  $userid));
+
+                if ($certifcompletion->certifpath == CERTIFPATH_CERT ||
+                                ($certifcompletion->certifpath == CERTIFPATH_RECERT && !$histcount)) {
+                    $out .= $OUTPUT->heading(get_string('oricertpath', 'totara_certification'), 2);
+                    $out .= $this->display_courseset(CERTIFPATH_CERT, $userid, $viewinganothersprogram);
+                } else {
+                    $out .= html_writer::start_tag('div', array('class' => 'programrecert'));
+                    $out .= $OUTPUT->heading(get_string('recertpath', 'totara_certification'), 2);
+                    $out .= html_writer::end_tag('div');
+                    $out .= $this->display_courseset(CERTIFPATH_RECERT, $userid, $viewinganothersprogram);
+                }
+            }
+        } else {
+            $out .= $this->display_courseset(CERTIFPATH_STD, $userid, $viewinganothersprogram);
+        }
+
+        // only show end note when a program is complete
+        $prog_owners_id = ($userid) ? $userid : $USER->id;
+        $prog_completion = $DB->get_record('prog_completion', array('programid' => $this->id, 'userid' => $prog_owners_id, 'coursesetid' => 0));
+
+        if ($prog_completion && $prog_completion->status == STATUS_PROGRAM_COMPLETE) {
+            $out .= html_writer::start_tag('div', array('class' => 'programendnote'));
+            $out .= $OUTPUT->heading(get_string('programends', 'totara_program'), 2);
+            $out .= html_writer::tag('div', $this->endnote, array('class' => 'endnote'));
+            $out .= html_writer::end_tag('div');
+            $out .= html_writer::end_tag('div');
+        }
+
+        return $out;
+    }
+
+
+
+    function display_courseset($certifpath, $userid, $viewinganothersprogram) {
+        $out = '';
+        $courseset_groups = $this->content->get_courseset_groups($certifpath);
 
         // check if this is a recurring program
         if (count($courseset_groups) == 0) {
@@ -1050,7 +1148,7 @@ class program {
             // flag to determine whether or not to display active links to
             // courses in the course set groups in the program. The first group
             // will always be accessible.
-            $courseset_group_accessible = true;
+            $courseset_group_accessible = true;;
 
             // display each course set
             foreach ($courseset_groups as $courseset_group) {
@@ -1075,20 +1173,13 @@ class program {
                 }
             }
         }
-
-        // only show end note when a program is complete
-        $prog_owners_id = ($userid) ? $userid : $USER->id;
-        $prog_completion = $DB->get_record('prog_completion', array('programid' => $this->id, 'userid' => $prog_owners_id, 'coursesetid' => 0));
-
-        if ($prog_completion && $prog_completion->status == STATUS_PROGRAM_COMPLETE) {
-            $out .= html_writer::start_tag('div', array('class' => 'programendnote'));
-            $out .= $OUTPUT->heading(get_string('programends', 'totara_program'), 2);
-            $out .= html_writer::tag('div', $this->endnote, array('class' => 'endnote'));
-            $out .= html_writer::end_tag('div');
-        }
-
         return $out;
     }
+
+
+
+
+
 
     function get_time_allowance_and_extension_text($userid, $viewinganothersprogram) {
         global $DB;
@@ -1096,7 +1187,9 @@ class program {
         $out = '';
 
         // Get the total time allowed for this program
-        $total_time_allowed = $this->content->get_total_time_allowance();
+        $certifpath = get_certification_path_user($this->certifid, $userid);
+        ($certifpath == CERTIFPATH_UNSET) && $certifpath = CERTIFPATH_CERT;
+        $total_time_allowed = $this->content->get_total_time_allowance($certifpath);
 
         // Only display the time allowance if user is assigned to program
         if ($this->user_is_assigned($userid)) {
@@ -1125,7 +1218,7 @@ class program {
                 if (!$extension = $DB->get_record('prog_extension', array('userid' => $userid, 'programid' => $this->id, 'status' => 0))) {
                     // Show extension link
                     $url = new moodle_url('/totara/program/view.php', array('id' => $this->id, 'extrequest' => '1'));
-                    $out .= html_writer::link($url, get_string('requestextension', 'totara_program'));
+                    $out .= ' ' . html_writer::link($url, get_string('requestextension', 'totara_program'));
                 } else {
                     // Show pending text
                     $out .= ' ' . get_string('pendingextension', 'totara_program');
@@ -1254,6 +1347,57 @@ class program {
         // Get relevant progress bar and return for display
         $renderer = $PAGE->get_renderer('totara_core');
         return $renderer->print_totara_progressbar($overall_progress, 'medium', false, $tooltipstr);
+    }
+
+    public function display_timedue_date($completionstatus, $time, $format = 'strftimedatefull') {
+        global $OUTPUT;
+
+        if ($time == 0 || $time == COMPLETION_TIME_NOT_SET) {
+            return get_string('noduedate', 'totara_plan');;
+        }
+
+        $out = userdate($time, get_string($format, 'langconfig'));
+
+        $days = '';
+        if ($completionstatus != STATUS_PROGRAM_COMPLETE) {
+            $days_remaining = floor(($time - time()) / 86400);
+            if ($days_remaining == 1) {
+                $days = get_string('onedayremaining', 'totara_program');
+            } else if ($days_remaining < 10 && $days_remaining > 0) {
+                $days = get_string('daysremaining', 'totara_program', $days_remaining);
+            } else if ($time < time()) {
+                $days = get_string('overdue', 'totara_plan');
+            }
+        }
+        if ($days != '') {
+            $out .= html_writer::empty_tag('br') . $OUTPUT->error_text($days);
+        }
+
+        return $out;
+    }
+
+    public function display_link_program_icon($programname, $program_id, $program_icon, $userid = null) {
+        global $OUTPUT, $USER;
+        if ($userid == null) {
+            $userid = $USER->id;
+        }
+        $programid = $program_id;
+        $programicon = !empty($program_icon) ? $program_icon : 'default';
+
+        $program = new program($programid);
+        $icon = $OUTPUT->pix_icon('programicons/' . $programicon, $programname, 'totara_core', array('class' => 'course_icon'));
+
+        if ($program->is_accessible()) {
+            $html = $OUTPUT->action_link(
+                new moodle_url('/totara/program/required.php', array('id' => $programid, 'userid' => $userid)),
+                $icon . $programname
+            );
+        } else {
+            $html = $icon . $programname;
+        }
+
+        return $html;
+
     }
 
     /**
@@ -1417,7 +1561,9 @@ class program {
             return false;
         }
         $now = time();
-        $total_time_allowed = $this->content->get_total_time_allowance();
+        $certifpath = get_certification_path_user($this->certifid, $userid);
+        $certifpath == CERTIFPATH_UNSET && $certifpath = CERTIFPATH_CERT;
+        $total_time_allowed = $this->content->get_total_time_allowance($this->certifid);
         $time_until_duedate = $timedue - $now;
 
         if ($timedue == COMPLETION_TIME_UNKNOWN) {

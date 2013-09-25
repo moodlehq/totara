@@ -92,7 +92,7 @@ if (count($locations) > 2) {
     echo html_writer::end_tag('div'). html_writer::end_tag('form');
 }
 
-print_session_list($course->id, $facetoface->id, $location);
+print_session_list($course->id, $facetoface, $location);
 
 if (has_capability('mod/facetoface:viewattendees', $context)) {
     echo $OUTPUT->heading(get_string('exportattendance', 'facetoface'));
@@ -109,7 +109,7 @@ if (has_capability('mod/facetoface:viewattendees', $context)) {
 echo $OUTPUT->box_end();
 echo $OUTPUT->footer($course);
 
-function print_session_list($courseid, $facetofaceid, $location) {
+function print_session_list($courseid, $facetoface, $location) {
     global $CFG, $USER, $DB, $OUTPUT, $PAGE;
 
     $f2f_renderer = $PAGE->get_renderer('mod_facetoface');
@@ -121,9 +121,10 @@ function print_session_list($courseid, $facetofaceid, $location) {
     $editsessions = has_capability('mod/facetoface:editsessions', $context);
 
     $bookedsession = null;
-    if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
-        $submission = array_shift($submissions);
-        $bookedsession = $submission;
+    $submissions = facetoface_get_user_submissions($facetoface->id, $USER->id);
+    if (!$facetoface->multiplesessions) {
+         $submission = array_shift($submissions);
+         $bookedsession = $submission;
     }
 
     $customfields = facetoface_get_session_customfields();
@@ -132,7 +133,7 @@ function print_session_list($courseid, $facetofaceid, $location) {
     $previousarray = array();
     $upcomingtbdarray = array();
 
-    if ($sessions = facetoface_get_sessions($facetofaceid, $location) ) {
+    if ($sessions = facetoface_get_sessions($facetoface->id, $location)) {
         foreach ($sessions as $session) {
 
             $sessionstarted = false;
@@ -141,6 +142,11 @@ function print_session_list($courseid, $facetofaceid, $location) {
             $isbookedsession = false;
 
             $sessiondata = $session;
+            if ($facetoface->multiplesessions) {
+                $submission = facetoface_get_user_submissions($facetoface->id, $USER->id,
+                        MDL_F2F_STATUS_REQUESTED, MDL_F2F_STATUS_FULLY_ATTENDED, $session->id);
+                $bookedsession = array_shift($submission);
+            }
             $sessiondata->bookedsession = $bookedsession;
 
             if ($session->roomid) {
@@ -189,7 +195,7 @@ function print_session_list($courseid, $facetofaceid, $location) {
     }
 
     if ($editsessions) {
-        echo html_writer::tag('p', html_writer::link(new moodle_url('sessions.php', array('f' => $facetofaceid)), get_string('addsession', 'facetoface')));
+        echo html_writer::tag('p', html_writer::link(new moodle_url('sessions.php', array('f' => $facetoface->id)), get_string('addsession', 'facetoface')));
     }
 
     // Previous sessions

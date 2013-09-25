@@ -29,6 +29,8 @@ if (!defined('MOODLE_INTERNAL')) {
 $id = optional_param('id', 0, PARAM_INT);
 $edit = optional_param('edit', 'off', PARAM_TEXT);
 
+$iscertif = ($DB->get_field('prog', 'certifid', array('id' => $id)) ? 1 : 0);
+
 if (!isset($currenttab)) {
     $currenttab = 'details';
 }
@@ -87,6 +89,16 @@ if (has_capability('totara/program:configuremessages', $context)) {
         $activated[] = 'messages';
     }
 }
+
+// Certification Tab
+if ($iscertif && has_capability('totara/certification:configurecertification', $context)) {
+    $toprow[] = new tabobject('certification', $CFG->wwwroot.'/totara/certification/edit_certification.php?id='.$id,
+                    get_string('certification', 'totara_certification'));
+    if (substr($currenttab, 0, 13) == 'certification') {
+        $activated[] = 'certification';
+    }
+}
+
 
 // Exceptions Report Tab
 // Only show if there are exceptions or you are on the exceptions tab already

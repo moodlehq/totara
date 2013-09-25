@@ -65,6 +65,10 @@ if (!empty($evidenceid)) {
     if (!$item = $DB->get_record('dp_plan_evidence', array('id' => $evidenceid))) {
         print_error('error:evidenceidincorrect', 'totara_plan');
     } else {
+        // Check if its readonly
+        if ($item->readonly) {
+            print_error('evidence_readonly', 'totara_plan');
+        }
         // Check that the user owns this evidence
         $userid = $item->userid;
     }

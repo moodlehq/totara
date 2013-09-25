@@ -61,6 +61,9 @@ define('DP_PRIORITY_REQUIRED', 2);
 // Maximum number of priority options
 define('DP_MAX_PRIORITY_OPTIONS', 5);
 
+// Maximum number of required learning to display (programs and certifications)
+define('DP_MAX_PROGS_TO_DISPLAY', 5);
+
 //// Plan item Approval status (Note that you should usually check *Plan status* as well as item status)
 // Item was added to an approved plan, but declined by manager
 define('DP_APPROVAL_DECLINED',          10);
@@ -382,6 +385,11 @@ function dp_get_rol_tabs_visible($userid) {
     }
 
     $visible[] = 'evidence';
+
+    $certification_progs = prog_get_certification_programs($userid, '', '', '', true);
+    if ($certification_progs > 0) {
+        $visible[] = 'certifications';
+    }
 
     return $visible;
 }
@@ -789,34 +797,28 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
 
     // Print Required Learning menu
     if ($showrequired) {
-        if ($programs = prog_get_required_programs($userid, ' ORDER BY fullname ASC ', '', '', false, true)) {
+        $programs = prog_get_required_programs($userid, ' ORDER BY fullname ASC ', '', '', false, true);
+        $certifications = prog_get_certification_programs($userid, ' ORDER BY fullname ASC ', '', '', false, true);
+        if ($programs || $certifications) {
+            $extraparams = array();
+            $headingclass = 'main';
             if ($role == 'manager') {
                 $extraparams['userid'] = $userid;
                 $out .= $OUTPUT->container_start(null, 'dp-plans-menu-section');
-                $out .= $OUTPUT->heading(get_string('requiredlearning', 'totara_program'), 4, 'dp-plans-menu-sub-header');
+                $headingclass = 'dp-plans-menu-sub-header';
             }
-            else {
-                $extraparams = '';
-                $out .= $OUTPUT->heading(get_string('requiredlearning', 'totara_program'), 3, 'main');
+            $out .= $OUTPUT->heading(get_string('requiredlearning', 'totara_program'), 3, $headingclass);
+
+            if ($programs) {
+                $list = dp_display_plans_menu_required($programs, $extraparams);
+                $out .= $OUTPUT->heading(get_string('programs', 'totara_program'), 5);
+                $out .= html_writer::alist($list, $attr);
             }
-            $progcount = 1;
-            $maxprogstodisplay = 5;
-            foreach ($programs as $p) {
-                if ($progcount > $maxprogstodisplay) {
-                    $list[] = $OUTPUT->action_link(new moodle_url('/totara/program/required.php', $extraparams), get_string('viewallrequiredlearning', 'totara_program'));
-                    break;
-                }
-                // hide inaccessible programs
-                $prog = new program($p->id);
-                if (!$prog->is_accessible()) {
-                    continue;
-                }
-                $attr['class'] = $p->id == $selectedprogid ? 'dp-menu-selected' : '';
-                $extraparams['id'] = $p->id;
-                $list[] = $OUTPUT->action_link(new moodle_url('/totara/program/required.php', $extraparams), $p->fullname);
-                $progcount++;
+            if ($certifications) {
+                $list = dp_display_plans_menu_required($certifications, $extraparams, count($list));
+                $out .= $OUTPUT->heading(get_string('certifications', 'totara_program'), 5);
+                $out .= html_writer::alist($list, $attr);
             }
-            $out .= html_writer::alist($list, $attr);
             if ($role == 'manager') {
                 $out .= $OUTPUT->container_end();
             }
@@ -831,6 +833,25 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
     $out .= $OUTPUT->container_end();
 
     return $out;
+}
+
+function dp_display_plans_menu_required($programs, $extraparams, $progcount=0) {
+    global $OUTPUT;
+    $list = array();
+    foreach ($programs as $p) {
+        if (count($list) + $progcount >= DP_MAX_PROGS_TO_DISPLAY) {
+            $list[] = $OUTPUT->action_link(new moodle_url('/totara/program/required.php', $extraparams), get_string('viewallrequiredlearning', 'totara_program'));
+            break;
+        }
+        // hide inaccessible programs
+        $prog = new program($p->id);
+        if (!$prog->is_accessible()) {
+            continue;
+        }
+        $extraparams['id'] = $p->id;
+        $list[] = $OUTPUT->action_link(new moodle_url('/totara/program/required.php', $extraparams), $p->fullname);
+    }
+    return($list);
 }
 
 /**

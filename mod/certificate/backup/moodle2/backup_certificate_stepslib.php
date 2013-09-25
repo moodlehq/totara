@@ -45,13 +45,19 @@ class backup_certificate_activity_structure_step extends backup_activity_structu
             'printsignature', 'printseal', 'timecreated', 'timemodified', 'requiredtime'));
 
         $issues = new backup_nested_element('issues');
+        $issues_history = new backup_nested_element('issues_history');
 
         $issue = new backup_nested_element('issue', array('id'), array(
             'certificateid', 'userid', 'timecreated', 'code'));
 
+        $issue_history = new backup_nested_element('issue_history', array('id'), array(
+            'userid', 'certificateid', 'code', 'timecreated', 'timecompleted', 'grade', 'outcome', 'timearchived', 'idarchived'));
+
         // Build the tree
         $certificate->add_child($issues);
+        $certificate->add_child($issues_history);
         $issues->add_child($issue);
+        $issues_history->add_child($issue_history);
 
         // Define sources
         $certificate->set_source_table('certificate', array('id' => backup::VAR_ACTIVITYID));
@@ -59,14 +65,17 @@ class backup_certificate_activity_structure_step extends backup_activity_structu
         // All the rest of elements only happen if we are including user info
         if ($userinfo) {
             $issue->set_source_table('certificate_issues', array('certificateid' => backup::VAR_PARENTID));
+            $issue_history->set_source_table('certificate_issues_history', array('certificateid' => backup::VAR_PARENTID));
         }
 
         // Annotate the user id's where required.
         $issue->annotate_ids('user', 'userid');
+        $issue_history->annotate_ids('user', 'userid');
 
         // Define file annotations
         $certificate->annotate_files('mod_certificate', 'intro', null); // This file area hasn't itemid
         $issue->annotate_files('mod_certificate', 'issue', 'id');
+        $issue_history->annotate_files('mod_certificate', 'issue_history', 'id');
 
         // Return the root element (certificate), wrapped into standard activity structure
         return $this->prepare_activity_structure($certificate);

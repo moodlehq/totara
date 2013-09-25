@@ -27,6 +27,7 @@ require_once($CFG->libdir . '/datalib.php');
 require_once($CFG->libdir . '/ddllib.php');
 require_once($CFG->dirroot . '/course/lib.php');
 require_once($CFG->dirroot . '/totara/program/program.class.php');
+require_once($CFG->dirroot . '/totara/certification/lib.php'); // For the constants
 
 /**
  * Can logged in user view user's required learning
@@ -93,12 +94,65 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
             ON (pc.programid = pua.programid AND pc.userid = pua.userid)";
 
     $where = "WHERE pc.userid = ?
-            AND pc.status <> ?";
+            AND pc.status <> ?
+            AND p.certifid IS NULL";
+
     $params[] = $userid;
     $params[] = STATUS_PROGRAM_COMPLETE;
+    $params[] = CERTIFTYPE_PROGRAM;
     if (!$showhidden) {
         $where .= " AND p.visible = ?";
         $params[] = 1;
+    }
+
+    if ($returncount) {
+        return $DB->count_records_sql($count.$from.$where, $params);
+    } else {
+        return $DB->get_records_sql($select.$from.$where.$sort, $params, $limitfrom, $limitnum);
+    }
+}
+
+/**
+ * Return a list of a user's certification programs or a count
+ *
+ * @global object $DB
+ * @param int $userid
+ * @param string $sort SQL fragment to order the programs
+ * @param int $limitfrom return a subset of records, starting at this point (optional, required if $limitnum is set).
+ * @param int $limitnum return a subset comprising this many records (optional, required if $limitfrom is set).
+ * @param bool $returncount Whether to return a count of the number of records found or the records themselves
+ * @param bool $showhidden Whether to include hidden programs in records returned
+ * @return array|int
+ */
+function prog_get_certification_programs($userid, $sort='', $limitfrom='', $limitnum='', $returncount=false, $showhidden=false) {
+    global $DB;
+
+    $params = array();
+    $params['userid'] = $userid;
+    $params['comptype'] = CERTIFTYPE_PROGRAM;
+
+    list($exceptionsql, $exceptionparams) = $DB->get_in_or_equal(array(PROGRAM_EXCEPTION_RAISED, PROGRAM_EXCEPTION_DISMISSED),
+                                                                                        SQL_PARAMS_NAMED, 'exception', false);
+    $params = array_merge($params, $exceptionparams);
+
+    // Construct sql query
+    $count = 'SELECT COUNT(*) ';
+    $select = 'SELECT p.id, p.fullname, p.fullname AS progname, pc.timedue AS duedate, cfc.certifpath, cfc.timeexpires ';
+    $from = "FROM {prog} p
+            INNER JOIN {prog_completion} pc ON p.id = pc.programid
+                    AND pc.coursesetid = 0
+                    AND pc.userid = :userid
+            INNER JOIN {prog_user_assignment} pua ON pc.programid = pua.programid
+                    AND pc.userid = pua.userid
+                    AND pua.exceptionstatus {$exceptionsql}
+            INNER JOIN {certif} cf ON cf.id = p.certifid
+            INNER JOIN {certif_completion} cfc ON cfc.certifid = cf.id
+                    AND cfc.userid = pc.userid ";
+
+    $where = '';
+    if (!$showhidden) {
+        $where .= " WHERE p.visible = :visible";
+        $params['visible'] = 1;
     }
 
     if ($returncount) {
@@ -189,6 +243,87 @@ function prog_display_required_programs($userid) {
 }
 
 /**
+ * Return markup for displaying a table of a specified user's certification programs
+ * This includes hidden programs but excludes unavailable programs
+ *
+ * @param   int $userid     Program assignee
+ * @return  string
+ */
+function prog_display_certification_programs($userid) {
+
+    $count = prog_get_certification_programs($userid, '', '', '', true, true);
+
+    // Set up table
+    $tablename = 'progs-list';
+    $tableheaders = array(get_string('certificationname', 'totara_program'));
+    $tablecols = array('progname');
+
+    // Due date
+    $tableheaders[] = get_string('duedate', 'totara_program');
+    $tablecols[] = 'duedate';
+
+    // Progress
+    $tableheaders[] = get_string('progress', 'totara_program');
+    $tablecols[] = 'progress';
+
+    $baseurl = new moodle_url('/totara/program/required.php', array('userid' => $userid));
+
+    $table = new flexible_table($tablename);
+    $table->define_headers($tableheaders);
+    $table->define_columns($tablecols);
+    $table->define_baseurl($baseurl);
+    $table->set_attribute('class', 'fullwidth');
+    $table->set_control_variables(array(
+        TABLE_VAR_SORT    => 'tsort',
+    ));
+    $table->sortable(true);
+    $table->no_sorting('progress');
+
+    $table->setup();
+    $table->pagesize(15, $count);
+    $sort = $table->get_sql_sort();
+    $sort = empty($sort) ? '' : ' ORDER BY '.$sort;
+
+    // Add table data
+    $cprograms = prog_get_certification_programs($userid, $sort, $table->get_page_start(), $table->get_page_size(), false, true);
+
+    if (!$cprograms) {
+        return '';
+    }
+
+    $rowcount = 0;
+    foreach ($cprograms as $cp) {
+        $program = new program($cp->id);
+        if (!$program->is_accessible()) {
+            continue;
+        }
+        $row = array();
+        $row[] = $program->display_summary_widget($userid);
+        if ($cp->certifpath == CERTIFPATH_CERT) {
+            $row[] = ($cp->duedate ? $program->display_duedate($cp->duedate) : get_string('noduedate', 'totara_program'));
+        } else {
+            $row[] = $program->display_date_as_text($cp->timeexpires);
+        }
+        $row[] = $program->display_progress($userid);
+        $table->add_data($row);
+        $rowcount++;
+    }
+
+    unset($cprograms);
+
+    if ($rowcount > 0) {
+        //2.2 flexible_table class no longer supports $table->data and echos directly on each call to add_data
+        ob_start();
+        $table->finish_html();
+        $out = ob_get_contents();
+        ob_end_clean();
+        return $out;
+    } else {
+        return '';
+    }
+}
+
+/**
  * Display the user message box
  *
  * @access public
@@ -201,9 +336,7 @@ function prog_display_user_message_box($programuser) {
     if (!$user) {
         return false;
     }
-    $userpic = new user_picture();
-    $userpic->user = $user;
-    $userpic->courseid = 1;
+    $user->courseid = 1;
 
     $a = new stdClass();
     $a->name = fullname($user);
@@ -211,7 +344,7 @@ function prog_display_user_message_box($programuser) {
     $a->site = $CFG->wwwroot;
 
     $renderer = $PAGE->get_renderer('totara_program');
-    $out = $renderer->display_user_message_box($userpic, $a);
+    $out = $renderer->display_user_message_box($user, $a);
     return $out;
 }
 
@@ -272,7 +405,7 @@ function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="
 
     $params = array('contextlevel' => CONTEXT_PROGRAM);
     if ($categoryid != "all" && is_numeric($categoryid)) {
-        $categoryselect = "WHERE p.category = :category";
+        $categoryselect = "WHERE p.category = :category AND p.certifid IS NULL";
         $params['category'] = $categoryid;
     } else {
         $categoryselect = "";
@@ -329,10 +462,11 @@ function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="
  * Gets the path of breadcrumbs for a category path matching $categoryid
  *
  * @param integer $categoryid The id of the current category
+ * @param string $viewtype Type of the page
  * @return array Multidimensional array containing name, link, and type of breadcrumbs
  *
  */
-function prog_get_category_breadcrumbs($categoryid) {
+function prog_get_category_breadcrumbs($categoryid, $viewtype = 'program') {
     global $CFG, $DB;
 
     $category = $DB->get_record('course_categories', array('id' => $categoryid));
@@ -349,7 +483,7 @@ function prog_get_category_breadcrumbs($categoryid) {
     if ($bread_info = $DB->get_records_sql($sql, $params)) {
         foreach ($bread_info as $crumb) {
             $cat_bread[] = array('name' => format_string($crumb->name),
-                                 'link' => new moodle_url('/totara/program/index.php', array('categoryid' => $crumb->id)),
+                                 'link' => new moodle_url("/totara/{$viewtype}/index.php", array('categoryid' => $crumb->id)),
                                  'type' => 'misc');
 
         }
@@ -373,7 +507,7 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
     $params = array(CONTEXT_PROGRAM);
     $categoryselect = "";
     if ($categoryid != "all" && is_numeric($categoryid)) {
-        $categoryselect = " WHERE p.category = ? ";
+        $categoryselect = " AND p.category = ? ";
         $params[] = $categoryid;
     }
 
@@ -384,8 +518,8 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
                           ctx.id AS ctxid, ctx.path AS ctxpath,
                           ctx.depth AS ctxdepth, ctx.contextlevel AS ctxlevel
                    FROM {prog} p
-                   JOIN {context} ctx
-                     ON (p.id = ctx.instanceid AND ctx.contextlevel = ?)";
+                   JOIN {context} ctx ON (p.id = ctx.instanceid AND ctx.contextlevel = ?)
+                   WHERE p.certifid IS NULL";
 
     $select = $progselect.$categoryselect.' ORDER BY '.$sort;
 
@@ -442,7 +576,8 @@ function prog_move_programs($programids, $categoryid) {
                 } else {
                     // figure out a sortorder that we can use in the destination category
                     $sortorder = $DB->get_field_sql('SELECT MIN(sortorder)-1 AS min
-                                                    FROM {prog} WHERE category = ?', array($categoryid));
+                                                     FROM {prog}
+                                                     WHERE category = ?', array($categoryid));
                     if (is_null($sortorder) || $sortorder === false) {
                         // the category is empty
                         // rather than let the db default to 0
@@ -489,6 +624,9 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
 
     global $DB;
 
+    $counters = new stdClass();
+    $counters->programcount = 0;
+    $counters->certifcount = 0;
     $count = 0;
 
     $catgap    = 1000; // "standard" category gap
@@ -520,11 +658,15 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
     // get some basic info about programs in the category
     $info = $DB->get_record_sql('SELECT MIN(sortorder) AS min,
                                         MAX(sortorder) AS max,
-                                        COUNT(sortorder)  AS count
+                                        COUNT(sortorder) AS count,
+                                        COALESCE(SUM(CASE WHEN certifid IS NULL THEN 1 ELSE 0 END),0) AS programcount,
+                                        COALESCE(SUM(CASE WHEN certifid IS NULL THEN 0 ELSE 1 END),0) AS certifcount
                                    FROM {prog}
                                   WHERE category = ?', array($categoryid));
     if (is_object($info)) { // no courses?
         $max   = $info->max;
+        $counters->programcount = $info->programcount;
+        $counters->certifcount = $info->certifcount;
         $count = $info->count;
         $min   = $info->min;
         unset($info);
@@ -561,8 +703,8 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
             }
 
             $DB->execute("UPDATE {prog}
-                         SET sortorder = sortorder + ?
-                         WHERE category = ?", array($shift, $categoryid));
+                          SET sortorder = sortorder + ?
+                          WHERE category = ?", array($shift, $categoryid));
             $n = $n + $catgap + $count;
 
         } else { // do it slowly
@@ -572,8 +714,8 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
             if ($safe || ($n >= $min && $n+$count+1 < $min && $DB->get_dbfamily() === 'mysql')) {
                 $shift = $max + $n + 1000;
                 $DB->execute("UPDATE {prog}
-                         SET sortorder = sortorder+$shift
-                         WHERE category = ?". array($categoryid));
+                              SET sortorder = sortorder+$shift
+                              WHERE category = ?". array($categoryid));
             }
 
             $programs = prog_get_programs($categoryid, 'p.sortorder ASC', 'p.id,p.sortorder');
@@ -598,10 +740,15 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
             }
         }
     }
-    $DB->set_field('course_categories', 'programcount', $count, array('id' => $categoryid));
+    if ($categoryid) {
+        $counters->id = $categoryid;
+        $DB->update_record('course_categories', $counters);
+    }
 
     // $n could need updating
-    $max = $DB->get_field_sql("SELECT MAX(sortorder) from {prog} WHERE category = ?", array($categoryid));
+    $max = $DB->get_field_sql("SELECT MAX(sortorder)
+                               FROM {prog}
+                               WHERE category = ?", array($categoryid));
     if ($max > $n) {
         $n = $max;
     }
@@ -788,12 +935,19 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
         $where = " WHERE category > 0 ";
     }
 
+    $where .= " AND p.certifid IS NULL"; // filter out certifications
+
+    // Add any additional sql supplied to where clause
+    if ($whereclause) {
+        $where .= " AND {$whereclause}";
+        $params = array_merge($params, $whereparams);
+    }
+
     $sql = "SELECT p.*,
                    ctx.id AS ctxid, ctx.path AS ctxpath,
                    ctx.depth AS ctxdepth, ctx.contextlevel AS ctxlevel
             FROM {prog} p
-            JOIN {context} ctx
-             ON (p.id = ctx.instanceid AND ctx.contextlevel = ".CONTEXT_PROGRAM.")
+            JOIN {context} ctx ON (p.id = ctx.instanceid AND ctx.contextlevel = ".CONTEXT_PROGRAM.")
             $where
             ORDER BY " . $sort;
 
@@ -1050,16 +1204,22 @@ function prog_get_recurring_programs() {
     return $recurring_programs;
 }
 
+
 function prog_get_tab_link($userid) {
     global $CFG, $DB;
     $dbman = $DB->get_manager();
     $progtable = new xmldb_table('prog');
     if ($dbman->table_exists($progtable)) {
-
-        $requiredlearningcount = prog_get_required_programs($userid, '', '', '', true, true);
+        $programcount = prog_get_required_programs($userid, '', '', '', true, true);
+        $certificationcount = prog_get_certification_programs($userid, '', '', '', true, true);
+        $requiredlearningcount = $programcount + $certificationcount;
         if ($requiredlearningcount == 1) {
-            $result = prog_get_required_programs($userid, '', '', '', false, true);
-            $program = reset($result);
+            if ($programcount == 1) {
+                $program = prog_get_required_programs($userid, '', '', '', false, true);
+            } else {
+                $program = prog_get_certification_programs($userid, '', '', '', false, true);
+            }
+            $program = reset($program); // resets array pointer and returns value of first element
             $prog = new program($program->id);
             if (!$prog->is_accessible()) {
                 return false;

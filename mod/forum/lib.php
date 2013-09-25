@@ -308,11 +308,79 @@ function forum_supports($feature) {
         case FEATURE_BACKUP_MOODLE2:          return true;
         case FEATURE_SHOW_DESCRIPTION:        return true;
         case FEATURE_PLAGIARISM:              return true;
+        case FEATURE_ARCHIVE_COMPLETION:      return true;
 
         default: return null;
     }
 }
 
+/**
+ * Obtains the specific requirements for completion.
+ *
+ * @param object $cm Course-module
+ * @return array Requirements for completion
+ */
+function forum_get_completion_requirements($cm) {
+    global $DB;
+
+    $forum = $DB->get_record('forum', array('id' => $cm->instance));
+
+    $result = array();
+
+    if ($forum->completiondiscussions > 0) {
+        $result[] = get_string('completiondiscussionsshort', 'forum', $forum->completiondiscussions);
+    }
+
+    if ($forum->completionreplies > 0) {
+        $result[] = get_string('completionrepliesshort', 'forum', $forum->completionreplies);
+    }
+
+    if ($forum->completionposts > 0) {
+        $result[] = get_string('completionpostsshort', 'forum', $forum->completionposts);
+    }
+
+    return $result;
+}
+
+/**
+ * Obtains the completion progress.
+ *
+ * @param object $cm      Course-module
+ * @param int    $userid  User ID
+ * @return string The current status of completion for the user
+ */
+function forum_get_completion_progress($cm, $userid) {
+    global $DB;
+
+    // Get forum details.
+    if (!($forum = $DB->get_record('forum', array('id' => $cm->instance)))) {
+        print_error("Can't find forum {$cm->instance}");
+    }
+
+    $postcountparams = array('userid' => $userid, 'forum' => $forum->id, 'archived' => 0);
+    $postcountsql="SELECT COUNT(1)
+                    FROM {forum_posts} fp
+                    INNER JOIN {forum_discussions} fd ON fp.discussion=fd.id
+                    WHERE fp.userid=:userid AND fd.forum=:forum
+                    AND fp.archived = :archived";
+
+    $result = array();
+
+    if ($forum->completiondiscussions) {
+        $count = $DB->count_records('forum_discussions', $postcountparams);
+        $result[] = get_string('completiondiscussionscompleted', 'forum', $count);
+    }
+    if ($forum->completionreplies) {
+        $result[] = get_string('completionrepliescompleted', 'forum',
+                $DB->get_field_sql( $postcountsql.' AND fp.parent<>0', $postcountparams));
+    }
+    if ($forum->completionposts) {
+        $result[] = get_string('completionpostscompleted', 'forum',
+                $DB->get_field_sql($postcountsql, $postcountparams));
+    }
+
+    return $result;
+}
 
 /**
  * Obtains the automatic completion state for this forum based on any conditions
@@ -337,7 +405,7 @@ function forum_get_completion_state($course,$cm,$userid,$type) {
 
     $result=$type; // Default return value
 
-    $postcountparams=array('userid'=>$userid,'forumid'=>$forum->id);
+    $postcountparams=array('userid' => $userid, 'forumid' => $forum->id, 'archived' => 0);
     $postcountsql="
 SELECT
     COUNT(1)
@@ -345,11 +413,12 @@ FROM
     {forum_posts} fp
     INNER JOIN {forum_discussions} fd ON fp.discussion=fd.id
 WHERE
-    fp.userid=:userid AND fd.forum=:forumid";
+    fp.userid=:userid AND fd.forum=:forumid
+    AND fp.archived = :archived";
 
     if ($forum->completiondiscussions) {
         $value = $forum->completiondiscussions <=
-                 $DB->count_records('forum_discussions',array('forum'=>$forum->id,'userid'=>$userid));
+                 $DB->count_records('forum_discussions', array('userid' => $userid, 'forum' => $forum->id, 'archived' => 0));
         if ($type == COMPLETION_AND) {
             $result = $result && $value;
         } else {
@@ -1666,7 +1735,14 @@ function forum_grade_item_update($forum, $grades=NULL) {
         require_once($CFG->libdir.'/gradelib.php');
     }
 
-    $params = array('itemname'=>$forum->name, 'idnumber'=>$forum->cmidnumber);
+    if (isset($forum->cmidnumber)) {
+        $cmidnumber = $forum->cmidnumber;
+    } else {
+        $course_module = get_coursemodule_from_instance('forum', $forum->id, $forum->course);
+        $cmidnumber = $course_module->idnumber;
+    }
+
+    $params = array('itemname'=>$forum->name, 'idnumber' => $cmidnumber);
 
     if (!$forum->assessed or $forum->scale == 0) {
         $params['gradetype'] = GRADE_TYPE_NONE;
@@ -8523,4 +8599,92 @@ function forum_get_posts_by_user($user, array $courses, $musthaveaccess = false,
     }
 
     return $return;
+}
+
+/**
+ * Copied code from forum_reset_userdata()
+ *
+ * @global type $CFG
+ * @global object $DB
+ * @param type $userid
+ * @param type $courseid
+ * @return boolean
+ */
+function forum_archive_completion($userid, $courseid) {
+    global $DB, $CFG;
+
+    require_once($CFG->libdir . '/completionlib.php');
+    require_once($CFG->dirroot . '/rating/lib.php');
+
+    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    $completion = new completion_info($course);
+
+    // All forums associated with this course and user
+    $sql = 'SELECT f.*
+            FROM {forum} f
+            WHERE f.course = :courseid
+            AND EXISTS (SELECT p.id
+                        FROM {forum_discussions} d
+                        JOIN {forum_posts} p ON p.discussion = d.id AND p.userid = :userid1
+                        WHERE d.forum = f.id
+                        UNION
+                        SELECT d.id
+                        FROM {forum_discussions} d
+                        WHERE d.forum = f.id
+                        AND d.userid = :userid2)';
+    $forums = $DB->get_records_sql($sql, array('courseid' => $courseid, 'userid1' => $userid, 'userid2' => $userid));
+
+    foreach ($forums as $forum) {
+        $params = array('userid' => $userid, 'courseid' => $courseid, 'forumid' => $forum->id, 'archived' => 1);
+
+        $course_module = get_coursemodule_from_instance('forum', $forum->id, $courseid);
+        $context = context_module::instance($course_module->id);
+
+        // Delete ratings on posts created by this user
+        $sql = "SELECT p.id
+                FROM {forum_posts} p
+                JOIN {forum_discussions} d ON d.id = p.discussion AND d.course = :courseid AND d.forum = :forumid
+                WHERE p.userid = :userid
+                AND p.archived <> :archived";
+        if ($posts = $DB->get_records_sql($sql, $params)) {
+            $rm = new rating_manager();
+            foreach ($posts as $post) {
+                $ratingdeloptions = new stdClass;
+                $ratingdeloptions->component = 'mod_forum';
+                $ratingdeloptions->ratingarea = 'post';
+                $ratingdeloptions->userid = $userid;
+                $ratingdeloptions->itemid = $post->id;
+                $ratingdeloptions->contextid = $context->id;
+                $rm->delete_ratings($ratingdeloptions);
+            }
+        }
+
+        // Archive forum discussions and posts
+        $sql = "UPDATE {forum_posts}
+                SET archived = :archived
+                WHERE userid = :userid
+                AND EXISTS (SELECT {forum_discussions}.id
+                            FROM {forum_discussions}
+                            WHERE {forum_discussions}.id = {forum_posts}.discussion
+                            AND {forum_discussions}.course = :courseid
+                            AND {forum_discussions}.forum = :forumid)";
+        $DB->execute($sql, $params);
+
+        $sql = "UPDATE {forum_discussions}
+                SET archived = :archived
+                WHERE userid = :userid
+                AND course = :courseid
+                AND forum = :forumid";
+        $DB->execute($sql, $params);
+
+        // Reset the grades
+        forum_update_grades($forum, $userid, true);
+
+        // Set completion to incomplete
+        // Reset viewed
+        $completion->set_module_viewed_reset($course_module, $userid);
+
+        // And reset completion, in case viewed is not a required condition
+        $completion->update_state($course_module, COMPLETION_INCOMPLETE, $userid);
+    }
 }

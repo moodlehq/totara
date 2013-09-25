@@ -271,7 +271,7 @@ class rb_filter_type {
             if (method_exists($this->report->src, $selectfunc)) {
                 $selectchoices = $this->report->src->$selectfunc($this->report);
             } else {
-                debugging("Filter function '{$selectfunc}' not found for filter '{$name}}' in source '" . get_class($report->src) . "'");
+                debugging("Filter function '{$selectfunc}' not found for filter '{$this->name}}' in source '" . get_class($this->report->src) . "'");
                 $selectchoices = array();
             }
             return $selectchoices;

@@ -88,7 +88,8 @@ echo $OUTPUT->header();
 $heading = get_string('cancelbookingfor', 'facetoface', $facetoface->name);
 
 $viewattendees = has_capability('mod/facetoface:viewattendees', $context);
-$signedup = facetoface_check_signup($facetoface->id);
+$multisessionid = ($facetoface->multiplesessions ? $session->id : null);
+$signedup = facetoface_check_signup($facetoface->id, $multisessionid);
 
 echo $OUTPUT->box_start();
 echo $OUTPUT->heading($heading);

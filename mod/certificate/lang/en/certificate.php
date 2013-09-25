@@ -209,3 +209,23 @@ $string['viewcertificateviews'] = 'View {$a} issued certificates';
 $string['viewed'] = 'You received this certificate on:';
 $string['viewtranscript'] = 'View Certificates';
 $string['watermark'] = 'Watermark';
+
+// Archive strings
+$string['error:certissuenotfound'] = 'Missing certificate issue history record for id : {$a}';
+$string['error:certificatenotfound'] = 'Missing certificate record for id : {$a}';
+$string['error:usernotfound'] = 'Missing user record for id : {$a}';
+$string['error:coursenotfound'] = 'Missing course record for id : {$a}';
+$string['viewarchive'] = 'Certificate Archive';
+$string['timecompleted'] = 'Time completed course';
+$string['outcome'] = 'Outcome';
+$string['timearchived'] = 'Time archived';
+$string['certificate:viewarchive'] = 'View archive';
+
+// View archive form
+$string['filteroptions'] = 'Filter options';
+$string['coursenamefilter'] = 'Course name contains';
+$string['certnamefilter'] = 'Certificate name contains';
+$string['usernamefilter'] = 'Username contains';
+$string['firstnamefilter'] = 'First name contains';
+$string['lastnamefilter'] = 'Last name contains';
+

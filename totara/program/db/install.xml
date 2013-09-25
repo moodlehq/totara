@@ -23,11 +23,13 @@
         <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="icon" TYPE="char" LENGTH="255" NOTNULL="false" DEFAULT="" SEQUENCE="false"/>
         <FIELD NAME="exceptionssent" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="audiencevisible" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="2" SEQUENCE="false"/>
+        <FIELD NAME="audiencevisible" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="2" SEQUENCE="false"/>
+        <FIELD NAME="certifid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="FK to certification table"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="category" TYPE="foreign" FIELDS="category" REFTABLE="course_categories" REFFIELDS="id"/>
+        <KEY NAME="cerifid" TYPE="foreign" FIELDS="certifid" REFTABLE="certif" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="prog_idn_ix" UNIQUE="false" FIELDS="idnumber"/>
@@ -120,6 +122,7 @@
         <FIELD NAME="recurcreatetime" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="contenttype" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="label" TYPE="char" LENGTH="255" NOTNULL="false" DEFAULT="" SEQUENCE="false"/>
+        <FIELD NAME="certifpath" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="0=not part of a certification (default), 1=certify path, 2=recertify path"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -170,7 +173,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="exceptionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="dataname" TYPE="char" LENGTH="50" NOTNULL="false" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="datavalue" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="datavalue" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -186,13 +189,13 @@
         <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="extensiondate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="extensionreason" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="extensionreason" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
-          <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-          <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id"/>
-          <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="progexte_pro_ix" UNIQUE="false" FIELDS="programid"/>
@@ -224,9 +227,9 @@
         <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="locked" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="messagesubject" TYPE="char" LENGTH="255" NOTNULL="false" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="mainmessage" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mainmessage" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="notifymanager" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="managermessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="managermessage" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="triggertime" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
@@ -300,7 +303,7 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
-     <INDEXES>
+      <INDEXES>
         <INDEX NAME="proguserassi_pro_ix" UNIQUE="false" FIELDS="programid"/>
         <INDEX NAME="proguserassi_use_ix" UNIQUE="false" FIELDS="userid"/>
         <INDEX NAME="proguserassi_ass_ix" UNIQUE="false" FIELDS="assignmentid"/>

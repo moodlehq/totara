@@ -40,6 +40,7 @@ class restore_certificate_activity_structure_step extends restore_activity_struc
 
         if ($userinfo) {
             $paths[] = new restore_path_element('certificate_issue', '/activity/certificate/issues/issue');
+            $paths[] = new restore_path_element('certificate_issue_history', '/activity/certificate/issues_history/issue_history');
         }
 
         // Return the paths wrapped into standard activity structure
@@ -74,8 +75,21 @@ class restore_certificate_activity_structure_step extends restore_activity_struc
         $this->set_mapping('certificate_issue', $oldid, $newitemid);
     }
 
+    protected function process_certificate_issue_history($data) {
+        global $DB;
+
+        $data = (object)$data;
+        $oldid = $data->id;
+
+        $data->certificateid = $this->get_new_parentid('certificate');
+
+        $newitemid = $DB->insert_record('certificate_issues_history', $data);
+        $this->set_mapping('certificate_issue_history', $oldid, $newitemid);
+    }
+
     protected function after_execute() {
         // Add certificate related files, no need to match by itemname (just internally handled context)
         $this->add_related_files('mod_certificate', 'issue', 'certificate_issue');
+        $this->add_related_files('mod_certificate', 'issue_history', 'certificate_issue_history');
     }
 }

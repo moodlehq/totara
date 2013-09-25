@@ -23,6 +23,7 @@
  */
 
 require_once("{$CFG->libdir}/formslib.php");
+require_once($CFG->dirroot . '/totara/certification/lib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -45,16 +46,43 @@ class program_content_edit_form extends moodleform {
 
         $program = $this->_customdata['program'];
         $content = $program->get_content();
-        $coursesets = $content->get_course_sets();
+        $iscertif = ($program->certifid == 0 ? 0 : 1);
 
-/// form definition
-//--------------------------------------------------------------------------------
-
+        // form definition
+        //--------------------------------------------------------------------------------
         // the form definition is passed off to the program content at this point
         // so that the form template can be rendered at the same time as the form
         // is defined. This allows the form to be displayed in a non-standard
         // layout
-        $this->template_html = $content->get_content_form_template($mform, $this->template_values, $coursesets);
+
+        if ($iscertif) {
+            // cert path
+            $coursesets = $content->get_course_sets_path(CERTIFPATH_CERT);
+
+            $this->template_html = $content->get_content_form_template($mform, $this->template_values, $coursesets, true, $iscertif, CERTIFPATH_CERT);
+
+            $this->template_html .= html_writer::empty_tag('br');
+
+            // recert path
+            $coursesets = $content->get_course_sets_path(CERTIFPATH_RECERT);
+            $this->template_html .= $content->get_content_form_template($mform, $this->template_values, $coursesets, true, $iscertif, CERTIFPATH_RECERT);
+      } else {
+            // std
+            $coursesets = $content->get_course_sets();
+            $this->template_html = $content->get_content_form_template($mform, $this->template_values, $coursesets, true, $iscertif);
+        }
+
+        $this->template_html .= html_writer::empty_tag('br');
+
+        // Add the save and return button
+        $mform->addElement('submit', 'savechanges', get_string('savechanges'), array('class'=>"savechanges-content program-savechanges"));
+        $this->template_values['%savechanges%'] = array('name'=>'savechanges', 'value'=>null);
+        $this->template_html .= '%savechanges%'."\n";
+
+        // Add the cancel button
+        $mform->addElement('cancel', 'cancel', get_string('cancel', 'totara_program'));
+        $this->template_values['%cancel%'] = array('name'=>'cancel', 'value'=>null);
+        $this->template_html .= '%cancel%'."\n";
     }
 
     /**
@@ -76,7 +104,6 @@ class program_content_edit_form extends moodleform {
 
         $this->_form->getValidationScript();
 
-
         // display the html
         echo $this->renderer->toHtml($this->interpolated_html);
     }
@@ -97,13 +124,13 @@ class program_content_edit_form extends moodleform {
         $mform->accept($this->renderer);
 
         $this->interpolated_html = $this->template_html;
-
         $template_values = $this->template_values;
 
         foreach ($template_values as $replacestr => $namevaluepair) {
             $elementname = $namevaluepair['name'];
             $elementvalue = $namevaluepair['value'];
-            $this->interpolated_html = str_replace($replacestr, $this->renderer->elementToHtml($elementname, $elementvalue), $this->interpolated_html);
+            $this->interpolated_html = str_replace($replacestr, $this->renderer->elementToHtml($elementname, $elementvalue),
+                             $this->interpolated_html);
         }
     }
 

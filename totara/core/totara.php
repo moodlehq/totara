@@ -1184,7 +1184,7 @@ function totara_errors_download() {
  * @access  public
  * @param   string  $value      Search value
  * @param   bool    $return     Return results (always true in M2.0, param left until all calls elsewhere cleaned up!)
- * @param   string  $type       Type of results ('all', 'course', 'program', 'category')
+ * @param   string  $type       Type of results ('all', 'course', 'program', 'certification', 'category')
  * @param   int     $category   Parent category (0 means all, -1 means global search)
  * @return  string|void
  */
@@ -1219,6 +1219,8 @@ function print_totara_search($value = '', $return = true, $type = 'all', $catego
             $strsearch = get_string('searchallcourses', 'totara_coursecatalog');
         } elseif ($type == 'program') {
             $strsearch = get_string('searchallprograms', 'totara_coursecatalog');
+        } elseif ($type == 'certification') {
+            $strsearch = get_string('searchallcertifications', 'totara_coursecatalog');
         } elseif ($type == 'category') {
             $strsearch = get_string('searchallcategories', 'totara_coursecatalog');
         } else {
@@ -1629,6 +1631,16 @@ function totara_build_menu() {
         'parent' => 'findcourses',
         'url' => '/totara/program/index.php'
     );
+
+    $plugins = get_plugin_list('totara');
+    if (isset($plugins['certification'])) {
+        $tree[] = (object)array(
+            'name' => 'certification',
+            'linktext' => get_string('certifications', 'totara_certification'),
+            'parent' => 'findcourses',
+            'url' => '/totara/certification/index.php'
+        );
+    }
 
     $tree[] = (object)array(
         'name' => 'calendar',

@@ -39,6 +39,7 @@ body.course h3.main {
 
 p.course-prog-alt-view {
     float: right;
+    margin-bottom: 0;
 }
 
 #programexceptions .exceptionactions{

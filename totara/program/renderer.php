@@ -164,7 +164,7 @@ class totara_program_renderer extends plugin_renderer_base {
     * @param str $url
     * @return str HTML fragment
     */
-    public function display_edit_assignment_form($id, $categories) {
+    public function display_edit_assignment_form($id, $categories, $certificationpath) {
         global $PAGE;
         $dropdown_options = array();
         $out = '';
@@ -174,7 +174,7 @@ class totara_program_renderer extends plugin_renderer_base {
 
         // Show the program time required so people know the minimum to set completion to.
         $program = new program($id);
-        $programtime = $program->content->get_total_time_allowance();
+        $programtime = $program->content->get_total_time_allowance($certificationpath);
 
         if ($programtime > 0) {
             $out .= prog_format_seconds($programtime);
@@ -230,15 +230,15 @@ class totara_program_renderer extends plugin_renderer_base {
     * Display the user message box
     *
     * @access public
-    * @param  userpic object   userpic class containing user data
+    * @param stdClass $user Object with at least fields id, picture, imagealt, firstname, lastname
     * @param  a object   data for get_string
     * @return string $out    HTML fragment
     */
-    public function display_user_message_box($userpic, $a) {
+    public function display_user_message_box($user, $a) {
         $table = new html_table();
         $table->attributes = array('border' => '0', 'width' => '100%');
         $cells = array();
-        $cell = new html_table_cell($this->output->user_picture($userpic));
+        $cell = new html_table_cell($this->output->user_picture($user));
         $cell->attributes['width'] = '50';
         $cells[] = $cell;
         $cell = new html_table_cell(html_writer::start_tag('strong') . get_string('youareviewingxsrequiredlearning', 'totara_program', $a) . html_writer::end_tag('strong'));

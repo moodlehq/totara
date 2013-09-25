@@ -299,6 +299,8 @@ $string['modulename'] = 'Face-to-face';
 $string['modulenameplural'] = 'Face-to-face';
 $string['moreinfo'] = 'More info';
 $string['multidate'] = '(multi-date)';
+$string['multiplesessions'] = 'Allow multiple sessions signup per user';
+$string['multiplesessionsheading'] = 'Multiple sessions signup settings';
 $string['newmanageremailaddress'] = 'Manager\'s email address';
 $string['noactionableunapprovedrequests'] = 'No actionable unapproved requests';
 $string['nocustomfields'] = '<p>No custom fields are defined.</p>';
@@ -743,6 +745,8 @@ $string['setting:manageraddressformatdefault'] = '';
 $string['setting:manageraddressformatreadable'] = 'Short description of the restrictions on a manager\'s email address.  This setting has no effect if the previous one is not set.';
 $string['setting:manageraddressformatreadable_caption'] = 'Format example:';
 $string['setting:manageraddressformatreadabledefault'] = 'firstname.lastname@company.com';
+$string['setting:multiplesessions'] = 'Default value for allowing multiple sessions signup per user';
+$string['setting:multiplesessions_caption'] = 'Multiple sessions default';
 $string['setting:oneemailperday'] = 'Send multiple confirmation emails for multi-date sessions. Note: If there is more than one session date on a single day then each session date will generate an email. One session date spanning over multiple days will generate only one email.';
 $string['setting:oneemailperday_caption'] = 'One message per date:';
 $string['setting:hidecost'] = 'Hide the cost and discount code fields.';
@@ -815,6 +819,7 @@ $string['usercalentry'] = 'Show entry on user\'s calendar';
 $string['userdeletedcancel'] = 'User has been deleted';
 $string['usernotsignedup'] = 'Status: not signed up';
 $string['usersignedup'] = 'Status: signed up';
+$string['usersignedupmultiple'] = 'User signed up on {$a} sessions';
 $string['usersignedupon'] = 'User signed up on {$a}';
 $string['userwillbewaitlisted'] = 'This session is currently full. By clicking the "Sign-up" button, you will be placed on the sessions\'s wait-list.';
 $string['validation:needatleastonedate'] = 'You need to provide at least one date, or else mark the session as wait-listed.';
@@ -915,6 +920,7 @@ Each activity is offered in one or more identical sessions. These sessions can b
 
 Reminder messages are sent to users and their managers a few days before the session is scheduled to start. Confirmation messages are sent when users sign-up for a session or cancel.';
 
+$string['multiplesessions_help'] = 'Use this option if you want users be able to sign up to multiple sessions . When this option is toggled, users can sign up for multiple sessions in the activity.';
 $string['normalcost_help'] = 'Normal cost is the amount charged to staff members who do not have a membership id.';
 
 $string['notificationtype_help'] = 'Notification Type allows the learner to select how they would like to be notified of their booking.

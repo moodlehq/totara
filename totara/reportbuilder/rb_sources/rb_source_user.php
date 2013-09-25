@@ -392,13 +392,16 @@ class rb_source_user extends rb_base_source {
         $user_pic = $OUTPUT->user_picture($picuser, array('courseid' => 1));
 
         $recordstr = get_string('records', 'rb_source_user');
+        $requiredstr = get_string('required', 'rb_source_user');
         $planstr = get_string('plans', 'rb_source_user');
         $profilestr = get_string('profile', 'rb_source_user');
         $bookingstr = get_string('bookings', 'rb_source_user');
         $appraisalstr = get_string('appraisals', 'totara_appraisal');
         $feedback360str = get_string('feedback360', 'totara_feedback360');
         $goalstr = get_string('goalplural', 'totara_hierarchy');
-        $rol_link = html_writer::link("{$CFG->wwwroot}/totara/plan/record/courses.php?userid={$userid}", $recordstr);
+        $rol_link = html_writer::link("{$CFG->wwwroot}/totara/plan/record/index.php?userid={$userid}", $recordstr);
+        $required_link = html_writer::link(new moodle_url('/totara/program/required.php',
+                array('userid' => $userid)), $requiredstr);
         $plan_link = html_writer::link("{$CFG->wwwroot}/totara/plan/index.php?userid={$userid}", $planstr);
         $profile_link = html_writer::link("{$CFG->wwwroot}/user/view.php?id={$userid}", $profilestr);
         $booking_link = html_writer::link("{$CFG->wwwroot}/my/bookings.php?userid={$userid}", $bookingstr);
@@ -415,6 +418,7 @@ class rb_source_user extends rb_base_source {
         $links .= $appraisal_link.'&nbsp;|&nbsp;';
         $links .= $feedback_link.'&nbsp;|&nbsp;';
         $links .= $goal_link;
+        $links .= $required_link;
 
         $table = new html_table();
         $table->attributes['class'] = 'namewithlinks-layout';

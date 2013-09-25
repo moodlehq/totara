@@ -62,6 +62,11 @@ class rb_plan_programs_embedded extends rb_base_embedded {
                 'heading' => get_string('duestatus', 'totara_program'),
             ),
             array(
+                'type' => 'program_completion_history',
+                'value' => 'program_completion_history_link',
+                'heading' => get_string('program_completion_history_link', 'rb_source_dp_program'),
+            ),
+            array(
                 'type' => 'program_completion',
                 'value' => 'status',
                 'heading' => get_string('progress', 'totara_program'),
@@ -77,6 +82,11 @@ class rb_plan_programs_embedded extends rb_base_embedded {
             array(
                 'type' => 'course_category',
                 'value' => 'id',
+                'advanced' => 1,
+            ),
+            array(
+                'type' => 'program_completion_history',
+                'value' => 'program_completion_history_count',
                 'advanced' => 1,
             ),
         );

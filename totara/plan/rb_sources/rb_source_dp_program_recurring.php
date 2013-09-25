@@ -67,7 +67,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
                 'prog', // table alias
                 'LEFT', // type of join
                 '{prog}',
-                'base.programid = prog.id', //how it is joined
+                '(base.programid = prog.id AND prog.certifid IS NULL)', // how it is joined
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
         );
@@ -84,6 +84,21 @@ class rb_source_dp_program_recurring extends rb_base_source {
             get_string('programname', 'totara_program'),
             "prog.fullname",
             array('joins' => 'prog')
+        );
+        $columnoptions[] = new rb_column_option(
+            'program',
+            'proglinkicon',
+            get_string('prognamelinkedicon', 'totara_program'),
+            "prog.fullname",
+            array(
+                'joins' => 'prog',
+                'displayfunc' => 'link_program_icon',
+                'defaultheading' => get_string('programname', 'totara_program'),
+                'extrafields' => array(
+                    'programid' => "prog.id",
+                    'program_icon' => "prog.icon"
+                )
+            )
         );
         $columnoptions[] = new rb_column_option(
             'program',
@@ -140,8 +155,24 @@ class rb_source_dp_program_recurring extends rb_base_source {
             )
         );
 
+        $columnoptions[] = new rb_column_option(
+            'program_completion_history',
+            'timedue',
+            get_string('duedate', 'totara_program'),
+            "base.timedue",
+            array(
+                'displayfunc' => 'completion_date',
+            )
+        );
+
         return $columnoptions;
     }
+
+    function rb_display_link_program_icon($programname, $row) {
+        $program = new program($row->programid);
+        return $program->display_link_program_icon($programname, $row->programid, $row->program_icon);
+    }
+
 
     function rb_display_program_completion_status($status,$row) {
         global $OUTPUT;
@@ -180,6 +211,42 @@ class rb_source_dp_program_recurring extends rb_base_source {
 
     protected function define_filteroptions() {
         $filteroptions = array();
+        $filteroptions[] = new rb_filter_option(
+                'program',
+                'fullname',
+                get_string('programname', 'totara_program'),
+                'text'
+            );
+        $filteroptions[] = new rb_filter_option(
+                'program',
+                'shortname',
+                get_string('programshortname', 'totara_program'),
+                'text'
+            );
+        $filteroptions[] = new rb_filter_option(
+                'program',
+                'idnumber',
+                get_string('programidnumber', 'totara_program'),
+                'text'
+            );
+        $filteroptions[] = new rb_filter_option(
+                'program',
+                'id',
+                get_string('programid', 'totara_program'),
+                'int'
+            );
+        $filteroptions[] = new rb_filter_option(
+                'program_completion_history',
+                'timedue',
+                get_string('programduedate', 'totara_program'),
+                'date'
+            );
+        $filteroptions[] = new rb_filter_option(
+                'program_completion_history',
+                'timecompleted',
+                get_string('completiondate', 'totara_program'),
+                'date'
+            );
         return $filteroptions;
     }
 

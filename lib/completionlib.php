@@ -804,6 +804,46 @@ class completion_info {
     }
 
     /**
+     * Resets a module as not viewed
+     *
+     * Should be called whenever a module is 'viewed' (it is up to the module how to
+     * determine that). Has no effect if viewing is not set as a completion condition.
+     *
+     * Note that this function must be called before you print the page header because
+     * it is possible that the navigation block may depend on it. If you call it after
+     * printing the header, it shows a developer debug warning.
+     *
+     * @param stdClass|cm_info $cm Activity
+     * @param int $userid User ID or 0 (default) for current user
+     * @return void
+     */
+    public function set_module_viewed_reset($cm, $userid=0) {
+        global $PAGE;
+        if ($PAGE->headerprinted) {
+            debugging('set_module_viewed must be called before header is printed',
+                    DEBUG_DEVELOPER);
+        }
+
+        // Don't do anything if view condition is not turned on
+        if ($cm->completionview == COMPLETION_VIEW_NOT_REQUIRED || !$this->is_enabled($cm)) {
+            return;
+        }
+
+        // Get current completion state
+        $data = $this->get_data($cm, false, $userid);
+
+        // If we haven't already viewed it, don't do anything
+        if ($data->viewed == COMPLETION_NOT_VIEWED) {
+            return;
+        }
+
+        // OK, change state, save it, and update completion
+        $data->viewed = COMPLETION_NOT_VIEWED;
+        $this->internal_set_data($cm, $data);
+        $this->update_state($cm, COMPLETION_INCOMPLETE, $userid);
+    }
+
+    /**
      * Determines how much completion data exists for an activity. This is used when
      * deciding whether completion information should be 'locked' in the module
      * editing form.
@@ -870,24 +910,27 @@ class completion_info {
      *
      * Intended to be used when unlocking completion criteria settings.
      */
-    public function delete_course_completion_data() {
+    public function delete_course_completion_data($userid = null) {
         global $DB, $CFG;
 
         require_once("{$CFG->dirroot}/blocks/totara_stats/locallib.php");
 
-        $DB->delete_records('course_completions', array('course' => $this->course_id));
-        $DB->delete_records('course_completion_crit_compl', array('course' => $this->course_id));
+        $params = array('course' => $this->course_id);
+        if (!empty($userid)) {
+            $params['userid'] = $userid;
+        }
+
+        $DB->delete_records('course_completions', $params);
+        $DB->delete_records('course_completion_crit_compl', $params);
 
         // Remove stats data
-        $DB->delete_records(
-            'block_totara_stats',
-            array('eventtype' => STATS_EVENT_COURSE_STARTED, 'data2' => $this->course_id)
-        );
+        unset($params['course']);
+        $params['eventtype'] = STATS_EVENT_COURSE_STARTED;
+        $params['data2'] = $this->course_id;
+        $DB->delete_records('block_totara_stats', $params);
 
-        $DB->delete_records(
-            'block_totara_stats',
-            array('eventtype' => STATS_EVENT_COURSE_COMPLETE, 'data2' => $this->course_id)
-        );
+        $params['eventtype'] = STATS_EVENT_COURSE_COMPLETE;
+        $DB->delete_records('block_totara_stats', $params);
     }
 
     /**

@@ -255,6 +255,7 @@ function certificate_supports($feature) {
         case FEATURE_MOD_INTRO:               return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
         case FEATURE_BACKUP_MOODLE2:          return true;
+        case FEATURE_ARCHIVE_COMPLETION:      return true;
 
         default: return null;
     }
@@ -1192,6 +1193,90 @@ function certificate_get_date($certificate, $certrecord, $course, $userid = null
     return '';
 }
 
+
+/**
+ * Returns the date the certificate was completed for the archive record
+ *
+ * @param object $certificate certificate record
+ * @param object $certrecord certificate history record
+ * @param object $course course record
+ * @param int $userid userid
+ */
+function certificate_get_date_completed($certificate, $certrecord, $course, $userid) {
+    // Set certificate date to current time, can be overwritten later
+    $date = $certrecord->timecreated;
+
+    if ($certificate->printdate == '2') {
+        // Get the enrolment end date
+        $sql = "SELECT MAX(c.timecompleted) as timecompleted
+                FROM {course_completions} c
+                WHERE c.userid = :userid
+                AND c.course = :courseid";
+        if ($timecompleted = $DB->get_record_sql($sql, array('userid' => $userid, 'courseid' => $course->id))) {
+            if (!empty($timecompleted->timecompleted)) {
+                $date = $timecompleted->timecompleted;
+            }
+        }
+    } else if ($certificate->printdate > 2) {
+        if ($modinfo = certificate_get_mod_grade($course, $certificate->printdate, $userid)) {
+            $date = $modinfo->dategraded;
+        }
+    }
+}
+
+/**
+ * Returns the completed date formated according to the certificate date format and the users language
+ *
+ * @param object $certificate record
+ * @param int $timecompleted time completed
+ * @return string formatted date
+ */
+function certificate_get_date_completed_formatted($certificate, $date, $user) {
+    global $USER;
+
+    if ($certificate->printdate > 0) {
+        $strmgr = get_string_manager();
+        $oldlocale = null;
+        if (isset($user->lang) && ($user->lang != $USER->lang)) {
+            // Need to change the locale for the gmstrftime() function to print the correct language
+            $locale = $strmgr->get_string('locale', 'langconfig', null, $user->lang);
+            $oldlocale = setlocale(LC_TIME, '0');
+            setlocale(LC_TIME, $locale);
+        }
+
+        $olduser = null;
+        if (!is_null($user) && is_object($user)) {
+            // Temporarily set the global $USER to $user
+            $olduser = $USER;
+            $USER = $user;
+        }
+
+        if ($certificate->datefmt == 1) {
+            $format = $strmgr->get_string('dateformat1', 'certificate', null, $user->lang);
+            $certificatedate = userdate($date, $format, $user->timezone, true);
+        } else if ($certificate->datefmt == 2) {
+            $certificatedate = date(get_string('dateformat2', 'certificate'), $date);
+        } else if ($certificate->datefmt == 3) {
+            $format = $strmgr->get_string('strftimedate', 'langconfig', null, $user->lang);
+            $certificatedate = userdate($date, $format, $user->timezone, true);
+        } else if ($certificate->datefmt == 4) {
+            $format = $strmgr->get_string('strftimemonthyear', 'langconfig', null, $user->lang);
+            $certificatedate = userdate($date, $format, $user->timezone, true);
+        }
+
+        if (!is_null($olduser) && is_object($olduser)) {
+            // Restore the $USER
+            $USER = $olduser;
+        }
+
+        if (!is_null($oldlocale)) {
+            // Restore the locale
+            setlocale(LC_TIME, $oldlocale);
+        }
+        return $certificatedate;
+    }
+}
+
 /**
  * Helper function to return the suffix of the day of
  * the month, eg 'st' if it is the 1st of the month.
@@ -1295,16 +1380,21 @@ function certificate_get_grade($certificate, $course, $userid = null) {
  *
  * @param stdClass $certificate
  * @param stdClass $course
+ * @param int $userid
  * @return string the outcome
  */
-function certificate_get_outcome($certificate, $course) {
+function certificate_get_outcome($certificate, $course, $userid = null) {
     global $USER, $DB;
+
+    if (empty($userid)) {
+        $userid = $USER->id;
+    }
 
     if ($certificate->printoutcome > 0) {
         if ($grade_item = new grade_item(array('id' => $certificate->printoutcome))) {
             $outcomeinfo = new stdClass;
             $outcomeinfo->name = $grade_item->get_name();
-            $outcome = new grade_grade(array('itemid' => $grade_item->id, 'userid' => $USER->id));
+            $outcome = new grade_grade(array('itemid' => $grade_item->id, 'userid' => $userid));
             $outcomeinfo->grade = grade_format_gradevalue($outcome->finalgrade, $grade_item, true, GRADE_DISPLAY_TYPE_REAL);
 
             return $outcomeinfo->name . ': ' . $outcomeinfo->grade;
@@ -1559,4 +1649,260 @@ function certificate_scan_image_dir($path) {
     }
 
     return $options;
+}
+
+/**
+ * Archives user's certificates for a course
+ *
+ * @param int $userid
+ * @param int $courseid
+ */
+function certificate_archive_completion($userid, $courseid) {
+    global $DB;
+
+    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    $completion = new completion_info($course);
+
+    $sql = "SELECT ci.*
+            FROM {certificate_issues} ci
+            INNER JOIN {certificate} c ON c.id = ci.certificateid AND c.course = :courseid
+            WHERE ci.userid = :userid";
+
+    if ($certs = $DB->get_records_sql($sql, array('userid' => $userid, 'courseid' => $courseid))) {
+        foreach ($certs as $cert) {
+            $certificate = $DB->get_record('certificate', array('id' => $cert->certificateid), '*', MUST_EXIST);
+
+            $data = clone $cert;
+            $data->id = 0;
+            $data->timearchived = time();
+            $data->idarchived = $cert->id; // Not sure if this is needed but might be useful if there is a data issue later on
+            $data->timecompleted = certificate_get_date_completed($certificate, $cert, $course, $userid);
+            $data->grade = certificate_get_grade($certificate, $course, $userid);
+            $data->outcome = certificate_get_outcome($certificate, $course, $userid);
+
+            $newid = $DB->insert_record('certificate_issues_history', $data, true);
+            if ($newid) {
+                $course_module = get_coursemodule_from_instance('certificate', $cert->certificateid, $course->id);
+
+                // Reset viewed
+                $completion->set_module_viewed_reset($course_module, $userid);
+                // And reset completion, in case viewed is not a required condition
+                $completion->update_state($course_module, COMPLETION_INCOMPLETE, $userid);
+
+                // Delete original
+                $DB->delete_records('certificate_issues', array('id' => $cert->id));
+            }
+        }
+    }
+    return true;
+}
+
+/**
+ * Creates a pdf for a given certificate_issue_history id
+ *
+ * @global object $DB
+ * @param int $certissueid
+ * @return object $pdf
+ */
+function certificate_print_archive_pdf($certissueid) {
+    global $DB, $CFG, $USER;
+
+    $certrecord = $DB->get_record('certificate_issues_history', array('id' => $certissueid), '*', MUST_EXIST);
+    $certificate = $DB->get_record('certificate', array('id' => $certrecord->certificateid), '*', MUST_EXIST);
+    $user = $DB->get_record('user', array('id' => $certrecord->userid), '*', MUST_EXIST);
+    $course = $DB->get_record('course', array('id' => $certificate->course), 'fullname', MUST_EXIST);
+    $cm = get_coursemodule_from_instance('certificate', $certrecord->certificateid, $certificate->course);
+
+    // $pdf is created by certificate.php
+    require($CFG->dirroot . '/mod/certificate/type/' . $certificate->certificatetype . '/certificate.php');
+
+    return ($pdf);
+
+}
+
+/**
+ * Returns a list of archived certificates
+ *
+ * @global object $DB
+ * @param array $filters
+ * @param int $totalcount
+ * @return array $archives - list of archived certificates
+ */
+function certificate_archive_get_list($filters, &$totalcount) {
+    global $DB;
+
+    $params = array();
+    $wheres = array();
+    $where = '';
+
+    if (isset($filters['courseid']) && $filters['courseid']) {
+        $params['courseid'] = $filters['courseid'];
+        $wheres[] = 'course.id = :courseid';
+    }
+    if (isset($filters['coursename']) && $filters['coursename']) {
+        $params['coursename'] = '%' . $DB->sql_like_escape($filters['coursename']) . '%';
+        $wheres[] = $DB->sql_like('course.fullname', ':coursename', false);
+    }
+    if (isset($filters['certid']) && $filters['certid']) {
+        $params['certid'] = $filters['certid'];
+        $wheres[] = 'cert.id = :certid';
+    }
+    if (isset($filters['certname']) && $filters['certname']) {
+        $params['certname'] = '%' . $DB->sql_like_escape($filters['certname']) . '%';
+        $wheres[] = $DB->sql_like('cert.name', ':certname', false);
+    }
+    if (isset($filters['username']) && $filters['username']) {
+        $params['username'] = '%' . $DB->sql_like_escape($filters['username']) . '%';
+        $wheres[] = $DB->sql_like('u.username', ':username', false);
+    }
+    if (isset($filters['firstname']) && $filters['firstname']) {
+        $params['firstname'] = '%' . $DB->sql_like_escape($filters['firstname']) . '%';
+        $wheres[] = $DB->sql_like('u.firstname', ':firstname', false);
+    }
+    if (isset($filters['lastname']) && $filters['lastname']) {
+        $params['lastname'] = '%' . $DB->sql_like_escape($filters['lastname']) . '%';
+        $wheres[] = $DB->sql_like('u.lastname', ':lastname', false);
+    }
+    if (!empty($wheres)) {
+        $where = 'WHERE ' . implode(' AND ', $wheres);
+    }
+
+    $sqlbody = "FROM {certificate_issues_history} ci
+                INNER JOIN {certificate} cert ON cert.id = ci.certificateid
+                INNER JOIN {course} course ON course.id = cert.course
+                INNER JOIN {user} u ON u.id = ci.userid
+                {$where}";
+
+    $sqlcount = "SELECT COUNT(*) " . $sqlbody;
+    $totalcount = $DB->count_records_sql($sqlcount, $params);
+
+    $offset = $filters['page'] * $filters['perpage'];
+
+    $sql = "SELECT ci.id,
+                    u.id userid,
+                    u.username,
+                    u.firstname,
+                    u.lastname,
+                    course.id AS courseid,
+                    course.fullname AS coursename,
+                    cert.id AS certid,
+                    cert.name AS certname,
+                    ci.timecompleted,
+                    ci.grade,
+                    ci.outcome,
+                    ci.timearchived
+            {$sqlbody}
+            ORDER BY u.lastname,
+                     u.firstname,
+                     course.fullname,
+                     cert.name,
+                     ci.timecompleted,
+                     ci.timearchived";
+    $archives = $DB->get_records_sql($sql, $params, $offset, $filters['perpage']);
+
+    return $archives;
+}
+
+/**
+ * Displays a table of archived certificates
+ *
+ * @global object $OUTPUT
+ * @param array $archives
+ * @param array $params - contains paging parameters
+ */
+function certificate_archive_display_list($archives, $params) {
+    global $OUTPUT;
+
+    $table = new flexible_table('view-certificate-archive');
+    $table->define_columns(array(
+        'username',
+        'userfullname',
+        'timecompleted',
+        'grade',
+        'outcome',
+        'timearchived',
+        'options'
+    ));
+    $table->define_headers(array(
+        get_string('username'),
+        get_string('fullnameuser'),
+        get_string('timecompleted', 'certificate'),
+        get_string('coursegrade', 'certificate'),
+        get_string('outcome', 'certificate'),
+        get_string('timearchived', 'certificate'),
+        get_string('options')
+    ));
+
+    $table->column_class('username', 'username');
+    $table->column_class('userfullname', 'userfullname');
+    $table->column_class('timecompleted', 'timecompleted');
+    $table->column_class('grade', 'grade');
+    $table->column_class('outcome', 'outcome');
+    $table->column_class('timearchived', 'timearchived');
+    $table->column_class('options', 'options');
+
+    $table->define_baseurl(new moodle_url('/mod/certificate/viewarchive.php', $params));
+    $table->sortable(false);
+    $table->collapsible(false);
+
+    $table->set_attribute('cellspacing', '0');
+    $table->set_attribute('id', 'view-certificate-archive');
+    $table->set_attribute('class', 'generaltable');
+    $table->set_attribute('width', '100%');
+    $table->setup();
+
+    $table->initialbars($params['totalcount'] > $params['perpage']);
+    $table->pagesize($params['perpage'], $params['totalcount']);
+
+    if ($archives) {
+        foreach ($archives as $archive) {
+            $options = '';
+
+            $viewurl = new moodle_url('/mod/certificate/viewarchive.php',
+                    array('certid' => $archive->certid, 'historyid' => $archive->id, 'output' => 'I'));
+            $viewbutton = new single_button($viewurl, get_string('view'));
+            $viewbutton->add_action(new popup_action('click', $viewurl,
+                    'view' . $archive->id, array('height' => 600, 'width' => 800)));
+            $options .= html_writer::tag('span', $OUTPUT->render($viewbutton));
+
+            $downloadurl = new moodle_url('/mod/certificate/viewarchive.php',
+                    array('certid' => $archive->certid, 'historyid' => $archive->id, 'output' => 'D'));
+            $downloadbutton = new single_button($downloadurl,
+                    get_string('download'));
+            $downloadbutton->add_action(new popup_action('click', $downloadurl,
+                    'download' . $archive->id, array('height' => 600, 'width' => 800)));
+            $options .= html_writer::tag('span', $OUTPUT->render($downloadbutton));
+
+            $row = array();
+
+            $userurl = new moodle_url('/user/view.php', array('id' => $archive->userid));
+            $row[] = html_writer::link($userurl, format_string($archive->username));
+            $row[] = html_writer::link($userurl, format_string(fullname($archive)));
+
+            $row[] = userdate($archive->timecompleted);
+            $row[] = $archive->grade;
+            $row[] = $archive->outcome;
+            $row[] = userdate($archive->timearchived);
+            $row[] = $options;
+
+            $table->add_data($row);
+        }
+    }
+    $table->print_html();
+
+}
+
+/**
+ * Adds module specific settings to the settings block
+ *
+ * @param settings_navigation $settings The settings navigation object
+ * @param navigation_node $choicenode The node to add module settings to
+ */
+function certificate_extend_settings_navigation(settings_navigation $settings, navigation_node $choicenode) {
+    global $PAGE;
+
+    if (has_capability('mod/certificate:viewarchive', $PAGE->cm->context)) {
+        $choicenode->add(get_string('viewarchive', 'certificate'),
+                new moodle_url('/mod/certificate/viewarchive.php', array('certid' => $PAGE->cm->instance)));
+    }
 }

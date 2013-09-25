@@ -22,6 +22,9 @@
  * @subpackage reportbuilder
  *
  * Unit tests to check source column definitions
+ *
+ * vendor/bin/phpunit columns_test totara/reportbuilder/tests/column_test.php
+ *
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -218,6 +221,7 @@ class columns_test extends reportcache_advanced_testcase {
         $this->course_completions_data->timecompleted = 1140606000;
         $this->course_completions_data->reaggregate = 0;
         $this->course_completions_data->rpl = '';
+        $this->course_completions_data->rplgrade = 0;
         $this->course_completions_data->status = 0;
 
         $this->course_completion_criteria_data = new stdClass();
@@ -543,6 +547,7 @@ class columns_test extends reportcache_advanced_testcase {
         $this->f2f_signups_data->discountcode = '';
         $this->f2f_signups_data->mailedreminder = 0;
         $this->f2f_signups_data->notificationtype = 0;
+        $this->f2f_signups_data->archived = 0;
 
         $this->f2f_signup_status_data = new stdClass();
         $this->f2f_signup_status_data->id = 1;
@@ -768,6 +773,7 @@ class columns_test extends reportcache_advanced_testcase {
         $this->dp_plan_evidence_data->institution = 'plan evidence institution';
         $this->dp_plan_evidence_data->datecompleted = 0;
         $this->dp_plan_evidence_data->userid = 2;
+        $this->dp_plan_evidence_data->readonly = 0;
 
         $this->dp_plan_evidence_relation_data = new stdClass();
         $this->dp_plan_evidence_relation_data->id = 1;
@@ -809,17 +815,35 @@ class columns_test extends reportcache_advanced_testcase {
         $this->cohort_members_data->cohortid = 1;
         $this->cohort_members_data->userid = 1;
 
-        $this->prog_data = new stdClass();
-        $this->prog_data->id = 1;
-        $this->prog_data->category = 1;
-        $this->prog_data->fullname = 'program';
-        $this->prog_data->shortname = 'prog';
-        $this->prog_data->idnumber = '123';
-        $this->prog_data->icon = 'default.png';
-        $this->prog_data->summary = 'summary';
-        $this->prog_data->availablefrom = 123456789;
-        $this->prog_data->availableuntil = 123456789;
-        $this->prog_data->audiencevisible = 2;
+        $this->prog_data = array();
+
+        $this->prog_data1 = new stdClass();
+        $this->prog_data1->id = 1;
+        $this->prog_data1->certifid = null;
+        $this->prog_data1->category = 1;
+        $this->prog_data1->fullname = 'program';
+        $this->prog_data1->shortname = 'prog';
+        $this->prog_data1->idnumber = '123';
+        $this->prog_data1->icon = 'default.png';
+        $this->prog_data1->summary = 'summary';
+        $this->prog_data1->availablefrom = 123456789;
+        $this->prog_data1->availableuntil = 123456789;
+        $this->prog_data1->audiencevisible = 2;
+        $this->prog_data[] = $this->prog_data1;
+
+        $this->prog_data2 = new stdClass();
+        $this->prog_data2->id = 2;
+        $this->prog_data2->certifid = 1;
+        $this->prog_data2->category = 1;
+        $this->prog_data2->fullname = 'Cf program fullname 101';
+        $this->prog_data2->shortname = 'CP101';
+        $this->prog_data2->idnumber = 'CP101';
+        $this->prog_data2->summary = 'CP101';
+        $this->prog_data2->availablefrom = 123456789;
+        $this->prog_data2->availableuntil = 123456789;
+        $this->prog_data2->icon = 'people-and-communities';
+        $this->prog_data2->audiencevisible = 2;
+        $this->prog_data[] = $this->prog_data2;
 
         $this->prog_courseset_data = new stdClass();
         $this->prog_courseset_data->id = 1;
@@ -845,17 +869,33 @@ class columns_test extends reportcache_advanced_testcase {
         $this->prog_extension_data->userid = 2;
         $this->prog_extension_data->status = 0;
 
-        $this->prog_completion_data = new stdClass();
-        $this->prog_completion_data->id = 2;
-        $this->prog_completion_data->programid = 1;
-        $this->prog_completion_data->userid = 2;
-        $this->prog_completion_data->coursesetid = 0;
-        $this->prog_completion_data->status = 1;
-        $this->prog_completion_data->timedue = 1205445539;
-        $this->prog_completion_data->timecompleted = 1205445539;
-        $this->prog_completion_data->timestarted = 1205445539;
-        $this->prog_completion_data->positionid = 1;
-        $this->prog_completion_data->organisationid = 1;
+        $this->prog_completion_data = array();
+
+        $this->prog_completion_data1 = new stdClass();
+        $this->prog_completion_data1->id = 2;
+        $this->prog_completion_data1->programid = 1;
+        $this->prog_completion_data1->userid = 2;
+        $this->prog_completion_data1->coursesetid = 0;
+        $this->prog_completion_data1->status = 1;
+        $this->prog_completion_data1->timedue = 1205445539;
+        $this->prog_completion_data1->timecompleted = 1205445539;
+        $this->prog_completion_data1->timestarted = 1205445539;
+        $this->prog_completion_data1->positionid = 1;
+        $this->prog_completion_data1->organisationid = 1;
+        $this->prog_completion_data[] = $this->prog_completion_data1;
+
+        $this->prog_completion_data2 = new stdClass();
+        $this->prog_completion_data2->id = 3;
+        $this->prog_completion_data2->programid = 2;
+        $this->prog_completion_data2->userid = 2;
+        $this->prog_completion_data2->coursesetid = 0;
+        $this->prog_completion_data2->status = 1;
+        $this->prog_completion_data2->timestarted = 1378136334;
+        $this->prog_completion_data2->timedue = -1;
+        $this->prog_completion_data2->timecompleted = 1378215781;
+        $this->prog_completion_data2->positionid = 1;
+        $this->prog_completion_data2->organisationid = 1;
+        $this->prog_completion_data[] = $this->prog_completion_data2;
 
         $this->prog_completion_history_data = new stdClass();
         $this->prog_completion_history_data->id = 2;
@@ -1071,6 +1111,14 @@ class columns_test extends reportcache_advanced_testcase {
         $this->goal_record->goalid = 1;
         $this->goal_record->deleted = 0;
 
+        $this->goal_scale_data = new stdClass();
+        $this->goal_scale_data->id = 5;
+        $this->goal_scale_data->name = 'Goal Scale';
+        $this->goal_scale_data->description = '';
+        $this->goal_scale_data->timemodified = 1332153671;
+        $this->goal_scale_data->usermodified = 1;
+        $this->goal_scale_data->defaultid = 4;
+
         $this->goal_scale_values = new stdClass();
         $this->goal_scale_values->id = 4;
         $this->goal_scale_values->scaleid = 5;
@@ -1079,7 +1127,30 @@ class columns_test extends reportcache_advanced_testcase {
         $this->goal_scale_values->timemodified = 0;
         $this->goal_scale_values->usermodified = 0;
 
-        //Note most of this is just random filler, but component MUST be a valid value e.g. course/program/competency
+        $this->goal_item_history_data = new stdClass();
+        $this->goal_item_history_data->id = 1;
+        $this->goal_item_history_data->scope = 2;
+        $this->goal_item_history_data->itemid = 1;
+        $this->goal_item_history_data->scalevalueid = 1;
+        $this->goal_item_history_data->timemodified = 1332153671;
+        $this->goal_item_history_data->usermodified = 1;
+
+        $this->goal_personal_data = new stdClass();
+        $this->goal_personal_data->id = 1;
+        $this->goal_personal_data->userid = 1;
+        $this->goal_personal_data->name = 'My Personal Goal';
+        $this->goal_personal_data->description = '';
+        $this->goal_personal_data->targetdate = 1332153671;
+        $this->goal_personal_data->scaleid = 1;
+        $this->goal_personal_data->scalevalueid = 4;
+        $this->goal_personal_data->assigntype = 1;
+        $this->goal_personal_data->timecreated = 1332153671;
+        $this->goal_personal_data->usercreated = 1;
+        $this->goal_personal_data->timemodified = 1332153671;
+        $this->goal_personal_data->usermodified = 1;
+        $this->goal_personal_data->deleted = 0;
+
+        // Note most of this is just random filler, but component MUST be a valid value e.g. course/program/competency.
         $this->filler_data = new stdClass();
         $this->filler_data->id = 1;
         $this->filler_data->courseid = 1;
@@ -1127,6 +1198,82 @@ class columns_test extends reportcache_advanced_testcase {
         $this->visible_cohort_data->timecreated = 1;
         $this->visible_cohort_data->usermodified = 1;
 
+        $this->totara_compl_import_course_data = new stdClass();
+        $this->totara_compl_import_course_data->id = 1;
+        $this->totara_compl_import_course_data->username = 'username';
+        $this->totara_compl_import_course_data->courseshortname = 'shortname';
+        $this->totara_compl_import_course_data->courseidnumber = 'idnumber';
+        $this->totara_compl_import_course_data->completiondate = '2013-08-27';
+        $this->totara_compl_import_course_data->grade = 'grade';
+        $this->totara_compl_import_course_data->timecreated = time();
+        $this->totara_compl_import_course_data->timeupdated = time();
+        $this->totara_compl_import_course_data->importuserid = 1;
+        $this->totara_compl_import_course_data->importerror = 1;
+        $this->totara_compl_import_course_data->importerrormsg = 'nousername;usernamenotfound;nocourse;nomanualenrol;';
+        $this->totara_compl_import_course_data->rownumber = 1;
+        $this->totara_compl_import_course_data->importevidence = 0;
+
+        $this->totara_compl_import_cert_data = new stdClass();
+        $this->totara_compl_import_cert_data->id = 1;
+        $this->totara_compl_import_cert_data->username = 'username';
+        $this->totara_compl_import_cert_data->certificationshortname = 'shortname';
+        $this->totara_compl_import_cert_data->certificationidnumber = 'idnumber';
+        $this->totara_compl_import_cert_data->completiondate = '2013-08-27';
+        $this->totara_compl_import_cert_data->timecreated = time();
+        $this->totara_compl_import_cert_data->timeupdated = time();
+        $this->totara_compl_import_cert_data->importuserid = 1;
+        $this->totara_compl_import_cert_data->importerror = 1;
+        $this->totara_compl_import_cert_data->importerrormsg = 'nousername;usernamenotfound;nocourse;nomanualenrol;';
+        $this->totara_compl_import_cert_data->rownumber = 1;
+        $this->totara_compl_import_cert_data->importevidence = 0;
+
+        $this->certif_data = new stdClass();
+        $this->certif_data->id = 1;
+        $this->certif_data->learningcomptype = 1;
+        $this->certif_data->activeperiod = '1 year';
+        $this->certif_data->windowperiod = '4 week';
+        $this->certif_data->recertifydatetype = 1;
+        $this->certif_data->timemodified = 1332153673;
+
+        $this->certif_completion_data = new stdClass();
+        $this->certif_completion_data->id = 1;
+        $this->certif_completion_data->certifid = 1;
+        $this->certif_completion_data->userid = 2;
+        $this->certif_completion_data->certifpath = 1;
+        $this->certif_completion_data->status = 1;
+        $this->certif_completion_data->renewalstatus = 0;
+        $this->certif_completion_data->timewindowopens = 0;
+        $this->certif_completion_data->timeexpires = 0;
+        $this->certif_completion_data->timecompleted = 0;
+        $this->certif_completion_data->timemodified = 1332153671;
+
+        $this->certif_completion_history_data = new stdClass();
+        $this->certif_completion_history_data->id = 1;
+        $this->certif_completion_history_data->certifid = 1;
+        $this->certif_completion_history_data->userid = 2;
+        $this->certif_completion_history_data->certifpath = 1;
+        $this->certif_completion_history_data->status = 1;
+        $this->certif_completion_history_data->renewalstatus = 0;
+        $this->certif_completion_history_data->timewindowopens = 1332153673;
+        $this->certif_completion_history_data->timeexpires = 1332113673;
+        $this->certif_completion_history_data->timecompleted = null;
+        $this->certif_completion_history_data->timemodified = 1332153671;
+
+        $this->course_completion_history_data = new stdClass();
+        $this->course_completion_history_data->id = 1;
+        $this->course_completion_history_data->courseid = 1;
+        $this->course_completion_history_data->userid = 1;
+        $this->course_completion_history_data->timecompleted = 1332153671;
+        $this->course_completion_history_data->grade = 1;
+
+        $this->comp_record_history_data = new stdClass();
+        $this->comp_record_history_data->id = 1;
+        $this->comp_record_history_data->userid = 1;
+        $this->comp_record_history_data->competencyid = 1;
+        $this->comp_record_history_data->proficiency = 1;
+        $this->comp_record_history_data->timemodified = 1332153671;
+        $this->comp_record_history_data->usermodified = 1;
+
         $DB->insert_record('report_builder', $this->rb_data);
         $DB->insert_record('report_builder_columns', $this->rb_col_data);
         $DB->insert_record('report_builder_filters', $this->rb_filter_data);
@@ -1154,6 +1301,7 @@ class columns_test extends reportcache_advanced_testcase {
         $DB->insert_record('comp_type_info_field', $this->type_field_data);
         $DB->insert_record('comp_type_info_data', $this->type_data_data);
         $DB->insert_record('comp_record', $this->dummy_data);
+        $DB->insert_record('comp_record_history', $this->comp_record_history_data);
         $DB->insert_record('comp_criteria', $this->dummy_data);
         $DB->insert_record('comp_criteria_record', $this->dummy_data);
         $DB->insert_record('comp_template', $this->dummy_data);
@@ -1194,11 +1342,11 @@ class columns_test extends reportcache_advanced_testcase {
         $DB->insert_record('dp_plan_component_relation', $this->dp_plan_component_relation_data);
         $DB->insert_record('cohort', $this->cohort_data);
         $DB->insert_record('cohort_members', $this->cohort_members_data);
-        $DB->insert_record('prog', $this->prog_data);
+        $DB->insert_records_via_batch('prog', $this->prog_data);
         $DB->insert_record('prog_courseset', $this->prog_courseset_data);
         $DB->insert_record('prog_courseset_course', $this->prog_courseset_course_data);
         $DB->insert_record('prog_extension', $this->prog_extension_data);
-        $DB->insert_record('prog_completion', $this->prog_completion_data);
+        $DB->insert_records_via_batch('prog_completion', $this->prog_completion_data);
         $DB->insert_record('prog_completion_history', $this->prog_completion_history_data);
         $DB->insert_record('prog_user_assignment', $this->prog_user_assignment_data);
         $DB->insert_record('pos_type_info_field', $this->pos_type_info_field_data);
@@ -1222,6 +1370,15 @@ class columns_test extends reportcache_advanced_testcase {
         $DB->insert_record('goal_framework', $this->goal_framework);
         $DB->insert_record('goal_record', $this->goal_record);
         $DB->insert_record('goal_scale_values', $this->goal_scale_values);
+        $DB->insert_record('goal_item_history', $this->goal_item_history_data);
+        $DB->insert_record('goal_scale', $this->goal_scale_data);
+        $DB->insert_record('goal_personal', $this->goal_personal_data);
+        $DB->insert_record('totara_compl_import_course', $this->totara_compl_import_course_data);
+        $DB->insert_record('totara_compl_import_cert', $this->totara_compl_import_cert_data);
+        $DB->insert_record('certif', $this->certif_data);
+        $DB->insert_record('certif_completion', $this->certif_completion_data);
+        $DB->insert_record('certif_completion_history', $this->certif_completion_history_data);
+        $DB->insert_record('course_completion_history', $this->course_completion_history_data);
 
         // db version of report
         $this->rb = new reportbuilder(1);
@@ -1238,7 +1395,7 @@ class columns_test extends reportcache_advanced_testcase {
         global $SESSION, $DB;
         // loop through installed sources
         foreach (reportbuilder::get_source_list(true) as $sourcename => $title) {
-            //echo '<h3>Source ' . $title . ':</h3>' . "\n";
+            // echo '<h3>Title : [' . $title . '] Sourcename : [' . $sourcename . ']</h3>' . "\n";
             $src = reportbuilder::get_source_object($sourcename);
             foreach ($src->columnoptions as $column) {
                 // create a report
@@ -1258,7 +1415,7 @@ class columns_test extends reportcache_advanced_testcase {
                 $col->sortorder = 1;
                 $colid = $DB->insert_record('report_builder_columns', $col);
                 // create the reportbuilder object
-                //echo '<h5>Test ' . $column->type . '-' . $column->value . ' column:</h5>' . "\n";
+                // echo '<h5>column option : Test ' . $column->type . '-' . $column->value . ' column:</h5>' . "\n";
 
                 if ($usecache) {
                     $this->enable_caching($reportid);
@@ -1266,6 +1423,7 @@ class columns_test extends reportcache_advanced_testcase {
 
                 $rb = new reportbuilder($reportid);
                 $sql = $rb->build_query();
+                // echo '<h5>sql ' . var_export($sql, true) . '</h5>' . "\n";
                 $records = $DB->get_recordset_sql($sql[0], $sql[1], 0, 40);
                 foreach ($records as $record) {
                     if (array_key_exists('competency_proficiencyandapproval', $record)) {
@@ -1274,11 +1432,17 @@ class columns_test extends reportcache_advanced_testcase {
                     $data = $rb->process_data_row($record);
                 }
                 $records->close();
-                if ($title == "User" || $title == "Courses") {
-                    $this->assertEquals('2', $rb->get_full_count());
+                $message = "\nReport title : {$title}\n";
+                $message .= "Report sourcename : {$sourcename}\n";
+                $message .= "Column option : Test {$column->type}_{$column->value} column\n";
+                $message .= "SQL : {$sql[0]}\n";
+                $message .= "SQL Params : " . var_export($sql[1], true) . "\n";
+                if ($title == "User" || $title == "Courses" ||
+                        in_array($sourcename, array('dp_certification_history', 'program_completion'))) {
+                    $this->assertEquals('2', $rb->get_full_count(), $message);
                 }
                 else{
-                    $this->assertEquals('1', $rb->get_full_count());
+                    $this->assertEquals('1', $rb->get_full_count(), $message);
                 }
                 // remove afterwards
                 $DB->delete_records('report_builder', array('id' => $reportid));
@@ -1314,7 +1478,7 @@ class columns_test extends reportcache_advanced_testcase {
                 $fil->sortorder = 1;
                 $filid = $DB->insert_record('report_builder_filters', $fil);
                 // create the reportbuilder object
-                //echo '<h5>Test ' . $filter->type . '-' . $filter->value . ' filter:</h5>'."\n";
+                // echo '<h5>Filter option : Test ' . $filter->type . '-' . $filter->value . ' filter:</h5>'."\n";
                 $rb = new reportbuilder($reportid);
                 // set session to filter by this column
                 $filtername = 'filtering_test1';
@@ -1342,7 +1506,12 @@ class columns_test extends reportcache_advanced_testcase {
                 }
 
                 $records->close();
-                $this->assertRegExp('/[012]/', (string)$rb->get_filtered_count());
+                $message = "\nReport title : {$title}\n";
+                $message .= "Report sourcename : {$sourcename}\n";
+                $message .= "Filter option : Test {$filter->type}_{$filter->value} filter\n";
+                $message .= "SQL : {$sql[0]}\n";
+                $message .= "SQL Params : " . var_export($sql[1], true) . "\n";
+                $this->assertRegExp('/[012]/', (string)$rb->get_filtered_count(), $message);
                 // remove afterwards
                 $DB->delete_records('report_builder', array('id' => $reportid));
                 unset($SESSION->{$filtername});

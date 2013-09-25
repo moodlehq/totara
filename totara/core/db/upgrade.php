@@ -779,11 +779,6 @@ function xmldb_totara_core_upgrade($oldversion) {
         $field = new xmldb_field('audiencevisible', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, 2);
 
         // Conditionally launch add field audiencevisible to course table.
-        if (!$dbman->field_exists($table, $field)) {
-            $dbman->add_field($table, $field);
-        }
-
-        // Main savepoint reached.
         totara_upgrade_mod_savepoint(true, 2013091500, 'totara_core');
     }
 
@@ -812,6 +807,29 @@ function xmldb_totara_core_upgrade($oldversion) {
 
         // Core savepoint reached.
         upgrade_plugin_savepoint(true, 2013092000, 'totara', 'core');
+    }
+
+    if ($oldversion < 2013092100) {
+        // Add RPL and renewalstatus columns to course_completions table.
+        $table = new xmldb_table('course_completions');
+
+        // Define field rpl to be added to course_completions.
+        $field = new xmldb_field('rplgrade', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null, 'rpl');
+
+        // Conditionally launch add field rpl.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('renewalstatus', XMLDB_TYPE_INTEGER, '2', null, null, null, '0', 'status');
+
+        // Conditionally launch add field renewalstatus.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Main savepoint reached.
+        totara_upgrade_mod_savepoint(true, 2013092100, 'totara_core');
     }
 
     return true;

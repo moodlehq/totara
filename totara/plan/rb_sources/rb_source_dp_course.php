@@ -96,7 +96,7 @@ class rb_source_dp_course extends rb_base_source {
      * @return array
      */
     protected function define_joinlist() {
-        global $CFG;
+        global $CFG, $DB;
         $joinlist = array();
 
         // to get access to position type constants
@@ -185,6 +185,19 @@ from
                     'grade_grades.userid = base.userid)',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
                 'grade_items'
+        );
+        $joinlist[] = new rb_join(
+                'course_completion_history',
+                'LEFT',
+                '(SELECT ' . $DB->sql_concat('userid', 'courseid') . ' uniqueid,
+                    userid,
+                    courseid,
+                    COUNT(id) historycount
+                    FROM {course_completion_history}
+                    GROUP BY userid, courseid)',
+                '(course_completion_history.courseid = base.courseid AND ' .
+                    'course_completion_history.userid = base.userid)',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
         );
 
 
@@ -402,7 +415,30 @@ from
                     'defaultheading' => get_string('grade', 'rb_source_course_completion'),
                 )
             );
-
+        $columnoptions[] = new rb_column_option(
+                'course_completion_history',
+                'course_completion_history_link',
+                get_string('course_completion_history_link', 'rb_source_dp_course'),
+                'course_completion_history.historycount',
+                array(
+                    'joins' => 'course_completion_history',
+                    'defaultheading' => get_string('course_completion_history_link', 'rb_source_dp_course'),
+                    'displayfunc' => 'course_completion_history_link',
+                    'extrafields' => array(
+                        'courseid' => 'base.courseid',
+                        'userid' => 'base.userid',
+                    ),
+                )
+            );
+        $columnoptions[] = new rb_column_option(
+                'course_completion_history',
+                'course_completion_history_count',
+                get_string('course_completion_history_count', 'rb_source_dp_course'),
+                'course_completion_history.historycount',
+                array(
+                    'joins' => 'course_completion_history',
+                )
+             );
         $this->add_cohort_course_fields_to_columns($columnoptions);
 
         return $columnoptions;
@@ -459,6 +495,12 @@ from
                 'course_completion',
                 'passgrade',
                 'Required Grade',
+                'number'
+        );
+        $filteroptions[] = new rb_filter_option(
+                'course_completion_history',
+                'course_completion_history_count',
+                get_string('course_completion_history_count', 'rb_source_dp_course'),
                 'number'
         );
 
@@ -570,6 +612,12 @@ from
             }
         }
         return $content;
+    }
+
+    public function rb_display_course_completion_history_link($name, $row) {
+        global $OUTPUT;
+        return $OUTPUT->action_link(new moodle_url('/totara/plan/record/courses.php',
+                array('courseid' => $row->courseid, 'userid' => $row->userid, 'history' => 1)), $name);
     }
 
     function rb_filter_coursecompletion_status() {

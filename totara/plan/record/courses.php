@@ -36,7 +36,9 @@
 
     global $SESSION,$USER;
 
-    $userid     = optional_param('userid', null, PARAM_INT);                       // which user to show
+    $courseid = optional_param('courseid', null, PARAM_INT);
+    $history = optional_param('history', false, PARAM_BOOL);
+    $userid = optional_param('userid', $USER->id, PARAM_INT);                       // which user to show
     $sid = optional_param('sid', '0', PARAM_INT);
     $format = optional_param('format','', PARAM_TEXT); // export format
     $rolstatus = optional_param('status', 'all', PARAM_ALPHANUM);
@@ -44,13 +46,20 @@
         $rolstatus = 'all';
     }
 
-    // default to current user
-    if (empty($userid)) {
-        $userid = $USER->id;
-    }
+    $pageparams = array(
+        'courseid' => $courseid,
+        'history' => $history,
+        'userid' => $userid,
+        'format' => $format,
+        'status' => $rolstatus
+    );
 
     if (!$user = $DB->get_record('user', array('id' => $userid))) {
         print_error('error:usernotfound', 'totara_plan');
+    }
+
+    if (!empty($courseid) && (!$course = $DB->get_record('course', array('id' => $courseid), 'fullname'))) {
+        print_error(get_string('coursenotfound', 'totara_plan'));
     }
 
     $context = context_system::instance();
@@ -61,8 +70,7 @@
     }
 
     $PAGE->set_context($context);
-    $PAGE->set_url(new moodle_url('/totara/plan/record/courses.php',
-        array('userid' => $userid, 'status' => $rolstatus)));
+    $PAGE->set_url(new moodle_url('/totara/plan/record/courses.php', $pageparams));
     $PAGE->set_pagelayout('noblocks');
 
     $renderer =  $PAGE->get_renderer('totara_reportbuilder');
@@ -82,11 +90,21 @@
     if ($rolstatus !== 'all') {
         $data['rolstatus'] = $rolstatus;
     }
+    if ($history) {
+        $shortname = 'plan_courses_completion_history';
+        $data['courseid'] = $courseid;
+        if (!empty($courseid)) {
+            $strsubheading = get_string('coursescompletionhistoryforsubhead', 'totara_plan', $course->fullname);
+        } else {
+            $strsubheading = get_string('coursescompletionhistorysubhead', 'totara_plan');
+        }
+    }
+
     if (!$report = reportbuilder_get_embedded_report($shortname, $data, false, $sid)) {
         print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
     }
 
-    $log_url = "record/courses.php?format={$format}&amp;status={$rolstatus}&amp;userid={$userid}";
+    $log_url = $PAGE->url->out_as_local_url();
 
     if ($format != '') {
         add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);

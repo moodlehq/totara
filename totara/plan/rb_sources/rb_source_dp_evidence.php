@@ -55,6 +55,7 @@ class rb_source_dp_evidence extends rb_base_source {
                 e.evidencelink,
                 e.institution,
                 e.datecompleted,
+                e.readonly,
                 CASE
                     WHEN e.datecompleted > 0 THEN 'completed'
                     ELSE 'active'
@@ -221,6 +222,7 @@ class rb_source_dp_evidence extends rb_base_source {
                 'displayfunc' => 'actionlinks',
                 'extrafields' => array(
                     'userid' => 'base.userid',
+                    'readonly' => 'base.readonly',
                 'noexport' => true,
                 'nosort' => true),
             )
@@ -347,7 +349,9 @@ class rb_source_dp_evidence extends rb_base_source {
 
         // Check user's permissions to edit this item
         $usercontext = context_user::instance($row->userid);
-        if ($USER->id == $row->userid ||
+        if ($row->readonly) {
+            $out .= get_string('evidence_readonly', 'totara_plan');
+        } else if ($USER->id == $row->userid ||
                 totara_is_manager($row->userid) ||
                 has_capability('totara/plan:accessanyplan', $usercontext)) {
 

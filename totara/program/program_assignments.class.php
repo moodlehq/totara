@@ -416,7 +416,7 @@ abstract class prog_assignment_category {
         // Store list of seen ids
         $seenids = array();
 
-        // If theres inputs for this category
+        // If theres inputs for this assignment category (this)
         if (isset($data->item[$this->id])) {
 
             // Get the list of item ids

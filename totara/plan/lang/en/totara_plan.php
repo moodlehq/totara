@@ -57,10 +57,14 @@ $string['rplupdated'] = 'Recognition of Prior Learning updated';
 $string['error:usernotfound'] = 'User not found';
 $string['error:cannotviewpage'] = 'You cannot view this page';
 $string['recordoflearningcourses'] = 'Record of Learning: Courses';
+$string['recordoflearningcoursescompletionhistory'] = 'Record of Learning: Courses Completion History';
 $string['recordoflearningprograms'] = 'Record of Learning: Programs';
 $string['recordoflearningprogramsrecurring'] = 'Record of Learning: Recurring programs';
+$string['recordoflearningprogramscompletionhistory'] = 'Record of Learning: Programs Completion History';
 $string['recordoflearningcompetencies'] = 'Record of Learning: Competencies';
 $string['recordoflearningobjectives'] = 'Record of Learning: Objectives';
+$string['recordoflearningcertifications'] = 'Record of Learning: Certifications';
+$string['recordoflearningcertificationshistory'] = 'Record of Learning: Previous Certifications';
 $string['teammembers'] = 'Team Members';
 $string['allteammembers'] = 'All Team Members';
 $string['currentlyviewing'] = 'Currently Viewing';
@@ -819,16 +823,19 @@ $string['activecourses'] = 'Active Courses';
 $string['activecompetencies'] = 'Active Competencies';
 $string['activeobjectives'] = 'Active Objectives';
 $string['activeprograms'] = 'Active Programs';
+$string['activecertifications'] = 'Active Certifications';
 
 $string['allcourses'] = 'All Courses';
 $string['allcompetencies'] = 'All Competencies';
 $string['allobjectives'] = 'All Objectives';
 $string['allprograms'] = 'All Programs';
+$string['allcertifications'] = 'All Certifications';
 
 $string['completedcourses'] = 'Completed Courses';
 $string['completedcompetencies'] = 'Completed Competencies';
 $string['completedobjectives'] = 'Completed Objectives';
 $string['completedprograms'] = 'Completed Programs';
+$string['completedcertifications'] = 'Completed Certifications';
 $string['on'] = 'on';
 
 // Comments
@@ -868,32 +875,45 @@ $string['activecourses'] = 'Courses';
 $string['activecompetencies'] = 'Competencies';
 $string['activeobjectives'] = 'Objectives';
 $string['activeprograms'] = 'Programs';
+$string['activecertifications'] = 'Certifications';
 
 $string['allcourses'] = 'Courses';
 $string['allcompetencies'] = 'Competencies';
 $string['allobjectives'] = 'Objectives';
 $string['allprograms'] = 'Programs';
+$string['allcertifications'] = 'Certifications';
 
 $string['completedcourses'] = 'Courses';
 $string['completedcompetencies'] = 'Competencies';
 $string['completedobjectives'] = 'Objectives';
 $string['completedprograms'] = 'Programs';
+$string['completedcertifications'] = 'Certifications';
 
 $string['completedcoursessubhead'] = 'Completed Courses';
 $string['completedcompetenciessubhead'] = 'Completed Competencies';
 $string['completedobjectivessubhead'] = 'Completed Objectives';
 $string['completedprogramssubhead'] = 'Completed Programs';
+$string['completedcertificationssubhead'] = 'Completed Certifications';
 
 $string['activecoursessubhead'] = 'Active Courses';
 $string['activecompetenciessubhead'] = 'Active Competencies';
 $string['activeobjectivessubhead'] = 'Active Objectives';
 $string['activeprogramssubhead'] = 'Active Programs';
+$string['activecertificationssubhead'] = 'Active Certifications';
 
 $string['allcoursessubhead'] = 'All Courses';
 $string['allcompetenciessubhead'] = 'All Competencies';
 $string['historyforcompetencyx'] = 'History for competency "{$a}"';
 $string['allobjectivessubhead'] = 'All Objectives';
 $string['allprogramssubhead'] = 'All Programs';
+$string['allcertificationssubhead'] = 'All Certifications';
+
+$string['programscompletionhistorysubhead'] = 'Previous Completed Programs';
+$string['programscompletionhistoryforsubhead'] = 'Previous Completions for {$a}';
+$string['coursescompletionhistorysubhead'] = 'Previous Completed Courses';
+$string['coursescompletionhistoryforsubhead'] = 'Previous Completions for {$a}';
+$string['certificationshistorysubhead'] = 'All Previous Certifications';
+$string['certificationshistoryforsubhead'] = 'Previous Certifications for {$a}';
 //Help title strings
 $string['competencyevidencestatus'] = 'Evidence Status';
 //Help Strings
@@ -1084,3 +1104,4 @@ $string['evidenceattachmentdeleted'] = 'Attached evidence file has been deleted'
 $string['deleteattachedevidenceareyousure'] = 'Are you sure you want to delete the attached evidence?';
 $string['deleteattachmentevidence'] = 'Delete attached evidence';
 $string['deletecheckevidencetypeinuse'] = 'It is being used by existing evidence';
+$string['evidence_readonly'] = 'Evidence is read only';

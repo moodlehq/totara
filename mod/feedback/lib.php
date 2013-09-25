@@ -70,6 +70,7 @@ function feedback_supports($feature) {
         case FEATURE_GRADE_OUTCOMES:          return false;
         case FEATURE_BACKUP_MOODLE2:          return true;
         case FEATURE_SHOW_DESCRIPTION:        return true;
+        case FEATURE_ARCHIVE_COMPLETION:      return true;
 
         default: return null;
     }
@@ -3144,6 +3145,13 @@ function feedback_extend_settings_navigation(settings_navigation $settings,
                                     array('id' => $PAGE->cm->id,
                                           'do_show' => 'showentries')));
     }
+
+    if (has_capability('mod/feedback:viewarchive', $PAGE->cm->context)) {
+        $feedbacknode->add(get_string('viewarchive', 'feedback'),
+                    new moodle_url('/mod/feedback/viewarchive.php',
+                            array('feedbackid' => $PAGE->cm->instance)));
+    }
+
 }
 
 function feedback_init_feedback_session() {
@@ -3186,4 +3194,208 @@ function feedback_ajax_saveitemorder($itemlist, $feedback) {
                                             array('id'=>$itemid, 'feedback'=>$feedback->id));
     }
     return $result;
+}
+
+/**
+ * Archives user's feedback for a course
+ *
+ * @param int $userid
+ * @param int $courseid
+ */
+function feedback_archive_completion($userid, $courseid) {
+    global $DB, $CFG;
+
+    require_once($CFG->libdir.'/gradelib.php');
+
+    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    $completion = new completion_info($course);
+
+    $sql = "SELECT fc.*
+            FROM {feedback_completed} fc
+            INNER JOIN {feedback} f ON f.id = fc.feedback AND f.course = :courseid
+            WHERE fc.userid = :userid";
+
+    if ($completeds = $DB->get_records_sql($sql, array('userid' => $userid, 'courseid' => $courseid))) {
+        foreach ($completeds as $completed) {
+            $data = clone $completed;
+            $data->id = 0;
+            $data->timearchived = time();
+            $data->idarchived = $completed->id; // Not sure if this is needed but might be useful if there is a data issue later on
+
+            $newid = $DB->insert_record('feedback_completed_history', $data, true);
+
+            if ($newid) {
+                $newvalues = array();
+                $values = $DB->get_records('feedback_value', array('completed' => $completed->id));
+                foreach ($values as $value) {
+                    $newvalue = clone $value;
+                    $newvalue->id = 0;
+                    $newvalue->completed = $newid;
+                    $newvalue->timearchived = time();
+                    // Not sure if this is needed but might be useful if there is a data issue later on
+                    $newvalue->idarchived = $value->id;
+
+                    $newvalues[] = $newvalue;
+                }
+                $DB->insert_records_via_batch('feedback_value_history', $newvalues);
+                unset($newvalues);
+
+                // Then do the necessary
+                feedback_delete_completed($completed->id);
+                $course_module = get_coursemodule_from_instance('feedback', $completed->feedback, $courseid);
+                // Reset viewed
+                $completion->set_module_viewed_reset($course_module, $userid);
+                // And reset completion, in case viewed is not a required condition
+                $completion->update_state($course_module, COMPLETION_INCOMPLETE, $userid);
+            }
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Returns a list of archived feedback
+ *
+ * @global object $DB
+ * @param array $filters
+ * @param int $totalcount
+ * @return array $archives - list of archived feedback
+ */
+function feedback_archive_get_list($filters, &$totalcount) {
+    global $DB;
+
+    $params = array();
+    $wheres = array();
+    $where = '';
+
+    if (isset($filters['courseid']) && $filters['courseid']) {
+        $params['courseid'] = $filters['courseid'];
+        $wheres[] = 'course.id = :courseid';
+    }
+    if (isset($filters['coursename']) && $filters['coursename']) {
+        $params['coursename'] = '%' . $DB->sql_like_escape($filters['coursename']) . '%';
+        $wheres[] = $DB->sql_like('course.fullname', ':coursename', false);
+    }
+    if (isset($filters['feedbackid']) && $filters['feedbackid']) {
+        $params['feedbackid'] = $filters['feedbackid'];
+        $wheres[] = 'f.id = :feedbackid';
+    }
+    if (isset($filters['feedbackname']) && $filters['feedbackname']) {
+        $params['feedbackname'] = '%' . $DB->sql_like_escape($filters['feedbackname']) . '%';
+        $wheres[] = $DB->sql_like('f.name', ':feedbackname', false);
+    }
+    if (isset($filters['username']) && $filters['username']) {
+        $params['username'] = '%' . $DB->sql_like_escape($filters['username']) . '%';
+        $wheres[] = $DB->sql_like('u.username', ':username', false);
+    }
+    if (isset($filters['firstname']) && $filters['firstname']) {
+        $params['firstname'] = '%' . $DB->sql_like_escape($filters['firstname']) . '%';
+        $wheres[] = $DB->sql_like('u.firstname', ':firstname', false);
+    }
+    if (isset($filters['lastname']) && $filters['lastname']) {
+        $params['lastname'] = '%' . $DB->sql_like_escape($filters['lastname']) . '%';
+        $wheres[] = $DB->sql_like('u.lastname', ':lastname', false);
+    }
+    if (!empty($wheres)) {
+        $where = 'WHERE ' . implode(' AND ', $wheres);
+    }
+
+    $sqlbody = "FROM {feedback_completed_history} c
+                INNER JOIN {feedback} f ON f.id = c.feedback
+                INNER JOIN {course} course ON course.id = f.course
+                INNER JOIN {user} u ON u.id = c.userid
+                {$where}";
+
+    $sqlcount = "SELECT COUNT(*) " . $sqlbody;
+    $totalcount = $DB->count_records_sql($sqlcount, $params);
+
+    $offset = $filters['page'] * $filters['perpage'];
+
+    $sql = "SELECT c.id,
+                    u.id userid,
+                    u.username,
+                    u.firstname,
+                    u.lastname,
+                    course.id AS courseid,
+                    course.fullname AS coursename,
+                    f.id AS feedbackid,
+                    f.name AS feedbackname,
+                    c.timemodified AS timecompleted,
+                    c.timearchived
+            {$sqlbody}
+            ORDER BY u.lastname,
+                     u.firstname,
+                     course.fullname,
+                     f.name,
+                     c.timemodified,
+                     c.timearchived";
+    $archives = $DB->get_records_sql($sql, $params, $offset, $filters['perpage']);
+
+    return $archives;
+}
+
+/**
+ * Displays a table of archived feedback
+ *
+ * @param array $archives
+ * @param array $params - contains paging parameters
+ */
+function feedback_archive_display_list($archives, $params) {
+    $table = new flexible_table('view-feedback-archive');
+    $table->define_columns(array(
+        'username',
+        'userfullname',
+        'timecompleted',
+        'timearchived',
+        'options'
+    ));
+    $table->define_headers(array(
+        get_string('username'),
+        get_string('fullnameuser'),
+        get_string('timecompleted', 'feedback'),
+        get_string('timearchived', 'feedback'),
+        get_string('options')
+    ));
+
+    $table->column_class('username', 'username');
+    $table->column_class('userfullname', 'userfullname');
+    $table->column_class('timecompleted', 'timecompleted');
+    $table->column_class('timearchived', 'timearchived');
+
+    $table->define_baseurl(new moodle_url('/mod/feedback/viewarchive.php', $params));
+    $table->sortable(false);
+    $table->collapsible(false);
+
+    $table->set_attribute('cellspacing', '0');
+    $table->set_attribute('id', 'view-feedback-archive');
+    $table->set_attribute('class', 'generaltable');
+    $table->set_attribute('width', '100%');
+    $table->setup();
+
+    $table->initialbars($params['totalcount'] > $params['perpage']);
+    $table->pagesize($params['perpage'], $params['totalcount']);
+
+    if ($archives) {
+        foreach ($archives as $archive) {
+            $options = '';
+
+            $row = array();
+
+            $viewurl = new moodle_url('/mod/feedback/viewarchive.php',
+                    array('historyid' => $archive->id, 'feedbackid' => $archive->feedbackid));
+            $options .= html_writer::link($viewurl, format_string(get_string('view')));
+
+            $userurl = new moodle_url('/user/view.php', array('id' => $archive->userid));
+            $row[] = html_writer::link($userurl, format_string($archive->username));
+            $row[] = html_writer::link($userurl, format_string(fullname($archive)));
+
+            $row[] = userdate($archive->timecompleted);
+            $row[] = userdate($archive->timearchived);
+            $row[] = $options;
+
+            $table->add_data($row);
+        }
+    }
+    $table->print_html();
 }

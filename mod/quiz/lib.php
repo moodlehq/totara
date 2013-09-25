@@ -1547,6 +1547,7 @@ function quiz_supports($feature) {
         case FEATURE_BACKUP_MOODLE2:            return true;
         case FEATURE_SHOW_DESCRIPTION:          return true;
         case FEATURE_CONTROLS_GRADE_VISIBILITY: return true;
+        case FEATURE_ARCHIVE_COMPLETION:        return true;
 
         default: return null;
     }
@@ -1764,4 +1765,44 @@ function quiz_get_navigation_options() {
         QUIZ_NAVMETHOD_FREE => get_string('navmethod_free', 'quiz'),
         QUIZ_NAVMETHOD_SEQ  => get_string('navmethod_seq', 'quiz')
     );
+}
+
+/**
+ * Delete completion records
+ *
+ * @global object $DB
+ * @param int $userid
+ * @param int $courseid
+ */
+function quiz_archive_completion($userid, $courseid) {
+    global $DB, $CFG;
+
+    require_once($CFG->libdir . '/completionlib.php');
+    require_once($CFG->dirroot . '/mod/quiz/locallib.php');
+
+    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    $completion = new completion_info($course);
+
+    $sql = 'SELECT q.*
+            FROM {quiz} q
+            WHERE q.course = :courseid
+            AND EXISTS (SELECT qa.id
+                        FROM {quiz_attempts} qa
+                        WHERE qa.quiz = q.id
+                        AND userid = :userid)';
+    if ($quizs = $DB->get_records_sql($sql, array('courseid' => $courseid, 'userid' => $userid))) {
+        foreach ($quizs as $quiz) {
+            if ($attempts = $DB->get_records('quiz_attempts', array('quiz' => $quiz->id, 'userid' => $userid))) {
+                foreach ($attempts as $attempt) {
+                    quiz_delete_attempt($attempt, $quiz);
+                }
+            }
+            // Set as not viewed
+            $course_module = get_coursemodule_from_instance('quiz', $quiz->id, $courseid);
+            // Reset viewed
+            $completion->set_module_viewed_reset($course_module, $userid);
+            // And reset completion, as a fail safe
+            $completion->update_state($course_module, COMPLETION_INCOMPLETE, $userid);
+        }
+    }
 }

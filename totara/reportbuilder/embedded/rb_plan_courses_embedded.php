@@ -60,6 +60,11 @@ class rb_plan_courses_embedded extends rb_base_embedded {
                 'heading' => get_string('courseduedate', 'rb_source_dp_course'),
             ),
             array(
+                'type' => 'course_completion_history',
+                'value' => 'course_completion_history_link',
+                'heading' => get_string('course_completion_history_link', 'rb_source_dp_course'),
+            ),
+            array(
                 'type' => 'course_completion',
                 'value' => 'statusandapproval',
                 'heading' => get_string('progress', 'rb_source_dp_course'),
@@ -85,6 +90,11 @@ class rb_plan_courses_embedded extends rb_base_embedded {
             array(
                 'type' => 'plan',
                 'value' => 'courseduedate',
+                'advanced' => 1,
+            ),
+            array(
+                'type' => 'course_completion_history',
+                'value' => 'course_completion_history_count',
                 'advanced' => 1,
             ),
         );

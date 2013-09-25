@@ -42,6 +42,13 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->addElement('checkbox', 'approvalreqd', get_string('approvalreqd', 'facetoface'));
         $mform->addHelpButton('approvalreqd', 'approvalreqd', 'facetoface');
 
+        $mform->addElement('advcheckbox', 'multiplesessions', get_string('multiplesessions', 'facetoface'), '',
+                array('group' => 1), array(0, 1));
+        $mform->setType('multiplesessions', PARAM_BOOL);
+        $mform->addHelpButton('multiplesessions', 'multiplesessions', 'facetoface');
+        $multiplesessions = get_config(null, 'facetoface_multiplesessions') ? 1 : 0;
+        $mform->setDefault('multiplesessions', $multiplesessions);
+
         $mform->addElement('header', 'calendaroptions', get_string('calendaroptions', 'facetoface'));
 
         $calendarOptions = array(

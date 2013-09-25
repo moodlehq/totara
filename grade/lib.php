@@ -2725,6 +2725,10 @@ abstract class grade_helper {
                 if (!has_capability('gradeexport/'.$plugin.':view', $context)) {
                     continue;
                 }
+                if ($plugin == 'fusion') {
+                    // Hide fusion grade export plugin until T-10375 fixed.
+                    continue;
+                }
                 $pluginstr = get_string('pluginname', 'gradeexport_'.$plugin);
                 $url = new moodle_url('/grade/export/'.$plugin.'/index.php', array('id'=>$courseid));
                 $exportplugins[$plugin] = new grade_plugin_info($plugin, $url, $pluginstr);

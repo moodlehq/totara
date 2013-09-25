@@ -39,7 +39,9 @@ class restore_feedback_activity_structure_step extends restore_activity_structur
         $paths[] = new restore_path_element('feedback_item', '/activity/feedback/items/item');
         if ($userinfo) {
             $paths[] = new restore_path_element('feedback_completed', '/activity/feedback/completeds/completed');
+            $paths[] = new restore_path_element('feedback_completed_history', '/activity/feedback/completeds_history/completed_history');
             $paths[] = new restore_path_element('feedback_value', '/activity/feedback/completeds/completed/values/value');
+            $paths[] = new restore_path_element('feedback_value_history', '/activity/feedback/completeds_history/completed_history/values_history/value_history');
             $paths[] = new restore_path_element('feedback_tracking', '/activity/feedback/trackings/tracking');
         }
 
@@ -91,6 +93,18 @@ class restore_feedback_activity_structure_step extends restore_activity_structur
         $this->set_mapping('feedback_completed', $oldid, $newitemid);
     }
 
+    protected function process_feedback_completed_history($data) {
+        global $DB;
+
+        $data = (object)$data;
+        $oldid = $data->id;
+        $data->feedback = $this->get_new_parentid('feedback');
+        $data->userid = $this->get_mappingid('user', $data->userid);
+
+        $newitemid = $DB->insert_record('feedback_completed_history', $data);
+        $this->set_mapping('feedback_completed_history', $oldid, $newitemid);
+    }
+
     protected function process_feedback_value($data) {
         global $DB;
 
@@ -102,6 +116,19 @@ class restore_feedback_activity_structure_step extends restore_activity_structur
 
         $newitemid = $DB->insert_record('feedback_value', $data);
         $this->set_mapping('feedback_value', $oldid, $newitemid);
+    }
+
+    protected function process_feedback_value_history($data) {
+        global $DB;
+
+        $data = (object)$data;
+        $oldid = $data->id;
+        $data->completed = $this->get_new_parentid('feedback_completed_history');
+        $data->item = $this->get_mappingid('feedback_item', $data->item);
+        $data->course_id = $this->get_courseid();
+
+        $newitemid = $DB->insert_record('feedback_value_history', $data);
+        $this->set_mapping('feedback_value_history', $oldid, $newitemid);
     }
 
     protected function process_feedback_tracking($data) {

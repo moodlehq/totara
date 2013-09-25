@@ -65,7 +65,7 @@ class completion_completion extends data_object {
 
     /* @var array $required_fields Array of required table fields, must start with 'id'. */
     public $required_fields = array('id', 'userid', 'course', 'organisationid', 'positionid',
-        'timeenrolled', 'timestarted', 'timecompleted', 'reaggregate', 'status', 'rpl');
+        'timeenrolled', 'timestarted', 'timecompleted', 'reaggregate', 'status', 'rpl', 'rplgrade');
 
     /* @var array $optional_fields Array of optional table fields */
     public $optional_fields = array('name' => '');
@@ -105,6 +105,8 @@ class completion_completion extends data_object {
     /* @var string Record of prior learning, leave blank if none */
     public $rpl;
 
+    /* @var string Grade for record of prior learning, leave blank if none */
+    public $rplgrade;
 
     /**
      * Finds and returns a data_object instance based on params.
@@ -252,6 +254,9 @@ class completion_completion extends data_object {
                 totara_stats_add_event($timenow, $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
             }
         }
+
+        // Mark as in progress for the certification
+        inprogress_certification_stage($this->course);
     }
 
     /**
