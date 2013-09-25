@@ -2240,7 +2240,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
 
             $j=1;
             foreach ($sessions as $session) {
-                if (!facetoface_session_has_capacity($session, $contextmodule)) {
+                if (!facetoface_session_has_capacity($session, $contextmodule, MDL_F2F_STATUS_WAITLISTED) && !$session->allowoverbook) {
                     continue;
                 }
 
@@ -2749,13 +2749,13 @@ function facetoface_delete_user_calendar_events($session, $eventtype) {
  * @param object $context (optional) A context object (record from context table)
  * @return bool True if user can be added to session
  **/
-function facetoface_session_has_capacity($session, $context = false) {
+function facetoface_session_has_capacity($session, $context = false, $status = MDL_F2F_STATUS_BOOKED) {
 
     if (empty($session)) {
         return false;
     }
 
-    $signupcount = facetoface_get_num_attendees($session->id);
+    $signupcount = facetoface_get_num_attendees($session->id, $status);
     if ($signupcount >= $session->capacity) {
         // if session is full, check if overbooking is allowed for this user
         if (!$context || !has_capability('mod/facetoface:overbook', $context)) {

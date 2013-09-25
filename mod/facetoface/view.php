@@ -117,6 +117,7 @@ function print_session_list($courseid, $facetofaceid, $location) {
     $timenow = time();
 
     $context = context_course::instance($courseid);
+    $f2f_renderer->setcontext($context);
     $viewattendees = has_capability('mod/facetoface:viewattendees', $context);
     $editsessions = has_capability('mod/facetoface:editsessions', $context);
 
