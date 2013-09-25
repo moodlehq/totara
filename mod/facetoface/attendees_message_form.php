@@ -37,6 +37,7 @@ class mod_facetoface_attendees_message_form extends moodleform {
         $mform =& $this->_form;
 
         $mform->addElement('hidden', 's', $this->_customdata['s']);
+        $mform->setType('s', PARAM_INT);
 
         $mform->addElement('header', 'recipientgroupsheader', get_string('messagerecipientgroups', 'facetoface'));
 
@@ -100,7 +101,6 @@ class mod_facetoface_attendees_message_form extends moodleform {
         $buttonarray[] = $mform->createElement('cancel', 'cancel', get_string('discardmessage', 'facetoface'));
 
         $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
-        $mform->setType('buttonar', PARAM_RAW);
         $mform->closeHeaderBefore('buttonar');
     }
 }
