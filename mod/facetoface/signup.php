@@ -153,7 +153,7 @@ if ($session->datetimeknown && facetoface_has_session_started($session, $timenow
     exit();
 }
 
-if (!$signedup && !facetoface_session_has_capacity($session, $context) && (!$session->allowoverbook)) {
+if (!facetoface_session_has_capacity($session, $context, MDL_F2F_STATUS_WAITLISTED) && !$session->allowoverbook) {
     echo $OUTPUT->notification(get_string('sessionisfull', 'facetoface'), 'notifyproblem');
     echo $OUTPUT->box_end();
     echo $OUTPUT->footer($course);
@@ -164,20 +164,20 @@ echo facetoface_print_session($session, $viewattendees);
 
 if ($signedup) {
     if (!($session->datetimeknown && facetoface_has_session_started($session, $timenow))) {
-        // Cancellation link
+        // Cancellation link.
         echo html_writer::link(new moodle_url('cancelsignup.php', array('s' => $session->id, 'backtoallsessions' => $backtoallsessions)), get_string('cancelbooking', 'facetoface'), array('title' => get_string('cancelbooking', 'facetoface')));
         echo ' &ndash; ';
     }
-    // See attendees link
+    // See attendees link.
     if ($viewattendees) {
         echo html_writer::link(new moodle_url('attendees.php', array('s' => $session->id, 'backtoallsessions' => $backtoallsessions)), get_string('seeattendees', 'facetoface'), array('title' => get_string('seeattendees', 'facetoface')));
     }
 
     echo html_writer::empty_tag('br') . html_writer::link($returnurl, get_string('goback', 'facetoface'), array('title' => get_string('goback', 'facetoface')));
 }
-// Don't allow signup to proceed if a manager is required
+// Don't allow signup to proceed if a manager is required.
 else if (facetoface_manager_needed($facetoface) && empty($manager->email)) {
-    // Check to see if the user has a managers email set
+    // Check to see if the user has a managers email set.
     echo html_writer::tag('p', html_writer::tag('strong', get_string('error:manageremailaddressmissing', 'facetoface')));
     echo html_writer::empty_tag('br') . html_writer::link($returnurl, get_string('goback', 'facetoface'), array('title' => get_string('goback', 'facetoface')));
 
@@ -185,7 +185,7 @@ else if (facetoface_manager_needed($facetoface) && empty($manager->email)) {
     echo html_writer::tag('p', html_writer::tag('strong', get_string('error:nopermissiontosignup', 'facetoface')));
     echo html_writer::empty_tag('br') . html_writer::link($returnurl, get_string('goback', 'facetoface'), array('title' => get_string('goback', 'facetoface')));
 } else {
-    // Signup form
+    // Signup form.
     $mform->display();
 }
 
