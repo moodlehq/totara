@@ -548,7 +548,7 @@ class rb_source_program_overview extends rb_base_source {
         $requiredcolumns = array();
         $requiredcolumns[] = new rb_column(
             'prog',
-            'id',
+            'groupbycol',
             '',
             "program.id",
             array(
