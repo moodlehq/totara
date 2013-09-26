@@ -57,12 +57,6 @@ $logurl = 'bookings.php'.$querystring;
 
 if ($format != '') {
     add_to_log(SITEID, 'my', 'teammembers export', $logurl, $report->fullname);
-    // If found 'namewithlinks' column, delete function that inserts links inside the column 'name'.
-    $namewithlinkscol = totara_search_for_value($report->columns, 'value', EQUAL, 'namewithlinks');
-    if (!empty($namewithlinkscol)) {
-        $namewithlinkscol = reset($namewithlinkscol);
-        $namewithlinkscol->displayfunc = '';
-    }
     $report->export_data($format);
     die;
 }

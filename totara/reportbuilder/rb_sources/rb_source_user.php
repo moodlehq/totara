@@ -378,9 +378,13 @@ class rb_source_user extends rb_base_source {
     }
 
 
-    function rb_display_user_with_links($user, $row) {
+    function rb_display_user_with_links($user, $row, $isexport = false) {
         global $CFG, $OUTPUT;
         $userid = $row->user_id;
+
+        if ($isexport) {
+            return $user;
+        }
 
         $picuser = new stdClass();
         $picuser->id = $userid;
@@ -423,6 +427,7 @@ class rb_source_user extends rb_base_source {
         $cell->attributes['class'] = 'user-links';
         $cell->colspan = 2;
         $table->data[] = new html_table_row(array($cell));
+
         $return = html_writer::table($table);
 
         return $return;
