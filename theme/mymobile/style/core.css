@@ -1630,5 +1630,9 @@ div.tablets, #sliderdiv, .has-myblocks .jsetsbar {
     max-width: 100px;
     max-height: 100px;
 }
+.ui-bar-b .main .ui-link {
+    color: #fff /*{b-bar-link-color}*/;
+}
+
 /** Custom CSS **/
 [[setting:customcss]]
