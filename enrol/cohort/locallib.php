@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/enrol/locallib.php');
 require_once($CFG->dirroot . '/totara/cohort/lib.php');
+require_once($CFG->dirroot . '/group/lib.php');
 
 
 /**
@@ -38,7 +39,6 @@ require_once($CFG->dirroot . '/totara/cohort/lib.php');
 class enrol_cohort_handler {
     public static function member_added($ca) {
         global $DB, $CFG;
-        require_once("$CFG->dirroot/group/lib.php");
 
         if (!enrol_is_enabled('cohort')) {
             return true;
