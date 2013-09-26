@@ -856,8 +856,8 @@ function facetoface_is_session_in_progress($session, $timenow) {
     if (!$session->datetimeknown) {
         return false;
     }
-    $startedsessions = totara_search_for_value($session->sessiondates, 'timestart', LESS_THAN, $timenow);
-    $unfinishedsessions = totara_search_for_value($session->sessiondates, 'timefinish', GREATER_THAN, $timenow);
+    $startedsessions = totara_search_for_value($session->sessiondates, 'timestart', TOTARA_SEARCH_OP_LESS_THAN, $timenow);
+    $unfinishedsessions = totara_search_for_value($session->sessiondates, 'timefinish', TOTARA_SEARCH_OP_GREATER_THAN, $timenow);
     if (!empty($startedsessions) && !empty($unfinishedsessions)) {
         return true;
     }

@@ -28,12 +28,12 @@
  */
 
 // Constants defined to be used in totara_search_for_value function.
-define('EQUAL', 0);
-define('NOTEQUAL', 1);
-define('GREATER_THAN', 2);
-define('GREATER_THAN_OR_EQUAL', 3);
-define('LESS_THAN', 4);
-define('LESS_THAN_OR_EQUAL', 5);
+define('TOTARA_SEARCH_OP_EQUAL', 0);
+define('TOTARA_SEARCH_OP_NOT_EQUAL', 1);
+define('TOTARA_SEARCH_OP_GREATER_THAN', 2);
+define('TOTARA_SEARCH_OP_GREATER_THAN_OR_EQUAL', 3);
+define('TOTARA_SEARCH_OP_LESS_THAN', 4);
+define('TOTARA_SEARCH_OP_LESS_THAN_OR_EQUAL', 5);
 
 /**
  * Pop N items off the beginning of $items and return them as an array
@@ -255,42 +255,42 @@ function totara_get_lineage($items, $itemid, $pathsofar = array()) {
 function totara_search_for_value($arraytosearch, $property, $operator, $searchvalue) {
     $objectsfound = array();
     switch ($operator) {
-        case EQUAL:
+        case TOTARA_SEARCH_OP_EQUAL:
             $objectsfound = array_filter($arraytosearch,
                 function ($objtofind) use($searchvalue, $property) {
                     return $objtofind->{$property} == $searchvalue;
                 }
             );
             break;
-        case NOTEQUAL:
+        case TOTARA_SEARCH_OP_NOT_EQUAL:
             $objectsfound = array_filter($arraytosearch,
                 function ($objtofind) use($searchvalue, $property) {
                     return $objtofind->{$property} != $searchvalue;
                 }
             );
             break;
-        case GREATER_THAN:
+        case TOTARA_SEARCH_OP_GREATER_THAN:
             $objectsfound = array_filter($arraytosearch,
                 function ($objtofind) use($searchvalue, $property) {
                     return $objtofind->{$property} > $searchvalue;
                 }
             );
             break;
-        case GREATER_THAN_OR_EQUAL:
+        case TOTARA_SEARCH_OP_GREATER_THAN_OR_EQUAL:
             $objectsfound = array_filter($arraytosearch,
                 function ($objtofind) use($searchvalue, $property) {
                     return $objtofind->{$property} >= $searchvalue;
                 }
             );
             break;
-        case LESS_THAN:
+        case TOTARA_SEARCH_OP_LESS_THAN:
             $objectsfound = array_filter($arraytosearch,
                 function ($objtofind) use($searchvalue, $property) {
                     return $objtofind->{$property} < $searchvalue;
                 }
             );
             break;
-        case LESS_THAN_OR_EQUAL:
+        case TOTARA_SEARCH_OP_LESS_THAN_OR_EQUAL:
             $objectsfound = array_filter($arraytosearch,
                 function ($objtofind) use($searchvalue, $property) {
                     return $objtofind->{$property} <= $searchvalue;
