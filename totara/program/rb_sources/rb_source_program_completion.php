@@ -105,21 +105,21 @@ class rb_source_program_completion extends rb_base_source {
             'starteddate',
             get_string('starteddate', 'rb_source_program_completion'),
             'base.timestarted',
-            array('displayfunc' => 'nice_date')
+            array('displayfunc' => 'prog_date')
         );
         $columnoptions[] = new rb_column_option(
             'progcompletion',
             'completeddate',
             get_string('completeddate', 'rb_source_program_completion'),
             'base.timecompleted',
-            array('displayfunc' => 'nice_date')
+            array('displayfunc' => 'prog_date')
         );
         $columnoptions[] = new rb_column_option(
             'progcompletion',
             'duedate',
             get_string('duedate', 'rb_source_program_completion'),
             'base.timedue',
-            array('displayfunc' => 'nice_date')
+            array('displayfunc' => 'prog_date')
         );
 
         $columnoptions[] =new rb_column_option(
@@ -408,6 +408,25 @@ class rb_source_program_completion extends rb_base_source {
             return get_string('incomplete', 'totara_program');
         }
     }
+
+    /**
+     * Reformat a timestamp into a date, handling -1 which is used by program code for no date.
+     *
+     * If not -1 just call the regular date display function.
+     *
+     * @param integer $date Unix timestamp
+     * @param object $row Object containing all other fields for this row
+     *
+     * @return string Date in a nice format
+     */
+    public function rb_display_prog_date($date, $row) {
+        if ($date == -1) {
+            return '';
+        } else {
+            return $this->rb_display_nice_date($date, $row);
+        }
+    }
+
     //
     //
     // Source specific filter display methods
