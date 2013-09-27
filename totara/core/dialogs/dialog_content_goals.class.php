@@ -140,7 +140,7 @@ class totara_dialog_content_goals extends totara_dialog_content {
      * @param   $frameworkid    int
      */
     public function set_framework($frameworkid) {
-        $this->framework = $frameworkid;
+        $this->frameworkid = $frameworkid;
     }
 
 
