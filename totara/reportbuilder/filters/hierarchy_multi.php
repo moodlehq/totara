@@ -70,8 +70,9 @@ class rb_filter_hierarchy_multi extends rb_filter_type {
         $advanced = $this->advanced;
         $type = $this->options['hierarchytype'];
 
-        // container for currently selected items
-        $content = html_writer::empty_tag('div', array('class' => 'list-' . $this->name )) . display_choose_hierarchy_items_link($this->name, $type);
+        // Container for currently selected items.
+        $content = html_writer::tag('div', '', array('class' => 'list-' . $this->name));
+        $content .= display_choose_hierarchy_items_link($this->name, $type);
         $mform->addElement('static', $this->name.'_list', $label, $content);
 
         if ($advanced) {
