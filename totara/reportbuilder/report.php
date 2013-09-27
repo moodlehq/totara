@@ -54,13 +54,16 @@ if ($report->embedded) {
     print_error('cannotviewembedded', 'totara_reportbuilder');
 }
 
+$logurl = reportbuilder_get_report_url($report);
+// The module path is readded when the log entry is generated.
+$logurl = str_replace($logurl, $CFG->wwwroot . '/totara/reportbuilder', '');
 if ($format != '') {
-    add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id='.$id, $report->fullname);
+    add_to_log(SITEID, 'reportbuilder', 'export report', $logurl, $report->fullname);
     $report->export_data($format);
     die;
 }
 
-add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='.$id, $report->fullname);
+add_to_log(SITEID, 'reportbuilder', 'view report', $logurl, $report->fullname);
 
 $PAGE->requires->string_for_js('reviewitems', 'block_totara_alerts');
 $report->include_js();

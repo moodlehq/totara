@@ -510,7 +510,7 @@ class totara_feedback360_renderer extends plugin_renderer_base {
                 $attrs['data-questid'] = $quest->id;
                 if ($quest->id != $first->id) {
                     $posupurl = new moodle_url('/totara/feedback360/content.php', array('action' => 'posup',
-                        'id' => $quest->id, 'feedback360id' => $feedback360->id));
+                        'id' => $quest->id, 'feedback360id' => $feedback360->id, 'sesskey' => sesskey()));
                     $posuplink = $this->output->action_icon($posupurl, new pix_icon('/t/up', $strup, 'moodle'), null,
                             array('class' => 'action-icon js-hide'));
                 } else {
@@ -518,7 +518,7 @@ class totara_feedback360_renderer extends plugin_renderer_base {
                 }
                 if ($quest->id != $last->id) {
                     $posdownurl = new moodle_url('/totara/feedback360/content.php', array('action' => 'posdown',
-                            'id' => $quest->id, 'feedback360id' => $feedback360->id));
+                            'id' => $quest->id, 'feedback360id' => $feedback360->id, 'sesskey' => sesskey()));
                     $posdownlink = $this->output->action_icon($posdownurl, new pix_icon('/t/down', $strdown, 'moodle'), null,
                             array('class' => 'action-icon js-hide'));
                 } else {

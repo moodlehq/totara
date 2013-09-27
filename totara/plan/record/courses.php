@@ -104,7 +104,8 @@
         print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
     }
 
-    $log_url = $PAGE->url->out_as_local_url();
+    // The module path is readded when the log entry is generated.
+    $log_url = str_replace($PAGE->url->out_as_local_url(), 'totara/plan/', '');
 
     if ($format != '') {
         add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);

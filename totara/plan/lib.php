@@ -653,6 +653,7 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
         TABLE_VAR_SORT    => 'tsort',
     ));
     $table->sortable(true);
+    $table->no_sorting('actioncontrols');
     if (in_array('status', $cols)) {
         $table->no_sorting('status_'.$statuses_undrsc);
     }

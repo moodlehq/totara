@@ -118,6 +118,9 @@ function make_log_url($module, $url) {
             $url = '/'.$url;
             break;
         // Totara specific modules
+        case 'appraisal':
+        case 'certification':
+        case 'feedback360':
         case 'reportbuilder':
         case 'hierarchy':
         case 'customfield':
@@ -128,6 +131,7 @@ function make_log_url($module, $url) {
         case 'position':
         case 'organisation':
         case 'competency':
+        case 'goal':
             $url = '/totara/hierarchy/' . $url;
             break;
         case 'priorityscales':

@@ -730,7 +730,7 @@ class totara_appraisal_renderer extends plugin_renderer_base {
                 $attrs['data-type'] = 'page';
                 if ($page->id != $first->id) {
                     $posupurl = new moodle_url('/totara/appraisal/ajax/page.php', array('action' => 'posup',
-                        'id' => $page->id));
+                        'id' => $page->id, 'sesskey' => sesskey()));
                     $posuplink = $this->output->action_icon($posupurl, new pix_icon('/t/up', $strup, 'moodle'), null,
                             array('class' => 'action-icon js-hide'));
                 } else {
@@ -738,7 +738,7 @@ class totara_appraisal_renderer extends plugin_renderer_base {
                 }
                 if ($page->id != $last->id) {
                     $posdownurl = new moodle_url('/totara/appraisal/ajax/page.php', array('action' => 'posdown',
-                            'id' => $page->id));
+                            'id' => $page->id, 'sesskey' => sesskey()));
                     $posdownlink = $this->output->action_icon($posdownurl, new pix_icon('/t/down', $strdown, 'moodle'), null,
                             array('class' => 'action-icon js-hide'));
                 } else {
@@ -816,11 +816,11 @@ class totara_appraisal_renderer extends plugin_renderer_base {
                     $attrs['class'] .= ' last';
                 }
                 $editurl = new moodle_url('/totara/appraisal/ajax/question.php', array('action' => 'edit',
-                    'id' => $quest->id));
+                    'id' => $quest->id, 'sesskey' => sesskey()));
                 $duplicateurl = new moodle_url('/totara/appraisal/ajax/question.php', array('action' => 'duplicate',
-                    'id' => $quest->id));
+                    'id' => $quest->id, 'sesskey' => sesskey()));
                 $deleteurl = new moodle_url('/totara/appraisal/ajax/question.php', array('action' => 'delete',
-                    'id' => $quest->id));
+                    'id' => $quest->id, 'sesskey' => sesskey()));
 
                 if ($quest->hasredisplay) {
                     $deleteurl->param('hasredisplay', 'true');
