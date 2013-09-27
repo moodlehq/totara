@@ -263,6 +263,11 @@ class reportcache_testing_data_generator extends testing_data_generator {
         $rawdata->{'999completiontype'} = 1;
         $rawdata->{'999timeallowedperiod'} = 2;
         $rawdata->{'999timeallowednum'} = 1;
+        $rawdata->setprefixes_ce = 999;
+        $rawdata->certifpath_ce = 1;
+        $rawdata->iscertif = 0;
+        $rawdata->{'999certifpath'} = 1;
+        $rawdata->contenttype_ce = 1;
 
         $program = new program($programid);
         $programcontent = $program->get_content();
