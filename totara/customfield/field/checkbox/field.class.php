@@ -71,5 +71,3 @@ class customfield_checkbox extends customfield_base {
     }
 
 }
-
-?>

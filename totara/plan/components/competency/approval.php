@@ -82,5 +82,3 @@ echo $OUTPUT->confirm(get_string('confirmrequest'.$action, 'totara_plan'), $curr
 print $component->display_competency_detail($caid);
 
 echo $OUTPUT->footer();
-
-?>

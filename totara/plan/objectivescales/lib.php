@@ -206,5 +206,3 @@ function dp_objective_default_scale_id() {
         return false;
     }
 }
-
-?>

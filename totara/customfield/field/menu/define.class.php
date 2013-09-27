@@ -61,5 +61,3 @@ class customfield_define_menu extends customfield_define_base {
     }
 
 }
-
-?>

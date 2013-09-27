@@ -465,5 +465,3 @@ class rb_source_dp_objective extends rb_base_source {
         return $content;
     }
 }
-
-?>

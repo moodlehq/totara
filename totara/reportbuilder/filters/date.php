@@ -295,4 +295,3 @@ class rb_filter_date extends rb_filter_type {
         return '';
     }
 }
-?>

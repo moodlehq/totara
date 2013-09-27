@@ -104,4 +104,3 @@ foreach ($instances as $instance) {
 $table->finish_html();
 
 echo $OUTPUT->footer();
-?>

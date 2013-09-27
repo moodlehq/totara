@@ -104,5 +104,3 @@ function update_general_settings($id, $fromform) {
     $transaction->allow_commit();
     return true;
 }
-
-?>

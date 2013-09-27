@@ -46,9 +46,4 @@ echo $OUTPUT->heading($template->fullname);
 
 require('tabs.php');
 
-
-
-
 echo $OUTPUT->footer();
-
-?>

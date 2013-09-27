@@ -167,4 +167,3 @@
 
     echo $OUTPUT->container_end();
     echo $OUTPUT->footer();
-?>

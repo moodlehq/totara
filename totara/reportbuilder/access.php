@@ -114,5 +114,3 @@ function update_access($reportid, $fromform) {
 
     return true;
 }
-
-?>

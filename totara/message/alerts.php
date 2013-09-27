@@ -152,5 +152,3 @@ if ($countfiltered > 0) {
 }
 
 echo $output->footer();
-
-?>

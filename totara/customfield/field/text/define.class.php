@@ -44,5 +44,3 @@ class customfield_define_text extends customfield_define_base {
     }
 
 }
-
-?>

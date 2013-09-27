@@ -224,7 +224,3 @@ function build_columns($id, $fromform, $report) {
 
     return true;
 }
-
-
-
-?>

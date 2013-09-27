@@ -61,4 +61,3 @@ class totara_message_workflow_plugin_base {
     }
 
 }
-?>

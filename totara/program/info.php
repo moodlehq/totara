@@ -82,5 +82,3 @@ echo html_writer::empty_tag('br');
 echo $OUTPUT->close_window_button();
 
 echo $OUTPUT->footer();
-
-?>

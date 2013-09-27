@@ -56,5 +56,3 @@ function comp_relation_get_relations($compid) {
     }
     return $returnrecs;
 }
-
-?>

@@ -63,4 +63,3 @@ class totara_message_workflow_pingpong extends totara_message_workflow_plugin_ba
     }
 
 }
-?>

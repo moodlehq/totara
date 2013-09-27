@@ -101,4 +101,3 @@ function update_global_settings($fromform) {
 
     return true;
 }
-?>

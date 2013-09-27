@@ -141,4 +141,3 @@ echo $OUTPUT->heading($heading);
 $mform->display();
 
 echo $OUTPUT->footer();
-?>

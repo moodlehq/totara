@@ -55,5 +55,3 @@ print $plan->display_tabs($componentname);
 print $component->display_back_to_index_link();
 
 echo $OUTPUT->footer();
-
-?>

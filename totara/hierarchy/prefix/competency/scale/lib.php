@@ -228,5 +228,3 @@ function competency_scale_display_table($scales, $editingon=0) {
         array('prefix' => 'competency')), get_string('scalescompcustomcreate', 'totara_hierarchy'), 'get') .
         $OUTPUT->help_icon('competencyscalesgeneral', 'totara_hierarchy'), array('class' => 'buttons'));
 }
-
-?>

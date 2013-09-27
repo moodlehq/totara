@@ -757,5 +757,3 @@ from
         return implode(html_writer::empty_tag('br'), $content);
     }
 }
-
-?>

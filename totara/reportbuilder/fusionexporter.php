@@ -154,6 +154,3 @@ function clean_column_name($name) {
     $name = preg_replace('/\s/u', '_', $name);
     return $name;
 }
-
-
-?>

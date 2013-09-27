@@ -338,5 +338,3 @@ echo $OUTPUT->footer();
 function display_yes_no($value) {
     return (isset($value) && $value == 1) ? get_string('yes') : get_string('no');
 }
-
-?>

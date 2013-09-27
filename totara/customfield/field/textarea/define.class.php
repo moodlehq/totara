@@ -45,5 +45,3 @@ class customfield_define_textarea extends customfield_define_base {
     }
 
 }
-
-?>

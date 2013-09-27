@@ -53,6 +53,3 @@ $ADMIN->add('totara_reportbuilder',
         true
     )
 );
-
-
-?>

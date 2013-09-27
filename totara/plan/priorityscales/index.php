@@ -127,5 +127,3 @@ $priorities = dp_get_priorities();
 dp_priority_display_table($priorities, $editingon=1);
 
 echo $OUTPUT->footer();
-
-?>

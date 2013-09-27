@@ -216,5 +216,3 @@ function dp_priority_default_scale_id() {
         return false;
     }
 }
-
-?>

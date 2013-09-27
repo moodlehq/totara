@@ -121,6 +121,3 @@ if (!empty($searches)) {
 }
 
 echo $output->footer();
-
-
-?>

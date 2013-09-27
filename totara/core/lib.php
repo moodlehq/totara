@@ -320,6 +320,3 @@ function totara_update_temporary_managers() {
         mtrace('DONE Removing expired temporary managers');
     }
 }
-
-?>
-

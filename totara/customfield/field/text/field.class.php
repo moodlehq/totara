@@ -35,5 +35,3 @@ class customfield_text extends customfield_base {
     }
 
 }
-
-?>

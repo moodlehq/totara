@@ -78,4 +78,3 @@ function update_pos_settings($fromform) {
 
     return true;
 }
-?>

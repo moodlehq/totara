@@ -52,5 +52,3 @@ $form->set_data($data);
 $form->display();
 
 echo $OUTPUT->footer();
-
-?>

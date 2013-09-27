@@ -126,4 +126,3 @@ class tm_alert_eventdata extends tm_message_eventdata {
         $this->userto = $userto;
     }
 }
-?>

@@ -80,8 +80,4 @@ echo $OUTPUT->confirm(get_string('confirmrequest'.$action, 'totara_plan'), $curr
 
 $component->display_objective_detail($caid);
 
-
 echo $OUTPUT->footer();
-
-
-?>

@@ -129,5 +129,3 @@ $objectives = dp_get_objectives();
 dp_objective_display_table($objectives, $editingon=1);
 
 echo $OUTPUT->footer();
-
-?>

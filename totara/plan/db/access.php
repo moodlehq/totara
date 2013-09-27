@@ -171,5 +171,3 @@ $capabilities = array(
         )
     )
 );
-
-?>

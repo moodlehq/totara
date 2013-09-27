@@ -160,5 +160,3 @@ if ($fromform = $mform->get_data()) {
 }
 
 echo $OUTPUT->footer();
-
-?>

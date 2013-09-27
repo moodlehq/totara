@@ -128,4 +128,3 @@ class customfield_file extends customfield_base {
 
     }
 }
-?>

@@ -58,5 +58,3 @@ defined('MOODLE_INTERNAL') || die;
             array('totara/plan:configureplans')
         )
     );
-
-?>

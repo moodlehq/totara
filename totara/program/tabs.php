@@ -118,5 +118,3 @@ $tabs = array($toprow);
 
 // print out tabs
 print_tabs($tabs, $currenttab, $inactive, $activated);
-
-?>

@@ -107,5 +107,3 @@ class customfield_menu extends customfield_base {
         }
     }
 }
-
-?>

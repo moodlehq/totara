@@ -121,5 +121,3 @@ class customfield_textarea extends customfield_base {
         }
     }
 }
-
-?>

@@ -84,5 +84,3 @@ class field_form extends moodleform {
         parent::set_data($field);
     }
 }
-
-?>

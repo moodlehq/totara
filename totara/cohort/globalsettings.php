@@ -77,4 +77,3 @@ function update_global_settings($fromform) {
     set_config('alertoptions', implode(',', $alertoptions), 'cohort');
     return true;
 }
-?>

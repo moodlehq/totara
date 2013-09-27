@@ -144,4 +144,3 @@ function add_scheduled_report($fromform) {
     }
     return false;
 }
-?>

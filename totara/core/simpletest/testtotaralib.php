@@ -238,4 +238,3 @@ class totaralib_db_test extends UnitTestCaseUsingDatabase {
         $this->assertFalse(totara_get_staff($this->userid));
     }
 }
-?>

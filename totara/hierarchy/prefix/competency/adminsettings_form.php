@@ -34,5 +34,3 @@ class competency_global_settings_form extends moodleform
         $this->add_action_buttons(false);
     }
 }
-
-?>

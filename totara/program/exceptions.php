@@ -162,5 +162,3 @@ $jsmodule = array(
 $PAGE->requires->js_init_call('M.totara_programexceptions.init',$args, false, $jsmodule);
 
 echo $OUTPUT->footer();
-
-?>

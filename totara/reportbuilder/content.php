@@ -122,6 +122,3 @@ function update_content($id, $report, $fromform) {
     $transaction->allow_commit();
     return true;
 }
-
-
-?>

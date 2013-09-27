@@ -87,4 +87,3 @@ if (count($failed_ids) == 0) {
 else {
     totara_set_notification(get_string('failedtoresolve', 'totara_program') . ': ' . implode(', ', $failed_ids));
 }
-?>

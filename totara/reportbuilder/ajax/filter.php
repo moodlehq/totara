@@ -114,5 +114,3 @@ switch ($action) {
         echo '';
         break;
 }
-
-?>

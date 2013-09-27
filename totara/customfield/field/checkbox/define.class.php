@@ -32,5 +32,3 @@ class customfield_define_checkbox extends customfield_define_base {
         $form->addHelpButton('defaultdata', 'customfielddefaultdatacheckbox', 'totara_customfield');
     }
 }
-
-?>

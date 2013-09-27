@@ -89,5 +89,3 @@ if ($countfiltered>0) {
 }
 
 echo $OUTPUT->footer();
-
-?>

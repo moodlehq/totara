@@ -134,4 +134,3 @@ function competency_template_display_table($templates, $frameworkid) {
         array('class' => 'buttons'));
     }
 }
-?>

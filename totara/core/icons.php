@@ -29,5 +29,3 @@ $PAGE->set_context(context_system::instance());
 $type = optional_param('type', 'course', PARAM_TEXT);
 
 echo $PAGE->get_renderer('totara_core')->print_icons_list($type);
-
-?>

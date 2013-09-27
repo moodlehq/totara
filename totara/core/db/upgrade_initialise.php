@@ -37,5 +37,3 @@ $success = get_string('success');
 //echo $OUTPUT->heading('Disable Moodle autoupdates in Totara');
 //echo $OUTPUT->notification($success, 'notifysuccess');
 //print_upgrade_separator();
-
-?>

@@ -30,5 +30,3 @@ $PAGE->set_context(context_system::instance());
 
 
 echo $PAGE->get_renderer('totara_program')->display_set_completion();
-
-?>

@@ -145,4 +145,3 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ) {
         echo html_writer::tag('em', get_string('noevidencetypesavailable', 'totara_hierarchy'));
     }
 }
-?>

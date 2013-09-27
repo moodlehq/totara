@@ -131,4 +131,3 @@ switch ($action) {
         echo json_encode($data);
     break;
 }
-?>

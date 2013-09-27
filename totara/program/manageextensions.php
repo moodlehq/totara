@@ -172,5 +172,3 @@ if (!empty($staff_ids)) {
 }
 
 echo $OUTPUT->footer();
-
-?>

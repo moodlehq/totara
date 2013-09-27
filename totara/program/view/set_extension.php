@@ -26,4 +26,3 @@ $PAGE->set_context(get_system_context());
 require_login();
 
 echo $PAGE->get_renderer('totara_program')->display_set_extension();
-?>

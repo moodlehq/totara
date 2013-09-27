@@ -155,4 +155,3 @@ if ($countfiltered > 0) {
 
 echo $OUTPUT->container_end();
 echo $OUTPUT->footer();
-?>

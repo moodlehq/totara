@@ -285,6 +285,3 @@ class positionassignment_test extends UnitTestCaseUsingDatabase {
         $this->assertEqual($field, '/1/3/4/5');
     }
 }
-
-
-?>

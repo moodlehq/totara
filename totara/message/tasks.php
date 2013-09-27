@@ -147,5 +147,3 @@ if ($countfiltered > 0) {
     echo totara_message_checkbox_all_none();
 }
 echo $output->footer();
-
-?>
