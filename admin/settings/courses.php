@@ -18,7 +18,8 @@ if ($hassiteconfig
     $ADMIN->add('courses', new admin_externalpage('programmgmt', new lang_string('manageprograms', 'admin'), $CFG->wwwroot . '/totara/program/manage.php',
                     array('totara/program:createprogram', 'totara/program:configureprogram')));
 
-    $ADMIN->add('courses', new admin_externalpage('managecertifications', new lang_string('managecertifications', 'totara_core'), $CFG->wwwroot . '/totara/certification/manage.php',
+    $ADMIN->add('courses', new admin_externalpage('managecertifications', new lang_string('managecertifications', 'totara_core'),
+            $CFG->wwwroot . '/totara/program/manage.php?viewtype=certification',
             array('totara/certification:createcertification', 'totara/certification:configurecertification')));
 
     $ADMIN->add('courses', new admin_externalpage('coursecustomfields', new lang_string('customfields', 'totara_customfield'), $CFG->wwwroot . '/totara/customfield/index.php?prefix=course',

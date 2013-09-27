@@ -1252,3 +1252,43 @@ function get_timewindowopens($timeexpires, $windowperiod) {
     }
     return strtotime('-'.$windowperiod, $timeexpires);
 }
+
+/**
+ * Can the current user delete certifications in this category?
+ *
+ * @param int $categoryid
+ * @return boolean
+ */
+function certif_can_delete_certifications($categoryid) {
+    global $DB;
+
+    $context = context_coursecat::instance($categoryid);
+    $sql = context_helper::get_preload_record_columns_sql('ctx');
+    $programcontexts = $DB->get_records_sql('SELECT ctx.instanceid AS progid, ' .
+                    $sql . ' FROM {context} ctx ' .
+                    'JOIN {prog} p ON ctx.instanceid = p.id ' .
+                    'WHERE ctx.path like :pathmask AND ctx.contextlevel = :programlevel AND p.certifid IS NOT NULL',
+                    array('pathmask' => $context->path. '/%', 'programlevel' => CONTEXT_PROGRAM));
+    foreach ($programcontexts as $ctxrecord) {
+        context_helper::preload_from_record($ctxrecord);
+        $programcontext = context_program::instance($ctxrecord->progid);
+        if (!has_capability('totara/certification:deletecertification', $programcontext)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Returns true if the category has certifications in it
+ * (count does not include child categories)
+ *
+ * @param coursecat $category
+ * @return bool
+ */
+function certif_has_certifications($category) {
+    global $DB;
+    return $DB->record_exists_sql("SELECT 1 FROM {prog} WHERE category = :category AND certifid IS NOT NULL",
+                    array('category' => $category->id));
+}

@@ -53,7 +53,7 @@ if (has_capability('totara/certification:createcertification', $systemcontext)) 
 }
 
 $currenturl = qualified_me();
-$indexurl = new moodle_url('/course/index.php', array('viewtype' => 'certification'));
+$indexurl = new moodle_url('/program/index.php', array('viewtype' => 'certification'));
 
 if ($action == 'add') {
     if ($categoryid) { // creating new certification in this category
@@ -94,7 +94,7 @@ if ($data = $form->get_data()) {
 
 // Display
 $heading = get_string('createnewcertification', 'totara_certification');
-$pagetitle = format_string(get_string('certification', 'totara_certification').': '.$heading);
+$pagetitle = format_string(get_string('certification', 'totara_certification') . ': ' . $heading);
 prog_add_base_navlinks();
 $PAGE->navbar->add($heading);
 
@@ -111,4 +111,3 @@ $form->display();
 echo $OUTPUT->container_end();
 
 echo $OUTPUT->footer();
-

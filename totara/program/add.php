@@ -226,8 +226,6 @@ if ($data = $form->get_data()) {
         } else {
             $viewurl = "{$CFG->wwwroot}/totara/program/view.php?id={$newid}";
         }
-        // call prog_fix_program_sortorder to ensure new program is displayed properly and the counts are updated
-        prog_fix_program_sortorder($data->category);
 
         // Certification
         if ($data->iscertif) {
@@ -261,6 +259,10 @@ if ($data = $form->get_data()) {
       } else {
           $successmsg = get_string('programcreatesuccess', 'totara_program');
       }
+
+      // Call prog_fix_program_sortorder to ensure new program is displayed properly and the counts are updated.
+      // Needs to be called at the very end!
+      prog_fix_program_sortorder($data->category);
 
       totara_set_notification($successmsg, $viewurl, array('class' => 'notifysuccess'));
     }

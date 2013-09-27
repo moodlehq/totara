@@ -35,10 +35,12 @@ require_once($CFG->dirroot . '/totara/cohort/lib.php');
 $id = optional_param('categoryid', 0, PARAM_INT);
 // Which page to show.
 $page = optional_param('page', 0, PARAM_INT);
+// Type of a page, program or certification.
+$viewtype = optional_param('viewtype', 'program', PARAM_TEXT);
 // How many per page.
 $perpage = optional_param('perpage', $CFG->coursesperpage, PARAM_INT);
 // Search words.
-$search    = optional_param('search', '', PARAM_RAW);
+$search = optional_param('search', '', PARAM_RAW);
 if (!$id && !empty($search)) {
     $searchcriteria = array('search' => $search);
 } else {
@@ -70,24 +72,25 @@ $coursecat = coursecat::get($id);
 
 if ($id) {
     $PAGE->set_category_by_id($id);
-    $PAGE->set_url(new moodle_url('/totara/program/manage.php', array('categoryid' => $id)));
+    $PAGE->set_url(new moodle_url('/totara/program/manage.php', array('categoryid' => $id, 'viewtype' => $viewtype)));
     // This is sure to be the category context.
     $context = $PAGE->context;
     // Add program breadcrumbs.
-    $PAGE->navbar->add(get_string('programs', 'totara_program'), new moodle_url('/totara/program/index.php'));
-    $category_breadcrumbs = prog_get_category_breadcrumbs($id);
+    $navname = $viewtype == 'program' ? get_string('programs', 'totara_program') : get_string('certifications', 'totara_certification');
+    $PAGE->navbar->add($navname, new moodle_url('/totara/program/index.php', array('viewtype' => $viewtype)));
+    $category_breadcrumbs = prog_get_category_breadcrumbs($id, $viewtype);
     foreach ($category_breadcrumbs as $crumb) {
         $PAGE->navbar->add($crumb['name'], $crumb['link']);
     }
     if (!can_edit_in_category($coursecat->id)) {
-        redirect(new moodle_url('/totara/program/index.php'));
+        redirect(new moodle_url('/totara/program/index.php', array('viewtype' => $viewtype)));
     }
 } else {
     $context = context_system::instance();
     $PAGE->set_context($context);
-    $PAGE->set_url(new moodle_url('/totara/program/manage.php'));
+    $PAGE->set_url(new moodle_url('/totara/program/manage.php', array('viewtype' => $viewtype)));
     if (!can_edit_in_category()) {
-        redirect(new moodle_url('/totara/program/index.php'));
+        redirect(new moodle_url('/totara/program/index.php', array('viewtype' => $viewtype)));
     }
 }
 
@@ -106,7 +109,7 @@ if (!empty($deletecat) and confirm_sesskey()) {
     require_once($CFG->dirroot.'/course/delete_category_form.php');
     $mform = new delete_category_form(null, $cattodelete);
     if ($mform->is_cancelled()) {
-        redirect(new moodle_url('/totara/program/manage.php'));
+        redirect(new moodle_url('/totara/program/manage.php', array('viewtype' => $viewtype)));
     }
 
     // Start output.
@@ -117,15 +120,22 @@ if (!empty($deletecat) and confirm_sesskey()) {
         // The form has been submit handle it.
         if ($data->fulldelete == 1 && $cattodelete->can_delete_full()) {
             $cattodeletename = $cattodelete->get_formatted_name();
-            list($deletedcourses, $deletedprograms) = $cattodelete->delete_full(true);
-            foreach ($deletedprograms as $program) {
-                echo $OUTPUT->notification(get_string('programdeletesuccess', 'totara_program', $program->shortname), 'notifysuccess');
+            list($deletedcourses, $deletedprograms, $deletedcertifs) = $cattodelete->delete_full(true);
+            if ($viewtype == 'program') {
+                foreach ($deletedprograms as $program) {
+                    echo $OUTPUT->notification(get_string('programdeletesuccess', 'totara_program', $program->shortname), 'notifysuccess');
+                }
+            } else {
+                foreach ($deletedcertifs as $certif) {
+                    echo $OUTPUT->notification(get_string('certificationdeletesuccess', 'totara_certification', $certif->shortname),
+                         'notifysuccess');
+                }
             }
             echo $OUTPUT->notification(get_string('coursecategorydeleted', 'moodle', $cattodeletename), 'notifysuccess');
-            echo $OUTPUT->continue_button(new moodle_url('/totara/program/manage.php'));
+            echo $OUTPUT->continue_button(new moodle_url('/totara/program/manage.php', array('viewtype' => $viewtype)));
         } else if ($data->fulldelete == 0 && $cattodelete->can_move_content_to($data->newparent)) {
             $cattodelete->delete_move($data->newparent, true);
-            echo $OUTPUT->continue_button(new moodle_url('/totara/program/manage.php'));
+            echo $OUTPUT->continue_button(new moodle_url('/totara/program/manage.php', array('viewtype' => $viewtype)));
         } else {
             // Some error in parameters (user is cheating?).
             $mform->display();
@@ -197,7 +207,7 @@ if ((!empty($moveupcat) or !empty($movedowncat)) and confirm_sesskey()) {
 
 if ($coursecat->id && $canmanage && $resort && confirm_sesskey()) {
     // Resort the category.
-    if ($programs = prog_get_programs($coursecat->id, '', 'p.id,p.fullname,p.sortorder')) {
+    if ($programs = prog_get_programs($coursecat->id, '', 'p.id,p.fullname,p.sortorder', $viewtype)) {
         collatorlib::asort_objects_by_property($programs, 'fullname', collatorlib::SORT_NATURAL);
         $i = 1;
         foreach ($programs as $program) {
@@ -291,6 +301,7 @@ if ($perpage) {
     $urlparams['perpage'] = $perpage;
 }
 $urlparams += $searchcriteria;
+$urlparams['viewtype'] = $viewtype;
 
 $PAGE->set_pagelayout('coursecategory');
 $programrenderer = $PAGE->get_renderer('totara_program');
@@ -300,9 +311,10 @@ if (can_edit_in_category()) {
     // otherwise the admin block does not appear to this user, and you get an error.
     require_once($CFG->libdir . '/adminlib.php');
     if ($id) {
-        navigation_node::override_active_url(new moodle_url('/totara/program/index.php', array('categoryid' => $id)));
+        navigation_node::override_active_url(new moodle_url('/totara/program/index.php', array('categoryid' => $id, 'viewtype' => $viewtype)));
     }
-    admin_externalpage_setup('programmgmt', '', $urlparams, $CFG->wwwroot . '/totara/program/manage.php');
+    $pagetype = ($viewtype == 'program') ? 'programmgmt' : 'managecertifications';
+    admin_externalpage_setup($pagetype, '', $urlparams, $CFG->wwwroot . "/totara/program/manage.php");
     $settingsnode = $PAGE->settingsnav->find_active_node();
     if ($id && $settingsnode) {
         $settingsnode->make_inactive();
@@ -313,7 +325,7 @@ if (can_edit_in_category()) {
     $site = get_site();
     $PAGE->set_title("$site->shortname: $coursecat->name");
     $PAGE->set_heading($site->fullname);
-    $PAGE->set_button($programrenderer->program_search_form('', 'navbar'));
+    $PAGE->set_button($programrenderer->program_search_form($viewtype, '', 'navbar'));
 }
 
 // Start output.
@@ -326,9 +338,16 @@ if (!empty($searchcriteria)) {
     $table = new html_table;
     $table->id = 'coursecategories';
     $table->attributes['class'] = 'admintable generaltable editcourse';
+    if ($viewtype == 'program') {
+        $strcategory = get_string('programcategories', 'totara_program');
+        $strtype = get_string('programs', 'totara_program');
+    } else {
+        $strcategory = get_string('certifcategories', 'totara_certification');
+        $strtype = get_string('certifications', 'totara_certification');
+    }
     $table->head = array(
-                    get_string('programcategories', 'totara_program'),
-                    get_string('programs', 'totara_program'),
+                    $strcategory,
+                    $strtype,
                     get_string('edit'),
                     get_string('movecategoryto'),
     );
@@ -340,14 +359,17 @@ if (!empty($searchcriteria)) {
     );
     $table->data = array();
 
-    print_category_edit($table, $coursecat);
+    print_category_edit($table, $coursecat, $viewtype);
 
     echo html_writer::table($table);
 } else {
     // Print the category selector.
     $displaylist = coursecat::make_categories_list();
-    $select = new single_select(new moodle_url('/totara/program/manage.php'), 'categoryid', $displaylist, $coursecat->id, null, 'switchcategory');
-    $select->set_label(get_string('programcategories', 'totara_program').':');
+    $select = new single_select(new moodle_url('/totara/program/manage.php', array('viewtype' => $viewtype)),
+                  'categoryid', $displaylist, $coursecat->id, null, 'switchcategory');
+    $strcategory = ($viewtype == 'program') ? get_string('programcategories', 'totara_program') : 
+                                              get_string('certifcategories', 'totara_certification');
+    $select->set_label($strcategory . ':');
 
     echo html_writer::start_tag('div', array('class' => 'categorypicker'));
     echo $OUTPUT->render($select);
@@ -358,12 +380,12 @@ if ($canmanage) {
     echo $OUTPUT->container_start('buttons');
     // Print button to update this category.
     if ($id) {
-        $url = new moodle_url('/course/editcategory.php', array('id' => $id, 'type' => 'program'));
+        $url = new moodle_url('/course/editcategory.php', array('id' => $id, 'type' => $viewtype));
         echo $OUTPUT->single_button($url, get_string('editcategorythis'), 'get');
     }
 
     // Print button for creating new categories.
-    $url = new moodle_url('/course/editcategory.php', array('parent' => $id, 'type' => 'program'));
+    $url = new moodle_url('/course/editcategory.php', array('parent' => $id, 'type' => $viewtype));
     if ($id) {
         $title = get_string('addsubcategory');
     } else {
@@ -372,20 +394,39 @@ if ($canmanage) {
     echo $OUTPUT->single_button($url, $title, 'get');
 
     // Print button for switching to courses management.
-    $url = new moodle_url('/course/manage.php', array('categoryid' => $id));
+    $url = new moodle_url('/course/manage.php', array('categoryid' => $id, 'viewtype' => $viewtype));
     $coursecaps = array('moodle/course:create', 'moodle/course:delete', 'moodle/course:update');
     if (has_any_capability($coursecaps, $context)) {
         $title = get_string('managecoursesinthiscat', 'totara_program');
     }
     echo $OUTPUT->single_button($url, $title, 'get');
+    if ($viewtype == 'program') {
+        // Print button for switching to certification management.
+        $url = new moodle_url('/totara/program/manage.php', array('categoryid' => $id, 'viewtype' => 'certification'));
+        $programcaps = array('totara/certification:createcertification',
+                             'totara/certification:deletecertification',
+                             'totara/certification:configurecertification');
+        if (has_any_capability($programcaps, $context)) {
+            $title = get_string('managecertifsinthiscat', 'totara_certification');
+        }
+        echo $OUTPUT->single_button($url, $title, 'get');
+    } else {
+        // Print button for switching to program management.
+        $url = new moodle_url('/totara/program/manage.php', array('categoryid' => $id));
+        $programcaps = array('totara/program:createprogram', 'totara/program:deleteprogram', 'totara/program:configureprogram');
+        if (has_any_capability($programcaps, $context)) {
+            $title = get_string('manageprogramsinthiscat', 'totara_program');
+        }
+        echo $OUTPUT->single_button($url, $title, 'get');
+    }
     echo $OUTPUT->container_end();
 }
 
 if (!empty($searchcriteria)) {
-    $programs = coursecat::get(0)->search_programs($searchcriteria, array('offset' => $page * $perpage,
-                                                'limit' => $perpage, 'sort' => array('fullname' => 1)));
+    $options = array('offset' => $page * $perpage, 'limit' => $perpage, 'sort' => array('fullname' => 1));
+    $programs = coursecat::get(0)->search_programs($searchcriteria, $options, $viewtype);
     $numprograms = count($programs);
-    $totalcount = coursecat::get(0)->search_programs_count($searchcriteria);
+    $totalcount = coursecat::get(0)->search_programs_count($searchcriteria, $options, $viewtype);
 } else if ($coursecat->id) {
     // Print out all the sub-categories (plain mode).
     // In order to view hidden subcategories the user must have the viewhiddencategories.
@@ -416,7 +457,7 @@ if (!empty($searchcriteria)) {
         );
     $table->head = array(new lang_string('subcategories'));
     $table->data = array();
-    $baseurl = new moodle_url('/totara/program/manage.php');
+    $baseurl = new moodle_url('/totara/program/manage.php', array('viewtype' => $viewtype));
     foreach ($subcategories as $subcategory) {
         // Preload the context we will need it to format the category name shortly.
         context_helper::preload_from_record($subcategory);
@@ -436,7 +477,7 @@ echo html_writer::table($table);
 
 $programs = prog_get_programs_page($coursecat->id, 'p.sortorder ASC',
             'p.id,p.sortorder,p.shortname,p.fullname,p.summary,p.visible,p.audiencevisible',
-                $totalcount, $page*$perpage, $perpage);
+                $totalcount, $page*$perpage, $perpage, $viewtype);
                 $numprograms = count($programs);
                 } else {
     $subcategorieswereshown = true;
@@ -453,8 +494,9 @@ if (!$programs) {
     // Display a basic list of programs with paging/editing options.
     $table = new html_table;
     $table->attributes = array('border' => 0, 'cellspacing' => 0, 'cellpadding' => '4', 'class' => 'generalbox boxaligncenter');
+    $strtype = ($viewtype == 'program') ? get_string('programs', 'totara_program') : get_string('certifications', 'totara_certification');
     $table->head = array(
-                    get_string('programs', 'totara_program'),
+                    $strtype,
                     get_string('edit'),
                     get_string('select')
     );
@@ -483,7 +525,7 @@ if (!$programs) {
         $atlastpage = true;
     }
 
-    $baseurl = new moodle_url('/totara/program/manage.php', $urlparams + array('sesskey' => sesskey()));
+    $baseurl = new moodle_url('/totara/program/manage.php', $urlparams + array('sesskey' => sesskey(), 'viewtype' => $viewtype));
     foreach ($programs as $aprogram) {
         $programcontext = context_program::instance($aprogram->id);
 
@@ -491,7 +533,7 @@ if (!$programs) {
         $up = ($count > 1 || !$atfirstpage);
         $down = ($count < $numprograms || !$atlastpage);
 
-        $programurl = new moodle_url('/totara/program/view.php', array('id' => $aprogram->id));
+        $programurl = new moodle_url('/totara/program/view.php', array('id' => $aprogram->id, 'viewtype' => $viewtype));
         $attributes = array();
         $attributes['class'] = $aprogram->visible ? '' : 'dimmed';
         $programname = format_string($aprogram->fullname);
@@ -499,7 +541,8 @@ if (!$programs) {
 
         $icons = array();
         // "Update program" icon.
-        if (has_capability('totara/program:configuredetails', $programcontext)) {
+        $capability = ($viewtype == 'program') ? 'totara/program:configuredetails' : 'totara/certification:configuredetails';
+        if (has_capability($capability, $programcontext)) {
             $url = new moodle_url('/totara/program/edit.php', array('id' => $aprogram->id, 'category' => $id));
             $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/edit', get_string('settings')));
         }
@@ -511,7 +554,8 @@ if (!$programs) {
         }
 
         // "Delete program" icon.
-        if (has_capability('totara/program:deleteprogram', $programcontext)) {
+        $capability = ($viewtype == 'program') ? 'totara/program:deleteprogram' : 'totara/certification:deletecertification';
+        if (has_capability($capability, $programcontext)) {
             $url = new moodle_url('/totara/program/delete.php', array('id' => $aprogram->id, 'category' => $id));
             $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/delete', get_string('delete')));
         }
@@ -530,7 +574,9 @@ if (!$programs) {
             }
             $icons[] = $OUTPUT->action_icon($url, new pix_icon("t/{$icon}", get_string('manageaudincevisibility', 'totara_cohort')));
         } else {
-            if (has_any_capability(array('totara/program:visibility', 'totara/program:viewhiddenprograms'), $programcontext)) {
+            $capabilities = ($viewtype == 'program') ? array('totara/program:visibility', 'totara/program:viewhiddenprograms') :
+                                                       array('totara/certification:viewhiddencertifications', 'totara/program:visibility');
+            if (has_any_capability($capabilities, $programcontext)) {
                 if (!empty($aprogram->visible)) {
                     $url = new moodle_url($baseurl, array('hide' => $aprogram->id));
                     $icons[] = $OUTPUT->action_icon($url, new pix_icon('t/hide', get_string('hide')));
@@ -570,12 +616,14 @@ if (!$programs) {
 
     if ($abletomoveprograms) {
         $movetocategories = coursecat::make_categories_list('moodle/category:manage');
-        $movetocategories[$id] = get_string('moveselectedprogramsto', 'totara_program');
+        $label = ($viewtype == 'program') ? get_string('moveselectedprogramsto', 'totara_program') :
+                                            get_string('moveselectedcertificationsto', 'totara_certification');
+        $movetocategories[$id] = $label;
 
         $cell = new html_table_cell();
         $cell->colspan = 3;
         $cell->attributes['class'] = 'mdl-right';
-        $cell->text = html_writer::label(get_string('moveselectedprogramsto', 'totara_program'), 'movetoid', false, array('class' => 'accesshide'));
+        $cell->text = html_writer::label($label, 'movetoid', false, array('class' => 'accesshide'));
         $cell->text .= html_writer::select($movetocategories, 'moveto', $id, null, array('id' => 'movetoid', 'class' => 'autosubmit'));
         $cell->text .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'categoryid', 'value' => $id));
         $PAGE->requires->yui_module('moodle-core-formautosubmit',
@@ -585,8 +633,9 @@ if (!$programs) {
         $table->data[] = new html_table_row(array($cell));
     }
 
-    $actionurl = new moodle_url('/totara/program/manage.php');
-    $pagingurl = new moodle_url('/totara/program/manage.php', array('categoryid' => $id, 'perpage' => $perpage) + $searchcriteria);
+    $actionurl = new moodle_url('/totara/program/manage.php', array('viewtype' => $viewtype));
+    $pagingurl = new moodle_url('/totara/program/manage.php',
+                    array('categoryid' => $id, 'perpage' => $perpage, 'viewtype' => $viewtype) + $searchcriteria);
 
     echo $OUTPUT->paging_bar($totalcount, $page, $perpage, $pagingurl);
     echo html_writer::start_tag('form', array('id' => 'moveprograms', 'action' => $actionurl, 'method' => 'post'));
@@ -606,24 +655,36 @@ echo html_writer::start_tag('div', array('class' => 'buttons'));
 
 if ($canmanage && $numprograms > 1 && empty($searchcriteria)) {
     // Print button to re-sort programs by name.
-    $url = new moodle_url('/totara/program/manage.php', array('categoryid' => $id, 'resort' => 'name', 'sesskey' => sesskey()));
+    $url = new moodle_url('/totara/program/manage.php',
+                    array('categoryid' => $id, 'resort' => 'name', 'sesskey' => sesskey(), 'viewtype' => $viewtype));
     echo $OUTPUT->single_button($url, get_string('resortprogramsbyname', 'totara_program'), 'get');
 }
 
-if (has_capability('totara/program:createprogram', $context) && empty($searchcriteria)) {
-    // Print button to create a new program.
-    $url = new moodle_url('/totara/program/add.php');
-    if ($coursecat->id) {
-        $url->params(array('category' => $coursecat->id));
-    } else {
-        $url->params(array('category' => $CFG->defaultrequestcategory));
+if (empty($searchcriteria)) {
+    if ($viewtype == 'program' && has_capability('totara/program:createprogram', $context)) {
+        // Print button to create a new program.
+        $url = new moodle_url('/totara/program/add.php');
+        if ($coursecat->id) {
+            $url->params(array('category' => $coursecat->id));
+        } else {
+            $url->params(array('category' => $CFG->defaultrequestcategory));
+        }
+        echo $OUTPUT->single_button($url, get_string('addnewprogram', 'totara_program'), 'get');
+    } else if ($viewtype == 'certification' && has_capability('totara/certification:createcertification', $context)) {
+        // Print button to create a new certification.
+        $url = new moodle_url('/totara/certification/add.php');
+        if ($coursecat->id) {
+            $url->params(array('category' => $coursecat->id));
+        } else {
+            $url->params(array('category' => $CFG->defaultrequestcategory));
+        }
+        echo $OUTPUT->single_button($url, get_string('addnewcertification', 'totara_certification'), 'get');
     }
-    echo $OUTPUT->single_button($url, get_string('addnewprogram', 'totara_program'), 'get');
 }
 
 echo html_writer::end_tag('div');
 
-echo $programrenderer->program_search_form();
+echo $programrenderer->program_search_form($viewtype);
 
 echo $OUTPUT->footer();
 
@@ -636,7 +697,7 @@ echo $OUTPUT->footer();
  * @param bool $up True if this category can be moved up.
  * @param bool $down True if this category can be moved down.
  */
-function print_category_edit(html_table $table, coursecat $category, $depth = -1, $up = false, $down = false) {
+function print_category_edit(html_table $table, coursecat $category, $viewtype = 'program', $depth = -1, $up = false, $down = false) {
     global $OUTPUT;
 
     static $str = null;
@@ -661,7 +722,8 @@ function print_category_edit(html_table $table, coursecat $category, $depth = -1
         $attributes = array();
         $attributes['class'] = $category->visible ? '' : 'dimmed';
         $attributes['title'] = $str->edit;
-        $categoryurl = new moodle_url('/totara/program/manage.php', array('categoryid' => $category->id, 'sesskey' => sesskey()));
+        $categoryurl = new moodle_url('/totara/program/manage.php',
+                        array('categoryid' => $category->id, 'sesskey' => sesskey(), 'viewtype' => $viewtype));
         $categoryname = $category->get_formatted_name();
         $categorypadding = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $depth);
         $categoryname = $categorypadding . html_writer::link($categoryurl, $categoryname, $attributes);
@@ -670,26 +732,29 @@ function print_category_edit(html_table $table, coursecat $category, $depth = -1
         if (has_capability('moodle/category:manage', $categorycontext)) {
             // Edit category.
             $icons[] = $OUTPUT->action_icon(
-                            new moodle_url('/course/editcategory.php', array('id' => $category->id, 'type' => 'program')),
+                            new moodle_url('/course/editcategory.php', array('id' => $category->id, 'type' => $viewtype)),
                             new pix_icon('t/edit', $str->edit, 'moodle', array('class' => 'iconsmall')),
                             null, array('title' => $str->edit)
             );
             // Delete category.
             $icons[] = $OUTPUT->action_icon(
-                            new moodle_url('/totara/program/manage.php', array('deletecat' => $category->id, 'sesskey' => sesskey())),
+                            new moodle_url('/totara/program/manage.php',
+                                           array('deletecat' => $category->id, 'sesskey' => sesskey(), 'viewtype' => $viewtype)),
                             new pix_icon('t/delete', $str->delete, 'moodle', array('class' => 'iconsmall')),
                             null, array('title' => $str->delete)
             );
             // Change visibility.
             if (!empty($category->visible)) {
                 $icons[] = $OUTPUT->action_icon(
-                                new moodle_url('/totara/program/manage.php', array('hidecat' => $category->id, 'sesskey' => sesskey())),
+                                new moodle_url('/totara/program/manage.php',
+                                               array('hidecat' => $category->id, 'sesskey' => sesskey(), 'viewtype' => $viewtype)),
                                 new pix_icon('t/hide', $str->hide, 'moodle', array('class' => 'iconsmall')),
                                 null, array('title' => $str->hide)
                 );
             } else {
                 $icons[] = $OUTPUT->action_icon(
-                                new moodle_url('/totara/program/manage.php', array('showcat' => $category->id, 'sesskey' => sesskey())),
+                                new moodle_url('/totara/program/manage.php',
+                                               array('showcat' => $category->id, 'sesskey' => sesskey(), 'viewtype' => $viewtype)),
                                 new pix_icon('t/show', $str->show, 'moodle', array('class' => 'iconsmall')),
                                 null, array('title' => $str->show)
                 );
@@ -705,7 +770,8 @@ function print_category_edit(html_table $table, coursecat $category, $depth = -1
             // Move up/down.
             if ($up) {
                 $icons[] = $OUTPUT->action_icon(
-                                new moodle_url('/totara/program/manage.php', array('moveupcat' => $category->id, 'sesskey' => sesskey())),
+                                new moodle_url('/totara/program/manage.php',
+                                               array('moveupcat' => $category->id, 'sesskey' => sesskey(), 'viewtype' => $viewtype)),
                                 new pix_icon('t/up', $str->moveup, 'moodle', array('class' => 'iconsmall')),
                                 null, array('title' => $str->moveup)
                 );
@@ -714,7 +780,8 @@ function print_category_edit(html_table $table, coursecat $category, $depth = -1
             }
             if ($down) {
                 $icons[] = $OUTPUT->action_icon(
-                                new moodle_url('/totara/program/manage.php', array('movedowncat' => $category->id, 'sesskey' => sesskey())),
+                                new moodle_url('/totara/program/manage.php',
+                                               array('movedowncat' => $category->id, 'sesskey' => sesskey(), 'viewtype' => $viewtype)),
                                 new pix_icon('t/down', $str->movedown, 'moodle', array('class' => 'iconsmall')),
                                 null, array('title' => $str->movedown)
                 );
@@ -725,18 +792,20 @@ function print_category_edit(html_table $table, coursecat $category, $depth = -1
 
         $actions = '';
         if (has_capability('moodle/category:manage', $categorycontext)) {
-            $popupurl = new moodle_url('/totara/program/manage.php', array('movecat' => $category->id, 'sesskey' => sesskey()));
+            $popupurl = new moodle_url('/totara/program/manage.php',
+                            array('movecat' => $category->id, 'sesskey' => sesskey(), 'viewtype' => $viewtype));
             $tempdisplaylist = array(0 => get_string('top')) + coursecat::make_categories_list('moodle/category:manage', $category->id);
             $select = new single_select($popupurl, 'movetocat', $tempdisplaylist, $category->parent, null, "moveform$category->id");
             $select->set_label(get_string('frontpagecategorynames'), array('class' => 'accesshide'));
             $actions = $OUTPUT->render($select);
         }
 
+        $count = $viewtype == 'program' ? $category->programcount : $category->certifcount;
         $table->data[] = new html_table_row(array(
                         // Category name.
                         new html_table_cell($categoryname),
                         // Program count.
-                        new html_table_cell($category->programcount),
+                        new html_table_cell($count),
                         // Icons.
                         new html_table_cell(join(' ', $icons)),
                         // Actions.
@@ -759,7 +828,7 @@ function print_category_edit(html_table $table, coursecat $category, $depth = -1
             $down = $last ? false : true;
             $first = false;
 
-            print_category_edit($table, $cat, $depth+1, $up, $down);
+            print_category_edit($table, $cat, $viewtype, $depth+1, $up, $down);
         }
     }
 }

@@ -33,11 +33,12 @@ require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 require_login();
 
 $id = required_param('id', PARAM_INT); // program id
+$viewtype = optional_param('viewtype', 'program', PARAM_TEXT); // Type of a page, program or certification.
 
 $program = new program($id);
 
 $PAGE->set_context(context_program::instance($program->id));
-$PAGE->set_url('/totara/program/view.php', array('id' => $id));
+$PAGE->set_url('/totara/program/view.php', array('id' => $id, 'viewtype' => $viewtype));
 $PAGE->set_pagelayout('noblocks');
 add_to_log(SITEID, 'program', 'view', "view.php?id={$program->id}&amp;userid={$USER->id}", $program->fullname);
 
@@ -66,14 +67,14 @@ $PAGE->requires->js_init_call('M.totara_programview.init',$args, false, $jsmodul
 
 $isadmin = has_capability('moodle/category:manage', context_coursecat::instance($program->category));
 
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
+$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, $viewtype);
 
 $heading = $program->fullname;
 $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
 if ($isadmin) {
-    $PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/totara/program/manage.php'));
+    $PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/totara/program/manage.php', array('viewtype' => $viewtype)));
 } else {
-    $PAGE->navbar->add(get_string('findprograms', 'totara_program'), new moodle_url('/totara/program/index.php'));
+    $PAGE->navbar->add(get_string('findprograms', 'totara_program'), new moodle_url('/totara/program/index.php', array('viewtype' => $viewtype)));
 }
 
 foreach ($category_breadcrumbs as $crumb) {

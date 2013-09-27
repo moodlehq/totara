@@ -1456,7 +1456,7 @@ class core_course_renderer extends plugin_renderer_base {
 
         // category name
         $categoryname = $coursecat->get_formatted_name();
-        $categorycount = totara_get_category_item_count($coursecat->id, true);
+        $categorycount = totara_get_category_item_count($coursecat->id, 'course');
         $categoryname = html_writer::link(new moodle_url('/course/index.php',
                 array('categoryid' => $coursecat->id)),
                 $categoryname);

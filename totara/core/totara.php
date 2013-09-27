@@ -1638,7 +1638,7 @@ function totara_build_menu() {
             'name' => 'certification',
             'linktext' => get_string('certifications', 'totara_certification'),
             'parent' => 'findcourses',
-            'url' => '/totara/certification/index.php'
+            'url' => '/totara/program/index.php?viewtype=certification'
         );
     }
 

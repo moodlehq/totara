@@ -55,7 +55,7 @@ class certification_add_form extends moodleform {
 
         $buttonarray = array();
         $buttonarray[] = $mform->createElement('submit', 'savechanges', get_string('add'), 'class="certification-add"');
-        $buttonarray[] = $mform->createElement('cancel', 'cancel', get_string('cancel', 'totara_certification'),
+        $buttonarray[] = $mform->createElement('cancel', 'cancel', get_string('cancel'),
                                                 'class="certification-cancel"');
         $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
         $mform->closeHeaderBefore('buttonar');

@@ -27,22 +27,26 @@ require_once($CFG->dirroot . '/totara/program/lib.php');
 require_once($CFG->libdir. '/coursecatlib.php');
 
 $categoryid = optional_param('categoryid', 0, PARAM_INT); // Category id
+$viewtype = optional_param('viewtype', 'program', PARAM_TEXT); // Type of a page, program or certification.
+
 $site = get_site();
 
 if ($categoryid) {
+    $url = new moodle_url('/totara/program/index.php', array('categoryid' => $categoryid, 'viewtype' => $viewtype));
     $PAGE->set_category_by_id($categoryid);
-    $PAGE->set_url(new moodle_url('/totara/program/index.php', array('categoryid' => $categoryid)));
+    $PAGE->set_url($url);
     $PAGE->set_pagetype('course-index-category');
     $category = $PAGE->category;
     // Add program breadcrumbs.
-    $PAGE->navbar->add(get_string('programs', 'totara_program'), new moodle_url('/totara/program/index.php'));
-    $category_breadcrumbs = prog_get_category_breadcrumbs($categoryid);
+    $navname = $viewtype == 'program' ? get_string('programs', 'totara_program') : get_string('certifications', 'totara_certification');
+    $PAGE->navbar->add($navname, $url);
+    $category_breadcrumbs = prog_get_category_breadcrumbs($categoryid, $viewtype);
     foreach ($category_breadcrumbs as $crumb) {
         $PAGE->navbar->add($crumb['name'], $crumb['link']);
     }
 } else {
     $categoryid = 0;
-    $PAGE->set_url('/totara/program/index.php');
+    $PAGE->set_url('/totara/program/index.php', array('viewtype' => $viewtype));
     $PAGE->set_context(context_system::instance());
 }
 
@@ -58,8 +62,8 @@ if ($categoryid && !$category->visible && !has_capability('moodle/category:viewh
 }
 
 $PAGE->set_totara_menu_selected('findcourses');
-$PAGE->set_heading($site->fullname);
-$content = $programrenderer->program_category($categoryid);
+$PAGE->set_heading(format_string($site->fullname));
+$content = $programrenderer->program_category($categoryid, $viewtype);
 
 echo $OUTPUT->header();
 echo $OUTPUT->skip_link_target();

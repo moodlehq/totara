@@ -393,6 +393,17 @@ if ($canmanage && empty($searchcriteria)) {
         $title = get_string('manageprogramsinthiscat', 'totara_program');
     }
     echo $OUTPUT->single_button($url, $title, 'get');
+
+    // Print button for switching to certification management.
+    $url = new moodle_url('/totara/program/manage.php', array('categoryid' => $id, 'viewtype' => 'certification'));
+    $certifcaps = array('totara/certification:createcertification',
+                        'totara/certification:deletecertification',
+                        'totara/certification:configurecertification');
+    if (has_any_capability($programcaps, $context)) {
+            $title = get_string('managecertifsinthiscat', 'totara_certification');
+        }
+    echo $OUTPUT->single_button($url, $title, 'get');
+
     echo $OUTPUT->container_end();
 }
 

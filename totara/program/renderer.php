@@ -455,9 +455,10 @@ class totara_program_renderer extends plugin_renderer_base {
      * @param coursecat_helper $chelper various display options
      * @param coursecat $coursecat
      * @param int $depth depth of this category in the current tree
+     * @param string $type Program or certification
      * @return string
      */
-    protected function coursecat_category(programcat_helper $chelper, $coursecat, $depth) {
+    protected function coursecat_category(programcat_helper $chelper, $coursecat, $depth, $type = 'program') {
         global $CFG;
         require_once($CFG->dirroot . '/totara/coursecatalog/lib.php');
 
@@ -471,13 +472,14 @@ class totara_program_renderer extends plugin_renderer_base {
             $categorycontent = '';
             $classes[] = 'notloaded';
             if ($coursecat->get_children_count() ||
-            ($chelper->get_show_programs() >= self::COURSECAT_SHOW_PROGRAMS_COLLAPSED && prog_get_programs_count($coursecat))) {
+            ($chelper->get_show_programs() >= self::COURSECAT_SHOW_PROGRAMS_COLLAPSED &&
+             prog_get_programs_count($coursecat, $type))) {
                 $classes[] = 'with_children';
                 $classes[] = 'collapsed';
             }
         } else {
             // Load category content.
-            $categorycontent = $this->coursecat_category_content($chelper, $coursecat, $depth);
+            $categorycontent = $this->coursecat_category_content($chelper, $coursecat, $depth, $type);
             $classes[] = 'loaded';
             if (!empty($categorycontent)) {
                 $classes[] = 'with_children';
@@ -489,9 +491,9 @@ class totara_program_renderer extends plugin_renderer_base {
 
         // Category name.
         $categoryname = $coursecat->get_formatted_name();
-        $categorycount = totara_get_category_item_count($coursecat->id, false);
+        $categorycount = totara_get_category_item_count($coursecat->id, $type);
         $categoryname = html_writer::link(new moodle_url('/totara/program/index.php',
-                        array('categoryid' => $coursecat->id)),
+                        array('categoryid' => $coursecat->id, 'viewtype' => $type)),
                         $categoryname);
         $categoryname .= html_writer::tag('span', ' (' . $categorycount . ')',
                         array('title' => get_string('numberofprograms', 'totara_program')));
@@ -514,9 +516,10 @@ class totara_program_renderer extends plugin_renderer_base {
      * @param programcat_helper $chelper various display options
      * @param coursecat $coursecat
      * @param int $depth depth of the category in the current tree
+     * @param string $type Program or certification
      * @return string
      */
-    protected function coursecat_subcategories(programcat_helper $chelper, $coursecat, $depth) {
+    protected function coursecat_subcategories(programcat_helper $chelper, $coursecat, $depth, $type = 'program') {
         global $CFG;
         $subcategories = array();
         if (!$chelper->get_categories_display_option('nodisplay')) {
@@ -564,7 +567,7 @@ class totara_program_renderer extends plugin_renderer_base {
         }
 
         foreach ($subcategories as $subcategory) {
-            $content .= $this->coursecat_category($chelper, $subcategory, $depth + 1);
+            $content .= $this->coursecat_category($chelper, $subcategory, $depth + 1, $type);
         }
 
         if (!empty($pagingbar)) {
@@ -586,12 +589,13 @@ class totara_program_renderer extends plugin_renderer_base {
      * @param programcat_helper $chelper various display options
      * @param coursecat $coursecat
      * @param int $depth depth of the category in the current tree
+     * @param string $type Program or certification
      * @return string
      */
-    protected function coursecat_category_content(programcat_helper $chelper, $coursecat, $depth) {
+    protected function coursecat_category_content(programcat_helper $chelper, $coursecat, $depth, $type = 'program') {
         $content = '';
         // Subcategories.
-        $content .= $this->coursecat_subcategories($chelper, $coursecat, $depth);
+        $content .= $this->coursecat_subcategories($chelper, $coursecat, $depth, $type);
 
         $showprogramsauto = $chelper->get_show_programs() == self::COURSECAT_SHOW_PROGRAMS_AUTO;
         if ($showprogramsauto && $depth) {
@@ -602,7 +606,7 @@ class totara_program_renderer extends plugin_renderer_base {
             $programs = array();
             $displayoptions = $chelper->get_programs_display_options();
             if (!$chelper->get_programs_display_option('nodisplay') && $coursecat->id != 0) {
-                $programs = prog_get_programs($coursecat->id, 'p.sortorder ASC', 'p.*', $displayoptions);
+                $programs = prog_get_programs($coursecat->id, 'p.sortorder ASC', 'p.*', $type, $displayoptions);
             }
             if ($viewmoreurl = $chelper->get_programs_display_option('viewmoreurl')) {
                 // The option for 'View more' link was specified, display more link (if it is link to category view page, add category id).
@@ -610,7 +614,7 @@ class totara_program_renderer extends plugin_renderer_base {
                     $chelper->set_programs_display_option('viewmoreurl', new moodle_url($viewmoreurl, array('categoryid' => $coursecat->id)));
                 }
             }
-            $content .= $this->coursecat_programs($chelper, $programs, prog_get_programs_count($coursecat, $displayoptions));
+            $content .= $this->coursecat_programs($chelper, $programs, prog_get_programs_count($coursecat, $type, $displayoptions));
         }
 
         if ($showprogramsauto) {
@@ -626,10 +630,11 @@ class totara_program_renderer extends plugin_renderer_base {
      *
      * @param programcat_helper $chelper various display options
      * @param coursecat $coursecat top category (this category's name and description will NOT be added to the tree)
+     * @param string $type Program or certification
      * @return string
      */
-    protected function coursecat_tree(programcat_helper $chelper, $coursecat) {
-        $categorycontent = $this->coursecat_category_content($chelper, $coursecat, 0);
+    protected function coursecat_tree(programcat_helper $chelper, $coursecat, $type = 'program') {
+        $categorycontent = $this->coursecat_category_content($chelper, $coursecat, 0, $type);
         if (empty($categorycontent)) {
             return '';
         }
@@ -665,18 +670,20 @@ class totara_program_renderer extends plugin_renderer_base {
      *
      * @param int|stdClass|coursecat $category
      */
-    public function program_category($category) {
+    public function program_category($category, $viewtype = 'program') {
         global $CFG;
         require_once($CFG->libdir . '/coursecatlib.php');
         $coursecat = coursecat::get(is_object($category) ? $category->id : $category);
         $site = get_site();
         $output = '';
 
-        $this->page->set_button($this->program_search_form('', 'navbar'));
+        $this->page->set_button($this->program_search_form($viewtype, '', 'navbar'));
+        $label = ($viewtype == 'program') ? get_string('programcategories', 'totara_program') :
+                                            get_string('certifcategories', 'totara_certification');
         if (!$coursecat->id) {
             if (can_edit_in_category()) {
                 // Add 'Manage' button instead of program search form.
-                $managebutton = $this->single_button(new moodle_url('/totara/program/manage.php'),
+                $managebutton = $this->single_button(new moodle_url('/totara/program/manage.php', array('viewtype' => $viewtype)),
                                 get_string('manageprograms', 'admin'), 'get');
                 $this->page->set_button($managebutton);
             }
@@ -686,17 +693,16 @@ class totara_program_renderer extends plugin_renderer_base {
                 $strfulllistofprograms = get_string('fulllistofprograms', 'totara_program');
                 $this->page->set_title("$site->shortname: $strfulllistofprograms");
             } else {
-                $strcategories = get_string('programcategories', 'totara_program');
-                $this->page->set_title("$site->shortname: $strcategories");
+                $this->page->set_title("$site->shortname: {$label}");
             }
         } else {
             $this->page->set_title("$site->shortname: ". $coursecat->get_formatted_name());
 
             // Print the category selector.
             $output .= html_writer::start_tag('div', array('class' => 'categorypicker'));
-            $select = new single_select(new moodle_url('/totara/program/index.php'), 'categoryid',
+            $select = new single_select(new moodle_url('/totara/program/index.php', array('viewtype' => $viewtype)), 'categoryid',
                             coursecat::make_categories_list(), $coursecat->id, null, 'switchcategory');
-            $select->set_label(get_string('programcategories', 'totara_program') . ':');
+            $select->set_label($label . ':');
             $output .= $this->render($select);
             $output .= html_writer::end_tag('div');
         }
@@ -725,13 +731,15 @@ class totara_program_renderer extends plugin_renderer_base {
         }
         $programdisplayoptions['limit'] = $perpage;
         $catdisplayoptions['limit'] = $perpage;
+        $hasitems = ($viewtype == 'program') ? prog_has_programs($coursecat) : certif_has_certifications($coursecat);
+        //TODO: might need to fix certifications here...
         if ($browse === 'programs' || !$coursecat->has_children()) {
             $programdisplayoptions['offset'] = $page * $perpage;
             $programdisplayoptions['paginationurl'] = new moodle_url($baseurl, array('browse' => 'programs'));
             $catdisplayoptions['nodisplay'] = true;
             $catdisplayoptions['viewmoreurl'] = new moodle_url($baseurl, array('browse' => 'categories'));
             $catdisplayoptions['viewmoretext'] = new lang_string('viewallsubcategories');
-        } else if ($browse === 'categories' || !prog_has_programs($coursecat) && $coursecat->id != 0) {
+        } else if ($browse === 'categories' || !$hasitems && $coursecat->id != 0) {
             $programdisplayoptions['nodisplay'] = true;
             $catdisplayoptions['offset'] = $page * $perpage;
             $catdisplayoptions['paginationurl'] = new moodle_url($baseurl, array('browse' => 'categories'));
@@ -745,17 +753,17 @@ class totara_program_renderer extends plugin_renderer_base {
         $chelper->set_programs_display_options($programdisplayoptions)->set_categories_display_options($catdisplayoptions);
 
         // Display program category tree.
-        $output .= $this->coursecat_tree($chelper, $coursecat);
+        $output .= $this->coursecat_tree($chelper, $coursecat, $viewtype);
 
         // Add program search form (if we are inside category it was already added to the navbar).
         if (!$coursecat->id) {
-            $output .= $this->program_search_form();
+            $output .= $this->program_search_form($viewtype);
         }
 
         // Add action buttons.
         $output .= $this->container_start('buttons');
         $context = get_category_or_system_context($coursecat->id);
-        if (has_capability('totara/program:createprogram', $context)) {
+        if ($viewtype == 'program' && has_capability('totara/program:createprogram', $context)) {
             // Print link to create a new program, for the 1st available category.
             if ($coursecat->id) {
                 $url = new moodle_url('/totara/program/add.php', array('category' => $coursecat->id, 'returnto' => 'category'));
@@ -763,6 +771,13 @@ class totara_program_renderer extends plugin_renderer_base {
                 $url = new moodle_url('/totara/program/add.php', array('category' => $CFG->defaultrequestcategory, 'returnto' => 'topcat'));
             }
             $output .= $this->single_button($url, get_string('addnewprogram', 'totara_program'), 'get');
+        } else if (has_capability('totara/certification:createcertification', $context)) {
+            if ($coursecat->id) {
+                $url = new moodle_url('/totara/certification/add.php', array('category' => $coursecat->id, 'returnto' => 'category'));
+            } else {
+                $url = new moodle_url('/totara/certification/add.php', array('category' => $CFG->defaultrequestcategory, 'returnto' => 'topcat'));
+            }
+            $output .= $this->single_button($url, get_string('addnewcertification', 'totara_certification'), 'get');
         }
         $output .= $this->container_end();
 
@@ -776,7 +791,7 @@ class totara_program_renderer extends plugin_renderer_base {
      * @param string $format display format - 'plain' (default), 'short' or 'navbar'
      * @return string
      */
-    function program_search_form($value = '', $format = 'plain') {
+    function program_search_form($type = 'program', $value = '', $format = 'plain') {
         static $count = 0;
         $formid = 'coursesearch';
         if ((++$count) > 1) {
@@ -798,10 +813,15 @@ class totara_program_renderer extends plugin_renderer_base {
                 $inputsize = 30;
         }
 
-        $strsearchprograms = get_string('searchprograms', 'totara_program');
+        if ($type == 'program') {
+            $strsearchprograms = get_string('searchprograms', 'totara_program');
+        } else {
+            $strsearchprograms = get_string('searchcertifications', 'totara_certification');
+        }
         $searchurl = new moodle_url('/totara/program/search.php');
 
         $output = html_writer::start_tag('form', array('id' => $formid, 'action' => $searchurl, 'method' => 'get'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'viewtype', 'value' => $type));
         $output .= html_writer::start_tag('fieldset', array('class' => 'coursesearchbox invisiblefieldset'));
         $output .= html_writer::tag('label', $strsearchprograms . ': ', array('for' => $inputid));
         $output .= html_writer::empty_tag('input', array('type' => 'text', 'id' => $inputid,
@@ -817,9 +837,10 @@ class totara_program_renderer extends plugin_renderer_base {
      * Renders html to display search result page
      *
      * @param array $searchcriteria
+     * @param string $type Program or certification
      * @return string
      */
-    public function search_programs($searchcriteria) {
+    public function search_programs($searchcriteria, $type = 'program') {
         global $CFG;
         $content = '';
         if (!empty($searchcriteria)) {
@@ -843,12 +864,12 @@ class totara_program_renderer extends plugin_renderer_base {
             }
             $chelper = new programcat_helper();
             $chelper->set_show_programs(self::COURSECAT_SHOW_PROGRAMS_EXPANDED_WITH_CAT)->
-            set_programs_display_options($displayoptions)->
-            set_search_criteria($searchcriteria)->
-            set_attributes(array('class' => $class));
+                                        set_programs_display_options($displayoptions)->
+                                        set_search_criteria($searchcriteria)->
+                                        set_attributes(array('class' => $class));
 
-            $programs = coursecat::search_programs($searchcriteria, $chelper->get_programs_display_options());
-            $totalcount = coursecat::search_programs_count($searchcriteria);
+            $programs = coursecat::search_programs($searchcriteria, $chelper->get_programs_display_options(), $type);
+            $totalcount = coursecat::search_programs_count($searchcriteria, $chelper->get_programs_display_options(), $type);
             $programslist = $this->coursecat_programs($chelper, $programs, $totalcount);
 
             if (!$totalcount) {
@@ -865,12 +886,12 @@ class totara_program_renderer extends plugin_renderer_base {
             if (!empty($searchcriteria['search'])) {
                 // print search form only if there was a search by search string, otherwise it is confusing
                 $content .= $this->box_start('generalbox mdl-align');
-                $content .= $this->program_search_form($searchcriteria['search']);
+                $content .= $this->program_search_form($type, $searchcriteria['search']);
                 $content .= $this->box_end();
             }
         } else {
             $content .= $this->box_start('generalbox mdl-align');
-            $content .= $this->program_search_form();
+            $content .= $this->program_search_form($type);
             $content .= html_writer::tag('div', get_string("searchhelp"), array('class' => 'searchhelp'));
             $content .= $this->box_end();
         }

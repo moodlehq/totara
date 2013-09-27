@@ -8,6 +8,7 @@ require_once($CFG->libdir.'/formslib.php');
 require_once($CFG->libdir.'/questionlib.php');
 require_once($CFG->libdir. '/coursecatlib.php');
 require_once($CFG->dirroot . '/totara/program/lib.php');
+require_once($CFG->dirroot . '/totara/certification/lib.php');
 
 class delete_category_form extends moodleform {
 
@@ -50,6 +51,9 @@ class delete_category_form extends moodleform {
         }
         if (prog_has_programs($this->_category)) {
             $contents .= '<li>' . get_string('programs', 'totara_program') . '</li>';
+        }
+        if (certif_has_certifications($this->_category)) {
+            $contents .= '<li>' . get_string('certifications', 'totara_certification') . '</li>';
         }
         if (question_context_has_any_questions($categorycontext)) {
             $contents .= '<li>' . get_string('questionsinthequestionbank') . '</li>';

@@ -32,7 +32,6 @@ function totara_get_category_item_count($categoryids, $viewtype = 'course') {
         return array();
     }
 
-
     // What items are we counting, courses, programs, or certifications?
     switch ($viewtype) {
         case 'course':
@@ -50,7 +49,7 @@ function totara_get_category_item_count($categoryids, $viewtype = 'course') {
             $extrawhere = " AND certifid IS NULL";
             break;
         case 'certification':
-            $itemcap = 'totara/program:viewhiddenprograms';
+            $itemcap = 'totara/certification:viewhiddencertifications';
             $itemtable = "{prog}";
             $itemcontext = CONTEXT_PROGRAM;
             $itemalias = 'p';
@@ -101,8 +100,12 @@ function totara_get_category_item_count($categoryids, $viewtype = 'course') {
 
     // Get all items inside all the categories.
     if (!$items = $DB->get_records_sql($sql, $params)) {
-        // sub-categories are all empty
-        return array();
+        // Sub-categories are all empty.
+        if (is_array($categoryids)) {
+            return array();
+        } else {
+            return 0;
+        }
     }
 
     $results = array();

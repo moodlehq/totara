@@ -671,7 +671,7 @@ class rb_source_program_overview extends rb_base_source {
 
         $list = array();
 
-        if ($progs = prog_get_programs('all', 'p.fullname', 'p.id, p.fullname')) {
+        if ($progs = prog_get_programs('all', 'p.fullname', 'p.id, p.fullname', 'program')) {
             foreach ($progs as $prog) {
                 $list[$prog->id] = format_string($prog->fullname);
             }

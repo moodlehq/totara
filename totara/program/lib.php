@@ -396,7 +396,7 @@ function prog_add_required_learning_base_navlinks($userid) {
  * Returns list of programs, for whole site, or category
  *
  */
-function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="p.*", $options = array()) {
+function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="p.*", $type = 'program', $options = array()) {
     global $USER, $DB, $CFG;
     require_once($CFG->dirroot . '/totara/cohort/lib.php');
 
@@ -405,7 +405,8 @@ function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="
 
     $params = array('contextlevel' => CONTEXT_PROGRAM);
     if ($categoryid != "all" && is_numeric($categoryid)) {
-        $categoryselect = "WHERE p.category = :category AND p.certifid IS NULL";
+        $certifsql = ($type == 'program') ? " AND p.certifid IS NULL" : " AND p.certifid IS NOT NULL";
+        $categoryselect = "WHERE p.category = :category {$certifsql}";
         $params['category'] = $categoryid;
     } else {
         $categoryselect = "";
@@ -447,7 +448,8 @@ function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="
     foreach ($programs as $program) {
         if (isset($program->visible) && $program->visible <= 0) {
             // for hidden programs, require visibility check
-            if (has_capability('totara/program:viewhiddenprograms', program_get_context($program->id))) {
+            $capability = ($type == 'program') ? 'totara/program:viewhiddenprograms' : 'totara/certification:viewhiddencertifications';
+            if (has_capability($capability, program_get_context($program->id))) {
                 $visibleprograms[] = $program;
             }
         } else {
@@ -483,7 +485,9 @@ function prog_get_category_breadcrumbs($categoryid, $viewtype = 'program') {
     if ($bread_info = $DB->get_records_sql($sql, $params)) {
         foreach ($bread_info as $crumb) {
             $cat_bread[] = array('name' => format_string($crumb->name),
-                                 'link' => new moodle_url("/totara/{$viewtype}/index.php", array('categoryid' => $crumb->id)),
+                                 'link' => new moodle_url("/totara/program/index.php",
+                                                 array('categoryid' => $crumb->id,
+                                                       'viewtype' => $viewtype)),
                                  'type' => 'misc');
 
         }
@@ -500,7 +504,7 @@ function prog_get_category_breadcrumbs($categoryid, $viewtype = 'program') {
  */
 function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
                           $fields="p.id,p.sortorder,p.shortname,p.fullname,p.summary,p.visible",
-                          &$totalcount, $limitfrom="", $limitnum="") {
+                          &$totalcount, $limitfrom="", $limitnum="", $type = 'program') {
 
     global $DB;
 
@@ -511,6 +515,13 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
         $params[] = $categoryid;
     }
 
+    $typesql = '';
+    if ($type == 'program') {
+        $typesql = " p.certifid IS NULL"; // filter out certifications
+    } else {
+        $typesql = " p.certifid IS NOT NULL";
+    }
+
     // pull out all programs matching the cat
     $visibleprograms = array();
 
@@ -519,7 +530,7 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
                           ctx.depth AS ctxdepth, ctx.contextlevel AS ctxlevel
                    FROM {prog} p
                    JOIN {context} ctx ON (p.id = ctx.instanceid AND ctx.contextlevel = ?)
-                   WHERE p.certifid IS NULL";
+                   WHERE {$typesql}";
 
     $select = $progselect.$categoryselect.' ORDER BY '.$sort;
 
@@ -534,8 +545,9 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
     // iteration will have to be done inside loop to keep track of the limitfrom and limitnum
     foreach ($rs as $program) {
         if ($program->visible <= 0) {
-            // for hidden programs, require visibility check
-            if (has_capability('totara/program:viewhiddenprograms', program_get_context($program->id))) {
+            // For hidden programs, require visibility check.
+            $capability = ($type == 'program') ? 'totara/program:viewhiddenprograms' : 'totara/certification:viewhiddencertifications';
+            if (has_capability($capability, program_get_context($program->id))) {
                 $totalcount++;
                 if ($totalcount > $limitfrom && (!$limitnum or count($visibleprograms) < $limitnum)) {
                     $visibleprograms [] = $program;
@@ -863,9 +875,10 @@ function prog_can_enter_course($user, $course) {
  * @param int $page
  * @param int $recordsperpage
  * @param int $totalcount Passed in by reference.
+ * @param string $type Are we looking for programs or certifications
  * @return object {@link $COURSE} records
  */
-function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount) {
+function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount, $type = 'program') {
     global $DB, $USER;
 
     $REGEXP    = $DB->sql_regex(true);
@@ -935,12 +948,10 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
         $where = " WHERE category > 0 ";
     }
 
-    $where .= " AND p.certifid IS NULL"; // filter out certifications
-
-    // Add any additional sql supplied to where clause
-    if ($whereclause) {
-        $where .= " AND {$whereclause}";
-        $params = array_merge($params, $whereparams);
+    if ($type == 'program') {
+        $where .= " AND p.certifid IS NULL"; // filter out certifications
+    } else {
+        $where .= " AND p.certifid IS NOT NULL";
     }
 
     $sql = "SELECT p.*,
@@ -1626,7 +1637,7 @@ function prog_program_overviewfiles_options($program) {
  */
 function prog_has_programs($category) {
     global $DB;
-    return $DB->record_exists_sql("SELECT 1 FROM {prog} WHERE category = :category",
+    return $DB->record_exists_sql("SELECT 1 FROM {prog} WHERE category = :category AND certifid IS NULL",
             array('category' => $category->id));
 }
 
@@ -1634,14 +1645,15 @@ function prog_has_programs($category) {
  *
  * @param coursecat $category
  * @param array $options Program display options
+ * @param string $type Program or certification
  * @return int
  */
-function prog_get_programs_count($category, $options = array()) {
+function prog_get_programs_count($category, $type = 'program', $options = array()) {
     // We have no programs at site level.
     if ($category->id == 0) {
         return 0;
     }
-    $programs = prog_get_programs($category->id, 'p.sortorder ASC', 'p.*', $options);
+    $programs = prog_get_programs($category->id, 'p.sortorder ASC', 'p.*', $type, $options);
     return count($programs);
 }
 

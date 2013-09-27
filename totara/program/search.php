@@ -29,6 +29,7 @@ require_once($CFG->libdir . '/coursecatlib.php');
 $search    = optional_param('search', '', PARAM_RAW);  // search words
 $page      = optional_param('page', 0, PARAM_INT);     // which page to show
 $perpage   = optional_param('perpage', '', PARAM_RAW); // how many per page, may be integer or 'all'
+$viewtype  = optional_param('viewtype', 'program', PARAM_TEXT);
 
 // List of minimum capabilities which user need to have for editing/moving program.
 $capabilities = array('totara/program:createprogram', 'moodle/category:manage');
@@ -54,6 +55,8 @@ if ($perpage !== 'all' && !($perpage = (int)$perpage)) {
 if (!empty($page)) {
     $urlparams['page'] = $page;
 }
+$urlparams['viewtype'] = $viewtype;
+
 $PAGE->set_url('/totara/program/search.php', $searchcriteria + $urlparams);
 $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('standard');
@@ -63,7 +66,11 @@ if ($CFG->forcelogin) {
     require_login();
 }
 
-$strprograms = new lang_string('programs', 'totara_program');
+if ($viewtype == 'program') {
+    $strprograms = new lang_string('programs', 'totara_program');
+} else {
+    $strprograms = new lang_string('certifications', 'totara_certification');
+}
 $strsearch = new lang_string('search');
 $strsearchresults = new lang_string('searchresults');
 
@@ -80,9 +87,10 @@ if (empty($searchcriteria)) {
     // Link to manage search results should be visible if user have system or category level capability.
     if ((can_edit_in_category() || !empty($usercatlist))) {
         $aurl = new moodle_url('/totara/program/manage.php', $searchcriteria);
-        $searchform = $OUTPUT->single_button($aurl, get_string('manageprograms', 'admin'), 'get');
+        $managestring = ($viewtype == 'program') ? get_string('manageprograms', 'admin') : get_string('managecertifications', 'totara_core');
+        $searchform = $OUTPUT->single_button($aurl, $managestring, 'get');
     } else {
-        $searchform = $programrenderer->program_search_form($search, 'navbar');
+        $searchform = $programrenderer->program_search_form($viewtype, $search, 'navbar');
     }
     $PAGE->set_button($searchform);
 }
@@ -90,5 +98,5 @@ if (empty($searchcriteria)) {
 $PAGE->set_heading($site->fullname);
 
 echo $OUTPUT->header();
-echo $programrenderer->search_programs($searchcriteria);
+echo $programrenderer->search_programs($searchcriteria, $viewtype);
 echo $OUTPUT->footer();

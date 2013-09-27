@@ -35,6 +35,7 @@ $importname = optional_param('importname', 'course', PARAM_ALPHA);
 $timecreated = optional_param('timecreated', null, PARAM_INT);
 $importuserid = optional_param('importuserid', null, PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT);
+$sid = optional_param('sid', '0', PARAM_INT);
 $pageparams = array('importname' => $importname, 'importuserid' => $importuserid, 'timecreated' => $timecreated);
 
 require_login();
@@ -44,7 +45,7 @@ require_capability('totara/completionimport:import', $context);
 $PAGE->set_context($context);
 
 $shortname = 'completionimport_' . $importname;
-if (!$report = reportbuilder_get_embedded_report($shortname, $pageparams)) {
+if (!$report = reportbuilder_get_embedded_report($shortname, $pageparams, false, $sid)) {
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
@@ -84,7 +85,7 @@ if ($countfiltered > 0) {
     echo $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
     // export button
-    $renderer->export_select($report->_id);
+    $renderer->export_select($report->_id, $sid);
 }
 
 echo $OUTPUT->container_end();

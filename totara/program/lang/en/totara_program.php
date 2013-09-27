@@ -710,6 +710,7 @@ In program messages, certain variables can be inserted into the subject and/or b
 :   This will be replaced the the course set label (it will only be replaced if the message relates to a course set';
 $string['viewallprograms'] = 'View all programs';
 $string['viewallrequiredlearning'] = 'View all';
+$string['viewcourse'] = 'View course';
 $string['viewexceptions'] = 'View exception report to resolve issue(s).';
 $string['viewinguserextrequests'] = 'Viewing extension requests for {$a}';
 $string['viewingxusersprogram'] = 'You are viewing <a href="{$a->wwwroot}/user/view.php?id={$a->id}">{$a->fullname}\'s</a> progress on this program.';

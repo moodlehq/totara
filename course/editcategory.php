@@ -86,7 +86,7 @@ $mform = new editcategory_form('editcategory.php', compact('category', 'editorop
 $mform->set_data($category);
 
 if ($mform->is_cancelled()) {
-    if ($type != 'program') {
+    if ($type == 'course') {
         if ($id) {
             redirect($CFG->wwwroot . '/course/manage.php?categoryid=' . $id);
         } else if ($parent) {
@@ -95,12 +95,16 @@ if ($mform->is_cancelled()) {
             redirect($CFG->wwwroot .'/course/manage.php');
         }
     } else {
+        $url = new moodle_url('/totara/program/manage.php');
+        $url->param('viewtype', $type);
         if ($id) {
-            redirect($CFG->wwwroot . '/totara/program/manage.php?categoryid=' . $id);
+            $url->param('categoryid', $id);
+            redirect($url);
         } else if ($parent) {
-            redirect($CFG->wwwroot .'/totara/program/manage.php?categoryid=' . $parent);
+            $url->param('categoryid', $parent);
+            redirect($url);
         } else {
-            redirect($CFG->wwwroot .'/totara/program/manage.php');
+            redirect($url);
         }
     }
 } else if ($data = $mform->get_data()) {
@@ -114,19 +118,20 @@ if ($mform->is_cancelled()) {
         $newcategory = coursecat::create($data, $editoroptions);
     }
 
-    if ($type != 'program') {
+    if ($type == 'course') {
         redirect('manage.php?categoryid='.$newcategory->id);
     } else {
-        redirect(new moodle_url('/totara/program/manage.php', array('categoryid' => $newcategory->id)));
+        redirect(new moodle_url('/totara/program/manage.php',
+                 array('categoryid' => $newcategory->id, 'viewtype' => $type)));
     }
 }
 
 // Page "Add new category" (with "Top" as a parent) does not exist in navigation.
 // We pretend we are on course management page.
-if (empty($id) && empty($parent) && $type != 'program') {
+if (empty($id) && empty($parent) && $type == 'course') {
     navigation_node::override_active_url(new moodle_url('/course/manage.php'));
 } else if (empty($id) && empty($parent)) {
-    navigation_node::override_active_url(new moodle_url('/totara/program/manage.php'));
+    navigation_node::override_active_url(new moodle_url('/totara/program/manage.php', array('viewtype' => $type)));
 }
 
 $PAGE->set_title($title);

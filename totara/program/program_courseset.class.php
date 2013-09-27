@@ -775,12 +775,14 @@ class multi_course_set extends course_set {
                 $completeheading = false;
             }
 
-            // Get these variables outside loop as they are the
-            // same for all courses.
+            // Get label for launch/view course button - applies to all courses.
+            $launchviewlabel = get_string('launchcourse', 'totara_program');
             if (!empty($this->certifpath)) {
                 $certificationid = $DB->get_field('prog', 'certifid', array('id' => $this->programid));
-
                 $certifpath_user = get_certification_path_user($certificationid, $userid);
+                if ($certifpath_user == CERTIFPATH_RECERT && !certif_iswindowopen($certificationid, $userid)) {
+                    $launchviewlabel = get_string('viewcourse', 'totara_program');
+                }
             }
 
             foreach ($this->courses as $course) {
@@ -800,18 +802,9 @@ class multi_course_set extends course_set {
                     $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)),
                                     get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
                 } else {
+                    // User must be enrolled or course can be viewed (checks audience visibility),
+                    // And course must be accessible.
                     $showcourseset = (is_enrolled($coursecontext, $userid) || totara_course_is_viewable($course->id, $userid)) && (($userid && $accessible) || $accessible);
-                    // Check if we are a certification-program by looking at the optional certif related field on the courseset.
-                    if (!empty($this->certifpath)) {
-                        if ($this->certifpath != $certifpath_user) {
-                            // If this courseset is not the one the user is on dont show.
-                             $showcourseset = false;
-                        } else if ($certifpath_user == CERTIFPATH_RECERT && !certif_iswindowopen($certificationid, $userid)) {
-                            // If it is but window is not open - don't show.
-                             $showcourseset = false;
-                        }
-                    }
-
                     if ($showcourseset) {
                         $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $coursename);
                         $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)),

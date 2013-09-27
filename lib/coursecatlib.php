@@ -50,6 +50,7 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
         'sortorder' => array('so', 0),
         'coursecount' => array('cc', 0),
         'programcount' => null, // not cached
+        'certifcount' => null, // not cached
         'visible' => array('vi', 1),
         'visibleold' => null, // not cached
         'timemodified' => null, // not cached
@@ -84,6 +85,9 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
 
     /** @var int */
     protected $programcount = false;
+
+    /** @var int */
+    protected $certifcount = false;
 
     /** @var int */
     protected $visible = 1;
@@ -1381,6 +1385,12 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
             return false;
         }
 
+        // Check certifications.
+        require_once($CFG->dirroot . '/totara/certification/lib.php');
+        if (!certif_can_delete_certifications($this->id)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -1402,15 +1412,17 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
 
         $deletedcourses = array();
         $deletedprograms = array();
+        $deletedcertifs = array();
 
         // Get children. Note, we don't want to use cache here because
         // it would be rebuilt too often
         $children = $DB->get_records('course_categories', array('parent' => $this->id), 'sortorder ASC');
         foreach ($children as $record) {
             $coursecat = new coursecat($record);
-            list($tempcourses, $temppograms) = $coursecat->delete_full($showfeedback);
+            list($tempcourses, $temppograms, $tempcertifs) = $coursecat->delete_full($showfeedback);
             $deletedcourses = array_merge($deletedcourses, $tempcourses);
             $deletedprograms = array_merge($deletedprograms, $temppograms);
+            $deletedcertifs = array_merge($deletedcertifs, $tempcertifs);
         }
 
         if ($courses = $DB->get_records('course', array('category' => $this->id), 'sortorder ASC')) {
@@ -1426,10 +1438,17 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
             require_once($CFG->dirroot . '/totara/program/lib.php');
             foreach ($programs as $program) {
                 $prog = new program($program->id);
-                if (!$prog->delete()) {
-                    throw new moodle_exception('programdeletefail', 'totara_program', '', $program->shortname);
+                if (!empty($prog->certifid)) {
+                    if (!$prog->delete()) {
+                        throw new moodle_exception('certifdeletefail', 'totara_certification', '', $program->shortname);
+                    }
+                    $deletedcertifs[] = $program;
+                } else {
+                    if (!$prog->delete()) {
+                        throw new moodle_exception('programdeletefail', 'totara_program', '', $program->shortname);
+                    }
+                    $deletedprograms[] = $program;
                 }
-                $deletedprograms[] = $program;
             }
         }
 
@@ -1455,7 +1474,7 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
         if ($this->id == $CFG->defaultrequestcategory) {
             set_config('defaultrequestcategory', $DB->get_field('course_categories', 'MIN(id)', array('parent' => 0)));
         }
-        return array($deletedcourses, $deletedprograms);
+        return array($deletedcourses, $deletedprograms, $deletedcertifs);
     }
 
     /**
@@ -1486,6 +1505,11 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
         require_once($CFG->dirroot . '/totara/program/lib.php');
         if (prog_has_programs($this)) {
             $testcaps[] = 'totara/program:createprogram';
+        }
+        // If this category has certifications, user must have 'certification:createcertification' capability in target category.
+        require_once($CFG->dirroot . '/totara/certification/lib.php');
+        if (certif_has_certifications($this)) {
+            $testcaps[] = 'totara/certification:createcertification';
         }
         // If this category has subcategories or questions, user must have 'category:manage' capability in target category.
         if ($this->has_children() || question_context_has_any_questions($context)) {
@@ -1524,6 +1548,11 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
         require_once($CFG->dirroot . '/totara/program/lib.php');
         if (prog_has_programs($this)) {
             $testcaps[] = 'totara/program:createprogram';
+        }
+        // If this category has certifications, user must have 'certification:createcertification' capability in target category.
+        require_once($CFG->dirroot . '/totara/certification/lib.php');
+        if (certif_has_certifications($this)) {
+            $testcaps[] = 'totara/certification:createcertification';
         }
         // If this category has subcategories or questions, user must have 'category:manage' capability in target category.
         if ($this->has_children() || question_context_has_any_questions($context)) {
@@ -1582,9 +1611,9 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
             }
         }
 
+        require_once($CFG->dirroot . '/totara/program/lib.php');
         // Move programs.
-        if ($programs = $DB->get_records('prog', array('category' => $this->id), 'sortorder ASC', 'id')) {
-            require_once($CFG->dirroot . '/totara/program/lib.php');
+        if ($programs = $DB->get_records_select('prog', 'category = ? AND certifid IS NULL', array($this->id), 'sortorder ASC', 'id')) {
             if (!prog_move_programs(array_keys($programs), $newparentid)) {
                 if ($showfeedback) {
                     echo $OUTPUT->notification(get_string('error:progsnotmoved', 'totara_program', $catname));
@@ -1593,6 +1622,19 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
             }
             if ($showfeedback) {
                 echo $OUTPUT->notification(get_string('programsmovedout', 'totara_program', $catname), 'notifysuccess');
+            }
+        }
+
+        // Move certifications.
+        if ($certifs = $DB->get_records_select('prog', 'category = ? AND certifid IS NOT NULL', array($this->id), 'sortorder ASC', 'id')) {
+            if (!prog_move_programs(array_keys($certifs), $newparentid)) {
+                if ($showfeedback) {
+                    echo $OUTPUT->notification(get_string('error:certifsnotmoved', 'totara_certification', $catname));
+                }
+                return false;
+            }
+            if ($showfeedback) {
+                echo $OUTPUT->notification(get_string('certifsmovedout', 'totara_certification', $catname), 'notifysuccess');
             }
         }
 
@@ -2077,9 +2119,10 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
      *
      * @param array $search search string
      * @param array $options display options, search is always category-independent
+     * @param string $type Program or certification?
      * @return array
      */
-    public static function search_programs($search, $options = array()) {
+    public static function search_programs($search, $options = array(), $type = 'program') {
         global $DB, $CFG;
         require_once($CFG->dirroot . '/totara/program/lib.php');
 
@@ -2091,7 +2134,7 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
             // Search programs that have specified words in their names/summaries.
             $searchterms = preg_split('|\s+|', trim($search['search']), 0, PREG_SPLIT_NO_EMPTY);
             $searchterms = array_filter($searchterms, create_function('$v', 'return strlen($v) > 1;'));
-            $programlist = prog_get_programs_search($searchterms, 'p.sortorder ASC', 0, 9999999, $totalcount);
+            $programlist = prog_get_programs_search($searchterms, 'p.sortorder ASC', 0, 9999999, $totalcount, $type);
             self::sort_records($programlist, $sortfields);
             $records = array_slice($programlist, $offset, $limit, true);
         } else {
@@ -2111,10 +2154,11 @@ class coursecat implements renderable, cacheable_object, IteratorAggregate {
      *
      * @param array $search search criteria, see method search_programs() for more details
      * @param array $options display options
+     * @param atring $type Program or certification
      * @return int
      */
-    public static function search_programs_count($search, $options = array()) {
-        $programs = self::search_programs($search, $options);
+    public static function search_programs_count($search, $options = array(), $type = 'program') {
+        $programs = self::search_programs($search, $options, $type);
 
         return count($programs);
     }
