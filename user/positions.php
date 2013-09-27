@@ -93,7 +93,7 @@ elseif (!in_array($type, $POSITION_TYPES)) {
 
 // Can user edit temp manager.
 $can_edit_tempmanager = false;
-if ($type == $POSITION_TYPES[POSITION_TYPE_PRIMARY] && $CFG->enabletempmanagers) {
+if ($type == $POSITION_TYPES[POSITION_TYPE_PRIMARY] && !empty($CFG->enabletempmanagers)) {
     if (has_capability('totara/core:delegateusersmanager', $personalcontext)) {
         $can_edit_tempmanager = true;
     } else if ($USER->id == $user->id && has_capability('totara/core:delegateownmanager', $personalcontext)) {

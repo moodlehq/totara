@@ -286,7 +286,7 @@ class user_position_assignment_form extends moodleform {
                 $mform->addHelpButton('appraiserselector', 'chooseappraiser', 'totara_hierarchy');
             }
 
-            if ($primary && $CFG->enabletempmanagers) {
+            if ($primary && !empty($CFG->enabletempmanagers)) {
                 // Temporary manager.
                 $tempmanager = totara_get_manager($pa->userid, null, false, true);
 

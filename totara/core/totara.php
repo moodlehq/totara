@@ -829,7 +829,7 @@ function totara_get_staff($userid=null, $postype=null) {
     $staff = $DB->get_fieldset_select('pos_assignment', 'userid', "type = ? AND managerid = ?", array($postype, $userid));
 
     // Get temporary staff.
-    if ($CFG->enabletempmanagers && $postype == POSITION_TYPE_PRIMARY) {
+    if (!empty($CFG->enabletempmanagers) && $postype == POSITION_TYPE_PRIMARY) {
         $tempstaff = $DB->get_fieldset_select('temporary_manager', 'userid', 'tempmanagerid = ? AND expirytime > ?',
             array($userid, $now));
 
@@ -857,7 +857,7 @@ function totara_get_manager($userid, $postype=null, $skiptemp=false, $skipreal=f
     $userid = (int) $userid;
     $now = time();
 
-    if ($CFG->enabletempmanagers && $postype == POSITION_TYPE_PRIMARY && !$skiptemp) {
+    if (!empty($CFG->enabletempmanagers) && $postype == POSITION_TYPE_PRIMARY && !$skiptemp) {
         // Temporary manager.
         $sql = "SELECT u.*, tm.expirytime
                   FROM {temporary_manager} tm
