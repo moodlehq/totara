@@ -883,7 +883,7 @@ class prog_content {
         // Add certifpath
         if ($updateform) {
             $mform->addElement('hidden', 'certifpath'.$suffix);
-            $mform->setType('certifpath', PARAM_INT);
+            $mform->setType('certifpath'.$suffix, PARAM_INT);
             $mform->setConstant('certifpath'.$suffix, $certifpath);
             $template_values['%certifpath'.$suffix.'%'] = array('name'=>'certifpath'.$suffix, 'value'=>null);
         }
