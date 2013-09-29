@@ -506,20 +506,21 @@ class goal extends hierarchy {
     /**
      * Deletes or transfers all user assignments for a given group assignment.
      *
-     * @param int $type         The GOAL_ASSIGNMENT_TYPE
+     * @param int $assigntype   The GOAL_ASSIGNMENT_TYPE
      * @param int $assignmentid The id of the assignment record in goal_grp_type
+     * @param int $type         goal_assignment_type_info
      * @param array $delete_params
      */
-    public static function delete_group_assignment($type, $assignmentid, $delete_params) {
+    public static function delete_group_assignment($assigntype, $assignmentid, $type, $delete_params) {
         global $DB;
 
-        if ($type == GOAL_ASSIGNMENT_INDIVIDUAL) {
+        if ($assigntype == GOAL_ASSIGNMENT_INDIVIDUAL) {
             // This should not be called on individual assignments.
             print_error('error:deletingindiviualassignments', 'totara_hierarchy');
         }
 
         // Delete all records of the specified assigntype and assignmentid.
-        self::delete_user_assignments(array('assigntype' => $type, 'assignmentid' => $assignmentid));
+        self::delete_user_assignments(array('assigntype' => $assigntype, 'assignmentid' => $assignmentid));
 
         // Then delete the group assignment record.
         $DB->delete_records($type->table, $delete_params);

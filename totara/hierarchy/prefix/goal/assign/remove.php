@@ -118,7 +118,7 @@ if ($delete) {
     } else {
         // If it's not an individual assignment delete/transfer user assignments.
         $assignmentid = $DB->get_field($type->table, 'id', $delete_params);
-        goal::delete_group_assignment($assigntype, $assignmentid, $delete_params);
+        goal::delete_group_assignment($assigntype, $assignmentid, $type, $delete_params);
     }
 
     add_to_log(SITEID, 'goal', 'delete goal assignment', "item/view.php?id={$goalid}&amp;prefix=goal", $strassig);
