@@ -114,6 +114,12 @@ echo $OUTPUT->heading(format_string($cohort->name));
 
 echo cohort_print_tabs('view', $cohort->id, $cohort->cohorttype, $cohort);
 
+// Verify if the cohort has a broken rule.
+$cohortbrokenrules = totara_cohort_broken_rules(null, $cohort->id, false);
+if (!empty($cohortbrokenrules)) {
+    totara_display_broken_rules_box();
+}
+
 $out = '';
 $out .= html_writer::start_tag('div', array('class' => 'mform'));
 $out .= html_writer::start_tag('fieldset');
@@ -180,17 +186,23 @@ if ($cohort->cohorttype == cohort::TYPE_DYNAMIC) {
             if (!empty($rules)) { // Print its rules
                 $item .= html_writer::start_tag('ul');
                 foreach ($rules as $rulerec) {
-                    $rule = cohort_rules_get_rule_definition($rulerec->ruletype, $rulerec->name);
-                    $rule->sqlhandler->fetch($rulerec->id);
-                    $rule->ui->setParamValues($rule->sqlhandler->paramvalues);
-
                     $item .= html_writer::start_tag('li');
                     if ($j) {
                         $item .= $rulesetoperator . ' ';
                     }
-                    $item .= $rule->ui->getRuleDescription($rulerec->id);
+                    $rule = cohort_rules_get_rule_definition($rulerec->ruletype, $rulerec->name);
+                    if ($rule) {
+                        $rule->sqlhandler->fetch($rulerec->id);
+                        $rule->ui->setParamValues($rule->sqlhandler->paramvalues);
+                        $item .= $rule->ui->getRuleDescription($rulerec->id);
+                    } else { // Broken rule.
+                        $a = new stdClass();
+                        $a->type = $rulerec->ruletype;
+                        $a->name = $rulerec->name;
+                        $content = get_string('cohortbrokenrule', 'totara_cohort', $a);
+                        $item .= html_writer::tag('b', $content, array('class' => 'error'));
+                    }
                     $item .= html_writer::end_tag('li');
-
                     $j++;
                 }
                 $item .= html_writer::end_tag('ul');
@@ -206,11 +218,11 @@ if ($cohort->cohorttype == cohort::TYPE_DYNAMIC) {
 
     $out .= html_writer::end_tag('fieldset') . html_writer::end_tag('div');
 
-} //end if cohort type is dynamic
+} // End if cohort type is dynamic.
 
 echo $out;
-$cloneurl = new moodle_url("/cohort/view.php", array('id'=>$cohort->id,'clone'=>1));
-$delurl = new moodle_url("/cohort/view.php", array('id'=>$cohort->id,'delete'=>1));
-echo $OUTPUT->single_button($cloneurl, get_string('clonethiscohort','totara_cohort'));
-echo $OUTPUT->single_button($delurl, get_string('deletethiscohort','totara_cohort'));
+$cloneurl = new moodle_url("/cohort/view.php", array('id'=>$cohort->id, 'clone'=>1));
+$delurl = new moodle_url("/cohort/view.php", array('id'=>$cohort->id, 'delete'=>1));
+echo $OUTPUT->single_button($cloneurl, get_string('clonethiscohort', 'totara_cohort'));
+echo $OUTPUT->single_button($delurl, get_string('deletethiscohort', 'totara_cohort'));
 echo $OUTPUT->footer();

@@ -39,6 +39,10 @@ define('COHORT_COL_STATUS_DRAFT_UNCHANGED', 10);
 define('COHORT_COL_STATUS_DRAFT_CHANGED', 20);
 define('COHORT_COL_STATUS_OBSOLETE', 30);
 
+define('COHORT_BROKEN_RULE_NONE', 0);
+define('COHORT_BROKEN_RULE_NOT_NOTIFIED', 1);
+define('COHORT_BROKEN_RULE_NOTIFIED', 2);
+
 define('COHORT_MEMBER_SELECTOR_MAX_ROWS', 1000);
 
 
@@ -438,13 +442,15 @@ function totara_cohort_get_dynamic_cohort_whereclause($cohortid) {
 
         foreach ($rules as $rulerec) {
             /* @var $rule cohort_rule_option */
-            $rule = $ruledefs[$rulerec->ruletype][$rulerec->name];
-            $sqlhandler = $rule->sqlhandler;
-            $sqlhandler->fetch($rulerec->id);
-            $snippet = $sqlhandler->get_sql_snippet();
-            if (!empty($snippet->sql)) {
-                $whereclause->sql .= "        " . strtoupper($COHORT_RULES_OP[$ruleset->operator]) . " {$snippet->sql} \n";
-                $whereclause->params = array_merge($whereclause->params, $snippet->params);
+            if (isset($ruledefs[$rulerec->ruletype][$rulerec->name])) {
+                $rule = $ruledefs[$rulerec->ruletype][$rulerec->name];
+                $sqlhandler = $rule->sqlhandler;
+                $sqlhandler->fetch($rulerec->id);
+                $snippet = $sqlhandler->get_sql_snippet();
+                if (!empty($snippet->sql)) {
+                    $whereclause->sql .= "        " . strtoupper($COHORT_RULES_OP[$ruleset->operator]) . " {$snippet->sql} \n";
+                    $whereclause->params = array_merge($whereclause->params, $snippet->params);
+                }
             }
         }
 
@@ -641,7 +647,7 @@ function totara_cohort_get_nested_dynamic_cohorts($cohortid, $current=array()) {
     $current = array_unique($current);
 
     if (!empty($mastercohortid)) {
-        // unset the top level cohortid
+        // Unset the top level cohortid.
         foreach ($current as $i => $v) {
             if ($v == $mastercohortid) {
                 unset($current[$i]);
@@ -678,7 +684,7 @@ function totara_cohort_send_queued_notifications(){
         mtrace(date("H:i:s", $timenow)."  Sending queued '{$batch->action}' messages for cohort '{$batch->idnumber}' (id:{$batch->cohortid}) ");
 
         // First flag the notices we're going to send, so that subsequent cron runs won't accidentally double-send them
-        // if this takes a long time.
+        // If this takes a long time.
         $processtime = time();
         $sql = 'UPDATE {cohort_msg_queue} SET processed = ? WHERE cohortid = ? AND action = ? and processed = 0';
         $sqlparams = array($processtime, $batch->cohortid, $batch->action);
@@ -712,7 +718,7 @@ function totara_cohort_send_queued_notifications(){
  *
  * Used when running the cohort sync to make sure members are up to date.
  *
- * @param int $courseid one course, empty mean all
+ * @param int $courseid one course, empty means all
  * @param bool $verbose verbose CLI output
  * @return void
  */
@@ -724,16 +730,59 @@ function totara_cohort_check_and_update_dynamic_cohort_members($courseid, $verbo
     }
     totara_cohort_clean_deleted_users();
 
-    // first make sure dynamic cohort members are up to date
+    // First make sure dynamic cohort members are up to date.
     if (empty($courseid)) {
         $dcohorts = $DB->get_records('cohort', array('cohorttype' => cohort::TYPE_DYNAMIC), 'idnumber');
     } else {
-        // only update members of cohorts that is associated with this course
+        // Only update members of cohorts that is associated with this course.
         $dcohorts = totara_cohort_get_course_cohorts($courseid, cohort::TYPE_DYNAMIC);
     }
+
+    // Looking for cohorts with broken rules.
+    $cohortwithbrokenrules = totara_cohort_broken_rules($courseid, null, true);
+
     if ($verbose) {
+        mtrace('... ' . count($cohortwithbrokenrules) . ' Audience(s) with broken rule(s) found.');
         mtrace('updating dynamic cohort members...');
     }
+
+    if (!empty($cohortwithbrokenrules)) {
+        // Ignore audience with broken rules.
+        $dcohorts = array_udiff($dcohorts, $cohortwithbrokenrules,
+            function ($obj1, $obj2) {
+                return $obj1->id - $obj2->id;
+            }
+        );
+
+        // Look for all site administrators.
+        $siteadmins = get_admins();
+        $notifiedcohorts = array();
+        foreach ($cohortwithbrokenrules as $brokencohort) {
+            if ($brokencohort->broken == COHORT_BROKEN_RULE_NONE) { // Cohort has not been marked as broken.
+                // Notify about the broken rules.
+                if (totara_send_notification_broken_rule($siteadmins, $brokencohort)) {
+                    $notifiedcohorts[$brokencohort->id] = $brokencohort;
+                }
+            } else if ($brokencohort->broken == COHORT_BROKEN_RULE_NOT_NOTIFIED) {
+                // Cohort has been marked as broken but it hasn't been notified. So, notify.
+                if (totara_send_notification_broken_rule($siteadmins, $brokencohort)) {
+                    $notifiedcohorts[$brokencohort->id] = $brokencohort;
+                }
+            }
+        }
+        // Update broken field for cohorts that have been notified.
+        totara_update_broken_field(array_keys($notifiedcohorts), COHORT_BROKEN_RULE_NOTIFIED);
+        // Update broken field for cohorts that could have not been notified.
+        $notnotified = totara_search_for_value($cohortwithbrokenrules, 'broken', TOTARA_SEARCH_OP_NOT_EQUAL,
+            COHORT_BROKEN_RULE_NOTIFIED);
+        $notnotified = array_diff(array_keys($notnotified), array_keys($notifiedcohorts));
+        totara_update_broken_field($notnotified, COHORT_BROKEN_RULE_NOT_NOTIFIED);
+    }
+
+    // Update broken field for active cohorts.
+    $brokencohorts = totara_search_for_value($dcohorts, 'broken', TOTARA_SEARCH_OP_NOT_EQUAL, COHORT_BROKEN_RULE_NONE);
+    totara_update_broken_field(array_keys($brokencohorts), COHORT_BROKEN_RULE_NONE);
+
     foreach ($dcohorts as $cohort) {
         $active = totara_cohort_is_active($cohort);
         if (!$active) {
@@ -747,7 +796,7 @@ function totara_cohort_check_and_update_dynamic_cohort_members($courseid, $verbo
         try {
             $timenow = time();
             if ($verbose) {
-                mtrace(date("H:i:s",$timenow)." updating {$cohort->idnumber} members...");
+                mtrace(date("H:i:s", $timenow)." updating {$cohort->idnumber} members...");
             }
             $result = totara_cohort_update_dynamic_cohort_members($cohort->id);
             if (is_array($result) && array_key_exists('add', $result) && array_key_exists('del', $result)) {
@@ -758,12 +807,12 @@ function totara_cohort_check_and_update_dynamic_cohort_members($courseid, $verbo
                 throw new Exception("error processing members: " . print_r($result, true));
             }
         } catch (Exception $e) {
-            // log it
+            // Log it.
             if ($verbose) {
                 mtrace($e->getMessage());
             }
         }
-    } // foreach
+    }
 }
 
 
@@ -1154,7 +1203,7 @@ class totara_cohort_course_cohorts
 
     function get_item($itemid) {
         global $DB;
-        return $DB->get_record('cohort',array('id' => $itemid),'id, name as fullname, cohorttype');
+        return $DB->get_record('cohort', array('id' => $itemid), 'id, name as fullname, cohorttype');
     }
 
     function user_affected_count($item) {
@@ -1192,7 +1241,6 @@ class totara_cohort_course_cohorts
      * @return string html
      */
     function display($return = false) {
-
 
         $html = '<div id="course-cohort-assignments">
             <div id="assignment_categories" class="enrolled">
@@ -1249,11 +1297,11 @@ function totara_cohort_delete_course($courseid, $showfeedback) {
         foreach ($courserules as $rule) {
             $DB->delete_records('cohort_rule_params', array('ruleid' => $rule->id, 'name' => 'listofids', 'value' => $courseid));
 
-            // Delete the rule if it has no params left after this
+            // Delete the rule if it has no params left after this.
             if (!$DB->count_records('cohort_rule_params', array('ruleid' => $rule->id))) {
                 $DB->delete_records('cohort_rules', array('id' => $rule->id));
 
-                // Delete the rule's ruleset if it has no params left after this
+                // Delete the rule's ruleset if it has no params left after this.
                 if (!$DB->count_records('cohort_rules', array('rulesetid' => $rule->rulesetid))) {
                     $DB->delete_records('cohort_rulesets', array('id' => $rule->rulesetid));
                 }
@@ -1262,4 +1310,118 @@ function totara_cohort_delete_course($courseid, $showfeedback) {
 
         $transaction->allow_commit();
     }
+}
+
+/**
+ * Used when running the cohort sync to know which cohort has a broken rule.
+ *
+ * @param int $courseid one course, empty means all
+ * @param int $cohortid one cohort, empty means all
+ * @param bool $verbose verbose CLI output
+ * @return array $cohortwithbrokenrules list of cohorts with broken rules
+ */
+function totara_cohort_broken_rules($courseid, $cohortid, $verbose) {
+    global $DB, $CFG;
+    require_once($CFG->dirroot . '/totara/core/utils.php');
+    $cohortwithbrokenrules = array();
+
+    if ($verbose) {
+        mtrace('Checking audiences with broken rules...');
+    }
+
+    if (empty($courseid)) {
+        if (empty($cohortid)) {
+            $dcohorts = $DB->get_records('cohort', array('cohorttype' => cohort::TYPE_DYNAMIC), 'idnumber');
+        } else {
+            $dcohorts = $DB->get_records('cohort', array('id' => $cohortid, 'cohorttype' => cohort::TYPE_DYNAMIC), 'idnumber');
+        }
+    } else {
+        // Only get members of cohorts that is associated with this course.
+        $dcohorts = totara_cohort_get_course_cohorts($courseid, cohort::TYPE_DYNAMIC);
+        if (!empty($cohortid)) {
+            // Get cohort.
+            $dcohorts = totara_search_for_value($dcohorts, 'id', TOTARA_SEARCH_OP_EQUAL, $cohortid);
+        }
+    }
+
+    foreach ($dcohorts as $cohort) {
+        $rulesets = $DB->get_records('cohort_rulesets', array('rulecollectionid' => $cohort->activecollectionid), 'sortorder');
+        foreach ($rulesets as $ruleset) {
+            $rules = $DB->get_records('cohort_rules', array('rulesetid' => $ruleset->id));
+            foreach ($rules as $rulerec) {
+                $rule = cohort_rules_get_rule_definition($rulerec->ruletype, $rulerec->name);
+                if (!$rule) { // There is a broken rule.
+                    $cohortwithbrokenrules[$cohort->id] = $cohort;
+                    break 2;
+                }
+            }
+        }
+    }
+
+    return $cohortwithbrokenrules;
+}
+
+/**
+ * Display message of broken rule found.
+ *
+ * @param string $class the box's class style.
+ * @param string $style the box's style.
+ * @return void
+ */
+function totara_display_broken_rules_box($class = 'notifyproblem clearfix', $style='display:block') {
+    echo '<div class="'.$class.'" id="cohort_broken_rules_box" style="'.$style.'">';
+    echo '<span>'.get_string('cohortbrokenrulesnotice', 'totara_cohort').'</span>';
+    echo '</div>';
+}
+
+/**
+ * Send notification about a cohort with broken rules.
+ *
+ * @param array $users.
+ * @param object $cohort.
+ * @return boolean $sent
+ */
+function totara_send_notification_broken_rule($users, $cohort) {
+    $sent = false;
+
+    $subject = get_string('cohortbrokenrulesubject', 'totara_cohort');
+    $fullmessage = get_string('cohortbrokenrulesmessage', 'totara_cohort');
+    $fullmessage .= html_writer::start_tag('ul');
+    $url = html_writer::link(new moodle_url('/totara/cohort/rules.php', array('id' => $cohort->id)), $cohort->name);
+    $fullmessage .= html_writer::tag('li', $url);
+    $fullmessage .= html_writer::end_tag('ul');
+
+    foreach ($users as $user) {
+        $newevent = new stdClass();
+        $newevent->userfrom    = null;
+        $newevent->userto      = $user;
+        $newevent->fullmessage = $fullmessage;
+        $newevent->subject     = $subject;
+        $newevent->urgency     = TOTARA_MSG_URGENCY_URGENT;
+        if (tm_alert_send($newevent)) {
+            $sent = true; // It has been successfully notified.
+        }
+    }
+
+    return $sent;
+}
+
+/**
+ * Update broken field.
+ *
+ * @param array $cohortids.
+ * @param integer $status.
+ * @return boolean.
+ */
+function totara_update_broken_field($cohortids, $status) {
+    global $DB;
+
+    if (!empty($cohortids)) {
+        list($insql, $inparams) = $DB->get_in_or_equal($cohortids);
+        $sql = "UPDATE {cohort} SET broken = ? WHERE id {$insql}";
+        $params = array_merge(array($status), $inparams);
+        return $DB->execute($sql, $params);
+    }
+
+    return false;
 }

@@ -493,5 +493,19 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2012102300, 'totara', 'cohort');
     }
 
-    return true;
+    if ($oldversion < 2013100100) {
+
+        // Define field broken to be added to cohort
+        $table = new xmldb_table('cohort');
+        $field = new xmldb_field('broken');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, 'draftcollectionid');
+
+        // Launch add field broken
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        upgrade_plugin_savepoint(true, 2013100100, 'totara', 'cohort');
+    }
+
+        return true;
 }

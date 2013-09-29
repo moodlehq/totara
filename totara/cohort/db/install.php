@@ -36,7 +36,7 @@ function xmldb_totara_cohort_install() {
 
     $result = true;
 
-    // Define fields to be added to cohort
+    // Define fields to be added to cohort.
     $table = new xmldb_table('cohort');
 
     $field = new xmldb_field('cohorttype');
@@ -99,13 +99,20 @@ function xmldb_totara_cohort_install() {
         $dbman->add_field($table, $field);
     }
 
+    // Add broken rule.
+    $field = new xmldb_field('broken');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, 'draftcollectionid');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
     if (!isset($CFG->cohort_lastautoidnumber)) {
         set_config('cohort_lastautoidnumber', 0);
     }
     if (!isset($CFG->cohort_autoidformat)) {
         set_config('cohort_autoidformat', 'AUD%04d');
     }
-    // Add cohort alert global config
+    // Add cohort alert global config.
     if (get_config('cohort', 'alertoptions') === false) {
         set_config('alertoptions', implode(',', array_keys($COHORT_ALERT)), 'cohort');
     }

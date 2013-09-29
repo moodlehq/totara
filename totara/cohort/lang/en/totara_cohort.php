@@ -116,6 +116,15 @@ $string['cohortmsgalreadyended'] = 'This audience is inactive, because its <stro
 $string['cohortmsgnotyetstarted'] = 'This audience is inactive, because its <strong>start date</strong> is in the future: <strong>{$a}</strong>. No users will be enrolled in any learning items while this audience is inactive, and any existing enrolments due to this audience will be unenrolled.';
 $string['cohortname'] = 'Audience name';
 $string['cohortruleschanged'] = 'Audience rules changed';
+$string['cohortbrokenrule'] = '{$a->type} - {$a->name} => This rule is broken';
+$string['cohortbrokenrulesubject'] = 'Some broken rules have been found';
+$string['cohortbrokenrulesnotice'] = 'Some broken rules have been found. While there are broken rules the audience membership will not be updated';
+$string['cohortbrokenrulesmessage'] = 'Some broken rules have been found.
+While there are broken rules the audience membership will not be updated.
+
+The following dynamic audience needs your attention:
+
+';
 $string['cohorts'] = 'Audiences';
 $string['cohortsaddenrolled'] = 'Add enrolled audiences';
 $string['cohortsin'] = 'Available Audiences';

@@ -119,7 +119,7 @@ if (($data = data_submitted()) && confirm_sesskey()) {
     }
 }
 
-if ($formdata = $mform->get_data()){
+if ($formdata = $mform->get_data()) {
 
     // Update the cohort operator?
     if (isset($formdata->cohortoperator) && $formdata->cohortoperator <> $cohort->rulesetoperator) {
@@ -134,7 +134,7 @@ if ($formdata = $mform->get_data()){
 
     if (isset($formdata->rulesetoperator) && is_array($formdata->rulesetoperator)) {
         $operatorschanged = false;
-        foreach ($formdata->rulesetoperator as $rulesetid=>$operator){
+        foreach ($formdata->rulesetoperator as $rulesetid => $operator) {
             if (array_key_exists($rulesetid, $rulesets) && $operator <> $rulesets[$rulesetid]->operator) {
                 $todb = new stdClass();
                 $todb->id = $rulesetid;
@@ -189,8 +189,8 @@ echo <<<JS
 var ruleHandlerMap = new Array();
 JS;
 $ruledefs = cohort_rules_list();
-foreach ($ruledefs as $groupname=>$group) {
-    foreach ($group as $typename=>$def) {
+foreach ($ruledefs as $groupname => $group) {
+    foreach ($group as $typename => $def) {
         /* @var $def cohort_rule_option */
         echo "ruleHandlerMap['{$groupname}-{$typename}'] = '{$def->ui->handlertype}';\n";
     }
@@ -202,6 +202,12 @@ JS;
 
 echo $OUTPUT->heading(format_string($cohort->name));
 echo cohort_print_tabs('editrules', $cohort->id, $cohort->cohorttype, $cohort);
+
+// Verify if the cohort has a broken rule.
+$cohortbrokenrules = totara_cohort_broken_rules(null, $cohort->id, false);
+if (!empty($cohortbrokenrules)) {
+    totara_display_broken_rules_box();
+}
 
 display_approval_action_box($cohort->id,
     $style=$cohort->status == COHORT_COL_STATUS_DRAFT_CHANGED ? null : 'display:none;');

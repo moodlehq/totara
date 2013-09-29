@@ -32,8 +32,8 @@ require_once($CFG->dirroot.'/cohort/lib.php');
 require_once($CFG->dirroot.'/totara/cohort/rules/settings.php');
 
 
-define('COHORT_RULES_OP_AND',0);
-define('COHORT_RULES_OP_OR',10);
+define('COHORT_RULES_OP_AND', 0);
+define('COHORT_RULES_OP_OR', 10);
 global $COHORT_RULES_OP;
 $COHORT_RULES_OP = array(
     COHORT_RULES_OP_AND => 'and',
@@ -94,13 +94,13 @@ function cohort_rules_get_menu_options() {
     if (!$rulesmenu) {
         $rules = cohort_rules_list();
 
-        // Set up the list of rules for use in menus
+        // Set up the list of rules for use in menus.
         $rulesmenu = array();
-        foreach ($rules as $groupname=>$group) {
+        foreach ($rules as $groupname => $group) {
             $curlabel = get_string("rulegroup-{$groupname}", 'totara_cohort');
             $rulesmenu[$curlabel] = array();
 
-            foreach ($group as $typename=>$option) {
+            foreach ($group as $typename => $option) {
                 if (!$option->hiddenfrommenu) {
                     $rulesmenu[$curlabel]["{$groupname}-{$typename}"] = $option->getLabel();
                 }
@@ -180,9 +180,15 @@ function cohort_rule_create_rule($rulesetid, $type, $name) {
  * Take a rule's description and wrap it in the HTML it needs to fit into the rules form
  * @param int $ruleid
  * @param string $description
+ * @param string $rulegroup
+ * @param string $rulename
+ * @param boolean $first
+ * @param string $operator
+ * @param boolean $brokenrule
  * @return string
  */
-function cohort_rule_form_html($ruleid, $description, $rulegroup='', $rulename='', $first=false, $operator='') {
+function cohort_rule_form_html($ruleid, $description, $rulegroup = '', $rulename = '', $first = false, $operator = '',
+                               $brokenrule = false) {
     global $CFG, $OUTPUT;
 
     $strdelete = get_string('deleterule', 'totara_cohort');
@@ -207,13 +213,15 @@ function cohort_rule_form_html($ruleid, $description, $rulegroup='', $rulename='
     $return .= html_writer::start_tag('td', array('class' => 'rule'));
     $return .= html_writer::start_tag('div', array('id' => 'ruledef'.$ruleid, 'class' => 'fitem ruledef'));
     $return .= $description;
-    $image = html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/edit'), 'alt' => $stredit, 'class'=>'iconsmall'));
-    $url = new moodle_url($CFG->wwwroot . '/totara/cohort/rules/ruledetail.php', array('type' => 'rule', 'id' => $ruleid));
-    $return .= html_writer::link($url, $image, array('title' => $stredit, 'class' => 'ruledef-edit',
-                                                                           'data-ruletype' => $rulegroup . '-' . $rulename,
-                                                                           'data-ruleid' => $ruleid));
+    if (!$brokenrule) {
+        $image = html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/edit'), 'alt' => $stredit, 'class'=>'iconsmall'));
+        $url = new moodle_url($CFG->wwwroot . '/totara/cohort/rules/ruledetail.php', array('type' => 'rule', 'id' => $ruleid));
+        $return .= html_writer::link($url, $image, array('title' => $stredit, 'class' => 'ruledef-edit',
+                                                                               'data-ruletype' => $rulegroup . '-' . $rulename,
+                                                                               'data-ruleid' => $ruleid));
+    }
     $image = html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/delete'), 'alt' => $strdelete, 'class'=>'iconsmall'));
-    $return .= html_writer::link('#', $image, array('title' => $strdelete, 'class' => 'ruledef-delete','data-ruleid'=> $ruleid));
+    $return .= html_writer::link('#', $image, array('title' => $strdelete, 'class' => 'ruledef-delete', 'data-ruleid'=> $ruleid));
 
     $return .= html_writer::end_tag('div');
     $return .= html_writer::end_tag('td');
@@ -246,7 +254,7 @@ function cohort_rules_approve_changes($cohort) {
 
     $transaction = $DB->start_delegated_transaction();
 
-    // Mark current active cohort collection as obsolete
+    // Mark current active cohort collection as obsolete.
     $todb = new stdClass;
     $todb->id = $cohort->activecollectionid;
     $todb->status = COHORT_COL_STATUS_OBSOLETE;
@@ -254,10 +262,10 @@ function cohort_rules_approve_changes($cohort) {
     $todb->modifierid = $USER->id;
     $DB->update_record('cohort_rule_collections', $todb);
 
-    // Copy current draft cohort collection
+    // Copy current draft cohort collection.
     $dcollid = cohort_rules_clone_collection($cohort->draftcollectionid, COHORT_COL_STATUS_DRAFT_UNCHANGED, false);
 
-    // Mark current draft cohort collection as active
+    // Mark current draft cohort collection as active.
     $todb = new stdClass;
     $todb->id = $cohort->draftcollectionid;
     $todb->status = COHORT_COL_STATUS_ACTIVE;
@@ -265,7 +273,7 @@ function cohort_rules_approve_changes($cohort) {
     $todb->modifierid = $USER->id;
     $DB->update_record('cohort_rule_collections', $todb);
 
-    // Update cohort
+    // Update cohort.
     $todb = new stdClass;
     $todb->id = $cohort->id;
     $todb->activecollectionid = $cohort->draftcollectionid;
@@ -307,7 +315,7 @@ function cohort_rules_delete_collection($collectionid, $usetrans=true) {
         $transaction = $DB->start_delegated_transaction();
     }
 
-    // Delete rule params
+    // Delete rule params.
     $sql = "DELETE FROM {cohort_rule_params}
          WHERE ruleid IN (
             SELECT cr.id FROM {cohort_rules} cr
@@ -318,7 +326,7 @@ function cohort_rules_delete_collection($collectionid, $usetrans=true) {
         )";
     $DB->execute($sql, array($collectionid));
 
-    // Delete rules
+    // Delete rules.
     $sql = "DELETE FROM {cohort_rules}
         WHERE rulesetid IN(
             SELECT crs.id FROM {cohort_rulesets} crs
@@ -327,10 +335,10 @@ function cohort_rules_delete_collection($collectionid, $usetrans=true) {
 
     $DB->execute($sql, array($collectionid));
 
-    // Delete rulesets
+    // Delete rulesets.
     $DB->delete_records('cohort_rulesets', array("rulecollectionid" => $collectionid));
 
-    // Finally, delete rule collection
+    // Finally, delete rule collection.
     $DB->delete_records('cohort_rule_collections', array('id' => $collectionid));
 
     if ($usetrans) {
@@ -392,7 +400,7 @@ function cohort_rules_clone_collection($collid, $status=null, $usetrans=true, $c
 
         $newruleset->id = $DB->insert_record('cohort_rulesets', $newruleset);
 
-        // Create rules for this ruleset
+        // Create rules for this ruleset.
         if (!$rules = $DB->get_records('cohort_rules', array('rulesetid' => $ruleset->id), 'sortorder')) {
             continue;
         }
