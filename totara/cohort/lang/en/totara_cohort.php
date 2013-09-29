@@ -96,6 +96,15 @@ $string['cohortalertoptions_help'] = '
 When multiple options are selected the user can choose their preferred options from the alert dropdown menu.
 
 When no options are selected, the alert function is disabled.';
+$string['cohortbrokenrule'] = '{$a->type} - {$a->name} => This rule is broken';
+$string['cohortbrokenrulesmessage'] = 'Some broken rules have been found.
+While there are broken rules the audience membership will not be updated.
+
+The following dynamic audience needs your attention:
+
+';
+$string['cohortbrokenrulesnotice'] = 'Some broken rules have been found. While there are broken rules the audience membership will not be updated';
+$string['cohortbrokenrulesubject'] = 'Some broken rules have been found';
 $string['cohortdateactive'] = 'Active';
 $string['cohortdatealreadyended'] = 'Already ended';
 $string['cohortdatenotyetstarted'] = 'Not yet started';
@@ -220,12 +229,12 @@ $string['error:mustpickonevalue'] = 'You must specify at least one value';
 $string['error:noeditdynamiccohort'] = 'This is a dynamic audience. You cannot directly edit its members.';
 $string['error:noresponsefromajax'] = 'Error: No response from Ajax';
 $string['error:notdynamiccohort'] = 'This is not a dynamic audience.';
+$string['error:novisibleaudiencesselected'] = 'Audiences must be added when using the option "Visible to members of the selected audiences" is selected';
 $string['error:rulemissing'] = 'A required parameter (rule) was missing';
 $string['error:rulemissingparams'] = 'This rule is not defined.';
 $string['error:startafterfinish'] = 'Start date must not be later than finish date';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
 $string['error:visiblelearningdisabled'] = 'Visible learning is not enabled.';
-$string['error:novisibleaudiencesselected'] = 'Audiences must be added when using the option "Visible to members of the selected audiences" is selected';
 $string['excludeuserswho'] = 'Exclude users who';
 $string['excludeuserswho_help'] = 'This setting lets you choose types of users to exclude from having plans generated for them
 

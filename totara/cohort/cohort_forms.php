@@ -25,7 +25,7 @@
  * This file defines the form for editing the list of rules for a dynamic cohort.
  */
 if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+    die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
 }
 
 require_once($CFG->dirroot . '/lib/formslib.php');
@@ -41,7 +41,7 @@ class cohort_rules_form extends moodleform {
         $mform->addElement('hidden', 'id', $cohort->id);
         $mform->setType('id', PARAM_INT);
 
-        // The menu for the operator between rulesets
+        // The menu for the operator between rulesets.
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'cohortoperator', '', get_string('cohortoperatorandlabel', 'totara_cohort'), COHORT_RULES_OP_AND);
         $radiogroup[] =& $mform->createElement('radio', 'cohortoperator', '', get_string('cohortoperatororlabel', 'totara_cohort'), COHORT_RULES_OP_OR);
@@ -76,7 +76,7 @@ class cohort_rules_form extends moodleform {
 
             $mform->addElement('header', "cohort-ruleset-header{$id}", $ruleset->name);
 
-            // The menu for the operator in this ruleset
+            // The menu for the operator in this ruleset.
             $radiogroup = array();
             $radioname = "rulesetoperator[{$id}]";
             $radiogroup[] =& $mform->createElement('radio', $radioname, '', get_string('cohortoperatorandlabel', 'totara_cohort'), COHORT_RULES_OP_AND);
@@ -89,9 +89,21 @@ class cohort_rules_form extends moodleform {
             $firstrule = true;
             foreach ($ruleset->rules as $rulerec) {
                 $rule = cohort_rules_get_rule_definition($rulerec->ruletype, $rulerec->name);
-                $rule->sqlhandler->fetch($rulerec->id);
-                $rule->ui->setParamValues($rule->sqlhandler->paramvalues);
-                $mform->addElement('html', cohort_rule_form_html($rulerec->id, $rule->ui->getRuleDescription($rulerec->id, false), $rulerec->ruletype, $rulerec->name, $firstrule, $ruleset->operator));
+                if ($rule) {
+                    $rule->sqlhandler->fetch($rulerec->id);
+                    $rule->ui->setParamValues($rule->sqlhandler->paramvalues);
+                    $mform->addElement('html', cohort_rule_form_html($rulerec->id,
+                        $rule->ui->getRuleDescription($rulerec->id, false), $rulerec->ruletype, $rulerec->name, $firstrule,
+                        $ruleset->operator, false));
+                } else { // Broken rule.
+                    $a = new stdClass();
+                    $a->type = $rulerec->ruletype;
+                    $a->name = $rulerec->name;
+                    $content = get_string('cohortbrokenrule', 'totara_cohort', $a);
+                    $description = html_writer::tag('b', $content, array('class' => 'error'));
+                    $mform->addElement('html', cohort_rule_form_html($rulerec->id, $description, $rulerec->ruletype, $rulerec->name,
+                        $firstrule, $ruleset->operator, true));
+                }
                 $firstrule = false;
             }
             $mform->addElement('html', '</table></div>');
