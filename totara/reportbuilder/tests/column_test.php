@@ -1437,8 +1437,15 @@ class columns_test extends reportcache_advanced_testcase {
                 $message .= "Column option : Test {$column->type}_{$column->value} column\n";
                 $message .= "SQL : {$sql[0]}\n";
                 $message .= "SQL Params : " . var_export($sql[1], true) . "\n";
+
+                // Get the column option object.
+                $columnoption = reportbuilder::get_single_item($rb->columnoptions, $column->type, $column->value);
+
                 if ($title == "User" || $title == "Courses" ||
-                        in_array($sourcename, array('dp_certification_history', 'program_completion'))) {
+                    in_array($sourcename, array('dp_certification_history', 'program_completion')) ||
+                    // The answer here depends on if the column we are testing
+                    // is grouped or not.
+                    ($sourcename == 'program_overview' && $columnoption->grouping == 'none')) {
                     $this->assertEquals('2', $rb->get_full_count(), $message);
                 }
                 else{

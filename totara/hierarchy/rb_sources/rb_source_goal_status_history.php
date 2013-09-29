@@ -246,6 +246,32 @@ class rb_source_goal_status_history extends rb_base_source {
         return $goals;
     }
 
+    /**
+     * Filter scale value (status).
+     *
+     * @return array
+     */
+    public function rb_filter_scalevalue() {
+        global $DB, $CFG;
+        require_once($CFG->dirroot . "/totara/hierarchy/prefix/goal/lib.php");
+
+        $scalevalues = array();
+
+        $sql = 'SELECT gsv.*, gs.name AS scalename
+                  FROM {goal_scale_values} gsv
+                  JOIN {goal_scale} gs
+                    ON gsv.scaleid = gs.id
+                 ORDER BY gs.name, gsv.sortorder';
+
+        $goalscalevalues = $DB->get_records_sql($sql);
+
+        foreach ($goalscalevalues as $goalscalevalue) {
+            $scalevalues[$goalscalevalue->id] = $goalscalevalue->scalename . ': ' . $goalscalevalue->name;
+        }
+
+        return $scalevalues;
+    }
+
 
     public function rb_display_scope($scope) {
         $scopes = $this->rb_filter_scope();
