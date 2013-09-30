@@ -31,16 +31,16 @@ M.totara_review_settings = M.totara_review_settings || {
     init: function(Y, args) {
         $('#id_hasmultifield').on('click', function() {
             if ($('#id_hasmultifield').is(':checked')) {
-                $('#multiplefields').show();
+                $('#id_multiplefields').show();
             } else {
-                $('#multiplefields').hide();
+                $('#id_multiplefields').hide();
             }
         });
 
         if ($('#id_hasmultifield').is(':checked')) {
-            $('#multiplefields').show();
+            $('#id_multiplefields').show();
         } else {
-            $('#multiplefields').hide();
+            $('#id_multiplefields').hide();
         }
     }
 
