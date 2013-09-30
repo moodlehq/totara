@@ -34,6 +34,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 require_once($CFG->dirroot . '/totara/completionimport/lib.php');
+require_once($CFG->dirroot . '/totara/certification/lib.php');
 require_once($CFG->libdir . '/csvlib.class.php');
 
 define('CERT_HISTORY_IMPORT_USERS', 11);
@@ -147,7 +148,7 @@ class importcertification_testcase extends advanced_testcase {
         $generatorstop = time();
 
         $importstart = time();
-        import_completions($filename, $importname, $importstart);
+        import_completions($filename, $importname, $importstart, true);
         $importstop = time();
 
         $importtablename = get_tablename($importname);

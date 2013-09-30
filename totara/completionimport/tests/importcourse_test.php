@@ -120,7 +120,7 @@ class importcourse_testcase extends advanced_testcase {
         $generatorstop = time();
 
         $importstart = time();
-        import_completions($filename, $importname, $importstart);
+        import_completions($filename, $importname, $importstart, true);
         $importstop = time();
 
         $importtablename = get_tablename($importname);

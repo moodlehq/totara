@@ -743,6 +743,7 @@ function import_course($importname, $importtime) {
  */
 function import_certification($importname, $importtime) {
     global $DB, $CFG;
+    require_once($CFG->dirroot . '/totara/program/program.class.php');
 
     $errors = array();
     $updateids = array();
@@ -1167,9 +1168,10 @@ function move_sourcefile($filename, $tempfilename) {
  * @param string $tempfilename name of temporary csv file
  * @param string $importname name of import
  * @param int $importtime time of import
+ * @param bool $quiet If true, suppress outputting messages (for tests).
  * @return boolean
  */
-function import_completions($tempfilename, $importname, $importtime) {
+function import_completions($tempfilename, $importname, $importtime, $quiet = false) {
     global $OUTPUT, $DB;
 
     // Increase memory limit
@@ -1180,22 +1182,28 @@ function import_completions($tempfilename, $importname, $importtime) {
 
     if ($errors = check_fields_exist($tempfilename, $importname)) {
         // Source file header doesn't have the required fields
-        echo $OUTPUT->notification(get_string('missingfields', 'totara_completionimport'), 'notifyproblem');
-        echo html_writer::alist($errors);
+        if (!$quiet) {
+            echo $OUTPUT->notification(get_string('missingfields', 'totara_completionimport'), 'notifyproblem');
+            echo html_writer::alist($errors);
+        }
         unlink($tempfilename);
         return false;
     }
 
     if ($errors = import_csv($tempfilename, $importname, $importtime)) {
         // Something went wrong with import
-        echo $OUTPUT->notification(get_string('csvimportfailed', 'totara_completionimport'), 'notifyproblem');
-        echo html_writer::alist($errors);
+        if (!$quiet) {
+            echo $OUTPUT->notification(get_string('csvimportfailed', 'totara_completionimport'), 'notifyproblem');
+            echo html_writer::alist($errors);
+        }
         unlink($tempfilename);
         return false;
     }
     // Don't need the temporary file any more
     unlink($tempfilename);
-    echo $OUTPUT->notification(get_string('csvimportdone', 'totara_completionimport'), 'notifysuccess');
+    if (!$quiet) {
+        echo $OUTPUT->notification(get_string('csvimportdone', 'totara_completionimport'), 'notifysuccess');
+    }
 
     // Data checks - no errors returned, it adds errors to each row in the import table
     import_data_checks($importname, $importtime);
@@ -1210,11 +1218,15 @@ function import_completions($tempfilename, $importname, $importtime) {
     $functionname = 'import_' . $importname;
     $errors = $functionname($importname, $importtime);
     if (!empty($errors)) {
-        echo $OUTPUT->notification(get_string('error:' . $functionname, 'totara_completionimport'), 'notifyproblem');
-        echo html_writer::alist($errors);
+        if (!$quiet) {
+            echo $OUTPUT->notification(get_string('error:' . $functionname, 'totara_completionimport'), 'notifyproblem');
+            echo html_writer::alist($errors);
+        }
         return false;
     }
-    echo $OUTPUT->notification(get_string('dataimportdone', 'totara_completionimport', $importname), 'notifysuccess');
+    if (!$quiet) {
+        echo $OUTPUT->notification(get_string('dataimportdone', 'totara_completionimport', $importname), 'notifysuccess');
+    }
 
     // End the transaction
     $transaction->allow_commit();
