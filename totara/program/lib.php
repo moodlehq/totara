@@ -1431,8 +1431,14 @@ function prog_update_completion($userid, program $program = null) {
         // Get the program content.
         $program_content = $program->get_content();
 
-        // Get the program course sets in the groups that they exist in the program.
-        $courseset_groups = $program_content->get_courseset_groups();
+        if ($program->certifid) {
+            // If this is a certification program get course sets for groups on the path the user is on.
+            $certificationpath = get_certification_path_user($program->certifid, $userid);
+            $courseset_groups = $program_content->get_courseset_groups($certificationpath);
+        } else {
+            // If standard program get the courseset groups (just one path).
+            $courseset_groups = $program_content->get_courseset_groups(CERTIFPATH_STD);
+        }
 
         // First check if the program is already marked as complete for this user and do nothing if it is.
         if ($program->is_program_complete($userid)) {
