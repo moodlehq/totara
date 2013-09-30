@@ -417,7 +417,7 @@ class rb_source_user extends rb_base_source {
         $links .= $rol_link.'&nbsp;|&nbsp;';
         $links .= $appraisal_link.'&nbsp;|&nbsp;';
         $links .= $feedback_link.'&nbsp;|&nbsp;';
-        $links .= $goal_link;
+        $links .= $goal_link.'&nbsp;|&nbsp;';
         $links .= $required_link;
 
         $table = new html_table();
