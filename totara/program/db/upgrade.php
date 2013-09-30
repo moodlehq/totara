@@ -200,20 +200,14 @@ function xmldb_totara_program_upgrade($oldversion) {
             $dbman->add_key($table, $key);
         }
 
-        // Define field certifpath to be added to prog_courseset.
+        // Define field certifpath to be added to prog_courseset. Default is CERTIFPATH_STD.
         $table = new xmldb_table('prog_courseset');
-        $field = new xmldb_field('certifpath', XMLDB_TYPE_INTEGER, '2', null, null, null, '0', 'label');
+        $field = new xmldb_field('certifpath', XMLDB_TYPE_INTEGER, '2', null, null, null, '1', 'label');
 
         // Conditionally launch add field certifpath
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
-
-        // On upgrade, any existing records will be program ones rather than certification,
-        // and certifpath will have been initialised to 0.
-        // Change these to CERTIFPATH_STD.
-        require_once($CFG->dirroot.'/totara/certification/lib.php');
-        $DB->set_field_select('prog_courseset', 'certifpath', CERTIFPATH_STD, ' certifpath = 0 ');
 
         // Define field certifcount to be added to course_categories.
         $table = new xmldb_table('course_categories');
