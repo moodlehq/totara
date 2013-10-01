@@ -50,10 +50,10 @@ class question_coursefromplan extends review {
 
         $itemsql = 'SELECT COUNT(item.id)
                       FROM {dp_plan_course_assign} item
-                      JOIN {dp_plan} plan
-                        ON item.planid = plan.id
-                     WHERE plan.userid = ?
-                       AND plan.status >= ?
+                      JOIN {dp_plan} pl
+                        ON item.planid = pl.id
+                     WHERE pl.userid = ?
+                       AND pl.status >= ?
                        AND item.approved >= ?';
         return $DB->count_records_sql($itemsql, array($this->subjectid, DP_PLAN_STATUS_APPROVED, DP_APPROVAL_APPROVED));
     }
@@ -72,14 +72,14 @@ class question_coursefromplan extends review {
         if (!empty($relatedanswerids)) {
             list($answerssql, $answerids) = $DB->get_in_or_equal($relatedanswerids);
 
-            $sql = 'SELECT reviewdata.*, course.fullname, plan.name AS planname
+            $sql = 'SELECT reviewdata.*, course.fullname, pl.name AS planname
                      FROM {'.$this->prefix.'_review_data} reviewdata
                      LEFT JOIN {dp_plan_course_assign} pca
                        ON reviewdata.itemid = pca.id
                      LEFT JOIN {course} course
                        ON course.id = pca.courseid
-                     LEFT JOIN {dp_plan} plan
-                       ON plan.id = pca.planid
+                     LEFT JOIN {dp_plan} pl
+                       ON pl.id = pca.planid
                     WHERE reviewdata.'.$this->prefix.'questfieldid = ?
                       AND reviewdata.'.$this->storage->answerfield.' '.$answerssql.'
                     ORDER BY reviewdata.itemid';
@@ -113,10 +113,10 @@ class question_coursefromplan extends review {
 
         $sql = "SELECT item.id
                   FROM {dp_plan_course_assign} item
-                  JOIN {dp_plan} plan
-                    ON item.planid = plan.id
+                  JOIN {dp_plan} pl
+                    ON item.planid = pl.id
                  WHERE item.id " . $itemssql . "
-                   AND plan.userid = ?";
+                   AND pl.userid = ?";
 
         $new_items = $DB->get_records_sql($sql, $params);
 

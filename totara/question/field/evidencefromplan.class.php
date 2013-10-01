@@ -48,12 +48,12 @@ class question_evidencefromplan extends review {
 
         $itemsql = 'SELECT COUNT(item.id)
                       FROM {dp_plan_evidence_relation} link
-                      JOIN {dp_plan} plan
-                        ON link.planid = plan.id
+                      JOIN {dp_plan} pl
+                        ON link.planid = pl.id
                       JOIN {dp_plan_evidence} item
                         ON link.evidenceid = item.id
-                     WHERE plan.userid = ?
-                       AND plan.status >= ?';
+                     WHERE pl.userid = ?
+                       AND pl.status >= ?';
         return $DB->count_records_sql($itemsql, array($this->subjectid, DP_PLAN_STATUS_APPROVED));
     }
 
@@ -110,10 +110,10 @@ class question_evidencefromplan extends review {
 
         $sql = "SELECT item.evidenceid
                   FROM {dp_plan_evidence_relation} item
-                  JOIN {dp_plan} plan
-                    ON item.planid = plan.id
+                  JOIN {dp_plan} pl
+                    ON item.planid = pl.id
                  WHERE item.evidenceid " . $itemssql . "
-                   AND plan.userid = ?";
+                   AND pl.userid = ?";
 
         $new_items = $DB->get_records_sql($sql, $params);
 
