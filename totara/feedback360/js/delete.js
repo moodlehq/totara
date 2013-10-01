@@ -46,5 +46,4 @@ $(document).on('click', '.external_record_del', function (event) {
     }
     newval.push(email);
     cancelled.val(newval.join(','));
-//    console.log(cancelled.val());
 });
