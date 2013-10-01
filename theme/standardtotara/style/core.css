@@ -829,6 +829,13 @@ input[type="checkbox"] {
 .dir-rtl #dialog-tabs ul li.ui-state-default {
     float: right;
 }
+.dir-rtl div.ui-dialog .ui-dialog-buttonpane {
+    text-align: right;
+    padding: .3em .4em .5em 1em;
+}
+.dir-rtl div.ui-dialog .ui-dialog-buttonpane  .ui-dialog-buttonset {
+    float: left;
+}
 .dir-rtl div.ui-dialog .ui-dialog-buttonpane button {
     float: left;
 }

@@ -80,7 +80,11 @@ M.totara_review = M.totara_review || {
           totaraDialog_handler_treeview_multiselect.prototype.first_load.call(this);
 
           // add our extra button
-          var $button = $('<button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" style="float: right;"><span class="ui-button-text">' + M.util.get_string('selectall','totara_question') + '</span></button>');
+          if (right_to_left()) {
+            var $button = $('<button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" style="float: left;"><span class="ui-button-text">' + M.util.get_string('selectall','totara_question') + '</span></button>');
+          } else {
+            var $button = $('<button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" style="float: right;"><span class="ui-button-text">' + M.util.get_string('selectall','totara_question') + '</span></button>');
+          }
 
           $button.click(function() {
             handler._selectall();
