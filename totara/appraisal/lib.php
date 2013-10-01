@@ -3424,7 +3424,7 @@ class appraisal_question extends question_storage {
                     ON (' . sql_cast2char('aqf.id') . ' = ' . $DB->sql_compare_text('aqfr.param1') . '
                     AND aqfr.datatype = ?)
                  WHERE aqf.appraisalstagepageid = ?
-                 GROUP BY aqf.id, aqf.name, aqf.datatype
+                 GROUP BY aqf.id, aqf.name, aqf.datatype, aqf.sortorder
                  ORDER BY aqf.sortorder';
         return $DB->get_records_sql($sql, array('redisplay', $pageid));
     }
