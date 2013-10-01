@@ -259,29 +259,26 @@ class question_goals extends reviewrating {
 
             /* Note that this join is done in this order so that fullname will be null if the goal_record
              * or goal_personal records have been deleted. */
-            $sql = 'SELECT reviewdata.*, g.fullname
+            $sql = 'SELECT reviewdata.*, item.fullname
                       FROM {'.$this->prefix.'_review_data} reviewdata
-                      LEFT JOIN {goal_record} gr
-                        ON reviewdata.itemid = gr.id
-                      LEFT JOIN {goal} g
-                        ON gr.goalid = g.id
-                       AND gr.userid = ?
-                       AND gr.deleted = 0
+                      LEFT JOIN (SELECT gr.id, ? AS scope, g.fullname
+                                   FROM {goal_record} gr
+                                   JOIN {goal} g
+                                     ON gr.goalid = g.id
+                                  WHERE gr.userid = ?
+                                    AND gr.deleted = 0
+                                  UNION
+                                 SELECT pg.id, ? AS scope, pg.name AS fullname
+                                   FROM {goal_personal} pg
+                                  WHERE pg.userid = ?
+                                    AND pg.deleted = 0) item
+                        ON reviewdata.itemid = item.id
+                       AND reviewdata.scope = item.scope
                      WHERE reviewdata.'.$this->prefix.'questfieldid = ?
-                       AND reviewdata.'.$this->storage->answerfield.' '.$answerssql.'
-                       AND reviewdata.scope = ?
-                     UNION
-                    SELECT reviewdata.*, pg.name as fullname
-                      FROM {'.$this->prefix.'_review_data} reviewdata
-                      LEFT JOIN {goal_personal} pg
-                        ON reviewdata.itemid = pg.id
-                       AND pg.deleted = 0
-                     WHERE reviewdata.'.$this->prefix.'questfieldid = ?
-                       AND reviewdata.'.$this->storage->answerfield.' '.$answerssql.'
-                       AND reviewdata.scope = ?';
+                       AND reviewdata.'.$this->storage->answerfield.' '.$answerssql;
 
-            $params = array_merge(array($this->subjectid, $this->id), $answerids, array(goal::SCOPE_COMPANY),
-                    array($this->id), $answerids, array(goal::SCOPE_PERSONAL));
+            $params = array_merge(array(goal::SCOPE_COMPANY, $this->subjectid,
+                                        goal::SCOPE_PERSONAL, $this->subjectid, $this->id), $answerids);
 
             $items = $DB->get_records_sql($sql, $params);
             foreach ($items as $item) {
