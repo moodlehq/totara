@@ -45,7 +45,7 @@ $maturity = MATURITY_STABLE;            // this version's maturity level
 // This can be used for modules to set a minimum functionality requirement.
 
 $TOTARA = new stdClass();
-$TOTARA->version    = '2.4.10+';       // Please keep as string.
-$TOTARA->build      = '20130917.00';   // Please keep as string.
+$TOTARA->version    = '2.4.11';       // Please keep as string.
+$TOTARA->build      = '20131001.00';  // Please keep as string.
 $TOTARA->release    = "{$TOTARA->version} (Build: {$TOTARA->build})";
 

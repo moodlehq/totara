@@ -3,6 +3,32 @@
 
 Totara LMS Changelog
 
+Release 2.4.11 (1st October 2013):
+==================================================
+
+New Features:
+    T-10421    Added additional registration check/site version message
+
+Improvements:
+    T-11218    Improved readability in course/program categories when using mymobile totara theme
+    T-11086    Refactored program assignment code to reduce POST vars
+    T-11240    Added time modified column/filter to report builder user reports
+
+Bug Fixes:
+    T-11227    Fixed warning in Totara upgrade function
+    T-11226    Fixed plans showing up under required learning header for mylearning pages
+    T-11219    Included library file for hierarchy fields in Reportbuilder
+    T-11230    Fixed completion language string in Learning Plans
+    T-11285    Made constant names less general in the utils library
+    T-11304    Fixed javascript problem when selecting organisation/position filters in My Reports
+    T-11299    Fixed display of empty completion dates in program completion reports
+    T-11253    Added support for audience rules that have outdated criteria
+    T-11256    Fixed capacity of waitlist for facetoface sessions when overbooking is turned off
+    T-10607    Added ajax updates to attendee tab in facetoface sessions
+    T-11310    Fixed cron error when syncing audiences into course groups
+    T-10904    Fixed display of tags while editing wiki pages
+
+
 Release 2.4.10 (17th September 2013):
 ==================================================
 
