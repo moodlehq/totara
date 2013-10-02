@@ -1393,6 +1393,7 @@ class columns_test extends reportcache_advanced_testcase {
      */
     function test_columns_and_filters($usecache) {
         global $SESSION, $DB;
+        $this->preventResetByRollback();
         // loop through installed sources
         foreach (reportbuilder::get_source_list(true) as $sourcename => $title) {
             // echo '<h3>Title : [' . $title . '] Sourcename : [' . $sourcename . ']</h3>' . "\n";
