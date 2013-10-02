@@ -55,7 +55,7 @@ $sql = "SELECT *
          WHERE itemid = ?
            AND appraisalquestfieldid = ?
            AND appraisalroleassignmentid " . $rolessql . "
-           AND content <> ''";
+           AND NOT " . $DB->sql_isempty('appraisal_review_data', 'content', true, true);
 $params = array_merge(array($reviewdata->itemid, $reviewdata->appraisalquestfieldid), $roleids);
 if ($reviewdata->scope > 0) {
     $sql .= ' AND scope = ?';
