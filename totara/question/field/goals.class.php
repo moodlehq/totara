@@ -234,7 +234,7 @@ class question_goals extends reviewrating {
                 foreach ($scalevalues as $scalevalue) {
                     $options[$scalevalue->id] = $scalevalue->name;
                 }
-                $name = $this->get_prefix_form() . '_scalevalueid_' . $item->itemid;
+                $name = $this->get_prefix_form() . '_scalevalueid_' . $item->itemid . '_' . $item->scope;
                 $form->addElement('select', $name, get_string('goalstatus', 'totara_question'), $options);
                 $form->setDefault($name, $scalevalueid);
             } else {
@@ -459,7 +459,7 @@ class question_goals extends reviewrating {
             if ($canupdatecompanygoals || $canupdatepersonalgoals) {
                 $goals = $this->get_review_items();
                 foreach ($goals as $goal) {
-                    $name = $this->get_prefix_form() . '_scalevalueid_' . $goal->itemid;
+                    $name = $this->get_prefix_form() . '_scalevalueid_' . $goal->itemid . '_' . $goal->scope;
                     if (isset($data->$name)) {
                         $scalevalueid = $data->$name;
                         $todb = new stdClass();
