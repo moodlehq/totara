@@ -1,12 +1,19 @@
 .empty {
     height: 0px;
 }
-.previewbutton{
+
+.dir-ltr div.previewer {
     float: right;
 }
+.dir-rtl div.previewer {
+    float: left;
+}
 
-.requestbutton{
+.dir-ltr div.requestbutton {
     float: right;
+}
+.dir-rtl div.requestbutton {
+    float: left;
 }
 
 .quest-container {

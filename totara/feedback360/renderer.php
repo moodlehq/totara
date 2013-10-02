@@ -48,7 +48,7 @@ class totara_feedback360_renderer extends plugin_renderer_base {
         $preview_url = new moodle_url('/totara/feedback360/feedback.php', $preview_params);
         $preview_str = get_string('preview', 'totara_feedback360');
         $preview_button = new single_button($preview_url, $preview_str, 'get');
-        $preview_button->class = 'previewbutton';
+        $preview_button->class .= ' previewer';
         $preview_button->add_action(new popup_action('click', new moodle_url($preview_url, $preview_params), 'previewpopup',
                 array('height' => 800, 'width' => 1000)));
         return $this->render($preview_button);
