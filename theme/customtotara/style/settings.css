@@ -1,8 +1,11 @@
 a {
-	color: [[setting:linkcolor]];
+    color: [[setting:linkcolor]];
+}
+.mform .btn-cancel {
+    color: [[setting:linkcolor]];
 }
 a:visited {
-	color: [[setting:linkvisitedcolor]];
+    color: [[setting:linkvisitedcolor]];
 }
 a:hover {
     color: [[setting:linkcolor-dark]];
