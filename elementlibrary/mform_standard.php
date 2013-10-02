@@ -139,6 +139,7 @@ class standard_form_elements extends moodleform {
         $mform->addElement('text', 'textfield', 'Text field');
         $mform->setDefault('textfield', 'Default text');
         $mform->disabledIf('textfield', 'disableelements', 'checked');
+        $mform->setType('textfield', PARAM_CLEANHTML);
 
         $mform->addElement('textarea', 'textareafield', 'Textarea field', 'wrap="virtual" rows="20" cols="50"');
         $mform->setDefault('textareafield', 'Default text');
@@ -151,6 +152,7 @@ class standard_form_elements extends moodleform {
         $mform->addElement('static', 'datedes', '', 'Don\'t forget to style the popup dialog');
         $mform->addElement('url', 'urlfield', 'URL');
         $mform->disabledIf('urlfield', 'disableelements', 'checked');
+        $mform->setType('urlfield', PARAM_URL);
 
         $mform->addElement('header', null, 'Another Header element');
 

@@ -634,8 +634,11 @@ class appraisal_message_form extends moodleform {
         }
 
         $mform->addElement('hidden', 'id')->setValue($appraisalid);
+        $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'messageid')->setValue($messageid);
+        $mform->setType('messageid', PARAM_INT);
         $mform->addElement('hidden', 'action')->setValue('edit');
+        $mform->setType('action', PARAM_ALPHA);
 
         // Events list -> appraisal activation, + all stages.
         $eventslist = array('0' => get_string('eventactivation', 'totara_appraisal'));
@@ -708,9 +711,11 @@ class appraisal_message_form extends moodleform {
         $mform->addElement('text', 'messagetitle[0]',
                 get_string('eventmessagetitle', 'totara_appraisal') . $required,
                 array('class' => 'appraisal-event-title hide-disabled'));
+        $mform->setType('messagetitle[0]', PARAM_CLEANHTML);
         $mform->addElement('textarea', 'messagebody[0]',
                 get_string('eventmessagebody', 'totara_appraisal') . $required,
                 array('class' => 'appraisal-event-body hide-disabled'));
+        $mform->setType('messagebody[0]', PARAM_CLEANHTML);
         $mform->disabledIf('messagetitle[0]', 'messagetoall', 'eq', 'each');
         $mform->disabledIf('messagebody[0]', 'messagetoall', 'eq', 'each');
 
@@ -719,9 +724,11 @@ class appraisal_message_form extends moodleform {
             $mform->addElement('text', "messagetitle[$role]",
                     get_string('eventmessageroletitle', 'totara_appraisal', $name) . $required,
                     array('class' => 'appraisal-event-title hide-disabled'));
+            $mform->setType("messagetitle[$role]", PARAM_CLEANHTML);
             $mform->addElement('textarea', "messagebody[$role]",
                     get_string('eventmessagerolebody', 'totara_appraisal', $name) . $required,
                     array('class' => 'appraisal-event-body hide-disabled'));
+            $mform->setType("messagebody[$role]", PARAM_CLEANHTML);
             $mform->disabledIf("messagetitle[$role]", 'messagetoall', 'eq', 'all');
             $mform->disabledIf("messagebody[$role]", 'messagetoall', 'eq', 'all');
             $mform->disabledIf("messagetitle[$role]", "rolegrp[$role]");
@@ -826,8 +833,11 @@ class appraisal_print_stages_form extends moodleform {
         $subjectid = $this->_customdata['subjectid'];
 
         $mform->addElement('hidden', 'appraisalid')->setValue($appraisalid);
+        $mform->setType('appraisalid', PARAM_INT);
         $mform->addElement('hidden', 'role')->setValue($role);
+        $mform->setType('role', PARAM_INT);
         $mform->addElement('hidden', 'subjectid')->setValue($subjectid);
+        $mform->setType('subjectid', PARAM_INT);
 
         $stageselect = array();
         foreach ($stages as $stagedata) {

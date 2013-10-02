@@ -38,6 +38,7 @@ class f2f_room_form extends moodleform {
         $roomid = $this->_customdata['roomid'];
 
         $mform->addElement('hidden', 'id', $roomid);
+        $mform->setType('id', PARAM_INT);
 
         $mform->addElement('text', 'name', get_string('roomname', 'facetoface'), array('size' => '45'));
         $mform->setType('name', PARAM_TEXT);

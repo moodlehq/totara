@@ -71,6 +71,7 @@ class customfield_define_base {
             $form->addHelpButton('forceunique', 'customfieldforceunique', 'totara_customfield');
         } else {
             $form->addElement('hidden', 'forceunique', '0');
+            $form->setType('forceunique', PARAM_INT);
         }
 
         $form->addElement('selectyesno', 'hidden', get_string('visible', 'totara_customfield'));

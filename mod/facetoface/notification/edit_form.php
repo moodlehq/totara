@@ -40,6 +40,7 @@ class mod_facetoface_notification_form extends moodleform {
         $isfrozen = $notification->is_frozen();
 
         $mform->addElement('hidden', 'id', $this->_customdata['id']);
+        $mform->setType('id', PARAM_INT);
 
         // If frozen, display details at top
         // Hide scheduling/recipient selectors for automatic notifications
@@ -51,6 +52,7 @@ class mod_facetoface_notification_form extends moodleform {
             $mform->addElement('static', '', get_string('scheduling', 'facetoface'), $description);
             $mform->addElement('static', '', get_string('recipients', 'facetoface'), $recipients);
             $mform->addElement('hidden', 'type', $notification->type);
+            $mform->setType('type', PARAM_INT);
         } else {
             // For non automatic notifications, display schedule/recipient picker
             $mform->addElement('radio', 'type', get_string('scheduling', 'facetoface'), get_string('sendnow', 'facetoface'), MDL_F2F_NOTIFICATION_MANUAL);

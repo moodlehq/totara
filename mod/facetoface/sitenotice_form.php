@@ -12,6 +12,7 @@ class mod_facetoface_sitenotice_form extends moodleform {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         $mform->addElement('hidden', 'id', $this->_customdata['id']);
+        $mform->setType('id', PARAM_INT);
 
         $mform->addElement('text', 'name', get_string('name'), 'maxlength="255" size="50"');
         $mform->addRule('name', null, 'required', null, 'client');

@@ -41,6 +41,7 @@ class mod_certificate_upload_image_form extends moodleform {
         $mform =& $this->_form;
 
         $mform->addElement('hidden', 'id', $data->id);
+        $mform->setType('id', PARAM_INT);
 
         $bordergroup = array();
         $bordergroup[] = $mform->createElement('header', 'cert_borders', get_string('uplborderdesc', 'mod_certificate'));

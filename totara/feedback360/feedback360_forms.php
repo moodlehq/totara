@@ -415,10 +415,10 @@ class request_select_users extends moodleform {
         $mform->setType('systemnew', PARAM_SEQUENCE);
         // A list of currently assigned system users, used to un-assign.
         $mform->addElement('hidden', 'systemold', '');
-        $mform->setType('systemnew', PARAM_SEQUENCE);
+        $mform->setType('systemold', PARAM_SEQUENCE);
         // A list of existing email assignments.
         $mform->addElement('hidden', 'emailold', '');
-        $mform->setType('emailcancel', PARAM_TEXT);
+        $mform->setType('emailold', PARAM_TEXT);
         // A list of cancelled email assignments.
         $mform->addElement('hidden', 'emailcancel', '');
         $mform->setType('emailcancel', PARAM_TEXT);

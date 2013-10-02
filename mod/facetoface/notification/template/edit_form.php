@@ -37,6 +37,7 @@ class mod_facetoface_notification_template_form extends moodleform {
         $editoroptions = $this->_customdata['editoroptions'];
 
         $mform->addElement('hidden', 'id', $this->_customdata['id']);
+        $mform->setType('id', PARAM_INT);
 
         $mform->addElement('text', 'title', get_string('title', 'facetoface'), array('size' => 50));
         $mform->addRule('title', null, 'required', null, 'client');
