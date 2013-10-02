@@ -91,17 +91,22 @@ class block_facetoface_renderer extends plugin_renderer_base {
                 $location = isset($date->location) ? $date->location : '';
                 $output .= html_writer::tag('td', format_string($location));
             }
+
             $output .= html_writer::start_tag('td');
             if ($date->datetimeknown) {
-                foreach ($date->alldates as $sessiondate) {
+                $sessiondates = $date->alldates;
+                foreach ($sessiondates as $sessiondate) {
                     $sessionobj = facetoface_format_session_times($sessiondate->timestart, $sessiondate->timefinish, $sessiondate->sessiontimezone);
                     if ($sessionobj->startdate == $sessionobj->enddate) {
-                        $output .= $sessionobj->startdate;
+                        $output .= $sessionobj->startdate . html_writer::empty_tag('br');
                     } else {
-                        $output .= $sessionobj->startdate . ' - ' . $sessionobj->enddate;
+                        $output .= $sessionobj->startdate . ' - ' . $sessionobj->enddate . html_writer::empty_tag('br');
                     }
-                    $output .= html_writer::end_tag('td');
-                    $output .= html_writer::start_tag('td');
+                }
+                $output .= html_writer::end_tag('td');
+                $output .= html_writer::start_tag('td');
+                foreach ($sessiondates as $sessiondate) {
+                    $sessionobj = facetoface_format_session_times($sessiondate->timestart, $sessiondate->timefinish, $sessiondate->sessiontimezone);
                     $output .= $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone . html_writer::empty_tag('br');
                 }
             } else {
@@ -110,6 +115,7 @@ class block_facetoface_renderer extends plugin_renderer_base {
                 $output .= html_writer::start_tag('td');
             }
             $output .= html_writer::end_tag('td');
+
             if ($includebookings) {
                 $output .= html_writer::tag('td', html_writer::link($attendeelink.$date->sessionid, (isset($date->nbbookings)? format_string($date->nbbookings) : 0)));
             }
