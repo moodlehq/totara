@@ -55,7 +55,7 @@ if ($iscertif) {
     }
 } else {
     if (has_capability('totara/program:createprogram', $systemcontext)) {
-        admin_externalpage_setup('manageprograms', '', null, $actualurl);
+        admin_externalpage_setup('programmgmt', '', null, $actualurl);
     } else {
         $PAGE->set_context($systemcontext);
         $PAGE->set_url($actualurl);

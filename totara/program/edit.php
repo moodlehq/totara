@@ -48,13 +48,9 @@ $programcontext = $program->get_context();
 // Integrate into the admin tree only if the user can edit programs at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:configureprogram', $systemcontext)) {
-    if ($iscertif) {
-        admin_externalpage_setup('managecertifications', '',
-            array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php', array('context' => $programcontext));
-    } else {
-        admin_externalpage_setup('manageprograms', '',
-            array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php', array('context' => $programcontext));
-    }
+    $adminpage = $iscertif ? 'managecertifications' : 'programmgmt';
+    admin_externalpage_setup($adminpage, '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php',
+                             array('context' => $programcontext));
 } else {
     $PAGE->set_url(new moodle_url('/totara/program/edit.php', array('id' => $id)));
     $PAGE->set_context($programcontext);
