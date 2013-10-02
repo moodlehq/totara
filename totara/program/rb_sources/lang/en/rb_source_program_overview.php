@@ -18,6 +18,7 @@ $string['complete'] = 'Complete';
 $string['incomplete'] = 'Incomplete';
 $string['finalgrade'] = 'Final Grade';
 $string['gradepass'] = 'Grade Pass';
+$string['coursecompletion_completeviarpl'] = 'Complete via RPL';
 $string['coursecompletion_inprogress'] = 'In progress';
 $string['coursecompletion_notyetstarted'] = 'Not yet started';
 $string['coursecompletion_complete'] = 'Complete';
