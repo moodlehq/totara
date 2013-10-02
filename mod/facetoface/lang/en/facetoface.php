@@ -367,7 +367,6 @@ $string['pdroomcapacityexceeded'] = '<strong>Warning:</strong> Note that pre-def
 $string['place'] = 'Room';
 $string['result'] = 'Result';
 $string['return'] = 'Return';
-$string['roomassignedtoanothersession'] = 'Room assigned to another session during the selected session date and time';
 $string['roomdeleted'] = 'Room deleted';
 $string['roomdoesnotexist'] = 'Room does not exist';
 $string['roomisinuse'] = 'Room is in use';

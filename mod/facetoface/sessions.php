@@ -96,7 +96,7 @@ local_js(array(
 $PAGE->requires->string_for_js('save', 'totara_core');
 $PAGE->requires->string_for_js('error:addpdroom-dialognotselected', 'totara_core');
 $PAGE->requires->strings_for_js(array('cancel', 'ok'), 'moodle');
-$PAGE->requires->strings_for_js(array('chooseroom', 'roomassignedtoanothersession', 'pdroomcapacityexceeded'), 'facetoface');
+$PAGE->requires->strings_for_js(array('chooseroom', 'pdroomcapacityexceeded'), 'facetoface');
 
 $display_selected = json_encode(dialog_display_currently_selected(get_string('selected', 'facetoface'), 'addpdroom-dialog'));
 $args = array('args' => '{"sessionid":'.$s.','.

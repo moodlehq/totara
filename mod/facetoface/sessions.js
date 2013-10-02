@@ -215,10 +215,6 @@ totaraDialog_handler_addpdroom.prototype._open = function(alternative_url) {
 totaraDialog_handler_addpdroom.prototype.first_load = function() {
     // Call parent function
     totaraDialog_handler_treeview_singleselect.prototype.first_load.call(this);
-
-    if (!$('div#roomdialognote').length) {
-        $('<div id="roomdialognote" class="helplink">*' + M.util.get_string('roomassignedtoanothersession', 'facetoface') + '</div>').insertAfter($('div#addpdroom-dialog'));
-    }
 }
 
 totaraDialog_handler_addpdroom.prototype.every_load = function() {
@@ -230,8 +226,6 @@ totaraDialog_handler_addpdroom.prototype.every_load = function() {
     // Add footnote flag to all unclickable items, except the currently selected one
     $('span.unclickable').not('#item_'+selected_val).has('a').not('.hasfootnoteflag').each(function() {
         $(this).addClass('hasfootnoteflag');
-        var linktag = $(this).children('a');
-        linktag.text('* ' + linktag.text());
     });
 }
 
