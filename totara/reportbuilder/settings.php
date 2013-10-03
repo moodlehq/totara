@@ -28,7 +28,8 @@
 
 $ADMIN->add('reports',
     new admin_category('totara_reportbuilder',
-    get_string('reportbuilder','totara_reportbuilder'))
+    get_string('reportbuilder','totara_reportbuilder')),
+    'comments'
 );
 // add links to report builder reports
 $ADMIN->add('totara_reportbuilder',

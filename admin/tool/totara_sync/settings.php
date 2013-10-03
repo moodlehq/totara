@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die;
 if (has_capability('tool/totara_sync:manage', $systemcontext)) {
     require_once($CFG->dirroot.'/admin/tool/totara_sync/lib.php');
 
-    $ADMIN->add('root', new admin_category('tool_totara_sync', get_string('pluginname', 'tool_totara_sync')));
+    $ADMIN->add('root', new admin_category('tool_totara_sync', get_string('pluginname', 'tool_totara_sync')), 'development');
     $ADMIN->add('tool_totara_sync', new admin_externalpage('totarasyncsettings',
             get_string('generalsettings', 'tool_totara_sync'),
             "$CFG->wwwroot/admin/tool/totara_sync/admin/settings.php", 'tool/totara_sync:manage'));
