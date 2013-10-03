@@ -168,7 +168,9 @@ if ($data = $form->get_data()) {
         $program_todb->sortorder = !empty($sortorder) ? $sortorder : 0;
         $program_todb->icon = $data->icon;
         $program_todb->exceptionssent = 0;
-        $program_todb->visible = $data->visible;
+        if (isset($data->visible)) {
+            $program_todb->visible = $data->visible;
+        }
         if (isset($data->audiencevisible)) {
             $program_todb->audiencevisible = $data->audiencevisible;
         }
