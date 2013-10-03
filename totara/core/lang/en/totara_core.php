@@ -285,7 +285,7 @@ $string['error:organisationnotselected'] = 'Please select an organisation';
 $string['error:managernotselected'] = 'Please select a manager';
 $string['error:addpdroom-dialognotselected'] = 'Please select a room';
 //My Team strings
-$string['teammembers_text'] = 'All members of your teams are show below.';
+$string['teammembers_text'] = 'All members of your team are shown below.';
 $string['nostaffassigned'] = 'You currently do not have a team.';
 $string['numberofstaff'] = '({$a} staff)';
 //Course Types
