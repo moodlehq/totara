@@ -43,7 +43,7 @@ $guest = guest_user();
 $managers = array();
 if (empty($CFG->tempmanagerrestrictselection)) {
     // All users.
-    $sql = "SELECT u.id,".$DB->sql_fullname('u.firstname', 'u.lastname')." AS fullname
+    $sql = "SELECT u.id, u.email, ".$DB->sql_fullname('u.firstname', 'u.lastname')." AS fullname
               FROM {user} u
              WHERE u.deleted = 0
                AND u.id != ?
@@ -53,7 +53,7 @@ if (empty($CFG->tempmanagerrestrictselection)) {
 } else {
     $currentmanager = totara_get_manager($userid, null, true);
     $currentmanager = empty($currentmanager) ? 0 : $currentmanager->id;
-    $sql = "SELECT DISTINCT u.id, ".$DB->sql_fullname('u.firstname', 'u.lastname')." AS fullname
+    $sql = "SELECT DISTINCT u.id, u.email, ".$DB->sql_fullname('u.firstname', 'u.lastname')." AS fullname
               FROM {pos_assignment} pa
               JOIN {user} u ON pa.managerid = u.id
              WHERE u.deleted = 0
