@@ -34,6 +34,7 @@ $context = context_system::instance();
 require_capability('moodle/cohort:view', $context);
 $canedit = has_capability('moodle/cohort:manage', $context);
 
+$sid    = optional_param('sid', '0', PARAM_INT);
 $id     = optional_param('id', false, PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT);
 $debug  = optional_param('debug', false, PARAM_BOOL);
@@ -58,10 +59,7 @@ if (!$id) {
 
 $cohort = $DB->get_record('cohort', array('id' => $id), '*', MUST_EXIST);
 
-$report = reportbuilder_get_embedded_report(
-    'cohort_associations_visible',
-    array('cohortid' => $id)
-);
+$report = reportbuilder_get_embedded_report('cohort_associations_visible', array('cohortid' => $id), false, $sid);
 
 // Handle a request for export.
 if($format != '') {
@@ -119,9 +117,12 @@ if ($canedit) {
 
 $report->display_search();
 
+// Print saved search buttons if appropriate.
+echo $report->display_saved_search_options();
+
 $report->display_table();
 
 $output = $PAGE->get_renderer('totara_reportbuilder');
-$output->export_select($report->_id);
+$output->export_select($report->_id, $sid);
 
 echo $OUTPUT->footer();

@@ -38,7 +38,7 @@ $debug  = optional_param('debug', false, PARAM_BOOL);
 
 $PAGE->set_context($context);
 
-$report = reportbuilder_get_embedded_report('cohort_orphaned_users', false, $sid);
+$report = reportbuilder_get_embedded_report('cohort_orphaned_users', null, false, $sid);
 // Handle a request for export
 if($format!='') {
 //    add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);

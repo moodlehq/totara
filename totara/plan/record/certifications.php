@@ -32,6 +32,7 @@ require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 
+$sid = optional_param('sid', '0', PARAM_INT);
 $certifid = optional_param('certifid', null, PARAM_INT);
 $history = optional_param('history', null, PARAM_BOOL);
 $userid = optional_param('userid', $USER->id, PARAM_INT);
@@ -94,7 +95,7 @@ if ($history) {
 if ($rolstatus !== 'all') {
     $data['rolstatus'] = $rolstatus;
 }
-if (!$report = reportbuilder_get_embedded_report($shortname, $data)) {
+if (!$report = reportbuilder_get_embedded_report($shortname, $data, false, $sid)) {
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
@@ -148,11 +149,14 @@ echo $renderer->print_description($report->description, $report->_id);
 
 $report->display_search();
 
+// Print saved search buttons if appropriate.
+echo $report->display_saved_search_options();
+
 if ($countfiltered > 0) {
     echo $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
     // export button
-    $renderer->export_select($report->_id);
+    $renderer->export_select($report->_id, $sid);
 }
 
 echo $OUTPUT->container_end();
