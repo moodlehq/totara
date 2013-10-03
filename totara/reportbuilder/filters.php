@@ -199,7 +199,7 @@ function build_filters($id, $fromform) {
         $name = isset($fromform->newfiltername) ? $fromform->newfiltername : '';
         $todb = new stdClass();
         $todb->reportid = $id;
-        $todb->advanced = isset($fromform->newadvanced) ? 1 : 0;
+        $todb->advanced = isset($fromform->newadvanced) ? $fromform->newadvanced : 0;
         $parts = explode('-', $fromform->newfilter);
         $todb->type = $parts[0];
         $todb->value = $parts[1];

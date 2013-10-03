@@ -187,8 +187,8 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
                         customname.attr('name', 'customname'+fid);
                         nametext.attr('id', 'id_filtername'+fid);
                         nametext.attr('name', 'filtername'+fid);
-                        advancedCheck.attr('name', 'filter'+fid);
-                        advancedCheck.attr('id', 'id_filter'+fid);
+                        advancedCheck.attr('name', 'advanced'+fid);
+                        advancedCheck.attr('id', 'id_advanced'+fid);
                         advancedCheck.closest('tr').attr('fid', fid);
 
                         // Append a new filter select box
