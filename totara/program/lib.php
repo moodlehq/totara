@@ -99,7 +99,6 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
 
     $params[] = $userid;
     $params[] = STATUS_PROGRAM_COMPLETE;
-    $params[] = CERTIFTYPE_PROGRAM;
     if (!$showhidden) {
         $where .= " AND p.visible = ?";
         $params[] = 1;
