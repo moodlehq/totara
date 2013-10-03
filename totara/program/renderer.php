@@ -607,7 +607,7 @@ class totara_program_renderer extends plugin_renderer_base {
             $displayoptions = $chelper->get_programs_display_options();
             if (!$chelper->get_programs_display_option('nodisplay') && $coursecat->id != 0) {
                 $programs = prog_get_programs($coursecat->id, 'p.sortorder ASC',
-                        'p.id, p.sortorder, p.shortname, p.fullname, p.visible', $type, $displayoptions);
+                        'p.id, p.category, p.sortorder, p.shortname, p.fullname, p.visible, p.icon', $type, $displayoptions);
             }
             if ($viewmoreurl = $chelper->get_programs_display_option('viewmoreurl')) {
                 // The option for 'View more' link was specified, display more link.

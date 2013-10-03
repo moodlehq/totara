@@ -1717,13 +1717,14 @@ class program_in_list implements IteratorAggregate {
      */
     public function has_summary() {
         if (isset($this->record->hassummary)) {
-            return !empty($this->record->hassummary);
+            return $this->record->hassummary;
         }
         if (!isset($this->record->summary)) {
             // We need to retrieve summary.
             $this->__get('summary');
         }
-        return !empty($this->record->summary);
+        $this->record->hassummary = !empty($this->record->summary);
+        return $this->record->hassummary;
     }
 
     /**
