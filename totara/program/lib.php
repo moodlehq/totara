@@ -1653,7 +1653,7 @@ function prog_get_programs_count($category, $type = 'program', $options = array(
     if ($category->id == 0) {
         return 0;
     }
-    $programs = prog_get_programs($category->id, 'p.sortorder ASC', 'p.*', $type, $options);
+    $programs = prog_get_programs($category->id, '', 'p.id', $type, $options);
     return count($programs);
 }
 

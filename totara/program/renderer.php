@@ -606,15 +606,19 @@ class totara_program_renderer extends plugin_renderer_base {
             $programs = array();
             $displayoptions = $chelper->get_programs_display_options();
             if (!$chelper->get_programs_display_option('nodisplay') && $coursecat->id != 0) {
-                $programs = prog_get_programs($coursecat->id, 'p.sortorder ASC', 'p.*', $type, $displayoptions);
+                $programs = prog_get_programs($coursecat->id, 'p.sortorder ASC',
+                        'p.id, p.sortorder, p.shortname, p.fullname, p.visible', $type, $displayoptions);
             }
             if ($viewmoreurl = $chelper->get_programs_display_option('viewmoreurl')) {
-                // The option for 'View more' link was specified, display more link (if it is link to category view page, add category id).
+                // The option for 'View more' link was specified, display more link.
+                // If it is link to category view page, add category id.
                 if ($viewmoreurl->compare(new moodle_url('/totara/program/index.php'), URL_MATCH_BASE)) {
-                    $chelper->set_programs_display_option('viewmoreurl', new moodle_url($viewmoreurl, array('categoryid' => $coursecat->id)));
+                    $chelper->set_programs_display_option('viewmoreurl',
+                            new moodle_url($viewmoreurl, array('categoryid' => $coursecat->id)));
                 }
             }
-            $content .= $this->coursecat_programs($chelper, $programs, prog_get_programs_count($coursecat, $type, $displayoptions));
+            $content .= $this->coursecat_programs($chelper, $programs,
+                    prog_get_programs_count($coursecat, $type, $displayoptions));
         }
 
         if ($showprogramsauto) {
