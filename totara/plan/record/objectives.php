@@ -60,7 +60,7 @@
 
     $PAGE->set_context($context);
     $PAGE->set_url(new moodle_url('/totara/plan/record/objectives.php',
-        array('userid' => $userid, 'status' => $rolstatus)));
+        array('userid' => $userid, 'status' => $rolstatus, 'format' => $format)));
     $PAGE->set_pagelayout('noblocks');
 
     $renderer = $PAGE->get_renderer('totara_reportbuilder');
@@ -84,15 +84,14 @@
         print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
     }
 
-    $log_url = "record/objectives.php?format={$format}&amp;status={$rolstatus}&amp;userid={$userid}";
-
+    $logurl = $PAGE->url->out_as_local_url();
     if ($format != '') {
-        add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
+        add_to_log(SITEID, 'rbembedded', 'record export', $logurl, $report->fullname);
         $report->export_data($format);
         die;
     }
 
-    add_to_log(SITEID, 'plan', 'record view', $log_url, $report->fullname);
+    add_to_log(SITEID, 'rbembedded', 'record view', $logurl, $report->fullname);
 
     $report->include_js();
 

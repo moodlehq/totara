@@ -61,16 +61,14 @@ if (!$report = reportbuilder_get_embedded_report($shortname, $data, false, $sid)
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
-$query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
-$log_url = 'bookings.php'.$query_string;
-
+$logurl = $PAGE->url->out_as_local_url();
 if ($format != '') {
-    add_to_log(SITEID, 'my', 'bookings export', $log_url, $report->fullname);
+    add_to_log(SITEID, 'rbembedded', 'bookings export', $logurl, $report->fullname);
     $report->export_data($format);
     die;
 }
 
-add_to_log(SITEID, 'my', 'bookings view', $log_url, $report->fullname);
+add_to_log(SITEID, 'rbembedded', 'bookings view', $logurl, $report->fullname);
 
 $report->include_js();
 

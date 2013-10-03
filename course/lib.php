@@ -145,6 +145,9 @@ function make_log_url($module, $url) {
         case 'grade':
             $url = "/grade/$url";
             break;
+        case 'rbembedded':
+            $url = $url;
+            break;
         default:
             $url = "/mod/$module/$url";
             break;

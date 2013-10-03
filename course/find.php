@@ -32,6 +32,7 @@ $format = optional_param('format','', PARAM_TEXT); // export format
 $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('noblocks');
 $PAGE->set_totara_menu_selected('course');
+$PAGE->set_url('/course/find.php');
 
 if ($CFG->forcelogin) {
     require_login();
@@ -46,22 +47,20 @@ if (!$report = reportbuilder_get_embedded_report($shortname, null, false, $sid))
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
+$logurl = $PAGE->url->out_as_local_url();
 if ($format != '') {
-    add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id=' . $report->_id,
-        $report->fullname);
+    add_to_log(SITEID, 'rbembedded', 'export report', $logurl, $report->fullname);
     $report->export_data($format);
     die;
 }
 
-add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='. $report->_id,
-    $report->fullname);
+add_to_log(SITEID, 'rbembedded', 'view report', $logurl, $report->fullname);
 
 $report->include_js();
 
 $fullname = format_string($report->fullname);
 $pagetitle = format_string(get_string('report','totara_core').': '.$fullname);
 
-$PAGE->set_url('/course/find.php');
 $PAGE->set_pagelayout('admin');
 $PAGE->navbar->add($fullname, new moodle_url("/course/find.php"));
 $PAGE->navbar->add(get_string('search'));

@@ -68,7 +68,7 @@ if ($USER->id != $userid && !totara_is_manager($userid) && !has_capability('tota
 
 $PAGE->set_context($context);
 $PAGE->set_url(new moodle_url('/totara/plan/record/programs_recurring.php',
-    array('userid' => $userid, 'status' => $rolstatus)));
+    array('userid' => $userid, 'status' => $rolstatus, 'format' => $format)));
 $PAGE->set_pagelayout('noblocks');
 
 $renderer = $PAGE->get_renderer('totara_reportbuilder');
@@ -91,16 +91,14 @@ $data = array(
 
 $report = reportbuilder_get_embedded_report($shortname, $data, false, $sid);
 
-$query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
-$log_url = 'record/programs_recurring.php'.$query_string;
-
+$logurl = $PAGE->url->out_as_local_url();
 if ($format != '') {
-    add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
+    add_to_log(SITEID, 'rbembedded', 'record export', $logurl, $report->fullname);
     $report->export_data($format);
     die;
 }
 
-add_to_log(SITEID, 'plan', 'record view', $log_url, $report->fullname);
+add_to_log(SITEID, 'rbembedded', 'record view', $logurl, $report->fullname);
 
 $report->include_js();
 

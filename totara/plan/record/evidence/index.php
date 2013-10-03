@@ -44,6 +44,7 @@ if (!$user = $DB->get_record('user', array('id' => $userid))) {
 $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('noblocks');
+$PAGE->set_url('/totara/plan/record/evidence/index.php', array('userid' => $userid, 'format' => $format, 'status' => $rolstatus));
 
 if ($USER->id != $userid && !totara_is_manager($userid) && !has_capability('totara/plan:accessanyplan', context_system::instance())) {
     print_error('error:cannotviewpage', 'totara_plan');
@@ -65,15 +66,14 @@ if ($rolstatus != 'all') {
 }
 $report = reportbuilder_get_embedded_report('plan_evidence', $reportfilters, false, $sid);
 
-$log_url = "record/evidence/index.php?format={$format}&amp;status={$rolstatus}&amp;userid={$userid}";
-
+$logurl = $PAGE->url->out_as_local_url();
 if ($format != '') {
-    add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
+    add_to_log(SITEID, 'rbembedded', 'record export', $logurl, $report->fullname);
     $report->export_data($format);
     die;
 }
 
-add_to_log(SITEID, 'plan', 'record view', $log_url, $report->fullname);
+add_to_log(SITEID, 'rbembedded', 'record view', $logurl, $report->fullname);
 
 $report->include_js();
 
@@ -85,7 +85,6 @@ $PAGE->navbar->add($strsubheading);
 $PAGE->set_title($strheading);
 $PAGE->set_heading($strheading);
 $PAGE->set_button($report->edit_button());
-$PAGE->set_url('/totara/plan/record/evidence/index.php', array('userid' => $userid));
 $PAGE->set_totara_menu_selected($menuitem);
 
 echo $OUTPUT->header();

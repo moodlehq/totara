@@ -53,16 +53,14 @@ if (!$report = reportbuilder_get_embedded_report($shortname, null, false, $sid))
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
-$querystring = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
-$logurl = 'bookings.php'.$querystring;
-
+$logurl = $PAGE->url->out_as_local_url();
 if ($format != '') {
-    add_to_log(SITEID, 'my', 'teammembers export', $logurl, $report->fullname);
+    add_to_log(SITEID, 'rbembedded', 'teammembers export', $logurl, $report->fullname);
     $report->export_data($format);
     die;
 }
 
-add_to_log(SITEID, 'my', 'teammembers report view', 'teammembers.php');
+add_to_log(SITEID, 'rbembedded', 'teammembers report view', $logurl, $report->fullname);
 
 $report->include_js();
 

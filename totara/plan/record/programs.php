@@ -103,15 +103,14 @@
     }
     $report = reportbuilder_get_embedded_report($shortname, $data, false, $sid);
 
-    $log_url = $PAGE->url->out_as_local_url();
-
+    $logurl = $PAGE->url->out_as_local_url();
     if ($format != '') {
-        add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
+        add_to_log(SITEID, 'rbembedded', 'record export', $logurl, $report->fullname);
         $report->export_data($format);
         die;
     }
 
-    add_to_log(SITEID, 'plan', 'record view', $log_url, $report->fullname);
+    add_to_log(SITEID, 'rbembedded', 'record view', $logurl, $report->fullname);
 
     $report->include_js();
 

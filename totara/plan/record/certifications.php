@@ -100,13 +100,14 @@ if (!$report = reportbuilder_get_embedded_report($shortname, $data)) {
 
 $log_url = "record/certifications.php?format={$format}&amp;status={$rolstatus}&amp;userid={$userid}&amp;certifid={$certifid}";
 
+$logurl = $PAGE->url->out_as_local_url();
 if ($format != '') {
-    add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
+    add_to_log(SITEID, 'rbembedded', 'record export', $logurl, $report->fullname);
     $report->export_data($format);
     die;
 }
 
-add_to_log(SITEID, 'plan', 'record view', $log_url, $report->fullname);
+add_to_log(SITEID, 'rbembedded', 'record view', $logurl, $report->fullname);
 
 $report->include_js();
 

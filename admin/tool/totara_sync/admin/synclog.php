@@ -78,15 +78,14 @@ if ($delete != 'none' && confirm_sesskey()) {
     }
 }
 
+$logurl = $PAGE->url->out_as_local_url();
 if ($format != '') {
-    add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id=' . $report->_id,
-        $report->fullname);
+    add_to_log(SITEID, 'rbembedded', 'export report', $logurl, $report->fullname);
     $report->export_data($format);
     die;
 }
 
-add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='. $report->_id,
-    $report->fullname);
+add_to_log(SITEID, 'rbembedded', 'view report', $logurl, $report->fullname);
 
 $report->include_js();
 
