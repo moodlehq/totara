@@ -170,11 +170,18 @@ function xmldb_totara_core_install() {
         $dbman->add_field($table, $field);
     }
 
-    // Define field renewalstatus to be added to course_completions
+    // Define fields status and renewalstatus to be added to course_completions.
     $table = new xmldb_table('course_completions');
-    $field = new xmldb_field('renewalstatus', XMLDB_TYPE_INTEGER, '2', null, null, null, '0', 'status');
+    $field = new xmldb_field('status', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0');
 
-    // Conditionally launch add field renewalstatus
+    // Conditionally launch add field status.
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('renewalstatus', XMLDB_TYPE_INTEGER, '2', null, null, null, '0');
+
+    // Conditionally launch add field renewalstatus.
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
@@ -435,6 +442,13 @@ function xmldb_totara_core_install() {
     $field = new xmldb_field('completionprogressonview', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, 'enablecompletion');
 
     // Conditionally launch add field completionprogressonview.
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('audiencevisible', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, 2);
+
+    // Conditionally launch add field audiencevisible to course table.
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
