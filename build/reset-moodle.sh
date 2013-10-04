@@ -90,7 +90,7 @@ git checkout t2-release-2.4
 git reset --hard origin/t2-release-2.4
 
 echo "Upgrade to Totara"
-sudo -u www-data php /var/lib/jenkins/jobs/${JOB_NAME}/workspace/admin/cli/upgrade.php --non-interactive
+sudo -u www-data php /var/lib/jenkins/jobs/${JOB_NAME}/workspace/admin/cli/upgrade.php --non-interactive --allow-unstable
 
 echo "Initialize phpunit environment"
 php admin/tool/phpunit/cli/init.php

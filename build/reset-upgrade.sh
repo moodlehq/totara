@@ -34,4 +34,4 @@ SALT=`grep passwordsaltmain /var/lib/jenkins/jobs/${PREBUILDNAME}/workspace/conf
 sed "s/###PASSWORDSALTMAINGOESHERE###/${SALT}/g" ../config-template.php > config.php
 
 echo "Run the CLI-Upgrade script"
-sudo -u www-data php /var/lib/jenkins/jobs/${JOB_NAME}/workspace/admin/cli/upgrade.php --non-interactive
+sudo -u www-data php /var/lib/jenkins/jobs/${JOB_NAME}/workspace/admin/cli/upgrade.php --non-interactive --allow-unstable
