@@ -92,12 +92,12 @@ M.totara_question_ratingnumeric = M.totara_question_ratingnumeric || {
       if (right_to_left()) {
         $slider.css('float', 'right');
         $slider.before('<span id="' + sliderName + '_minVal" style="display:inline-block; margin-left:5px; width:20px; text-align:left; float:right;">' + minVal + '</span>');
-        $slider.after('<span id="' + sliderName + '_currentVal" style="display:inline-block; width:' + labelWidth + '; text-align:center; float:right; clear:both;">' + defaultVal || minVal + '</span>')
+        $slider.after('<span id="' + sliderName + '_currentVal" style="display:inline-block; width:' + labelWidth + '; text-align:center; float:right; clear:both;">' + (defaultVal || minVal) + '</span>');
         $slider.after('<span id="' + sliderName + '_maxVal" style="display:inline-block; margin-right:5px; width:20px; text-align:left; float:right;">' + maxVal + '</span>');
       } else {
         $slider.css('float', 'left');
         $slider.before('<span id="' + sliderName + '_minVal" style="display:inline-block; margin-right:5px; width:20px; text-align:right; float:left;">' + minVal + '</span>');
-        $slider.after('<span id="' + sliderName + '_currentVal" style="display:inline-block; width:' + labelWidth + '; text-align:center; float:left; clear:both;">' + defaultVal || minVal + '</span>')
+        $slider.after('<span id="' + sliderName + '_currentVal" style="display:inline-block; width:' + labelWidth + '; text-align:center; float:left; clear:both;">' + (defaultVal || minVal) + '</span>');
         $slider.after('<span id="' + sliderName + '_maxVal" style="display:inline-block; margin-left:5px; width:20px; text-align:left; float:left;">' + maxVal + '</span>');
       }
     });
