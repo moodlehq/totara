@@ -14,7 +14,7 @@ $string['choosefile'] = 'Choose file to upload';
 $string['completionimport'] = 'Upload Completion Records';
 $string['completionimport_certification'] = 'Completion import: Certification status';
 $string['completionimport_course'] = 'Completion import: Course status';
-$string['completionimport:import'] = 'Completiom import';
+$string['completionimport:import'] = 'Completion import';
 $string['course_results'] = 'Course results';
 $string['courseblankrefs'] = 'Blank course shortname and course ID number';
 $string['csvdateformat'] = 'CSV Date format';
@@ -89,7 +89,7 @@ $string['runimport'] = 'Run the import';
 $string['unknownfield'] = 'Unknown column \'{$a->columnname}\' in file \'{$a->filename}\'';
 $string['unreadablefile'] = 'File is unreadable : {$a}';
 $string['uploadcertification'] = 'Upload certification csv';
-$string['uploadcertificationintro'] = 'This will import historical records from a csv file into the certifications.
+$string['uploadcertificationintro'] = 'This will import historical records from a csv file as certifications.
 Any certifications that do not exist in the current system will be created as evidence in the record of learning.
 
 The csv file should contain the following columns in the first line of the file
@@ -97,7 +97,7 @@ The csv file should contain the following columns in the first line of the file
 {$a}
 ';
 $string['uploadcourse'] = 'Upload course csv';
-$string['uploadcourseintro'] = 'This will import historical completion records from a csv file and enrol users onto the specificed courses.
+$string['uploadcourseintro'] = 'This will import historical completion records from a csv file and enrol users onto the specified courses.
 Any courses that do not exist in the current system will be created as evidence in the record of learning.
 
 The csv file should contain the following columns in the first line of the file
@@ -108,5 +108,5 @@ $string['uploadsuccess'] = 'Uploaded files successfully';
 $string['uploadvia_directory'] = 'Alternatively upload csv files via a directory on the server';
 $string['uploadvia_form'] = 'Alternatively upload csv files via a form';
 $string['usernamenotfound'] = 'User name not found';
-$string['validfilenames'] = 'Please note, these are the only valid file names, anything else will be ignored:';
+$string['validfilenames'] = 'Please note, these are the only valid file names, anything else will be ignored :';
 $string['viewreports'] = 'View import errors';
