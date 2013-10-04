@@ -739,7 +739,7 @@ function totara_cohort_check_and_update_dynamic_cohort_members($courseid, $verbo
     }
 
     // Looking for cohorts with broken rules.
-    $cohortwithbrokenrules = totara_cohort_broken_rules($courseid, null, true);
+    $cohortwithbrokenrules = totara_cohort_broken_rules($courseid, null, $verbose);
 
     if ($verbose) {
         mtrace('... ' . count($cohortwithbrokenrules) . ' Audience(s) with broken rule(s) found.');
