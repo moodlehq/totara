@@ -403,6 +403,31 @@ function recertify_expires_stage() {
 }
 
 /**
+ * Get time of last completed certification course
+ *
+ * @param integer $certificationid
+ * @param integer $userid
+ * @return integer
+ */
+function certif_get_content_completion_time($certificationid, $userid) {
+    global $DB;
+    $courses = find_courses_for_certif($certificationid, 'c.id');
+    $courselist = array_keys($courses);
+    list($incourse, $params) = $DB->get_in_or_equal($courselist, SQL_PARAMS_NAMED);
+
+    $sql = "SELECT MAX(timecompleted) AS maxtimecompleted
+            FROM {course_completions}
+            WHERE course $incourse
+              AND userid = :userid";
+    $params['userid'] = $userid;
+    $completion = $DB->get_record_sql($sql, $params);
+    if (!$completion) {
+        return 0;
+    }
+    return $completion->maxtimecompleted;
+}
+
+/**
  * Create/update certif_completion record at start of path (assign or complete stages)
  *
  * @param integer $certificationid
@@ -430,12 +455,17 @@ function write_certif_completion($certificationid, $userid, $certificationpath =
     $todb->certifpath = $certificationpath;
     if ($certificationpath == CERTIFPATH_RECERT) {
         $todb->status = CERTIFSTATUS_COMPLETED;
+        $lastcompleted = certif_get_content_completion_time($certificationid, $userid);
+        // If no courses completed, maintain default behaviour.
+        if (!$lastcompleted) {
+            $lastcompleted = time();
+        }
         // Base date is now if COMPLETION option set  (or if first re-certification (where timexpires would be 0)
         // else its the expired date (ie the full active period)
-        $base = get_certiftimebase($certification->recertifydatetype, $certificationcompletion->timeexpires, $now);
+        $base = get_certiftimebase($certification->recertifydatetype, $certificationcompletion->timeexpires, $lastcompleted);
         $todb->timeexpires = get_timeexpires($base, $certification->activeperiod);
         $todb->timewindowopens = get_timewindowopens($todb->timeexpires, $certification->windowperiod);
-        $todb->timecompleted = $now;
+        $todb->timecompleted = $lastcompleted;
     } else { // CERT
         $todb->status =  CERTIFSTATUS_ASSIGNED;
         // Window/expires not relevant for CERTIFPATH_CERT as should be doing in program 'due' time.
