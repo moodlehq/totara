@@ -62,49 +62,6 @@ class totara_assign_goal extends totara_assign_core {
         return $grouptypes;
     }
 
-
-    public function get_assignable_grouptype_names() {
-        $return = array();
-        foreach (self::get_assignable_grouptypes() as $grouptype) {
-            $grouptypeobj = self::load_grouptype($grouptype);
-            $return[$grouptype] = $grouptypeobj->get_grouptype_displayname($grouptype);
-        }
-        return $return;
-    }
-
-    public function delete_assigned_group($grouptype, $deleteid) {
-        if (!in_array($grouptype, self::get_assignable_grouptypes())) {
-                print_error('error:assigncannotdeletegrouptypex', 'totara_core');
-        }
-        $grouptypeobj = self::load_grouptype($grouptype);
-        $grouptypeobj->delete($deleteid);
-    }
-
-
-
-    /**
-     * Query child classes to get back combined array of objects of all currently assigned groups.
-     * Array should be passed to module renderer to do the actual display.
-     */
-    public function get_current_assigned_groups() {
-        global $DB;
-
-        $sqlallassignedgroups = '';
-        foreach (self::get_assignable_grouptypes() as $grouptype) {
-            // Instantiate a group object.
-            $grouptypeobj = self::load_grouptype($grouptype);
-            $groupunion = (empty($sqlallassignedgroups)) ? "" : " UNION ";
-            $sqlallassignedgroups .= $groupunion . $grouptypeobj->get_current_assigned_groups_sql($this->moduleinstanceid);
-        }
-        $assignedgroups = $DB->get_records_sql($sqlallassignedgroups, array());
-        foreach ($assignedgroups as $assignedgroup) {
-            $grouptypeobj = self::load_grouptype($assignedgroup->grouptype);
-            $includedids = $grouptypeobj->get_groupassignment_ids($assignedgroup);
-            $assignedgroup->groupusers = $grouptypeobj->get_assigned_user_count($includedids);
-        }
-        return $assignedgroups;
-    }
-
 }
 
 class pos_goal_assign_ui_picker_hierarchy extends totara_assign_ui_picker_hierarchy {

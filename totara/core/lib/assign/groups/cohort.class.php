@@ -179,7 +179,6 @@ class totara_assign_core_grouptype_cohort extends totara_assign_core_grouptype {
         return " SELECT " . $DB->sql_concat("'" . $this->grouptype . "_'", "assignedgroups.id") . " AS id,
                         assignedgroups.id AS assignedgroupid,
                         '{$this->grouptype}' AS grouptype,
-                        '{$this->get_grouptype_displayname()}' AS grouptypename,
                         {$this->grouptype}id AS grouptypeid,
                         0 AS includechildren,
                         source.id AS sourceid,

@@ -176,7 +176,6 @@ class totara_assign_core_grouptype_hierarchy extends totara_assign_core_grouptyp
         return " SELECT " . $DB->sql_concat("'" . $this->grouptype . "_'", "assignedgroups.id") . " AS id,
                         assignedgroups.id AS assignedgroupid,
                         '{$this->grouptype}' AS grouptype,
-                        '{$this->get_grouptype_displayname()}' AS grouptypename,
                         {$this->grouptype}id AS grouptypeid,
                         assignedgroups.includechildren,
                         source.id AS sourceid,

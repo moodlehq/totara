@@ -139,8 +139,8 @@ class totara_assign_core {
      */
     public function get_assignable_grouptype_names() {
         $return = array();
-        foreach (self::get_assignable_grouptypes() as $grouptype) {
-            $grouptypeobj = self::load_grouptype($grouptype);
+        foreach ($this->get_assignable_grouptypes() as $grouptype) {
+            $grouptypeobj = $this->load_grouptype($grouptype);
             $return[$grouptype] = $grouptypeobj->get_grouptype_displayname();
         }
         return $return;
@@ -154,13 +154,13 @@ class totara_assign_core {
      * @return void
      */
     public function delete_assigned_group($grouptype, $deleteid) {
-        if (!in_array($grouptype, self::get_assignable_grouptypes())) {
+        if (!in_array($grouptype, $this->get_assignable_grouptypes())) {
             print_error('error:assigncannotdeletegrouptypex', 'totara_core', $grouptype);
         }
         if ($this->is_locked()) {
             print_error('error:assignmentmoduleinstancelocked', 'totara_core');
         }
-        $grouptypeobj = self::load_grouptype($grouptype);
+        $grouptypeobj = $this->load_grouptype($grouptype);
         $grouptypeobj->delete($deleteid);
     }
 
@@ -206,25 +206,27 @@ class totara_assign_core {
     /**
      * Query child classes to get back combined array of objects of all currently assigned groups.
      * Array should be passed to module renderer to do the actual display.
-     * @access  public
      * @return array of objects
      */
     public function get_current_assigned_groups() {
         global $DB;
 
         $sqlallassignedgroups = '';
-        foreach (self::get_assignable_grouptypes() as $grouptype) {
+        foreach ($this->get_assignable_grouptypes() as $grouptype) {
             // Instantiate a group object.
-            $grouptypeobj = self::load_grouptype($grouptype);
+            $grouptypeobj = $this->load_grouptype($grouptype);
             $groupunion = (empty($sqlallassignedgroups)) ? "" : " UNION ";
             $sqlallassignedgroups .= $groupunion . $grouptypeobj->get_current_assigned_groups_sql($this->moduleinstanceid);
         }
         $assignedgroups = $DB->get_records_sql($sqlallassignedgroups, array());
 
+        $grouptypenames = $this->get_assignable_grouptype_names();
+
         foreach ($assignedgroups as $assignedgroup) {
-            $grouptypeobj = self::load_grouptype($assignedgroup->grouptype);
+            $grouptypeobj = $this->load_grouptype($assignedgroup->grouptype);
             $includedids = $grouptypeobj->get_groupassignment_ids($assignedgroup);
             $assignedgroup->groupusers = $grouptypeobj->get_assigned_user_count($includedids);
+            $assignedgroup->grouptypename = $grouptypenames[$assignedgroup->grouptype];
         }
         return $assignedgroups;
     }
@@ -408,7 +410,7 @@ class totara_assign_core {
         // need to join them together with a UNION, excluding any
         // duplicates.
         foreach ($assignedgroups as $assignedgroup) {
-            $grouptypeobj = self::load_grouptype($assignedgroup->grouptype);
+            $grouptypeobj = $this->load_grouptype($assignedgroup->grouptype);
             list($groupsql, $groupparams) =
                 $grouptypeobj->get_current_assigned_users_sql($assignedgroup);
             $sqls[] = $groupsql;
@@ -450,7 +452,7 @@ class totara_assign_core {
             if (!empty($assignedgroup->includechildren)) {
                 $string .= get_string('assignincludechildren', 'totara_core');
             }
-            $grouptypeobj = self::load_grouptype($assignedgroup->grouptype);
+            $grouptypeobj = $this->load_grouptype($assignedgroup->grouptype);
             $groupids = $grouptypeobj->filter_only_assigned_users($assignedgroup, $userids);
 
             foreach ($groupids as $userid) {
@@ -528,7 +530,7 @@ class totara_assign_core {
         // Iterate over each group.
         $assignedgroups = $this->get_current_assigned_groups();
         foreach ($assignedgroups as $assignedgroup) {
-            $grouptypeobj = self::load_grouptype($assignedgroup->grouptype);
+            $grouptypeobj = $this->load_grouptype($assignedgroup->grouptype);
             $grouptypeobj->duplicate($assignedgroup, $newassign);
         }
     }
