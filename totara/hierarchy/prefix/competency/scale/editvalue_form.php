@@ -58,9 +58,10 @@ class competencyscalevalue_edit_form extends moodleform {
         $mform->addHelpButton('idnumber', 'competencyscalevalueidnumber', 'totara_hierarchy');
         $mform->setType('idnumber', PARAM_TEXT);
 
-        $mform->addElement('text', 'numericscore', get_string('competencyscalevaluenumericalvalue', 'totara_hierarchy'), 'maxlength="100"  size="10"');
+        $mform->addElement('text', 'numericscore', get_string('competencyscalevaluenumericalvalue', 'totara_hierarchy'),
+            'maxlength="12"  size="10"');
         $mform->addHelpButton('numericscore', 'competencyscalevaluenumericalvalue', 'totara_hierarchy');
-        $mform->setType('numericscore', PARAM_INT);
+        $mform->setType('numericscore', PARAM_RAW);
 
         if (competency_scale_is_used($scaleid)) {
            $note = html_writer::tag('span', get_string('proficientvaluefrozen', 'totara_hierarchy'), array('class' => 'notifyproblem'));
@@ -101,9 +102,14 @@ class competencyscalevalue_edit_form extends moodleform {
 
         // Check the numericscore field was either empty or a number
         if (strlen($valuenew->numericscore)) {
+            // Convert to float
+            $valuenew->numericscore = unformat_float($valuenew->numericscore, true);
+
             // Is a number
             if (is_numeric($valuenew->numericscore)) {
-                $valuenew->numericscore = (float)$valuenew->numericscore;
+                if ($valuenew->numericscore < -99999.99999 OR $valuenew->numericscore > 99999.99999) {
+                    $err['numericscore'] = get_string('invalidscalenumericalvalue', 'totara_hierarchy');
+                }
             } else {
                 $err['numericscore'] = get_string('invalidnumeric', 'totara_hierarchy');
             }

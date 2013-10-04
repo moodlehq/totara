@@ -332,6 +332,7 @@ $string['idnumberview'] = 'ID Number';
 $string['includecompetencyevidence'] = 'Include competency evidence';
 $string['invalidevidencetype'] = 'Invalid evidence type';
 $string['invalidnumeric'] = 'Numerical value must be numerical (or not set)';
+$string['invalidscalenumericalvalue'] = 'Numerical value is outside the allowed range';
 $string['itemstoadd'] = 'Items to add';
 $string['linktoscalevalues'] = '<a href="view.php?id={$a}&amp;type=competency">Click here</a> to view/edit the scale values for this competency scale.';
 $string['linktoscalevalues11'] = '<a href="view.php?id={$a}&amp;prefix=competency">Click here</a> to view/edit the scale values for this competency scale.';
@@ -670,7 +671,7 @@ $string['organisationframeworks_help'] = 'An **Organisational Framework** is set
 You can set up multiple organisational frameworks. For example: set up a framework for subdivisions or subsidiaries of a business.';
 $string['competencytype_help'] = 'Administrators can create and assign types of competencies. If a competency is assigned a type it inherits any custom fields that have been assigned to that type. This allows you to organise meta-data relating to your competencies and only show the fields that each sort of competency needs.';
 $string['competencyshortname_help'] = 'Competency short name is the quick reference name of the competency and can be used for display purposes.';
-$string['competencyscalevaluenumericalvalue_help'] = 'Scale value numerical value is the numerical value associated with the scale value.';
+$string['competencyscalevaluenumericalvalue_help'] = 'Scale value numerical value is the numerical value associated with the scale value. The scale value must be within the range -99999.99999 to 99999.99999 with no more than 5 decimal places.';
 $string['competencyscalevaluedescription_help'] = 'A longer description of the competency scale value';
 $string['competencytemplatefullname_help'] = 'Template full name is the complete title of the competency template being set up.';
 $string['competencytemplategeneral_help'] = 'A **Competency Template** is a way of grouping competencies from one competency framework together.
