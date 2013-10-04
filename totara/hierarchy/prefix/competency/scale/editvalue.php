@@ -94,6 +94,7 @@ if ($value->id == 0 && $scale_used) {
 $value->descriptionformat = FORMAT_HTML;
 $value = file_prepare_standard_editor($value, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
                                           'totara_hierarchy', 'comp_scale_values', $value->id);
+$value->numericscore = isset($value->numericscore) ? format_float($value->numericscore, 5, true, true) : '';
 $valueform = new competencyscalevalue_edit_form(null, array('scaleid' => $scale->id, 'id' => $id));
 $valueform->set_data($value);
 
@@ -107,6 +108,7 @@ if ($valueform->is_cancelled()) {
 
     $valuenew->timemodified = time();
     $valuenew->usermodified = $USER->id;
+    $valuenew->numericscore = unformat_float($valuenew->numericscore);
 
     if (!strlen($valuenew->numericscore)) {
         $valuenew->numericscore = null;
