@@ -218,7 +218,7 @@ function import_csv($tempfilename, $importname, $importtime) {
             FROM {{$tablename}}
             WHERE importuserid = :userid
             AND timecreated = :timecreated
-            AND importerrormsg = :importerrormsg
+            AND " . $DB->sql_compare_text('importerrormsg') . " = :importerrormsg
             ORDER BY id DESC";
     $params = array('userid' => $USER->id, 'timecreated' => $importtime, 'importerrormsg' => 'emptyrow;');
     $emptyrows = $DB->get_records_sql($sql, $params);
