@@ -877,7 +877,7 @@ function totara_cohort_check_and_update_dynamic_cohort_members($courseid, progre
     }
 
     // Looking for cohorts with broken rules.
-    $cohortwithbrokenrules = totara_cohort_broken_rules($courseid, null, true);
+    $cohortwithbrokenrules = totara_cohort_broken_rules($courseid, null, $trace);
 
     $trace->output('... ' . count($cohortwithbrokenrules) . ' Audience(s) with broken rule(s) found.');
     $trace->output('updating dynamic cohort members...');
@@ -1367,17 +1367,15 @@ function totara_cohort_get_visible_learning_sql($table, $field, $instancetype = 
  *
  * @param int $courseid one course, empty means all
  * @param int $cohortid one cohort, empty means all
- * @param bool $verbose verbose CLI output
+ * @param progress_trace $trace
  * @return array $cohortwithbrokenrules list of cohorts with broken rules
  */
-function totara_cohort_broken_rules($courseid, $cohortid, $verbose) {
+function totara_cohort_broken_rules($courseid, $cohortid, progress_trace $trace) {
     global $DB, $CFG;
     require_once($CFG->dirroot . '/totara/core/utils.php');
     $cohortwithbrokenrules = array();
 
-    if ($verbose) {
-        mtrace('Checking audiences with broken rules...');
-    }
+    $trace->output('Checking audiences with broken rules...');
 
     if (empty($courseid)) {
         if (empty($cohortid)) {
