@@ -236,8 +236,8 @@ class rb_filter_date extends rb_filter_type {
         if ($daysafter and $daysbefore) {
             $uniqueparamdaysafter = rb_unique_param('fdaysafter');
             $uniqueparamdaysbefore = rb_unique_param('fdaysbefore');
-            $result = "$resdaysafter AND {$query} <= :{$uniqueparamdaysafter}
-                OR $resdaysbefore AND {$query} >= :{$uniqueparamdaysbefore}";
+            $result = "($resdaysafter AND {$query} <= :{$uniqueparamdaysafter}
+                OR $resdaysbefore AND {$query} >= :{$uniqueparamdaysbefore})";
             $params[$uniqueparamdaysafter] = $daysafter;
             $params[$uniqueparamdaysbefore] = $daysbefore;
             return array($result, $params);
