@@ -42,10 +42,10 @@ class rb_source_dp_certification_history extends rb_base_source {
      */
     public function __construct() {
         global $DB;
-        $currentunique = $DB->sql_concat("'current'", 'id');
+        $activeunique = $DB->sql_concat("'active'", 'id');
         $historyunique = $DB->sql_concat("'history'", 'id');
-        $sql = '(SELECT ' . $currentunique . ' AS id,
-                1 AS current,
+        $sql = '(SELECT ' . $activeunique . ' AS id,
+                1 AS active,
                 id AS completionid,
                 certifid,
                 userid,
@@ -54,7 +54,7 @@ class rb_source_dp_certification_history extends rb_base_source {
                 FROM {certif_completion}
                 UNION
                 SELECT ' . $historyunique . ' AS id,
-                0 AS current,
+                0 AS active,
                 id AS completionid,
                 certifid,
                 userid,
@@ -149,9 +149,9 @@ class rb_source_dp_certification_history extends rb_base_source {
 
         $columnoptions[] = new rb_column_option(
                 'base',
-                'current',
+                'active',
                 get_string('current', 'rb_source_dp_certification_history'),
-                'base.current',
+                'base.active',
                 array(
                     'displayfunc' => 'yes_or_no',
                 )
@@ -228,7 +228,7 @@ class rb_source_dp_certification_history extends rb_base_source {
 
         $filteroptions[] = new rb_filter_option(
                 'base',
-                'current',
+                'active',
                 get_string('current', 'rb_source_dp_certification_history'),
                 'select',
                 array(
@@ -306,8 +306,8 @@ class rb_source_dp_certification_history extends rb_base_source {
                 'base.certifid'
         );
         $paramoptions[] = new rb_param_option(
-                'current',
-                'base.current'
+                'active',
+                'base.active'
         );
         $paramoptions[] = new rb_param_option(
                 'visible',

@@ -48,7 +48,7 @@ class rb_plan_certifications_history_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'base',
-                'value' => 'current',
+                'value' => 'active',
                 'heading' => get_string('current', 'rb_source_dp_certification_history'),
             ),
             array(
@@ -71,7 +71,7 @@ class rb_plan_certifications_history_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'base',
-                'value' => 'current',
+                'value' => 'active',
                 'advanced' => 0,
             ),
             array(
