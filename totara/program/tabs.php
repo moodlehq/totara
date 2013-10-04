@@ -28,8 +28,10 @@ if (!defined('MOODLE_INTERNAL')) {
 
 $id = optional_param('id', 0, PARAM_INT);
 $edit = optional_param('edit', 'off', PARAM_TEXT);
-
-$iscertif = ($DB->get_field('prog', 'certifid', array('id' => $id)) ? 1 : 0);
+$iscertif = optional_param('iscertif', 0, PARAM_BOOL);
+if ($id) {
+    $iscertif = ($DB->get_field('prog', 'certifid', array('id' => $id)) ? 1 : 0);
+}
 
 if (!isset($currenttab)) {
     $currenttab = 'details';
@@ -111,7 +113,7 @@ if (has_capability('totara/program:handleexceptions', $context) && ($exceptions 
 }
 
 if (!$id) {
-    $inactive += array('overview', 'content', 'assignments', 'messages');
+    $inactive += array('overview', 'content', 'assignments', 'messages', 'certification');
 }
 
 $tabs = array($toprow);
