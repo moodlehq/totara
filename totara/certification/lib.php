@@ -159,22 +159,21 @@ function totara_certification_cron() {
 /**
  * Assign certification to user
  *
- * There are 2 main steps
- * - check if user has already completed 'cert' path - and complete certification if so.
- * - if not, assign to cert path to do initial certification
+ * Assign to cert path to do initial certification.
+ * Note: If learner has prior completion of courses in the program, they are assigned to the CERT path here.
+ * When cron invokes program competion (assuming all courses in the program are completed),
+ * they will be set on RECERT path in the program completion event handler
  *
  * @param integer $certificationid
  * @param integer $userid
  */
 function assign_certification_stage($certificationid, $userid) {
     global $DB;
-    // prior completion assignment:
-    // This is handled by program cron completing the certif and invoking the completion event
 
     // Current assignment:
     // When an assignment is updated - this event (sometimes) gets called too
     // the changed data is program competion (due) date - which does not affect certif_completion
-    // so we just need to check if already exists
+    // so we just need to check if already exists.
     //
     // Assignment completion
     // Relative date added   - not called
@@ -457,11 +456,22 @@ function write_certif_completion($certificationid, $userid, $certificationpath =
         $todb->status = CERTIFSTATUS_COMPLETED;
         $lastcompleted = certif_get_content_completion_time($certificationid, $userid);
         // If no courses completed, maintain default behaviour.
+        // TODO check if needed - can a program be completed with no courses completed?
         if (!$lastcompleted) {
             $lastcompleted = time();
         }
-        // Base date is now if COMPLETION option set  (or if first re-certification (where timexpires would be 0)
-        // else its the expired date (ie the full active period)
+        // The base date is 'now' if the COMPLETION option set (or if first re-certification (where timexpires would be 0))
+        // else its the expired date (ie at the end of the full certification period).
+        //
+        // Prior learning:
+        // Normally when the program completion event is called (and hence this function) we just need to record the curent date-time
+        // and calculate the new expiry etc.
+        // However with prior learning, where courses may have been completed before being added to a program,
+        // the preferred date is the date of the last course. As there is currently no way to differentiate between a user/program
+        // which is prior learning and not, we have to do this check for all program completions - rather than just using
+        // the current time.
+        // Note: the completion date in prog_completion will still be 'now' - not the last course-completion date so will
+        // differ from certification completion
         $base = get_certiftimebase($certification->recertifydatetype, $certificationcompletion->timeexpires, $lastcompleted);
         $todb->timeexpires = get_timeexpires($base, $certification->activeperiod);
         $todb->timewindowopens = get_timewindowopens($todb->timeexpires, $certification->windowperiod);
