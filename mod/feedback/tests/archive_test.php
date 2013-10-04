@@ -79,7 +79,6 @@ class mod_feedback_archive_testcase extends advanced_testcase {
         // feedback_item_textfield->save_item() function depends on form->get_data().
         $this->assertEquals(0, $DB->count_records('feedback_item'));
         $item = new stdClass();
-        $item->id = 0;
         $item->feedback = $feedback->id;
         $item->template = 0;
         $item->name = 'What is 1+1';

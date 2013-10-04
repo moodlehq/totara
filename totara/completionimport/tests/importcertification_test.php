@@ -66,7 +66,6 @@ class importcertification_testcase extends advanced_testcase {
         $until = strtotime('+1 day', $now);
         for ($i = 1; $i <= CERT_HISTORY_IMPORT_CERTIFICATIONS; $i++) {
             $program = new stdClass();
-            $program->id = $i;
             $program->certifid = $i;
             $program->fullname = 'Certification Program ' . $i;
             $program->availablefrom = $from;
@@ -92,8 +91,8 @@ class importcertification_testcase extends advanced_testcase {
         // Then some certifications
         $this->assertEquals(0, $DB->count_records('certif'), "Certif table isn't empty");
         $sql = "INSERT INTO {certif}
-                SELECT certifid AS id,
-                        " . CERTIFTYPE_PROGRAM . " AS learningcomptype,
+                    (learningcomptype, activeperiod, windowperiod, recertifydatetype, timemodified)
+                SELECT  " . CERTIFTYPE_PROGRAM . " AS learningcomptype,
                         '1 year' AS activeperiod,
                         '4 week' AS windowperiod,
                         " . CERTIFRECERT_COMPLETION . " AS recertifydatetype,
