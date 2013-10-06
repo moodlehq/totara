@@ -25,26 +25,34 @@
 function xmldb_totara_program_install() {
     global $CFG, $DB;
     $dbman = $DB->get_manager();
-    // Check if the 'programcount' field has been added to the 'course_categories'
-    // table and add it if not
+    // Conditionally add 'programcount' field to 'course_categories'.
     $table = new xmldb_table('course_categories');
-    $field = new xmldb_field('programcount');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'theme');
+    $field = new xmldb_field('programcount', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
 
     if (!$dbman->field_exists($table, $field)) {
-        // Launch add field programcount
+        // Launch add field programcount.
         $dbman->add_field($table, $field);
     }
 
-    // Check if the 'certifcount' field has been added to the 'course_categories'
-    // table and add it if not
+    // Conditionally add 'certifcount' field to 'course_categories'.
     $table = new xmldb_table('course_categories');
-    $field = new xmldb_field('certifcount');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'programcount');
+    $field = new xmldb_field('certifcount', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
 
     if (!$dbman->field_exists($table, $field)) {
-        // Launch add field certifcount
+        // Launch add field certifcount.
         $dbman->add_field($table, $field);
+    }
+
+    // Update category counts.
+    $sql = 'SELECT cat.id,
+                    SUM(CASE WHEN p.certifid IS NULL THEN 1 ELSE 0 END) AS programcount,
+                    SUM(CASE WHEN p.certifid IS NULL THEN 0 ELSE 1 END) AS certifcount
+            FROM {prog} p
+            JOIN {course_categories} cat ON cat.id = p.category
+            GROUP BY cat.id';
+    $cats = $DB->get_records_sql($sql);
+    foreach ($cats as $cat) {
+        $DB->update_record('course_categories', $cat, true);
     }
 
     // Set a config value to ensure that the program cron tasks are included
