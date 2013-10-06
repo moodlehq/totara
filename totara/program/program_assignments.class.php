@@ -628,9 +628,10 @@ abstract class prog_assignment_category {
 
     public function build_first_table_cell($name, $id, $itemid) {
         global $OUTPUT;
-        $output = html_writer::start_tag('div', array('class' => 'item'));
+        $output = html_writer::start_tag('div', array('class' => 'totara-item-group'));
         $output .= format_string($name);
-        $output .= $OUTPUT->action_icon('#', new pix_icon('t/delete', get_string('delete')), null, array('class' => 'deletelink'));
+        $output .= $OUTPUT->action_icon('#', new pix_icon('t/delete', get_string('delete')), null,
+            array('class' => 'deletelink totara-item-group-icon'));
         $output .= html_writer::end_tag('div');
         $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'item['.$id.']['.$itemid.']', 'value' => '1'));
         return $output;

@@ -443,9 +443,10 @@ abstract class prog_message {
         // Add the move up button for this message
         if ($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->isfirstmoveablemessage) ? 'moveup fieldsetbutton disabled' : 'moveup fieldsetbutton';
+            $attributes['class'] = 'btn-cancel moveup fieldsetbutton';
             if (isset($this->isfirstmoveablemessage)) {
                 $attributes['disabled'] = 'disabled';
+                $attributes['class'] .= 'disabled';
             }
             $mform->addElement('submit', $prefix.'moveup', get_string('moveup', 'totara_program'), $attributes);
             $template_values['%'.$prefix.'moveup%'] = array('name'=>$prefix.'moveup', 'value'=>null);
@@ -455,9 +456,10 @@ abstract class prog_message {
         // Add the move down button for this message
         if ($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->islastmessage) ? 'movedown fieldsetbutton disabled' : 'movedown fieldsetbutton';
+            $attributes['class'] = 'btn-cancel movedown fieldsetbutton';
             if (isset($this->islastmessage)) {
                 $attributes['disabled'] = 'disabled';
+                $attributes['class'] .= 'disabled';
             }
             $mform->addElement('submit', $prefix.'movedown', get_string('movedown', 'totara_program'), $attributes);
             $template_values['%'.$prefix.'movedown%'] = array('name'=>$prefix.'movedown', 'value'=>null);
@@ -466,7 +468,8 @@ abstract class prog_message {
 
          // Add the delete button for this message
         if ($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'totara_program'), array('class'=>"delete fieldsetbutton deletedmessagebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'totara_program'),
+                array('class'=>"btn-cancel delete fieldsetbutton deletedmessagebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'delete%'."\n";
@@ -564,7 +567,7 @@ abstract class prog_noneventbased_message extends prog_message {
         $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message surround'));
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
@@ -707,7 +710,7 @@ abstract class prog_eventbased_message extends prog_message {
         $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message surround'));
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
@@ -753,7 +756,7 @@ class prog_enrolment_message extends prog_noneventbased_message {
         $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message surround'));
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
@@ -797,7 +800,7 @@ class prog_exception_report_message extends prog_noneventbased_message {
         $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message surround'));
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
@@ -1011,7 +1014,7 @@ class prog_learner_followup_message extends prog_eventbased_message {
         $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message surround'));
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
@@ -1110,7 +1113,7 @@ class prog_extension_request_message extends prog_noneventbased_message {
         $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message surround'));
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
@@ -1158,7 +1161,7 @@ class prog_recert_windowopen_message extends prog_eventbased_message {
         $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_certification');
 
         $templatehtml = '';
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message surround'));
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
@@ -1203,7 +1206,7 @@ class prog_recert_windowdueclose_message extends prog_eventbased_message {
         $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_certification');
 
         $templatehtml = '';
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message surround'));
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
@@ -1248,7 +1251,7 @@ class prog_recert_failrecert_message extends prog_eventbased_message {
         $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_certification');
 
         $templatehtml = '';
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message surround'));
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);

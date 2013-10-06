@@ -259,7 +259,7 @@ class program_edit_form extends moodleform {
 
         //replacement for old totara/core/icon classes
         $programicon = ($program && !empty($program->icon)) ? $program->icon : 'default';
-        totara_add_icon_picker($mform, $action, 'program', $programicon, $nojs);
+        totara_add_icon_picker($mform, $action, 'program', $programicon, $nojs, false);
 
         if ($action == 'add') {
             $buttonarray = array();
@@ -274,6 +274,11 @@ class program_edit_form extends moodleform {
             $mform->closeHeaderBefore('buttonar');
         }
 
+        if ($action == 'view' && $program && has_capability('totara/program:configuredetails', $program->get_context())) {
+            $button = $OUTPUT->single_button(new moodle_url('/totara/program/edit.php',
+                array('id' => $program->id, 'action' => 'edit')), get_string('editprogramdetails', 'totara_program'), 'get');
+            $mform->addElement('static', 'progdetailsbutton', '', $button);
+        }
     }
 
     function validation($data, $files) {
@@ -304,33 +309,13 @@ class program_edit_form extends moodleform {
         return $errors;
     }
 
-    /**
-     * Display static form and edit button
-     *
-     * @access  public
-     * @return  void
-     */
-    public function display() {
-        global $OUTPUT;
-
-        parent::display();
-
-        $program = (isset($this->_customdata['program'])) ? $this->_customdata['program'] : false;
-        $action = $this->_customdata['action'];
-
-        // if $action is 'view' and $program is not false then we are viewing an existing program
-        // Check user has capability to edit program
-        if ($action == 'view' && $program && has_capability('totara/program:configuredetails', $program->get_context())) {
-            echo $OUTPUT->single_button(new moodle_url('/totara/program/edit.php', array('id' => $program->id, 'action' => 'edit')), get_string('editprogramdetails', 'totara_program'), 'get');
-        }
-    }
 }
 
 // Define a form class to display the program content in a non-editable form
 class program_content_nonedit_form extends moodleform {
 
     function definition() {
-        global $CFG, $USER;
+        global $CFG, $USER, $OUTPUT;
 
         $mform =& $this->_form;
 
@@ -349,6 +334,13 @@ class program_content_nonedit_form extends moodleform {
        } else {
            $this->display_course_sets($mform, $content, CERTIFPATH_STD, '');
        }
+
+        // Check capabilities.
+        if (has_capability('totara/program:configurecontent', $program->get_context())) {
+            $button = $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'), array('id' => $program->id)),
+                get_string('editprogramcontent', 'totara_program'), 'get');
+            $mform->addElement('static', 'progcontentbutton', '', $button);
+        }
 
     }
 
@@ -393,33 +385,13 @@ class program_content_nonedit_form extends moodleform {
             $mform->addElement('static', 'timeallowance_'.$certifpath, '', $timeallowedstr);
         }
     }
-
-
-    /**
-     * Display static form and edit button
-     *
-     * @access  public
-     * @return  void
-     */
-    public function display() {
-        global $OUTPUT;
-
-        parent::display();
-
-        $program = $this->_customdata['program'];
-
-        // Check capabilities
-        if (has_capability('totara/program:configurecontent', $program->get_context())) {
-            echo $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'), array('id' => $program->id)), get_string('editprogramcontent', 'totara_program'), 'get');
-        }
-    }
 }
 
 // Define a form class to display the program assignments
 class program_assignments_nonedit_form extends moodleform {
 
     function definition() {
-        global $CFG, $USER;
+        global $CFG, $USER, $OUTPUT;
 
         $mform =& $this->_form;
 
@@ -435,26 +407,17 @@ class program_assignments_nonedit_form extends moodleform {
         $formelement = $assignments->display_form_element();
 
         $mform->addElement('static', $elementname, $formlabel, $formelement);
-    }
-
-
-    /**
-     * Display static form and edit button
-     *
-     * @access  public
-     * @return  void
-     */
-    public function display() {
-        global $OUTPUT;
-        parent::display();
-
-        $program = $this->_customdata['program'];
 
         // Check capabilities
         if (has_capability('totara/program:configureassignments', $program->get_context())) {
-            echo $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'), array('id' => $program->id)), get_string('editprogramassignments', 'totara_program'), 'get');
+            $button = $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'), array('id' => $program->id)),
+                get_string('editprogramassignments', 'totara_program'), 'get');
+
+            $mform->addElement('static', 'progassignbutton', '', $button);
         }
     }
+
+
 }
 
 
@@ -462,7 +425,7 @@ class program_assignments_nonedit_form extends moodleform {
 class program_messages_nonedit_form extends moodleform {
 
     function definition() {
-        global $CFG, $USER;
+        global $CFG, $USER, $OUTPUT;
 
         $mform =& $this->_form;
 
@@ -478,25 +441,13 @@ class program_messages_nonedit_form extends moodleform {
         $formelement = $messagesmanager->display_form_element();
 
         $mform->addElement('static', $elementname, $formlabel, $formelement);
-    }
-
-
-    /**
-     * Display static form and edit button
-     *
-     * @access  public
-     * @return  void
-     */
-    public function display() {
-        global $OUTPUT;
-
-        parent::display();
-
-        $program = $this->_customdata['program'];
 
         // Check capabilities
         if (has_capability('totara/program:configuremessages', $program->get_context())) {
-            echo $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'), array('id' => $program->id)), get_string('editprogrammessages', 'totara_program'), 'get');
+            $button = $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'), array('id' => $program->id)),
+                get_string('editprogrammessages', 'totara_program'), 'get');
+
+            $mform->addElement('static', 'progmessagebutton', '', $button);
         }
     }
 }
@@ -507,7 +458,7 @@ class program_messages_nonedit_form extends moodleform {
 class program_certifications_nonedit_form extends moodleform {
 
     function definition() {
-        global $CFG, $USER, $DB, $CERTIFRECERT;
+        global $CFG, $USER, $DB, $CERTIFRECERT, $OUTPUT;
 
         $mform =& $this->_form;
 
@@ -530,26 +481,12 @@ class program_certifications_nonedit_form extends moodleform {
             $mform->addElement('static', 'el4', get_string('editdetailsrcopt', 'totara_certification'),
                             $CERTIFRECERT[$certification->recertifydatetype]);
         }
-    }
-
-
-    /**
-     * Display static form and edit button
-     *
-     * @access  public
-     * @return  void
-     */
-    public function display() {
-        global $OUTPUT;
-
-        parent::display();
-
-        $program = $this->_customdata['program'];
 
         // Check capabilities
         if (has_capability('totara/certification:configurecertification', $program->get_context())) {
-            echo $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'),
+            $button = $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'),
                  array('id' => $program->id)), get_string('editcertification', 'totara_certification'), 'get');
+            $mform->addElement('static', 'certificationbutton', '', $button);
         }
     }
 }

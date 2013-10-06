@@ -931,8 +931,7 @@ class prog_content {
             }
         }
 
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => 'programcontent'));
-        $templatehtml .= html_writer::start_tag('legend', array('class' => 'ftoggler')) . get_string('programcontent', 'totara_program') . html_writer::end_tag('legend');
+        $templatehtml .= $OUTPUT->heading(get_string('programcontent', 'totara_program'));
 
         // Show the program total minimum time required.
         $program = new program($this->programid);
@@ -977,8 +976,6 @@ class prog_content {
         $this->formdataobject->{'setprefixes'.$suffix} = $setprefixesstr;
 
         $templatehtml .= html_writer::end_tag('div');
-        $templatehtml .= html_writer::end_tag('fieldset');
-        $templatehtml .= html_writer::empty_tag('br');
 
         if (!$recurring) {
             // Add the add content drop down

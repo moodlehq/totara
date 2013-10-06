@@ -78,11 +78,6 @@ class program_content_edit_form extends moodleform {
         $mform->addElement('submit', 'savechanges', get_string('savechanges'), array('class'=>"savechanges-content program-savechanges"));
         $this->template_values['%savechanges%'] = array('name'=>'savechanges', 'value'=>null);
         $this->template_html .= '%savechanges%'."\n";
-
-        // Add the cancel button
-        $mform->addElement('cancel', 'cancel', get_string('cancel', 'totara_program'));
-        $this->template_values['%cancel%'] = array('name'=>'cancel', 'value'=>null);
-        $this->template_html .= '%cancel%'."\n";
     }
 
     /**

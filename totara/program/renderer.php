@@ -118,10 +118,11 @@ class totara_program_renderer extends plugin_renderer_base {
     */
     public function assignment_category_display($assignment_class, $headers, $buttonname, $data) {
         $categoryclassstr = strtolower(str_replace(' ', '', $assignment_class->name));
-        $html = html_writer::start_tag('fieldset', array('class' => 'assignment_category '.$categoryclassstr, 'id' => 'category-'. $assignment_class->id));
+        $html = html_writer::start_tag('fieldset', array('class' => 'surround assignment_category '.$categoryclassstr,
+            'id' => 'category-'. $assignment_class->id));
         $html .= html_writer::start_tag('legend') . $assignment_class->name .  html_writer::end_tag('legend');
         $table = new html_table();
-        $table->attributes['class'] = 'fullwidth';
+        $table->attributes['class'] = 'invisiblepadded fullwidth';
         $colcount = 0;
         // Add the headers
         foreach ($headers as $header) {
@@ -159,18 +160,18 @@ class totara_program_renderer extends plugin_renderer_base {
         return $html;
     }
     /**
-    * Generates HTML for edit assignments form
-    *
-    * @param str $url
-    * @return str HTML fragment
-    */
+     * Generates HTML for edit assignments form
+     *
+     * @param int $id Program ID.
+     * @param array $categories Assignment categories to display.
+     * @param int $certificationpath
+     * @return str HTML fragment
+     */
     public function display_edit_assignment_form($id, $categories, $certificationpath) {
-        global $PAGE;
         $dropdown_options = array();
         $out = '';
         $out .= html_writer::start_tag('form', array('name' => 'form_prog_assignments', 'method' => 'post'));
-        $out .= html_writer::start_tag('fieldset', array('id' => 'programassignments'));
-        $out .= html_writer::tag('legend', get_string('programassignments', 'totara_program'), array('class' => 'ftoggler'));
+        $out .= $this->output->heading(get_string('programassignments', 'totara_program'));
 
         // Show the program time required so people know the minimum to set completion to.
         $program = new program($id);
@@ -200,10 +201,9 @@ class totara_program_renderer extends plugin_renderer_base {
                 'fullpath' => '/totara/program/assignment/program_assignment.js',
                 'requires' => array('json', 'totara_core'));
 
-            $PAGE->requires->js_init_code($js, true, $jsmodule);
+            $this->page->requires->js_init_code($js, true, $jsmodule);
         }
         $out .= html_writer::end_tag('div');
-        $out .= html_writer::end_tag('fieldset');
 
         // Display the drop-down if there's any categories that aren't yet being used
         if (!empty($dropdown_options)) {
@@ -271,6 +271,7 @@ class totara_program_renderer extends plugin_renderer_base {
         $out .= html_writer::end_tag('span');
         $out .= html_writer::end_tag('p');
         $out .= html_writer::end_tag('div');
+        return $out;
     }
     /**
     * Generates the HTML to display the program search form
@@ -403,8 +404,11 @@ class totara_program_renderer extends plugin_renderer_base {
         $out = '';
         $out .= html_writer::start_tag('div', array('id' => 'prog-completion-fixed-date'));
         $out .= html_writer::start_tag('label', array('for' => 'completiontime')) . get_string('completeby', 'totara_program') . html_writer::end_tag('label');
+        $out .= html_writer::start_tag('div', array('class' => 'datepicker-wrapper'));
         $out .= html_writer::empty_tag('input', array('class' => 'completiontime', 'type' => 'text', 'name' => "completiontime", 'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
-        $out .= html_writer::start_tag('button', array('class' => 'fixeddate')) . get_string('setfixedcompletiondate', 'totara_program') . html_writer::end_tag('button');
+        $out .= html_writer::end_tag('div');
+        $out .= ' ' . html_writer::start_tag('button', array('class' => 'fixeddate')) .
+            get_string('setfixedcompletiondate', 'totara_program') . html_writer::end_tag('button');
         $out .= html_writer::end_tag('div');
 
         $out .= html_writer::start_tag('div', array('id' => 'prog-completion-or-string'));
@@ -412,14 +416,13 @@ class totara_program_renderer extends plugin_renderer_base {
         $out .= html_writer::end_tag('div');
 
         $out .= html_writer::start_tag('div', array('id' => 'prog-completion-relative-date'));
-        $out .= get_string('completewithin', 'totara_program');
+        $out .= html_writer::start_tag('label', array('for' => 'timeamount')) . get_string('completewithin', 'totara_program') .
+            html_writer::end_tag('label');
         $out .= program_utilities::print_duration_selector($prefix = '', $periodelementname = 'timeperiod', $periodvalue = '', $numberelementname = 'timeamount', $numbervalue = '1', $includehours = false);
-        $out .= html_writer::empty_tag('br');
-        $out .= get_string('of', 'totara_program');
+        $out .= ' ' . get_string('of', 'totara_program') . ' ';
         $out .= $this->completion_events_dropdown();
         $out .= html_writer::empty_tag('input', array('id' => 'instance', 'type' => 'hidden', 'name' => "instance", 'value' => ''));
         $out .= html_writer::link('#', '', array('id' => 'instancetitle'));
-        $out .= html_writer::empty_tag('br');
         $out .= html_writer::start_tag('button', array('class' => 'relativeeventtime')) . get_string('settimerelativetoevent', 'totara_program') . html_writer::end_tag('button');
         $out .= html_writer::end_tag('div');
 

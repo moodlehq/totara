@@ -382,23 +382,6 @@ hr {
     color:#087BB1;
 }
 /**
- * Fieldset class with borders shown by default
- */
-fieldset.surround,
-.mform fieldset.surround {
-    border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border: 1px solid #000000;
-    padding: 5px;
-}
-fieldset.surround legend,
-.mform fieldset.surround legend {
-    font-weight:bold;
-    font-size:16px;
-    padding: 0px 5px;
-}
-/**
  * Moodle Forms
  */
 input,
@@ -473,6 +456,10 @@ input[type="checkbox"] {
 .dir-rtl input[type="radio "] {
     margin: 0 0 0 5px;
 }
+/**
+ * Regular totara fieldset removes borders and shows legend as an
+ * underlined title, with underline spanning full page width
+ */
 .mform fieldset {
     padding:10px 0 10px;
     border:none;
@@ -487,6 +474,30 @@ input[type="checkbox"] {
 .mform fieldset div {
     margin:5px 0;
 }
+
+/**
+ * Use the 'surround' class to override and provide a fieldset that
+ * uses a full border around the contents.
+ */
+fieldset.surround,
+.mform fieldset.surround {
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border: 1px solid #BFBFBF;
+    padding: 5px;
+    width:auto;
+}
+
+fieldset.surround legend,
+.mform fieldset.surround legend {
+    font-weight:bold;
+    font-size:16px;
+    padding: 0px 5px;
+    border-bottom: none;
+    width: auto;
+}
+
 .mform .required,
 .mform .fdescription.required {
     color:#6b6b6b;
@@ -1002,3 +1013,33 @@ select.totara-expanded-width {
     width: auto;
     position: absolute;
 }
+
+/**
+ * Styles for 'totara-item-group' and related. Used in programs to surround individual items.
+ */
+.totara-item-group {
+    background-color: #f7f8e8;
+    border: 1px solid #d0d676;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    padding: 6px 10px;
+    width: 90%;
+    overflow: auto;
+    color: #000;
+    margin: 3px 0px;
+}
+
+.totara-item-group .totara-item-group-icon {
+    border: none;
+    background: none;
+    padding: 0px;
+}
+
+.dir-ltr .totara-item-group .totara-item-group-icon {
+    float: right;
+}
+.dir-rtl .totara-item-group .totara-item-group-icon {
+    float: left;
+}
+

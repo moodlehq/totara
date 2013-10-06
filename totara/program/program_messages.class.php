@@ -499,7 +499,7 @@ class prog_messages_manager {
     }
 
     public function get_message_form_template(&$mform, &$template_values, $messages=null, $updateform=true) {
-        global $DB;
+        global $DB, $OUTPUT;
 
         if ($messages == null) {
             $messages = $this->messages;
@@ -559,8 +559,7 @@ class prog_messages_manager {
             $this->formdataobject->deletedmessages = $deletedmessageidsstr;
         }
 
-        $templatehtml .= html_writer::start_tag('fieldset', array('id' => 'programmessages'));
-        $templatehtml .= html_writer::tag('legend', get_string('programmessages', 'totara_program'), array('class' => 'ftoggler'));
+        $templatehtml .= $OUTPUT->heading(get_string('programmessages', 'totara_program'));
         $templatehtml .= html_writer::tag('p', get_string('instructions:programmessages', 'totara_program'));
 
         $templatehtml .= html_writer::start_tag('div', array('id' => 'messages'));
@@ -588,8 +587,6 @@ class prog_messages_manager {
         }
 
         $templatehtml .= html_writer::end_tag('div');
-        $templatehtml .= html_writer::end_tag('fieldset');
-        $templatehtml .= html_writer::empty_tag('br');
 
         if ($canaddmessage) {
             // Add the add message drop down

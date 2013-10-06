@@ -153,7 +153,6 @@ tr.r1 {
 .generalbox,
 .totarabox,
 .admin .generalbox,
-table.fullwidth,
 .generaltable,
 .userenrolment,
 .forumheaderlist,
@@ -1257,10 +1256,6 @@ ul.topics li.section .content {
 }
 .dir-rtl .path-backup .mform .fgroup .proceedbutton {
    margin-left:0;
-}
-p.course-prog-alt-view {
-   padding:10px;
-   background:#FFFFFF;
 }
 .path-course-view .completionprogress {
    padding:11px 10px 10px;

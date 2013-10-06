@@ -115,13 +115,14 @@ echo $OUTPUT->header();
 
 echo $OUTPUT->container_start('program exceptions', 'program-exceptions');
 
-echo $OUTPUT->heading($heading.' - '.get_string('exceptionsreport', 'totara_program'));
+echo $OUTPUT->heading($heading);
+
+echo $program->display_current_status();
 
 $currenttab = 'exceptions';
 require('tabs.php');
 
-echo html_writer::start_tag('fieldset', array('id' => 'programexceptions'));
-echo html_writer::start_tag('legend', array('class' => 'ftoggler')) . get_string('programexceptions', 'totara_program') . html_writer::end_tag('legend');
+echo $OUTPUT->heading(get_string('programexceptions', 'totara_program'));
 echo html_writer::start_tag('p') . get_string('instructions:programexceptions', 'totara_program') . html_writer::end_tag('p');
 
 $renderer = $PAGE->get_renderer('totara_program');
@@ -131,8 +132,6 @@ $programexceptionsmanager->print_exceptions_form($id, $programexceptions, $selec
 
 $pagingbar = new paging_bar($foundexceptionscount, $page, RESULTS_PER_PAGE, $base_url);
 echo $OUTPUT->render($pagingbar);
-
-echo html_writer::end_tag('fieldset');
 
 echo $OUTPUT->container_end();
 

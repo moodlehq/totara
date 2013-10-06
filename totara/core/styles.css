@@ -40,3 +40,11 @@ span.coursecompletionstatus span.completion-complete {
 span.coursecompletionstatus span.completion-completeviarpl {
     background-position: 0px -24px;
 }
+
+/**
+ * Wrap this div round the datepicker text field and icon to avoid
+ * issues in RTL languages.
+ */
+div.datepicker-wrapper {
+    display: inline-block;
+}

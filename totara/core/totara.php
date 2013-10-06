@@ -567,17 +567,19 @@ function totara_display_course_progress_icon($userid, $courseid, $status) {
 }
 
 /**
-*  Adds the current icon and icon select dropdown to a moodle form
-*  replaces all the old totara/icon classes
-*
-* @access  public
-* @param   object $mform reference to moodle form object
-* @param   string $action form action - add, edit or view
-* @param   string $type program, course or message icons
-* @param   string $currenticon value currently stored in db
-* @return  void
+ *  Adds the current icon and icon select dropdown to a moodle form
+ *  replaces all the old totara/icon classes
+ *
+ * @access  public
+ * @param   object $mform Reference to moodle form object.
+ * @param   string $action Form action - add, edit or view.
+ * @param   string $type Program, course or message icons.
+ * @param   string $currenticon Value currently stored in db.
+ * @param   int    $nojs 1 if Javascript is disabled.
+ * @param   bool   $fieldset If true, include a 'header' around the icon picker.
+ * @return  void
 */
-function totara_add_icon_picker(&$mform, $action, $type, $currenticon='default', $nojs=0) {
+function totara_add_icon_picker(&$mform, $action, $type, $currenticon='default', $nojs=0, $fieldset=true) {
     global $CFG, $OUTPUT;
     //get all icons of this type from core
     $replace = array('.png' => '', '_' => ' ', '-' => ' ');
@@ -585,7 +587,9 @@ function totara_add_icon_picker(&$mform, $action, $type, $currenticon='default',
                             ucwords(strtr($currenticon, $replace)),
                             'totara_core',
                             array('class' => "course_icon", 'id' => "icon_preview"));
-    $mform->addElement('header', 'iconheader', get_string($type.'icon', 'totara_core'));
+    if ($fieldset) {
+        $mform->addElement('header', 'iconheader', get_string($type.'icon', 'totara_core'));
+    }
     if ($nojs == 1) {
         $mform->addElement('static', 'currenticon', get_string('currenticon', 'totara_core'), $iconhtml);
         if ($action=='add' || $action=='edit') {
@@ -609,7 +613,9 @@ function totara_add_icon_picker(&$mform, $action, $type, $currenticon='default',
         }
         $mform->addElement('static', 'currenticon', get_string('currenticon', 'totara_core'), $iconhtml . $buttonhtml);
     }
-    $mform->setExpanded('iconheader');
+    if ($fieldset) {
+        $mform->setExpanded('iconheader');
+    }
 }
 /**
 * print out the Totara My Learning nav section

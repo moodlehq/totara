@@ -112,6 +112,7 @@ if (!empty($staff_ids)) {
         $table->define_columns($columns);
         $table->define_headers($headers);
         $table->define_baseurl(new moodle_url("/totara/program/manageextensions.php"));
+        $table->set_attribute('class', 'fullwidth');
         $table->setup();
 
         $options = array(
