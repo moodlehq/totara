@@ -3970,12 +3970,12 @@ function totara_reportbuilder_cron() {
  */
 function sql_table_from_select($table, $select, array $params = array()) {
     global $DB;
-    $md5 = substr(md5($table), 0, 7);
+    $hashtablename = substr(md5($table), 0, 15);
     switch ($DB->get_dbfamily()) {
         case 'mysql':
             $columnssql = "SHOW COLUMNS FROM `{$table}`";
-            $indexsql = "CREATE INDEX rb_cache_{$md5}_%1\$s ON {$table} (%1\$s)";
-            $indexlongsql = "CREATE INDEX rb_cache_{$md5}_%1\$s ON {$table} (%1\$s(%2\$d))";
+            $indexsql = "CREATE INDEX rb_cache_{$hashtablename}_%1\$s ON {$table} (%2\$s)";
+            $indexlongsql = "CREATE INDEX rb_cache_{$hashtablename}_%1\$s ON {$table} (%2\$s(%3\$d))";
             $fieldname = 'field';
 
             // Find out if want some special db engine.
@@ -3995,7 +3995,7 @@ function sql_table_from_select($table, $select, array $params = array()) {
             $result = $DB->execute($sql, $params);
             break;
         case 'mssql':
-            $viewname = 'tmp_'.$md5;
+            $viewname = 'tmp_'.$hashtablename;
             $viewsql = "CREATE VIEW $viewname AS $select";
             $DB->execute($viewsql, $params);
 
@@ -4009,14 +4009,14 @@ function sql_table_from_select($table, $select, array $params = array()) {
                     LEFT JOIN sys.types st ON (st.system_type_id = sc.system_type_id
                         AND st.name <> 'sysname' AND st.name <> 'geometry' AND st.name <> 'hierarchyid')
                     WHERE sc.object_id = OBJECT_ID('{$table}')";
-            $indexsql = "CREATE INDEX rb_cache_{$md5}_%1\$s ON {$table} (%1\$s)";
+            $indexsql = "CREATE INDEX rb_cache_{$hashtablename}_%1\$s ON {$table} (%2\$s)";
             $fieldname = 'name';
             break;
         case 'postgres':
         default:
             $sql = "CREATE TABLE \"{$table}\" AS $select";
             $columnssql = "SELECT column_name, data_type FROM information_schema.columns WHERE table_name ='{$table}'";
-            $indexsql = "CREATE INDEX rb_cache_{$md5}_%1\$s ON {$table} (%1\$s)";
+            $indexsql = "CREATE INDEX rb_cache_{$hashtablename}_%1\$s ON {$table} (%2\$s)";
             $fieldname = 'column_name';
             $result = $DB->execute($sql, $params);
             break;
@@ -4026,7 +4026,8 @@ function sql_table_from_select($table, $select, array $params = array()) {
     // Create indexes
     $fields = $DB->get_records_sql($columnssql);
     foreach ($fields as $field) {
-        $sql = sprintf($indexsql, $field->$fieldname);
+        $hashfieldname = substr(md5($field->$fieldname), 0, 15);
+        $sql = sprintf($indexsql, $hashfieldname, $field->$fieldname);
 
         // db engines specifics
         switch ($DB->get_dbfamily()) {
@@ -4037,7 +4038,7 @@ function sql_table_from_select($table, $select, array $params = array()) {
                 }
                 if (strpos($field->type, 'blob') !== false || strpos($field->type, 'text') !== false) {
                     // Index only first 255 symbols (mysql maximum = 767)
-                    $sql = sprintf($indexlongsql, $field->$fieldname, 255);
+                    $sql = sprintf($indexlongsql, $hashfieldname, $field->$fieldname, 255);
                 }
             break;
             case 'mssql':
