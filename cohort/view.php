@@ -115,7 +115,8 @@ echo $OUTPUT->heading(format_string($cohort->name));
 echo cohort_print_tabs('view', $cohort->id, $cohort->cohorttype, $cohort);
 
 // Verify if the cohort has a broken rule.
-$cohortbrokenrules = totara_cohort_broken_rules(null, $cohort->id, false);
+$trace = new null_progress_trace();
+$cohortbrokenrules = totara_cohort_broken_rules(null, $cohort->id, $trace);
 if (!empty($cohortbrokenrules)) {
     totara_display_broken_rules_box();
 }
