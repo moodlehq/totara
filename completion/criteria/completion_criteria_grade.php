@@ -81,21 +81,6 @@ class completion_criteria_grade extends completion_criteria {
     }
 
     /**
-     * Update the criteria information stored in the database
-     *
-     * @param stdClass $data Form data
-     */
-    public function update_config($data) {
-
-        // TODO validation.
-        if (!empty($data->criteria_grade) && is_numeric($data->criteria_grade_value)) {
-            $this->course = $data->id;
-            $this->gradepass = $data->criteria_grade_value;
-            $this->insert();
-        }
-    }
-
-    /**
      * Get user's course grade in this course
      *
      * @param completion_completion $completion an instance of completion_completion class
