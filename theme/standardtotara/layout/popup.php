@@ -32,7 +32,7 @@ $bodyclasses = array('popup','content-only', $modname);
 
 
 if (!empty($PAGE->theme->settings->favicon)) {
-    $faviconurl = $PAGE->theme->settings->favicon;
+    $faviconurl = $PAGE->theme->setting_file_url('favicon', 'favicon');
 } else {
     $faviconurl = $OUTPUT->favicon();
 }

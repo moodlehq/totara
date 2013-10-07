@@ -47,4 +47,4 @@ $THEME->sheets = array(
 
 $THEME->enable_dock = true;
 //$THEME->rendererfactory = 'theme_overridden_renderer_factory';
-$THEME->csspostprocess = 'customtotara_process_css';
+$THEME->csspostprocess = 'theme_customtotara_process_css';

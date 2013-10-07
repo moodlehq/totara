@@ -43,8 +43,6 @@ $showsidepost = $hassidepost && !$PAGE->blocks->region_completely_docked('side-p
 $custommenu = $OUTPUT->custom_menu();
 $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custommenu));
 
-$displaylogo = !isset($PAGE->theme->settings->displaylogo) || $PAGE->theme->settings->displaylogo;
-
 $bodyclasses = array();
 if ($showsidepre && !$showsidepost) {
     if (!right_to_left()) {
@@ -62,16 +60,14 @@ if ($showsidepre && !$showsidepost) {
     $bodyclasses[] = 'content-only';
 }
 
-if (!empty($PAGE->theme->settings->frontpagelogo)) {
-    $logourl = $PAGE->theme->settings->frontpagelogo;
-} else if (!empty($PAGE->theme->settings->logo)) {
-    $logourl = $PAGE->theme->settings->logo;
+if (!empty($PAGE->theme->settings->logo)) {
+    $logourl = $PAGE->theme->setting_file_url('logo', 'logo');
 } else {
     $logourl = $OUTPUT->pix_url('logo', 'theme');
 }
 
 if (!empty($PAGE->theme->settings->favicon)) {
-    $faviconurl = $PAGE->theme->settings->favicon;
+    $faviconurl = $PAGE->theme->setting_file_url('favicon', 'favicon');
 } else {
     $faviconurl = $OUTPUT->favicon();
 }

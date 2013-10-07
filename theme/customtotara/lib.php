@@ -9,7 +9,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param theme_config $theme
  * @return string
  */
-function customtotara_process_css($css, $theme) {
+function theme_customtotara_process_css($css, $theme) {
 
     $substitutions = array(
         'linkcolor' => '#087BB1',
@@ -25,12 +25,10 @@ function customtotara_process_css($css, $theme) {
     } else {
         $customcss = null;
     }
-    $css = customtotara_set_customcss($css, $customcss);
+    $css = theme_customtotara_set_customcss($css, $customcss);
 
     return $css;
-
 }
-
 
 /**
  * Sets the custom css variable in CSS
@@ -39,7 +37,7 @@ function customtotara_process_css($css, $theme) {
  * @param mixed $customcss
  * @return string
  */
-function customtotara_set_customcss($css, $customcss) {
+function theme_customtotara_set_customcss($css, $customcss) {
     $tag = '[[setting:customcss]]';
     $replacement = $customcss;
     if (is_null($replacement)) {
@@ -47,4 +45,25 @@ function customtotara_set_customcss($css, $customcss) {
     }
     $css = str_replace($tag, $replacement, $css);
     return $css;
+}
+
+/**
+ * Serves any files associated with the theme settings.
+ *
+ * @param stdClass $course
+ * @param stdClass $cm
+ * @param context $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
+ * @param array $options
+ * @return bool
+ */
+function theme_customtotara_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+    if ($context->contextlevel == CONTEXT_SYSTEM && ($filearea === 'logo' || $filearea === 'favicon')) {
+        $theme = theme_config::load('customtotara');
+        return $theme->setting_file_serve($filearea, $args, $forcedownload, $options);
+    } else {
+        send_file_not_found();
+    }
 }

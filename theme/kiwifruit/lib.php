@@ -33,14 +33,14 @@
  * @param theme_config $theme
  * @return string
  */
-function kiwifruit_process_css($css, $theme) {
+function theme_kiwifruit_process_css($css, $theme) {
     // Set the custom CSS
     if (!empty($theme->settings->customcss)) {
         $customcss = $theme->settings->customcss;
     } else {
         $customcss = null;
     }
-    $css = kiwifruit_set_customcss($css, $customcss);
+    $css = theme_kiwifruit_set_customcss($css, $customcss);
 
     return $css;
 }
@@ -52,7 +52,7 @@ function kiwifruit_process_css($css, $theme) {
  * @param mixed $customcss
  * @return string
  */
-function kiwifruit_set_customcss($css, $customcss) {
+function theme_kiwifruit_set_customcss($css, $customcss) {
     $tag = '[[setting:customcss]]';
     $replacement = $customcss;
     if (is_null($replacement)) {
@@ -60,4 +60,25 @@ function kiwifruit_set_customcss($css, $customcss) {
     }
     $css = str_replace($tag, $replacement, $css);
     return $css;
+}
+
+/**
+ * Serves any files associated with the theme settings.
+ *
+ * @param stdClass $course
+ * @param stdClass $cm
+ * @param context $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
+ * @param array $options
+ * @return bool
+ */
+function theme_kiwifruit_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+    if ($context->contextlevel == CONTEXT_SYSTEM && ($filearea === 'logo' || $filearea === 'favicon')) {
+        $theme = theme_config::load('kiwifruit');
+        return $theme->setting_file_serve($filearea, $args, $forcedownload, $options);
+    } else {
+        send_file_not_found();
+    }
 }

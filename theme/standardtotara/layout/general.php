@@ -63,8 +63,6 @@ if ($showmenu && !$hascustommenu) {
     $totaramenu = $totara_core_renderer->print_totara_menu($menudata);
 }
 
-$displaylogo = !isset($PAGE->theme->settings->displaylogo) || $PAGE->theme->settings->displaylogo;
-
 $bodyclasses = array();
 if ($showsidepre && !$showsidepost) {
     if (!right_to_left()) {
@@ -82,16 +80,14 @@ if ($showsidepre && !$showsidepost) {
     $bodyclasses[] = 'content-only';
 }
 
-if (!empty($PAGE->theme->settings->frontpagelogo)) {
-    $logourl = $PAGE->theme->settings->frontpagelogo;
-} else if (!empty($PAGE->theme->settings->logo)) {
-    $logourl = $PAGE->theme->settings->logo;
+if (!empty($PAGE->theme->settings->logo)) {
+    $logourl = $PAGE->theme->setting_file_url('logo', 'logo');
 } else {
     $logourl = $OUTPUT->pix_url('logo', 'theme');
 }
 
 if (!empty($PAGE->theme->settings->favicon)) {
-    $faviconurl = $PAGE->theme->settings->favicon;
+    $faviconurl = $PAGE->theme->setting_file_url('favicon', 'favicon');
 } else {
     $faviconurl = $OUTPUT->favicon();
 }
@@ -108,7 +104,7 @@ echo $OUTPUT->doctype() ?>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="generator" content="<?php echo get_string('poweredby', 'totara_core'); ?>" />
 <meta name="description" content="<?php p(strip_tags(format_text($sitesummary, FORMAT_HTML))) ?>" />
-<link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
+<link rel="shortcut icon" href="<?php echo $faviconurl; ?>" />
 <?php echo $OUTPUT->standard_head_html() ?>
 </head>
 <body <?php echo $OUTPUT->body_attributes($bodyclasses); ?>>

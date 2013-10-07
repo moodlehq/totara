@@ -33,29 +33,27 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
+    // Logo file setting.
+    $name = 'theme_kiwifruit/logo';
+    $title = new lang_string('logo', 'theme_kiwifruit');
+    $description = new lang_string('logodesc', 'theme_kiwifruit');
+    $setting = new admin_setting_configstoredfile($name, $title, $description, 'logo');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
 
-// Logo file setting
-$name = 'theme_kiwifruit/logo';
-$title = new lang_string('logo','theme_kiwifruit');
-$description = new lang_string('logodesc', 'theme_kiwifruit');
-$default = "";
-$setting = new admin_setting_configfilepicker($name, $title, $description, $default, array('web_image'));
-$settings->add($setting);
+    // Favicon file setting.
+    $name = 'theme_kiwifruit/favicon';
+    $title = new lang_string('favicon', 'theme_kiwifruit');
+    $description = new lang_string('favicondesc', 'theme_kiwifruit');
+    $setting = new admin_setting_configstoredfile($name, $title, $description, 'favicon', 0, array('accepted_types' => '.ico'));
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
 
-// Favicon file setting
-$name = 'theme_kiwifruit/favicon';
-$title = new lang_string('favicon','theme_kiwifruit');
-$description = new lang_string('favicondesc', 'theme_kiwifruit');
-$default = "";
-$setting = new admin_setting_configfilepicker($name, $title, $description, $default, array('*.ico'));
-$settings->add($setting);
-
-// Custom CSS file
-$name = 'theme_kiwifruit/customcss';
-$title = new lang_string('customcss','theme_kiwifruit');
-$description = new lang_string('customcssdesc', 'theme_kiwifruit');
-$default = '';
-$setting = new admin_setting_configtextarea($name, $title, $description, $default);
-$settings->add($setting);
+    // Custom CSS file.
+    $name = 'theme_kiwifruit/customcss';
+    $title = new lang_string('customcss', 'theme_kiwifruit');
+    $description = new lang_string('customcssdesc', 'theme_kiwifruit');
+    $default = '';
+    $setting = new admin_setting_configtextarea($name, $title, $description, $default);
+    $settings->add($setting);
 }
-
