@@ -3218,7 +3218,6 @@ function feedback_archive_completion($userid, $courseid) {
     if ($completeds = $DB->get_records_sql($sql, array('userid' => $userid, 'courseid' => $courseid))) {
         foreach ($completeds as $completed) {
             $data = clone $completed;
-            $data->id = 0;
             $data->timearchived = time();
             $data->idarchived = $completed->id; // Not sure if this is needed but might be useful if there is a data issue later on
 
@@ -3229,7 +3228,6 @@ function feedback_archive_completion($userid, $courseid) {
                 $values = $DB->get_records('feedback_value', array('completed' => $completed->id));
                 foreach ($values as $value) {
                     $newvalue = clone $value;
-                    $newvalue->id = 0;
                     $newvalue->completed = $newid;
                     $newvalue->timearchived = time();
                     // Not sure if this is needed but might be useful if there is a data issue later on

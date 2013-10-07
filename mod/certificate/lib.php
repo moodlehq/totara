@@ -1673,7 +1673,6 @@ function certificate_archive_completion($userid, $courseid) {
             $certificate = $DB->get_record('certificate', array('id' => $cert->certificateid), '*', MUST_EXIST);
 
             $data = clone $cert;
-            $data->id = 0;
             $data->timearchived = time();
             $data->idarchived = $cert->id; // Not sure if this is needed but might be useful if there is a data issue later on
             $data->timecompleted = certificate_get_date_completed($certificate, $cert, $course, $userid);

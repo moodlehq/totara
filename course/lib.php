@@ -3326,7 +3326,6 @@ function archive_course_completion($userid, $courseid) {
     }
 
     $history = new StdClass();
-    $history->id = 0;
     $history->courseid = $courseid;
     $history->userid = $userid;
     $history->timecompleted = $course_completion->timecompleted;
