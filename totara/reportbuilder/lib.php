@@ -2903,13 +2903,15 @@ class reportbuilder {
 
         $table = new html_table();
         $row = new html_table_row();
-        $table->attributes['class'] = 'invisiblepadded boxalignright';
+        $table->attributes['class'] = 'invisiblepadded rb-search';
 
         if (strlen($savedbutton) != 0) {
             $row->cells[] = new html_table_cell($savedbutton);
         }
         if (strlen($savedmenu) != 0) {
-            $row->cells[] = new html_table_cell($savedmenu);
+             $cell = new html_table_cell($savedmenu);
+             $cell->attributes['class'] .= 'rb-search-menu';
+             $row->cells[] = $cell;
         }
 
         $table->data = array($row);

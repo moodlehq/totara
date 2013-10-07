@@ -7,12 +7,24 @@ div.multicheck-items fieldset.felement span {
 }
 
 /* show/hide button alignment */
-.rb-showhide.boxalignright {
+.dir-ltr .rb-showhide.boxalignright {
     text-align: right;
 }
-
 .dir-rtl .rb-showhide.boxalignright {
     text-align: left;
+}
+
+.dir-ltr .rb-search {
+    margin-left: auto;
+    margin-right: 0;
+}
+.dir-rtl .rb-search {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.rb-search-menu {
+    vertical-align: middle !important;
 }
 
 .rb-genbutton {
