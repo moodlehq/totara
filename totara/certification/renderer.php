@@ -27,18 +27,17 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 /**
-* Standard HTML output renderer for totara_core module
-*/
+ * Standard HTML output renderer for totara_core module
+ */
 class totara_certification_renderer extends plugin_renderer_base {
 
-
     /**
-    * Print a description of a program, suitable for browsing in a list.
-    * (This is the counterpart to print_course in /course/lib.php)
-    *
-    * @param object $data all info required by renderer
-    * @return HTML fragment
-    */
+     * Print a description of a program, suitable for browsing in a list.
+     * (This is the counterpart to print_course in /course/lib.php)
+     *
+     * @param object $data all info required by renderer
+     * @return HTML fragment
+     */
     public function print_certification($data) {
 
         if ($data->accessible) {
@@ -86,12 +85,12 @@ class totara_certification_renderer extends plugin_renderer_base {
 
 
     /**
-    * Generates HTML for a cancel button which is displayed on
-    * management edit screens
-    *
-    * @param str $url
-    * @return str HTML fragment
-    */
+     * Generates HTML for a cancel button which is displayed on
+     * management edit screens
+     *
+     * @param str $url
+     * @return str HTML fragment
+     */
     public function get_cancel_button($params=null, $url='') {
         if (empty($url)) {
             $url = "/totara/program/edit.php"; // back to program edit

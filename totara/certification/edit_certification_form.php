@@ -55,7 +55,7 @@ class edit_certification_form extends moodleform {
             $recertifydatetype = $certification->recertifydatetype;
         }
 
-        $mform->addElement('header','editdetailshdr', get_string('editdetailshdr', 'totara_certification'));
+        $mform->addElement('header', 'editdetailshdr', get_string('editdetailshdr', 'totara_certification'));
         $mform->addElement('html', html_writer::start_tag('p', array('class' => 'instructions')) .
                              get_string('editdetailsdesc', 'totara_certification') . html_writer::end_tag('p'));
 

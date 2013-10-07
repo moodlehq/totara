@@ -276,12 +276,12 @@ function complete_certification_stage($certificationid, $userid) {
  *
  * @return int Count of certification completion records
  */
-function recertify_window_opens_stage(){
+function recertify_window_opens_stage() {
     global $DB, $CFG;
 
     // Find any users who have reached this point
     $uniqueid = $DB->sql_concat('cfc.certifid', 'cfc.userid', 'p.id');
-    $sql = "SELECT {$uniqueid} AS uniqueid, cfc.certifid, cfc.userid, p.id as pid
+    $sql = "SELECT {$uniqueid} as uniqueid, cfc.certifid, cfc.userid, p.id as pid
             FROM {certif_completion} cfc
             JOIN {certif} cf on cf.id = cfc.certifid
             JOIN {prog} p on p.certifid = cf.id
@@ -303,7 +303,8 @@ function recertify_window_opens_stage(){
         reset_certifcomponent_completions($completionrecord, $courses);
 
         // Set the renewal status of the certification/program to due for renewal.
-        $DB->set_field('certif_completion', 'renewalstatus', CERTIFRENEWALSTATUS_DUE, array('certifid' => $completionrecord->certifid, 'userid' => $completionrecord->userid));
+        $DB->set_field('certif_completion', 'renewalstatus', CERTIFRENEWALSTATUS_DUE,
+                        array('certifid' => $completionrecord->certifid, 'userid' => $completionrecord->userid));
 
         // Send messages after everything else is done.
         send_certif_message($completionrecord->pid, $completionrecord->userid, MESSAGETYPE_RECERT_WINDOWOPEN);
@@ -690,7 +691,7 @@ function get_certification_path_user($certificationid, $userid) {
  * @return int CERTIFPATH constant
  */
 function get_certification_path_field($formdata, $field, $fieldvalue) {
-    foreach (array('_ce','_rc') as $suffix) {
+    foreach (array('_ce', '_rc') as $suffix) {
         if (!isset($formdata->{$field.$suffix})
             || empty($formdata->{$field.$suffix})
             || $formdata->{$field.$suffix} != $fieldvalue) {
@@ -748,14 +749,14 @@ function certif_get_certifications_search($searchterms, $sort='fullname ASC', $p
             $shortnamesearch .= ' AND ';
         }
 
-        if (substr($searchterm,0,1) == '+') {
-            $searchterm      = substr($searchterm,1);
+        if (substr($searchterm, 0, 1) == '+') {
+            $searchterm      = substr($searchterm, 1);
             $summarysearch  .= " cf.summary $REGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
             $fullnamesearch .= " cf.fullname $REGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
             $idnumbersearch  .= " cf.idnumber $REGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
             $shortnamesearch  .= " cf.shortname $REGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
-        } else if (substr($searchterm,0,1) == "-") {
-            $searchterm      = substr($searchterm,1);
+        } else if (substr($searchterm, 0, 1) == "-") {
+            $searchterm      = substr($searchterm, 1);
             $summarysearch  .= " cf.summary $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
             $fullnamesearch .= " cf.fullname $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
             $idnumbersearch .= " cf.idnumber $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
@@ -820,7 +821,7 @@ function certif_get_certifications_search($searchterms, $sort='fullname ASC', $p
             }
 
             if (isset($USER->timezone)) {
-                $now = usertime(time(),$USER->timezone);
+                $now = usertime(time(), $USER->timezone);
             } else {
                 $now = usertime(time());
             }
@@ -937,10 +938,10 @@ function certification_progress($certificationcompletionid) {
 
     $certificationcompletion = $DB->get_record('certif_completion', array('id' => $certificationcompletionid), 'status, renewalstatus');
 
-     if ($certificationcompletion->status == CERTIFSTATUS_INPROGRESS) {
+    if ($certificationcompletion->status == CERTIFSTATUS_INPROGRESS) {
         // In progress.
         $overall_progress = 50;
-     } else if ($certificationcompletion->status == CERTIFSTATUS_COMPLETED && $certificationcompletion->renewalstatus != CERTIFRENEWALSTATUS_DUE) {
+    } else if ($certificationcompletion->status == CERTIFSTATUS_COMPLETED && $certificationcompletion->renewalstatus != CERTIFRENEWALSTATUS_DUE) {
         // Completed and not due for renewal.
         $overall_progress = 100;
     } else {

@@ -111,11 +111,11 @@ add_to_log(SITEID, 'certification', 'edit', "edit_certification.php?id={$program
 // Display
 
 $heading = format_string($program->fullname);
-$heading .= ' ('.get_string('certification','totara_certification').')';
+$heading .= ' ('.get_string('certification', 'totara_certification').')';
 
 // Javascript includes
-$PAGE->requires->strings_for_js(array('editcertif', 'saveallchanges', 'confirmchanges'
-                ,'youhaveunsavedchanges', 'youhaveunsavedchanges', 'tosaveall'), 'totara_certification');
+$PAGE->requires->strings_for_js(array('editcertif', 'saveallchanges', 'confirmchanges',
+                 'youhaveunsavedchanges', 'youhaveunsavedchanges', 'tosaveall'), 'totara_certification');
 $args = array('args'=>'{"id":'.$program->id.'}');
 $jsmodule = array(
      'name' => 'totara_certificationconfirm',
