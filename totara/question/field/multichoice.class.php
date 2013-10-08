@@ -150,7 +150,7 @@ abstract class multichoice extends question_base {
         if (!isset($data->selectchoices) || !$data->selectchoices) {
             $atleastone = false;
             foreach ($data->choice as $choice) {
-                if ($choice['option']) {
+                if (trim($choice['option']) != "") {
                     $atleastone = true;
                     break;
                 }
@@ -269,10 +269,12 @@ abstract class multichoice extends question_base {
      */
     protected function add_choices_menu(MoodleQuickForm $form, $readonly = false, $jsid = 'availablechoices',
             $headerstringkey = 'availablechoices', $limitone = true) {
-        global $DB;
+        global $DB, $OUTPUT;
 
         $type = $this->scaletype;
-        $form->addElement('header', $jsid, get_string($headerstringkey, 'totara_question'));
+        $requiredstr = '<img class="req" title="' . get_string('requiredelement', 'form') . '" alt="' .
+                    get_string('requiredelement', 'form') . '" src="' . $OUTPUT->pix_url('req') . '" />';
+        $form->addElement('header', $jsid, get_string($headerstringkey, 'totara_question') . $requiredstr);
         $form->setExpanded($jsid);
 
         // Saved scales.

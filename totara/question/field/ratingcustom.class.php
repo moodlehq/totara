@@ -64,17 +64,12 @@ class question_ratingcustom extends multichoice {
     public function define_validate($data, $files) {
         $err = parent::define_validate($data, $files);
 
-        foreach ($data->choice as $choice) {
-            if ($choice['option'] && !$choice['score']) {
-                $err['choice'] = get_string('ratingchoicemusthavescore', 'totara_question');
-                break;
-            }
-        }
-
-        foreach ($data->choice as $choice) {
-            if ($choice['score'] && !$choice['option']) {
-                $err['choice'] = get_string('ratingscoremusthavechoice', 'totara_question');
-                break;
+        for ($i = 0; $i < count($data->choice); $i++) {
+            $choice = $data->choice[$i];
+            if (trim($choice['option']) != "" && $choice['score'] == "") {
+                $err["choice[{$i}]"] = get_string('ratingchoicemusthavescore', 'totara_question');
+            } else if ($choice['score'] != "" && trim($choice['option']) == "") {
+                $err["choice[{$i}]"] = get_string('ratingscoremusthavechoice', 'totara_question');
             }
         }
 

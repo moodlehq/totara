@@ -57,10 +57,13 @@ M.totara_question_multichoice = M.totara_question_multichoice || {
 
     var $allOptions = $container.find('div[id^="fgroup_id_choice_"]').slice(0, max);
 
-    $allOptions.each(function(){
-        if ($(this).find("input[type='text']").val() != '') {
-            numVisible ++;
-        }
+    $allOptions.each(function(i){
+        $(this).find("input[type='text']").each(function(j, e) {
+            if ($(e).val() != '') {
+                numVisible = i + 1;
+                return false;
+            }
+        });
     });
 
     if (numVisible < 3) {
