@@ -74,7 +74,7 @@ class prog_messages_manager {
         MESSAGETYPE_RECERT_FAILRECERT       => 'prog_recert_failrecert_message',
     );
 
-    function __construct($programid) {
+    function __construct($programid, $newprogram = false) {
         global $DB;
         $this->programid = $programid;
         $this->messages = array();
@@ -94,7 +94,8 @@ class prog_messages_manager {
 
                 $this->messages[] = $messageob;
             }
-        } else { // if the default messages don't already exist, create them
+        } else if ($newprogram) {
+            // If it is a new program, create the default messages.
             $enrolment_message_class = $this->message_classnames[MESSAGETYPE_ENROLMENT];
             $enrolment_message = new $enrolment_message_class($programid);
             $enrolment_message->messagesubject = get_string('defaultenrolmentmessage_subject', 'totara_program');
@@ -107,7 +108,7 @@ class prog_messages_manager {
             $exception_report_message->mainmessage = get_string('defaultexceptionreportmessage_message', 'totara_program');
             $this->messages[] = $exception_report_message;
 
-            // the default message must be saved at this point
+            // The default message must be saved at this point.
             $this->save_messages();
         }
 
@@ -185,11 +186,6 @@ class prog_messages_manager {
             unset($message->isfirstmessage);
             if ($pos == 1) {
                 $message->isfirstmessage = true;
-            }
-
-            unset($message->isfirstmoveablemessage);
-            if ($pos == 3) {
-                $message->isfirstmoveablemessage = true;
             }
 
             unset($message->islastmessage);
@@ -592,6 +588,8 @@ class prog_messages_manager {
             // Add the add message drop down
             if ($updateform) {
                 $messageoptions = array(
+                    MESSAGETYPE_ENROLMENT => get_string('enrolment', 'totara_program'),
+                    MESSAGETYPE_EXCEPTION_REPORT => get_string('exceptionsreport', 'totara_program'),
                     MESSAGETYPE_UNENROLMENT => get_string('unenrolment', 'totara_program'),
                     MESSAGETYPE_PROGRAM_DUE => get_string('programdue', 'totara_program'),
                     MESSAGETYPE_PROGRAM_OVERDUE => get_string('programoverdue', 'totara_program'),

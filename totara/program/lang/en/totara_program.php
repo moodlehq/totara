@@ -219,6 +219,7 @@ $string['editprogramroleassignments'] = 'Edit program role assignments';
 $string['editprograms'] = 'Add/edit programs';
 $string['endnote'] = 'Endnote';
 $string['endnote_help'] = 'Note to be displayed at the end of the program';
+$string['enrolment'] = 'Enrolment';
 $string['enrolmentmessage'] = 'Enrolment message';
 $string['enrolmentmessage_help'] = 'This message will be sent whenever a user is automatically assigned to a program.';
 $string['error:addinguserassignment'] = 'An error occured when adding a user assignment';

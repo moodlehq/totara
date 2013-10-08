@@ -185,6 +185,9 @@ if ($data = $form->get_data()) {
         $program = new program($newid);
         $transaction->allow_commit();
 
+        // Create message manager to add default messages.
+        $messagemanager = new prog_messages_manager($newid, true);
+
         $editoroptions = $TEXTAREA_OPTIONS;
         $editoroptions['context'] = context_program::instance($newid);
 

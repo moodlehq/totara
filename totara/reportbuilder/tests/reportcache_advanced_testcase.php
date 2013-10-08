@@ -30,6 +30,7 @@ global $CFG;
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/cron.php');
 require_once($CFG->libdir . '/testing/generator/data_generator.php');
+require_once($CFG->dirroot . '/totara/program/program.class.php');
 
 abstract class reportcache_advanced_testcase extends advanced_testcase {
     protected static $generator = null;
@@ -167,6 +168,8 @@ class reportcache_testing_data_generator extends testing_data_generator {
         $todb = (object)$properties;
         $newid = $DB->insert_record('prog', $todb);
         $program = new program($newid);
+        $messagemanager = new prog_messages_manager($newid, true);
+
         return $program;
     }
 

@@ -64,7 +64,7 @@ abstract class prog_message {
     public $messagesubject, $mainmessage;
     public $notifymanager, $managermessage;
     public $triggertime, $triggerperiod, $triggernum;
-    public $isfirstmessage, $islastmessage, $isfirstmoveablemessage;
+    public $isfirstmessage, $islastmessage;
     public $studentrole, $managerrole;
     public $uniqueid;
 
@@ -444,7 +444,7 @@ abstract class prog_message {
         if ($updateform) {
             $attributes = array();
             $attributes['class'] = 'btn-cancel moveup fieldsetbutton';
-            if (isset($this->isfirstmoveablemessage)) {
+            if (isset($this->isfirstmessage)) {
                 $attributes['disabled'] = 'disabled';
                 $attributes['class'] .= 'disabled';
             }
@@ -734,7 +734,7 @@ class prog_enrolment_message extends prog_noneventbased_message {
 
         $this->messagetype = MESSAGETYPE_ENROLMENT;
         $this->helppage = 'enrolmentmessage';
-        $this->locked = true;
+        $this->locked = false;
         $this->sortorder = 1;
         $this->fieldsetlegend = get_string('legend:enrolmentmessage', 'totara_program');
 
@@ -760,6 +760,7 @@ class prog_enrolment_message extends prog_noneventbased_message {
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_manager_fields_template($mform, $template_values, $formdataobject, $updateform);
 
@@ -778,7 +779,7 @@ class prog_exception_report_message extends prog_noneventbased_message {
 
         $this->messagetype = MESSAGETYPE_EXCEPTION_REPORT;
         $this->helppage = 'exceptionreportmessage';
-        $this->locked = true;
+        $this->locked = false;
         $this->sortorder = 2;
         $this->fieldsetlegend = get_string('legend:exceptionreportmessage', 'totara_program');
 
@@ -804,6 +805,7 @@ class prog_exception_report_message extends prog_noneventbased_message {
         $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
+        $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
 
         $templatehtml .= html_writer::end_tag('fieldset');
