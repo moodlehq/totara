@@ -116,17 +116,47 @@ class question_userinfo extends question_base{
 
 
     /**
+     * Validate custom element configuration
+     *
+     * @param stdClass $data
+     * @param array $files
+     */
+    protected function define_validate($data, $files) {
+        $err = array();
+
+        $atleastone = false;
+        foreach ($this->info_fields as $field => $name) {
+            if ($data->$field) {
+                $atleastone = true;
+            }
+        }
+        if (!$atleastone) {
+            $err['errorplaceholder'] = get_string('error:userinfoatleastone', 'totara_question');
+        }
+
+        return $err;
+    }
+
+
+    /**
      * Customfield specific settings elements
      *
      * @param MoodleQuickForm $form
      */
     protected function add_field_specific_settings_elements(MoodleQuickForm $form, $readonly, $moduleinfo) {
-        $form->addElement('header', 'infoheader', get_string('infotodisplay', 'totara_question'));
+        global $OUTPUT;
+
+        $requiredstr = html_writer::empty_tag('img', array('title' => get_string('requiredelement', 'form'),
+                'src' => $OUTPUT->pix_url('req'), 'alt' => get_string('requiredelement', 'form'), 'class'=>'req'));
+        $form->addElement('header', 'infoheader', get_string('infotodisplay', 'totara_question') . $requiredstr);
         $form->setExpanded('infoheader');
 
         foreach ($this->info_fields as $field => $fieldname) {
             $form->addElement('advcheckbox', $field, $fieldname);
         }
+
+        $form->addElement('static', 'errorplaceholder');
+
     }
 
 

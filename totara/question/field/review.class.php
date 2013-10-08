@@ -319,8 +319,8 @@ abstract class review extends multichoice {
 
         // Add the header - starts a new frameset.
         if ($canasnweritems && $this->required) {
-            $requiredstr = '<img class="req" title="' . get_string('requiredelement', 'form') . '" alt="' .
-                    get_string('requiredelement', 'form') . '" src="' . $OUTPUT->pix_url('req') . '" />';
+            $requiredstr = html_writer::empty_tag('img', array('title' => get_string('requiredelement', 'form'),
+                    'src' => $OUTPUT->pix_url('req'), 'alt' => get_string('requiredelement', 'form'), 'class'=>'req'));
         } else {
             $requiredstr = '';
         }

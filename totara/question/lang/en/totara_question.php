@@ -67,6 +67,7 @@ $string['error:reviewmustselectitem'] = 'At least one one item must be reviewed'
 $string['error:scorenumeric'] = 'The value for score must be numeric';
 $string['error:selectatleastone'] = 'You must select at least one';
 $string['error:twooptions'] = 'At least two options required';
+$string['error:userinfoatleastone'] = 'At least one item must be selected';
 $string['fieldrequired'] = 'This field is required';
 $string['fieldspercompfromplan'] = 'Fields per competency';
 $string['fieldspercoursefromplan'] = 'Fields per course';

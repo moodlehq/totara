@@ -100,6 +100,8 @@ class question_fixedimage extends question_base{
             $this->add_field_specific_view_elements($form);
         } else {
             $form->addElement('filemanager', 'image_filemanager', get_string('image', 'totara_question'), null, $options);
+            $form->addRule('image_filemanager', get_string('required'), 'required', null, 'client');
+
             $form->addElement('textarea', 'description', get_string('description'), array('cols' => 60, 'rows' => 5));
         }
     }

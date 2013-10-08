@@ -96,7 +96,8 @@ class question_fixedtext extends question_base{
             $this->add_field_specific_view_elements($form);
         } else {
             $form->addElement('editor', 'fixedtext_editor', get_string('questiontypefixedtext', 'totara_question'), null,
-                $TEXTAREA_OPTIONS);
+                    $TEXTAREA_OPTIONS);
+            $form->addRule('fixedtext_editor', get_string('required'), 'required', null, 'client');
         }
     }
 

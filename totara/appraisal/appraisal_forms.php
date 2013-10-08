@@ -416,6 +416,8 @@ class appraisal_add_quest_form extends question_choose_element_form {
 class appraisal_quest_edit_form extends question_base_form {
 
     public function definition() {
+        global $OUTPUT;
+
         $mform = & $this->_form;
         $mform->disable_form_change_checker();
         $id = $this->_customdata['id'];
@@ -448,7 +450,9 @@ class appraisal_quest_edit_form extends question_base_form {
         $info->pageid = $pageid;
         $element->add_settings_form_elements($mform, $readonly, $info);
         if ($element->requires_permissions()) {
-            $mform->addElement('header', 'perms', get_string('permissions', 'totara_appraisal'));
+            $requiredstr = html_writer::empty_tag('img', array('title' => get_string('requiredelement', 'form'),
+                    'src' => $OUTPUT->pix_url('req'), 'alt' => get_string('requiredelement', 'form'), 'class'=>'req'));
+            $mform->addElement('header', 'perms', get_string('permissions', 'totara_appraisal') . $requiredstr);
             $mform->setExpanded('perms');
             if ($element->is_answerable()) {
                 if ($id < 1 && $notfirst) {
@@ -704,16 +708,16 @@ class appraisal_message_form extends moodleform {
         $mform->addElement('select', 'messagetoall', '', $messageall);
 
         // Required field icon. This is a bit of a hack.
-        $required = '<img class="req" title="'.get_string('requiredelement', 'form').'" alt="'.
-                get_string('requiredelement', 'form').'" src="'.$OUTPUT->pix_url('req') .'" />';
+        $requiredstr = html_writer::empty_tag('img', array('title' => get_string('requiredelement', 'form'),
+                'src' => $OUTPUT->pix_url('req'), 'alt' => get_string('requiredelement', 'form'), 'class'=>'req'));
 
         // Messages.
         $mform->addElement('text', 'messagetitle[0]',
-                get_string('eventmessagetitle', 'totara_appraisal') . $required,
+                get_string('eventmessagetitle', 'totara_appraisal') . $requiredstr,
                 array('class' => 'appraisal-event-title hide-disabled'));
         $mform->setType('messagetitle[0]', PARAM_CLEANHTML);
         $mform->addElement('textarea', 'messagebody[0]',
-                get_string('eventmessagebody', 'totara_appraisal') . $required,
+                get_string('eventmessagebody', 'totara_appraisal') . $requiredstr,
                 array('class' => 'appraisal-event-body hide-disabled'));
         $mform->setType('messagebody[0]', PARAM_CLEANHTML);
         $mform->disabledIf('messagetitle[0]', 'messagetoall', 'eq', 'each');
@@ -722,11 +726,11 @@ class appraisal_message_form extends moodleform {
         foreach ($roles as $role => $rolename) {
             $name = get_string($rolename, 'totara_appraisal');
             $mform->addElement('text', "messagetitle[$role]",
-                    get_string('eventmessageroletitle', 'totara_appraisal', $name) . $required,
+                    get_string('eventmessageroletitle', 'totara_appraisal', $name) . $requiredstr,
                     array('class' => 'appraisal-event-title hide-disabled'));
             $mform->setType("messagetitle[$role]", PARAM_CLEANHTML);
             $mform->addElement('textarea', "messagebody[$role]",
-                    get_string('eventmessagerolebody', 'totara_appraisal', $name) . $required,
+                    get_string('eventmessagerolebody', 'totara_appraisal', $name) . $requiredstr,
                     array('class' => 'appraisal-event-body hide-disabled'));
             $mform->setType("messagebody[$role]", PARAM_CLEANHTML);
             $mform->disabledIf("messagetitle[$role]", 'messagetoall', 'eq', 'all');
