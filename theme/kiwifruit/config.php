@@ -99,7 +99,7 @@ $THEME->layouts = array(
     'redirect' => array(
         'file' => 'general.php',
         'regions' => array(),
-        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true, 'nocourseheaderfooter' => true)
+        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => true, 'nocustommenu' => true, 'nologininfo' => true, 'nocourseheaderfooter' => true, 'langmenu' => false)
     ),
 );
 
