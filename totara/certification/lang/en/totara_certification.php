@@ -55,6 +55,7 @@ $string['certification:viewhiddencertifications'] = 'View hidden certifications'
 $string['certificationcontent'] = 'Define the program content by adding sets of courses';
 $string['certificationcreatesuccess'] = 'Certification created sucessfully';
 $string['certificationdeletesuccess'] = 'Certification "{$a}" deleted sucessfully';
+$string['certificationdetailssaved'] = 'Certification details saved';
 $string['certificationhistory'] = 'Previous Certification';
 $string['certifications'] = 'Certifications';
 $string['certificationsinthiscategory'] = 'Certifications in this category';

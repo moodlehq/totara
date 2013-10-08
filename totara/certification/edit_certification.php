@@ -101,6 +101,10 @@ if ($data = $form->get_data()) {
         $certification->timemodified = time();
         $certification->recertifydatetype = $data->recertifydatetype;
         $DB->update_record('certif', $certification);
+
+        totara_set_notification(get_string('certificationdetailssaved', 'totara_certification'),
+                new moodle_url('/totara/certification/edit_certification.php', array('id' => $program->id)),
+                array('class' => 'notifysuccess'));
     }
 
 }
