@@ -122,6 +122,7 @@ $string['error:recipientsrequired'] = 'At least one group of recipients must be 
 $string['error:newduedatebeforeold'] = 'The due date can not be set to an earlier date, please set it to a date equal to or after the existing due date.';
 $string['error:noformselected'] = 'Error no feedback form selected. Please select a feedback form before continuing.';
 $string['error:readonly'] = 'Cannot submit form in read only mode';
+$string['error:submitform'] = 'Please, fill form with valid required data before submit or save progress to finish later.';
 $string['error:unexpectedtype'] = 'The variable {$a} does not meet the expected type';
 $string['error:unrecognisedaction'] = 'Trying to preform an unrecognised action: {$a}';
 $string['error:previewpermissions'] = 'You do not have permission to preview this feedback';

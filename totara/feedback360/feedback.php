@@ -200,6 +200,9 @@ if ($form->is_submitted() && !$respassignment->is_completed()) {
         }
         totara_set_notification($message, $returnurl, array('class' => 'notifysuccess'));
     }
+    if ($answers->action == 'submit' && !$formisvalid) {
+        totara_set_notification(get_string('error:submitform', 'totara_feedback360'), null, array('class' => 'notifyproblem'));
+    }
 } else if (!$preview) {
     $form->set_data($feedback360->get_answers($respassignment));
 }
