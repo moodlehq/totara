@@ -54,8 +54,11 @@ class question_fixedtext extends question_base{
             $toform = new stdClass();
         }
 
-        $editor = new tinymce_texteditor();
-        $editor->use_editor('fixedtext_editor');
+        // This class only accessible if text editor was added.
+        if (class_exists('tinymce_texteditor')) {
+            $editor = new tinymce_texteditor();
+            $editor->use_editor('fixedtext_editor');
+        }
 
         $toform->fixedtextformat = FORMAT_HTML;
         $toform->fixedtext = $this->param1;
@@ -89,8 +92,12 @@ class question_fixedtext extends question_base{
      */
     protected function add_field_specific_settings_elements(MoodleQuickForm $form, $readonly, $moduleinfo) {
         global $TEXTAREA_OPTIONS;
-        $form->addElement('editor', 'fixedtext_editor', get_string('questiontypefixedtext', 'totara_question'), null,
+        if ($readonly) {
+            $this->add_field_specific_view_elements($form);
+        } else {
+            $form->addElement('editor', 'fixedtext_editor', get_string('questiontypefixedtext', 'totara_question'), null,
                 $TEXTAREA_OPTIONS);
+        }
     }
 
 

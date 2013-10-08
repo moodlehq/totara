@@ -46,7 +46,7 @@ class feedback360_edit_form extends moodleform {
 
         if ($readonly) {
             $mform->addElement('static', 'name', get_string('name', 'totara_feedback360'));
-            $mform->addElement('static', 'description', get_string('description'), $feedback360->description_editor['text']);
+            $mform->addElement('static', 'description_ro', get_string('description'), $feedback360->description_editor['text']);
         } else {
             $mform->addElement('text', 'name', get_string('name', 'totara_feedback360'), 'maxlength="255" size="50"');
             $mform->addRule('name', null, 'required');
@@ -54,6 +54,7 @@ class feedback360_edit_form extends moodleform {
 
             $mform->addElement('editor', 'description_editor', get_string('description'), null, $TEXTAREA_OPTIONS);
             $mform->addHelpButton('description_editor', 'description', 'totara_feedback360');
+            $mform->setType('description_editor', PARAM_CLEANHTML);
 
             $submittitle = get_string('createfeedback360', 'totara_feedback360');
             if ($feedback360->id > 0) {
@@ -62,7 +63,6 @@ class feedback360_edit_form extends moodleform {
             $this->add_action_buttons(true, $submittitle);
         }
         $mform->setType('name', PARAM_TEXT);
-        $mform->setType('description_editor', PARAM_CLEANHTML);
 
         $this->set_data($feedback360);
     }

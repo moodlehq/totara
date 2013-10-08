@@ -96,10 +96,12 @@ class question_fixedimage extends question_base{
 
         $options = $FILEPICKER_OPTIONS;
         $options['accepted_types'] = 'web_image';
-
-        $form->addElement('filemanager', 'image_filemanager', get_string('image', 'totara_question'), null, $options);
-
-        $form->addElement('textarea', 'description', get_string('description'), array('cols' => 60, 'rows' => 5));
+        if ($readonly) {
+            $this->add_field_specific_view_elements($form);
+        } else {
+            $form->addElement('filemanager', 'image_filemanager', get_string('image', 'totara_question'), null, $options);
+            $form->addElement('textarea', 'description', get_string('description'), array('cols' => 60, 'rows' => 5));
+        }
     }
 
     /**
@@ -123,7 +125,6 @@ class question_fixedimage extends question_base{
         global $CFG, $FILEPICKER_OPTIONS;
 
         require_once($CFG->libdir . '/resourcelib.php');
-
         $contextid = $FILEPICKER_OPTIONS['context']->id;
         $content = '';
 
