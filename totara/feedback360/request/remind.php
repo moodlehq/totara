@@ -142,7 +142,7 @@ if (!empty($confirmation)) {
                 // Send a task to the requested user.
                 $eventdata = new stdClass();
                 $eventdata->userto = $userto;
-                $eventdata->useridfrom = $requester->id;
+                $eventdata->userfrom = $requester;
                 $eventdata->icon = 'feedback360-remind';
                 if ($asmanager) {
                     $eventdata->subject = $stringmanager->get_string('managerreminderemailsubject', 'totara_feedback360',

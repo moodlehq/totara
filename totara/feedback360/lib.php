@@ -1559,7 +1559,7 @@ class feedback360_responder {
             // Send a task to the requested user.
             $eventdata = new stdClass();
             $eventdata->userto = $userto;
-            $eventdata->useridfrom = ($asmanager) ? $USER->id : $userfrom->id;
+            $eventdata->userfrom = ($asmanager) ? $USER : $userfrom;
             $eventdata->icon = 'feedback360-request';
             if ($asmanager) {
                 $eventdata->subject = $stringmanager->get_string('manageremailrequestsubject', 'totara_feedback360',
