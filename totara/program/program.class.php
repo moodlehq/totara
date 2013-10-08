@@ -1036,8 +1036,9 @@ class program {
             }
         }
 
-        //only show time allowance and extension text if a completion time has been set
-        if ($userassigned && $prog_completion && ($prog_completion->timedue != COMPLETION_TIME_NOT_SET)) {
+        // Only show time allowance and extension text if a completion time has been set and the program is not completed.
+        if ($userassigned && $prog_completion && ($prog_completion->timedue != COMPLETION_TIME_NOT_SET) &&
+                ($prog_completion->timecompleted == 0)) {
             $out .= $this->get_time_allowance_and_extension_text($userid, $viewinganothersprogram);
         }
 
