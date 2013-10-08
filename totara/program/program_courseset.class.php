@@ -796,6 +796,12 @@ class multi_course_set extends course_set {
 
                 $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
 
+                $showcourseset = false;
+                if ($userid) {
+                    $showcourseset = (is_enrolled($coursecontext, $userid) || totara_course_is_viewable($course->id, $userid))
+                                     && $accessible;
+                }
+
                 // Site admin can access any course.
                 if (is_siteadmin($USER->id)) {
                     $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $coursename);
@@ -804,7 +810,6 @@ class multi_course_set extends course_set {
                 } else {
                     // User must be enrolled or course can be viewed (checks audience visibility),
                     // And course must be accessible.
-                    $showcourseset = (is_enrolled($coursecontext, $userid) || totara_course_is_viewable($course->id, $userid)) && (($userid && $accessible) || $accessible);
                     if ($showcourseset) {
                         $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $coursename);
                         $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)),
