@@ -29,11 +29,17 @@ class user_position_assignment_form extends moodleform {
 
     // Define the form
     function definition () {
-        global $CFG, $DB, $OUTPUT, $COURSE, $POSITION_TYPES;
+        global $CFG, $DB, $POSITION_TYPES;
 
         $mform = $this->_form;
         $type = $this->_customdata['type'];
         $pa = $this->_customdata['position_assignment'];
+        $submitted = $this->_customdata['submitted'];
+        $submittedpositionid = $this->_customdata['submittedpositionid'];
+        $submittedorganisationid = $this->_customdata['submittedorganisationid'];
+        $submittedmanagerid = $this->_customdata['submittedmanagerid'];
+        $submittedappraiserid = $this->_customdata['submittedappraiserid'];
+        $submittedtempmanagerid = $this->_customdata['submittedtempmanagerid'];
         $editoroptions = $this->_customdata['editoroptions'];
         $can_edit = $this->_customdata['can_edit'];
         $can_edit_tempmanager = empty($this->_customdata['can_edit_tempmanager']) ? 0 : 1;
@@ -49,22 +55,50 @@ class user_position_assignment_form extends moodleform {
             $aspirational = true;
         }
 
+        if ($submitted) {
+            $positionid = $submittedpositionid;
+            $organisationid = $submittedorganisationid;
+            $appraiserid = $submittedappraiserid;
+        } else {
+            $positionid = $pa->positionid;
+            $organisationid = $pa->organisationid;
+            $appraiserid = $pa->appraiserid;
+        }
+
         // Get position title
         $position_title = '';
-        if ($pa->positionid) {
-            $position_title = $DB->get_field('pos', 'fullname', array('id' => $pa->positionid));
+        if ($positionid) {
+            $position_title = $DB->get_field('pos', 'fullname', array('id' => $positionid));
         }
 
         // Get organisation title
         $organisation_title = '';
-        if ($pa->organisationid) {
-            $organisation_title = $DB->get_field('org', 'fullname', array('id' => $pa->organisationid));
+        if ($organisationid) {
+            $organisation_title = $DB->get_field('org', 'fullname', array('id' => $organisationid));
         }
 
         // Get manager title.
         $manager_title = '';
         $manager_id = 0;
-        if ($pa->reportstoid) {
+        if ($submitted) {
+            if ($submittedmanagerid) {
+                $manager = $DB->get_record_sql(
+                    "SELECT
+                        u.id,
+                        u.firstname,
+                        u.lastname
+                     FROM
+                        {user} u
+                     WHERE
+                        u.id = ?",
+                     array($submittedmanagerid));
+
+                if ($manager) {
+                    $manager_title = fullname($manager);
+                    $manager_id = $manager->id;
+                }
+            }
+        } else if ($pa->reportstoid) {
             $manager = $DB->get_record_sql(
                 "SELECT
                     u.id,
@@ -89,7 +123,7 @@ class user_position_assignment_form extends moodleform {
         // Get appraiser title.
         $appraiser_title = '';
         $appraiser_id = 0;
-        if ($pa->appraiserid) {
+        if ($appraiserid) {
             $appraiser = $DB->get_record_sql(
                 "SELECT
                     u.id,
@@ -99,7 +133,7 @@ class user_position_assignment_form extends moodleform {
                     {user} u
                  WHERE
                     u.id = ?",
-                 array($pa->appraiserid));
+                 array($appraiserid));
             if ($appraiser) {
                 $appraiser_title = fullname($appraiser);
                 $appraiser_id = $appraiser->id;
@@ -288,11 +322,16 @@ class user_position_assignment_form extends moodleform {
 
             if ($primary && !empty($CFG->enabletempmanagers)) {
                 // Temporary manager.
-                $tempmanager = totara_get_manager($pa->userid, null, false, true);
+                if ($submitted) {
+                    $tempmanager = $DB->get_record('user', array('id' => $submittedtempmanagerid));
+                    $tempmanager_expiry = null;
+                } else {
+                    $tempmanager = totara_get_manager($pa->userid, null, false, true);
+                    $tempmanager_expiry = !empty($tempmanager) ? $tempmanager->expirytime : null;
+                }
 
                 $tempmanager_id = !empty($tempmanager->id) ? $tempmanager->id : 0;
                 $tempmanager_title = !empty($tempmanager) ? fullname($tempmanager) : '';
-                $tempmanager_expiry = !empty($tempmanager) ? $tempmanager->expirytime : null;
                 if ($nojs) {
                     $sql = "SELECT u.id, ".$DB->sql_fullname('u.firstname', 'u.lastname')." AS fullname
                               FROM {user} u
@@ -517,26 +556,28 @@ class user_position_assignment_form extends moodleform {
             unset($errstr);
         }
 
-        if ($can_edit_tempmanager) {
-            // If tempmanager, check that expiry is set.
-            if ($mform->getElement('tempmanagerid')->getValue()) {
-                if (empty($data['tempmanagerexpiry'])) {
-                    $result['tempmanagerexpiry_group'] = get_string('error:tempmanagerexpirynotset', 'totara_core');
+        // If tempmanager, check that expiry is set.
+        if ($can_edit_tempmanager && $mform->getElement('tempmanagerid')->getValue()) {
+            if (empty($data['tempmanagerexpiry'])) {
+                $result['tempmanagerexpiry_group'] = get_string('error:tempmanagerexpirynotset', 'totara_core');
+            } else {
+                // Ensure temp manager expiry in right format and date is in future.
+                $tempmanagerexpirystr = $data['tempmanagerexpiry'];
+                $tempmanagerexpiry = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),
+                        $tempmanagerexpirystr);
+
+                if (false === $tempmanagerexpiry && $tempmanagerexpirystr !== 'dd/mm/yy' && $tempmanagerexpirystr !== '') {
+                    $result['tempmanagerexpiry'] = get_string('error:dateformat', 'position');
+                }
+
+                if (time() >  $tempmanagerexpiry && $tempmanagerexpiry !== false) {
+                    $result['tempmanagerexpiry_group'] = get_string('error:datenotinfuture', 'totara_core');
                 }
             }
+        }
 
-            // Ensure temp manager expiry in right format and date is in future.
-            $tempmanagerexpirystr = !empty($data['tempmanagerexpiry']) ? $data['tempmanagerexpiry'] : '';
-            $tempmanagerexpiry = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),
-                    $tempmanagerexpirystr);
-
-            if (false === $tempmanagerexpiry && $tempmanagerexpirystr !== 'dd/mm/yy' && $tempmanagerexpirystr !== '') {
-                $result['tempmanagerexpiry'] = get_string('error:dateformat', 'position');
-            }
-
-            if (time() >  $tempmanagerexpiry && $tempmanagerexpiry !== false) {
-                $result['tempmanagerexpiry_group'] = get_string('error:datenotinfuture', 'totara_core');
-            }
+        if (!empty($result)) {
+            totara_set_notification(get_string('error:positionvalidationfailed', 'totara_core'));
         }
 
         return $result;

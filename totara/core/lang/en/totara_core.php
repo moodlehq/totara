@@ -357,6 +357,7 @@ $string['error:tempmanagernotset'] = 'Temporary manager needs to be set';
 $string['error:tempmanagernotselected'] = 'No temporary manager selected';
 $string['error:tempmanagerexpirynotset'] = 'An expiry date for the temporary manager needs to be set';
 $string['error:datenotinfuture'] = 'The date needs to be in the future';
+$string['error:positionvalidationfailed'] = 'The problems indicated below must be fixed before your changes can be saved.';
 $string['manager(s)'] = 'Manager(s)';
 $string['tempmanagersupporttext'] = ' Note, only current team managers can be selected.';
 $string['tempmanagerassignmsgstaffsubject'] = '{$a->tempmanager} is now your temporary manager';

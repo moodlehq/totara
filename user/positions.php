@@ -164,11 +164,19 @@ if ($nojs) {
     $currenturl = "{$CFG->wwwroot}/user/positions.php?user={$user->id}&course={$course->id}&type={$type}";
 }
 // Form
+$submitbutton = optional_param('submitbutton', null, PARAM_ALPHANUMEXT);
+$submitted = !empty($submitbutton);
+$submittedpositionid = optional_param('positionid', null, PARAM_INT);
+$submittedorganisationid = optional_param('organisationid', null, PARAM_INT);
+$submittedmanagerid = optional_param('managerid', null, PARAM_INT);
+$submittedappraiserid = optional_param('appraiserid', null, PARAM_INT);
+$submittedtempmanagerid = optional_param('tempmanagerid', null, PARAM_INT);
 $position_assignment->descriptionformat = FORMAT_HTML;
 $position_assignment = file_prepare_standard_editor($position_assignment, 'description', $editoroptions, $editoroptions['context'],
     'totara_core', 'pos_assignment', $position_assignment->id);
 $form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit',
-        'nojs', 'editoroptions', 'can_edit_tempmanager'));
+        'nojs', 'editoroptions', 'can_edit_tempmanager', 'submitted', 'submittedpositionid', 'submittedorganisationid',
+        'submittedmanagerid', 'submittedappraiserid', 'submittedtempmanagerid'));
 $form->set_data($position_assignment);
 // Don't show the page if they do not have a position & can't edit positions.
 if (!$can_edit && !$position_assignment->id && !$can_edit_tempmanager) {
