@@ -58,6 +58,12 @@ if (has_capability('totara/program:configureprogram', $systemcontext)) {
     $PAGE->set_heading($program->fullname);
 }
 
+// Permissions checks.
+if (!has_capability('totara/program:configureprogram', $programcontext) &&
+    !has_capability('totara/program:configuredetails', $programcontext)) {
+    print_error('error:nopermissions', 'totara_program');
+}
+
 if ($action == 'edit') {
     require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
