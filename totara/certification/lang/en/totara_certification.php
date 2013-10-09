@@ -98,6 +98,7 @@ $string['error:histalreadyexists'] = 'Certification history already exists certi
 $string['error:incorrectcertifid'] = 'Incorrect certification ID certifid={$a}';
 $string['error:incorrectid'] = 'Incorrect certification completion ID or user ID';
 $string['error:invalidaction'] = 'Invalid action: {$a}';
+$string['error:minimuperiod'] = 'Window period must be at least {$a}';
 $string['error:missingprogcompletion'] = 'Missing program completion record for certifid={$a->certifid} userid={$a->userid}';
 $string['error:mustbepositive'] = 'Number must be positive';
 $string['error:nullactiveperiod'] = 'Recertification active period is not set';
@@ -145,6 +146,7 @@ $string['status_completed'] = 'Completed';
 $string['status_expired'] = 'Expired';
 $string['status_inprogress'] = 'In progress';
 $string['status_unset'] = 'Unset';
+$string['timeallowance'] = 'Minimum time required for recertification is {$a->timestring}';
 $string['tosaveall'] = 'To save all changes, click \'Save all changes\'. To edit click \'Edit certification details\'. Saving changes cannot be undone.';
 $string['type_competency'] = 'Competency';
 $string['type_course'] = 'Course';

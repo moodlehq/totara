@@ -41,6 +41,10 @@ require_login();
 $systemcontext = context_system::instance();
 $program = new program($id);
 $programcontext = $program->get_context();
+$timeallowance = new stdClass();
+$timeallowance->seconds = $program->content->get_total_time_allowance(CERTIFPATH_RECERT);
+$timeallowance->timestring = prog_format_seconds($timeallowance->seconds, true);
+
 $certification = $DB->get_record('certif', array('id' => $program->certifid));
 
 if (!$certification) {
@@ -83,9 +87,8 @@ $currenturl = qualified_me();
 $currenturl_noquerystring = strip_querystring($currenturl);
 $viewurl = $currenturl_noquerystring."?id={$id}";
 $overviewurl = $CFG->wwwroot."/totara/certifciation/edit_certification.php?id={$id}&action=view";
-
-$form = new edit_certification_form($currenturl, array('certification'=>$certification), 'post', '',
-                                                                                array('name'=>'form_certif_details'));
+$customdata = array('certification' => $certification, 'timeallowance' => $timeallowance);
+$form = new edit_certification_form($currenturl, $customdata, 'post', '', array('name'=>'form_certif_details'));
 
 if ($form->is_cancelled()) {
     totara_set_notification(get_string('programupdatecancelled', 'totara_program'), $overviewurl,

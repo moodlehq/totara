@@ -36,6 +36,8 @@ class edit_certification_form extends moodleform {
 
         $mform =& $this->_form;
 
+        $timeallowance = $this->_customdata['timeallowance'];
+
         $certification = $this->_customdata['certification'];
         if (empty($certification->activeperiod)) {
             $active = array('', 'day');
@@ -95,7 +97,19 @@ class edit_certification_form extends moodleform {
         $mform->addGroup($windowgrp, 'windowgrp', get_string('editdetailswindow', 'totara_certification'), ' ', false);
         $mform->addHelpButton('windowgrp', 'editdetailswindow', 'totara_certification');
 
-        // recert datetype
+        $mform->registerRule('windowperiod_validation', 'function', 'windowperiod_validation');
+        $mform->addRule('windowgrp',
+                get_string('error:minimuperiod', 'totara_certification', $timeallowance->timestring),
+                'windowperiod_validation',
+                array('mform' => $mform, 'timeallowance' => $timeallowance->seconds));
+
+        if ($timeallowance->seconds > 0) {
+            $mform->addElement('html', html_writer::tag('p',
+                    get_string('timeallowance', 'totara_certification', $timeallowance),
+                    array('class' => 'timeallowance')));
+        }
+
+        // Recert datetype.
         $recertoptions = array(
             CERTIFRECERT_COMPLETION => get_string('editdetailsrccmpl', 'totara_certification'),
             CERTIFRECERT_EXPIRY => get_string('editdetailsrcexp', 'totara_certification')
@@ -120,6 +134,7 @@ class edit_certification_form extends moodleform {
      * @return array of "element_name"=>"error_description" if there are errors,
      *         or an empty array if everything is OK (true allowed for backwards compatibility too).
      */
+
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
 
@@ -133,4 +148,18 @@ class edit_certification_form extends moodleform {
         }
         return $errors;
     }
+
+}
+
+/**
+ * Validates that the window period is greater than or equal to the required time for recertification
+ *
+ * @param string $element Element name
+ * @param array $value Value of windowgrp
+ * @param array $params Custom parameters
+ * @return boolean
+ */
+function windowperiod_validation($element, $value, $params) {
+    $timewindowperiod = strtotime($value['windownum'] . ' ' . $value['windowperiod'], 0);
+    return ($timewindowperiod && ($timewindowperiod >= $params['timeallowance']));
 }
