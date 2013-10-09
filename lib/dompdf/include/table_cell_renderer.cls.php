@@ -1,9 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: table_cell_renderer.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
 /**
@@ -18,14 +19,14 @@ class Table_Cell_Renderer extends Block_Renderer {
 
   function render(Frame $frame) {
     $style = $frame->get_style();
-
+    
     if ( trim($frame->get_node()->nodeValue) === "" && $style->empty_cells === "hide" ) {
       return;
     }
 
     $this->_set_opacity( $frame->get_opacity( $style->opacity ) );
     list($x, $y, $w, $h) = $frame->get_border_box();
-
+    
     // Draw our background, border and content
     if ( ($bg = $style->background_color) !== "transparent" ) {
       $this->_canvas->filled_rectangle($x, $y, $w, $h, $bg);
@@ -34,7 +35,7 @@ class Table_Cell_Renderer extends Block_Renderer {
     if ( ($url = $style->background_image) && $url !== "none" ) {
       $this->_background_image($url, $x, $y, $w, $h, $style);
     }
-
+    
     $table = Table_Frame_Decorator::find_parent_table($frame);
 
     if ( $table->get_style()->border_collapse !== "collapse" ) {

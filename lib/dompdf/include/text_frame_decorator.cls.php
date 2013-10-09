@@ -1,11 +1,12 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Brian Sweeney <eclecticgeek@gmail.com>
- * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: text_frame_decorator.cls.php 459 2012-01-25 21:38:50Z fabien.menager $
  */
 
 /**
@@ -15,17 +16,17 @@
  * @package dompdf
  */
 class Text_Frame_Decorator extends Frame_Decorator {
-
+  
   // protected members
   protected $_text_spacing;
-
+  
   // buggy DOMText::splitText (PHP < 5.2.7)
   public static $_buggy_splittext;
-
+  
   function __construct(Frame $frame, DOMPDF $dompdf) {
     if ( !$frame->is_text_node() )
       throw new DOMPDF_Exception("Text_Decorator can only be applied to #text nodes.");
-
+    
     parent::__construct($frame, $dompdf);
     $this->_text_spacing = null;
   }
@@ -36,12 +37,12 @@ class Text_Frame_Decorator extends Frame_Decorator {
     parent::reset();
     $this->_text_spacing = null;
   }
-
+  
   //........................................................................
 
   // Accessor methods
   function get_text_spacing() { return $this->_text_spacing; }
-
+      
   function get_text() {
     // FIXME: this should be in a child class (and is incorrect)
 //    if ( $this->_frame->get_style()->content !== "normal" ) {
@@ -74,7 +75,7 @@ class Text_Frame_Decorator extends Frame_Decorator {
     // This function is called in add_frame_to_line() and is used to
     // determine the line height, so we actually want to return the
     // 'line-height' property, not the actual margin box
-    $style = $this->get_parent()->get_style();
+    $style = $this->get_style();
     $font = $style->font_family;
     $size = $style->font_size;
 
@@ -87,7 +88,7 @@ class Text_Frame_Decorator extends Frame_Decorator {
     */
 
     return ($style->line_height / $size) * Font_Metrics::get_font_height($font, $size);
-
+    
   }
 
   function get_padding_box() {
@@ -100,10 +101,10 @@ class Text_Frame_Decorator extends Frame_Decorator {
   // Set method
   function set_text_spacing($spacing) {
     $style = $this->_frame->get_style();
-
+    
     $this->_text_spacing = $spacing;
     $char_spacing = $style->length_in_pt($style->letter_spacing);
-
+    
     // Re-adjust our width to account for the change in spacing
     $style->width = Font_Metrics::get_text_width($this->get_text(), $style->font_family, $style->font_size, $spacing, $char_spacing);
   }
@@ -121,16 +122,16 @@ class Text_Frame_Decorator extends Frame_Decorator {
 
     return $style->width = Font_Metrics::get_text_width($text, $font, $size, $word_spacing, $char_spacing);
   }
-
+  
   //........................................................................
 
   // Text manipulation methods
-
+  
   // split the text in this frame at the offset specified.  The remaining
   // text is added a sibling frame following this one and is returned.
   function split_text($offset) {
     if ( $offset == 0 )
-      return null;
+      return;
 
     if ( self::$_buggy_splittext ) {
       // workaround to solve DOMText::spliText() bug parsing multibyte strings
@@ -144,7 +145,7 @@ class Text_Frame_Decorator extends Frame_Decorator {
     else {
       $split = $this->_frame->get_node()->splitText($offset);
     }
-
+    
     $deco = $this->copy($split);
 
     $p = $this->get_parent();

@@ -2,14 +2,14 @@
 /**
  * @package php-font-lib
  * @link    http://php-font-lib.googlecode.com/
- * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id$
+ * @version $Id: font_table_maxp.cls.php 37 2011-11-07 07:38:44Z fabien.menager $
  */
 
 /**
  * `maxp` font table.
- *
+ * 
  * @package php-font-lib
  */
 class Font_Table_maxp extends Font_Table {
@@ -30,11 +30,11 @@ class Font_Table_maxp extends Font_Table {
     "maxComponentElements"  => self::uint16,
     "maxComponentDepth"     => self::uint16,
   );
-
+  
   function _encode(){
     $font = $this->getFont();
     $this->data["numGlyphs"] = count($font->getSubset());
-
+    
     return parent::_encode();
   }
 }

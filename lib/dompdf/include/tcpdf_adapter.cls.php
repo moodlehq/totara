@@ -1,12 +1,13 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: tcpdf_adapter.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
-require_once DOMPDF_LIB_DIR . '/tcpdf/tcpdf.php';
+require_once(DOMPDF_LIB_DIR . '/tcpdf/tcpdf.php');
 
 /**
  * TCPDF PDF Rendering interface
@@ -29,12 +30,9 @@ class TCPDF_Adapter implements Canvas {
    *
    * @var array;
    */
-  static public $PAPER_SIZES = array(); // Set to CPDF_Adapter::$PAPER_SIZES below.
+  static public $PAPER_SIZES = array(); // Set to
+                                        // CPDF_Adapter::$PAPER_SIZES below.
 
-  /**
-   * @var DOMPDF
-   */
-  private $_dompdf;
 
   /**
    * Instance of the TCPDF class
@@ -58,14 +56,14 @@ class TCPDF_Adapter implements Canvas {
   private $_height;
 
   /**
-   * Last fill color used
+   * Last fill colour used
    *
    * @var array
    */
   private $_last_fill_color;
 
   /**
-   * Last stroke color used
+   * Last stroke colour used
    *
    * @var array
    */
@@ -77,7 +75,7 @@ class TCPDF_Adapter implements Canvas {
    * @var float
    */
   private $_last_line_width;
-
+  
   /**
    * Total number of pages
    *
@@ -102,28 +100,25 @@ class TCPDF_Adapter implements Canvas {
   /**
    * Class constructor
    *
-   * @param mixed  $paper       The size of paper to use either a string (see {@link CPDF_Adapter::$PAPER_SIZES}) or
-   *                            an array(xmin,ymin,xmax,ymax)
+   * @param mixed $paper The size of paper to use either a string (see {@link CPDF_Adapter::$PAPER_SIZES}) or
+   *                     an array(xmin,ymin,xmax,ymax)
    * @param string $orientation The orientation of the document (either 'landscape' or 'portrait')
-   * @param DOMPDF $dompdf
    */
-  function __construct($paper = "letter", $orientation = "portrait", DOMPDF $dompdf) {
-
+  function __construct($paper = "letter", $orientation = "portrait") {
+   
     if ( is_array($paper) )
       $size = $paper;
     else if ( isset(self::$PAPER_SIZES[mb_strtolower($paper)]) )
-      $size = self::$PAPER_SIZES[$paper];
+      $size = self::$PAPER_SIZE[$paper];
     else
-      $size = self::$PAPER_SIZES["letter"];
+      $size = self::$PAPER_SIZE["letter"];
 
     if ( mb_strtolower($orientation) === "landscape" ) {
       list($size[2], $size[3]) = array($size[3], $size[2]);
     }
 
-    $this->_width  = $size[2] - $size[0];
+    $this->_width = $size[2] - $size[0];
     $this->_height = $size[3] - $size[1];
-
-    $this->_dompdf = $dompdf;
 
     $this->_pdf = new TCPDF("P", "pt", array($this->_width, $this->_height));
     $this->_pdf->Setcreator("DOMPDF Converter");
@@ -133,15 +128,12 @@ class TCPDF_Adapter implements Canvas {
     $this->_page_number = $this->_page_count = 1;
     $this->_page_text = array();
 
-    $this->_last_fill_color   = null;
-    $this->_last_stroke_color = null;
-    $this->_last_line_width   = null;
-  }
+    $this->_last_fill_color     =
+      $this->_last_stroke_color =
+      $this->_last_line_width   = null;
 
-  function get_dompdf(){
-    return $this->_dompdf;
-  }
-
+  }  
+  
   /**
    * Remaps y coords from 4th to 1st quadrant
    *
@@ -151,16 +143,14 @@ class TCPDF_Adapter implements Canvas {
   protected function y($y) { return $this->_height - $y; }
 
   /**
-   * Sets the stroke color
+   * Sets the stroke colour
    *
    * @param array $color
-   *
-   * @return void
    */
-  protected function _set_stroke_color($color) {
-    $color[0] = round(255 * $color[0]);
-    $color[1] = round(255 * $color[1]);
-    $color[2] = round(255 * $color[2]);
+  protected function _set_stroke_colour($colour) {
+    $colour[0] = round(255 * $colour[0]);
+    $colour[1] = round(255 * $colour[1]);
+    $colour[2] = round(255 * $colour[2]);
 
     if ( is_null($this->_last_stroke_color) || $color != $this->_last_stroke_color ) {
       $this->_pdf->SetDrawColor($color[0],$color[1],$color[2]);
@@ -170,14 +160,14 @@ class TCPDF_Adapter implements Canvas {
   }
 
   /**
-   * Sets the fill color
+   * Sets the fill colour
    *
    * @param array $color
    */
-  protected function _set_fill_color($color) {
-    $color[0] = round(255 * $color[0]);
-    $color[1] = round(255 * $color[1]);
-    $color[2] = round(255 * $color[2]);
+  protected function _set_fill_colour($colour) {
+    $colour[0] = round(255 * $colour[0]);
+    $colour[1] = round(255 * $colour[1]);
+    $colour[2] = round(255 * $colour[2]);
 
     if ( is_null($this->_last_fill_color) || $color != $this->_last_fill_color ) {
       $this->_pdf->SetDrawColor($color[0],$color[1],$color[2]);
@@ -192,7 +182,7 @@ class TCPDF_Adapter implements Canvas {
    * @return TCPDF
    */
   function get_tcpdf() { return $this->_pdf; }
-
+  
   /**
    * Returns the current page number
    *
@@ -223,7 +213,7 @@ class TCPDF_Adapter implements Canvas {
   /**
    * Draws a line from x1,y1 to x2,y2
    *
-   * See {@link Style::munge_color()} for the format of the color array.
+   * See {@link Style::munge_colour()} for the format of the colour array.
    * See {@link Cpdf::setLineStyle()} for a description of the format of the
    * $style parameter (aka dash).
    *
@@ -242,7 +232,7 @@ class TCPDF_Adapter implements Canvas {
       $this->_last_line_width = $width;
     }
 
-    $this->_set_stroke_color($color);
+    $this->_set_stroke_colour($color);
 
     // FIXME: ugh, need to handle different styles here
     $this->_pdf->line($x1, $y1, $x2, $y2);
@@ -251,7 +241,7 @@ class TCPDF_Adapter implements Canvas {
   /**
    * Draws a rectangle at x1,y1 with width w and height h
    *
-   * See {@link Style::munge_color()} for the format of the color array.
+   * See {@link Style::munge_colour()} for the format of the colour array.
    * See {@link Cpdf::setLineStyle()} for a description of the $style
    * parameter (aka dash)
    *
@@ -262,7 +252,7 @@ class TCPDF_Adapter implements Canvas {
    * @param array $color
    * @param float $width
    * @param array $style
-   */
+   */   
   function rectangle($x1, $y1, $w, $h, $color, $width, $style = null) {
 
     if ( is_null($this->_last_line_width) || $width != $this->_last_line_width ) {
@@ -270,28 +260,28 @@ class TCPDF_Adapter implements Canvas {
       $this->_last_line_width = $width;
     }
 
-    $this->_set_stroke_color($color);
-
+    $this->_set_stroke_colour($color);
+    
     // FIXME: ugh, need to handle styles here
     $this->_pdf->rect($x1, $y1, $w, $h);
-
+    
   }
 
   /**
    * Draws a filled rectangle at x1,y1 with width w and height h
    *
-   * See {@link Style::munge_color()} for the format of the color array.
+   * See {@link Style::munge_colour()} for the format of the colour array.
    *
    * @param float $x1
    * @param float $y1
    * @param float $w
    * @param float $h
    * @param array $color
-   */
+   */   
   function filled_rectangle($x1, $y1, $w, $h, $color) {
 
-    $this->_set_fill_color($color);
-
+    $this->_set_fill_colour($color);
+    
     // FIXME: ugh, need to handle styles here
     $this->_pdf->rect($x1, $y1, $w, $h, "F");
   }
@@ -310,9 +300,9 @@ class TCPDF_Adapter implements Canvas {
    *       );
    * </code>
    *
-   * See {@link Style::munge_color()} for the format of the color array.
+   * See {@link Style::munge_colour()} for the format of the colour array.
    * See {@link Cpdf::setLineStyle()} for a description of the $style
-   * parameter (aka dash)
+   * parameter (aka dash)   
    *
    * @param array $points
    * @param array $color
@@ -327,7 +317,7 @@ class TCPDF_Adapter implements Canvas {
   /**
    * Draws a circle at $x,$y with radius $r
    *
-   * See {@link Style::munge_color()} for the format of the color array.
+   * See {@link Style::munge_colour()} for the format of the colour array.
    * See {@link Cpdf::setLineStyle()} for a description of the $style
    * parameter (aka dash)
    *
@@ -337,54 +327,50 @@ class TCPDF_Adapter implements Canvas {
    * @param array $color
    * @param float $width
    * @param array $style
-   * @param bool $fill Fills the circle if true
-   */
+   * @param bool $fill Fills the circle if true   
+   */   
   function circle($x, $y, $r, $color, $width = null, $style = null, $fill = false) {
     // FIXME
   }
 
   /**
    * Add an image to the pdf.
+   *
    * The image is placed at the specified x and y coordinates with the
    * given width and height.
    *
    * @param string $img_url the path to the image
-   * @param float  $x       x position
-   * @param float  $y       y position
-   * @param int    $w       width (in pixels)
-   * @param int    $h       height (in pixels)
-   * @param string $resolution
-   *
-   * @return void
+   * @param string $img_type the type (e.g. extension) of the image
+   * @param float $x x position
+   * @param float $y y position
+   * @param int $w width (in pixels)
+   * @param int $h height (in pixels)
    */
-  function image($img_url, $x, $y, $w, $h, $resolution = "normal") {
+  function image($img_url, $img_type, $x, $y, $w, $h) {
     // FIXME
   }
 
   /**
    * Writes text at the specified x and y coordinates
-   * See {@link Style::munge_color()} for the format of the color array.
    *
-   * @param float  $x
-   * @param float  $y
+   * See {@link Style::munge_colour()} for the format of the colour array.
+   *
+   * @param float $x
+   * @param float $y
    * @param string $text the text to write
    * @param string $font the font file to use
-   * @param float  $size the font size, in points
-   * @param array  $color
-   * @param float  $word_space word spacing adjustment
-   * @param float  $char_space
-   * @param float  $angle
-   *
-   * @return void
+   * @param float $size the font size, in points
+   * @param array $color
+   * @param float $adjust word spacing adjustment
    */
-  function text($x, $y, $text, $font, $size, $color = array(0,0,0), $word_space = 0.0, $char_space = 0.0, $angle = 0.0) {
+  function text($x, $y, $text, $font, $size, $color = array(0,0,0), $adjust = 0) {
     // FIXME
   }
 
   function javascript($code) {
     // FIXME
   }
-
+  
   /**
    * Add a named destination (similar to <a name="foo">...</a> in html)
    *
@@ -406,7 +392,7 @@ class TCPDF_Adapter implements Canvas {
   function add_link($url, $x, $y, $width, $height) {
     // FIXME
   }
-
+  
   /**
    * Add meta information to the PDF
    *
@@ -419,19 +405,17 @@ class TCPDF_Adapter implements Canvas {
       $this->_pdf->$method($value);
     }
   }
-
+  
   /**
    * Calculates text size, in points
    *
    * @param string $text the text to be sized
    * @param string $font the desired font
    * @param float  $size the desired font size
-   * @param float  $word_spacing word spacing, if any
-   * @param float  $char_spacing
-   *
+   * @param float  $spacing word spacing, if any
    * @return float
    */
-  function get_text_width($text, $font, $size, $word_spacing = 0.0, $char_spacing = 0.0) {
+  function get_text_width($text, $font, $size, $spacing = 0) {
     // FIXME
   }
 
@@ -446,7 +430,7 @@ class TCPDF_Adapter implements Canvas {
     // FIXME
   }
 
-
+  
   /**
    * Starts a new page
    *
@@ -475,154 +459,8 @@ class TCPDF_Adapter implements Canvas {
   function output($options = null) {
     // FIXME
   }
-
-  /**
-   * Starts a clipping rectangle at x1,y1 with width w and height h
-   *
-   * @param float $x1
-   * @param float $y1
-   * @param float $w
-   * @param float $h
-   */
-  function clipping_rectangle($x1, $y1, $w, $h) {
-    // TODO: Implement clipping_rectangle() method.
-  }
-
-  /**
-   * Starts a rounded clipping rectangle at x1,y1 with width w and height h
-   *
-   * @param float $x1
-   * @param float $y1
-   * @param float $w
-   * @param float $h
-   * @param float $tl
-   * @param float $tr
-   * @param float $br
-   * @param float $bl
-   *
-   * @return void
-   */
-  function clipping_roundrectangle($x1, $y1, $w, $h, $tl, $tr, $br, $bl) {
-    // TODO: Implement clipping_roundrectangle() method.
-  }
-
-  /**
-   * Ends the last clipping shape
-   */
-  function clipping_end() {
-    // TODO: Implement clipping_end() method.
-  }
-
-  /**
-   * Save current state
-   */
-  function save() {
-    // TODO: Implement save() method.
-  }
-
-  /**
-   * Restore last state
-   */
-  function restore() {
-    // TODO: Implement restore() method.
-  }
-
-  /**
-   * Rotate
-   */
-  function rotate($angle, $x, $y) {
-    // TODO: Implement rotate() method.
-  }
-
-  /**
-   * Skew
-   */
-  function skew($angle_x, $angle_y, $x, $y) {
-    // TODO: Implement skew() method.
-  }
-
-  /**
-   * Scale
-   */
-  function scale($s_x, $s_y, $x, $y) {
-    // TODO: Implement scale() method.
-  }
-
-  /**
-   * Translate
-   */
-  function translate($t_x, $t_y) {
-    // TODO: Implement translate() method.
-  }
-
-  /**
-   * Transform
-   */
-  function transform($a, $b, $c, $d, $e, $f) {
-    // TODO: Implement transform() method.
-  }
-
-  /**
-   * Add an arc to the PDF
-   * See {@link Style::munge_color()} for the format of the color array.
-   *
-   * @param float $x      X coordinate of the arc
-   * @param float $y      Y coordinate of the arc
-   * @param float $r1     Radius 1
-   * @param float $r2     Radius 2
-   * @param float $astart Start angle in degrees
-   * @param float $aend   End angle in degrees
-   * @param array $color  Color
-   * @param float $width
-   * @param array $style
-   *
-   * @return void
-   */
-  function arc($x, $y, $r1, $r2, $astart, $aend, $color, $width, $style = array()) {
-    // TODO: Implement arc() method.
-  }
-
-  /**
-   * Calculates font baseline, in points
-   *
-   * @param string $font
-   * @param float  $size
-   *
-   * @return float
-   */
-  function get_font_baseline($font, $size) {
-    // TODO: Implement get_font_baseline() method.
-  }
-
-  /**
-   * Sets the opacity
-   *
-   * @param float  $opacity
-   * @param string $mode
-   */
-  function set_opacity($opacity, $mode = "Normal") {
-    // TODO: Implement set_opacity() method.
-  }
-
-  /**
-   * Sets the default view
-   *
-   * @param string $view
-   * 'XYZ'  left, top, zoom
-   * 'Fit'
-   * 'FitH' top
-   * 'FitV' left
-   * 'FitR' left,bottom,right
-   * 'FitB'
-   * 'FitBH' top
-   * 'FitBV' left
-   * @param array  $options
-   *
-   * @return void
-   */
-  function set_default_view($view, $options = array()) {
-    // TODO: Implement set_default_view() method.
-  }}
-
+  
+}
+    
 // Workaround for idiotic limitation on statics...
-TCPDF_Adapter::$PAPER_SIZES = CPDF_Adapter::$PAPER_SIZES;
+PDFLib_Adapter::$PAPER_SIZES = CPDF_Adapter::$PAPER_SIZES;

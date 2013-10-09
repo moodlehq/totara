@@ -2,14 +2,14 @@
 /**
  * @package php-font-lib
  * @link    http://php-font-lib.googlecode.com/
- * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id$
+ * @version $Id: font_table_head.cls.php 34 2011-10-23 13:53:25Z fabien.menager $
  */
 
 /**
  * `head` font table.
- *
+ * 
  * @package php-font-lib
  */
 class Font_Table_head extends Font_Table {
@@ -32,10 +32,10 @@ class Font_Table_head extends Font_Table {
     "indexToLocFormat"   => self::int16,
     "glyphDataFormat"    => self::int16,
   );
-
+  
   protected function _parse(){
     parent::_parse();
-
+    
     if($this->data["magicNumber"] != 0x5F0F3CF5) {
       throw new Exception("Incorrect magic number (".dechex($this->data["magicNumber"]).")");
     }

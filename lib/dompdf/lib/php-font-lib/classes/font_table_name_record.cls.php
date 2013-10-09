@@ -2,14 +2,14 @@
 /**
  * @package php-font-lib
  * @link    http://php-font-lib.googlecode.com/
- * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  * @version $Id$
  */
 
 /**
  * Font table name record.
- *
+ * 
  * @package php-font-lib
  */
 class Font_Table_name_Record extends Font_Binary_Stream {
@@ -20,7 +20,7 @@ class Font_Table_name_Record extends Font_Binary_Stream {
   public $length;
   public $offset;
   public $string;
-
+  
   public static $format = array(
     "platformID" => self::uint16,
     "platformSpecificID" => self::uint16,
@@ -29,21 +29,21 @@ class Font_Table_name_Record extends Font_Binary_Stream {
     "length"     => self::uint16,
     "offset"     => self::uint16,
   );
-
+  
   public function map($data) {
     foreach($data as $key => $value) {
       $this->$key = $value;
     }
   }
-
+  
   public function getUTF8() {
     return $this->string;
   }
-
+  
   public function getUTF16() {
     return Font::UTF8ToUTF16($this->string);
   }
-
+  
   function __toString(){
     return $this->string;
   }

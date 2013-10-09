@@ -1,9 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: inline_positioner.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
 /**
@@ -22,7 +23,7 @@ class Inline_Positioner extends Positioner {
     /**
      * Find our nearest block level parent and access its lines property.
      * @var Block_Frame_Decorator
-     */
+     */ 
     $p = $this->_frame->find_block_parent();
 
     // Debugging code:
@@ -37,7 +38,7 @@ class Inline_Positioner extends Positioner {
       throw new DOMPDF_Exception("No block-level parent found.  Not good.");
 
     $f = $this->_frame;
-
+    
     $cb = $f->get_containing_block();
     $line = $p->get_current_line_box();
 
@@ -55,15 +56,15 @@ class Inline_Positioner extends Positioner {
     if ( !$is_fixed && $f->get_parent() &&
          $f->get_parent() instanceof Inline_Frame_Decorator &&
          $f->is_text_node() ) {
-
+      
       $min_max = $f->get_reflower()->get_min_max_width();
-
+      
       // If the frame doesn't fit in the current line, a line break occurs
       if ( $min_max["min"] > ($cb["w"] - $line->left - $line->w - $line->right) ) {
         $p->add_line();
       }
     }
-
+    
     $f->set_position($cb["x"] + $line->w, $line->y);
 
   }

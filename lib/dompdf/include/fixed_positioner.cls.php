@@ -1,10 +1,11 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: fixed_positioner.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
 /**
@@ -32,11 +33,11 @@ class Fixed_Positioner extends Positioner {
     $margin_right  = $initialcb_style->length_in_pt($initialcb_style->margin_right,  $initialcb["w"]);
     $margin_bottom = $initialcb_style->length_in_pt($initialcb_style->margin_bottom, $initialcb["h"]);
     $margin_left   = $initialcb_style->length_in_pt($initialcb_style->margin_left,   $initialcb["w"]);
-
+    
     // The needed computed style of the element
     $height = $style->length_in_pt($style->height, $initialcb["h"]);
     $width  = $style->length_in_pt($style->width,  $initialcb["w"]);
-
+    
     $top    = $style->length_in_pt($style->top,    $initialcb["h"]);
     $right  = $style->length_in_pt($style->right,  $initialcb["w"]);
     $bottom = $style->length_in_pt($style->bottom, $initialcb["h"]);
@@ -52,8 +53,7 @@ class Fixed_Positioner extends Positioner {
           $margin_height = $this->_frame->get_margin_height();
           if ( $margin_height !== "auto" ) {
             $y -= $margin_height;
-          }
-          else {
+          } else {
             $y -= $height;
           }
         }
@@ -70,14 +70,13 @@ class Fixed_Positioner extends Positioner {
           $margin_width = $this->_frame->get_margin_width();
           if ( $margin_width !== "auto" ) {
             $x -= $margin_width;
-          }
-          else {
+          } else {
             $x -= $width;
           }
         }
       }
     }
-
+    
     $frame->set_position($x, $y);
 
     $children = $frame->get_children();

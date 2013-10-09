@@ -1,9 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: absolute_positioner.cls.php 460 2012-01-26 07:17:46Z fabien.menager $
  */
 
 /**
@@ -17,41 +18,41 @@ class Absolute_Positioner extends Positioner {
 
     $frame = $this->_frame;
     $style = $frame->get_style();
-
+    
     $p = $frame->find_positionned_parent();
-
+    
     list($x, $y, $w, $h) = $frame->get_containing_block();
 
     $top    = $style->length_in_pt($style->top,    $h);
     $right  = $style->length_in_pt($style->right,  $w);
     $bottom = $style->length_in_pt($style->bottom, $h);
     $left   = $style->length_in_pt($style->left,   $w);
-
+    
     if ( $p && !($left === "auto" && $right === "auto") ) {
       // Get the parent's padding box (see http://www.w3.org/TR/CSS21/visuren.html#propdef-top)
       list($x, $y, $w, $h) = $p->get_padding_box();
     }
-
+    
     list($width, $height) = array($frame->get_margin_width(), $frame->get_margin_height());
-
+    
     $orig_style = $this->_frame->get_original_style();
     $orig_width = $orig_style->width;
     $orig_height = $orig_style->height;
-
+    
     /****************************
-
-    Width auto:
+    
+    Width auto: 
     ____________| left=auto | left=fixed |
     right=auto  |     A     |     B      |
     right=fixed |     C     |     D      |
-
-    Width fixed:
+    
+    Width fixed: 
     ____________| left=auto | left=fixed |
     right=auto  |     E     |     F      |
     right=fixed |     G     |     H      |
-
+    
     *****************************/
-
+    
     if ( $left === "auto" ) {
       if ( $right === "auto" ) {
         // A or E - Keep the frame at the same position
@@ -83,7 +84,7 @@ class Absolute_Positioner extends Positioner {
         }
       }
     }
-
+    
     // The same vertically
     if ( $top === "auto" ) {
       if ( $bottom === "auto" ) {
@@ -117,7 +118,7 @@ class Absolute_Positioner extends Positioner {
         }
       }
     }
-
+    
     $frame->set_position($x, $y);
 
   }

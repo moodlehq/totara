@@ -93,7 +93,14 @@ $PAGE->set_title($heading);
 $PAGE->set_heading($heading);
 
 if ($action == 'snapshot') {
-    ob_flush();
+    $ob_was = 0;
+    $ob_level = ob_get_level();
+    // IIS always return true for ob_get_level().
+    while ($ob_level != $ob_was && $ob_level > 0) {
+        $ob_was = $ob_level;
+        ob_flush();
+        $ob_level = ob_get_level();
+    }
     require_once($CFG->libdir . '/dompdf/lib.php');
     set_time_limit('300');
     ob_start();

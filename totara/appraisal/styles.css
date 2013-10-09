@@ -442,6 +442,20 @@ form.print-stages-form .fitem .fitemtitle {
     }
 }
 
+@media pdf {
+    .visibleto {
+        display: none;
+    }
+
+    .visibleto-review {
+        display: none;
+    }
+
+    * {
+        font-family: "DejaVu Sans";
+    }
+}
+
 .redisplay-notification-nomargin .notifyproblem {
     margin: 0 !important;
 }

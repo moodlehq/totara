@@ -154,10 +154,10 @@ class HTML5_TreeBuilder {
         $this->dom->substituteEntities = true;
         $this->dom->strictErrorChecking = false;
     }
-
-    public function getQuirksMode(){
-      return $this->quirks_mode;
-    }
+		
+		public function getQuirksMode(){
+			return $this->quirks_mode;
+		}
 
     // Process tag tokens
     public function emitToken($token, $mode = null) {
@@ -393,8 +393,8 @@ class HTML5_TreeBuilder {
 
         /* A start tag whose tag name is "html" */
         } elseif($token['type'] === HTML5_Tokenizer::STARTTAG && $token['name'] == 'html') {
-            /* Create an element for the token in the HTML namespace. Append it
-             * to the Document  object. Put this element in the stack of open
+            /* Create an element for the token in the HTML namespace. Append it 
+             * to the Document  object. Put this element in the stack of open 
              * elements. */
             // XDOM
             $html = $this->insertElement($token, false);
@@ -570,11 +570,11 @@ class HTML5_TreeBuilder {
             // Uhhh... XSCRIPT
 
             /* 3. If the parser was originally created for the HTML
-             * fragment parsing algorithm, then mark the script element as
+             * fragment parsing algorithm, then mark the script element as 
              * "already executed". (fragment case) */
             // ditto... XSCRIPT
 
-            /* 4. Append the new element to the current node  and push it onto
+            /* 4. Append the new element to the current node  and push it onto 
              * the stack of open elements.  */
             end($this->stack)->appendChild($node);
             $this->stack[] = $node;
@@ -820,14 +820,14 @@ class HTML5_TreeBuilder {
                         $this->ignored = true;
                         // Ignore
                     } else {
-                        /* 1. Remove the second element on the stack of open
+                        /* 1. Remove the second element on the stack of open 
                          * elements from its parent node, if it has one.  */
                         if($this->stack[1]->parentNode) {
                             $this->stack[1]->parentNode->removeChild($this->stack[1]);
                         }
 
-                        /* 2. Pop all the nodes from the bottom of the stack of
-                         * open elements, from the current node up to the root
+                        /* 2. Pop all the nodes from the bottom of the stack of 
+                         * open elements, from the current node up to the root 
                          * html element. */
                         array_splice($this->stack, 1);
 
@@ -1139,9 +1139,9 @@ class HTML5_TreeBuilder {
 
                 /* A start tag whose tag name is "table" */
                 case 'table':
-                    /* If the Document is not set to quirks mode, and the
-                     * stack of open elements has a p element in scope, then
-                     * act as if an end tag with the tag name "p" had been
+                    /* If the Document is not set to quirks mode, and the 
+                     * stack of open elements has a p element in scope, then 
+                     * act as if an end tag with the tag name "p" had been 
                      * seen. */
                     if($this->quirks_mode !== self::QUIRKS_MODE &&
                     $this->elementInScope('p')) {
@@ -1472,19 +1472,19 @@ class HTML5_TreeBuilder {
             switch($token['name']) {
                 /* An end tag with the tag name "body" */
                 case 'body':
-                    /* If the stack of open elements does not have a body
-                     * element in scope, this is a parse error; ignore the
+                    /* If the stack of open elements does not have a body 
+                     * element in scope, this is a parse error; ignore the 
                      * token. */
                     if(!$this->elementInScope('body')) {
                         $this->ignored = true;
 
-                    /* Otherwise, if there is a node in the stack of open
-                     * elements that is not either a dc element, a dd element,
-                     * a ds element, a dt element, an li element, an optgroup
-                     * element, an option element, a p element, an rp element,
-                     * an rt element, a tbody element, a td element, a tfoot
-                     * element, a th element, a thead element, a tr element,
-                     * the body element, or the html element, then this is a
+                    /* Otherwise, if there is a node in the stack of open 
+                     * elements that is not either a dc element, a dd element, 
+                     * a ds element, a dt element, an li element, an optgroup 
+                     * element, an option element, a p element, an rp element, 
+                     * an rt element, a tbody element, a td element, a tfoot 
+                     * element, a th element, a thead element, a tr element, 
+                     * the body element, or the html element, then this is a 
                      * parse error.
                      */
                     } else {
@@ -1542,7 +1542,7 @@ class HTML5_TreeBuilder {
                     $node = $this->form_pointer;
                     /* Set the form element pointer  to null. */
                     $this->form_pointer = null;
-                    /* If node is null or the stack of open elements does not
+                    /* If node is null or the stack of open elements does not 
                         * have node in scope, then this is a parse error; ignore the token. */
                     if ($node === null || !in_array($node, $this->stack)) {
                         // parse error
@@ -2178,17 +2178,17 @@ class HTML5_TreeBuilder {
         /* Anything else */
         } else {
             if ($this->pendingTableCharacters !== '' && is_string($this->pendingTableCharacters)) {
-                /* If any of the tokens in the pending table character tokens list
-                 * are character tokens that are not one of U+0009 CHARACTER
-                 * TABULATION, U+000A LINE FEED (LF), U+000C FORM FEED (FF), or
-                 * U+0020 SPACE, then reprocess those character tokens using the
-                 * rules given in the "anything else" entry in the in table"
+                /* If any of the tokens in the pending table character tokens list 
+                 * are character tokens that are not one of U+0009 CHARACTER 
+                 * TABULATION, U+000A LINE FEED (LF), U+000C FORM FEED (FF), or 
+                 * U+0020 SPACE, then reprocess those character tokens using the 
+                 * rules given in the "anything else" entry in the in table" 
                  * insertion mode.*/
                 if ($this->pendingTableCharactersDirty) {
-                    /* Parse error. Process the token using the rules for the
-                     * "in body" insertion mode, except that if the current
-                     * node is a table, tbody, tfoot, thead, or tr element,
-                     * then, whenever a node would be inserted into the current
+                    /* Parse error. Process the token using the rules for the 
+                     * "in body" insertion mode, except that if the current 
+                     * node is a table, tbody, tfoot, thead, or tr element, 
+                     * then, whenever a node would be inserted into the current 
                      * node, it must instead be foster parented. */
                     // XERROR
                     $old = $this->foster_parent;
@@ -2200,7 +2200,7 @@ class HTML5_TreeBuilder {
                     $this->processWithRulesFor($text_token, self::IN_BODY);
                     $this->foster_parent = $old;
 
-                /* Otherwise, insert the characters given by the pending table
+                /* Otherwise, insert the characters given by the pending table 
                  * character tokens list into the current node. */
                 } else {
                     $this->insertText($this->pendingTableCharacters);
@@ -2209,7 +2209,7 @@ class HTML5_TreeBuilder {
                 $this->pendingTableCharactersNull = null;
             }
 
-            /* Switch the insertion mode to the original insertion mode and
+            /* Switch the insertion mode to the original insertion mode and 
              * reprocess the token.
              */
             $this->mode = $this->original_mode;
@@ -2632,7 +2632,7 @@ class HTML5_TreeBuilder {
             // parse error
 
         } elseif($token['type'] === HTML5_Tokenizer::STARTTAG && $token['name'] === 'html') {
-            $this->processWithRulesFor($token, self::IN_BODY);
+            $this->processWithRulesFor($token, self::INBODY);
 
         /* A start tag token whose tag name is "option" */
         } elseif($token['type'] === HTML5_Tokenizer::STARTTAG &&
@@ -2846,9 +2846,9 @@ class HTML5_TreeBuilder {
             ) || $token['type'] === HTML5_Tokenizer::ENDTAG
         ) {
             $this->processWithRulesFor($token, $this->secondary_mode);
-            /* If, after doing so, the insertion mode is still "in foreign
-             * content", but there is no element in scope that has a namespace
-             * other than the HTML namespace, switch the insertion mode to the
+            /* If, after doing so, the insertion mode is still "in foreign 
+             * content", but there is no element in scope that has a namespace 
+             * other than the HTML namespace, switch the insertion mode to the 
              * secondary insertion mode. */
             if ($this->mode === self::IN_FOREIGN_CONTENT) {
                 $found = false;
@@ -2872,11 +2872,11 @@ class HTML5_TreeBuilder {
             }
         } elseif ($token['type'] === HTML5_Tokenizer::EOF || (
         $token['type'] === HTML5_Tokenizer::STARTTAG &&
-        (in_array($token['name'], array('b', "big", "blockquote", "body", "br",
-        "center", "code", "dc", "dd", "div", "dl", "ds", "dt", "em", "embed", "h1", "h2",
-        "h3", "h4", "h5", "h6", "head", "hr", "i", "img", "li", "listing",
-        "menu", "meta", "nobr", "ol", "p", "pre", "ruby", "s",  "small",
-        "span", "strong", "strike",  "sub", "sup", "table", "tt", "u", "ul",
+        (in_array($token['name'], array('b', "big", "blockquote", "body", "br", 
+        "center", "code", "dc", "dd", "div", "dl", "ds", "dt", "em", "embed", "h1", "h2", 
+        "h3", "h4", "h5", "h6", "head", "hr", "i", "img", "li", "listing", 
+        "menu", "meta", "nobr", "ol", "p", "pre", "ruby", "s",  "small", 
+        "span", "strong", "strike",  "sub", "sup", "table", "tt", "u", "ul", 
         "var")) || ($token['name'] === 'font' && ($this->getAttr($token, 'color') ||
         $this->getAttr($token, 'face') || $this->getAttr($token, 'size')))))) {
             // XERROR: parse error
@@ -3033,9 +3033,9 @@ class HTML5_TreeBuilder {
                 elements. */
                 array_pop($this->stack);
 
-                /* If the parser was not originally created as part of the HTML
-                 * fragment parsing algorithm  (fragment case), and the current
-                 * node is no longer a frameset element, then switch the
+                /* If the parser was not originally created as part of the HTML 
+                 * fragment parsing algorithm  (fragment case), and the current 
+                 * node is no longer a frameset element, then switch the 
                  * insertion mode to "after frameset". */
                 $this->mode = self::AFTER_FRAMESET;
             }
@@ -3165,7 +3165,7 @@ class HTML5_TreeBuilder {
 
         if (!empty($token['attr'])) {
             foreach($token['attr'] as $attr) {
-                if(!$el->hasAttribute($attr['name']) && preg_match("/^[a-zA-Z_:]/", $attr['name'])) {
+                if(!$el->hasAttribute($attr['name'])) {
                     $el->setAttribute($attr['name'], $attr['value']);
                 }
             }
@@ -3351,10 +3351,10 @@ class HTML5_TreeBuilder {
     }
 
     private function generateImpliedEndTags($exclude = array()) {
-        /* When the steps below require the UA to generate implied end tags,
-         * then, while the current node is a dc element, a dd element, a ds
-         * element, a dt element, an li element, an option element, an optgroup
-         * element, a p element, an rp element, or an rt element, the UA must
+        /* When the steps below require the UA to generate implied end tags, 
+         * then, while the current node is a dc element, a dd element, a ds 
+         * element, a dt element, an li element, an option element, an optgroup 
+         * element, a p element, an rp element, or an rt element, the UA must 
          * pop the current node off the stack of open elements. */
         $node = end($this->stack);
         $elements = array_diff(array('dc', 'dd', 'ds', 'dt', 'li', 'p', 'td', 'th', 'tr'), $exclude);
@@ -3405,8 +3405,8 @@ class HTML5_TreeBuilder {
             /* 2. Let node be the last node in the stack of open elements. */
             $node = $this->stack[$n];
 
-            /* 3. If node is the first node in the stack of open elements, then
-             * set last to true and set node to the context  element. (fragment
+            /* 3. If node is the first node in the stack of open elements, then 
+             * set last to true and set node to the context  element. (fragment 
              * case) */
             if($this->stack[0]->isSameNode($node)) {
                 $last = true;
@@ -3455,9 +3455,9 @@ class HTML5_TreeBuilder {
                 $this->mode = self::IN_TABLE;
                 break;
 
-            /* 11. If node is an element from the MathML namespace or the SVG
-             * namespace, then switch the insertion mode to "in foreign
-             * content", let the secondary insertion mode be "in body", and
+            /* 11. If node is an element from the MathML namespace or the SVG 
+             * namespace, then switch the insertion mode to "in foreign 
+             * content", let the secondary insertion mode be "in body", and 
              * abort these steps. */
             } elseif($node->namespaceURI === self::NS_SVG ||
             $node->namespaceURI === self::NS_MATHML) {
@@ -3552,9 +3552,9 @@ class HTML5_TreeBuilder {
     }
 
     private function getCurrentTable() {
-        /* The current table is the last table  element in the stack of open
-         * elements, if there is one. If there is no table element in the stack
-         * of open elements (fragment case), then the current table is the
+        /* The current table is the last table  element in the stack of open 
+         * elements, if there is one. If there is no table element in the stack 
+         * of open elements (fragment case), then the current table is the 
          * first element in the stack of open elements (the html element). */
         for ($i = count($this->stack) - 1; $i >= 0; $i--) {
             if ($this->stack[$i]->tagName === 'table') {
@@ -3600,10 +3600,10 @@ class HTML5_TreeBuilder {
         $table = $this->getCurrentTable(); // almost equivalent to last table element, except it can be html
         /* When a node node is to be foster parented, the node node must be
          * be inserted into the foster parent element. */
-        /* If the foster parent element is the parent element of the last table
-         * element in the stack of open elements, then node must be inserted
-         * immediately before the last table element in the stack of open
-         * elements in the foster parent element; otherwise, node must be
+        /* If the foster parent element is the parent element of the last table 
+         * element in the stack of open elements, then node must be inserted 
+         * immediately before the last table element in the stack of open 
+         * elements in the foster parent element; otherwise, node must be 
          * appended to the foster parent element. */
         if ($table->tagName === 'table' && $table->parentNode->isSameNode($foster_parent)) {
             $foster_parent->insertBefore($node, $table);
@@ -3670,14 +3670,14 @@ class HTML5_TreeBuilder {
             $this->root = $root;
             /* 4.3 Append the element root to the Document node created above. */
             $this->dom->appendChild($root);
-            /* 4.4 Set up the parser's stack of open elements so that it
+            /* 4.4 Set up the parser's stack of open elements so that it 
              * contains just the single element root. */
             $this->stack = array($root);
             /* 4.5 Reset the parser's insertion mode appropriately. */
             $this->resetInsertionMode($context);
-            /* 4.6 Set the parser's form element pointer  to the nearest node
-             * to the context element that is a form element (going straight up
-             * the ancestor chain, and including the element itself, if it is a
+            /* 4.6 Set the parser's form element pointer  to the nearest node 
+             * to the context element that is a form element (going straight up 
+             * the ancestor chain, and including the element itself, if it is a 
              * form element), or, if there is no such form element, to null. */
             $node = $context;
             do {
@@ -3821,10 +3821,10 @@ class HTML5_TreeBuilder {
         $this->appendToRealParent($el);
         $this->stack[] = $el;
         // XERROR: see below
-        /* If the newly created element has an xmlns attribute in the XMLNS
-         * namespace  whose value is not exactly the same as the element's
-         * namespace, that is a parse error. Similarly, if the newly created
-         * element has an xmlns:xlink attribute in the XMLNS namespace whose
+        /* If the newly created element has an xmlns attribute in the XMLNS 
+         * namespace  whose value is not exactly the same as the element's 
+         * namespace, that is a parse error. Similarly, if the newly created 
+         * element has an xmlns:xlink attribute in the XMLNS namespace whose 
          * value is not the XLink Namespace, that is a parse error. */
     }
 
@@ -3841,3 +3841,4 @@ class HTML5_TreeBuilder {
         }
     }
 }
+

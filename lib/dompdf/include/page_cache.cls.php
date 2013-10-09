@@ -1,16 +1,17 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: page_cache.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
 /**
  * Caches individual rendered PDF pages
  *
  * Not totally implemented yet.  Use at your own risk ;)
- *
+ * 
  * @access private
  * @package dompdf
  * @static
@@ -20,21 +21,21 @@ class Page_Cache {
   const DB_USER = "dompdf_page_cache";
   const DB_PASS = "some meaningful password";
   const DB_NAME = "dompdf_page_cache";
-
+  
   static private $__connection = null;
-
-  static function init() {
+  
+  function init() {
     if ( is_null(self::$__connection) ) {
       $con_str = "host=" . DB_HOST .
         " dbname=" . self::DB_NAME .
         " user=" . self::DB_USER .
         " password=" . self::DB_PASS;
-
+      
       if ( !self::$__connection = pg_connect($con_str) )
         throw new Exception("Database connection failed.");
     }
   }
-
+  
   function __construct() { throw new Exception("Can not create instance of Page_Class.  Class is static."); }
 
   private static function __query($sql) {
@@ -42,7 +43,7 @@ class Page_Cache {
       throw new Exception(pg_last_error(self::$__connection));
     return $res;
   }
-
+  
   static function store_page($id, $page_num, $data) {
     $where = "WHERE id='" . pg_escape_string($id) . "' AND ".
       "page_num=". pg_escape_string($page_num);
@@ -50,10 +51,10 @@ class Page_Cache {
     $res = self::__query("SELECT timestamp FROM page_cache ". $where);
 
     $row = pg_fetch_assoc($res);
-
-    if ( $row )
+    
+    if ( $row ) 
       self::__query("UPDATE page_cache SET data='" . pg_escape_string($data) . "' " . $where);
-    else
+    else 
       self::__query("INSERT INTO page_cache (id, page_num, data) VALUES ('" . pg_escape_string($id) . "', ".
                      pg_escape_string($page_num) . ", ".
                      "'". pg_escape_string($data) . "')");
@@ -70,7 +71,7 @@ class Page_Cache {
                     pg_escape_string($id) . "', '" . pg_escape_string($font) . "')");
     self::__query("COMMIT");
   }
-
+  
 //   static function retrieve_page($id, $page_num) {
 
 //     $res = self::__query("SELECT data FROM page_cache WHERE id='" . pg_escape_string($id) . "' AND ".
@@ -79,7 +80,7 @@ class Page_Cache {
 //     $row = pg_fetch_assoc($res);
 
 //     return pg_unescape_bytea($row["data"]);
-
+    
 //   }
 
   static function get_page_timestamp($id, $page_num) {
@@ -89,7 +90,7 @@ class Page_Cache {
     $row = pg_fetch_assoc($res);
 
     return $row["timestamp"];
-
+    
   }
 
   // Adds the cached document referenced by $id to the provided pdf
@@ -98,9 +99,9 @@ class Page_Cache {
 
     // Ensure that the fonts needed by the cached document are loaded into
     // the pdf
-    while ($row = pg_fetch_assoc($res))
+    while ($row = pg_fetch_assoc($res)) 
       $pdf->get_cpdf()->selectFont($row["font_name"]);
-
+    
     $res = self::__query("SELECT data FROM page_cache WHERE id='" . pg_escape_string($id) . "'");
 
     if ( $new_page )
@@ -109,17 +110,17 @@ class Page_Cache {
     $first = true;
     while ($row = pg_fetch_assoc($res)) {
 
-      if ( !$first )
+      if ( !$first ) 
         $pdf->new_page();
-      else
-        $first = false;
-
+      else 
+        $first = false;        
+      
       $page = $pdf->reopen_serialized_object($row["data"]);
       //$pdf->close_object();
       $pdf->add_object($page, "add");
 
     }
-
+      
   }
 }
 

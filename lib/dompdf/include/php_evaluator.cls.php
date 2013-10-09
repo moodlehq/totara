@@ -1,9 +1,10 @@
 <?php
 /**
  * @package dompdf
- * @link    http://dompdf.github.com/
+ * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: php_evaluator.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
 /**
@@ -13,7 +14,7 @@
  * @package dompdf
  */
 class PHP_Evaluator {
-
+  
   /**
    * @var Canvas
    */
@@ -24,25 +25,24 @@ class PHP_Evaluator {
   }
 
   function evaluate($code, $vars = array()) {
-    if ( !$this->_canvas->get_dompdf()->get_option("enable_php") ) {
+    if ( !DOMPDF_ENABLE_PHP )
       return;
-    }
-
+    
     // Set up some variables for the inline code
     $pdf = $this->_canvas;
     $PAGE_NUM = $pdf->get_page_number();
     $PAGE_COUNT = $pdf->get_page_count();
-
+    
     // Override those variables if passed in
     foreach ($vars as $k => $v) {
       $$k = $v;
     }
 
     //$code = html_entity_decode($code); // @todo uncomment this when tested
-    eval($code);
+    eval(utf8_decode($code)); 
   }
 
-  function render(Frame $frame) {
+  function render($frame) {
     $this->evaluate($frame->get_node()->nodeValue);
   }
 }

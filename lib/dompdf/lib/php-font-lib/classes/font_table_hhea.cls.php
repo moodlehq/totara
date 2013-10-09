@@ -2,14 +2,14 @@
 /**
  * @package php-font-lib
  * @link    http://php-font-lib.googlecode.com/
- * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id$
+ * @version $Id: font_table_hhea.cls.php 37 2011-11-07 07:38:44Z fabien.menager $
  */
 
 /**
  * `hhea` font table.
- *
+ * 
  * @package php-font-lib
  */
 class Font_Table_hhea extends Font_Table {
@@ -32,11 +32,11 @@ class Font_Table_hhea extends Font_Table {
     "metricDataFormat"    => self::int16,
     "numOfLongHorMetrics" => self::uint16,
   );
-
+  
   function _encode(){
     $font = $this->getFont();
     $this->data["numOfLongHorMetrics"] = count($font->getSubset());
-
+    
     return parent::_encode();
   }
 }

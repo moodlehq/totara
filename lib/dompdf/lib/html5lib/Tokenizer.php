@@ -118,7 +118,7 @@ class HTML5_Tokenizer {
         $escape = false;
         //echo "\n\n";
         while($state !== null) {
-
+            
             /*echo $state . ' ';
             switch ($this->content_model) {
                 case self::PCDATA: echo 'PCDATA'; break;
@@ -128,7 +128,7 @@ class HTML5_Tokenizer {
             }
             if ($escape) echo " escape";
             echo "\n";*/
-
+            
             switch($state) {
                 case 'data':
 
@@ -138,7 +138,7 @@ class HTML5_Tokenizer {
                     if (strlen($lastFourChars) > 4) $lastFourChars = substr($lastFourChars, -4);
 
                     // see below for meaning
-                    $hyp_cond =
+                    $hyp_cond = 
                         !$escape &&
                         (
                             $this->content_model === self::RCDATA ||
@@ -159,7 +159,7 @@ class HTML5_Tokenizer {
                              ) &&
                              !$escape
                         );
-                    $gt_cond =
+                    $gt_cond = 
                         $escape &&
                         (
                             $this->content_model === self::RCDATA ||
@@ -237,7 +237,7 @@ class HTML5_Tokenizer {
                         $this->tree->emitToken(array(
                             'type' => self::EOF
                         ));
-
+                    
                     } elseif($char === "\t" || $char === "\n" || $char === "\x0c" || $char === ' ') {
                         // Directly after emitting a token you switch back to the "data
                         // state". At that point spaceCharacters are important so they are
@@ -255,7 +255,7 @@ class HTML5_Tokenizer {
                         THIS IS AN OPTIMIZATION: Get as many character that
                         otherwise would also be treated as a character token and emit it
                         as a single character token. Stay in the data state. */
-
+                        
                         $mask = '';
                         if ($hyp_cond) $mask .= '-';
                         if ($amp_cond) $mask .= '&';
@@ -1009,8 +1009,8 @@ class HTML5_Tokenizer {
 
                     } elseif($char === '&') {
                         /* U+0026 AMPERSAND (&)
-                        Switch to the entity in attribute value state, with the
-                        additional allowed character  being U+003E
+                        Switch to the entity in attribute value state, with the 
+                        additional allowed character  being U+003E 
                         GREATER-THAN SIGN (>). */
                         $this->characterReferenceInAttributeValue('>');
 
@@ -1458,7 +1458,7 @@ class HTML5_Tokenizer {
                            U+0020 SPACE
                         Switch to the before DOCTYPE name state. */
                         $state = 'before DOCTYPE name';
-
+                    
                     } elseif($char === false) {
                         /* EOF
                         Parse error. Create a new DOCTYPE token. Set its
@@ -2094,7 +2094,7 @@ class HTML5_Tokenizer {
     public function save() {
         return $this->tree->save();
     }
-
+		
 		/**
 		 * @return HTML5_TreeBuilder The tree
 		 */
@@ -2223,8 +2223,8 @@ class HTML5_Tokenizer {
                     ));
                     return HTML5_Data::utf8chr($new_codepoint);
                 } else {
-                    /* Otherwise, if the number is greater than 0x10FFFF, then
-                     * this is a parse error. Return a U+FFFD REPLACEMENT
+                    /* Otherwise, if the number is greater than 0x10FFFF, then 
+                     * this is a parse error. Return a U+FFFD REPLACEMENT 
                      * CHARACTER. */
                     if ($codepoint > 0x10FFFF) {
                         $this->emitToken(array(
@@ -2233,16 +2233,16 @@ class HTML5_Tokenizer {
                         ));
                         return "\xEF\xBF\xBD";
                     }
-                    /* Otherwise, return a character token for the Unicode
-                     * character whose code point is that number.  If the
-                     * number is in the range 0x0001 to 0x0008,    0x000E to
-                     * 0x001F,  0x007F  to 0x009F, 0xD800 to 0xDFFF, 0xFDD0 to
-                     * 0xFDEF, or is one of 0x000B, 0xFFFE, 0xFFFF, 0x1FFFE,
-                     * 0x1FFFF, 0x2FFFE, 0x2FFFF, 0x3FFFE, 0x3FFFF, 0x4FFFE,
-                     * 0x4FFFF, 0x5FFFE, 0x5FFFF, 0x6FFFE, 0x6FFFF, 0x7FFFE,
-                     * 0x7FFFF, 0x8FFFE, 0x8FFFF, 0x9FFFE, 0x9FFFF, 0xAFFFE,
-                     * 0xAFFFF, 0xBFFFE, 0xBFFFF, 0xCFFFE, 0xCFFFF, 0xDFFFE,
-                     * 0xDFFFF, 0xEFFFE, 0xEFFFF, 0xFFFFE, 0xFFFFF, 0x10FFFE,
+                    /* Otherwise, return a character token for the Unicode 
+                     * character whose code point is that number.  If the 
+                     * number is in the range 0x0001 to 0x0008,    0x000E to 
+                     * 0x001F,  0x007F  to 0x009F, 0xD800 to 0xDFFF, 0xFDD0 to 
+                     * 0xFDEF, or is one of 0x000B, 0xFFFE, 0xFFFF, 0x1FFFE, 
+                     * 0x1FFFF, 0x2FFFE, 0x2FFFF, 0x3FFFE, 0x3FFFF, 0x4FFFE, 
+                     * 0x4FFFF, 0x5FFFE, 0x5FFFF, 0x6FFFE, 0x6FFFF, 0x7FFFE, 
+                     * 0x7FFFF, 0x8FFFE, 0x8FFFF, 0x9FFFE, 0x9FFFF, 0xAFFFE, 
+                     * 0xAFFFF, 0xBFFFE, 0xBFFFF, 0xCFFFE, 0xCFFFF, 0xDFFFE, 
+                     * 0xDFFFF, 0xEFFFE, 0xEFFFF, 0xFFFFE, 0xFFFFF, 0x10FFFE, 
                      * or 0x10FFFF, then this is a parse error. */
                     // && has higher precedence than ||
                     if (
@@ -2275,7 +2275,7 @@ class HTML5_Tokenizer {
             // matches the start of one of the identifiers in the first column.
 
             $refs = HTML5_Data::getNamedCharacterReferences();
-
+            
             // Get the longest string which is the start of an identifier
             // ($chars) as well as the longest identifier which matches ($id)
             // and its codepoint ($codepoint).
@@ -2289,7 +2289,7 @@ class HTML5_Tokenizer {
                 }
                 $chars .= $char = $this->stream->char();
             }
-
+            
             // Unconsume the one character we just took which caused the while
             // statement to fail. This could be anything and could cause state
             // changes (as if it matches the while loop it must be
@@ -2426,3 +2426,4 @@ class HTML5_Tokenizer {
         }
     }
 }
+
