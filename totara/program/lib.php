@@ -69,7 +69,7 @@ function prog_can_view_users_required_learning($learnerid) {
 }
 
 /**
- * Return a list of a user's required programs or a count
+ * Return a list of a user's programs or a count
  *
  * @global object $DB
  * @param int $userid
@@ -78,15 +78,18 @@ function prog_can_view_users_required_learning($learnerid) {
  * @param int $limitnum return a subset comprising this many records (optional, required if $limitfrom is set).
  * @param bool $returncount Whether to return a count of the number of records found or the records themselves
  * @param bool $showhidden Whether to include hidden programs in records returned
+ * @param bool $onlyrequiredlearning Only return required learning programs
  * @return array|int
  */
-function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum='', $returncount=false, $showhidden=false) {
+function prog_get_all_programs($userid, $sort = '', $limitfrom = '', $limitnum = '', $returncount = false, $showhidden = false,
+        $onlyrequiredlearning = false) {
     global $DB;
 
-    // Construct sql query
+    // Construct sql query.
     $count = 'SELECT COUNT(*) ';
     $select = 'SELECT p.*, p.fullname AS progname, pc.timedue AS duedate ';
-    list($insql, $params) = $DB->get_in_or_equal(array(PROGRAM_EXCEPTION_RAISED, PROGRAM_EXCEPTION_DISMISSED), SQL_PARAMS_QM, 'param', false);
+    list($insql, $params) = $DB->get_in_or_equal(array(PROGRAM_EXCEPTION_RAISED, PROGRAM_EXCEPTION_DISMISSED),
+            SQL_PARAMS_QM, 'param', false);
     $from = "FROM {prog} p
             INNER JOIN {prog_completion} pc ON p.id = pc.programid AND pc.coursesetid = 0
             INNER JOIN (SELECT DISTINCT userid, programid FROM {prog_user_assignment}
@@ -94,8 +97,10 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
             ON (pc.programid = pua.programid AND pc.userid = pua.userid)";
 
     $where = "WHERE pc.userid = ?
-            AND pc.status <> ?
-            AND p.certifid IS NULL";
+            AND pc.status <> ?";
+    if ($onlyrequiredlearning) {
+        $where .= " AND p.certifid IS NULL";
+    }
 
     $params[] = $userid;
     $params[] = STATUS_PROGRAM_COMPLETE;
@@ -109,6 +114,22 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
     } else {
         return $DB->get_records_sql($select.$from.$where.$sort, $params, $limitfrom, $limitnum);
     }
+}
+
+/**
+ * Return a list of a user's required learning programs or a count
+ *
+ * @global object $DB
+ * @param int $userid
+ * @param string $sort The order in which to sort the programs
+ * @param int $limitfrom return a subset of records, starting at this point (optional, required if $limitnum is set).
+ * @param int $limitnum return a subset comprising this many records (optional, required if $limitfrom is set).
+ * @param bool $returncount Whether to return a count of the number of records found or the records themselves
+ * @param bool $showhidden Whether to include hidden programs in records returned
+ * @return array|int
+ */
+function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum='', $returncount=false, $showhidden=false) {
+    return prog_get_all_programs($userid, $sort, $limitfrom, $limitnum, $returncount, $showhidden, true);
 }
 
 /**
@@ -1428,7 +1449,7 @@ function prog_process_extensions($extensions) {
  */
 function prog_update_completion($userid, program $program = null) {
     if (!$program) {
-        $proglist = prog_get_required_programs($userid);
+        $proglist = prog_get_all_programs($userid);
         $programs = array();
         foreach ($proglist as $progrow) {
             $programs[] = new program($progrow->id);
