@@ -97,15 +97,14 @@ M.totara_programcontent = M.totara_programcontent || {
             // get suffix saved on dialog
             var suf = this._dialog.suf;
 
-            // page has current courseset(s) with prefixes in setprefix_ce and setprefix_rc
-            // we want current values so et_html.php can add to relevant one
-            // TODO - actually only need to send the one that's to be updated
+            // Page has current courseset(s) with prefixes in setprefix_ce and setprefix_rc
+            // we want current values so et_html.php can add to relevant one.
+            // Actually only need to send the one that's to be updated but simpler to send all.
             var setprefixes_ce = $('input:hidden[name=setprefixes_ce]').val(); // '12324234,142423434'
             var setprefixes_rc = $('input:hidden[name=setprefixes_rc]').val();
             if (! setprefixes_rc) {
                 setprefixes_rc = '';
             }
-            module.config.debug && console.log('setprefixes_ce='+setprefixes_ce+' setprefixes_rc='+setprefixes_rc);
 
             // get sortorder value for new courseset - at the end. It will be adjusted on server to fit
             // in with ce/rc grouping. It must always be unique within a program as move/delete etc use it
@@ -121,8 +120,6 @@ M.totara_programcontent = M.totara_programcontent || {
                     '&setprefixes_rc=' + setprefixes_rc +
                     '&suf=' +suf,
                     function(data) {
-                module.config.debug && console.log('save() data html='+data['html']);
-                module.config.debug && console.log('getJSON suf='+suf);
                 $('#course_sets'+suf).append(data['html']); // put new fragment in holding area
                 $('input[name="setprefixes_ce"]').val(data['setprefixes_ce']);
                 $('input[name="setprefixes_rc"]').val(data['setprefixes_rc']);
@@ -141,7 +138,6 @@ M.totara_programcontent = M.totara_programcontent || {
             this.url = M.cfg.wwwroot+'/totara/program/content/';
             this.find_url = 'find_courses.php?id='+module.config.id;
             this.ajax_url = 'get_html.php?id='+module.config.id;
-            module.config.debug && console.log('totaraDialog_addmulticourse url = '+this.url + this.ajax_url);
 
             // Setup the handler
             var handler = new totaraDialog_handler_addmulticourse(this.url + this.ajax_url);
@@ -185,11 +181,11 @@ M.totara_programcontent = M.totara_programcontent || {
             }
 
             // retrieve the number of set prefixes so that we can determine the sort order for the new set
-            var setprefixes = $('input:hidden[name=setprefixes]').val();
-            if (setprefixes == '') {
+            var setprefixes_ce = $('input:hidden[name=setprefixes_ce]').val();
+            if (setprefixes_ce == '') {
                 var sortorder = 1;
             } else {
-                var setprefixesarray = setprefixes.split(',');
+                var setprefixesarray = setprefixes_ce.split(',');
                 var sortorder = setprefixesarray.length + 1;
             }
 
@@ -198,10 +194,10 @@ M.totara_programcontent = M.totara_programcontent || {
                     '&htmltype=competencyset' +
                     '&competencyid=' + id +
                     '&sortorder=' + sortorder +
-                    '&setprefixes=' + setprefixes
+                    '&setprefixes_ce=' + setprefixes_ce
                     , function(data) {
-                $('#course_sets').append(data['html']);
-                $('input[name="setprefixes"]').val(data['setprefixes']);
+                $('#course_sets_ce').append(data['html']);
+                $('input[name="setprefixes_ce"]').val(data['setprefixes_ce']);
                 module.initCoursesets();
 
                 $('form[name="form_prog_content"]').submit();
@@ -240,6 +236,7 @@ M.totara_programcontent = M.totara_programcontent || {
 
         };
 
+
         // Define the dialog and handler for adding a recurring course set
         // Create handler
         totaraDialog_handler_addrecurringcourse = function(contenturl) {
@@ -260,13 +257,18 @@ M.totara_programcontent = M.totara_programcontent || {
             }
 
             // Recurring programs will only ever contain a single course set so we can set these default values
-            var setprefixes = '';
+            var setprefixes_ce = '';
             var sortorder = 1;
 
             // retrieve the html for the new set
-            $.getJSON(this.contenturl + '&htmltype=recurringset' + '&courseid=' + courseid + '&sortorder=' + sortorder + '&setprefixes=' + setprefixes, function(data) {
-                $('#course_sets').append(data['html']);
-                $('input[name="setprefixes"]').val(data['setprefixes']);
+            $.getJSON(this.contenturl +
+                '&htmltype=recurringset' +
+                '&courseid=' + courseid +
+                '&sortorder=' + sortorder +
+                '&setprefixes_ce=' + setprefixes_ce,
+                function(data) {
+                $('#course_sets_ce').append(data['html']);
+                $('input[name="setprefixes_ce"]').val(data['setprefixes_ce']);
                 module.initCoursesets();
                 $('form[name="form_prog_content"]').submit();
             })
@@ -274,6 +276,7 @@ M.totara_programcontent = M.totara_programcontent || {
             this._dialog.hide();
 
         };
+
         // Define the dialog
         totaraDialog_addrecurringcourse = function() {
 
@@ -554,7 +557,7 @@ M.totara_programcontent = M.totara_programcontent || {
     addContent: function(suf){
         // get the type of content to be added
         var contenttype = $('#contenttype'+suf).val();
-        this.config.debug && console.log('addContent() suf='+suf+' contenttype='+contenttype);
+
         if (contenttype == this.config.CONTENTTYPE_MULTICOURSE) {
             totaraDialogs['addmulticourse'].suf = suf; // store on dialog object
             totaraDialogs['addmulticourse'].open();

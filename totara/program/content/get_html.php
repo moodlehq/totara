@@ -45,7 +45,6 @@ if ($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
     $setprefixes_ce = required_param('setprefixes_ce', PARAM_TEXT); // the prefixes of the existing course sets
     $setprefixes_rc = required_param('setprefixes_rc', PARAM_TEXT); // the prefixes of the existing course sets
     $html = '';
-
     // retrieve the courses to be added to this course set
     $courseids = explode(':', $courseids_str);
 
@@ -85,10 +84,10 @@ if ($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
     echo json_encode($data);
 
 } else if ($htmltype == 'competencyset') {
-
+    // Std programs only
     $competencyid = required_param('competencyid', PARAM_INT);
     $sortorder = required_param('sortorder', PARAM_INT);
-    $setprefixes = required_param('setprefixes', PARAM_TEXT); // the prefixes of the existing course sets
+    $setprefixes_ce = required_param('setprefixes_ce', PARAM_TEXT); // the prefixes of the existing course sets
 
     $html = '';
 
@@ -102,18 +101,19 @@ if ($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
     $html .= $newcourseset->print_set_minimal();
 
     $coursesetprefix = $newcourseset->get_set_prefix();
-    $setprefixesstr = empty($setprefixes) ? $coursesetprefix : $setprefixes.','.$coursesetprefix;
+    $setprefixesstr_ce = empty($setprefixes_ce) ? $coursesetprefix : $setprefixes_ce.','.$coursesetprefix;
 
     $data = array(
-        'html'          => $html,
-        'setprefixes'   => $setprefixesstr
+        'html'           => $html,
+        'setprefixes_ce' => $setprefixesstr_ce
     );
 
     echo json_encode($data);
 
 } else if ($htmltype == 'recurringset') {
-
+    // Std programs only
     $courseid = required_param('courseid', PARAM_INT);
+    $setprefixes_ce = required_param('setprefixes_ce', PARAM_TEXT); // the prefixes of the existing course sets
 
     $newcourseset = new recurring_course_set($id);
     $newcourseset->sortorder = 1;
@@ -128,11 +128,11 @@ if ($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
     $html = $newcourseset->print_set_minimal();
 
     $coursesetprefix = $newcourseset->get_set_prefix();
-    $setprefixesstr = empty($setprefixes) ? $coursesetprefix : $setprefixes.','.$coursesetprefix;
+    $setprefixesstr_ce = empty($setprefixes_ce) ? $coursesetprefix : $setprefixes_ce.','.$coursesetprefix;
 
     $data = array(
-        'html'          => $html,
-        'setprefixes'   => $setprefixesstr
+        'html'           => $html,
+        'setprefixes_ce' => $setprefixesstr_ce
     );
 
     echo json_encode($data);
