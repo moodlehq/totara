@@ -131,11 +131,11 @@ if ($editform->is_cancelled()) {
 
     // Fix dates
     if (isset($data->startdate) && $data->startdate) {
-        $data->startdate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->startdate);
+        $data->startdate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $data->startdate);
     }
 
     if (isset($data->enddate) && $data->enddate) {
-        $data->enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->enddate);
+        $data->enddate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $data->enddate);
     }
 
 

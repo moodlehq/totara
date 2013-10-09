@@ -60,7 +60,7 @@ switch ($action) {
         $defaults = file_prepare_standard_editor($defaults, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
             'totara_appraisal', 'appraisal_stage', $id);
         if ($defaults->timedue) {
-            $defaults->timedue = userdate($defaults->timedue, get_string('strftimedatefullshort', 'langconfig'),
+            $defaults->timedue = userdate($defaults->timedue, get_string('datepickerlongyearphpuserdate', 'totara_core'),
                     $CFG->timezone, false);
         }
         $mform = new appraisal_stage_edit_form(null, array('action'=>$action, 'stage' => $defaults, 'readonly' => !$isdraft));
@@ -75,7 +75,7 @@ switch ($action) {
                 totara_set_notification(get_string('error:unknownbuttonclicked', 'totara_appraisal'), $returnurl);
             }
             if (!empty($fromform->timedue)) {
-                $fromform->timedue = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),
+                $fromform->timedue = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'),
                         $fromform->timedue);
                 if ($fromform->timedue < time()) {
                     totara_set_notification(get_string('error:completebyinvalid', 'totara_appraisal'));

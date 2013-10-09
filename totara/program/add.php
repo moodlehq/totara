@@ -150,10 +150,11 @@ if ($data = $form->get_data()) {
         $program_todb = new stdClass;
 
         $program_todb->availablefrom = ($data->availablefromselector) ?
-            totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->availablefromselector) : 0;
+            totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'),$data->availablefromselector) : 0;
         $program_todb->availableuntil = ($data->availableuntilselector) ?
-            totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->availableuntilselector) : 0;
-        // Calcuate sortorder
+            totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'),$data->availableuntilselector) : 0;
+
+        //Calcuate sortorder
         $sortorder = $DB->get_field('prog', 'MAX(sortorder) + 1', array());
 
         $now = time();

@@ -60,26 +60,26 @@ class cohort_edit_form extends moodleform {
         // startdate
         $group = array();
         $group[] = $mform->createElement('text', 'startdate', '', array('name' => get_string('startdate', 'totara_cohort'),
-            'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+            'placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $group[] = $mform->createElement('static', 'startdate_hint', '', get_string('dateformathint', 'totara_cohort'));
         $mform->addGroup($group, 'startdate_group', get_string('startdate', 'totara_cohort'), array(' '), false);
         $mform->setType('startdate', PARAM_TEXT);
-        $mform->setDefault('startdate', get_string('datepickerdisplayformat', 'totara_core'));
+        $mform->setDefault('startdate', get_string('datepickerlongyeardisplayformat', 'totara_core'));
         $mform->addHelpButton('startdate_group', 'startdate', 'totara_cohort');
 
          // enddate
         $group = array();
         $group[] = $mform->createElement('text', 'enddate', '', array('name' => get_string('enddate', 'totara_cohort'),
-            'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+            'placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $group[] = $mform->createElement('static', 'enddate_hint', '', get_string('dateformathint', 'totara_cohort'));
         $mform->addGroup($group, 'enddate_group', get_string('enddate', 'totara_cohort'), array(' '), false);
         $mform->setType('enddate', PARAM_TEXT);
-        $mform->setDefault('enddate', get_string('datepickerdisplayformat', 'totara_core'));
+        $mform->setDefault('enddate', get_string('datepickerlongyeardisplayformat', 'totara_core'));
         $mform->addHelpButton('enddate_group', 'enddate', 'totara_cohort');
 
-        $rule1['startdate'][] = array(get_string('entervaliddate', 'totara_cohort'), 'regex' , get_string('datepickerregexphp', 'totara_core'));
+        $rule1['startdate'][] = array(get_string('entervaliddate', 'totara_cohort'), 'regex' , get_string('datepickerlongyearregexphp', 'totara_core'));
         $mform->addGroupRule('startdate_group', $rule1);
-        $rule2['enddate'][] = array(get_string('entervaliddate', 'totara_cohort'), 'regex' , get_string('datepickerregexphp', 'totara_core'));
+        $rule2['enddate'][] = array(get_string('entervaliddate', 'totara_cohort'), 'regex' , get_string('datepickerlongyearregexphp', 'totara_core'));
         $mform->addGroupRule('enddate_group', $rule2);
 
         // alert options
@@ -144,7 +144,7 @@ class cohort_edit_form extends moodleform {
             if (!$startdateint) {
                  $mform->setDefault('startdate', '');
             } else {
-                 $mform->setDefault('startdate', date(get_string('datepickerparseformat', 'totara_core'), $startdateint));
+                 $mform->setDefault('startdate', userdate($startdateint, get_string('datepickerlongyearphpuserdate', 'totara_core')));
             }
         }
 
@@ -157,7 +157,7 @@ class cohort_edit_form extends moodleform {
             if (!$enddateint) {
                  $mform->setDefault('enddate', '');
             } else {
-                 $mform->setDefault('enddate', date(get_string('datepickerparseformat', 'totara_core'), $enddateint));
+                 $mform->setDefault('enddate', userdate($enddateint, get_string('datepickerlongyearphpuserdate', 'totara_core')));
             }
         }
     }
@@ -187,16 +187,16 @@ class cohort_edit_form extends moodleform {
         // Check that startdate and enddate are empty or valid dates, and that
         // startdate is before enddate if both are provided
         $startdatestr = isset($data['startdate'])?$data['startdate']:'';
-        $startdate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $startdatestr );
+        $startdate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $startdatestr );
         $enddatestr = isset($data['enddate'])?$data['enddate']:'';
-        $enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddatestr );
+        $enddate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $enddatestr );
 
         // Enforce valid dates
-        if (false === $startdate && $startdatestr !== get_string('datepickerdisplayformat', 'totara_core') && $startdatestr !== '') {
-            $errors['startdate'] = get_string('error:dateformat', 'totara_cohort', get_string('datepickerplaceholder', 'totara_core'));
+        if (false === $startdate && $startdatestr !== get_string('datepickerlongyeardisplayformat', 'totara_core') && $startdatestr !== '') {
+            $errors['startdate'] = get_string('error:dateformat', 'totara_cohort', get_string('datepickerlongyearplaceholder', 'totara_core'));
         }
-        if (false === $enddate && $enddatestr !== get_string('datepickerdisplayformat', 'totara_core') && $enddatestr !== '') {
-            $errors['enddate'] = get_string('error:dateformat', 'totara_cohort', get_string('datepickerplaceholder', 'totara_core'));
+        if (false === $enddate && $enddatestr !== get_string('datepickerlongyeardisplayformat', 'totara_core') && $enddatestr !== '') {
+            $errors['enddate'] = get_string('error:dateformat', 'totara_cohort', get_string('datepickerlongyearplaceholder', 'totara_core'));
         }
 
         // Enforce start date before finish date

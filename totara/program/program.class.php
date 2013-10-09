@@ -1355,14 +1355,18 @@ class program {
         return $renderer->print_totara_progressbar($overall_progress, 'medium', false, $tooltipstr);
     }
 
-    public function display_timedue_date($completionstatus, $time, $format = 'strftimedatefull') {
+    public function display_timedue_date($completionstatus, $time, $format = '') {
         global $OUTPUT;
 
         if ($time == 0 || $time == COMPLETION_TIME_NOT_SET) {
             return get_string('noduedate', 'totara_plan');;
         }
 
-        $out = userdate($time, get_string($format, 'langconfig'));
+        if (empty($format)) {
+            $format = get_string('datepickerlongyearphpuserdate', 'totara_core');
+        }
+
+        $out = userdate($time, $format);
 
         $days = '';
         if ($completionstatus != STATUS_PROGRAM_COMPLETE) {

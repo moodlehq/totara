@@ -96,7 +96,7 @@ function update_general_settings($id, $fromform) {
     $todb = new stdClass();
     $todb->id = $id;
     $todb->fullname = $fromform->templatename;
-    $todb->enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $fromform->enddate);
+    $todb->enddate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $fromform->enddate);
 
     $transaction = $DB->start_delegated_transaction();
 

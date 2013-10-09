@@ -97,7 +97,7 @@ function local_js($options = array()) {
 
         $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.9.2.custom.min.js');
 
-        $PAGE->requires->strings_for_js(array('datepickerdisplayformat', 'datepickerplaceholder', 'datepickerregexjs'), 'totara_core');
+        $PAGE->requires->strings_for_js(array('datepickerlongyeardisplayformat', 'datepickerlongyearplaceholder', 'datepickerlongyearregexjs'), 'totara_core');
         $PAGE->requires->string_for_js('thisdirection', 'langconfig');
 
         $lang = current_language();
@@ -140,10 +140,10 @@ function local_js($options = array()) {
 function build_datepicker_js($selector, $dateformat=null) {
     global $PAGE;
 
-    $PAGE->requires->strings_for_js(array('datepickerdisplayformat', 'datepickerplaceholder', 'datepickerregexjs'), 'totara_core');
+    $PAGE->requires->strings_for_js(array('datepickerlongyeardisplayformat', 'datepickerlongyearplaceholder', 'datepickerlongyearregexjs'), 'totara_core');
 
     if (empty($dateformat)) {
-        $dateformat = get_string('datepickerdisplayformat', 'totara_core');
+        $dateformat = get_string('datepickerlongyeardisplayformat', 'totara_core');
     }
     $button_img = array('t/calendar', 'totara_core');
     $args = array($selector, $dateformat, $button_img);

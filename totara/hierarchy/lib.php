@@ -1221,7 +1221,7 @@ class hierarchy {
 
             // Print target date if available.
             if (!empty($record->targetdate)) {
-                $targetdate = userdate($record->targetdate, get_string('strftimedatefullshort', 'langconfig'),
+                $targetdate = userdate($record->targetdate, get_string('datepickerlongyearphpuserdate', 'totara_core'),
                         $CFG->timezone, false);
                 $out .= html_writer::tag('div', html_writer::tag('strong',
                         get_string('goaltargetdate', 'totara_hierarchy') . ': ') . $targetdate,
@@ -1408,7 +1408,7 @@ class hierarchy {
 
             if (!empty($item->targetdateselector)) {
                 // Set up formatting the date for goals.
-                $item->targetdate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),
+                $item->targetdate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'),
                         $item->targetdateselector);
             }
 

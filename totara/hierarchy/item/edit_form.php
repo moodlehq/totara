@@ -160,7 +160,7 @@ class item_edit_form extends moodleform {
             // Fix up the format of the goal target date.
             if (!empty($data->targetdate)) {
                     $data->targetdateselector = userdate($data->targetdate,
-                            get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
+                            get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false);
             }
         }
 
@@ -196,7 +196,7 @@ class item_edit_form extends moodleform {
             $errors += customfield_validation($itemnew, $itemnew->prefix, $shortprefix.'_type');
         }
 
-        $dateparseformat = get_string('datepickerparseformat', 'totara_core');
+        $dateparseformat = get_string('datepickerlongyearparseformat', 'totara_core');
         if (!empty($data['targetdateselector'])) {
             $targetdate = $data['targetdateselector'];
             if (!empty($targetdate) && !totara_date_parse_from_format($dateparseformat, $targetdate)) {

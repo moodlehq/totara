@@ -1100,7 +1100,7 @@ function dp_create_template($templatename, $enddate, &$error) {
 
     $todb = new stdClass();
     $todb->fullname = $templatename;
-    $todb->enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddate);
+    $todb->enddate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $enddate);
     $sortorder = $DB->get_field('dp_template', 'MAX(sortorder)', array()) + 1;
     $todb->sortorder = $sortorder;
     $todb->visible = 1;

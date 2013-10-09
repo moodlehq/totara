@@ -125,7 +125,7 @@ if ($itemform->is_cancelled()) {
         if (empty($itemnew->targetdateselector)) {
             $itemnew->targetdate = 0;
         } else {
-            $itemnew->targetdate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),
+            $itemnew->targetdate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'),
                     $itemnew->targetdateselector);
         }
         unset($itemnew->targetdateselector);

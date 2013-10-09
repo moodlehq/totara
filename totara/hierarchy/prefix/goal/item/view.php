@@ -128,7 +128,7 @@ $scalevaluestr = html_writer::tag('strong', get_string('goaltable:scalevalue', '
 echo html_writer::tag('p', $scalevaluestr);
 
 // Target Date.
-$targetdate = userdate($goalpersonal->targetdate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
+$targetdate = userdate($goalpersonal->targetdate, get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false);
 $targetstr = html_writer::tag('strong', get_string('goaltargetdate', 'totara_hierarchy')) . ': ' . $targetdate;
 echo html_writer::tag('p', $targetstr);
 

@@ -107,7 +107,7 @@ class goal_edit_personal_form extends moodleform {
 
         // Target date.
         $mform->addElement('text', 'targetdateselector', get_string('goaltargetdate', 'totara_hierarchy'),
-                 array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+                 array('placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $mform->addHelpButton('targetdateselector', 'goaltargetdate', 'totara_hierarchy');
         $mform->setType('targetdateselector', PARAM_MULTILANG);
 
@@ -121,7 +121,7 @@ class goal_edit_personal_form extends moodleform {
 
         if (!empty($data->targetdate)) {
             // Format and name the data correctly for the date selector.
-            $data->targetdateselector = userdate($data->targetdate, get_string('strftimedatefullshort', 'langconfig'),
+            $data->targetdateselector = userdate($data->targetdate, get_string('datepickerlongyearphpuserdate', 'totara_core'),
                     $CFG->timezone, false);
         }
 
@@ -152,7 +152,7 @@ class goal_edit_personal_form extends moodleform {
         }
 
         // Check target date is in the future.
-        $dateparseformat = get_string('datepickerparseformat', 'totara_core');
+        $dateparseformat = get_string('datepickerlongyearparseformat', 'totara_core');
         if (!empty($fromform->targetdateselector)) {
             $targetdate = $fromform->targetdateselector;
             if (!empty($targetdate)) {
@@ -162,7 +162,7 @@ class goal_edit_personal_form extends moodleform {
                     }
                 } else {
                     $errors['targetdateselector'] = get_string('error:invaliddateformat', 'totara_hierarchy',
-                            get_string('datepickerplaceholder', 'totara_core'));
+                            get_string('datepickerlongyearplaceholder', 'totara_core'));
                 }
             }
         }

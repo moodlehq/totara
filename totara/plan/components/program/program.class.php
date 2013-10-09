@@ -295,10 +295,10 @@ class dp_program_component extends dp_base_component {
         $stored_records = array();
 
         if (!empty($duedates) && $cansetduedates) {
-            $datepickerplaceholder = get_string('datepickerplaceholder', 'totara_core');
+            $datepickerlongyearplaceholder = get_string('datepickerlongyearplaceholder', 'totara_core');
             foreach ($duedates as $id => $duedate) {
                 // allow empty due dates
-                if ($duedate == '' || $duedate == $datepickerplaceholder) {
+                if ($duedate == '' || $duedate == $datepickerlongyearplaceholder) {
                     // set all empty due dates to the plan due date
                     // if they are required
                     if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
@@ -308,17 +308,14 @@ class dp_program_component extends dp_base_component {
                         $duedateout = null;
                     }
                 } else {
-                    $datepattern = get_string('datepickerregexphp', 'totara_core');
+                    $datepattern = get_string('datepickerlongyearregexphp', 'totara_core');
                     if (preg_match($datepattern, $duedate, $matches) == 0) {
                         // skip badly formatted date strings
                         $badduedates[] = $id;
                         continue;
                     }
-                    $day = $matches[1];
-                    $mon = $matches[2];
-                    $year = $matches[3];
 
-                    $duedateout = mktime(0, 0, 0, $mon, $day, $year);
+                    $duedateout = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $duedate);
                 }
 
                 $todb = new stdClass();

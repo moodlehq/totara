@@ -224,7 +224,7 @@ class goal extends hierarchy {
 
         // Display the target date if appropriate.
         if (!empty($item->targetdate)) {
-            $format_date = userdate($item->targetdate, get_string('strftimedatefullshort', 'langconfig'),
+            $format_date = userdate($item->targetdate, get_string('datepickerlongyearphpuserdate', 'totara_core'),
                     $CFG->timezone, false);
             $data[] = array(
                 'title' => get_string('goaltargetdate', 'totara_hierarchy'),
@@ -326,7 +326,7 @@ class goal extends hierarchy {
         $mform->addHelpButton('scalename', 'goalscale', 'totara_hierarchy');
 
         $mform->addElement('text', 'targetdateselector', get_string('goaltargetdate', 'totara_hierarchy'),
-            array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+            array('placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $mform->addHelpButton('targetdateselector', 'goaltargetdate', 'totara_hierarchy');
         $mform->setType('targetdateselector', PARAM_MULTILANG);
 

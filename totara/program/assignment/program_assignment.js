@@ -138,7 +138,7 @@ M.totara_programassignment = M.totara_programassignment || {
         totaraDialog_completion_handler.prototype = new totaraDialog_handler();
 
         totaraDialog_completion_handler.prototype.first_load = function() {
-            M.totara_core.build_datepicker(module.Y, 'input[name="completiontime"]', M.util.get_string('datepickerdisplayformat', 'totara_core'));
+            M.totara_core.build_datepicker(module.Y, 'input[name="completiontime"]', M.util.get_string('datepickerlongyeardisplayformat', 'totara_core'));
             $('#ui-datepicker-div').css('z-index',1600);
         };
 
@@ -202,9 +202,9 @@ M.totara_programassignment = M.totara_programassignment || {
                 var completionevent = module.config.COMPLETION_EVENT_NONE;
                 var completioninstance = 0;
 
-                var dateformat = new RegExp(M.util.get_string('datepickerregexjs', 'totara_core'));
+                var dateformat = new RegExp(M.util.get_string('datepickerlongyearregexjs', 'totara_core'));
                 if (dateformat.test(completiontime) == false) {
-                    alert(M.util.get_string('pleaseentervaliddate', 'totara_program', M.util.get_string('datepickerplaceholder', 'totara_core')));
+                    alert(M.util.get_string('pleaseentervaliddate', 'totara_program', M.util.get_string('datepickerlongyearplaceholder', 'totara_core')));
                 }
                 else {
                     self.item.update_completiontime(completiontime, completionevent, completioninstance);

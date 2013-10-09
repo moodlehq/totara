@@ -71,7 +71,7 @@ M.totara_plan_template = M.totara_plan_template || {
                 $('input#id_name').val(templates[current].fullname);
 
                 var date = new Date(templates[current].enddate * 1000);
-                var datestr = $.datepicker.formatDate(M.util.get_string('datepickerdisplayformat', 'totara_core'), date);
+                var datestr = $.datepicker.formatDate(M.util.get_string('datepickerlongyeardisplayformat', 'totara_core'), date);
 
                 $('input#id_enddate').val(datestr);
             });

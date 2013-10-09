@@ -518,11 +518,12 @@ class rb_source_dp_certification extends rb_base_source {
 
 
     function rb_display_timedue_date($time, $row) {
+        $dateformat = get_string('strfdateshortmonth', 'langconfig');
         if ($row->certifpath == CERTIFPATH_CERT) {
             $program = new program($row->programid);
-            return $program->display_timedue_date($row->completionstatus, $time, 'strfdateshortmonth');
+            return $program->display_timedue_date($row->completionstatus, $time, $dateformat);
         } else {
-            return userdate($row->timeexpires, get_string('strfdateshortmonth', 'langconfig'));
+            return userdate($row->timeexpires, $dateformat);
         }
     }
 

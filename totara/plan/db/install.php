@@ -111,7 +111,7 @@ function xmldb_totara_plan_install() {
     // create a default template
     require_once($CFG->dirroot . '/totara/plan/lib.php');
     $templatename = get_string('learningplan', 'totara_plan');
-    $enddate = strftime(get_string('strftimedatefull', 'langconfig'), time() + 60*60*24*365); // one year from now
+    $enddate = strftime(get_string('datepickerlongyearphpuserdate', 'totara_core'), time() + 60*60*24*365); // one year from now
     $error = '';
     if (!$templateid = dp_create_template($templatename, $enddate, $error)) {
         error_log($error);

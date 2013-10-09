@@ -103,7 +103,7 @@ if ($data = $form->get_data()) {
     if (isset($data->submitbutton)) {
         $transaction = $DB->start_delegated_transaction();
 
-        $data->enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->enddate);  // convert to timestamp
+        $data->enddate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $data->enddate);  // convert to timestamp
         // Set up the plan
         $newid = $DB->insert_record('dp_plan', $data);
         $data->id = $newid;
@@ -168,7 +168,7 @@ $jsmodule = array(
 $json_templates = json_encode($templates);
 $args = array('args' => '{"templates":' . $json_templates . '}');
 
-$PAGE->requires->string_for_js('datepickerdisplayformat', 'totara_core');
+$PAGE->requires->string_for_js('datepickerlongyeardisplayformat', 'totara_core');
 $PAGE->requires->js_init_call('M.totara_plan_template.init', $args, false, $jsmodule);
 
 $PAGE->set_title($pagetitle);

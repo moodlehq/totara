@@ -920,7 +920,7 @@ function totara_update_temporary_manager($userid, $managerid, $expiry) {
     $msg->contexturl = $CFG->wwwroot.'/user/positions.php?user='.$userid.'&courseid='.SITEID;
     $msg->contexturlname = get_string('xpositions', 'totara_core', fullname($user));
     $msgparams = (object)array('staffmember' => fullname($user), 'tempmanager' => fullname($newtempmanager),
-        'expirytime' => userdate($expiry, get_string('strftimedatefullshort', 'langconfig')), 'url' => $msg->contexturl);
+        'expirytime' => userdate($expiry, get_string('datepickerlongyearphpuserdate', 'totara_core')), 'url' => $msg->contexturl);
 
     if (!empty($oldtempmanager) && $newtempmanager->id == $oldtempmanager->tempmanagerid) {
         if ($oldtempmanager->expirytime == $expiry) {

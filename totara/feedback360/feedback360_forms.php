@@ -448,7 +448,7 @@ class request_select_users extends moodleform {
 
         // Target date.
         $mform->addElement('text', 'duedateselector', get_string('duedate', 'totara_feedback360'),
-                 array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+                 array('placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $mform->addHelpButton('duedateselector', 'duedate', 'totara_feedback360');
         $mform->setType('duedateselector', PARAM_MULTILANG);
 
@@ -546,7 +546,7 @@ class request_select_users extends moodleform {
 
         if (!empty($data['duedate'])) {
             $mform->getElement('oldduedate')->setValue($data['duedate']);
-            $due = userdate($data['duedate'], get_string('strftimedatefullshort', 'langconfig'));
+            $due = userdate($data['duedate'], get_string('datepickerlongyearphpuserdate', 'totara_core'));
             $mform->getElement('duedateselector')->setValue($due);
         }
 
@@ -612,7 +612,7 @@ class request_select_users extends moodleform {
         }
 
         // Validate the due date field.
-        $dateparseformat = get_string('datepickerparseformat', 'totara_core');
+        $dateparseformat = get_string('datepickerlongyearparseformat', 'totara_core');
         if (!empty($data['duedateselector'])) {
             // If they have set a due date check that it is in the future.
             $targetdate = $data['duedateselector'];

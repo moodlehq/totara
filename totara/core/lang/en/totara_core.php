@@ -72,14 +72,22 @@ This information will allow Totara to better examine and resolve any support iss
 $string['totararelease'] = 'Totara release identifier';
 $string['totaraversion'] = 'Totara version number';
 $string['configforcelogintotara'] = 'Normally, the entire site is only available to logged in users. If you would like to make the front page and the course listings (but not the course contents) available without logging in, then you should uncheck this setting.';
-//date picker variables
-$string['datepickerdisplayformat'] = 'dd/mm/yy'; //how the datepicker displays the date, see jQuery documentation
-$string['datepickerplaceholder'] = 'dd/mm/yyyy'; //how the datepicker placeholder hint displays the default
-$string['datepickerparseformat'] = 'd/m/Y'; //how php parses the datepicker dates to a timestamp (in totara_date_parse_from_format)
-$string['datepickerregexjs'] = '[0-3][0-9]/(0|1)[0-9]/[0-9]{4}';
-$string['datepickerregexphp'] = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{4})$/';
-$string['datepickerphpuserdate'] = '%d/%m/%Y';
+// Date picker variables used by pre 2.4.12 versions.
+$string['datepickerdisplayformat'] = 'dd/mm/y'; // How the datepicker displays the date, see jQuery documentation.
+$string['datepickerplaceholder'] = 'dd/mm/yy'; // How the datepicker placeholder hint displays the default.
+$string['datepickerparseformat'] = 'd/m/y'; // How php parses the datepicker dates to a timestamp (in totara_date_parse_from_format).
+$string['datepickerregexjs'] = '[0-3][0-9]/(0|1)[0-9]/[0-9]{2}';
+$string['datepickerregexphp'] = '@^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/([0-9]{2})$@';
+$string['datepickerphpuserdate'] = '%d/%m/%y';
+// Date picker variables used by version 2.4.12 onwards.
+$string['datepickerlongyeardisplayformat'] = 'dd/mm/yy'; // How the datepicker displays the date, see jQuery documentation.
+$string['datepickerlongyearplaceholder'] = 'dd/mm/yyyy'; // How the datepicker placeholder hint displays the default.
+$string['datepickerlongyearparseformat'] = 'd/m/Y'; // How php parses the datepicker dates to a timestamp (in totara_date_parse_from_format).
+$string['datepickerlongyearregexjs'] = '[0-3][0-9]/(0|1)[0-9]/[0-9]{4}';
+$string['datepickerlongyearregexphp'] = '@^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/([0-9]{4})$@';
+$string['datepickerlongyearphpuserdate'] = '%d/%m/%Y';
 $string['strftimedateshortmonth'] = '%d %b %Y';
+
 $string['csvdateformat'] = 'CSV Import date format';
 $string['csvdateformatdefault'] = 'd/m/Y';
 $string['csvdateformatconfig'] = 'Date format to be used in CSV imports like user uploads with date custom profile fields, or Totara Sync.

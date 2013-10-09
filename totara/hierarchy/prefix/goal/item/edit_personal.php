@@ -79,7 +79,7 @@ if ($mform->is_cancelled()) {
         if (empty($fromform->targetdateselector)) {
             $todb->targetdate = 0;
         } else {
-            $todb->targetdate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),
+            $todb->targetdate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'),
                     $fromform->targetdateselector);
         }
         unset($fromform->targetdateselector);

@@ -68,7 +68,7 @@ $extensiondata = array(
     'programfullname'       => format_string($program->fullname)
 );
 
-$extensiondate_timestamp = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $extensiondate);  // convert to timestamp
+$extensiondate_timestamp = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $extensiondate);  // convert to timestamp
 
 $extension = new stdClass;
 $extension->programid = $program->id;

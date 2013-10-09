@@ -205,7 +205,7 @@ if ($mform->is_cancelled()) {
             redirect(new moodle_url($findurl, $findparams));
         }
 
-        $duedate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedateselector);
+        $duedate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $data->duedateselector);
 
         $newsystem = array();
         if (!empty($data->systemnew)) {

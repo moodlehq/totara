@@ -160,7 +160,7 @@ class program_edit_form extends moodleform {
             $mform->setType('available', PARAM_INT);
         }
 
-        $mform->addElement('text', 'availablefromselector', get_string('availablefrom', 'totara_program'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $mform->addElement('text', 'availablefromselector', get_string('availablefrom', 'totara_program'), array('placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $mform->setType('availablefromselector', PARAM_TEXT);
         if ($action == 'view') {
             $mform->hardFreeze('availablefromselector');
@@ -171,7 +171,7 @@ class program_edit_form extends moodleform {
         $mform->addElement('hidden', 'availablefrom');
         $mform->setType('availablefrom', PARAM_INT);
 
-        $mform->addElement('text', 'availableuntilselector', get_string('availableuntil', 'totara_program'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $mform->addElement('text', 'availableuntilselector', get_string('availableuntil', 'totara_program'), array('placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $mform->setType('availableuntilselector', PARAM_TEXT);
         if ($action == 'view') {
             $mform->hardFreeze('availableuntilselector');
@@ -285,7 +285,7 @@ class program_edit_form extends moodleform {
 
         $mform = $this->_form;
         $errors = array();
-        $dateparseformat = get_string('datepickerparseformat', 'totara_core');
+        $dateparseformat = get_string('datepickerlongyearparseformat', 'totara_core');
         if (!empty($data['availablefromselector'])) {
             $availablefrom = $data['availablefromselector'];
             if (!empty($availablefrom) && !totara_date_parse_from_format($dateparseformat, $availablefrom)) {

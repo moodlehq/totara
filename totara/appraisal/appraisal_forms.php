@@ -296,7 +296,7 @@ class appraisal_stage_edit_form extends moodleform {
             $mform->addElement('static', 'timedue', get_string('completeby', 'totara_appraisal'));
         } else {
             $mform->addElement('text', 'timedue', get_string('completeby', 'totara_appraisal'),
-                    array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+                    array('placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
             $mform->addElement('static', 'timedue_hint', '', get_string('completebystage_help', 'totara_appraisal'));
         }
         $mform->setType('timedue', PARAM_TEXT);
@@ -339,12 +339,12 @@ class appraisal_stage_edit_form extends moodleform {
     public function validation($data, $files) {
         $result = array();
         $timeduestr = isset($data['timedue']) ? $data['timedue'] : '';
-        $timedue = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $timeduestr);
+        $timedue = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $timeduestr);
 
-        $isplaceholder = $timeduestr == get_string('datepickerplaceholder', 'totara_core');
+        $isplaceholder = $timeduestr == get_string('datepickerlongyearplaceholder', 'totara_core');
         if (0 == $timedue && !$isplaceholder && $timeduestr !== '') {
             $result['timedue'] = get_string('error:dateformat', 'totara_appraisal',
-                    get_string('datepickerplaceholder', 'totara_core'));
+                    get_string('datepickerlongyearplaceholder', 'totara_core'));
         }
         return $result;
     }

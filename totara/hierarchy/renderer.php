@@ -635,7 +635,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
         // Add any company goals the user has assigned to the table.
         foreach ($assignments as $goalid => $assignment) {
             $duedate = !empty($assignment->targetdate) ? userdate($assignment->targetdate,
-                get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) : '';
+                get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false) : '';
 
             // Set up the scale value selector.
             if ($can_edit) {
@@ -779,7 +779,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
             }
 
             $duedate = !empty($goalpersonal->targetdate) ? userdate($goalpersonal->targetdate,
-                    get_string('strftimedatefullshort', 'langconfig'),
+                    get_string('datepickerlongyearphpuserdate', 'totara_core'),
                 $CFG->timezone, false) : '';
             $assign = goal::get_assignment_string(goal::SCOPE_PERSONAL, $goalpersonal);
             $nameurl = new moodle_url('/totara/hierarchy/prefix/goal/item/view.php', array('goalpersonalid' => $goalpersonal->id));

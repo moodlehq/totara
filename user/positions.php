@@ -194,11 +194,11 @@ else {
     elseif ($data = $form->get_data()) {
         // Fix dates
         if (isset($data->timevalidfrom) && $data->timevalidfrom) {
-            $data->timevalidfrom = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$data->timevalidfrom);
+            $data->timevalidfrom = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'),$data->timevalidfrom);
         }
 
         if (isset($data->timevalidto) && $data->timevalidto) {
-            $data->timevalidto = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$data->timevalidto);
+            $data->timevalidto = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'),$data->timevalidto);
         }
 
         if (isset($data->positionid) && $data->positionid == 0) {
@@ -252,7 +252,7 @@ else {
         if (!empty($data->tempmanagerid)) {
             // Update temporary manager.
             totara_update_temporary_manager($user->id, $data->tempmanagerid,
-                totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->tempmanagerexpiry));
+                totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $data->tempmanagerexpiry));
         } else if (!empty($CFG->enabletempmanagers)) {
             // Unassign the current temporary manager.
             totara_unassign_temporary_manager($user->id);

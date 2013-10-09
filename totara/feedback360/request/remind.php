@@ -81,7 +81,7 @@ if (!empty($confirmation)) {
         // Create the replacement variables for the email strings.
         $remvars = new stdClass();
         if (!empty($userform->timedue)) {
-            $duedate = userdate($userform->timedue, get_string('strftimedatefullshort', 'langconfig'));
+            $duedate = userdate($userform->timedue, get_string('datepickerlongyearphpuserdate', 'totara_core'));
             $remvars->timedue = get_string('byduedate' , 'totara_feedback360', $duedate);
         } else {
             $remvars->timedue = '';

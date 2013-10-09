@@ -144,7 +144,7 @@ M.totara_plan_component = M.totara_plan_component || {
         $('div.plan_box').replaceWith(new_planbox);
 
         // Add duedate datepicker
-        var format = M.util.get_string('datepickerdisplayformat', 'totara_core');
+        var format = M.util.get_string('datepickerlongyeardisplayformat', 'totara_core');
         M.totara_core.build_datepicker(this.Y, "[id^=duedate_"+M.totara_plan_component.config.component_name+"]", format);
 
     }

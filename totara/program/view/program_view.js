@@ -73,7 +73,7 @@ M.totara_programview = M.totara_programview || {
         totaraDialog_extension_handler.prototype = new totaraDialog_handler();
 
         totaraDialog_extension_handler.prototype.first_load = function() {
-            M.totara_core.build_datepicker(Y, 'input[name="extensiontime"]', M.util.get_string('datepickerdisplayformat', 'totara_core'));
+            M.totara_core.build_datepicker(Y, 'input[name="extensiontime"]', M.util.get_string('datepickerlongyeardisplayformat', 'totara_core'));
             $('#ui-datepicker-div').css('z-index',1600);
         }
 
@@ -90,10 +90,10 @@ M.totara_programview = M.totara_programview || {
             var extensiontime = $('.extensiontime', this._container).val();
             var extensionreason = $('.extensionreason', this._container).val();
 
-            var dateformat = new RegExp(M.util.get_string('datepickerregexjs', 'totara_core'));
+            var dateformat = new RegExp(M.util.get_string('datepickerlongyearregexjs', 'totara_core'));
 
             if (dateformat.test(extensiontime) == false) {
-                alert(M.util.get_string('pleaseentervaliddate', 'totara_program', M.util.get_string('datepickerplaceholder', 'totara_core')));
+                alert(M.util.get_string('pleaseentervaliddate', 'totara_program', M.util.get_string('datepickerlongyearplaceholder', 'totara_core')));
             } else if (extensionreason=='') {
                 alert(M.util.get_string('pleaseentervalidreason', 'totara_program'));
             } else {
