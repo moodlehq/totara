@@ -290,9 +290,14 @@ class appraisal {
 
         // Check that all stages are valid.
         $stages = appraisal_stage::fetch_appraisal($this->id);
+        $timesdue = array();
         foreach ($stages as $stage) {
             $checkstage = new appraisal_stage($stage->id);
             $err += $checkstage->validate($time);
+            if ($checkstage->timedue && in_array($checkstage->timedue, $timesdue)) {
+                $err['timedue'] = get_string('appraisalinvalid:stagesamedue', 'totara_appraisal');
+            }
+            $timesdue[] = $checkstage->timedue;
         }
 
         return $err;
@@ -1746,7 +1751,7 @@ class appraisal_stage {
 
         // Check if stage is completed for this user.
         $stages = self::get_stages($this->appraisalid);
-        if ($userassignment->activestageid != $this->id && $stages[$userassignment->activestageid]->timedue >= $this->timedue) {
+        if ($userassignment->activestageid != $this->id && $stages[$userassignment->activestageid]->timedue > $this->timedue) {
             return true;
         }
 

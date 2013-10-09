@@ -65,6 +65,7 @@ $string['appraisalinvalid:roles'] = 'There is no role that can answer at least o
 $string['appraisalinvalid:stagedue'] = 'Stage \'{$a}\' has invalid due date. It must be in the future.';
 $string['appraisalinvalid:stageempty'] = 'Stage \'{$a}\' must have at least one page.';
 $string['appraisalinvalid:stagenoonecananswer'] = 'Stage \'{$a}\' has no questions that can be answered.';
+$string['appraisalinvalid:stagesamedue'] = 'Two or more stages have the same due date.';
 $string['appraisalinvalid:status'] = 'Cannot activate appraisal that is not draft.';
 $string['appraisalinvalid:learners'] = 'There are no assigned learners.';
 $string['appraisallastwarning'] = 'Activating this appraisal will disable changes to all stages, pages and questions,
