@@ -3271,33 +3271,72 @@ function compare_activities_by_time_asc($a, $b) {
 function archive_course_activities($userid, $courseid) {
     global $DB, $CFG;
 
-    // Get all modules for this course.
+    // Get all distinct module names for this course.
     $sql = "SELECT DISTINCT m.name
             FROM {modules} m
             JOIN {course_modules} cm ON cm.module = m.id AND course = :courseid
             ORDER BY m.name";
     if ($modules = $DB->get_records_sql($sql, array('courseid' => $courseid))) {
-        foreach ($modules as $mod) {
-            // Check if a module instance is attached to the course and it has the archive feature
-            if ($DB->record_exists($mod->name, array('course' => $courseid))
-                    && plugin_supports('mod', $mod->name, FEATURE_ARCHIVE_COMPLETION, 0)) {
+        // Set up course completion.
+        $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+        $completion = new completion_info($course);
 
-                $modfile = $CFG->dirroot.'/mod/'. $mod->name . '/lib.php';
-                $modfunction = $mod->name.'_archive_completion';
-                if (!file_exists($modfile)) {
-                    debugging('feature_archive_completion is supported but lib file of the plugin is missing');
-                } else {
-                    include_once($modfile);
+        // Create the reset grade.
+        $grade = new stdClass();
+        $grade->userid   = $userid;
+        $grade->rawgrade = null;
+
+        foreach ($modules as $mod) {
+            $modfile = $CFG->dirroot . '/mod/' . $mod->name . '/lib.php';
+            // Check if a module instance is attached to the course and the lib file exists.
+            if ($DB->record_exists($mod->name, array('course' => $courseid)) && file_exists($modfile)) {
+                include_once($modfile);
+
+                // Does it have the archive feature?
+                if (plugin_supports('mod', $mod->name, FEATURE_ARCHIVE_COMPLETION, 0)) {
+                    $modfunction = $mod->name.'_archive_completion';
                     if (!function_exists($modfunction)) {
                         debugging('feature_archive_completion is supported but is missing the function in the plugin lib file');
                     } else {
                         $modfunction($userid, $courseid);
                     }
+                } else {
+                    // Reset manually.
+                    $resetview = plugin_supports('mod', $mod->name, FEATURE_COMPLETION_TRACKS_VIEWS, 0);
+                    $cms = get_all_instances_in_course($mod->name, $course, $userid);
+                    foreach ($cms as $cm) {
+                        // Get all instances doesn't return the completion columns.
+                        $cm = get_coursemodule_from_id($mod->name, $cm->coursemodule, $courseid);
+                        if ($resetview) {
+                            // Reset viewed.
+                            $completion->set_module_viewed_reset($cm, $userid);
+                        }
+
+                        // Reset completion.
+                        $completion->update_state($cm, COMPLETION_INCOMPLETE, $userid);
+                    }
+
+                    // Reset grades.
+                    $updateitemfunc = $mod->name . '_grade_item_update';
+                    if (function_exists($updateitemfunc)) {
+                        $sql = "SELECT a.*,
+                                        cm.idnumber as cmidnumber,
+                                        m.name as modname
+                                FROM {" . $mod->name . "} a
+                                JOIN {course_modules} cm ON cm.instance = a.id AND cm.course = :courseid
+                                JOIN {modules} m ON m.id = cm.module AND m.name = :modname";
+                        $params = array('modname' => $mod->name, 'courseid' => $courseid);
+
+                        if ($modinstances = $DB->get_records_sql($sql, $params)) {
+                            foreach ($modinstances as $modinstance) {
+                                $updateitemfunc($modinstance, $grade);
+                            }
+                        }
+                    }
                 }
             }
         }
     }
-
     return true;
 }
 
@@ -3341,11 +3380,11 @@ function archive_course_completion($userid, $courseid) {
     }
 
     // Copy
-    $course = $DB->get_record('course', array('id' => $courseid));
-    $completion = new completion_info($course);
     $DB->insert_record('course_completion_history', $history);
 
-    // Reset completion
+    // Reset course completion.
+    $course = $DB->get_record('course', array('id' => $courseid));
+    $completion = new completion_info($course);
     $completion->delete_course_completion_data($userid);
 
     return true;
