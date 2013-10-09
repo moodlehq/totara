@@ -460,7 +460,7 @@ abstract class prog_assignment_category {
                 if ($object->completiontime != COMPLETION_TIME_NOT_SET) {
                     if ($object->completionevent == COMPLETION_EVENT_NONE) {
                         // Convert fixed dates.
-                        $object->completiontime = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $object->completiontime);
+                        $object->completiontime = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $object->completiontime);
                     } else {
                         // Convert relative dates.
                         $parts = explode(' ', $object->completiontime);
@@ -594,7 +594,7 @@ abstract class prog_assignment_category {
             if ($item->completiontime != COMPLETION_TIME_NOT_SET) {
                 // Print a date.
                 $item->completiontime = trim(userdate($item->completiontime,
-                    get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false));
+                    get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false));
                 $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
                 $show_deletecompletionlink = true;
             }
@@ -667,7 +667,7 @@ abstract class prog_assignment_category {
             return get_string('completewithinevent', 'totara_program', $a);
         }
         else {
-            $datepattern = get_string('datepickerregexphp', 'totara_core');
+            $datepattern = get_string('datepickerlongyearregexphp', 'totara_core');
             if (preg_match($datepattern, $completiontime, $matches) == 0) {
                 return '';
             } else {
@@ -1613,7 +1613,7 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
         }
 
         // Check if the profile field contains a date in the lanconfig form...
-        $datepattern = get_string('datepickerregexphp', 'totara_core');
+        $datepattern = get_string('datepickerlongyearregexphp', 'totara_core');
         if (preg_match($datepattern, $date, $matches) > 0) {
             list($day, $month, $year) = explode('/', $date);
             $date = $month.'/'.$day.'/'.$year;

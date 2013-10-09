@@ -126,9 +126,9 @@ M.totara_cohortprogramcompletion = M.totara_cohortprogramcompletion || {
                 var completionevent = M.totara_cohortprogramcompletion.config.COMPLETION_EVENT_NONE;
                 var completioninstance = 0;
 
-                var dateformat = new RegExp(M.util.get_string('datepickerregexjs', 'totara_core'));
+                var dateformat = new RegExp(M.util.get_string('datepickerlongyearregexjs', 'totara_core'));
                 if (dateformat.test(completiontime) == false) {
-                    alert(M.util.get_string('pleaseentervaliddate', 'totara_program', M.util.get_string('datepickerplaceholder', 'totara_core')));
+                    alert(M.util.get_string('pleaseentervaliddate', 'totara_program', M.util.get_string('datepickerlongyearplaceholder', 'totara_core')));
                 }
                 else {
                     thisdialog.update_completiontime(completiontime, completionevent, completioninstance);
@@ -168,7 +168,7 @@ M.totara_cohortprogramcompletion = M.totara_cohortprogramcompletion || {
             var handler = this;
 
             $('.completiontime').datepicker({
-                dateFormat: M.util.get_string('datepickerdisplayformat', 'totara_core'),
+                dateFormat: M.util.get_string('datepickerlongyeardisplayformat', 'totara_core'),
                 showOn: 'both',
                 buttonImage: M.util.image_url('t/calendar', 'theme'),
                 buttonImageOnly: true,

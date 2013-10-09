@@ -194,22 +194,22 @@ class user_position_assignment_form extends moodleform {
             }
 
             $group = array();
-            $group[] = $mform->createElement('text', 'timevalidfrom','', array('name'=>get_string('startdate', 'totara_hierarchy'),'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+            $group[] = $mform->createElement('text', 'timevalidfrom','', array('name'=>get_string('startdate', 'totara_hierarchy'),'placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
             $mform->addGroup($group, 'timevalidfrom_group', get_string('startdate', 'totara_hierarchy'), array(' '), false);
             $mform->setType('timevalidfrom', PARAM_TEXT);
-            $mform->setDefault('timevalidfrom', get_string('datepickerdisplayformat','totara_core'));
+            $mform->setDefault('timevalidfrom', get_string('datepickerlongyeardisplayformat','totara_core'));
             $mform->addHelpButton('timevalidfrom_group', 'startdate', 'totara_hierarchy');
 
             $group = array();
-            $group[] = $mform->createElement('text', 'timevalidto', '', array('name'=>get_string('finishdate', 'totara_hierarchy'),'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+            $group[] = $mform->createElement('text', 'timevalidto', '', array('name'=>get_string('finishdate', 'totara_hierarchy'),'placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
             $mform->addGroup($group, 'timevalidto_group', get_string('finishdate', 'totara_hierarchy'), array(' '), false);
             $mform->setType('timevalidto', PARAM_TEXT);
-            $mform->setDefault('timevalidto', get_string('datepickerdisplayformat','totara_core'));
+            $mform->setDefault('timevalidto', get_string('datepickerlongyeardisplayformat','totara_core'));
             $mform->addHelpButton('timevalidto_group', 'finishdate', 'totara_hierarchy');
 
-            $rule1['timevalidfrom'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex' , get_string('datepickerregexphp', 'totara_core'));
+            $rule1['timevalidfrom'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex' , get_string('datepickerlongyearregexphp', 'totara_core'));
             $mform->addGroupRule('timevalidfrom_group', $rule1);
-            $rule2['timevalidto'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex' , get_string('datepickerregexphp', 'totara_core'));
+            $rule2['timevalidto'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex' , get_string('datepickerlongyearregexphp', 'totara_core'));
             $mform->addGroupRule('timevalidto_group', $rule2);
         }
 
@@ -231,7 +231,7 @@ class user_position_assignment_form extends moodleform {
                 $mform->setDefault('timevalidfrom', '');
             }
             else {
-                $mform->setDefault('timevalidfrom', date(get_string('datepickerparseformat', 'totara_core'), $timevalidfromdateint));
+                $mform->setDefault('timevalidfrom', date(get_string('datepickerlongyearparseformat', 'totara_core'), $timevalidfromdateint));
             }
         }
 
@@ -245,7 +245,7 @@ class user_position_assignment_form extends moodleform {
                 $mform->setDefault('timevalidto', '');
             }
             else {
-                $mform->setDefault('timevalidto', date(get_string('datepickerparseformat', 'totara_core'), $timevalidtodateint));
+                $mform->setDefault('timevalidto', date(get_string('datepickerlongyearparseformat', 'totara_core'), $timevalidtodateint));
             }
         }
     }
@@ -305,16 +305,16 @@ class user_position_assignment_form extends moodleform {
         $result = array();
 
         $timevalidfromstr = isset($data['timevalidfrom'])?$data['timevalidfrom']:'';
-        $timevalidfrom = totara_date_parse_from_format(get_string('datepickerparseformat','totara_core'),$timevalidfromstr);
+        $timevalidfrom = totara_date_parse_from_format(get_string('datepickerlongyearparseformat','totara_core'),$timevalidfromstr);
         $timevalidtostr = isset($data['timevalidto'])?$data['timevalidto']:'';
-        $timevalidto = totara_date_parse_from_format(get_string('datepickerparseformat','totara_core'),$timevalidtostr);
+        $timevalidto = totara_date_parse_from_format(get_string('datepickerlongyearparseformat','totara_core'),$timevalidtostr);
 
         // Enforce valid dates
-        if (false === $timevalidfrom && $timevalidfromstr !== get_string('datepickerdisplayformat','totara_core') && $timevalidfromstr !== '') {
-            $result['timevalidfrom'] = get_string('error:dateformat','totara_hierarchy', get_string('datepickerplaceholder', 'totara_core'));
+        if (false === $timevalidfrom && $timevalidfromstr !== get_string('datepickerlongyeardisplayformat','totara_core') && $timevalidfromstr !== '') {
+            $result['timevalidfrom'] = get_string('error:dateformat','totara_hierarchy', get_string('datepickerlongyearplaceholder', 'totara_core'));
         }
-        if (false === $timevalidto && $timevalidtostr !== get_string('datepickerdisplayformat','totara_core') && $timevalidtostr !== '') {
-            $result['timevalidto'] = get_string('error:dateformat','totara_hierarchy', get_string('datepickerplaceholder', 'totara_core'));
+        if (false === $timevalidto && $timevalidtostr !== get_string('datepickerlongyeardisplayformat','totara_core') && $timevalidtostr !== '') {
+            $result['timevalidto'] = get_string('error:dateformat','totara_hierarchy', get_string('datepickerlongyearplaceholder', 'totara_core'));
         }
 
         // Enforce start date before finish date

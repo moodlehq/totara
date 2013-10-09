@@ -222,7 +222,7 @@ class rb_source_dp_program extends rb_base_source {
             return get_string('noduedate', 'totara_plan');;
         }
 
-        $out = userdate($time, get_string('strftimedatefull', 'langconfig'));
+        $out = userdate($time, get_string('datepickerlongyearphpuserdate', 'totara_core'));
 
         $days = '';
         if ($completionstatus != STATUS_PROGRAM_COMPLETE) {

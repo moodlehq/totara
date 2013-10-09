@@ -115,7 +115,7 @@ $objective = file_prepare_standard_editor($objective, 'description', $TEXTAREA_O
                                           'totara_plan', 'dp_plan_objective', $objective->itemid);
 $mform = $component->objective_form($objectiveid);
 if (isset($objective->duedate)) {
-    $objective->duedate = userdate($objective->duedate, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false);
+    $objective->duedate = userdate($objective->duedate, get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false);
 }
 $mform->set_data($objective);
 
@@ -144,7 +144,7 @@ if ($deleteyes) {
                 $data->fullname,
                 isset($data->description) ? $data->description : null,
                 isset($data->priority) ? $data->priority : null,
-                !empty($data->duedate) ? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedate) : null,
+                !empty($data->duedate) ? totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $data->duedate) : null,
                 isset($data->scalevalueid) ? $data->scalevalueid : null
         );
         if (!$result) {
@@ -161,7 +161,7 @@ if ($deleteyes) {
         $record->fullname = $data->fullname;
         $record->description = ''; //handled later
         $record->priority = isset($data->priority)?$data->priority:null;
-        $record->duedate = !empty($data->duedate)? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedate):null;
+        $record->duedate = !empty($data->duedate)? totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $data->duedate):null;
         $record->scalevalueid = $data->scalevalueid;
         $record->approved = $component->approval_status_after_update();
 

@@ -670,14 +670,14 @@ class cohort_rule_ui_date extends cohort_rule_ui_form {
         // default
         $formdata['fixedordynamic'] = 1;
         // todo: make this configurable!
-        $formdata['beforeafterdate'] = get_string('datepickerplaceholder', 'totara_core');
+        $formdata['beforeafterdate'] = get_string('datepickerlongyearplaceholder', 'totara_core');
         if (isset($this->operator)) {
             if ($this->operator == COHORT_RULE_DATE_OP_AFTER_FIXED_DATE || $this->operator == COHORT_RULE_DATE_OP_BEFORE_FIXED_DATE) {
                 $formdata['fixedordynamic'] = 1;
                 $formdata['beforeaftermenu'] = $this->operator;
                 if (!empty($this->date)) {
                     // todo: make this configurable!
-                    $formdata['beforeafterdate'] = userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false);
+                    $formdata['beforeafterdate'] = userdate($this->date, get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false);
                 }
             } else if (
                     in_array(
@@ -735,7 +735,7 @@ class cohort_rule_ui_date extends cohort_rule_ui_form {
             {
                 dateFormat: '
 JS;
-        $datepickerjs .= get_string('datepickerdisplayformat', 'totara_core');
+        $datepickerjs .= get_string('datepickerlongyeardisplayformat', 'totara_core');
         $datepickerjs .= <<<JS
 ',
                 showOn: 'both',
@@ -789,7 +789,7 @@ JS;
         switch ($this->operator) {
             case COHORT_RULE_DATE_OP_BEFORE_FIXED_DATE:
             case COHORT_RULE_DATE_OP_AFTER_FIXED_DATE:
-                $a = userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false);
+                $a = userdate($this->date, get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false);
                 break;
             case COHORT_RULE_DATE_OP_BEFORE_PAST_DURATION:
             case COHORT_RULE_DATE_OP_WITHIN_PAST_DURATION:
@@ -811,7 +811,7 @@ JS;
         switch($fixedordynamic) {
             case 1:
                 $operator = required_param('beforeaftermenu', PARAM_INT);
-                $date = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), required_param('beforeafterdate', PARAM_TEXT));
+                $date = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), required_param('beforeafterdate', PARAM_TEXT));
                 break;
             case 2:
                 $operator = required_param('durationmenu', PARAM_INT);
@@ -1342,9 +1342,9 @@ class cohort_rule_ui_picker_course_date extends cohort_rule_ui_picker_course {
             array('id' => 'id_operator', 'class' => 'cohorttreeviewsubmitfield'));
         $html .= '<fieldset><input class="cohorttreeviewsubmitfield" size="10" name="date" id="completiondate" value="';
         if (isset($this->date)) {
-            $html .= htmlspecialchars(userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false));
+            $html .= htmlspecialchars(userdate($this->date, get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false));
         } else {
-            $html .= get_string('datepickerplaceholder', 'totara_core');
+            $html .= get_string('datepickerlongyearplaceholder', 'totara_core');
         }
         $html .= '" /></fieldset>';
         $html .= '</div>';
@@ -1356,7 +1356,7 @@ $(function() {
         {
             dateFormat: '
 JS;
-        $html .= get_string('datepickerdisplayformat', 'totara_core');
+        $html .= get_string('datepickerlongyeardisplayformat', 'totara_core');
         $html .= <<<JS
 ',
             showOn: 'both',
@@ -1397,7 +1397,7 @@ JS;
     }
 
     public function handleDialogUpdate($sqlhandler){
-        $date = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), required_param('date', PARAM_TEXT));
+        $date = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), required_param('date', PARAM_TEXT));
         $operator = required_param('operator', PARAM_INT);
         $listofids = required_param('selected', PARAM_SEQUENCE);
         $listofids = explode(',',$listofids);
@@ -1429,7 +1429,7 @@ JS;
         $ret = get_string(
             $descstr,
             'totara_cohort',
-            userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false)
+            userdate($this->date, get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false)
         );
 
         list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofids);
@@ -1766,9 +1766,9 @@ class cohort_rule_ui_picker_program_date extends cohort_rule_ui_picker_program {
             array('id' => 'id_operator', 'class' => 'cohorttreeviewsubmitfield'));
         $html .= '<fieldset><input class="cohorttreeviewsubmitfield" size="10" name="date" id="completiondate" value="';
         if (isset($this->date)) {
-            $html .= htmlspecialchars(userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false));
+            $html .= htmlspecialchars(userdate($this->date, get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false));
         } else {
-            $html .= get_string('datepickerplaceholder', 'totara_core');
+            $html .= get_string('datepickerlongyearplaceholder', 'totara_core');
         }
         $html .= '" /></fieldset>';
         $html .= '</div>';
@@ -1780,7 +1780,7 @@ $(function() {
         {
             dateFormat: '
 JS;
-        $html .= get_string('datepickerdisplayformat', 'totara_core');
+        $html .= get_string('datepickerlongyeardisplayformat', 'totara_core');
         $html .= <<<JS
 ',
             showOn: 'both',
@@ -1821,7 +1821,7 @@ JS;
     }
 
     public function handleDialogUpdate($sqlhandler){
-        $date = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), required_param('date', PARAM_TEXT));
+        $date = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), required_param('date', PARAM_TEXT));
         $operator = required_param('operator', PARAM_INT);
         $listofids = required_param('selected', PARAM_SEQUENCE);
         $listofids = explode(',',$listofids);
@@ -1853,7 +1853,7 @@ JS;
         $ret = get_string(
             $getstr,
             'totara_cohort',
-            userdate($this->date, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false)
+            userdate($this->date, get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false)
         );
 
         list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofids);

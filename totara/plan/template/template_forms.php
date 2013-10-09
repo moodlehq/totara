@@ -38,7 +38,7 @@ class dp_template_general_settings_form extends moodleform {
         $id = $this->_customdata['id'];
         $template = $DB->get_record('dp_template', array('id' => $id));
         $templatename = $template->fullname;
-        $enddate = $template->enddate == 0 ? '' : date(get_string('datepickerparseformat', 'totara_core'), $template->enddate);
+        $enddate = $template->enddate == 0 ? '' : date(get_string('datepickerlongyearparseformat', 'totara_core'), $template->enddate);
 
         $mform->addElement('hidden', 'id', $id);
 
@@ -49,10 +49,10 @@ class dp_template_general_settings_form extends moodleform {
         $mform->setDefault('templatename', $templatename);
         $mform->addRule('templatename', null, 'required');
 
-        $mform->addElement('text', 'enddate', get_string('enddate', 'totara_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $mform->addElement('text', 'enddate', get_string('enddate', 'totara_plan'), array('placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $mform->setType('enddate', PARAM_TEXT);
         $mform->setDefault('enddate', $enddate);
-        $mform->addRule('enddate', get_string('error:dateformat', 'totara_plan', get_string('datepickerplaceholder', 'totara_core')), 'regex', get_string('datepickerregexphp', 'totara_core'));
+        $mform->addRule('enddate', get_string('error:dateformat', 'totara_plan', get_string('datepickerlongyearplaceholder', 'totara_core')), 'regex', get_string('datepickerlongyearregexphp', 'totara_core'));
         $mform->addRule('enddate', null, 'required');
         $mform->addHelpButton('enddate', 'templateenddate', 'totara_plan', '', true);
 
@@ -65,11 +65,11 @@ class dp_template_general_settings_form extends moodleform {
 
         $result = array();
         $enddatestr = isset($data['enddate']) ? $data['enddate'] : '';
-        $enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddatestr);
+        $enddate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $enddatestr);
 
         // Enforce valid dates
-        if (false === $enddate && $enddatestr !== get_string('datepickerplaceholder', 'totara_core') && $enddatestr !== '') {
-            $result['enddate'] = get_string('error:dateformat', 'totara_plan', get_string('datepickerplaceholder', 'totara_core'));
+        if (false === $enddate && $enddatestr !== get_string('datepickerlongyearplaceholder', 'totara_core') && $enddatestr !== '') {
+            $result['enddate'] = get_string('error:dateformat', 'totara_plan', get_string('datepickerlongyearplaceholder', 'totara_core'));
         }
 
         return $result;
@@ -87,9 +87,9 @@ class dp_template_new_form extends moodleform {
         $mform->setType('templatename', PARAM_TEXT);
         $mform->addRule('templatename', null, 'required');
 
-        $mform->addElement('text', 'enddate', get_string('enddate', 'totara_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $mform->addElement('text', 'enddate', get_string('enddate', 'totara_plan'), array('placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $mform->setType('enddate', PARAM_TEXT);
-        $mform->addRule('enddate', get_string('error:dateformat','totara_plan', get_string('datepickerplaceholder', 'totara_core')), 'regex', get_string('datepickerregexphp', 'totara_core'));
+        $mform->addRule('enddate', get_string('error:dateformat','totara_plan', get_string('datepickerlongyearplaceholder', 'totara_core')), 'regex', get_string('datepickerlongyearregexphp', 'totara_core'));
         $mform->addRule('enddate', null, 'required');
         $mform->addHelpButton('enddate', 'templateenddate', 'totara_plan', '', true);
 
@@ -103,11 +103,11 @@ class dp_template_new_form extends moodleform {
         $result = array();
 
         $enddatestr = isset($data['enddate']) ? $data['enddate'] : '';
-        $enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddatestr );
+        $enddate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $enddatestr );
 
         // Enforce valid dates
-        if (false === $enddate && $enddatestr !== get_string('datepickerplaceholder', 'totara_core') && $enddatestr !== '') {
-            $result['enddate'] = get_string('error:dateformat', 'totara_plan', get_string('datepickerplaceholder', 'totara_core'));
+        if (false === $enddate && $enddatestr !== get_string('datepickerlongyearplaceholder', 'totara_core') && $enddatestr !== '') {
+            $result['enddate'] = get_string('error:dateformat', 'totara_plan', get_string('datepickerlongyearplaceholder', 'totara_core'));
         }
 
         return $result;

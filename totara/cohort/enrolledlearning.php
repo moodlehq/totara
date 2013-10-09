@@ -87,7 +87,7 @@ $args = array('args'=>'{"cohortid":'.$cohort->id.','.
         '"COHORT_ASSN_ITEMTYPE_COURSE":' . COHORT_ASSN_ITEMTYPE_COURSE . '}');
 $PAGE->requires->js_init_call('M.totara_cohortlearning.init', $args, false, $jsmodule);
 // Include cohort programcompletion js module
-$PAGE->requires->strings_for_js(array('datepickerdisplayformat', 'datepickerplaceholder', 'datepickerregexjs'), 'totara_core');
+$PAGE->requires->strings_for_js(array('datepickerlongyeardisplayformat', 'datepickerlongyearplaceholder', 'datepickerlongyearregexjs'), 'totara_core');
 $PAGE->requires->strings_for_js(array('completioncriteria', 'pleaseentervaliddate',
     'pleaseentervalidunit', 'pleasepickaninstance', 'chooseitem', 'removecompletiondate'), 'totara_program');
 $selected_program = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'program-completion-event-dialog'));

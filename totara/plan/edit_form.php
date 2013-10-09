@@ -139,10 +139,10 @@ class plan_edit_form extends moodleform {
             $mform->addElement('editor', 'description_editor', get_string('plandescription', 'totara_plan'), null, $TEXTAREA_OPTIONS);
             $mform->setType('description_editor', PARAM_CLEANHTML);
         }
-        $mform->addElement('text', 'enddate', get_string('completiondate', 'totara_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $mform->addElement('text', 'enddate', get_string('completiondate', 'totara_plan'), array('placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         if ($action == 'add' && isset($template->enddate)) {
-            $mform->setDefault('enddate', userdate($template->enddate, get_string('strftimedatefull', 'langconfig'), $CFG->timezone, false));
+            $mform->setDefault('enddate', userdate($template->enddate, get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false));
         }
 
         if ($action == 'view') {
@@ -192,12 +192,12 @@ class plan_edit_form extends moodleform {
             $startdate = isset($data['startdate']) ? $data['startdate'] : '';
             $enddate = isset($data['enddate']) ? $data['enddate'] : '';
 
-            $datepattern = get_string('datepickerregexphp', 'totara_core');
+            $datepattern = get_string('datepickerlongyearregexphp', 'totara_core');
             if (preg_match($datepattern, $enddate, $matches) == 0) {
-                $errstr = get_string('error:dateformat','totara_plan', get_string('datepickerplaceholder', 'totara_core'));
+                $errstr = get_string('error:dateformat','totara_plan', get_string('datepickerlongyearplaceholder', 'totara_core'));
                 $result['enddate'] = $errstr;
                 unset($errstr);
-            } elseif ( $startdate > totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddate) && $startdate !== false && $enddate !== false ) {
+            } elseif ( $startdate > totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $enddate) && $startdate !== false && $enddate !== false ) {
                 // Enforce start date before finish date
                 $errstr = get_string('error:creationaftercompletion', 'totara_plan');
                 $result['enddate'] = $errstr;

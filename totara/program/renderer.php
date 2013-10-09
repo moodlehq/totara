@@ -437,7 +437,7 @@ class totara_program_renderer extends plugin_renderer_base {
         $out = '';
         $out .= html_writer::start_tag('div', array('id' => 'prog-completion-fixed-date'));
         $out .= html_writer::start_tag('label', array('for' => 'completiontime')) . get_string('completeby', 'totara_program') . html_writer::end_tag('label');
-        $out .= html_writer::empty_tag('input', array('class' => 'completiontime', 'type' => 'text', 'name' => "completiontime", 'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $out .= html_writer::empty_tag('input', array('class' => 'completiontime', 'type' => 'text', 'name' => "completiontime", 'placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $out .= html_writer::start_tag('button', array('class' => 'fixeddate')) . get_string('setfixedcompletiondate', 'totara_program') . html_writer::end_tag('button');
         $out .= html_writer::end_tag('div');
 
@@ -469,7 +469,7 @@ class totara_program_renderer extends plugin_renderer_base {
         $out = '';
         $out .= html_writer::start_tag('div');
         $out .= html_writer::start_tag('label', array('for' => 'extensiontime')) . get_string('extenduntil', 'totara_program') . html_writer::end_tag('label');
-        $out .= html_writer::empty_tag('input', array('class' => 'extensiontime', 'type' => 'text', 'name' => 'extensiontime', 'id' => 'extensiontime', 'size' => '20', 'maxlength' => '10', 'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $out .= html_writer::empty_tag('input', array('class' => 'extensiontime', 'type' => 'text', 'name' => 'extensiontime', 'id' => 'extensiontime', 'size' => '20', 'maxlength' => '10', 'placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
         $out .= html_writer::end_tag('div');
         $out .= html_writer::empty_tag('br');
 
