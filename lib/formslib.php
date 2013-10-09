@@ -61,7 +61,8 @@ $TEXTAREA_OPTIONS = array(
         'maxfiles' => EDITOR_UNLIMITED_FILES,
         'maxbytes' => $totara_maxbytes,
         'trusttext' => true,
-        'context' => $totara_context
+        'context' => $totara_context,
+        'collapsed' => true
 );
 
 global $FILEPICKER_OPTIONS;
