@@ -64,6 +64,7 @@ $string['importnone'] = 'No records were imported';
 $string['importnotready'] = 'Import not ready, please check the errors above';
 $string['importresults'] = 'Import results';
 $string['importsource'] = 'Import source';
+$string['importsuccess'] = 'Imported all records successfully';
 $string['importtotal'] = '{$a} Records in total';
 $string['invalidcompletiondate'] = 'Invalid completion date';
 $string['invalidfilenames'] = 'These are invalid filenames and will be ignored : {$a}';

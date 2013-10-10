@@ -1046,10 +1046,14 @@ function display_report_link($importname, $importtime) {
                 $totals->totalrows - $totals->totalerrors - $totals->totalevidence));
         echo html_writer::tag('p', get_string('importtotal', 'totara_completionimport', $totals->totalrows));
 
-        $viewurl = new moodle_url('/totara/completionimport/viewreport.php',
-                array('importname' => $importname, 'timecreated' => $importtime, 'importuserid' => $USER->id));
-        $viewlink = html_writer::link($viewurl, format_string(get_string('report_' . $importname, 'totara_completionimport')));
-        echo html_writer::tag('p', $viewlink);
+        if (($totals->totalerrors + $totals->totalevidence) > 0) {
+            $viewurl = new moodle_url('/totara/completionimport/viewreport.php',
+                    array('importname' => $importname, 'timecreated' => $importtime, 'importuserid' => $USER->id));
+            $viewlink = html_writer::link($viewurl, format_string(get_string('report_' . $importname, 'totara_completionimport')));
+            echo html_writer::tag('p', $viewlink);
+        } else {
+            echo html_writer::tag('p', get_string('importsuccess', 'totara_completionimport'));
+        }
     } else {
         echo html_writer::tag('p', get_string('importnone', 'totara_completionimport'));
     }
