@@ -3302,20 +3302,6 @@ function archive_course_activities($userid, $courseid) {
                     }
                 } else {
                     // Reset manually.
-                    $resetview = plugin_supports('mod', $mod->name, FEATURE_COMPLETION_TRACKS_VIEWS, 0);
-                    $cms = get_all_instances_in_course($mod->name, $course, $userid);
-                    foreach ($cms as $cm) {
-                        // Get all instances doesn't return the completion columns.
-                        $cm = get_coursemodule_from_id($mod->name, $cm->coursemodule, $courseid);
-                        if ($resetview) {
-                            // Reset viewed.
-                            $completion->set_module_viewed_reset($cm, $userid);
-                        }
-
-                        // Reset completion.
-                        $completion->update_state($cm, COMPLETION_INCOMPLETE, $userid);
-                    }
-
                     // Reset grades.
                     $updateitemfunc = $mod->name . '_grade_item_update';
                     if (function_exists($updateitemfunc)) {
@@ -3333,6 +3319,21 @@ function archive_course_activities($userid, $courseid) {
                             }
                         }
                     }
+
+                    $resetview = plugin_supports('mod', $mod->name, FEATURE_COMPLETION_TRACKS_VIEWS, 0);
+                    $cms = get_all_instances_in_course($mod->name, $course, $userid);
+                    foreach ($cms as $cm) {
+                        // Get all instances doesn't return the completion columns.
+                        $cm = get_coursemodule_from_id($mod->name, $cm->coursemodule, $courseid);
+                        if ($resetview) {
+                            // Reset viewed.
+                            $completion->set_module_viewed_reset($cm, $userid);
+                        }
+
+                        // Reset completion.
+                        $completion->update_state($cm, COMPLETION_INCOMPLETE, $userid);
+                    }
+
                 }
             }
         }

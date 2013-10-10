@@ -1254,16 +1254,16 @@ function assign_archive_completion($userid, $courseid) {
             $assignment = new assign($context, $cm, $course);
             $assignment->delete_user_submission($userid);
 
-            // Reset viewed.
-            $completion->set_module_viewed_reset($cm, $userid);
-            // And reset completion, in case viewed is not a required condition.
-            $completion->update_state($cm, COMPLETION_INCOMPLETE, $userid);
-
             // Reset grade.
             $assign = $DB->get_record('assign', array('id' => $submission->assignid));
             $assign->cmidnumber = $cm->id;
             $assign->courseid = $courseid;
             assign_grade_item_update($assign, $grade);
+
+            // Reset viewed.
+            $completion->set_module_viewed_reset($cm, $userid);
+            // And reset completion, in case viewed is not a required condition.
+            $completion->update_state($cm, COMPLETION_INCOMPLETE, $userid);
         }
     }
 
