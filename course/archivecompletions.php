@@ -65,7 +65,7 @@ $categoryname = format_string($category->name, true, array('context' => context_
 
 $PAGE->navbar->add(get_string('administration'), new moodle_url('/admin/index.php/'));
 $PAGE->navbar->add(get_string('categories'), new moodle_url('/course/index.php'));
-$PAGE->navbar->add($categoryname, new moodle_url('/course/category.php', array('id' => $course->category)));
+$PAGE->navbar->add($categoryname, new moodle_url('/course/index.php', array('categoryid' => $course->category)));
 $PAGE->navbar->add($courseshortname, new moodle_url('/course/view.php', array('id' => $course->id)));
 
 

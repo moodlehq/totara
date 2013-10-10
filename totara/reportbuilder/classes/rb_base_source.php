@@ -771,7 +771,7 @@ abstract class rb_base_source {
             return '';
         }
         $attr = (isset($row->cat_visible) && $row->cat_visible == 0) ? array('class' => 'dimmed') : array();
-        $url = new moodle_url('/course/category.php', array('id' => $catid));
+        $url = new moodle_url('/course/index.php', array('categoryid' => $catid));
         return html_writer::link($url, $category, $attr);
     }
 
