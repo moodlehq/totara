@@ -59,6 +59,7 @@ $otherassignments = $appraisal->get_all_assignments($roleassignment->subjectid);
 unset($otherassignments[$roleassignment->appraisalrole]);
 $question = new appraisal_question($id, $roleassignment);
 $review = $question->get_element();
+$rights = $question->roles[$roleassignment->appraisalrole];
 
 if ($roleassignment->userid != $USER->id) {
     throw new appraisal_exception('Wrong assignment');
@@ -93,7 +94,9 @@ if (empty($newitems)) {
     exit;
 }
 
-$question->populate_roles_element($roleassignment, $otherassignments);
+if (($rights & appraisal::ACCESS_CANVIEWOTHER) == appraisal::ACCESS_CANVIEWOTHER) {
+    $question->populate_roles_element($roleassignment, $otherassignments);
+}
 $renderer = $PAGE->get_renderer('totara_question');
 $items = $review->get_grouped_items();
 foreach ($items as $scopekey => $scope) {
