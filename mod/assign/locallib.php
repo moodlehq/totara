@@ -718,7 +718,57 @@ class assign {
     }
 
     /**
-     * Update the settings for a single plugin.
+     * Deletes submission and grade for a user.
+     *
+     * @param int $userid
+     * @return bool true
+     */
+    public function delete_user_submission($userid) {
+        global $DB;
+
+        $grade = $this->get_user_grade($userid, false);
+
+        if ($submission = $this->get_user_submission($userid, false)) {
+            // Create file storage object.
+            $fs = get_file_storage();
+            // Dbman to check if a plugin table exists.
+            $dbman = $DB->get_manager();
+
+            // Delete files associated with this assignment for this user.
+            $assignmentid = $this->get_instance()->id;
+            $plugintypes = array();
+            $plugintypes['submissionplugins'] = array('submission' => $submission->id, 'assignment' => $assignmentid);
+            if ($grade) {
+                $plugintypes['feedbackplugins'] = array('grade' => $grade->id, 'assignment' => $assignmentid);
+            }
+            foreach ($plugintypes as $plugintype => $deleteparams) {
+                foreach ($this->$plugintype as $plugin) {
+                    $plugincomponent = $plugin->get_subtype() . '_' . $plugin->get_type();
+                    $fileareas = $plugin->get_file_areas();
+                    foreach ($fileareas as $filearea) {
+                        $fs->delete_area_files($this->context->id, $plugincomponent, $filearea, $submission->id);
+                    }
+                    // If a plugin component table exists then delete the records for this submission/feedback.
+                    if ($dbman->table_exists($plugincomponent) &&
+                            $DB->record_exists($plugincomponent, $deleteparams)) {
+                        $DB->delete_records($plugincomponent, $deleteparams);
+                    }
+                }
+            }
+
+            $DB->delete_records('assign_submission', array('id' => $submission->id));
+        }
+
+        // Remove assignment grade.
+        if ($grade) {
+            $DB->delete_records('assign_grades', array('id' => $grade->id));
+        }
+
+        return true;
+    }
+
+    /**
+     * Update the settings for a single plugin
      *
      * @param assign_plugin $plugin The plugin to update
      * @param stdClass $formdata The form data

@@ -174,6 +174,8 @@ function assign_supports($feature) {
             return true;
         case FEATURE_PLAGIARISM:
             return true;
+        case FEATURE_ARCHIVE_COMPLETION:
+            return true;
 
         default:
             return null;
@@ -1212,4 +1214,58 @@ function assign_get_completion_state($course, $cm, $userid, $type) {
         // Completion option is not enabled so just return $type.
         return $type;
     }
+}
+
+/**
+ * Archives user's assignments for a course
+ *
+ * @param int $userid
+ * @param int $courseid
+ */
+function assign_archive_completion($userid, $courseid) {
+    global $CFG, $DB;
+
+    // Required for assign class.
+    require_once($CFG->dirroot . '/mod/assign/locallib.php');
+
+    $sql = "SELECT s.id AS submissionid,
+                    a.id AS assignid
+            FROM {assign_submission} s
+            JOIN {assign} a ON a.id = s.assignment AND a.course = :courseid
+            WHERE s.userid = :userid";
+    $params = array('userid' => $userid, 'courseid' => $courseid);
+
+    if ($submissions = $DB->get_records_sql($sql, $params)) {
+        $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+
+        // Create the course completion info.
+        $completion = new completion_info($course);
+
+        // Create the reset grade.
+        $grade = new stdClass();
+        $grade->userid   = $userid;
+        $grade->rawgrade = null;
+
+        foreach ($submissions as $submission) {
+            $cm = get_coursemodule_from_instance('assign', $submission->assignid, $course->id);
+            $context = context_module::instance($cm->id);
+
+            // Delete assignment files and assignment grade.
+            $assignment = new assign($context, $cm, $course);
+            $assignment->delete_user_submission($userid);
+
+            // Reset viewed.
+            $completion->set_module_viewed_reset($cm, $userid);
+            // And reset completion, in case viewed is not a required condition.
+            $completion->update_state($cm, COMPLETION_INCOMPLETE, $userid);
+
+            // Reset grade.
+            $assign = $DB->get_record('assign', array('id' => $submission->assignid));
+            $assign->cmidnumber = $cm->id;
+            $assign->courseid = $courseid;
+            assign_grade_item_update($assign, $grade);
+        }
+    }
+
+    return true;
 }
