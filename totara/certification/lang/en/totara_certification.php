@@ -98,7 +98,8 @@ $string['error:histalreadyexists'] = 'Certification history already exists certi
 $string['error:incorrectcertifid'] = 'Incorrect certification ID certifid={$a}';
 $string['error:incorrectid'] = 'Incorrect certification completion ID or user ID';
 $string['error:invalidaction'] = 'Invalid action: {$a}';
-$string['error:minimuperiod'] = 'Window period must be at least {$a}';
+$string['error:minimumactiveperiod'] = 'Active period must be greater than the recertification window period';
+$string['error:minimumwindowperiod'] = 'Recertification window period must be at least {$a}';
 $string['error:missingprogcompletion'] = 'Missing program completion record for certifid={$a->certifid} userid={$a->userid}';
 $string['error:mustbepositive'] = 'Number must be positive';
 $string['error:nullactiveperiod'] = 'Recertification active period is not set';

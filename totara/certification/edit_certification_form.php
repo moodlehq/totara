@@ -83,6 +83,12 @@ class edit_certification_form extends moodleform {
         $mform->addGroup($activegrp, 'activegrp', get_string('editdetailsactive', 'totara_certification'), ' ', false);
         $mform->addHelpButton('activegrp', 'editdetailsactive', 'totara_certification');
 
+        $mform->registerRule('activeperiod_validation', 'function', 'activeperiod_validation');
+        $mform->addRule('activegrp',
+                get_string('error:minimumactiveperiod', 'totara_certification'),
+                'activeperiod_validation',
+                $mform);
+
         // Recert window period num.
         $mform->addElement('html', html_writer::start_tag('p', array('class' => 'subheader')) .
                              get_string('editdetailsrcwin', 'totara_certification') . html_writer::end_tag('p'));
@@ -99,9 +105,9 @@ class edit_certification_form extends moodleform {
 
         $mform->registerRule('windowperiod_validation', 'function', 'windowperiod_validation');
         $mform->addRule('windowgrp',
-                get_string('error:minimuperiod', 'totara_certification', $timeallowance->timestring),
+                get_string('error:minimumwindowperiod', 'totara_certification', $timeallowance->timestring),
                 'windowperiod_validation',
-                array('mform' => $mform, 'timeallowance' => $timeallowance->seconds));
+                $timeallowance->seconds);
 
         if ($timeallowance->seconds > 0) {
             $mform->addElement('html', html_writer::tag('p',
@@ -156,10 +162,25 @@ class edit_certification_form extends moodleform {
  *
  * @param string $element Element name
  * @param array $value Value of windowgrp
- * @param array $params Custom parameters
+ * @param int $timeallowance time allowance in seconds
  * @return boolean
  */
-function windowperiod_validation($element, $value, $params) {
+function windowperiod_validation($element, $value, $timeallowance) {
     $timewindowperiod = strtotime($value['windownum'] . ' ' . $value['windowperiod'], 0);
-    return ($timewindowperiod && ($timewindowperiod >= $params['timeallowance']));
+    return ($timewindowperiod && ($timewindowperiod >= $timeallowance));
+}
+
+/**
+ * Validates that the active period is greater than or equal to the recertification window period
+ *
+ * @param string $element Element name
+ * @param array $value Value of windowgrp
+ * @param object $mform
+ * @return boolean
+ */
+function activeperiod_validation($element, $value, $mform) {
+    $timeactiveperiod = strtotime($value['activenum'] . ' ' . $value['activeperiod'], 0);
+    $windowgrp = $mform->getElementValue('windowgrp');
+    $timewindowperiod = strtotime($windowgrp['windownum'] . ' ' . $windowgrp['windowperiod'][0], 0);
+    return ($timewindowperiod && $timeactiveperiod && ($timeactiveperiod >= $timewindowperiod));
 }
