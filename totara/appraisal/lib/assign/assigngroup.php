@@ -39,7 +39,6 @@ $add = optional_param('add', false, PARAM_BOOL);
 $urlparams = array('module' => $module, 'grouptype' => $grouptype, 'itemid' => $itemid, 'add' => $add);
 
 // Try to find the module class library.
-// TODO: T-11235 Check that module exists for security reasons.
 $assignclassname = "totara_assign_{$module}";
 require_once($CFG->dirroot."/totara/{$module}/lib.php");
 $moduleclass = new $module($itemid);
