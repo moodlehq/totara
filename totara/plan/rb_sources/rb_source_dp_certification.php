@@ -483,7 +483,7 @@ class rb_source_dp_certification extends rb_base_source {
     protected function define_defaultcolumns() {
         $defaultcolumns = array(
             array(
-                'type' => 'certif',
+                'type' => 'base',
                 'value' => 'fullnamelink',
             ),
             array(
