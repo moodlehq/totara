@@ -159,6 +159,41 @@ $capabilities = array(
                     'manager' => CAP_ALLOW
                     ),
                 ),
+        'totara/hierarchy:viewcompetencyscale' => array(
+                'captype'       => 'read',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+                'clonepermissionsfrom' => 'totara/hierarchy:viewcompetencyframeworks'
+                ),
+        'totara/hierarchy:createcompetencyscale' => array(
+                'riskbitmask'   => RISK_SPAM,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+                'clonepermissionsfrom' => 'totara/hierarchy:createcompetencyframeworks'
+                ),
+        'totara/hierarchy:updatecompetencyscale' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+                'clonepermissionsfrom' => 'totara/hierarchy:updatecompetencyframeworks'
+                ),
+        'totara/hierarchy:deletecompetencyscale' => array(
+                'riskbitmask'   => RISK_DATALOSS,
+                'captype'       => 'write',
+                'contextlevel'  => CONTEXT_SYSTEM,
+                'archetypes' => array(
+                    'manager' => CAP_ALLOW
+                    ),
+                'clonepermissionsfrom' => 'totara/hierarchy:deletecompetencyframeworks'
+                ),
 
         // Viewing and managing positions.
         'totara/hierarchy:viewposition' => array(

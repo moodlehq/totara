@@ -2708,4 +2708,72 @@ class hierarchy {
         return true;
     }
 
+    /**
+     * Returns a keyed array of hierarchy permissions. By default for the current user in the system context.
+     *
+     * The return value is of the form:
+     *
+     * array(
+     *     'cancreateframeworks' => true,
+     *     'canupdateframeworks' => false,
+     *     ...
+     * );
+     *
+     * the command:
+     *
+     * extract(hierarchy::get_permission());
+     *
+     * can be used to create named variables with each permission.
+     *
+     * @param context $context A context object to check in the context of (optional).
+     * @param integer|stdClass $user A user id or object to check for (optional).
+     *
+     * @return array Array containing boolean values for each permission checked.
+     */
+    public function get_permissions($context = null, $user = null) {
+        global $CFG;
+
+        $prefix = $this->prefix;
+        if (is_null($context)) {
+            $context = context_system::instance();
+        }
+        $cancreateframeworks = has_capability('totara/hierarchy:create' . $prefix . 'frameworks', $context, $user);
+        $canupdateframeworks = has_capability('totara/hierarchy:update' . $prefix . 'frameworks', $context, $user);
+        $candeleteframeworks = has_capability('totara/hierarchy:delete' . $prefix . 'frameworks', $context, $user);
+        $canmanageframeworks = $cancreateframeworks || $canupdateframeworks || $candeleteframeworks;
+        $canviewframeworks = has_capability('totara/hierarchy:view' . $prefix . 'frameworks', $context, $user);
+
+        $cancreateitems = has_capability('totara/hierarchy:create' . $prefix, $context, $user);
+        $canupdateitems = has_capability('totara/hierarchy:update' . $prefix, $context, $user);
+        $candeleteitems = has_capability('totara/hierarchy:delete' . $prefix, $context, $user);
+        $canmanageitems = $cancreateitems || $canupdateitems || $candeleteitems;
+        $canviewitems = has_capability('totara/hierarchy:view' . $prefix, $context, $user);
+
+        if (file_exists($CFG->dirroot.'/totara/hierarchy/prefix/'.$prefix.'/scale/lib.php')) {
+            $cancreatescales = has_capability('totara/hierarchy:create' . $prefix . 'scale', $context, $user);
+            $canupdatescales = has_capability('totara/hierarchy:update' . $prefix . 'scale', $context, $user);
+            $candeletescales = has_capability('totara/hierarchy:delete' . $prefix . 'scale', $context, $user);
+            $canmanagescales = $cancreatescales || $canupdatescales || $candeletescales;
+            $canviewscales = has_capability('totara/hierarchy:view' . $prefix . 'scale', $context, $user);
+            $hierarchyhasscales = true;
+        } else {
+            $cancreatescales = false;
+            $canupdatescales = false;
+            $candeletescales = false;
+            $canmanagescales = false;
+            $canviewscales = false;
+            $hierarchyhasscales = false;
+        }
+
+        $canmanage = $canmanageframeworks || $canmanageitems || $canmanagescales;
+        $canview = $canviewframeworks || $canviewitems || $canviewscales;
+
+        $out = compact('cancreateframeworks', 'canupdateframeworks', 'candeleteframeworks',
+            'canmanageframeworks',
+            'canviewframeworks', 'cancreateitems', 'canupdateitems', 'candeleteitems', 'canmanageitems',
+            'canviewitems', 'cancreatescales', 'canupdatescales', 'candeletescales', 'canmanagescales',
+            'hierarchyhasscales', 'canviewscales', 'canmanage', 'canview');
+        return $out;
+    }
+
 }

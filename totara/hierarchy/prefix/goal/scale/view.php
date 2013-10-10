@@ -24,6 +24,7 @@
 
 require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 require_once('lib.php');
 
 //
@@ -38,19 +39,26 @@ $movedown = optional_param('movedown', 0, PARAM_INT);
 // Set default value.
 $default = optional_param('default', 0, PARAM_INT);
 $prefix = required_param ('prefix', PARAM_ALPHA);
+$scale_used = goal_scale_is_used($id);
 
+$sitecontext = context_system::instance();
+$hierarchy = hierarchy::load_hierarchy($prefix);
 
 // Cache user capabilities.
-$sitecontext = context_system::instance();
-$can_edit = has_capability('totara/hierarchy:updategoalscale', $sitecontext);
-$scale_used = goal_scale_is_used($id);
+extract($hierarchy->get_permissions());
+
 $goalscalestr = get_string('goalscale', 'totara_hierarchy');
-$pageurl = new moodle_url('/totara/hierarchy/prefix/goal/scale/view.php', array('id' => $id));
+$pageurl = new moodle_url('/totara/hierarchy/prefix/goal/scale/view.php', array('id' => $id, 'prefix' => $prefix));
+
+// Permissions.
+if (!$canviewscales) {
+    print_error('accessdenied', 'admin');
+}
 
 // Set up the page.
-if ($can_edit) {
+if ($canmanage) {
+    // If the user can update the framework then show the admin link.
     admin_externalpage_setup($prefix.'manage');
-    require_capability('totara/hierarchy:viewgoalscale', $sitecontext);
 } else {
     $PAGE->set_url($pageurl);
     $PAGE->set_context($sitecontext);
@@ -59,7 +67,6 @@ if ($can_edit) {
     $PAGE->set_title($goalscalestr);
     $PAGE->set_heading($goalscalestr);
 }
-
 
 if (!$scale = $DB->get_record('goal_scale', array('id' => $id))) {
     print_error('incorrectgoalscaleid', 'totara_hierarchy');
@@ -76,7 +83,7 @@ $str_movedown = get_string('movedown');
 // Process any actions.
 //
 
-if ($can_edit) {
+if ($canupdatescales || $candeletescales) {
     // Move a value up or down.
     if ((!empty($moveup) or !empty($movedown))) {
 
@@ -184,7 +191,7 @@ $scale->description = file_rewrite_pluginfile_urls($scale->description, 'pluginf
 echo html_writer::tag('p', $scale->description);
 
 // Display warning if scale is in use.
-if ($can_edit && $scale_used) {
+if ($canupdatescales && $scale_used) {
     echo $OUTPUT->container(get_string('goalscaleinuse', 'totara_hierarchy'), 'notifysuccess');
 }
 
@@ -198,7 +205,7 @@ if (isset($maxprof) && isset($minnoneprof) && $maxprof > $minnoneprof) {
 
 // Display scale values.
 if ($values) {
-    if ($can_edit) {
+    if ($canupdatescales) {
         echo html_writer::start_tag('form', array('id' => 'compscaledefaultprofform',
             'action' => new moodle_url('/totara/hierarchy/prefix/goal/scale/view.php'), 'method' => 'POST'));
         echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id));
@@ -219,8 +226,7 @@ if ($values) {
         $OUTPUT->help_icon('goalscaleproficient', 'totara_hierarchy');
     $table->align[] = 'center';
 
-    if ($can_edit) {
-
+    if ($canupdatescales || $candeletescales) {
         $table->head[] = get_string('edit');
         $table->align[] = 'center';
     }
@@ -237,11 +243,11 @@ if ($values) {
         $row = array();
         $row[] = format_string($value->name);
 
-        $buttons = array();
-        if ($can_edit) {
+        if ($canupdatescales || $candeletescales) {
+            $buttons = array();
             $attributes = array('type' => 'radio', 'name' => 'default', 'value' => $value->id);
-            // There is only one value.
-            if ($numvalues == 1) {
+            // There is only one value or they can't update.
+            if ($numvalues == 1 || !$canupdatescales) {
                 $attributes['disabled'] = 'disabled';
             }
             // It is the default value.
@@ -258,11 +264,13 @@ if ($values) {
                 $row[] = get_string('no');
             }
 
+            if ($canupdatescales) {
             $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/hierarchy/prefix/goal/scale/editvalue.php',
                 array('id' => $value->id, 'prefix' => 'goal')), new pix_icon('t/edit', $str_edit), null,
                 array('class' => 'iconsmall', 'title' => $str_edit));
+            }
 
-            if (!$scale_used) {
+            if (!$scale_used && $candeletescales) {
                 if ($value->id == $scale->defaultid) {
                     // Prevent deleting default value.
                     $buttons[] = $OUTPUT->pix_icon('t/delete_grey',
@@ -281,7 +289,7 @@ if ($values) {
             }
 
             // If value can be moved up.
-            if ($count > 1 && !$scale_used) {
+            if ($count > 1 && !$scale_used && $canupdatescales) {
                 $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/hierarchy/prefix/goal/scale/view.php',
                     array('id' => $scale->id, 'moveup' => $value->id, 'prefix' => 'goal')),
                     new pix_icon('t/up', $str_moveup), null, array('class' => 'iconsmall', 'title' => $str_moveup));
@@ -290,13 +298,15 @@ if ($values) {
             }
 
             // If value can be moved down.
-            if ($count < $numvalues && !$scale_used) {
+            if ($count < $numvalues && !$scale_used && $canupdatescales) {
                 $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/hierarchy/prefix/goal/scale/view.php',
                     array('id' => $scale->id, 'movedown' => $value->id, 'prefix' => 'goal')),
                     new pix_icon('t/down', $str_movedown), null, array('class' => 'iconsmall', 'title' => $str_movedown));
             } else {
                 $buttons[] = $OUTPUT->spacer(array('height' => 11, 'width' => 11));
             }
+
+            $row[] = implode($buttons, '');
         } else {
             // Show the default and complete values as uneditble values.
             // It is the default value.
@@ -313,14 +323,10 @@ if ($values) {
             }
         }
 
-        if ($can_edit) {
-            $row[] = implode($buttons, '');
-        }
-
         $table->data[] = $row;
     }
 
-    if ($can_edit && $numvalues != 1) {
+    if ($canupdatescales && $numvalues != 1) {
         $row = array();
         $row[] = '';
         $row[] = html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('update')));
@@ -329,7 +335,7 @@ if ($values) {
         $table->data[] = $row;
     }
     echo html_writer::table($table);
-    if ($can_edit) {
+    if ($canupdatescales) {
         echo html_writer::end_tag('form');
     }
 } else {
@@ -341,7 +347,7 @@ if ($values) {
 
 // Print button for creating new scale value.
 $button_editscale = '';
-if ($can_edit && !$scale_used) {
+if ($canupdatescales && !$scale_used) {
     $button_editscale = $OUTPUT->single_button(new moodle_url('/totara/hierarchy/prefix/goal/scale/editvalue.php',
         array('scaleid' => $scale->id, 'prefix' => 'goal')), get_string('addnewscalevalue', 'totara_hierarchy'), 'get');
 }

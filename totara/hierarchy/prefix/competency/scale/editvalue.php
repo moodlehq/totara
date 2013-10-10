@@ -39,20 +39,20 @@ $prefix = required_param('prefix', PARAM_ALPHA);
 // Competency scale id
 $scaleid = optional_param('scaleid', 0, PARAM_INT);
 
+// Cache user capabilities.
+$sitecontext = context_system::instance();
+
+// Set up the page.
+admin_externalpage_setup($prefix.'manage');
+
 // Make sure we have at least one or the other
 if (!$id && !$scaleid) {
     print_error('incorrectparameters', 'totara_hierarchy');
 }
 
-
-// Page setup and check permissions
-admin_externalpage_setup($prefix.'manage');
-
-$sitecontext = context_system::instance();
-
 if ($id == 0) {
     // Creating new scale value
-    require_capability('totara/hierarchy:createcompetency', $sitecontext);
+    require_capability('totara/hierarchy:createcompetencyscale', $sitecontext);
 
     $value = new stdClass();
     $value->id = 0;
@@ -65,7 +65,7 @@ if ($id == 0) {
 
 } else {
     // Editing scale value
-    require_capability('totara/hierarchy:updatecompetency', $sitecontext);
+    require_capability('totara/hierarchy:updatecompetencyscale', $sitecontext);
 
     if (!$value = $DB->get_record('comp_scale_values', array('id' => $id))) {
         print_error('incorrectcompetencyscalevalueid', 'totara_hierarchy');

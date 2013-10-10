@@ -25,9 +25,11 @@
 require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/scale/lib.php');
 
+// This page is being included from another, which is why $prefix and $id are already defined.
 $shortprefix = hierarchy::get_short_prefix($prefix);
 // Make this page appear under the manage 'hierarchy' admin menu
-admin_externalpage_setup($prefix.'manage', '', array(), $CFG->wwwroot.'/totara/hierarchy/prefix/competency/framework/edit.php?prefix='.$prefix);
+$adminurl = $CFG->wwwroot.'/totara/hierarchy/framework/edit.php?prefix='.$prefix.'&id='.$id;
+admin_externalpage_setup($prefix.'manage', '', array(), $adminurl);
 $context = context_system::instance();
 
 if ($id == 0) {

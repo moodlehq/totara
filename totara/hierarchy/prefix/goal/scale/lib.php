@@ -139,11 +139,12 @@ function goal_scales_available() {
 
 
 /**
- * A function to display a table list of goal scales
+ * A function to display a table list of goal scales.
+ * No return - this echos html to output.
+ *
  * @param array $scales the scales to display in the table
- * @return html
  */
-function goal_scale_display_table($scales, $editingon=0) {
+function goal_scale_display_table($scales) {
     global $OUTPUT;
 
     $sitecontext = context_system::instance();
@@ -151,15 +152,18 @@ function goal_scale_display_table($scales, $editingon=0) {
     // Cache permissions.
     $can_edit = has_capability('totara/hierarchy:updategoalscale', $sitecontext);
     $can_delete = has_capability('totara/hierarchy:deletegoalscale', $sitecontext);
+    $can_add = has_capability('totara/hierarchy:creategoalscale', $sitecontext);
+    $can_view = has_capability('totara/hierarchy:viewgoalscale', $sitecontext);
 
-    // Make sure user has capability to edit.
-    if (!(($can_edit || $can_delete) && $editingon)) {
-        $editingon = 0;
+    // Make sure user has capability to view the table.
+    if (!$can_view) {
+        return;
     }
 
     $stredit = get_string('edit');
     $strdelete = get_string('delete');
     $stroptions = get_string('options', 'totara_core');
+
     //
     // Build page.
     //
@@ -167,7 +171,7 @@ function goal_scale_display_table($scales, $editingon=0) {
     if ($scales) {
         $table = new html_table();
         $table->head  = array(get_string('scale'), get_string('used'));
-        if ($editingon) {
+        if ($can_edit || $can_delete) {
             $table->head[] = $stroptions;
         }
 
@@ -187,7 +191,7 @@ function goal_scale_display_table($scales, $editingon=0) {
             }
 
             $buttons = array();
-            if ($editingon) {
+            if ($can_edit || $can_delete) {
                 if ($can_edit) {
                     $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/hierarchy/prefix/goal/scale/edit.php',
                         array('id' => $scale->id, 'prefix' => 'goal')),
@@ -226,9 +230,11 @@ function goal_scale_display_table($scales, $editingon=0) {
         echo html_writer::tag('p', get_string('noscalesdefined', 'totara_hierarchy'));
     }
 
-    $buttonurl = new moodle_url('/totara/hierarchy/prefix/goal/scale/edit.php', array('prefix' => 'goal'));
-    echo html_writer::tag('div',
-        $OUTPUT->single_button($buttonurl, get_string('scalesgoalcustomcreate', 'totara_hierarchy'), 'get')
-        . $OUTPUT->help_icon('goalscalesgeneral', 'totara_hierarchy'),
-        array('class' => 'buttons'));
+    if ($can_add) {
+        $buttonurl = new moodle_url('/totara/hierarchy/prefix/goal/scale/edit.php', array('prefix' => 'goal'));
+        echo html_writer::tag('div',
+            $OUTPUT->single_button($buttonurl, get_string('scalesgoalcustomcreate', 'totara_hierarchy'), 'get')
+            . $OUTPUT->help_icon('goalscalesgeneral', 'totara_hierarchy'),
+            array('class' => 'buttons'));
+    }
 }

@@ -34,7 +34,7 @@ require_once("{$CFG->dirroot}/totara/hierarchy/lib.php");
 
 $sitecontext = context_system::instance();
 
-// Get params
+// Get params.
 $prefix      = required_param('prefix', PARAM_ALPHA);
 $edit        = optional_param('edit', -1, PARAM_BOOL);
 $hide        = optional_param('hide', 0, PARAM_INT);
@@ -44,19 +44,14 @@ $movedown    = optional_param('movedown', 0, PARAM_INT);
 
 $hierarchy = hierarchy::load_hierarchy($prefix);
 
-// Cache user capabilities
-$can_add = has_capability('totara/hierarchy:create' . $prefix . 'frameworks', $sitecontext);
-$can_edit = has_capability('totara/hierarchy:update' . $prefix . 'frameworks', $sitecontext);
-$can_delete = has_capability('totara/hierarchy:delete' . $prefix . 'frameworks', $sitecontext);
-$can_view = has_capability('totara/hierarchy:view' . $prefix . 'frameworks', $sitecontext);
+// Cache user capabilities.
+extract($hierarchy->get_permissions());
 
-$can_manage = $can_edit || $can_delete || $can_add;
-
-if (!$can_view) {
+if (!($canviewframeworks || $canviewscales)) {
     print_error('accessdenied', 'admin');
 }
 
-if ($can_manage) {
+if ($canmanage) {
     // Setup page as admin and check permissions.
     admin_externalpage_setup($prefix.'manage', '', array('prefix' => $prefix));
 } else {
@@ -74,11 +69,11 @@ if ($can_manage) {
 /// Process any actions
 ///
 
-if ($can_edit) {
-    // Hide or show a framework
+if ($canupdateframeworks) {
+    // Hide or show a framework.
     if ($hide or $show or $moveup or $movedown) {
         require_capability('totara/hierarchy:update'.$prefix.'frameworks', $sitecontext);
-        // Hide an item
+        // Hide an item.
         if ($hide) {
             $hierarchy->hide_framework($hide);
         } elseif ($show) {
@@ -90,13 +85,13 @@ if ($can_edit) {
         }
     }
 
-} // End of editing stuff
+} // End of editing stuff.
 
 ///
 /// Load hierarchy frameworks after any changes
 ///
 
-// Get frameworks for this page
+// Get frameworks for this page.
 $frameworks = $hierarchy->get_frameworks(array('item_count' => 1), true);
 
 ///
@@ -111,19 +106,19 @@ $str_show     = get_string('show');
 
 if ($frameworks) {
 
-    // Create display table
+    // Create display table.
     $table = new html_table();
     $table->attributes['class'] = 'generaltable fullwidth edit'.$prefix;
 
-    // Setup column headers
+    // Setup column headers.
     $table->head = array(get_string('name', 'totara_hierarchy'), get_string($prefix.'plural', 'totara_hierarchy'));
 
-    // Add edit column
-    if ($can_edit || $can_delete) {
+    // Add edit column.
+    if ($canupdateframeworks || $candeleteframeworks) {
         $table->head[] = get_string('actions');
     }
 
-    // Add rows to table
+    // Add rows to table.
     $rowcount = 1;
     foreach ($frameworks as $framework) {
         $row = array();
@@ -132,12 +127,16 @@ if ($frameworks) {
 
         $link_params = array('prefix' => $prefix, 'frameworkid' => $framework->id);
         $link_url = new moodle_url('/totara/hierarchy/index.php', $link_params);
-        $row[] = $OUTPUT->action_link($link_url, format_string($framework->fullname), null, array('class' => $cssclass));
+        if ($canviewframeworks) {
+            $row[] = $OUTPUT->action_link($link_url, format_string($framework->fullname), null, array('class' => $cssclass));
+        } else {
+            $row[] = format_string($framework->fullname);
+        }
         $row[] = html_writer::tag('span', $framework->item_count, array('class' => $cssclass));
 
-        // Add edit link
+        // Add edit link.
         $buttons = array();
-        if ($can_edit || $can_delete) {
+        if ($canupdateframeworks) {
             $buttons[] = $OUTPUT->action_icon(new moodle_url('edit.php', array('prefix' => $prefix, 'id' => $framework->id)),
                     new pix_icon('t/edit', $str_edit), null, array('title' => $str_edit));
             if ($framework->visible) {
@@ -148,11 +147,11 @@ if ($frameworks) {
                         new pix_icon('t/show', $str_show), null, array('title' => $str_show));
             }
         }
-        if ($can_delete) {
+        if ($candeleteframeworks) {
             $buttons[] = $OUTPUT->action_icon(new moodle_url('delete.php', array('prefix' => $prefix, 'id' => $framework->id)),
                     new pix_icon('t/delete', $str_delete), null, array('title' => $str_delete));
         }
-        if ($can_edit) {
+        if ($canupdateframeworks) {
             if ($rowcount != 1) {
                 $buttons[] = $OUTPUT->action_icon(new moodle_url('index.php', array('prefix' => $prefix, 'moveup' => $framework->id)),
                         new pix_icon('t/up', $str_moveup), null, array('title' => $str_moveup));
@@ -176,7 +175,7 @@ if ($frameworks) {
     }
 }
 
-// Display page
+// Display page.
 
 $PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'));
 
@@ -184,28 +183,29 @@ echo $OUTPUT->header();
 
 echo $OUTPUT->heading(get_string($prefix.'frameworks', 'totara_hierarchy') . ' ' . $OUTPUT->help_icon($prefix.'frameworks', 'totara_hierarchy', false), 1);
 
-// Editing buttons
-if ($can_add) {
-    // Print button for creating new framework
+// Editing buttons.
+if ($cancreateframeworks) {
+    // Print button for creating new framework.
     echo html_writer::tag('div', $OUTPUT->single_button(new moodle_url('edit.php', array('prefix' => $prefix)),
                 get_string($prefix.'addnewframework', 'totara_hierarchy'), 'get'), array('class' => 'hierarchy-index-buttons'));
 }
 
 
-
-if ($frameworks) {
-    echo html_writer::table($table);
-} else {
-    echo html_writer::tag('p', get_string($prefix.'noframeworks', 'totara_hierarchy'));
-    echo html_writer::empty_tag('br');
+if ($canviewframeworks) {
+    if ($frameworks) {
+        echo html_writer::table($table);
+    } else {
+        echo html_writer::tag('p', get_string($prefix.'noframeworks', 'totara_hierarchy'));
+        echo html_writer::empty_tag('br');
+    }
 }
 
 
-// Display scales
-if (file_exists($CFG->dirroot.'/totara/hierarchy/prefix/'.$prefix.'/scale/lib.php')) {
+// Display scales.
+if ($hierarchyhasscales) {
     include($CFG->dirroot.'/totara/hierarchy/prefix/'.$prefix.'/scale/lib.php');
     $scales = $hierarchy->get_scales();
-    call_user_func("{$prefix}_scale_display_table", $scales, $can_edit);
+    call_user_func("{$prefix}_scale_display_table", $scales);
 }
 add_to_log(SITEID, $prefix, 'view framework', "framework/index.php?prefix=$prefix", '');
 echo $OUTPUT->footer();

@@ -46,7 +46,7 @@ $hierarchy = hierarchy::load_hierarchy($prefix);
     $can_add = has_capability('totara/hierarchy:create'.$prefix.'type', $sitecontext);
     $can_edit = has_capability('totara/hierarchy:update'.$prefix.'type', $sitecontext);
     $can_delete = has_capability('totara/hierarchy:delete'.$prefix.'type', $sitecontext);
-    $can_edit_custom_fields = has_capability('totara/hierarchy:update'.$prefix.'customfield', $sitecontext);
+    $can_edit_custom_fields = has_any_capability(array('totara/hierarchy:update'.$prefix.'customfield', 'totara/hierarchy:create'.$prefix.'customfield', 'totara/hierarchy:delete'.$prefix.'customfield'), $sitecontext);
 
     // Setup page and check permissions
     admin_externalpage_setup($prefix.'typemanage', null, array('prefix' => $prefix));
@@ -79,7 +79,7 @@ if ($types) {
     $table->align = array('left', 'center');
 
     // Add edit column
-    if ($can_edit) {
+    if ($can_edit || $can_delete) {
         $table->head[] = get_string('actions');
         $table->align[] = 'left';
     }
@@ -121,7 +121,9 @@ if ($types) {
         $row[] = get_string('unclassified', 'totara_hierarchy');
         $row[] = $unclassified;
         $row[] = '&nbsp;';
-        $row[] = '&nbsp;';
+        if ($buttons) {
+            $row[] = '&nbsp;';
+        }
         $table->data[] = $row;
     }
 

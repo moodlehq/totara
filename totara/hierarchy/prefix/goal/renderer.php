@@ -77,7 +77,7 @@ class totara_goal_renderer extends plugin_renderer_base {
         // Totals row.
         $row = array();
 
-        $frameworksurl = new moodle_url('/totara/hierarchy/framework/index.php?prefix=goal', array('prefix' => 'goal'));
+        $frameworksurl = new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => 'goal'));
         $statusreporturl = new moodle_url('/totara/hierarchy/prefix/goal/statusreport.php', array('clearfilters' => 1));
 
         $row[] = html_writer::link($frameworksurl, get_string('goalallframeworks', 'totara_hierarchy'));

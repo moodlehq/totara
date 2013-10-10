@@ -35,9 +35,12 @@ require_once('edit_form.php');
 // Scale id; 0 if creating a new scale.
 $id = optional_param('id', 0, PARAM_INT);
 $prefix = required_param('prefix', PARAM_ALPHA);
-// Page setup and check permissions.
-admin_externalpage_setup($prefix.'manage');
+
+// Cache user capabilities.
 $sitecontext = context_system::instance();
+
+// Set up the page.
+admin_externalpage_setup($prefix.'manage');
 
 if ($id == 0) {
     // Creating new goal scale.

@@ -36,28 +36,31 @@ require_once 'edit_form.php';
 // Scale id; 0 if creating a new scale
 $id = optional_param('id', 0, PARAM_INT);
 $prefix = required_param('prefix', PARAM_ALPHA);
-// Page setup and check permissions
-admin_externalpage_setup($prefix.'manage');
+
+// Cache user capabilities.
 $sitecontext = context_system::instance();
 
-if ($id == 0) {
-  // creating new competency scale
-  require_capability('totara/hierarchy:createcompetency', $sitecontext);
+// Set up the page.
+admin_externalpage_setup($prefix.'manage');
 
-  $scale = new stdClass();
-  $scale->id = 0;
-  $scale->sortorder = $DB->get_field('comp_framework', 'MAX(sortorder) + 1', array());
-  if (!$scale->sortorder) {
-    $scale->sortorder = 1;
-  }
+if ($id == 0) {
+    // Creating new competency scale.
+    require_capability('totara/hierarchy:createcompetencyscale', $sitecontext);
+
+    $scale = new stdClass();
+    $scale->id = 0;
+    $scale->sortorder = $DB->get_field('comp_framework', 'MAX(sortorder) + 1', array());
+    if (!$scale->sortorder) {
+        $scale->sortorder = 1;
+    }
 
 } else {
-  // editing existing competency scale
-  require_capability('totara/hierarchy:updatecompetency', $sitecontext);
+    // Editing existing competency scale.
+    require_capability('totara/hierarchy:updatecompetencyscale', $sitecontext);
 
-  if (!$scale = $DB->get_record('comp_scale', array('id' => $id))) {
-    print_error('incorrectcompetencyscaleid', 'totara_hierarchy');
-  }
+    if (!$scale = $DB->get_record('comp_scale', array('id' => $id))) {
+        print_error('incorrectcompetencyscaleid', 'totara_hierarchy');
+    }
 }
 
 

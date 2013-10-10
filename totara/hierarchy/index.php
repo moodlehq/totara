@@ -52,7 +52,7 @@ $shortprefix    = hierarchy::get_short_prefix($prefix);
 $searchactive = (strlen(trim($search)) > 0);
 // Hide move arrows when a search active because the hierarchy.
 // Is no longer properly represented.
-$can_move_item = (!$searchactive);
+$canmoveitems = (!$searchactive);
 
 $hierarchy = hierarchy::load_hierarchy($prefix);
 
@@ -68,17 +68,15 @@ if (!$framework) {
 
 // Check if custom types exist.
 $types = $hierarchy->get_types();
+
 // Cache user capabilities.
-$can_view        = has_capability('totara/hierarchy:view' . $prefix . 'frameworks', $sitecontext);
-$can_add_item    = has_capability('totara/hierarchy:create' . $prefix, $sitecontext);
-$can_edit_item   = has_capability('totara/hierarchy:update' . $prefix, $sitecontext);
-$can_delete_item = has_capability('totara/hierarchy:delete' . $prefix, $sitecontext);
-$can_manage_type = (count($types) > 0) && has_capability('totara/hierarchy:update' . $prefix . 'type', $sitecontext);
+extract($hierarchy->get_permissions());
 
-$can_manage = $can_edit_item || $can_delete_item || $can_add_item;
+$canview       = has_capability('totara/hierarchy:view' . $prefix . 'frameworks', $sitecontext);
+$canmanagetype = (count($types) > 0) && has_capability('totara/hierarchy:update' . $prefix . 'type', $sitecontext);
 
-// process actions
-if ($can_edit_item) {
+// Process actions.
+if ($canupdateitems) {
     require_capability('totara/hierarchy:update'.$prefix, $sitecontext);
     if ($hide && confirm_sesskey()) {
         $hierarchy->hide_item($hide);
@@ -90,7 +88,8 @@ if ($can_edit_item) {
         $hierarchy->reorder_hierarchy_item($movedown, HIERARCHY_ITEM_BELOW);
     }
 }
-//set page context so that export can use functions like format_text
+
+// Set page context so that export can use functions like format_text.
 $PAGE->set_context(context_system::instance());
 
 if ($format!='') {
@@ -99,7 +98,7 @@ if ($format!='') {
     die;
 }
 
-// if setdisplay parameter set, update the displaymode
+// If setdisplay parameter set, update the displaymode.
 if ($setdisplay != -1) {
     $DB->set_field($shortprefix.'_framework', 'hidecustomfields', $setdisplay, array('id' => $frameworkid));
     $displaymode = $setdisplay;
@@ -107,14 +106,14 @@ if ($setdisplay != -1) {
     $displaymode = $framework->hidecustomfields;
 }
 
-// Setup page and check permissions
+// Setup page and check permissions.
 $urlparams = array('prefix' => $prefix, 'frameworkid' => $frameworkid);
 
-if (!$can_view) {
+if (!$canview) {
     print_error('accessdenied', 'admin');
 }
 
-if ($can_manage) {
+if ($canmanage) {
     admin_externalpage_setup($prefix.'manage', null, $urlparams);
 } else {
     $detailsstr = get_string($prefix . 'details', 'totara_hierarchy');
@@ -128,19 +127,18 @@ if ($can_manage) {
 
 $PAGE->navbar->add(format_string($framework->fullname));
 echo $OUTPUT->header();
-// build query now as we need the count for flexible tables
+// Build query now as we need the count for flexible tables.
 $select = "SELECT hierarchy.*";
 $count = "SELECT COUNT(hierarchy.id)";
 $from   = " FROM {{$shortprefix}} hierarchy";
 $where  = " WHERE frameworkid = ?";
 $params = array($frameworkid);
 $order  = " ORDER BY sortthread";
-// if a search is happening, or custom fields are being displayed,
-// also join to get custom field data
+// If a search is happening, or custom fields are being displayed, also join to get custom field data.
 if ($searchactive || !$displaymode) {
     $custom_fields = $DB->get_records($shortprefix.'_type_info_field');
     foreach ($custom_fields as $custom_field) {
-        // add one join per custom field
+        // Add one join per custom field.
         $fieldid = $custom_field->id;
         $select .= ", cf_{$fieldid}.id AS cf_{$fieldid}_itemid, cf_{$fieldid}.data AS cf_{$fieldid}";
         $from .= " LEFT JOIN {{$shortprefix}_type_info_data} cf_{$fieldid}
@@ -150,11 +148,11 @@ if ($searchactive || !$displaymode) {
 
 $matchcount = $DB->count_records_sql($count.$from.$where, $params);
 
-// include search terms if any set
+// Include search terms if any set.
 if ($searchactive) {
-    // extract quoted strings from query
+    // Extract quoted strings from query.
     $keywords = totara_search_parse_keywords($search);
-    // match search terms against the following fields
+    // Match search terms against the following fields.
     $dbfields = array('fullname', 'shortname', 'description', 'idnumber');
     if (is_array($custom_fields)) {
         foreach ($custom_fields as $cf) {
@@ -189,7 +187,7 @@ if ($extrafields = $hierarchy->get_extrafields()) {
     }
 }
 
-if ($can_edit_item) {
+if ($canupdateitems || $candeleteitems) {
     $row = new stdClass();
     $row->type = 'actions';
     $row->value = new stdClass();
@@ -220,16 +218,19 @@ $records = $DB->get_recordset_sql($select.$from.$where.$order, $params, $table->
 
 
 echo $OUTPUT->container($OUTPUT->action_link(
-    new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => $prefix)), '&laquo; ' . get_string($prefix.'backtoallframeworks', 'totara_hierarchy')), 'back-link'
+    new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => $prefix)), '&laquo; ' .
+            get_string($prefix.'backtoallframeworks', 'totara_hierarchy')), 'back-link'
 );
 echo $OUTPUT->heading(format_string($framework->fullname));
 
-$framework->description = file_rewrite_pluginfile_urls($framework->description, 'pluginfile.php', $sitecontext->id, 'totara_hierarchy', $shortprefix.'_framework', $frameworkid);
+$framework->description = file_rewrite_pluginfile_urls($framework->description, 'pluginfile.php', $sitecontext->id,
+        'totara_hierarchy', $shortprefix.'_framework', $frameworkid);
 echo $OUTPUT->container($framework->description);
 echo html_writer::tag('div', '', array('class' => 'clearfix'));
 
-$table->add_toolbar_content($hierarchy->display_action_buttons($can_add_item, $page), 'right');
-$table->add_toolbar_content($hierarchy->display_bulk_actions_picker($can_add_item, $can_edit_item, $can_delete_item, $can_manage_type, $page), 'left' , 'top', 1);
+$table->add_toolbar_content($hierarchy->display_action_buttons($cancreateitems, $page), 'right');
+$table->add_toolbar_content($hierarchy->display_bulk_actions_picker($cancreateitems, $canupdateitems, $candeleteitems,
+        $canmanagetype, $page), 'left' , 'top', 1);
 $table->add_toolbar_content($hierarchy->display_showhide_detail_button($displaymode, $search, $page), 'right', 'top', 1);
 $placeholder = get_string('search') . ' ' . format_string($framework->fullname);
 $table->add_toolbar_content($hierarchy->display_search_box($search, $placeholder), 'left');
@@ -252,7 +253,8 @@ if ($searchactive) {
         echo html_writer::start_tag('p');
         echo html_writer::tag('strong', get_string('noresultsforsearchx', 'totara_hierarchy', $search));
     }
-    echo $OUTPUT->action_link(new moodle_url('index.php', array('prefix' => $prefix, 'frameworkid' => $frameworkid)), get_string('clearsearch', 'totara_hierarchy'));
+    echo $OUTPUT->action_link(new moodle_url('/totara/hierarchy/index.php',
+            array('prefix' => $prefix, 'frameworkid' => $frameworkid)), get_string('clearsearch', 'totara_hierarchy'));
     echo html_writer::end_tag('p');
 }
 
@@ -269,27 +271,27 @@ if ($matchcount > 0) {
         }
         $extraparams = (count($params)) ? implode($params, '&amp;') : '';
 
-        // cache this hierarchies types
+        // Cache this hierarchies types.
         $types = $hierarchy->get_types();
 
-        // figure out which custom fields are used by which types
+        // Figure out which custom fields are used by which types.
         $cfields = $DB->get_records($shortprefix.'_type_info_field');
         foreach ($records as $record) {
             $row = array();
-            // don't display items indented by depth if it's a search
+            // Don't display items indented by depth if it's a search.
             $showdepth = !$searchactive;
 
             $include_custom_fields = !$displaymode;
             $row[] = $hierarchy->display_hierarchy_item($record, $include_custom_fields,
-                $showdepth, $cfields, $types);
+                    $showdepth, $cfields, $types);
             if ($extrafields) {
                 foreach ($extrafields as $extrafield) {
                     $row[] = $hierarchy->display_hierarchy_item_extrafield($record, $extrafield);
                 }
             }
-            if ($can_edit_item) {
-                $row[] = $hierarchy->display_hierarchy_item_actions($record, $can_edit_item,
-                    $can_delete_item, $can_move_item, $extraparams);
+            if ($canupdateitems || $candeleteitems) {
+                $row[] = $hierarchy->display_hierarchy_item_actions($record, $canupdateitems,
+                        $candeleteitems, $canmoveitems, $extraparams);
             }
             $table->add_data($row);
             ++$num_on_page;

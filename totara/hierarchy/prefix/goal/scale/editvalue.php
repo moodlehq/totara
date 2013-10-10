@@ -28,7 +28,6 @@ require_once('editvalue_form.php');
 require_once($CFG->dirroot . '/totara/hierarchy/prefix/goal/scale/lib.php');
 require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
 
-
 //
 // Setup / loading data.
 //
@@ -39,16 +38,16 @@ $prefix = required_param('prefix', PARAM_ALPHA);
 // Goal scale id.
 $scaleid = optional_param('scaleid', 0, PARAM_INT);
 
+// Cache user capabilities.
+$sitecontext = context_system::instance();
+
+// Set up the page.
+admin_externalpage_setup($prefix.'manage');
+
 // Make sure we have at least one or the other.
 if (!$id && !$scaleid) {
     print_error('incorrectparameters', 'totara_hierarchy');
 }
-
-
-// Page setup and check permissions.
-admin_externalpage_setup($prefix.'manage');
-
-$sitecontext = context_system::instance();
 
 if ($id == 0) {
     // Creating new scale value.

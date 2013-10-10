@@ -39,27 +39,40 @@ $shortprefix = hierarchy::get_short_prefix($prefix);
 
 $hierarchy = hierarchy::load_hierarchy($prefix);
 
-///
-/// Setup / loading data
-///
-require_login();
+/*
+ * Setup / loading data.
+ */
 
 if (!$item = $hierarchy->get_item($id)) {
     print_error('itemdoesntexist', 'totara_hierarchy', null, $prefix);
 }
 $framework = $hierarchy->get_framework($item->frameworkid);
 
-// Cache user capabilities
-$can_add_item    = has_capability('totara/hierarchy:create'.$prefix, $sitecontext);
-$can_edit_item   = has_capability('totara/hierarchy:update'.$prefix, $sitecontext);
-$can_delete_item = has_capability('totara/hierarchy:delete'.$prefix, $sitecontext);
+// Cache user capabilities.
+extract($hierarchy->get_permissions());
 
-$sitecontext = context_system::instance();
-require_capability('totara/hierarchy:view'.$prefix, $sitecontext);
+if (!$canviewitems) {
+    print_error('accessdenied', 'admin');
+}
 
-// Cache user capabilities
-$can_edit = has_capability('totara/hierarchy:update'.$prefix, $sitecontext);
-$can_manage_fw = has_capability('totara/hierarchy:update'.$prefix.'frameworks', $sitecontext);
+if ($canmanage) {
+    // Setup page as admin and check permissions.
+    admin_externalpage_setup($prefix.'manage', '', array('prefix' => $prefix));
+} else {
+    // Non admin page set up.
+    $PAGE->set_context($sitecontext);
+    $pagetitle = format_string($framework->fullname.' - '.$item->fullname);
+    $PAGE->set_title($pagetitle);
+    $PAGE->set_heading('');
+    $PAGE->set_url('/totara/hierarchy/item/view.php', array('prefix' => $prefix, 'id' => $id));
+    $PAGE->set_pagelayout('admin');
+    if ($canviewframeworks) {
+        $PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'),
+                new moodle_url("../index.php", array('prefix' => $prefix)));
+    } else {
+        $PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'));
+    }
+}
 
 ///
 /// Display page
@@ -75,22 +88,11 @@ $hierarchy->hierarchy_page_setup('item/view', $setupitem);
 
 unset($setupitem);
 
-// Display page header
-
-
-$PAGE->set_context($sitecontext);
-$pagetitle = format_string($framework->fullname.' - '.$item->fullname);
-$PAGE->set_title($pagetitle);
-$PAGE->set_heading('');
-$PAGE->set_url('/totara/hierarchy/item/view.php', array('prefix' => $prefix, 'id' => $id));
-$PAGE->set_pagelayout('admin');
-$PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'), new moodle_url("../index.php", array('prefix' => $prefix)));
-
 if (!$framework = $DB->get_record($shortprefix.'_framework', array('id' => $item->frameworkid))) {
     print_error('invalidframeworkid', 'totara_hierarchy', $prefix);
 }
 
-if ($can_manage_fw) {
+if ($canmanageframeworks) {
     $PAGE->navbar->add(format_string($framework->fullname), new moodle_url("../index.php", array('prefix' => $prefix, 'frameworkid' => $framework->id)));
 } else {
     $PAGE->navbar->add(format_string($framework->fullname));
@@ -103,9 +105,8 @@ $heading = format_string("{$framework->fullname} - {$item->fullname}");
 
 // add editing icon
 $str_edit = get_string('edit');
-$str_remove = get_string('remove');
 
-if ($can_edit_item) {
+if ($canupdateitems) {
     $heading .= ' ' . $OUTPUT->action_icon(new moodle_url("edit.php",
             array('prefix' => $prefix, 'frameworkid' => $framework->id, 'id' => $item->id)),
             new pix_icon('t/edit', $str_edit, 'moodle', array('class' => 'iconsmall')));
@@ -150,7 +151,7 @@ echo html_writer::table($table);
 // Print extra info
 $hierarchy->display_extra_view_info($item, $frameworkid);
 
-if ($can_edit) {
+if ($canmanageframeworks) {
     $options = array('prefix' => $prefix,'frameworkid' => $framework->id);
     $button = $OUTPUT->single_button(new moodle_url('../index.php', $options), get_string($prefix.'returntoframework', 'totara_hierarchy'), 'get');
 

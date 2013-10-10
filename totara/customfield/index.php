@@ -53,6 +53,10 @@ $sitecontext = context_system::instance();
 $PAGE->set_url('/totara/customfield/index.php');
 $PAGE->set_context($sitecontext);
 
+$can_add = has_capability('totara/hierarchy:create'.$prefix.'customfield', $sitecontext);
+$can_edit = has_capability('totara/hierarchy:update'.$prefix.'customfield', $sitecontext);
+$can_delete = has_capability('totara/hierarchy:delete'.$prefix.'customfield', $sitecontext);
+
 $redirectoptions = array('prefix' => $prefix);
 if ($typeid) {
     $redirectoptions['typeid'] = $typeid;
@@ -89,7 +93,6 @@ $navlinks = $PAGE->navbar->has_items();
 // set the capability prefix
 $capability_prefix = ($shortprefix == 'course') ? 'core' : 'hierarchy';
 
-require_capability('totara/'.$capability_prefix.':update'.$prefix.'customfield', $sitecontext);
 admin_externalpage_setup($adminpagename, '', array('prefix' => $prefix));
 
 // check if any actions need to be performed
@@ -136,9 +139,14 @@ switch ($action) {
         die;
         break;
     case 'editfield':
-        require_capability('totara/'.$capability_prefix.':update'.$prefix.'customfield', $sitecontext);
         $id       = optional_param('id', 0, PARAM_INT);
         $datatype = optional_param('datatype', '', PARAM_ALPHA);
+
+        if ($id == 0) {
+            require_capability('totara/'.$capability_prefix.':create'.$prefix.'customfield', $sitecontext);
+        } else {
+            require_capability('totara/'.$capability_prefix.':update'.$prefix.'customfield', $sitecontext);
+        }
 
         customfield_edit_field($id, $datatype, $typeid, $redirect, $tableprefix, $prefix, $navlinks);
         die;
@@ -165,7 +173,10 @@ if ($prefix == 'course') {
 
 // show custom fields for the given type
 $table = new html_table();
-$table->head  = array(get_string('customfield', 'totara_customfield'), get_string('type', 'totara_hierarchy'), get_string('edit'));
+$table->head  = array(get_string('customfield', 'totara_customfield'), get_string('type', 'totara_hierarchy'));
+if ($can_edit || $can_delete) {
+    $table->head[] = get_string('edit');
+}
 if ($prefix == 'course') {
     $table->id = 'customfields_course';
 } else {
@@ -179,7 +190,11 @@ $fields = $DB->get_records($tableprefix.'_info_field', $select, 'sortorder ASC')
 $fieldcount = count($fields);
 
 foreach ($fields as $field) {
-    $table->data[] = array($field->fullname, get_string('customfieldtype'.$field->datatype, 'totara_customfield'), customfield_edit_icons($field, $fieldcount, $typeid, $prefix));
+    $row = array($field->fullname, get_string('customfieldtype'.$field->datatype, 'totara_customfield'));
+    if ($can_edit || $can_delete) {
+        $row[] = customfield_edit_icons($field, $fieldcount, $typeid, $prefix, $can_edit, $can_delete);
+    }
+    $table->data[] = $row;
 }
 if (count($table->data)) {
     echo html_writer::table($table);

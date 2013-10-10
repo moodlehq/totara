@@ -147,23 +147,26 @@ function competency_scales_available() {
  * @param array $scales the scales to display in the table
  * @return html
  */
-function competency_scale_display_table($scales, $editingon=0) {
-    global $CFG, $OUTPUT;
+function competency_scale_display_table($scales) {
+    global $OUTPUT;
 
     $sitecontext = context_system::instance();
 
     // Cache permissions
-    $can_edit = has_capability('totara/hierarchy:updatecompetency', $sitecontext);
-    $can_delete = has_capability('totara/hierarchy:deletecompetency', $sitecontext);
+    $can_edit = has_capability('totara/hierarchy:updatecompetencyscale', $sitecontext);
+    $can_delete = has_capability('totara/hierarchy:deletecompetencyscale', $sitecontext);
+    $can_add = has_capability('totara/hierarchy:createcompetencyscale', $sitecontext);
+    $can_view = has_capability('totara/hierarchy:viewcompetencyscale', $sitecontext);
 
-    // Make sure user has capability to edit
-    if (!(($can_edit || $can_delete) && $editingon)) {
-        $editingon = 0;
+    // Make sure user has capability to view the table.
+    if (!$can_view) {
+        return;
     }
 
     $stredit = get_string('edit');
     $strdelete = get_string('delete');
     $stroptions = get_string('options', 'totara_core');
+
     ///
     /// Build page
     ///
@@ -171,7 +174,7 @@ function competency_scale_display_table($scales, $editingon=0) {
     if ($scales) {
         $table = new html_table();
         $table->head  = array(get_string('scale'), get_string('used'));
-        if ($editingon) {
+        if ($can_edit || $can_delete) {
             $table->head[] = $stroptions;
         }
 
@@ -190,7 +193,7 @@ function competency_scale_display_table($scales, $editingon=0) {
             }
 
             $buttons = array();
-            if ($editingon) {
+            if ($can_edit || $can_delete) {
                 if ($can_edit) {
                     $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/hierarchy/prefix/competency/scale/edit.php', array('id' => $scale->id, 'prefix' => 'competency')),
                         new pix_icon('t/edit', $stredit), null, array('title' => $stredit));
@@ -223,8 +226,10 @@ function competency_scale_display_table($scales, $editingon=0) {
         echo html_writer::tag('p', get_string('noscalesdefined', 'totara_hierarchy'));
     }
 
-    echo html_writer::tag('div',
-        $OUTPUT->single_button(new moodle_url('/totara/hierarchy/prefix/competency/scale/edit.php',
-        array('prefix' => 'competency')), get_string('scalescompcustomcreate', 'totara_hierarchy'), 'get') .
-        $OUTPUT->help_icon('competencyscalesgeneral', 'totara_hierarchy'), array('class' => 'buttons'));
+    if ($can_add) {
+        echo html_writer::tag('div',
+            $OUTPUT->single_button(new moodle_url('/totara/hierarchy/prefix/competency/scale/edit.php',
+            array('prefix' => 'competency')), get_string('scalescompcustomcreate', 'totara_hierarchy'), 'get') .
+            $OUTPUT->help_icon('competencyscalesgeneral', 'totara_hierarchy'), array('class' => 'buttons'));
+    }
 }

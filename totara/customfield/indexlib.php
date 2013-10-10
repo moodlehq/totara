@@ -35,9 +35,11 @@
  * @param   object   the field object
  * @param   object   the fieldcount object
  * @param   object   the typeid of the object if used
+ * @param   bool     $can_edit Can the user edit custom fields.
+ * @param   bool     $can_delete Can the user delete custom fields.
  * @return  string   the icon string
  */
-function customfield_edit_icons($field, $fieldcount, $typeid=0, $prefix) {
+function customfield_edit_icons($field, $fieldcount, $typeid=0, $prefix, $can_edit, $can_delete) {
     global $OUTPUT;
 
     if (empty($str)) {
@@ -48,19 +50,33 @@ function customfield_edit_icons($field, $fieldcount, $typeid=0, $prefix) {
     }
 
     /// Edit
-    $params = array('prefix' => $prefix, 'id' => $field->id, 'action' => 'editfield');
-    if ($typeid != null) {
-        $params['typeid'] = $typeid;
+    if ($can_edit) {
+        $params = array('prefix' => $prefix, 'id' => $field->id, 'action' => 'editfield');
+        if ($typeid != null) {
+            $params['typeid'] = $typeid;
+        }
+        $editstr = $OUTPUT->action_icon(new moodle_url('/totara/customfield/index.php', $params), new pix_icon('t/edit', $stredit), null, array('title' => $stredit));
+    } else {
+        $editstr = $OUTPUT->spacer(array('height' => 11, 'width' => 11));
     }
-    $editstr = $OUTPUT->action_icon(new moodle_url('/totara/customfield/index.php', $params), new pix_icon('t/edit', $stredit), null, array('title' => $stredit));
 
     /// Delete
-    $params['action'] = 'deletefield';
-    $deletestr = $OUTPUT->action_icon(new moodle_url('/totara/customfield/index.php', $params), new pix_icon('t/delete', $strdelete), null, array('title' => $strdelete));
+    if ($can_delete) {
+        $params = array('prefix' => $prefix, 'id' => $field->id, 'action' => 'deletefield');
+        if ($typeid != null) {
+            $params['typeid'] = $typeid;
+        }
+        $deletestr = $OUTPUT->action_icon(new moodle_url('/totara/customfield/index.php', $params), new pix_icon('t/delete', $strdelete), null, array('title' => $strdelete));
+    } else {
+        $deletestr = $OUTPUT->spacer(array('height' => 11, 'width' => 11));
+    }
 
     /// Move up
-    if ($field->sortorder > 1) {
-        $params['action'] = 'movefield';
+    if ($field->sortorder > 1 && $can_edit) {
+        $params = array('prefix' => $prefix, 'id' => $field->id, 'action' => 'movefield');
+        if ($typeid != null) {
+            $params['typeid'] = $typeid;
+        }
         $params['dir'] = 'up';
         $params['sesskey'] = sesskey();
         $upstr = $OUTPUT->action_icon(new moodle_url('/totara/customfield/index.php', $params), new pix_icon('t/up', $strmoveup), null, array('title' => $strmoveup));
@@ -69,8 +85,11 @@ function customfield_edit_icons($field, $fieldcount, $typeid=0, $prefix) {
     }
 
     /// Move down
-    if ($field->sortorder < $fieldcount) {
-        $params['action'] = 'movefield';
+    if ($field->sortorder < $fieldcount && $can_edit) {
+        $params = array('prefix' => $prefix, 'id' => $field->id, 'action' => 'movefield');
+        if ($typeid != null) {
+            $params['typeid'] = $typeid;
+        }
         $params['dir'] = 'down';
         $params['sesskey'] = sesskey();
         $downstr = $OUTPUT->action_icon(new moodle_url('/totara/customfield/index.php', $params), new pix_icon('t/down', $strmovedown), null, array('title' => $strmovedown));

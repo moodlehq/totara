@@ -32,18 +32,20 @@ require_once('lib.php');
 /// Setup / loading data
 ///
 
-$sitecontext = context_system::instance();
-
 // Get params
 $id = required_param('id', PARAM_INT);
 $prefix = required_param('prefix', PARAM_ALPHA);
 // Delete confirmation hash
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
-// Setup page and check permissions
-admin_externalpage_setup($prefix.'manage');
+// Cache user capabilities.
+$sitecontext = context_system::instance();
 
-require_capability('totara/hierarchy:deletecompetency', $sitecontext);
+// Permissions.
+require_capability('totara/hierarchy:deletecompetencyscale', $sitecontext);
+
+// Set up the page.
+admin_externalpage_setup($prefix.'manage');
 
 if (!$value = $DB->get_record('comp_scale_values', array('id' => $id))) {
     print_error('incorrectcompetencyscalevalueid', 'totara_hierarchy');
