@@ -26,7 +26,7 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
 }
 
-require_once($CFG->dirroot.'/totara/program/program_assignments.class.php'); // for assignment category literals
+require_once($CFG->dirroot.'/totara/program/program_assignments.class.php'); // For assignment category literals.
 
 // Certification types (learning component types).
 define('CERTIFTYPE_PROGRAM', 1);
@@ -170,21 +170,22 @@ function totara_certification_cron() {
 function assign_certification_stage($certificationid, $userid) {
     global $DB;
 
-    // Current assignment:
-    // When an assignment is updated - this event (sometimes) gets called too
-    // the changed data is program competion (due) date - which does not affect certif_completion
-    // so we just need to check if already exists.
-    //
-    // Assignment completion
-    // Relative date added   - not called
-    // Relative date removed - called (not unassign)
-    // Fixed date added      - not called
-    // Fixed date removed    - not called (nor unassign)
+    /* Current assignment:
+     * When an assignment is updated - this event (sometimes) gets called too
+     * the changed data is program competion (due) date - which does not affect certif_completion
+     * so we just need to check if already exists.
+     *
+     * Assignment completion
+     * Relative date added   - not called
+     * Relative date removed - called (not unassign)
+     * Fixed date added      - not called
+     * Fixed date removed    - not called (nor unassign)
+     */
 
     $completionid = $DB->get_field('certif_completion', 'id', array('certifid' => $certificationid, 'userid' => $userid));
 
     if (!$completionid) {
-        // create new
+        // Create new.
         write_certif_completion($certificationid, $userid, CERTIFPATH_CERT);
     }
 }
@@ -230,7 +231,7 @@ function inprogress_certification_stage($courseid) {
 
     // Change only from specific states as function can be called at any time (whenever course is viewed)
     // from unset, assigned, expired - any time
-    // from completed when renewal status is dueforrenewal
+    // from completed when renewal status is dueforrenewal.
     if ($completion_record->status < CERTIFSTATUS_INPROGRESS
         || $completion_record->status == CERTIFSTATUS_EXPIRED
         || $completion_record->status == CERTIFSTATUS_COMPLETED && $completion_record->renewalstatus == CERTIFRENEWALSTATUS_DUE) {
@@ -279,7 +280,7 @@ function complete_certification_stage($certificationid, $userid) {
 function recertify_window_opens_stage() {
     global $DB, $CFG;
 
-    // Find any users who have reached this point
+    // Find any users who have reached this point.
     $uniqueid = $DB->sql_concat('cfc.certifid', 'cfc.userid', 'p.id');
     $sql = "SELECT {$uniqueid} as uniqueid, cfc.certifid, cfc.userid, p.id as pid
             FROM {certif_completion} cfc
@@ -290,9 +291,9 @@ function recertify_window_opens_stage() {
 
     $certificationcompletions = $DB->get_records_sql($sql, array(time(), CERTIFSTATUS_COMPLETED, CERTIFRENEWALSTATUS_NOTDUE));
 
-    require_once($CFG->dirroot.'/course/lib.php'); // archive_course_activities()
+    require_once($CFG->dirroot.'/course/lib.php'); // Archive_course_activities().
 
-    // For each certification & user
+    // For each certification & user.
     foreach ($certificationcompletions as $completionrecord) {
         // Archive completion.
         copy_certif_completion_to_hist($completionrecord->certifid, $completionrecord->userid);
@@ -329,7 +330,7 @@ function recertify_window_abouttoclose_stage() {
 
     // See if there are any programs & users where:
     // now > (timeexpires - offset-for-that-certif/prog)
-    // now < timeexpires (to minimise number of send attempts)
+    // now < timeexpires (to minimise number of send attempts).
 
     list($statussql, $statusparams) = $DB->get_in_or_equal(array(CERTIFSTATUS_COMPLETED, CERTIFSTATUS_INPROGRESS));
 
@@ -349,7 +350,7 @@ function recertify_window_abouttoclose_stage() {
     $certificationcompletions = $DB->get_records_sql($sql, $params);
 
     // Send function checks for message already sent and will skip if so. reset_certifcomponent_completion()
-    // will remove entry from prog_messagelog if not already cleared down
+    // will remove entry from prog_messagelog if not already cleared down.
     foreach ($certificationcompletions as $completion) {
         send_certif_message($completion->pid, $completion->userid, MESSAGETYPE_RECERT_WINDOWDUECLOSE);
     }
@@ -435,7 +436,8 @@ function certif_get_content_completion_time($certificationid, $userid) {
  * @param integer $certificationpath
  * @param integer $renewalstatus
  */
-function write_certif_completion($certificationid, $userid, $certificationpath = CERTIFPATH_CERT, $renewalstatus = CERTIFRENEWALSTATUS_NOTDUE) {
+function write_certif_completion($certificationid, $userid, $certificationpath = CERTIFPATH_CERT,
+                                                            $renewalstatus = CERTIFRENEWALSTATUS_NOTDUE) {
     global $DB, $CFG;
 
     $certification = $DB->get_record('certif', array('id' => $certificationid));
@@ -465,19 +467,19 @@ function write_certif_completion($certificationid, $userid, $certificationpath =
         // else its the expired date (ie at the end of the full certification period).
         //
         // Prior learning:
-        // Normally when the program completion event is called (and hence this function) we just need to record the curent date-time
-        // and calculate the new expiry etc.
+        // Normally when the program completion event is called (and hence this function) we just need to record the current
+        // date-time and calculate the new expiry etc.
         // However with prior learning, where courses may have been completed before being added to a program,
         // the preferred date is the date of the last course. As there is currently no way to differentiate between a user/program
         // which is prior learning and not, we have to do this check for all program completions - rather than just using
         // the current time.
         // Note: the completion date in prog_completion will still be 'now' - not the last course-completion date so will
-        // differ from certification completion
+        // differ from certification completion.
         $base = get_certiftimebase($certification->recertifydatetype, $certificationcompletion->timeexpires, $lastcompleted);
         $todb->timeexpires = get_timeexpires($base, $certification->activeperiod);
         $todb->timewindowopens = get_timewindowopens($todb->timeexpires, $certification->windowperiod);
         $todb->timecompleted = $lastcompleted;
-    } else { // CERT
+    } else { // CERT.
         $todb->status =  CERTIFSTATUS_ASSIGNED;
         // Window/expires not relevant for CERTIFPATH_CERT as should be doing in program 'due' time.
         $todb->timewindowopens = 0;
@@ -511,8 +513,8 @@ function copy_certif_completion_to_hist($certificationid, $userid) {
         print_error('error:incorrectid', 'totara_certification');
     }
 
-    // its possible to get an insert error after unassigning an individual from a certification, then reassigning them
-    // so check & Update if present
+    // Its possible to get an insert error after unassigning an individual from a certification, then reassigning them
+    // so check & Update if present.
     $certificationcompletion->timemodified = time();
     $completionhistory = $DB->get_record('certif_completion_history',
             array('certifid' => $certificationid, 'userid' => $userid, 'timeexpires' => $certificationcompletion->timeexpires));
@@ -556,7 +558,8 @@ function set_course_renewalstatus($courseids, $userid, $renewalstatus) {
 function certif_iswindowopen($certificationid, $userid) {
     global $DB;
 
-    $timewindowopens = $DB->get_field('certif_completion', 'timewindowopens', array('certifid' => $certificationid, 'userid' =>  $userid));
+    $timewindowopens = $DB->get_field('certif_completion', 'timewindowopens',
+                                          array('certifid' => $certificationid, 'userid' =>  $userid));
     $now = time();
     if ($timewindowopens && $now > $timewindowopens) {
         return true;
@@ -649,14 +652,13 @@ function send_certif_message($progid, $userid, $msgtype) {
     $messagesmanager = new prog_messages_manager($progid);
     $messages = $messagesmanager->get_messages();
 
-    // If messagetype set up for this program, send notifications to user and the
-    // user's manager (if set on message).
+    // If messagetype set up for this program, send notifications to user and the user's manager (if set on message).
     foreach ($messages as $message) {
         if ($message->messagetype == $msgtype) {
-               $message->send_message($user); // prog_eventbased_message.send_message() program_message.class.php
-               // this function checks prog_messagelog for existing record, checking messageid and userid (and coursesetid(=0))
+               $message->send_message($user); // Prog_eventbased_message.send_message() program_message.class.php.
+               // This function checks prog_messagelog for existing record, checking messageid and userid (and coursesetid(=0))
                // messageid is id of message in prog_message (ie for this prog and message type)
-               // if exists, the message is not sent
+               // if exists, the message is not sent.
         }
     }
 }
@@ -717,12 +719,13 @@ function get_certification_path_field($formdata, $field, $fieldvalue) {
  * @return object {@link $COURSE} records
  */
 // TODO: Fix this function to work in Moodle 2 way
-// See lib/datalib.php -> get_courses_search for example
-function certif_get_certifications_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount, $whereclause, $whereparams) {
+// See lib/datalib.php -> get_courses_search for example.
+function certif_get_certifications_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount,
+                                                                                                $whereclause, $whereparams) {
     global $DB, $USER;
 
-    $REGEXP    = $DB->sql_regex(true);
-    $NOTREGEXP = $DB->sql_regex(false);
+    $regexp    = $DB->sql_regex(true);
+    $notregexp = $DB->sql_regex(false);
 
     $fullnamesearch = '';
     $summarysearch = '';
@@ -751,16 +754,16 @@ function certif_get_certifications_search($searchterms, $sort='fullname ASC', $p
 
         if (substr($searchterm, 0, 1) == '+') {
             $searchterm      = substr($searchterm, 1);
-            $summarysearch  .= " cf.summary $REGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
-            $fullnamesearch .= " cf.fullname $REGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
-            $idnumbersearch  .= " cf.idnumber $REGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
-            $shortnamesearch  .= " cf.shortname $REGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+            $summarysearch  .= " summary $regexp '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+            $fullnamesearch .= " fullname $regexp '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+            $idnumbersearch  .= " idnumber $regexp '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+            $shortnamesearch  .= " shortname $regexp '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
         } else if (substr($searchterm, 0, 1) == "-") {
             $searchterm      = substr($searchterm, 1);
-            $summarysearch  .= " cf.summary $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
-            $fullnamesearch .= " cf.fullname $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
-            $idnumbersearch .= " cf.idnumber $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
-            $shortnamesearch .= " cf.shortname $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+            $summarysearch  .= " summary $notregexp '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+            $fullnamesearch .= " fullname $notregexp '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+            $idnumbersearch .= " idnumber $notregexp '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+            $shortnamesearch .= " shortname $notregexp '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
         } else {
             $summarysearch .= $DB->sql_like('summary', '?', false, true, false) . ' ';
             $summarysearchparams[] = '%' . $searchterm . '%';
@@ -776,7 +779,7 @@ function certif_get_certifications_search($searchterms, $sort='fullname ASC', $p
         }
     }
 
-    // If search terms supplied, include in where
+    // If search terms supplied, include in where.
     if (count($searchterms)) {
         $where = "
             WHERE (( $fullnamesearch ) OR ( $summarysearch ) OR ( $idnumbersearch ) OR ( $shortnamesearch ))
@@ -784,11 +787,11 @@ function certif_get_certifications_search($searchterms, $sort='fullname ASC', $p
         ";
         $params = array_merge($params, $fullnamesearchparams, $summarysearchparams, $idnumbersearchparams, $shortnamesearchparams);
     } else {
-        // Otherwise return everything
+        // Otherwise return everything.
         $where = " WHERE category > 0 ";
     }
 
-    // Add any additional sql supplied to where clause
+    // Add any additional sql supplied to where clause.
     if ($whereclause) {
         $where .= " AND {$whereclause}";
         $params = array_merge($params, $whereparams);
@@ -815,7 +818,7 @@ function certif_get_certifications_search($searchterms, $sort='fullname ASC', $p
 
     foreach ($rs as $certification) {
         if (!is_siteadmin($USER->id)) {
-            // Check if this certification is not available, if it's not then deny access
+            // Check if this certification is not available, if it's not then deny access.
             if ($certification->available == 0) {
                 continue;
             }
@@ -826,12 +829,12 @@ function certif_get_certifications_search($searchterms, $sort='fullname ASC', $p
                 $now = usertime(time());
             }
 
-            // Check if the certificationme isn't accessible yet
+            // Check if the certificationme isn't accessible yet.
             if ($certification->availablefrom > 0 && $certification->availablefrom > $now) {
                 continue;
             }
 
-            // Check if the certificationme isn't accessible anymore
+            // Check if the certificationme isn't accessible anymore.
             if ($certification->availableuntil > 0 && $certification->availableuntil < $now) {
                 continue;
             }
@@ -841,7 +844,7 @@ function certif_get_certifications_search($searchterms, $sort='fullname ASC', $p
                                                                     program_get_context($certification->pid))) {
             // Don't exit this loop till the end
             // we need to count all the visible courses
-            // to update $totalcount
+            // to update $totalcount.
             if ($c >= $limitfrom && $c < $limitto) {
                 $certifications[] = $certification;
             }
@@ -936,12 +939,14 @@ function certif_get_certifications_page($categoryid="all", $sort="sortorder ASC"
 function certification_progress($certificationcompletionid) {
     global $DB, $PAGE;
 
-    $certificationcompletion = $DB->get_record('certif_completion', array('id' => $certificationcompletionid), 'status, renewalstatus');
+    $certificationcompletion = $DB->get_record('certif_completion', array('id' => $certificationcompletionid),
+                                                'status, renewalstatus');
 
     if ($certificationcompletion->status == CERTIFSTATUS_INPROGRESS) {
         // In progress.
         $overall_progress = 50;
-    } else if ($certificationcompletion->status == CERTIFSTATUS_COMPLETED && $certificationcompletion->renewalstatus != CERTIFRENEWALSTATUS_DUE) {
+    } else if ($certificationcompletion->status == CERTIFSTATUS_COMPLETED
+                    && $certificationcompletion->renewalstatus != CERTIFRENEWALSTATUS_DUE) {
         // Completed and not due for renewal.
         $overall_progress = 100;
     } else {
@@ -951,7 +956,7 @@ function certification_progress($certificationcompletionid) {
 
     $tooltipstr = 'DEFAULTTOOLTIP';
 
-    // Get relevant progress bar and return for display
+    // Get relevant progress bar and return for display.
     $renderer = $PAGE->get_renderer('totara_core');
     return $renderer->print_totara_progressbar($overall_progress, 'medium', false, $tooltipstr);
 }
@@ -1108,22 +1113,22 @@ function certif_get_certifications($categoryid="all", $sort="cf.sortorder ASC", 
 function delete_removed_users($program) {
     global $DB;
 
-    // Get user assignments only if there are assignments for this program
+    // Get user assignments only if there are assignments for this program.
     $user_assignments = $DB->get_records('prog_user_assignment', array('programid' => $program->id));
 
     $certificationcompletions = $DB->get_records('certif_completion', array('certifid' => $program->certifid));
 
     // Check if completion record is not present in program user assignment but
-    // is in certification completion so delete from certification completions
+    // is in certification completion so delete from certification completions.
     foreach ($user_assignments as $assignment) {
-        foreach ($certificationcompletions as $k => $certification){
+        foreach ($certificationcompletions as $k => $certification) {
             if ($certification->userid == $assignment->userid) {
                 unset($certificationcompletions[$k]);
             }
         }
     }
 
-    // Remove and certification completions left in list, as no longer in program user assignment
+    // Remove and certification completions left in list, as no longer in program user assignment.
     if (count($certificationcompletions)) {
         list($usql, $params) = $DB->get_in_or_equal(array_keys($certificationcompletions));
         $DB->delete_records_select('certif_completion', "id $usql", $params);
@@ -1172,21 +1177,21 @@ function reset_certifcomponent_completions($certifcompletion, $courses=null) {
             AND coursesetid <> 0";
     $DB->execute($sql, array(STATUS_COURSESET_INCOMPLETE, $prog->id, $userid));
 
-    // course_completions (get list of courses if not done in calling function)
+    // Course_completions (get list of courses if not done in calling function).
     // Note: course_completion.renewalstatus is set to due at this point - would need to add that flag to cc processing
     // if not deleting record?
     if ($courses == null) {
-        $courses = find_courses_for_certif($certificationid, 'c.id'); // all paths
+        $courses = find_courses_for_certif($certificationid, 'c.id'); // All paths.
     }
     $courseids = array_keys($courses);
 
     foreach ($courseids as $courseid) {
-        // call course/lib.php functions
+        // Call course/lib.php functions.
         archive_course_completion($userid, $courseid);
         archive_course_activities($userid, $courseid);
     }
 
-    // remove mesages for prog&user so we can resend them
+    // Remove mesages for prog&user so we can resend them.
     certif_delete_messagelog($prog->id, $userid, MESSAGETYPE_RECERT_WINDOWOPEN);
     certif_delete_messagelog($prog->id, $userid, MESSAGETYPE_RECERT_WINDOWDUECLOSE);
     certif_delete_messagelog($prog->id, $userid, MESSAGETYPE_RECERT_FAILRECERT);

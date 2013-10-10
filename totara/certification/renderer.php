@@ -63,8 +63,8 @@ class totara_certification_renderer extends plugin_renderer_base {
         $attributes = array('title' => get_string('viewprogram', 'totara_program'), 'class' => $linkcss);
         $linktext = highlight($data->highlightterms, format_string($data->fullname));
         $out .= html_writer::link($url, $linktext, $attributes);
-        $out .= html_writer::end_tag('div'); // /name
-        $out .= html_writer::end_tag('div'); // /info
+        $out .= html_writer::end_tag('div'); // At /name .
+        $out .= html_writer::end_tag('div'); // At /info .
 
         $out .= html_writer::start_tag('div', array('class' => 'learningcomptype'));
         $out .= html_writer::start_tag('div', array('class' => 'name'));
@@ -93,7 +93,7 @@ class totara_certification_renderer extends plugin_renderer_base {
      */
     public function get_cancel_button($params=null, $url='') {
         if (empty($url)) {
-            $url = "/totara/program/edit.php"; // back to program edit
+            $url = "/totara/program/edit.php"; // Back to program edit.
         }
         $link = new moodle_url($url, $params);
         $output = $this->output->action_link($link, get_string('cancelcertificationmanagement', 'totara_certification'),

@@ -34,7 +34,7 @@ require_once($CFG->dirroot . '/totara/program/lib.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 require_once('edit_certification_form.php');
 
-$id = required_param('id', PARAM_INT); // certification id
+$id = required_param('id', PARAM_INT); // Certification id.
 
 require_login();
 
@@ -73,12 +73,12 @@ foreach ($category_breadcrumbs as $crumb) {
 $PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
 $PAGE->navbar->add(get_string('editcertif', 'totara_certification'));
 
-// Javascript include
+// Javascript include.
 local_js(array(
     TOTARA_JS_DIALOG)
 );
 
-// // Additional permissions check
+// Additional permissions check.
 if (!has_capability('totara/program:configuremessages', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
 }
@@ -95,7 +95,7 @@ if ($form->is_cancelled()) {
                                                                                 array('class' => 'notifysuccess'));
 }
 
-// This is where we validate and check the submitted data before saving it
+// This is where we validate and check the submitted data before saving it.
 if ($data = $form->get_data()) {
 
     if (isset($data->savechanges)) {
@@ -112,15 +112,16 @@ if ($data = $form->get_data()) {
 
 }
 
-// log this request
+// Log this request.
 add_to_log(SITEID, 'certification', 'edit', "edit_certification.php?id={$program->id}", $program->fullname);
 
-// Display
+
+// Display.
 
 $heading = format_string($program->fullname);
 $heading .= ' ('.get_string('certification', 'totara_certification').')';
 
-// Javascript includes
+// Javascript includes.
 $PAGE->requires->strings_for_js(array('editcertif', 'saveallchanges', 'confirmchanges',
                  'youhaveunsavedchanges', 'youhaveunsavedchanges', 'tosaveall'), 'totara_certification');
 $args = array('args'=>'{"id":'.$program->id.'}');
@@ -138,14 +139,14 @@ echo $OUTPUT->heading($heading);
 
 $renderer = $PAGE->get_renderer('totara_certification');
 
-// Display the current status
+// Display the current status.
 echo $program->display_current_status();
 $exceptions = $program->get_exception_count();
 $currenttab = 'certification';
 require_once($CFG->dirroot . '/totara/program/tabs.php');
 
 
-// Display the form
+// Display the form.
 $form->display();
 
 echo $renderer->get_cancel_button(array('id' => $program->id));

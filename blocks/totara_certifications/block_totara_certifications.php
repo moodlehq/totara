@@ -55,7 +55,7 @@ class block_totara_certifications extends block_base {
                          OR (cfc.certifpath = ? AND cfc.renewalstatus = ?))
                 ORDER BY cfc.timewindowopens DESC";
 
-        // as timewindowopens is 0 for CERTs they will come at top, in any order
+        // As timewindowopens is 0 for CERTs they will come at top, in any order.
 
         $renewals = $DB->get_records_sql($sql, array($USER->id, CERTIFPATH_CERT, CERTIFPATH_RECERT, CERTIFRENEWALSTATUS_DUE));
 
@@ -95,7 +95,7 @@ class block_totara_certifications extends block_base {
             }
             $this->content->text = $intro . html_writer::table($table);
 
-            // display 'required' list, certifications only
+            // Display 'required' list, certifications only.
             $url = new moodle_url('/totara/program/required.php', array('userid' => $USER->id, 'filter' => 'certification'));
             $this->content->footer = html_writer::link($url, get_string('allmycertifications', 'block_totara_certifications'));
         }

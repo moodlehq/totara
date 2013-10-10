@@ -37,7 +37,7 @@ require_once($CFG->dirroot.'/totara/certification/lib.php');
 function certification_cron() {
     $result = true;
 
-    // Run the tasks that should be run hourly
+    // Run the tasks that should be run hourly.
     $result = $result && certification_hourly_cron();
 
     return $result;
@@ -52,12 +52,12 @@ function certification_hourly_cron() {
     global $CFG;
 
     $timenow  = time();
-    $hourlycron = 3600; // one hour
+    $hourlycron = 3600; // One hour.
 
     $lasthourlycron = get_config(null, 'totara_certification_lasthourlycron');
 
     if ($lasthourlycron && ($timenow - $lasthourlycron <= $hourlycron)) {
-        // not enough time has elapsed to rerun hourly cron
+        // Not enough time has elapsed to rerun hourly cron.
         mtrace("No need to run certification hourly cron - has already been run recently.");
         if (isset($CFG->debugcron) && $CFG->debugcron) {
             mtrace("DEBUG - running anyway");

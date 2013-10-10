@@ -22,7 +22,7 @@
  * @subpackage certification
  */
 
-// Certification db upgrades
+// Certification db upgrades.
 
 defined('MOODLE_INTERNAL') || die();
 

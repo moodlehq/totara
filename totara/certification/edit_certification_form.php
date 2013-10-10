@@ -28,7 +28,7 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
 }
 
-// Define a form class to edit the program messages
+// Define a form class to edit the program messages.
 class edit_certification_form extends moodleform {
 
     public function definition() {
@@ -61,7 +61,7 @@ class edit_certification_form extends moodleform {
         $mform->addElement('html', html_writer::start_tag('p', array('class' => 'instructions')) .
                              get_string('editdetailsdesc', 'totara_certification') . html_writer::end_tag('p'));
 
-        // active period num
+        // Active period num.
         $mform->addElement('html', html_writer::start_tag('p', array('class' => 'subheader')) .
                              get_string('editdetailsactivep', 'totara_certification') . html_writer::end_tag('p'));
         $mform->addElement('html', html_writer::start_tag('p', array('class' => 'instructions')) .
@@ -71,7 +71,7 @@ class edit_certification_form extends moodleform {
         $mform->setType('activenum', PARAM_INT);
         $mform->setdefault('activenum', $active[0]);
 
-        // active period timeselect
+        // Active period timeselect.
         $dateperiodoptions = array(
             'day' => get_string('days', 'totara_certification'),
             'week' => get_string('weeks', 'totara_certification'),
@@ -83,7 +83,7 @@ class edit_certification_form extends moodleform {
         $mform->addGroup($activegrp, 'activegrp', get_string('editdetailsactive', 'totara_certification'), ' ', false);
         $mform->addHelpButton('activegrp', 'editdetailsactive', 'totara_certification');
 
-        // recert window period num
+        // Recert window period num.
         $mform->addElement('html', html_writer::start_tag('p', array('class' => 'subheader')) .
                              get_string('editdetailsrcwin', 'totara_certification') . html_writer::end_tag('p'));
         $windowgrp = array();
@@ -91,7 +91,7 @@ class edit_certification_form extends moodleform {
         $mform->setType('windownum', PARAM_INT);
         $mform->setDefault('windownum', $window[0]);
 
-        // recert window period timeselect
+        // Recert window period timeselect.
         $windowgrp[] = $mform->createElement('select', 'windowperiod', '', $dateperiodoptions);
         $mform->setDefault('windowperiod', $window[1]);
         $mform->addGroup($windowgrp, 'windowgrp', get_string('editdetailswindow', 'totara_certification'), ' ', false);
@@ -118,7 +118,7 @@ class edit_certification_form extends moodleform {
         $mform->setDefault('recertifydatetype', $recertifydatetype);
         $mform->addHelpButton('recertifydatetype', 'editdetailsrcopt', 'totara_certification');
 
-        // buttons
+        // Buttons.
         $buttonarray = array();
         $buttonarray[] = $mform->createElement('submit', 'savechanges', get_string('savechanges'), 'class="certification-add"');
         $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
@@ -139,7 +139,7 @@ class edit_certification_form extends moodleform {
         $errors = parent::validation($data, $files);
 
         foreach ($data as $elementname => $elementvalue) {
-            // check for negative integer issues
+            // Check for negative integer issues.
             if ($elementname == 'activenum' || $elementname == 'windownum') {
                 if ($elementvalue < 0) {
                     $errors[$elementname] = get_string('error:mustbepositive', 'totara_certification');

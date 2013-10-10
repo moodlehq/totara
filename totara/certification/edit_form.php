@@ -40,7 +40,7 @@ class certification_add_form extends moodleform {
         $systemcontext = context_system::instance();
         $categorycontext = context_coursecat::instance($category->id);
 
-        // Add some hidden fields
+        // Add some hidden fields.
         $mform->addElement('hidden', 'action', $action);
         $mform->setType('action', PARAM_TEXT);
 

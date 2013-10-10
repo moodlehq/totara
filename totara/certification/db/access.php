@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-    // View a certification
+    // View a certification.
     'totara/certification:viewcertification' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_PROGRAM,
@@ -34,7 +34,7 @@ $capabilities = array(
             'user' => CAP_ALLOW,
         )
     ),
-    // View hidden certifications
+    // View hidden certifications.
     'totara/certification:viewhiddencertifications' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_PROGRAM,
@@ -45,7 +45,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-    // Access any user's certifications
+    // Access any user's certifications.
     'totara/certification:accessanycertification' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
@@ -54,7 +54,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-    // Create new certifications
+    // Create new certifications.
     'totara/certification:createcertification' => array(
         'riskbitmask' => RISK_XSS | RISK_CONFIG,
         'captype' => 'write',
@@ -63,7 +63,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
         )
     ),
-    // Delete certifications
+    // Delete certifications.
     'totara/certification:deletecertification' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
@@ -74,7 +74,7 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'totara/certification:createcertification'
     ),
-    // Ability to edit and delete certifications
+    // Ability to edit and delete certifications.
     'totara/certification:configurecertification' => array(
         'riskbitmask' => RISK_DATALOSS | RISK_XSS |
             RISK_CONFIG,
@@ -84,7 +84,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
         )
     ),
-    // Ability to edit the certification details tab
+    // Ability to edit the certification details tab.
     'totara/certification:configuredetails' => array(
         'riskbitmask' => RISK_DATALOSS | RISK_XSS |
             RISK_CONFIG,
@@ -95,7 +95,7 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'totara/certification:configurecertification'
     ),
-    // Ability to add and remove certification content and configure the flow of content
+    // Ability to add and remove certification content and configure the flow of content.
     'totara/certification:configurecontent' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
@@ -105,7 +105,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
         )
     ),
-    // Ability to add and remove certification recertificationdetails
+    // Ability to add and remove certification recertificationdetails.
     'totara/certification:configurerecertificationdetails' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
@@ -115,7 +115,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
         )
     ),
-    // Ability to add and remove certification messages
+    // Ability to add and remove certification messages.
     'totara/certification:configuremessages' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
@@ -125,7 +125,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
         )
     ),
-    // Ability to view exception reports and handle exceptions
+    // Ability to view exception reports and handle exceptions.
     'totara/certification:handleexceptions' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,

@@ -36,7 +36,7 @@ require_login();
 
 $id = optional_param('id', 0, PARAM_INT);
 $action = optional_param('action', 'add', PARAM_TEXT);
-$categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
+$categoryid = optional_param('category', 0, PARAM_INT); // Course category - can be changed in edit form.
 
 $systemcontext = context_system::instance();
 $actualurl = new moodle_url('/totara/certification/add.php', array('category' => $categoryid, 'action' => $action, 'id'=> $id));
@@ -56,7 +56,7 @@ $currenturl = qualified_me();
 $indexurl = new moodle_url('/program/index.php', array('viewtype' => 'certification'));
 
 if ($action == 'add') {
-    if ($categoryid) { // creating new certification in this category
+    if ($categoryid) { // Creating new certification in this category.
         if (!$category = $DB->get_record('course_categories', array('id' => $categoryid))) {
             print_error('error:categoryidwasincorrect', 'totara_certification');
         }
@@ -65,20 +65,19 @@ if ($action == 'add') {
         print_error('error:categorymustbespecified', 'totara_certification');
     }
 
-    // while there is only a program type of certification go straight to program add rather than
-    // show selection page
+    // While there is only a program type of certification go straight to program-add rather than show selection page.
     redirect(new moodle_url('/totara/program/add.php', array('category' => $categoryid, 'iscertif' => 1)));
 } else {
     print_error('error:invalidaction', 'totara_certification', '', $action);
 }
 
 
-// Data and actions
+// Data and actions.
 if ($form->is_cancelled()) {
     redirect($indexurl);
 }
 
-// Handle form submit
+// Handle form submit.
 if ($data = $form->get_data()) {
     if (isset($data->savechanges)) {
         if ($data->action == 'add') {
@@ -92,7 +91,7 @@ if ($data = $form->get_data()) {
     }
 }
 
-// Display
+// Display.
 $heading = get_string('createnewcertification', 'totara_certification');
 $pagetitle = format_string(get_string('certification', 'totara_certification') . ': ' . $heading);
 prog_add_base_navlinks();
