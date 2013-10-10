@@ -469,6 +469,7 @@ function create_evidence($importname, $importtime) {
     $extraparams['tablename'] = $tablename;
     $extraparams['shortnamefield'] = $shortnamefield;
     $extraparams['idnumberfield'] = $idnumberfield;
+    $extraparams['importname'] = $importname;
 
     $evidences = $DB->get_recordset_sql($sql, $params);
     $DB->insert_records_via_batch('dp_plan_evidence', $evidences, 'create_evidence_item', $extraparams);
@@ -488,7 +489,7 @@ function create_evidence($importname, $importtime) {
  * @param string $idnumberfield name of id number, either certificationidnumber or courseidnumber
  * @return object $data record to insert
  */
-function create_evidence_item($item, $evidencetype, $csvdateformat, $tablename, $shortnamefield, $idnumberfield) {
+function create_evidence_item($item, $evidencetype, $csvdateformat, $tablename, $shortnamefield, $idnumberfield, $importname) {
     global $USER, $DB;
 
     $timecompleted = null;
@@ -499,9 +500,9 @@ function create_evidence_item($item, $evidencetype, $csvdateformat, $tablename, 
 
     $itemname = '';
     if (!empty($item->$shortnamefield)) {
-        $itemname = get_string('evidence_shortname', 'totara_completionimport', $item->$shortnamefield);
+        $itemname = get_string('evidence_shortname_' . $importname, 'totara_completionimport', $item->$shortnamefield);
     } else if (!empty($item->$idnumberfield)) {
-        $itemname = get_string('evidence_idnumber', 'totara_completionimport', $item->$idnumberfield);
+        $itemname = get_string('evidence_idnumber_' . $importname, 'totara_completionimport', $item->$idnumberfield);
     }
 
     $description = '';

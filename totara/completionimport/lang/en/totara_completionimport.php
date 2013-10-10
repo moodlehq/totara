@@ -38,8 +38,10 @@ $string['evidence_courseidnumber'] = 'Course ID number : {$a}';
 $string['evidence_courseshortname'] = 'Course Short name : {$a}';
 $string['evidence_grade'] = 'Grade : {$a}';
 $string['evidence_importid'] = 'Import ID : {$a}';
-$string['evidence_shortname'] = 'Imported short name : {$a}';
-$string['evidence_idnumber'] = 'Imported id number : {$a}';
+$string['evidence_shortname_certification'] = 'Completed certification : {$a}';
+$string['evidence_shortname_course'] = 'Completed course : {$a}';
+$string['evidence_idnumber_certification'] = 'Completed certification ID : {$a}';
+$string['evidence_idnumber_course'] = 'Completed course ID : {$a}';
 $string['evidencetype'] = 'Default evidence type';
 $string['evidencetype_help'] = 'Any courses or certificates that can\'t be found will be added as evidence in the record of learning.
 
