@@ -670,7 +670,7 @@ class plugin_manager {
                 , 'totara_addtoplan', 'totara_alerts',
                 'totara_my_learning_nav', 'totara_my_team_nav', 'totara_quicklinks',
                 'totara_recent_learning', 'totara_report_manager', 'totara_stats',
-                'totara_tasks', 'facetoface'
+                'totara_tasks', 'facetoface', 'totara_certifications'
             ),
 
             // Totara (as book module is standard)
@@ -850,7 +850,8 @@ class plugin_manager {
             // Totara:
             'totara' => array(
                 'appraisal', 'cohort', 'core', 'coursecatalog', 'customfield', 'dashboard', 'feedback360',
-                'hierarchy', 'message', 'oauth', 'plan', 'program', 'question', 'reportbuilder'
+                'hierarchy', 'message', 'oauth', 'plan', 'program', 'question', 'reportbuilder',
+                'certification', 'completionimport'
             ),
 
             'webservice' => array(
