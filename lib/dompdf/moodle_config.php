@@ -35,7 +35,7 @@ define("DOMPDF_DEFAULT_MEDIA_TYPE", "pdf");
 define("DOMPDF_ENABLE_JAVASCRIPT", true);
 define("DOMPDF_ENABLE_REMOTE", true);
 define("DOMPDF_DEFAULT_FONT", "serif");
-define("DOMPDF_DPI", 96);
+define("DOMPDF_DPI", 125);
 define("DOMPDF_ENABLE_FONTSUBSETTING", false);
 
 //define("DOMPDF_DEFAULT_PAPER_SIZE", "letter");

@@ -45,35 +45,32 @@ class totara_dompdf extends dompdf {
         }
 
         if (strpos($file, $CFG->wwwroot.'/pluginfile.php') !== false || strpos($file, $CFG->wwwroot.'/draftfile.php') !== false) {
-            if (!function_exists('curl_init')) {
-                return null;
-            }
             session_get_instance()->write_close();
-            $cs = curl_init();
-            curl_setopt($cs, CURLOPT_URL, $file);
-            curl_setopt($cs, CURLOPT_BINARYTRANSFER, true);
-            curl_setopt($cs, CURLOPT_FAILONERROR, true);
-            curl_setopt($cs, CURLOPT_RETURNTRANSFER, true);
-            if ((ini_get('open_basedir') == '') AND (ini_get('safe_mode') == 'Off')) {
-                curl_setopt($cs, CURLOPT_FOLLOWLOCATION, true);
-            }
-            curl_setopt($cs, CURLOPT_CONNECTTIMEOUT, 5);
-            curl_setopt($cs, CURLOPT_TIMEOUT, 3);
-            curl_setopt($cs, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($cs, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($cs, CURLOPT_USERAGENT, 'TCPDF');
 
-            curl_setopt($cs, CURLOPT_VERBOSE, 1);
+            $curlhandler = new curl();
             $logfile = fopen('/tmp/curl.txt', 'w+');
-            curl_setopt($cs, CURLOPT_STDERR, $logfile);
-            curl_setopt($cs, CURLOPT_COOKIE, $session_cookie_data);
-            $imgdata = curl_exec($cs);
+            $options = array(
+                'CURLOPT_BINARYTRANSFER' => true,
+                'CURLOPT_FAILONERROR' => true,
+                'CURLOPT_RETURNTRANSFER' => true,
+                'CURLOPT_CONNECTTIMEOUT' => 5,
+                'CURLOPT_TIMEOUT' => 3,
+                'CURLOPT_SSL_VERIFYPEER' => false,
+                'CURLOPT_SSL_VERIFYHOST' => false,
+                'CURLOPT_USERAGENT' => 'TCPDF',
+                'CURLOPT_STDERR' => $logfile,
+                'CURLOPT_VERBOSE' => 1,
+                'CURLOPT_COOKIE' => $session_cookie_data);
+            if ((ini_get('open_basedir') == '') && (ini_get('safe_mode') == 'Off')) {
+                $options['CURLOPT_FOLLOWLOCATION'] = true;
+            }
+
+            $imgdata = $curlhandler->get($file, array(), $options);
             fclose($logfile);
+
             if (!$imgdata) {
                 return;
             }
-            curl_close($cs);
-
             return $imgdata;
         } else {
             return file_get_contents($file);
