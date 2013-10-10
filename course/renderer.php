@@ -1088,9 +1088,18 @@ class core_course_renderer extends plugin_renderer_base {
 
         // course name
         $coursename = $chelper->get_course_formatted_name($course);
-        $coursenamelink = html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)),
-                $coursename, array('class' => $course->visible ? '' : 'dimmed',
-                            'style' => 'background-image:url('.totara_get_course_icon($course->id).')'));
+        $dimmed = '';
+        if (empty($CFG->audiencevisibility)) {
+            if (!$course->visible) {
+                $dimmed = 'dimmed';
+            }
+        } else {
+            if ($course->audiencevisible == COHORT_VISIBLE_NONE) {
+                $dimmed = 'dimmed';
+            }
+        }
+        $coursenamelink = html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $coursename,
+                array('class' => $dimmed, 'style' => 'background-image:url('.totara_get_course_icon($course->id).')'));
         $content .= html_writer::tag($nametag, $coursenamelink, array('class' => 'name'));
 
         // If we display course in collapsed form but the course has summary or course contacts, display the link to the info page.

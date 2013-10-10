@@ -3013,13 +3013,7 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
         } else {
             require_once($CFG->dirroot . '/totara/coursecatalog/lib.php');
             // Check audience visibility setting and user permissions.
-            if (!empty($CFG->audiencevisibility) && !totara_course_is_viewable($course->id)) {
-                if ($preventredirect) {
-                    throw new require_login_exception('Course is hidden');
-                }
-                navigation_node::override_active_url(new moodle_url('/'));
-                notice(get_string('coursehidden'), $CFG->wwwroot .'/');
-            } else if (!$course->visible and !has_capability('moodle/course:viewhiddencourses', $coursecontext)) {
+            if (!totara_course_is_viewable($course->id)) {
                 // originally there was also test of parent category visibility,
                 // BUT is was very slow in complex queries involving "my courses"
                 // now it is also possible to simply hide all courses user is not enrolled in :-)

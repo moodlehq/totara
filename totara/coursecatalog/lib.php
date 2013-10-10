@@ -192,22 +192,26 @@ function totara_course_is_viewable($courseid, $userid = null) {
         $userid = $USER->id;
     }
 
+    $coursecontext = context_course::instance($courseid);
+
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
     if (empty($CFG->audiencevisibility)) {
-        if ($course->visible) {
-            return true;
-        }
-
-        // If this user is able to view hidden courses, then let it be visible.
-        if (has_capability('moodle/course:viewhiddencourses', context_course::instance($course->id), $userid)) {
-            return true;
+        // This check is moved from require_login().
+        if (!$course->visible && !has_capability('moodle/course:viewhiddencourses', $coursecontext, $userid)) {
+            return false;
         }
     } else {
         if ($course->audiencevisible == COHORT_VISIBLE_ALL) {
+            // Course needs to be visible to all.
             return true;
         } else if (has_capability('totara/coursecatalog:manageaudiencevisibility', context_system::instance())) {
+            // Or user has 'manageaudiencevisibility' capability.
+            return true;
+        } else if (is_enrolled($coursecontext, $userid)) {
+            // Or user needs to be enrolled.
             return true;
         } else {
+            // Or user is in visible audiences.
             $sql = "SELECT cv.instanceid
                             FROM {cohort_visibility} cv
                             JOIN {cohort_members} cm ON cv.cohortid = cm.cohortid
@@ -222,8 +226,9 @@ function totara_course_is_viewable($courseid, $userid = null) {
             if ($DB->record_exists_sql($sql, $params)) {
                 return true;
             }
+            return false;
         }
     }
 
-    return false;
+    return true;
 }
