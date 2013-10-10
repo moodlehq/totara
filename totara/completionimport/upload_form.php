@@ -56,7 +56,7 @@ class upload_form extends moodleform {
         // Evidence type
         $options = $DB->get_records_select_menu('dp_evidence_type', null, null, 'sortorder', 'id, name');
         $selector = array(0 => get_string('selectanevidencetype', 'totara_plan'));
-        $selectoptions = array_merge($selector, $options);
+        $selectoptions = $selector + $options;
         $mform->addElement('select', 'evidencetype', get_string('evidencetype', 'totara_completionimport'), $selectoptions);
         $mform->setType('evidencetype', PARAM_INT);
         $mform->addHelpButton('evidencetype', 'evidencetype', 'totara_completionimport');
