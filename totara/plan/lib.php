@@ -386,7 +386,7 @@ function dp_get_rol_tabs_visible($userid) {
 
     $visible[] = 'evidence';
 
-    $certification_progs = prog_get_certification_programs($userid, '', '', '', true);
+    $certification_progs = prog_get_certification_programs($userid, '', '', '', true, true, true);
     if ($certification_progs > 0) {
         $visible[] = 'certifications';
     }
@@ -799,7 +799,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
     // Print Required Learning menu
     if ($showrequired) {
         $programs = prog_get_required_programs($userid, ' ORDER BY fullname ASC ', '', '', false, true);
-        $certifications = prog_get_certification_programs($userid, ' ORDER BY fullname ASC ', '', '', false, true);
+        $certifications = prog_get_certification_programs($userid, ' ORDER BY fullname ASC ', '', '', false, true, true);
         if ($programs || $certifications) {
             $extraparams = array();
             $headingclass = 'main';

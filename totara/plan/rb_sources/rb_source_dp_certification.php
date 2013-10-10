@@ -467,8 +467,8 @@ class rb_source_dp_certification extends rb_base_source {
         // OR status = ' . CERTIFSTATUS_EXPIRED . '
         $paramoptions[] = new rb_param_option(
                 'rolstatus',
-                '(CASE WHEN certif_completion.status = ' . CERTIFSTATUS_COMPLETED . ' THEN \'completed\' ELSE \'active\' END)',
-                'certif_completion',
+                '(CASE WHEN prog_completion.status = ' . STATUS_PROGRAM_COMPLETE . ' THEN \'completed\' ELSE \'active\' END)',
+                'prog_completion',
                 'string'
         );
         $paramoptions[] = new rb_param_option(

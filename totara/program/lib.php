@@ -142,9 +142,11 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
  * @param int $limitnum return a subset comprising this many records (optional, required if $limitfrom is set).
  * @param bool $returncount Whether to return a count of the number of records found or the records themselves
  * @param bool $showhidden Whether to include hidden programs in records returned
+ * @param bool $activeonly Whether to restrict to only active programs (programs where "Progress" is not "Complete")
  * @return array|int
  */
-function prog_get_certification_programs($userid, $sort='', $limitfrom='', $limitnum='', $returncount=false, $showhidden=false) {
+function prog_get_certification_programs($userid, $sort='', $limitfrom='', $limitnum='', $returncount=false, $showhidden=false,
+        $activeonly=false) {
     global $DB;
 
     $params = array();
@@ -174,8 +176,12 @@ function prog_get_certification_programs($userid, $sort='', $limitfrom='', $limi
                             AND pua.userid = pc.userid
                             AND pua.exceptionstatus {$exceptionsql})";
     if (!$showhidden) {
-        $where .= " WHERE p.visible = :visible";
+        $where .= "AND p.visible = :visible ";
         $params['visible'] = 1;
+    }
+    if ($activeonly) {
+        $where .= "AND pc.status <> :status ";
+        $params['status'] = STATUS_PROGRAM_COMPLETE;
     }
 
     if ($returncount) {
@@ -274,7 +280,7 @@ function prog_display_required_programs($userid) {
  */
 function prog_display_certification_programs($userid) {
 
-    $count = prog_get_certification_programs($userid, '', '', '', true, true);
+    $count = prog_get_certification_programs($userid, '', '', '', true, true, true);
 
     // Set up table
     $tablename = 'progs-list';
@@ -308,7 +314,8 @@ function prog_display_certification_programs($userid) {
     $sort = empty($sort) ? '' : ' ORDER BY '.$sort;
 
     // Add table data
-    $cprograms = prog_get_certification_programs($userid, $sort, $table->get_page_start(), $table->get_page_size(), false, true);
+    $cprograms = prog_get_certification_programs($userid, $sort, $table->get_page_start(), $table->get_page_size(),
+            false, true, true);
 
     if (!$cprograms) {
         return '';
@@ -1245,13 +1252,13 @@ function prog_get_tab_link($userid) {
     $progtable = new xmldb_table('prog');
     if ($dbman->table_exists($progtable)) {
         $programcount = prog_get_required_programs($userid, '', '', '', true, true);
-        $certificationcount = prog_get_certification_programs($userid, '', '', '', true, true);
+        $certificationcount = prog_get_certification_programs($userid, '', '', '', true, true, true);
         $requiredlearningcount = $programcount + $certificationcount;
         if ($requiredlearningcount == 1) {
             if ($programcount == 1) {
                 $program = prog_get_required_programs($userid, '', '', '', false, true);
             } else {
-                $program = prog_get_certification_programs($userid, '', '', '', false, true);
+                $program = prog_get_certification_programs($userid, '', '', '', false, true, true);
             }
             $program = reset($program); // resets array pointer and returns value of first element
             $prog = new program($program->id);
