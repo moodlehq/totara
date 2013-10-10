@@ -1565,8 +1565,10 @@ class program {
         }
         $now = time();
         $certifpath = get_certification_path_user($this->certifid, $userid);
-        $certifpath == CERTIFPATH_UNSET && $certifpath = CERTIFPATH_CERT;
-        $total_time_allowed = $this->content->get_total_time_allowance($this->certifid);
+        if ($certifpath == CERTIFPATH_UNSET) {
+            $certifpath = CERTIFPATH_CERT;
+        }
+        $total_time_allowed = $this->content->get_total_time_allowance($certifpath);
         $time_until_duedate = $timedue - $now;
 
         if ($timedue == COMPLETION_TIME_UNKNOWN) {
