@@ -737,16 +737,17 @@ class assign {
             // Delete files associated with this assignment for this user.
             $assignmentid = $this->get_instance()->id;
             $plugintypes = array();
-            $plugintypes['submissionplugins'] = array('submission' => $submission->id, 'assignment' => $assignmentid);
+            $plugintypes['submissionplugins'] = array('fieldname' =>'submission', 'itemid' => $submission->id);
             if ($grade) {
-                $plugintypes['feedbackplugins'] = array('grade' => $grade->id, 'assignment' => $assignmentid);
+                $plugintypes['feedbackplugins'] = array('fieldname' => 'grade', 'itemid' => $grade->id);
             }
-            foreach ($plugintypes as $plugintype => $deleteparams) {
+            foreach ($plugintypes as $plugintype => $params) {
+                $deleteparams = array('assignment' => $assignmentid, $params['fieldname'] => $params['itemid'] );
                 foreach ($this->$plugintype as $plugin) {
                     $plugincomponent = $plugin->get_subtype() . '_' . $plugin->get_type();
                     $fileareas = $plugin->get_file_areas();
                     foreach ($fileareas as $filearea) {
-                        $fs->delete_area_files($this->context->id, $plugincomponent, $filearea, $submission->id);
+                        $fs->delete_area_files($this->context->id, $plugincomponent, $filearea, $params['itemid']);
                     }
                     // If a plugin component table exists then delete the records for this submission/feedback.
                     if ($dbman->table_exists($plugincomponent) &&
