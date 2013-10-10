@@ -1100,6 +1100,9 @@ class program {
                     $out .= html_writer::end_tag('div');
                     $out .= $this->display_courseset(CERTIFPATH_RECERT, $userid, $viewinganothersprogram);
                 }
+            } else {
+                $out .= $OUTPUT->heading(get_string('oricertpath', 'totara_certification'), 2);
+                $out .= $this->display_courseset(CERTIFPATH_CERT, $userid, $viewinganothersprogram);
             }
         } else {
             $out .= $this->display_courseset(CERTIFPATH_STD, $userid, $viewinganothersprogram);
