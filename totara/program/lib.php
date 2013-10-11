@@ -162,14 +162,17 @@ function prog_get_certification_programs($userid, $sort='', $limitfrom='', $limi
             INNER JOIN {prog_completion} pc ON p.id = pc.programid
                     AND pc.coursesetid = 0
                     AND pc.userid = :userid
-            INNER JOIN {prog_user_assignment} pua ON pc.programid = pua.programid
-                    AND pc.userid = pua.userid
-                    AND pua.exceptionstatus {$exceptionsql}
             INNER JOIN {certif} cf ON cf.id = p.certifid
             INNER JOIN {certif_completion} cfc ON cfc.certifid = cf.id
                     AND cfc.userid = pc.userid ";
 
-    $where = '';
+    $where = 'WHERE 1=1 ';
+    // Is the user assigned? Exists is more efficient than using distinct.
+    $where .= "AND EXISTS (SELECT userid
+                            FROM {prog_user_assignment} pua
+                            WHERE pua.programid = pc.programid
+                            AND pua.userid = pc.userid
+                            AND pua.exceptionstatus {$exceptionsql})";
     if (!$showhidden) {
         $where .= " WHERE p.visible = :visible";
         $params['visible'] = 1;
