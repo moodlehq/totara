@@ -159,19 +159,23 @@ class totara_dialog_content_goals extends totara_dialog_content {
         if ($this->frameworkid == goal::SCOPE_COMPANY) {
             $goalcompanys = goal::get_goal_items(array('userid' => $userid), goal::SCOPE_COMPANY);
 
-            $goalids = array();
-            foreach ($goalcompanys as $goalcompany) {
-                $goalids[] = $goalcompany->goalid;
-            }
-            // Get the fullname of the goals from the goal table.
-            list($insql, $inparam) = $DB->get_in_or_equal($goalids);
-            $goalnames = $DB->get_records_select_menu('goal', "id {$insql}", $inparam, '', 'id,fullname');
-            foreach ($goalcompanys as $goalcompany) {
-                $goalcompany->fullname = $goalnames[$goalcompany->goalid];
-            }
-            usort($goalcompanys, array('self', 'goal_fullname_sort'));
+            if (!empty($goalcompanys)) {
+                $goalids = array();
+                foreach ($goalcompanys as $goalcompany) {
+                    $goalids[] = $goalcompany->goalid;
+                }
+                // Get the fullname of the goals from the goal table.
+                list($insql, $inparam) = $DB->get_in_or_equal($goalids);
+                $goalnames = $DB->get_records_select_menu('goal', "id {$insql}", $inparam, '', 'id,fullname');
+                foreach ($goalcompanys as $goalcompany) {
+                    $goalcompany->fullname = $goalnames[$goalcompany->goalid];
+                }
+                usort($goalcompanys, array('self', 'goal_fullname_sort'));
 
-            $this->items = $goalcompanys;
+                $this->items = $goalcompanys;
+            } else {
+                $this->items = array();
+            }
         } else if ($this->frameworkid == goal::SCOPE_PERSONAL) {
             if ($userid == 0) {
                 $userid = $USER->id;
