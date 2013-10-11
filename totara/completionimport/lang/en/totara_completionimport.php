@@ -25,6 +25,7 @@ $string['csvimportfailed'] = 'Failed to import the CSV file';
 $string['csvseparator'] = 'CSV Values separated by';
 $string['dataimportdone'] = '{$a} data imported successfully';
 $string['duplicate'] = 'Duplicate';
+$string['duplicateidnumber'] = 'Duplicate ID Number';
 $string['emptyfile'] = 'File is empty : {$a}';
 $string['emptyrow'] = 'Empty row';
 $string['error:import_certifications'] = 'Errors while importing the certifications';

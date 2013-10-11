@@ -370,6 +370,28 @@ function import_data_checks($importname, $importtime) {
         $duplicategroups->close();
     }
 
+    // Unique ID numbers.
+    if (in_array($shortnamefield, $columnnames) && in_array($idnumberfield, $columnnames)) {
+        // I 'think' the count has to be included in the select even though we only need having count().
+        $sql = "SELECT u.{$idnumberfield}, COUNT(*) AS shortnamecount
+                FROM (SELECT DISTINCT {$shortnamefield}, {$idnumberfield}
+                        FROM {{$tablename}}
+                        {$sqlwhere}) u
+                GROUP BY u.{$idnumberfield}
+                HAVING COUNT(*) > 1";
+        $idnumbers = $DB->get_records_sql($sql, $stdparams);
+        $idnumberlist = array_keys($idnumbers);
+        list($idsql, $idparams) = $DB->get_in_or_equal($idnumberlist, SQL_PARAMS_NAMED, 'param');
+
+        $params = array_merge($stdparams, $idparams);
+        $params['errorstring'] = 'duplicateidnumber;';
+        $sql = "UPDATE {{$tablename}}
+                SET importerrormsg = " . $DB->sql_concat('importerrormsg', ':errorstring') . "
+                {$sqlwhere}
+                AND {$idnumberfield} {$idsql}";
+        $DB->execute($sql, $params);
+    }
+
     if (in_array($shortnamefield, $columnnames) && in_array($idnumberfield, $columnnames)) {
         // Blank shortname and id number
         $params = array_merge($stdparams, array('errorstring' => $importname . 'blankrefs;'));
