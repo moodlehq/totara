@@ -423,7 +423,10 @@ switch ($searchtype) {
         $search_info->fullname = $DB->sql_fullname('u.firstname', 'u.lastname');
         $search_info->email = 'email';
         $search_info->sql = "FROM {user} u
-                            WHERE {$searchsql} {$managersql}";
+                            WHERE {$searchsql} {$managersql}
+                              AND u.id NOT IN (?, ?)";
+        $params[] = $this->customdata['current_user'];
+        $params[] = $this->customdata['current_manager'];
         $search_info->order = " ORDER BY u.firstname, u.lastname";
         $search_info->params = $params;
         break;

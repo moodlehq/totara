@@ -40,27 +40,24 @@ require_login();
 $guest = guest_user();
 
 // Load potential managers for this user.
-$managers = array();
+$currentmanager = totara_get_manager($userid, null, true);
+$currentmanagerid = empty($currentmanager) ? 0 : $currentmanager->id;
 if (empty($CFG->tempmanagerrestrictselection)) {
     // All users.
     $sql = "SELECT u.id, u.email, ".$DB->sql_fullname('u.firstname', 'u.lastname')." AS fullname
               FROM {user} u
              WHERE u.deleted = 0
-               AND u.id != ?
-               AND u.id != ?
-          ORDER BY u.firstname, u.lastname";
-    $managers = $DB->get_records_sql($sql, array($guest->id, $userid));
+               AND u.id NOT IN(?, ?, ?)
+          ORDER BY fullname, u.id";
 } else {
-    $currentmanager = totara_get_manager($userid, null, true);
-    $currentmanager = empty($currentmanager) ? 0 : $currentmanager->id;
     $sql = "SELECT DISTINCT u.id, u.email, ".$DB->sql_fullname('u.firstname', 'u.lastname')." AS fullname
               FROM {pos_assignment} pa
               JOIN {user} u ON pa.managerid = u.id
              WHERE u.deleted = 0
                AND u.id NOT IN(?, ?, ?)
           ORDER BY fullname, u.id";
-    $managers = $DB->get_records_sql($sql, array($guest->id, $userid, $currentmanager));
 }
+$managers = $DB->get_records_sql($sql, array($guest->id, $userid, $currentmanagerid));
 
 /*
  * Display page.
@@ -69,8 +66,9 @@ if (empty($CFG->tempmanagerrestrictselection)) {
 $dialog = new totara_dialog_content();
 $dialog->searchtype = 'temporary_manager';
 $dialog->items = $managers;
-$dialog->disabled_items = array($userid => true);
+$dialog->disabled_items = array($userid => true, $currentmanagerid => true);
 $dialog->customdata['current_user'] = $userid;
+$dialog->customdata['current_manager'] = $currentmanagerid;
 $dialog->urlparams['userid'] = $userid;
 
 echo $dialog->generate_markup();
