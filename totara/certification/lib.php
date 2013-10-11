@@ -459,7 +459,6 @@ function write_certif_completion($certificationid, $userid, $certificationpath =
         $todb->status = CERTIFSTATUS_COMPLETED;
         $lastcompleted = certif_get_content_completion_time($certificationid, $userid);
         // If no courses completed, maintain default behaviour.
-        // TODO check if needed - can a program be completed with no courses completed?
         if (!$lastcompleted) {
             $lastcompleted = time();
         }
@@ -612,29 +611,6 @@ function find_courses_for_certif($certifid, $fields='c.id, c.fullname') {
     $certificationrecords = $DB->get_records_sql($sql, array($certifid));
 
     return $certificationrecords;
-}
-
-/**
- * Get course module records given an array of course ids
- *
- * @param array $cids Array of course ids
- * @param string $fields Fields to return for records
- * @param string $usql
- * TODO: This function is never called, do we need it
- */
-function find_course_modules_for_courses($cids, $fields = 'id', $usql='') {
-    global $DB;
-
-    if ($usql == '') {
-        list($usql, $cids) = $DB->get_in_or_equal($cids);
-    }
-
-    $sql = "SELECT DISTINCT $fields
-            FROM {course_modules}
-            WHERE course $usql ";
-    $coursemodulerecords = $DB->get_records_sql($sql, $cids);
-
-    return $coursemodulerecords;
 }
 
 /**
@@ -930,8 +906,6 @@ function certif_get_certifications_page($categoryid="all", $sort="sortorder ASC"
 
 /**
  * Get progress bar for ROL etc
- *
- * @todo Need to review what the progress percentage is for each combination of status, renewalstatus, dates...
  *
  * @param integer $certificationcompletionid
  * @return string Markup for producing a progress bar
