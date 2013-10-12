@@ -86,6 +86,27 @@ function get_tablename($importname) {
 }
 
 /**
+ * Returns the SQL to compare the shortname if not empty or idnumber if shortname is empty
+ * @global object $DB
+ * @param string $relatedtable eg: "{course}" if a table or 'c' if its an alias
+ * @param string $importtable eg: "{totara_compl_import_course}" or "i"
+ * @param string $shortnamefield courseshortname or certificationshortname
+ * @param string $idnumberfield courseidnumber or certificationidnumber
+ * @return string Where condition
+ */
+function get_shortnameoridnumber($relatedtable, $importtable, $shortnamefield, $idnumberfield) {
+    global $DB;
+
+    $notemptyshortname = $DB->sql_isnotempty($importtable, "{$importtable}.{$shortnamefield}", true, false);
+    $emptyshortname = $DB->sql_isempty($importtable, "{$importtable}.{$shortnamefield}", true, false);
+    $shortnameoridnumber = "
+        (({$notemptyshortname} AND {$relatedtable}.shortname = {$importtable}.{$shortnamefield})
+        OR
+        ({$emptyshortname} AND {$relatedtable}.idnumber = {$importtable}.{$idnumberfield}))";
+    return $shortnameoridnumber;
+}
+
+/**
  * Returns the standard filter for the import table and related parameters
  *
  * @global object $USER
@@ -408,24 +429,18 @@ function import_data_checks($importname, $importtime) {
             // Course exists but there is no manual enrol record
             $params = array('enrolname' => 'manual', 'errorstring' => 'nomanualenrol;');
             $params = array_merge($stdparams, $params);
-            $notemptyshortname = $DB->sql_isnotempty($tablename, "{{$tablename}}.{$shortnamefield}", true, false);
+            $shortnameoridnumber = get_shortnameoridnumber("{course}", "{{$tablename}}", $shortnamefield, $idnumberfield);
             $sql = "UPDATE {{$tablename}}
                     SET importerrormsg = " . $DB->sql_concat('importerrormsg', ':errorstring') . "
                     {$sqlwhere}
                     AND EXISTS (SELECT {course}.id
                                 FROM {course}
-                                WHERE (CASE WHEN {$notemptyshortname}
-                                        THEN {course}.shortname = {{$tablename}}.{$shortnamefield}
-                                        ELSE {course}.idnumber = {{$tablename}}.{$idnumberfield}
-                                    END))
+                                WHERE {$shortnameoridnumber})
                     AND NOT EXISTS (SELECT {enrol}.id
                                 FROM {enrol}
                                 JOIN {course} ON {course}.id = {enrol}.courseid
                                 WHERE {enrol}.enrol = :enrolname
-                                AND (CASE WHEN {$notemptyshortname}
-                                        THEN {course}.shortname = {{$tablename}}.{$shortnamefield}
-                                        ELSE {course}.idnumber = {{$tablename}}.{$idnumberfield}
-                                    END))";
+                                AND {$shortnameoridnumber})";
             $DB->execute($sql, $params);
         }
 
@@ -460,27 +475,22 @@ function create_evidence($importname, $importtime) {
 
     if ($importname == 'course') {
         // Add any missing courses to other training (evidence)
+        $shortnameoridnumber = get_shortnameoridnumber('c', 'i', $shortnamefield, $idnumberfield);
         $sql = "SELECT i.id as importid, u.id userid, i.{$shortnamefield}, i.{$idnumberfield}, i.completiondate, i.grade
                 FROM {{$tablename}} i
                 JOIN {user} u ON u.username = i.username
                 {$sqlwhere}
                   AND NOT EXISTS (SELECT c.id
                                 FROM {course} c
-                                WHERE (CASE WHEN " . $DB->sql_isnotempty($tablename, "i." . $shortnamefield, true, false) . "
-                                            THEN c.shortname = i.{$shortnamefield}
-                                            ELSE c.idnumber = i.{$idnumberfield}
-                                        END))";
+                                WHERE {$shortnameoridnumber})";
     } else if ($importname == 'certification') {
         // Add any missing certifications to other training (evidence)
+        $shortnameoridnumber = get_shortnameoridnumber('p', 'i', $shortnamefield, $idnumberfield);
         $sql = "SELECT i.id as importid, u.id userid, i.{$shortnamefield},  i.{$idnumberfield}, i.completiondate
                 FROM {{$tablename}} i
                 JOIN {user} u ON u.username = i.username
-                LEFT JOIN {prog} p ON
-                        (CASE WHEN " . $DB->sql_isnotempty($tablename, "i." . $shortnamefield, true, false) . "
-                            THEN p.shortname = i.{$shortnamefield}
-                            ELSE p.idnumber = i.{$idnumberfield}
-                        END)
-                        AND p.certifid IS NOT NULL
+                LEFT JOIN {prog} p ON {$shortnameoridnumber}
+                    AND p.certifid IS NOT NULL
                 {$sqlwhere}
                 AND p.id IS NULL";
     }
@@ -587,7 +597,7 @@ function import_course($importname, $importtime) {
     $params['enrolname'] = 'manual';
 
     $tablename = get_tablename($importname);
-
+    $shortnameoridnumber = get_shortnameoridnumber('c', 'i', 'courseshortname', 'courseidnumber');
     $sql = "SELECT i.id as importid,
                     i.completiondate,
                     i.grade,
@@ -601,11 +611,7 @@ function import_course($importname, $importtime) {
                     cc.timeenrolled
             FROM {{$tablename}} i
             JOIN {user} u ON u.username = i.username
-            JOIN {course} c ON
-                (CASE WHEN " . $DB->sql_isnotempty($tablename, 'i.courseshortname', true, false) . "
-                    THEN c.shortname = i.courseshortname
-                    ELSE c.idnumber = i.courseidnumber
-                END)
+            JOIN {course} c ON {$shortnameoridnumber}
             JOIN {enrol} e ON e.courseid = c.id AND e.enrol = :enrolname
             LEFT JOIN {user_enrolments} ue ON (ue.enrolid = e.id AND ue.userid = u.id)
             LEFT JOIN {course_completions} cc ON cc.userid = u.id AND cc.course = c.id
@@ -792,6 +798,7 @@ function import_certification($importname, $importtime) {
     // Create missing program assignments for individuals, in a form that will work for insert_records_via_batch()
     // Note: Postgres objects to manifest constants being used as parameters where they are the left hand
     // of an SQL clause (eg 5 AS assignmenttype) so manifest constants are placed in the query directly (better anyway!)
+    $shortnameoridnumber = get_shortnameoridnumber('p', 'i', 'certificationshortname', 'certificationidnumber');
     $sql = "SELECT p.id AS programid,
             ".ASSIGNTYPE_INDIVIDUAL." AS assignmenttype,
             u.id AS assignmenttypeid,
@@ -801,10 +808,7 @@ function import_certification($importname, $importtime) {
             0 AS completioninstance
             FROM {{$tablename}} i
             JOIN {user} u ON u.username = i.username
-            JOIN {prog} p ON (CASE WHEN " . $DB->sql_isnotempty($tablename, 'i.certificationshortname', true, false) . "
-                                    THEN p.shortname = i.certificationshortname
-                                    ELSE p.idnumber = i.certificationidnumber
-                                END)
+            JOIN {prog} p ON {$shortnameoridnumber}
             LEFT JOIN {prog_assignment} pa ON pa.programid = p.id
                                               AND pa.assignmenttype = :assignmenttype2
                                               AND pa.assignmenttypeid = u.id
@@ -832,10 +836,7 @@ function import_certification($importname, $importtime) {
                     pc.id AS pcid,
                     pua.id AS puaid
             FROM {{$tablename}} i
-            JOIN {prog} p ON (CASE WHEN " . $DB->sql_isnotempty($tablename, 'i.certificationshortname', true, false) . "
-                                    THEN p.shortname = i.certificationshortname
-                                    ELSE p.idnumber = i.certificationidnumber
-                                END)
+            JOIN {prog} p ON {$shortnameoridnumber}
             JOIN {certif} c ON c.id = p.certifid
             JOIN {user} u ON u.username = i.username
             JOIN {prog_assignment} pa ON pa.programid = p.id
