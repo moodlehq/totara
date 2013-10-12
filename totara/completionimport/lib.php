@@ -373,10 +373,12 @@ function import_data_checks($importname, $importtime) {
     // Unique ID numbers.
     if (in_array($shortnamefield, $columnnames) && in_array($idnumberfield, $columnnames)) {
         // I 'think' the count has to be included in the select even though we only need having count().
+        $notemptyidnumber = $DB->sql_isnotempty($tablename, "{{$tablename}}.{$idnumberfield}", true, false);
         $sql = "SELECT u.{$idnumberfield}, COUNT(*) AS shortnamecount
                 FROM (SELECT DISTINCT {$shortnamefield}, {$idnumberfield}
                         FROM {{$tablename}}
-                        {$sqlwhere}) u
+                        {$sqlwhere}
+                        AND {$notemptyidnumber}) u
                 GROUP BY u.{$idnumberfield}
                 HAVING COUNT(*) > 1";
         $idnumbers = $DB->get_records_sql($sql, $stdparams);
