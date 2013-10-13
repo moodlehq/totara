@@ -259,11 +259,8 @@ class dp_program_component extends dp_base_component {
                         $badduedates[] = $id;
                         continue;
                     }
-                    $day = $matches[1];
-                    $mon = $matches[2];
-                    $year = $matches[3];
 
-                    $duedateout = mktime(0, 0, 0, $mon, $day, $year);
+                    $duedateout = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'), $duedate);
                 }
 
                 $todb = new stdClass();
