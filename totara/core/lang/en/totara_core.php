@@ -49,14 +49,14 @@ $string['datepickerdisplayformat'] = 'dd/mm/y'; // How the datepicker displays t
 $string['datepickerplaceholder'] = 'dd/mm/yy'; // How the datepicker placeholder hint displays the default.
 $string['datepickerparseformat'] = 'd/m/y'; // How php parses the datepicker dates to a timestamp (in totara_date_parse_from_format).
 $string['datepickerregexjs'] = '[0-3][0-9]/(0|1)[0-9]/[0-9]{2}';
-$string['datepickerregexphp'] = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
+$string['datepickerregexphp'] = '@^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/([0-9]{2})$@';
 $string['datepickerphpuserdate'] = '%d/%m/%y';
 // Date picker variables used by version 2.4.12 onwards.
 $string['datepickerlongyeardisplayformat'] = 'dd/mm/yy'; // How the datepicker displays the date, see jQuery documentation.
 $string['datepickerlongyearplaceholder'] = 'dd/mm/yyyy'; // How the datepicker placeholder hint displays the default.
 $string['datepickerlongyearparseformat'] = 'd/m/Y'; // How php parses the datepicker dates to a timestamp (in totara_date_parse_from_format).
 $string['datepickerlongyearregexjs'] = '[0-3][0-9]/(0|1)[0-9]/[0-9]{4}';
-$string['datepickerlongyearregexphp'] = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{4})$/';
+$string['datepickerlongyearregexphp'] = '@^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/([0-9]{4})$@';
 $string['datepickerlongyearphpuserdate'] = '%d/%m/%Y';
 $string['strftimedateshortmonth'] = '%d %b %Y';
 
