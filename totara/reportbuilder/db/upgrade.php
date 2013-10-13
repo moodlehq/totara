@@ -222,6 +222,11 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
         if (!$dbman->field_exists($table, $customnamefield)) {
             $dbman->add_field($table, $customnamefield);
         }
+        // Add pdf to the default export options.
+        $currentexportoptions = get_config('reportbuilder', 'exportoptions');
+        $currentexportoptions = is_null($currentexportoptions) ? 0 : $currentexportoptions;
+        $newexportoptions = ($currentexportoptions | REPORT_BUILDER_EXPORT_PDF_PORTRAIT | REPORT_BUILDER_EXPORT_PDF_LANDSCAPE);
+        set_config('exportoptions', $newexportoptions, 'reportbuilder');
         totara_upgrade_mod_savepoint(true, 2013092400, 'totara_reportbuilder');
     }
 

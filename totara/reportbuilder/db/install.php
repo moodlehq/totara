@@ -40,8 +40,10 @@ function xmldb_totara_reportbuilder_install() {
 
     // SCANMSG: use standard settings so they appear on upgrade?
     // set global export options to include all current
-    // formats except fusion tables (excel, csv and ods)
-    set_config('exportoptions', 7, 'reportbuilder');
+    // formats except fusion tables (excel, csv, ods, pdf portrait and pdf landscape)
+    $exportoptions = REPORT_BUILDER_EXPORT_EXCEL + REPORT_BUILDER_EXPORT_CSV + REPORT_BUILDER_EXPORT_ODS +
+                     REPORT_BUILDER_EXPORT_PDF_PORTRAIT + REPORT_BUILDER_EXPORT_PDF_LANDSCAPE;
+    set_config('exportoptions', $exportoptions, 'reportbuilder');
 
     // set global setting for financial year
     // default: July, 1
