@@ -137,7 +137,7 @@ if ($mform->is_cancelled()) {
         $todb->id = goal::insert_goal_item($todb, goal::SCOPE_PERSONAL);
 
         // We need to know the new id before we can process the editor and save the description.
-        $fromform = file_postupdate_standard_editor($fromform, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+        $fromform = file_postupdate_standard_editor($fromform, 'description', $TEXTAREA_OPTIONS, $context,
             'totara_hierarchy', 'goal', $todb->id);
         $DB->set_field('goal_personal', 'description', $fromform->description, array('id' => $todb->id));
 
