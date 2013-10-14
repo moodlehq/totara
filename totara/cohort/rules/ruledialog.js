@@ -138,7 +138,7 @@ M.totara_cohortrules = M.totara_cohortrules || {
                              if (o.value !== 0) {
                                  operator = M.util.get_string('or', 'totara_cohort');
                              }
-                             var divid = '#cohort-ruleset-header' + id + " td.operator ";
+                             var divid = '#id_cohort-ruleset-header' + id + " td.operator ";
                              $(divid).each(function (index, value) {
                                  if (index !== 0) {
                                      // Change ruleset operator
@@ -214,7 +214,7 @@ M.totara_cohortrules = M.totara_cohortrules || {
 
             if (idtype == 'cohort') {
                 handler.responsetype = 'newruleset';
-                handler.responsegoeshere = $('#addruleset');
+                handler.responsegoeshere = $('#id_addruleset');
             }
 
             dialog.default_url = url + '?rule=' + select.val() + '&id=' + id + '&type=' + idtype;

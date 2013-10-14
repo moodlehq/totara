@@ -189,14 +189,14 @@ M.totara_cohortruledelete = M.totara_cohortruledelete || {
         }
 
         function remove_ruleset(rulesetid) {
-            var ruleset = $('fieldset#cohort-ruleset-header' + rulesetid);
+            var ruleset = $('fieldset#id_cohort-ruleset-header' + rulesetid);
 
             // Delete the operator immediately prior to this ruleset (if any)
             ruleset.prev('fieldset').has('.cohort-oplabel').remove();
 
             // If this is the first ruleset on the page, also delete the operator
             // immediately after it (if any)
-            if (!ruleset.prevAll('fieldset [id^="cohort-ruleset-header"]').length) {
+            if (!ruleset.prevAll('fieldset [id^="id_cohort-ruleset-header"]').length) {
                 ruleset.next('fieldset').has('.cohort-oplabel').remove();
             }
 
