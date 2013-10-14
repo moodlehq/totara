@@ -33,9 +33,6 @@ class profile_field_text extends profile_field_base {
 
         /// Create the form field
         $mform->addElement($fieldtype, $this->inputname, format_string($this->field->name), 'maxlength="'.$maxlength.'" size="'.$size.'" ');
-        if ($this->is_required()) {
-            $mform->addRule($this->inputname, get_string('required'), 'required', null, 'client');
-        }
         $mform->setType($this->inputname, PARAM_TEXT);
     }
 
