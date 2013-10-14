@@ -365,3 +365,65 @@ function totara_readd_course_completion_changes() {
     }
 
 }
+
+/**
+ * Fix badges and completion capabilities when upgrading from Totara 2.4.
+ *
+ * @return void
+ */
+function totara_fix_existing_capabilities() {
+    global $DB;
+
+    // Get all existing totara_core capabilities in the database.
+    $cachedcaps = get_cached_capabilities('totara_core');
+    if ($cachedcaps) {
+        foreach ($cachedcaps as $cachedcap) {
+            // If it is a moodle capability, update its component.
+            if (strpos($cachedcap->name, 'moodle') === 0) {
+                $updatecap = new stdClass();
+                $updatecap->id = $cachedcap->id;
+                $updatecap->component = 'moodle';
+                $DB->update_record('capabilities', $updatecap);
+            }
+        }
+    }
+}
+
+/**
+ * Get tables and records which have non-unique idnumbers.
+ * Used in upgrade script.
+ *
+ * @return object|false Array (table => list of idnumbers) or false if no duplicates found
+ */
+function totara_get_nonunique_idnumbers() {
+    global $DB;
+
+    $tables = array('user', 'comp', 'comp_framework', 'comp_scale_values', 'comp_type', 'org', 'org_framework', 'org_type',
+                    'dp_priority_scale_value', 'dp_objective_scale_value', 'pos', 'pos_framework', 'pos_type', 'prog');
+
+    $records = array();
+    foreach ($tables as $table) {
+        if ($DB->get_manager()->table_exists($table)) {
+            $sql = "SELECT
+                        idnumber
+                    FROM
+                        {{$table}}
+                    WHERE " . $DB->sql_isnotempty($table, 'idnumber', true, false) . "
+                    GROUP BY
+                        idnumber
+                    HAVING
+                        COUNT(*) > 1";
+            if ($fields = $DB->get_fieldset_sql($sql)) {
+                $record = new stdClass();
+                $record->table = $table;
+                $record->idnumbers = implode(', ', $fields);
+                $records[] = $record;
+            }
+        }
+    }
+
+    if (!empty($records)) {
+        return $records;
+    }
+    return false;
+}

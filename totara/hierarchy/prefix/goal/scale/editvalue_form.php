@@ -130,10 +130,10 @@ class goalscalevalue_edit_form extends moodleform {
             }
         }
 
-        if (count($err) > 0) {
-            return $err;
+        if (!empty($valuenew->idnumber) && totara_idnumber_exists('goal_scale_values', $valuenew->idnumber, $valuenew->id)) {
+            $err['idnumber'] = get_string('idnumberexists', 'totara_core');
         }
 
-        return true;
+        return $err;
     }
 }

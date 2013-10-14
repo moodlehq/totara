@@ -69,4 +69,18 @@ class type_edit_form extends moodleform {
 
         $this->add_action_buttons();
     }
+
+    function validation($data, $files) {
+        $errors = array();
+        $data = (object)$data;
+
+        if (!empty($data->idnumber)) {
+            $prefix = hierarchy::get_short_prefix($data->prefix);
+            if (totara_idnumber_exists($prefix . '_type', $data->idnumber, $data->id)) {
+                $errors['idnumber'] = get_string('idnumberexists', 'totara_core');
+            }
+        }
+
+        return $errors;
+    }
 }

@@ -22,18 +22,54 @@
 * @subpackage totara_core
 */
 
+// Example of an upgrade output item:
+// echo $OUTPUT->heading('Disable Moodle autoupdates in Totara');
+// echo $OUTPUT->notification($success, 'notifysuccess');
+// print_upgrade_separator();
+
 defined('MOODLE_INTERNAL') || die();
 
-global $OUTPUT, $DB;
+global $OUTPUT, $DB, $CFG, $TOTARA;
 require_once ("$CFG->dirroot/totara/core/db/utils.php");
 
-// switch to default theme in 2.4
-set_config('theme', 'standardtotara');
-
-$dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
+$dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 $success = get_string('success');
 
-//example of an upgrade output item
-//echo $OUTPUT->heading('Disable Moodle autoupdates in Totara');
-//echo $OUTPUT->notification($success, 'notifysuccess');
-//print_upgrade_separator();
+// Double-check version numbers when upgrading a Totara installation.
+if (isset($CFG->totara_release)){
+    if (substr($CFG->totara_release, 0, 3) == '1.0' || substr($CFG->totara_release, 0, 3) == '1.1') {
+        $a = new stdClass();
+        $a->currentversion = $CFG->totara_release;
+        $a->attemptedversion = $TOTARA->release;
+        $a->required = get_string('totararequiredupgradeversion', 'totara_core');
+        throw new moodle_exception('totaraunsupportedupgradepath', 'totara_core', '', $a);
+    } else if (substr($CFG->totara_release, 0, 3) == '2.4') {
+        totara_fix_existing_capabilities();
+    }
+}
+
+// Switch to default theme in 2.4.
+if ($CFG->version < 2012120303.02) {
+    echo $OUTPUT->heading(get_string('totaraupgradesetstandardtheme', 'totara_core'));
+
+    set_config('theme', 'standardtotara');
+
+    echo $OUTPUT->notification($success, 'notifysuccess');
+    print_upgrade_separator();
+}
+
+// Check unique idnumbers in totara tables.
+if ($CFG->version < 2013051402.00) {
+    echo $OUTPUT->heading(get_string('totaraupgradecheckduplicateidnumbers', 'totara_core'));
+    $duplicates = totara_get_nonunique_idnumbers();
+    if (!empty($duplicates)) {
+        $duplicatestr = '';
+        foreach ($duplicates as $duplicate) {
+            $duplicatestr .= get_string('idnumberduplicates', 'totara_core', $duplicate) . '<br/>';
+        }
+        throw new moodle_exception('totarauniqueidnumbercheckfail', 'totara_core', '', $duplicatestr);
+    } else {
+        echo $OUTPUT->notification($success, 'notifysuccess');
+        print_upgrade_separator();
+    }
+}

@@ -212,6 +212,11 @@ class user_editadvanced_form extends moodleform {
             }
         }
 
+        // Check idnumber uniqueness.
+        if(!empty($usernew->idnumber) && totara_idnumber_exists('user', $usernew->idnumber, $usernew->id)) {
+            $err['idnumber'] = get_string('idnumberexists', 'totara_core');
+        }
+
         /// Next the customisable profile fields
         $err += profile_validation($usernew, $files);
 

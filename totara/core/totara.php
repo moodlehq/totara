@@ -1965,29 +1965,6 @@ function encrypt_data($plaintext, $key = '') {
 }
 
 /**
- * Fix badges and completion capabilities when upgrading from Totara 2.4.
- *
- * @return void
- */
-function totara_fix_existing_capabilities() {
-    global $DB;
-
-    // Get all existing totara_core capabilities in the database.
-    $cachedcaps = get_cached_capabilities('totara_core');
-    if ($cachedcaps) {
-        foreach ($cachedcaps as $cachedcap) {
-            // If it is a moodle capability, update its component.
-            if (strpos($cachedcap->name, 'moodle') === 0) {
-                $updatecap = new stdClass();
-                $updatecap->id = $cachedcap->id;
-                $updatecap->component = 'moodle';
-                $DB->update_record('capabilities', $updatecap);
-            }
-        }
-    }
-}
-
-/**
  * Get course icon for displaying in course page.
  *
  * @return string Course icon URL.
@@ -2042,4 +2019,27 @@ function totara_generate_email_user($emailaddress) {
     $emailuser->maildisplay = true;
 
     return $emailuser;
+}
+
+/**
+ * Checks if idnumber already exists.
+ * Used when adding new or updating exisiting records.
+ *
+ * @param string $table Name of the table
+ * @param string $idnumber IDnumber to check
+ * @param int $itemid Item id. Zero value means new item.
+ *
+ * @return bool True if idnumber already exists
+ */
+function totara_idnumber_exists($table, $idnumber, $itemid = 0) {
+    global $DB;
+
+    if (!$itemid) {
+        $duplicate = $DB->record_exists($table, array('idnumber' => $idnumber));
+    } else {
+        $duplicate = $DB->record_exists_select($table, 'idnumber = :idnumber AND id != :itemid',
+                                               array('idnumber' => $idnumber, 'itemid' => $itemid));
+    }
+
+    return $duplicate;
 }

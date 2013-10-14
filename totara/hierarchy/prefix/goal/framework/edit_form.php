@@ -93,4 +93,15 @@ class framework_edit_form extends moodleform {
 
         $this->add_action_buttons();
     }
+
+    function validation($data, $files) {
+        $errors = array();
+        $data = (object)$data;
+
+        if (!empty($data->idnumber) && totara_idnumber_exists('goal_framework', $data->idnumber, $data->id)) {
+            $errors['idnumber'] = get_string('idnumberexists', 'totara_core');
+        }
+
+        return $errors;
+    }
 }

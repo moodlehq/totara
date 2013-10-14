@@ -55,13 +55,7 @@ function xmldb_totara_core_install() {
         $DB->update_record('role', $todb);
     }
 
-    // TODO: SCANMSG Need to look at the stuff below and figure out what is still needed
-
-    //code from old postinst function:
-    set_config('theme', 'totara');
-    set_config("langmenu", 0);
-
-    // Create totara roles
+    // Create totara roles.
     $manager             = $DB->get_record('role', array('shortname' => 'manager'));
     $managerrole         = $manager->id;
     $staffmanagerrole    = create_role('', 'staffmanager', '', 'staffmanager');
@@ -130,14 +124,12 @@ function xmldb_totara_core_install() {
         }
     }
 
-
-    // set up blocks
+    // Set up blocks.
     totara_reset_mymoodle_blocks();
 
-    // set up frontpage
+    // Set up frontpage.
     set_config('frontpage', '');
     set_config('frontpageloggedin', '');
-    set_config('allowvisiblecoursesinhiddencategories', '1');
 
     // Add completionstartonenrol column to course table.
     $table = new xmldb_table('course');

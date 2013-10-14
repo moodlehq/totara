@@ -309,7 +309,7 @@ function useredit_shared_definition(&$mform, $editoroptions = null, $filemanager
 
     $mform->addElement('text', 'idnumber', get_string('idnumber'), 'maxlength="255" size="25"');
     $mform->setType('idnumber', PARAM_NOTAGS);
-    if (!is_siteadmin() && $user->totarasync) {
+    if (!has_capability('totara/core:updateuseridnumber', context_system::instance())) {
         $mform->freeze('idnumber');
     }
 

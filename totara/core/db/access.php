@@ -124,5 +124,14 @@ $capabilities = array(
         'archetypes'   => array(
             'manager'       => CAP_ALLOW,
         )
-    )
+    ),
+    // Update user ID number.
+    'totara/core:updateuseridnumber' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        ),
+    ),
 );

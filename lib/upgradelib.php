@@ -1524,21 +1524,19 @@ function upgrade_core($version, $verbose) {
         purge_all_caches();
         cache_helper::purge_all(true);
 
-        print_upgrade_part_start('moodle', false, $verbose);
         // Upgrade current language pack if we can
         upgrade_language_pack();
-        // one time special upgrade script for items that need fixing before main upgrade runs
-        if ($CFG->version < 2012120303.02) {
-            $initialupgradefile = "{$CFG->dirroot}/totara/core/upgrade/upgrade_initialise.php";
-            if (file_exists($initialupgradefile)) {
-                set_time_limit(0);
-                require($initialupgradefile);
-                // reset upgrade timeout to default
-                upgrade_set_timeout();
-            }
-        }
 
         print_upgrade_part_start('moodle', false, $verbose);
+
+        // Special upgrade script for items that need fixing before main upgrade runs.
+        $initialupgradefile = "{$CFG->dirroot}/totara/core/db/upgrade_initialise.php";
+        if (file_exists($initialupgradefile)) {
+            set_time_limit(0);
+            require($initialupgradefile);
+            // Reset upgrade timeout to default.
+            upgrade_set_timeout();
+        }
 
         // Pre-upgrade scripts for local hack workarounds.
         $preupgradefile = "$CFG->dirroot/local/preupgrade.php";
@@ -1547,19 +1545,6 @@ function upgrade_core($version, $verbose) {
             require($preupgradefile);
             // Reset upgrade timeout to default.
             upgrade_set_timeout();
-        }
-
-        //double-check version numbers when upgrading a Totara installation
-        if (isset($CFG->totara_release)){
-            if (substr($CFG->totara_release,0,3) == '1.0' || substr($CFG->totara_release,0,3) == '1.1') {
-                $a = new stdClass();
-                $a->currentversion = $CFG->totara_release;
-                $a->attemptedversion = $TOTARA->release;
-                $a->required = get_string('totararequiredupgradeversion', 'totara_core');
-                throw new moodle_exception('totaraunsupportedupgradepath', 'totara_core', '', $a);
-            } else if (substr($CFG->totara_release,0,3) == '2.4') {
-                totara_fix_existing_capabilities();
-            }
         }
 
         $result = xmldb_main_upgrade($CFG->version);

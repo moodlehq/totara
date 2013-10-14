@@ -204,6 +204,10 @@ class item_edit_form extends moodleform {
             }
         }
 
+        if (!empty($itemnew->idnumber) && totara_idnumber_exists($shortprefix, $itemnew->idnumber, $itemnew->id)) {
+            $errors['idnumber'] = get_string('idnumberexists', 'totara_core');
+        }
+
         return $errors;
     }
 

@@ -306,6 +306,11 @@ class program_edit_form extends moodleform {
             }
         }
 
+        $id = isset($data['id']) ? $data['id'] : 0;
+        if (!empty($data['idnumber']) && totara_idnumber_exists('prog', $data['idnumber'], $id)) {
+            $errors['idnumber'] = get_string('idnumberexists', 'totara_core');
+        }
+
         return $errors;
     }
 

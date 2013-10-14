@@ -120,8 +120,8 @@ class outputcomponents_testcase extends advanced_testcase {
         // Force SVG on so that we have predictable URL's.
         $CFG->svgicons = true;
 
-        // verify new install contains expected defaults
-        $this->assertEquals('totara', $CFG->theme);
+        // Verify new install contains expected defaults.
+        $this->assertEquals('standardtotara', $CFG->theme);
         $this->assertEquals(1, $CFG->slasharguments);
         $this->assertEquals(1, $CFG->themerev);
         $this->assertEquals(0, $CFG->themedesignermode);

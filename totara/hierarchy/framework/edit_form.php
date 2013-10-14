@@ -1,6 +1,7 @@
 <?php
 
-require_once($CFG->dirroot.'/lib/formslib.php');
+require_once($CFG->dirroot . '/lib/formslib.php');
+require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
 
 class framework_edit_form extends moodleform {
 
@@ -45,5 +46,19 @@ class framework_edit_form extends moodleform {
         $mform->setType('description_editor', PARAM_CLEANHTML);
 
         $this->add_action_buttons();
+    }
+
+    function validation($data, $files) {
+        $errors = array();
+        $data = (object)$data;
+
+        if (!empty($data->idnumber)) {
+            $prefix = hierarchy::get_short_prefix($data->prefix);
+            if (totara_idnumber_exists($prefix . '_framework', $data->idnumber, $data->id)) {
+                $errors['idnumber'] = get_string('idnumberexists', 'totara_core');
+            }
+        }
+
+        return $errors;
     }
 }

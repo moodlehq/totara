@@ -387,3 +387,13 @@ $string['managecertifications'] = 'Manage certifications';
 $string['archivecompletionrecords'] = 'Archive completion records';
 $string['uploadcompletionrecords'] = 'Upload completion records';
 $string['modulearchive'] = 'Activity archives';
+
+$string['core:updateuseridnumber'] = 'Update user ID number';
+$string['idnumberduplicates'] = 'Table: "{$a->table}". ID numbers: {$a->idnumbers}.';
+$string['idnumberexists'] = 'Record with this ID number already exists';
+$string['totarauniqueidnumbercheckfail'] = 'The following tables contain non-unique values in the column idnumber:<br/><br/>
+{$a}
+<br/>
+Please fix these records before attempting the upgrade.';
+$string['totaraupgradesetstandardtheme'] = 'Enable Standard Totara theme';
+$string['totaraupgradecheckduplicateidnumbers'] = 'Check duplicate ID numbers';
