@@ -5,9 +5,6 @@ class profile_field_textarea extends profile_field_base {
     function edit_field_add($mform) {
         /// Create the form field
         $mform->addElement('editor', $this->inputname, format_string($this->field->name), null, null);
-        if ($this->is_required()) {
-            $mform->addRule($this->inputname, get_string('required'), 'required', null, 'client');
-        }
         $mform->setType($this->inputname, PARAM_RAW); // we MUST clean this before display!
     }
 

@@ -41,9 +41,6 @@ class profile_field_menu extends profile_field_base {
      */
     function edit_field_add($mform) {
         $mform->addElement('select', $this->inputname, format_string($this->field->name), $this->options);
-        if ($this->is_required()) {
-            $mform->addRule($this->inputname, get_string('required'), 'required', null, 'client');
-        }
     }
 
     /**
