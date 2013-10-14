@@ -55,7 +55,7 @@ $data = array(
     'appraisalid' => $appraisalid,
 );
 
-if (!$report = reportbuilder_get_embedded_report('appraisal_metric', $data, false, $sid)) {
+if (!$report = reportbuilder_get_embedded_report('appraisal_detail', $data, false, $sid)) {
     print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 

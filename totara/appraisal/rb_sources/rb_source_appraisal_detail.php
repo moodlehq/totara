@@ -28,7 +28,7 @@ global $CFG;
 require_once(dirname(__FILE__) . '/rb_source_appraisal.php');
 require_once($CFG->dirroot . '/totara/appraisal/lib.php');
 
-class rb_source_appraisal_metric extends rb_source_appraisal {
+class rb_source_appraisal_detail extends rb_source_appraisal {
     public $base, $joinlist, $columnoption, $filteroptions, $paramoptions;
     public $defaultcolumns, $defaultfilters, $embeddedparams;
     public $sourcetitle, $shortname, $selectable, $cacheable;
@@ -44,8 +44,8 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
     public function __construct() {
         parent::__construct();
 
-        $this->sourcetitle = get_string('sourcetitle', 'rb_source_appraisal_metric');
-        $this->shortname = 'appraisal_metric';
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_appraisal_detail');
+        $this->shortname = 'appraisal_detail';
         $this->selectable = false;
         $this->cacheable = false;
     }
@@ -55,7 +55,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'rolelearner',
                 'answers',
-                get_string('answersfromlearner', 'rb_source_appraisal_metric'),
+                get_string('answersfromlearner', 'rb_source_appraisal_detail'),
                 'rolelearner.data_',
                 array('joins' => 'rolelearner',
                       'columngenerator' => 'answers')
@@ -63,7 +63,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'rolelearner',
                 'numericanswers',
-                get_string('numericanswersfromlearner', 'rb_source_appraisal_metric'),
+                get_string('numericanswersfromlearner', 'rb_source_appraisal_detail'),
                 'rolelearner.data_',
                 array('joins' => 'rolelearner',
                       'columngenerator' => 'numericanswers')
@@ -71,7 +71,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'rolelearner',
                 'totals',
-                get_string('totalsfromlearner', 'rb_source_appraisal_metric'),
+                get_string('totalsfromlearner', 'rb_source_appraisal_detail'),
                 'rolelearner.data_',
                 array('joins' => 'rolelearner',
                       'columngenerator' => 'totals')
@@ -79,7 +79,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'rolemanager',
                 'answers',
-                get_string('answersfrommanager', 'rb_source_appraisal_metric'),
+                get_string('answersfrommanager', 'rb_source_appraisal_detail'),
                 'rolemanager.data_',
                 array('joins' => 'rolemanager',
                       'columngenerator' => 'answers')
@@ -87,7 +87,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'rolemanager',
                 'numericanswers',
-                get_string('numericanswersfrommanager', 'rb_source_appraisal_metric'),
+                get_string('numericanswersfrommanager', 'rb_source_appraisal_detail'),
                 'rolemanager.data_',
                 array('joins' => 'rolemanager',
                       'columngenerator' => 'numericanswers')
@@ -95,7 +95,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'rolemanager',
                 'totals',
-                get_string('totalsfrommanager', 'rb_source_appraisal_metric'),
+                get_string('totalsfrommanager', 'rb_source_appraisal_detail'),
                 'rolemanager.data_',
                 array('joins' => 'rolemanager',
                       'columngenerator' => 'totals')
@@ -103,7 +103,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'roleteamlead',
                 'answers',
-                get_string('answersfromteamlead', 'rb_source_appraisal_metric'),
+                get_string('answersfromteamlead', 'rb_source_appraisal_detail'),
                 'roleteamlead.data_',
                 array('joins' => 'roleteamlead',
                       'columngenerator' => 'answers')
@@ -111,7 +111,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'roleteamlead',
                 'numericanswers',
-                get_string('numericanswersfromteamlead', 'rb_source_appraisal_metric'),
+                get_string('numericanswersfromteamlead', 'rb_source_appraisal_detail'),
                 'roleteamlead.data_',
                 array('joins' => 'roleteamlead',
                       'columngenerator' => 'numericanswers')
@@ -119,7 +119,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'roleteamlead',
                 'totals',
-                get_string('totalsfromteamlead', 'rb_source_appraisal_metric'),
+                get_string('totalsfromteamlead', 'rb_source_appraisal_detail'),
                 'roleteamlead.data_',
                 array('joins' => 'roleteamlead',
                       'columngenerator' => 'totals')
@@ -127,7 +127,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'roleappraiser',
                 'answers',
-                get_string('answersfromappraiser', 'rb_source_appraisal_metric'),
+                get_string('answersfromappraiser', 'rb_source_appraisal_detail'),
                 'roleappraiser.data_',
                 array('joins' => 'roleappraiser',
                       'columngenerator' => 'answers')
@@ -135,7 +135,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'roleappraiser',
                 'numericanswers',
-                get_string('numericanswersfromappraiser', 'rb_source_appraisal_metric'),
+                get_string('numericanswersfromappraiser', 'rb_source_appraisal_detail'),
                 'roleappraiser.data_',
                 array('joins' => 'roleappraiser',
                       'columngenerator' => 'numericanswers')
@@ -143,7 +143,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'roleappraiser',
                 'totals',
-                get_string('totalsfromappraiser', 'rb_source_appraisal_metric'),
+                get_string('totalsfromappraiser', 'rb_source_appraisal_detail'),
                 'roleappraiser.data_',
                 array('joins' => 'roleappraiser',
                       'columngenerator' => 'totals')
@@ -151,7 +151,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'roleall',
                 'answersall',
-                get_string('answersfromall', 'rb_source_appraisal_metric'),
+                get_string('answersfromall', 'rb_source_appraisal_detail'),
                 'roleall.data_',
                 array('joins' => array('rolelearner', 'rolemanager', 'roleteamlead', 'roleappraiser'),
                       'columngenerator' => 'allroleanswers')
@@ -159,7 +159,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'roleall',
                 'numericanswersall',
-                get_string('numericanswersfromall', 'rb_source_appraisal_metric'),
+                get_string('numericanswersfromall', 'rb_source_appraisal_detail'),
                 'roleall.data_',
                 array('joins' => array('rolelearner', 'rolemanager', 'roleteamlead', 'roleappraiser'),
                       'columngenerator' => 'allrolenumericanswers')
@@ -167,7 +167,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             new rb_column_option(
                 'roleall',
                 'totalsall',
-                get_string('totalsfromall', 'rb_source_appraisal_metric'),
+                get_string('totalsfromall', 'rb_source_appraisal_detail'),
                 'roleappraiser.data_',
                 array('joins' => array('rolelearner', 'rolemanager', 'roleteamlead', 'roleappraiser'),
                       'columngenerator' => 'allroletotals')
@@ -383,7 +383,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                 $this->make_question_column(
                     $columnoption->type,
                     $columnoption->value . 'total',
-                    get_string('overalltotal', 'rb_source_appraisal_metric', $rolename),
+                    get_string('overalltotal', 'rb_source_appraisal_detail', $rolename),
                     '(' . $field . ')',
                     $columnoption,
                     $hidden
@@ -395,7 +395,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             $this->make_question_column(
                 $columnoption->type,
                 $columnoption->value . 'minimum',
-                get_string('overallminimum', 'rb_source_appraisal_metric', $rolename),
+                get_string('overallminimum', 'rb_source_appraisal_detail', $rolename),
                 '(' . $minimum . ')',
                 $columnoption,
                 $hidden
@@ -406,7 +406,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
             $this->make_question_column(
                 $columnoption->type,
                 $columnoption->value . 'maximum',
-                get_string('overallmaximum', 'rb_source_appraisal_metric', $rolename),
+                get_string('overallmaximum', 'rb_source_appraisal_detail', $rolename),
                 '(' . $maximum . ')',
                 $columnoption,
                 $hidden
@@ -454,7 +454,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                     $this->make_question_column(
                         $columnoption->type,
                         $columnoption->value . "_" . $question->id,
-                        get_string('answerbyrole', 'rb_source_appraisal_metric', $a),
+                        get_string('answerbyrole', 'rb_source_appraisal_detail', $a),
                         $columnoption->field . $question->id,
                         $columnoption,
                         $hidden
@@ -467,7 +467,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                     $this->make_question_column(
                         $columnoption->type,
                         $columnoption->value . "_" . $question->id,
-                        get_string('answerbyrole', 'rb_source_appraisal_metric', $a),
+                        get_string('answerbyrole', 'rb_source_appraisal_detail', $a),
                         $columnoption->field . $question->id,
                         $columnoption,
                         $hidden
@@ -481,7 +481,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                     $this->make_question_column(
                         $columnoption->type,
                         $columnoption->value . "_" . $question->id,
-                        get_string('answerbyrole', 'rb_source_appraisal_metric', $a),
+                        get_string('answerbyrole', 'rb_source_appraisal_detail', $a),
                         $columnoption->field . $question->id . 'score',
                         $columnoption,
                         $hidden
@@ -494,7 +494,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                         $this->make_question_column(
                             $columnoption->type,
                             $columnoption->value . '_' . $question->id . '_maximum',
-                            get_string('ratingmaximum', 'rb_source_appraisal_metric', $question->name),
+                            get_string('ratingmaximum', 'rb_source_appraisal_detail', $question->name),
                             '(' . $max . ')',
                             $columnoption,
                             $hidden
@@ -508,7 +508,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                     $this->make_question_column(
                         $columnoption->type,
                         $columnoption->value . "_" . $question->id,
-                        get_string('answerbyrole', 'rb_source_appraisal_metric', $a),
+                        get_string('answerbyrole', 'rb_source_appraisal_detail', $a),
                         $columnoption->field . $question->id,
                         $columnoption,
                         $hidden
@@ -521,7 +521,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                         $this->make_question_column(
                             $columnoption->type,
                             $columnoption->value . '_' . $question->id . '_maximum',
-                            get_string('ratingmaximum', 'rb_source_appraisal_metric', $question->name),
+                            get_string('ratingmaximum', 'rb_source_appraisal_detail', $question->name),
                             '(' . $max . ')',
                             $columnoption,
                             $hidden
@@ -548,7 +548,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                     $this->make_question_column(
                         $columnoption->type,
                         $columnoption->value . '_' . $question->id,
-                        get_string('answerbyrole', 'rb_source_appraisal_metric', $a),
+                        get_string('answerbyrole', 'rb_source_appraisal_detail', $a),
                         $joinname . '.name',
                         $columnoption,
                         $hidden
@@ -580,7 +580,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                     $this->make_question_column(
                         $columnoption->type,
                         $columnoption->value . '_' . $question->id,
-                        get_string('answerbyrole', 'rb_source_appraisal_metric', $a),
+                        get_string('answerbyrole', 'rb_source_appraisal_detail', $a),
                         $joinname . '.names',
                         $columnoption,
                         $hidden
@@ -596,7 +596,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                     $this->make_question_column(
                         $columnoption->type,
                         $columnoption->value . '_' . $question->id,
-                        get_string('answerbyrole', 'rb_source_appraisal_metric', $a),
+                        get_string('answerbyrole', 'rb_source_appraisal_detail', $a),
                         $columnoption->field . $question->id,
                         $columnoption,
                         $hidden
@@ -631,7 +631,7 @@ class rb_source_appraisal_metric extends rb_source_appraisal {
                     $this->make_question_column(
                         $columnoption->type,
                         $columnoption->value . '_' . $question->id,
-                        get_string('answerbyrole', 'rb_source_appraisal_metric', $a),
+                        get_string('answerbyrole', 'rb_source_appraisal_detail', $a),
                         $joinname . '.files',
                         $columnoption,
                         $hidden

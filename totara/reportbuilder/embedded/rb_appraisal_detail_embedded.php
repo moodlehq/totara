@@ -22,16 +22,16 @@
  * @subpackage reportbuilder
  */
 
-class rb_appraisal_metric_embedded extends rb_base_embedded {
+class rb_appraisal_detail_embedded extends rb_base_embedded {
 
     public $url, $source, $fullname, $columns, $filters;
     public $contentmode, $embeddedparams;
 
     public function __construct() {
         $this->url = '/totara/appraisal/detailreport.php';
-        $this->source = 'appraisal_metric';
-        $this->shortname = 'appraisal_metric';
-        $this->fullname = get_string('sourcetitle', 'rb_source_appraisal_metric');
+        $this->source = 'appraisal_detail';
+        $this->shortname = 'appraisal_detail';
+        $this->fullname = get_string('sourcetitle', 'rb_source_appraisal_detail');
 
         $this->columns = $this->define_columns();
         $this->filters = $this->define_filters();
@@ -61,7 +61,7 @@ class rb_appraisal_metric_embedded extends rb_base_embedded {
             array(
                 'type' => 'roleall',
                 'value' => 'answersall',
-                'heading' => get_string('embeddedanswersfromallheading', 'rb_source_appraisal_metric')
+                'heading' => get_string('embeddedanswersfromallheading', 'rb_source_appraisal_detail')
             )
         );
 
