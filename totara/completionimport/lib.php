@@ -404,15 +404,18 @@ function import_data_checks($importname, $importtime) {
                 HAVING COUNT(*) > 1";
         $idnumbers = $DB->get_records_sql($sql, $stdparams);
         $idnumberlist = array_keys($idnumbers);
-        list($idsql, $idparams) = $DB->get_in_or_equal($idnumberlist, SQL_PARAMS_NAMED, 'param');
 
-        $params = array_merge($stdparams, $idparams);
-        $params['errorstring'] = 'duplicateidnumber;';
-        $sql = "UPDATE {{$tablename}}
-                SET importerrormsg = " . $DB->sql_concat('importerrormsg', ':errorstring') . "
-                {$sqlwhere}
-                AND {$idnumberfield} {$idsql}";
-        $DB->execute($sql, $params);
+        if (count($idnumberlist)) {
+            list($idsql, $idparams) = $DB->get_in_or_equal($idnumberlist, SQL_PARAMS_NAMED, 'param');
+
+            $params = array_merge($stdparams, $idparams);
+            $params['errorstring'] = 'duplicateidnumber;';
+            $sql = "UPDATE {{$tablename}}
+                    SET importerrormsg = " . $DB->sql_concat('importerrormsg', ':errorstring') . "
+                    {$sqlwhere}
+                    AND {$idnumberfield} {$idsql}";
+            $DB->execute($sql, $params);
+        }
     }
 
     if (in_array($shortnamefield, $columnnames) && in_array($idnumberfield, $columnnames)) {
