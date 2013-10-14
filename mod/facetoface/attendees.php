@@ -610,6 +610,8 @@ if ($show_table) {
 
         $headers[] = get_string('name');
         $columns[] = 'name';
+        $headers[] = get_string('timesignedup', 'facetoface');
+        $columns[] = 'timesignedup';
 
         if ($action == 'takeattendance') {
             $headers[] = get_string('currentstatus', 'facetoface');
@@ -619,8 +621,6 @@ if ($show_table) {
                 $columns[] = 'attendedsession';
             }
         } else if ($action == 'cancellations') {
-            $headers[] = get_string('timesignedup', 'facetoface');
-            $columns[] = 'timesignedup';
             $headers[] = get_string('timecancelled', 'facetoface');
             $columns[] = 'timecancelled';
             $headers[] = get_string('cancelreason', 'facetoface');
@@ -652,6 +652,7 @@ if ($show_table) {
             } else {
                 $data[] = html_writer::link($attendee_url, format_string(fullname($attendee)));
             }
+            $data[] = userdate($attendee->timesignedup, get_string('strftimedatetime'));
 
             if ($action == 'takeattendance') {
                 // Show current status
@@ -664,7 +665,6 @@ if ($show_table) {
                     $data[] = $select;
                 }
             } else if ($action == 'cancellations') {
-                $data[] = userdate($attendee->timesignedup, get_string('strftimedatetime'));
                 $data[] = userdate($attendee->timecancelled, get_string('strftimedatetime'));
                 $data[] = isset($attendee->cancelreason) ? format_string($attendee->cancelreason) : get_string('none');
             } else {

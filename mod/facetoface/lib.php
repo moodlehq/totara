@@ -984,6 +984,11 @@ function facetoface_get_attendees($sessionid, $status = array(MDL_F2F_STATUS_BOO
             f.course,
             ss.grade,
             ss.statuscode,
+            (
+                SELECT MIN(timecreated)
+                FROM {facetoface_signups_status} ss2
+                WHERE ss2.signupid = ss.signupid AND ss2.statuscode IN (?, ?)
+            ) as timesignedup,
             ss.timecreated
         FROM
             {facetoface} f
@@ -1005,7 +1010,7 @@ function facetoface_get_attendees($sessionid, $status = array(MDL_F2F_STATUS_BOO
         AND ss.superceded != 1
         ORDER BY ss.timecreated ASC";
 
-    $params = array_merge(array($sessionid), $statusparams);
+    $params = array_merge(array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED, $sessionid), $statusparams);
 
     $records = $DB->get_records_sql($sql, $params);
 
