@@ -621,7 +621,7 @@ class totara_program_renderer extends plugin_renderer_base {
                 }
             }
             $content .= $this->coursecat_programs($chelper, $programs,
-                    prog_get_programs_count($coursecat, $type, $displayoptions));
+                    prog_get_programs_count($coursecat, $type));
         }
 
         if ($showprogramsauto) {

@@ -1674,16 +1674,15 @@ function prog_has_programs($category) {
 /** Returns number of programs visible to the user
  *
  * @param coursecat $category
- * @param array $options Program display options
  * @param string $type Program or certification
  * @return int
  */
-function prog_get_programs_count($category, $type = 'program', $options = array()) {
+function prog_get_programs_count($category, $type = 'program') {
     // We have no programs at site level.
     if ($category->id == 0) {
         return 0;
     }
-    $programs = prog_get_programs($category->id, '', 'p.id', $type, $options);
+    $programs = prog_get_programs($category->id, '', 'p.id', $type);
     return count($programs);
 }
 
