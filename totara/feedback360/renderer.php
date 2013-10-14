@@ -338,9 +338,7 @@ class totara_feedback360_renderer extends plugin_renderer_base {
         $table = new html_table();
         $table->id = 'datatable';
         $table->attributes['class'] = 'clearfix';
-        $table->head = array(get_string('learner'),
-                             get_string('assignedvia', 'totara_core'),
-                             );
+        $table->head = array(get_string('learner'), get_string('assignedvia', 'totara_core'));
         $out = $this->output->container(html_writer::table($table), 'clearfix', 'assignedusers');
         return $out;
     }

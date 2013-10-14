@@ -1079,7 +1079,6 @@ class columns_test extends reportcache_advanced_testcase {
         $this->appraisal_user_assignment->id = 3;
         $this->appraisal_user_assignment->userid = 2;
         $this->appraisal_user_assignment->appraisalid = 1;
-        $this->appraisal_user_assignment->assignedvia = 'Position 1';
         $this->appraisal_user_assignment->activestageid = 2;
         $this->appraisal_user_assignment->timecompleted = null;
 

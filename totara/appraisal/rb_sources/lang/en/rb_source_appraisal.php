@@ -42,8 +42,6 @@ $string['appraisaltimestartedheading'] = 'Appraisal started';
 $string['appraisaltimefinishedcolumn'] = 'Appraisal Time Finished';
 $string['appraisaltimefinishedheading'] = 'Appraisal finished';
 
-$string['userappraisalassignedviacolumn'] = 'User Assigned Via';
-$string['userappraisalassignedviaheading'] = 'Assigned via';
 $string['userappraisaltimecompletedcolumn'] = 'User\'s Appraisal Time Completed';
 $string['userappraisaltimecompletedheading'] = 'Completed';
 $string['userappraisalactivestagenamecolumn'] = 'User\'s Current Stage';

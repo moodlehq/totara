@@ -73,7 +73,7 @@ $PAGE->navbar->add($remindstr);
 
 // Check confirmation before sending the requests, to help reduce spamming.
 if (!empty($confirmation)) {
-    $valid = sha1($userform->feedback360id . ':' . $userform->userid . ':' . $userform->assignedvia . ':' . $userform->timedue);
+    $valid = sha1($userform->feedback360id . ':' . $userform->userid . ':' . $userform->timedue);
     if ($confirmation == $valid) {
         $requester = $DB->get_record('user', array('id' => $userform->userid));
         $stringmanager = get_string_manager();
@@ -192,8 +192,7 @@ foreach ($resp_assignments as $resp_assignment) {
     }
 }
 $strremind = get_string('reminderconfirm', 'totara_feedback360') . $spacer . $system . $spacer . $external;
-$confirm = sha1($userform->feedback360id . ':' . $userform->userid . ':'
-              . $userform->assignedvia . ':' . $userform->timedue);
+$confirm = sha1($userform->feedback360id . ':' . $userform->userid . ':' . $userform->timedue);
 $rem_params = array('userformid' => $userformid, 'confirm' => $confirm);
 $rem_url = new moodle_url('/totara/feedback360/request/remind.php', $rem_params);
 

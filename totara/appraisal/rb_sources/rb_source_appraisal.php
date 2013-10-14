@@ -122,13 +122,6 @@ class rb_source_appraisal extends rb_base_source {
             ),
             new rb_column_option(
                 'userappraisal',
-                'assignedvia',
-                get_string('userappraisalassignedviacolumn', 'rb_source_appraisal'),
-                'base.assignedvia',
-                array('defaultheading' => get_string('userappraisalassignedviaheading', 'rb_source_appraisal'))
-            ),
-            new rb_column_option(
-                'userappraisal',
                 'timecompleted',
                 get_string('userappraisaltimecompletedcolumn', 'rb_source_appraisal'),
                 'base.timecompleted',

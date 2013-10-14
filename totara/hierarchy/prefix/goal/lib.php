@@ -648,7 +648,7 @@ class goal extends hierarchy {
      * @param   int     $userid     The id of the user to get the records of
      * @param   array   $canedit    An array holding all of the editing permissions
      * @param   boolean $display    Whether or not to join on the custom field data
-     * @return  array(object)   containing id,
+     * @return  array(object)
      */
     public static function get_user_assignments($userid, $canedit = null, $display = false) {
         global $CFG, $DB, $OUTPUT;
@@ -727,10 +727,10 @@ class goal extends hierarchy {
 
         /* $assignments
          *      ->goalname
+         *      ->assignmentid
          *      ->targetdate
-         *      ->status
-         *      ->assignedvia
-         *      ->edit options (where viable)
+         *      ->scalevalueid
+         *      ->via
          *      ->customfields  (where viable)
          */
 

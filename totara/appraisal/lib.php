@@ -4547,7 +4547,6 @@ class appraisal_role_assignment {
             $userassignment->id = 0;
             $userassignment->userid = $this->subjectid;
             $userassignment->appraisalid = $this->previewappraisalid;
-            $userassignment->assignedvia = '';
             $userassignment->activestageid = $this->previewstageid;
             $userassignment->timecompleted = 0;
             $userassignment->preview = true;
@@ -4592,12 +4591,6 @@ class appraisal_user_assignment {
      * @var int
      */
     protected $appraisalid = 0;
-
-    /**
-     * How user was assigned
-     * @var string
-     */
-    protected $assignedvia = '';
 
     /**
      * Current stage id of appraisal (for all roles always the same by req)
@@ -4659,7 +4652,6 @@ class appraisal_user_assignment {
         $this->id = $userass->id;
         $this->userid = $userass->userid;
         $this->appraisalid = $userass->appraisalid;
-        $this->assignedvia = $userass->assignedvia;
         $this->activestageid = $userass->activestageid;
         $this->timecompleted = $userass->timecompleted;
         $this->preview = false;
@@ -4682,7 +4674,6 @@ class appraisal_user_assignment {
             $userassignment->id = 0;
             $userassignment->userid = $userid;
             $userassignment->appraisalid = $appraisalid;
-            $userassignment->assignedvia = get_string('preview', 'totara_appraisal');
             $userassignment->activestageid = null;
             $userassignment->timecompleted = null;
             $userassignment->user = $DB->get_record('user', array('id' => $userid));

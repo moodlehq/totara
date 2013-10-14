@@ -71,7 +71,7 @@ if ($USER->id == $userform->userid) {
 $PAGE->navbar->add($cancelstr);
 
 if (!empty($confirmation)) {
-    $valid = sha1($userform->feedback360id . ':' . $userform->userid . ':' . $userform->assignedvia . ':' . $userform->timedue);
+    $valid = sha1($userform->feedback360id . ':' . $userform->userid . ':' . $userform->timedue);
     if ($confirmation == $valid) {
         $success = get_string('cancelrequestsuccess', 'totara_feedback360');
 
@@ -100,8 +100,7 @@ if ($DB->record_exists_sql($sql, array('uaid' => $userformid))) {
     $strdelete .= get_string('cancelrequestcontinued', 'totara_feedback360');
 }
 
-$confirm = sha1($userform->feedback360id . ':' . $userform->userid . ':'
-              . $userform->assignedvia . ':' . $userform->timedue);
+$confirm = sha1($userform->feedback360id . ':' . $userform->userid . ':' . $userform->timedue);
 $del_params = array('userformid' => $userformid, 'confirm' => $confirm);
 $del_url = new moodle_url('/totara/feedback360/request/stop.php', $del_params);
 

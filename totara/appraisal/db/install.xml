@@ -54,7 +54,6 @@
     <TABLE NAME="appraisal_scale" COMMENT="Multiple choice sets">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="appraisalquestfieldid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="scaletype" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false"/>
@@ -62,7 +61,6 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="apprscal_use_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
-        <KEY NAME="apprscal_app_fk" TYPE="foreign" FIELDS="appraisalquestfieldid" REFTABLE="appraisal_quest_field" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="apprscal_scatyp_ix" UNIQUE="false" FIELDS="scaletype"/>
@@ -212,7 +210,6 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="appraisalid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="assignedvia" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="activestageid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
