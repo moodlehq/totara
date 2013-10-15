@@ -217,7 +217,7 @@ class columns_test extends reportcache_advanced_testcase {
 
     protected $type_field_data = array(
         'id' => 1, 'fullname' => 'Custom Field', 'shortname' => 'CF1', 'classid' => 2, 'datatype' => 'checkbox', 'description' => 'Custom Field Description 1',
-        'sortorder' => 1, 'categoryid' => 1, 'hidden' => 0, 'locked' => 0, 'required' => 0, 'forceunique' => 0, 'defaultdata' => 0,
+        'sortorder' => 1, 'hidden' => 0, 'locked' => 0, 'required' => 0, 'forceunique' => 0, 'defaultdata' => 0,
         'param1' => null, 'param2' => null, 'param3' => null, 'param4' => null, 'param5' => null, 'typeid' => 1,
     );
 
@@ -405,13 +405,13 @@ class columns_test extends reportcache_advanced_testcase {
 
     protected $pos_type_info_field_data = array(
         'id' => 1, 'fullname' => 'Field Name', 'shortname' => 'Field', 'datatype' => 'text', 'description' => 'Description',
-        'sortorder' => 1, 'categoryid' => 1, 'hidden' => 0, 'locked' => 0, 'required' => 0, 'forceunique' => 0, 'defaultdata' => 'default',
+        'sortorder' => 1, 'hidden' => 0, 'locked' => 0, 'required' => 0, 'forceunique' => 0, 'defaultdata' => 'default',
         'param1' => 'text', 'param2' => 'text', 'param3' => 'text', 'param4' => 'text', 'param5' => 'text',
     );
 
     protected $org_type_info_field_data = array(
         'id' => 1, 'fullname' => 'Field Name', 'shortname' => 'Field', 'datatype' => 'text', 'description' => 'Description',
-        'sortorder' => 1, 'typeid' => 1, 'categoryid' => 1, 'hidden' => 0, 'locked' => 0, 'required' => 0, 'forceunique' => 0, 'defaultdata' => 'default',
+        'sortorder' => 1, 'typeid' => 1, 'hidden' => 0, 'locked' => 0, 'required' => 0, 'forceunique' => 0, 'defaultdata' => 'default',
         'param1' => 'text', 'param2' => 'text', 'param3' => 'text', 'param4' => 'text', 'param5' => 'text',
     );
 
@@ -632,7 +632,7 @@ class columns_test extends reportcache_advanced_testcase {
 
         )));
 
-        // db version of report
+        // DB version of report.
         $this->rb = new reportbuilder(1);
     }
 

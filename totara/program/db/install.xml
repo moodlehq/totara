@@ -168,21 +168,6 @@
         <INDEX NAME="progexce_use_ix" UNIQUE="false" FIELDS="userid"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="prog_exception_data" COMMENT="Stores details of any data specific to the exceptions raised for a program">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="exceptionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="dataname" TYPE="char" LENGTH="50" NOTNULL="false" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="datavalue" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="exceptionid" TYPE="foreign" FIELDS="exceptionid" REFTABLE="prog_exception" REFFIELDS="id"/>
-      </KEYS>
-      <INDEXES>
-        <INDEX NAME="progexcedata_exc_ix" UNIQUE="false" FIELDS="exceptionid"/>
-      </INDEXES>
-    </TABLE>
     <TABLE NAME="prog_extension" COMMENT="Stores extension requests for programs">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -225,7 +210,6 @@
         <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="messagetype" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="locked" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="messagesubject" TYPE="char" LENGTH="255" NOTNULL="false" DEFAULT="" SEQUENCE="false"/>
         <FIELD NAME="mainmessage" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="notifymanager" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>

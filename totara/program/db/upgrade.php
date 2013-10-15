@@ -234,5 +234,26 @@ function xmldb_totara_program_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2013092100, 'totara_program');
     }
 
+    // Drop unused 'prog_exception_data' table and 'locked' field in 'prog_message' table.
+    if ($oldversion < 2013101500) {
+        $table = new xmldb_table('prog_exception_data');
+
+        // Conditionally drop the table.
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+
+        $table = new xmldb_table('prog_message');
+        $field = new xmldb_field('locked');
+
+        // Conditionally drop the field.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Main savepoint reached.
+        totara_upgrade_mod_savepoint(true, 2013101500, 'totara_program');
+    }
+
     return true;
 }

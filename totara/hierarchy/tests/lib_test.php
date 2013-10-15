@@ -356,7 +356,6 @@ class hierarchylib_test extends advanced_testcase {
         $this->type1->timecreated = '1265963591';
         $this->type1->timemodified = '1265963591';
         $this->type1->usermodified = '2';
-        $this->type1->icon = '';
         $this->type1->idnumber = null;
         // competency
         $this->c1 = new stdClass();

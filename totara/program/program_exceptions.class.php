@@ -90,15 +90,14 @@ class prog_exceptions_manager {
      * @param int $userid
      * @param int $assignmentid
      * @param int $timeraised
-     * @param array $exceptiondata
      * @return <type>
      */
-    public function raise_exception($exceptiontype, $userid, $assignmentid, $timeraised=null, $exceptiondata=array()) {
+    public function raise_exception($exceptiontype, $userid, $assignmentid, $timeraised=null) {
         if (prog_exception::exception_exists($this->programid, $exceptiontype, $userid)) {
             // Return true if this exception has already been raised
             return true;
         }
-        return prog_exception::insert_exception($this->programid, $exceptiontype, $userid, $assignmentid, $timeraised, $exceptiondata);
+        return prog_exception::insert_exception($this->programid, $exceptiontype, $userid, $assignmentid, $timeraised);
     }
 
     /**
@@ -124,15 +123,6 @@ class prog_exceptions_manager {
 
         $transaction = $DB->start_delegated_transaction();
 
-        // first delete all exception_data entries for exceptions relating to this assignment
-        $subquery = "SELECT id FROM {prog_exception} WHERE assignmentid = ?";
-        $params = array($assignmentid);
-        if ($userid) {
-            $subquery .= " AND userid = ?";
-            $params[] = $userid;
-        }
-        $select = "exceptionid IN ($subquery)";
-        $DB->delete_records_select('prog_exception_data', $select, $params);
         $exceptionselect = "assignmentid = ?";
         $params = array($assignmentid);
         if ($userid) {
@@ -141,8 +131,7 @@ class prog_exceptions_manager {
         }
 
         $DB->delete_records_select('prog_exception', $exceptionselect, $params);
-        // Deleted exceptions, now update exception
-        // status for user assignments
+        // Deleted exceptions, now update exception status for user assignments.
         $update_sql = "UPDATE {prog_user_assignment} SET exceptionstatus = 0 WHERE assignmentid = ?";
         $params = array($assignmentid);
         if ($userid) {
@@ -156,25 +145,14 @@ class prog_exceptions_manager {
     }
 
     /**
-     * Deletes all exceptions and exception-related data for this program
+     * Deletes all exceptions for this program
      *
      * @return true
      */
     public function delete() {
         global $DB;
 
-        $transaction = $DB->start_delegated_transaction();
-
-        $exceptions = $DB->get_records('prog_exception', array('programid' => $this->programid));
-        foreach ($exceptions as $exception) {
-            $DB->delete_records('prog_exception_data', array('exceptionid' => $exception->id));
-        }
-
-        $DB->delete_records('prog_exception', array('programid' => $this->programid));
-
-        $transaction->allow_commit();
-
-        return true;
+        return $DB->delete_records('prog_exception', array('programid' => $this->programid));
     }
 
     public function handle_exceptions($action, $formdata) {

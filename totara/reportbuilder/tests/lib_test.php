@@ -294,7 +294,6 @@ class reportbuilderlib_test extends advanced_testcase {
         $this->pos_type_info_field_data->param4 = null;
         $this->pos_type_info_field_data->param5 = null;
         $this->pos_type_info_field_data->fullname = 'Checkbox test';
-        $this->pos_type_info_field_data->categoryid = null;
 
         $this->org_type_info_field_data = new stdClass();
         $this->org_type_info_field_data->id = 1;
@@ -314,7 +313,6 @@ class reportbuilderlib_test extends advanced_testcase {
         $this->org_type_info_field_data->param4 = null;
         $this->org_type_info_field_data->param5 = null;
         $this->org_type_info_field_data->fullname = 'Checkbox test';
-        $this->org_type_info_field_data->categoryid = null;
 
         $this->comp_type_info_field_data = new stdClass();
         $this->comp_type_info_field_data->id = 1;
@@ -334,7 +332,6 @@ class reportbuilderlib_test extends advanced_testcase {
         $this->comp_type_info_field_data->param4 = null;
         $this->comp_type_info_field_data->param5 = null;
         $this->comp_type_info_field_data->fullname = 'Checkbox test';
-        $this->comp_type_info_field_data->categoryid = null;
 
         $this->comp_data = array();
 

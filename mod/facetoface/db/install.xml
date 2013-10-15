@@ -97,7 +97,6 @@
         <FIELD NAME="superceded" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="grade" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="5"/>
         <FIELD NAME="note" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="advice" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>

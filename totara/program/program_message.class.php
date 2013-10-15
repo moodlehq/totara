@@ -60,7 +60,7 @@ class prog_message_data {
 
 abstract class prog_message {
 
-    public $id, $programid, $messagetype, $sortorder, $locked;
+    public $id, $programid, $messagetype, $sortorder;
     public $messagesubject, $mainmessage;
     public $notifymanager, $managermessage;
     public $triggertime, $triggerperiod, $triggernum;
@@ -84,7 +84,6 @@ abstract class prog_message {
             $this->id = $messageob->id;
             $this->programid = $messageob->programid;
             $this->sortorder = $messageob->sortorder;
-            $this->locked = $messageob->locked;
             $this->messagesubject = $messageob->messagesubject;
             $this->mainmessage = $messageob->mainmessage;
             $this->notifymanager = $messageob->notifymanager;
@@ -94,7 +93,6 @@ abstract class prog_message {
             $this->id = 0;
             $this->programid = $programid;
             $this->sortorder = 0;
-            $this->locked = false;
             $this->messagesubject = '';
             $this->mainmessage = '';
             $this->notifymanager = false;
@@ -164,7 +162,6 @@ abstract class prog_message {
         $message_todb->programid = $this->programid;
         $message_todb->messagetype = $this->messagetype;
         $message_todb->sortorder = $this->sortorder;
-        $message_todb->locked = $this->locked;
         $message_todb->notifymanager = $this->notifymanager;
         $message_todb->triggertime = $this->triggertime;
 
@@ -734,7 +731,6 @@ class prog_enrolment_message extends prog_noneventbased_message {
 
         $this->messagetype = MESSAGETYPE_ENROLMENT;
         $this->helppage = 'enrolmentmessage';
-        $this->locked = false;
         $this->sortorder = 1;
         $this->fieldsetlegend = get_string('legend:enrolmentmessage', 'totara_program');
 
@@ -779,7 +775,6 @@ class prog_exception_report_message extends prog_noneventbased_message {
 
         $this->messagetype = MESSAGETYPE_EXCEPTION_REPORT;
         $this->helppage = 'exceptionreportmessage';
-        $this->locked = false;
         $this->sortorder = 2;
         $this->fieldsetlegend = get_string('legend:exceptionreportmessage', 'totara_program');
 
@@ -823,7 +818,6 @@ class prog_unenrolment_message extends prog_noneventbased_message {
 
         $this->messagetype = MESSAGETYPE_UNENROLMENT;
         $this->helppage = 'unenrolmentmessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:unenrolmentmessage', 'totara_program');
 
         $studentmessagedata = array(
@@ -855,7 +849,6 @@ class prog_program_completed_message extends prog_noneventbased_message {
 
         $this->messagetype = MESSAGETYPE_PROGRAM_COMPLETED;
         $this->helppage = 'programcompletedmessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:programcompletedmessage', 'totara_program');
 
         $managermessagedata = array(
@@ -879,7 +872,6 @@ class prog_courseset_completed_message extends prog_noneventbased_message {
 
         $this->messagetype = MESSAGETYPE_COURSESET_COMPLETED;
         $this->helppage = 'coursesetcompletedmessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:coursesetcompletedmessage', 'totara_program');
 
         $managermessagedata = array(
@@ -903,7 +895,6 @@ class prog_program_due_message extends prog_eventbased_message {
 
         $this->messagetype = MESSAGETYPE_PROGRAM_DUE;
         $this->helppage = 'programduemessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:programduemessage', 'totara_program');
         $this->triggereventstr = get_string('beforeprogramisdue', 'totara_program');
 
@@ -928,7 +919,6 @@ class prog_courseset_due_message extends prog_eventbased_message {
 
         $this->messagetype = MESSAGETYPE_COURSESET_DUE;
         $this->helppage = 'coursesetduemessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:coursesetduemessage', 'totara_program');
         $this->triggereventstr = get_string('beforesetisdue', 'totara_program');
 
@@ -953,7 +943,6 @@ class prog_program_overdue_message extends prog_eventbased_message {
 
         $this->messagetype = MESSAGETYPE_PROGRAM_OVERDUE;
         $this->helppage = 'programoverduemessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:programoverduemessage', 'totara_program');
         $this->triggereventstr = get_string('afterprogramisdue', 'totara_program');
 
@@ -978,7 +967,6 @@ class prog_courseset_overdue_message extends prog_eventbased_message {
 
         $this->messagetype = MESSAGETYPE_COURSESET_OVERDUE;
         $this->helppage = 'coursesetoverduemessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:coursesetoverduemessage', 'totara_program');
         $this->triggereventstr = get_string('aftersetisdue', 'totara_program');
 
@@ -1003,7 +991,6 @@ class prog_learner_followup_message extends prog_eventbased_message {
 
         $this->messagetype = MESSAGETYPE_LEARNER_FOLLOWUP;
         $this->helppage = 'learnerfollowupmessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:learnerfollowupmessage', 'totara_program');
         $this->triggereventstr = get_string('afterprogramiscompleted', 'totara_program');
         $this->notifymanager = false;
@@ -1045,7 +1032,6 @@ class prog_extension_request_message extends prog_noneventbased_message {
 
         $this->messagetype = MESSAGETYPE_EXTENSION_REQUEST;
         $this->helppage = 'extensionrequestmessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:extensionrequestmessage', 'totara_program');
         $this->userid = $userid;
         $this->extensiondata = $data;
@@ -1143,7 +1129,6 @@ class prog_recert_windowopen_message extends prog_eventbased_message {
 
         $this->messagetype = MESSAGETYPE_RECERT_WINDOWOPEN;
         $this->helppage = 'recertwindowopenmessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:recertwindowopenmessage', 'totara_certification');
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
@@ -1187,7 +1172,6 @@ class prog_recert_windowdueclose_message extends prog_eventbased_message {
 
         $this->messagetype = MESSAGETYPE_RECERT_WINDOWDUECLOSE;
         $this->helppage = 'recertwindowdueclosemessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:recertwindowdueclosemessage', 'totara_certification');
         $this->triggereventstr = get_string('beforewindowduetoclose', 'totara_certification');
         $managermessagedata = array(
@@ -1233,7 +1217,6 @@ class prog_recert_failrecert_message extends prog_eventbased_message {
 
         $this->messagetype = MESSAGETYPE_RECERT_FAILRECERT;
         $this->helppage = 'recertfailrecertmessage';
-        $this->locked = false;
         $this->fieldsetlegend = get_string('legend:recertfailrecertmessage', 'totara_certification');
         $managermessagedata = array(
             'roleid'            => $this->managerrole,

@@ -51,18 +51,8 @@ abstract class prog_exception {
 
     }
 
-    public static function insert_exception($programid, $exceptiontype, $userid, $assignmentid, $timeraised=null, $exceptiondata=array()) {
+    public static function insert_exception($programid, $exceptiontype, $userid, $assignmentid, $timeraised=null) {
         global $DB;
-        $dataobjects = array();
-
-        if (!empty($exceptiondata)) {
-            foreach ($exceptiondata as $dataname=>$datavalue) {
-                $ob = new stdClass();
-                $ob->dataname = $dataname;
-                $ob->datavalue = $datavalue;
-                $dataobjects[] = $ob;
-            }
-        }
 
         if (!$timeraised) {
             $timeraised = time();
@@ -75,28 +65,17 @@ abstract class prog_exception {
         $exception->timeraised = $timeraised;
         $exception->assignmentid = $assignmentid;
 
-
         if ($exceptionid = $DB->insert_record('prog_exception', $exception)) {
-            $transaction = $DB->start_delegated_transaction();
-
             $prog_notify_todb = new stdClass;
             $prog_notify_todb->id = $programid;
             $prog_notify_todb->exceptionssent = 0;
             $DB->update_record('prog', $prog_notify_todb);
 
-            foreach ($dataobjects as $dataobject) {
-                $dataobject->exceptionid = $exceptionid;
-
-                $DB->insert_record('prog_exception_data', $dataobject);
-            }
-            $transaction->allow_commit();
             return $exceptionid;
         } else {
             return false;
         }
-
     }
-
 
     /**
      *  Checks if an exception exists
@@ -120,11 +99,7 @@ abstract class prog_exception {
      */
     public static function delete_exception($exceptionid) {
         global $DB;
-        // first delete any data relating to this exception
-        if (!$DB->delete_records('prog_exception_data', array('exceptionid' => $exceptionid))) {
-            return false;
-        }
-        // then delete the exception itself
+
         return $DB->delete_records('prog_exception', array('id' => $exceptionid));
     }
 

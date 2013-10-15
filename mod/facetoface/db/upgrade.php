@@ -1676,6 +1676,20 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2013092000, 'facetoface');
     }
 
+    if ($oldversion < 2013101500) {
+        // Define field "advice" to be dropped.
+        $table = new xmldb_table('facetoface_signups_status');
+        $field = new xmldb_field('advice');
+
+        // Conditionally drop field.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Facetoface savepoint reached.
+        upgrade_mod_savepoint(true, 2013101500, 'facetoface');
+    }
+
     return $result;
 }
 

@@ -686,5 +686,59 @@ function xmldb_totara_hierarchy_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2013080502, 'totara', 'hierarchy');
     }
 
+    // Drop unused hierarchy fields.
+    if ($oldversion < 2013101500) {
+        // Define 'icon' field to drop.
+        $field = new xmldb_field('icon');
+
+        $table = new xmldb_table('comp_type');
+        // Conditionally drop field.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        $table = new xmldb_table('org_type');
+        // Conditionally drop field.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        $table = new xmldb_table('pos_type');
+        // Conditionally drop field.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Define 'categoryid' field to drop.
+        $field = new xmldb_field('categoryid');
+
+        $table = new xmldb_table('comp_type_info_field');
+        // Conditionally drop field.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        $table = new xmldb_table('org_type_info_field');
+        // Conditionally drop field.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        $table = new xmldb_table('pos_type_info_field');
+        // Conditionally drop field.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        $table = new xmldb_table('goal_type_info_field');
+        // Conditionally drop field.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Hierarchy savepoint reached.
+        upgrade_plugin_savepoint(true, 2013101500, 'totara', 'hierarchy');
+    }
+
     return true;
 }

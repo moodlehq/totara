@@ -48,9 +48,9 @@ class competencylib_test extends UnitTestCaseUsingDatabase {
     );
 
     var $type_field_data = array(
-        array('id', 'fullname', 'shortname', 'typeid', 'datatype', 'description', 'sortorder', 'categoryid', 'hidden',
+        array('id', 'fullname', 'shortname', 'typeid', 'datatype', 'description', 'sortorder', 'hidden',
             'locked', 'required', 'forceunique', 'defaultdata', 'param1', 'param2', 'param3', 'param4', 'param5'),
-        array(1, 'Custom Field 1', 'CF1', 2, 'checkbox', 'Custom Field Description 1', 1, 1, 0, 0, 0, 0, 0, null, null,
+        array(1, 'Custom Field 1', 'CF1', 2, 'checkbox', 'Custom Field Description 1', 1, 0, 0, 0, 0, 0, null, null,
             null, null, null),
     );
 
