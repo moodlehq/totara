@@ -603,7 +603,7 @@ class CPDF_Adapter implements Canvas {
   function text($x, $y, $text, $font, $size, $color = array(0,0,0), $word_space = 0, $char_space = 0, $angle = 0) {
     $pdf = $this->_pdf;
     
-    $pdf->setColor($color);
+    $pdf->setColor($color, true);
     
     $font .= ".afm";
     $pdf->selectFont($font);

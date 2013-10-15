@@ -141,10 +141,7 @@ foreach ($stageslist as $stageid => $stagedata) {
                 $form->set_data($appraisal->get_answers($page->id, $assignment));
             }
             if ($action == 'snapshot') {
-                $defaultformrenderer = $GLOBALS['_HTML_QuickForm_default_renderer'];
-                $GLOBALS['_HTML_QuickForm_default_renderer'] = new PdfForm_Renderer();
                 $form->display();
-                $GLOBALS['_HTML_QuickForm_default_renderer'] = $defaultformrenderer;
             } else {
                 $form->display();
             }

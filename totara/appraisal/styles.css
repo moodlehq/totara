@@ -440,9 +440,17 @@ form.print-stages-form .fitem .fitemtitle {
     .visibleto-review {
         display: none;
     }
+
+    .skiplinks {
+        display: none;
+    }
 }
 
-@media pdf {
+@media dompdf {
+    * {
+        font-family: "DejaVu Sans";
+    }
+
     .visibleto {
         display: none;
     }
@@ -451,8 +459,34 @@ form.print-stages-form .fitem .fitemtitle {
         display: none;
     }
 
-    * {
-        font-family: "DejaVu Sans";
+    .userpicture {
+        display: none;
+    }
+
+    .skiplinks {
+        display: none;
+    }
+
+    .mform fieldset legend.ftoggler {
+        font-size: 18px;
+        color: #087BB1;
+    }
+
+    .mform fieldset div.fcontainer {
+        padding: 10px 0px;
+    }
+
+    .mform fieldset div.fcontainer h3 {
+        font-size: 16px;
+    }
+
+   .mform .fitem div.fitemtitle {
+        float: left;
+        width: 180px;
+    }
+
+    .mform div.fitem div.felement {
+        padding: 0 185px;
     }
 }
 

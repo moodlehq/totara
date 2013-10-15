@@ -1531,7 +1531,7 @@ class totara_appraisal_renderer extends plugin_renderer_base {
 
         if ($role) {
             $roles = appraisal::get_roles();
-            $a->rolename = get_String($roles[$role], 'totara_appraisal');
+            $a->rolename = get_string($roles[$role], 'totara_appraisal');
         }
 
         $r = new html_table_row(array($this->output->user_picture($subject),

@@ -351,5 +351,5 @@ $string['visibility'] = 'Visisbility';
 $string['questupdated'] = 'Page content updated';
 $string['unrecognizedaction'] = 'Unrecognized action';
 $string['xmoremissingroles'] = '{$a} more user(s) are also missing roles.';
-$string['youareprintingxsappraisal'] = '<strong>{$a->rolename}\'s version of <a href="{$a->site}/user/view.php?id={$a->userid}">{$a->name}\'s</a> appraisal.</strong>';
+$string['youareprintingxsappraisal'] = '<strong>{$a->rolename}\'s version of&nbsp;<a href="{$a->site}/user/view.php?id={$a->userid}">{$a->name}\'s</a> appraisal.</strong>';
 $string['youareviewingxsappraisal'] = '<strong>You are viewing <a href="{$a->site}/user/view.php?id={$a->userid}">{$a->name}\'s</a> appraisal.</strong>';

@@ -1077,20 +1077,6 @@ class MoodleQuickForm_staticcallback extends MoodleQuickForm_static {
 // Register question specific form element.
 MoodleQuickForm::registerElementType('staticcallback', "$CFG->dirroot/totara/question/lib.php", 'MoodleQuickForm_staticcallback');
 
-/**
- * Simplifies rendering elements as much as possible
- */
-class PdfForm_Renderer extends MoodleQuickForm_Renderer {
-    public function __construct() {
-        parent::MoodleQuickForm_Renderer();
-        foreach ($this->_elementTemplates as &$template) {
-            if ($template != '') {
-                $template = "\n\t\t<div>{label}: {element}</div>";
-            }
-        }
-    }
-}
-
 class question_exception extends Exception {
 
 }

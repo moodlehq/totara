@@ -47,3 +47,16 @@ IN LINE CHANGES:
 +    }
      $cb = $frame->get_containing_block();
      list($x, $y, $w, $h) = $frame->get_border_box();
+
+index a1943bc..a9cd5f3 100644
+--- a/lib/dompdf/include/cpdf_adapter.cls.php
++++ b/lib/dompdf/include/cpdf_adapter.cls.php
+@@ -603,7 +603,7 @@ class CPDF_Adapter implements Canvas {
+   function text($x, $y, $text, $font, $size, $color = array(0,0,0), $word_space = 0, $char_space = 0, $angle = 0) {
+     $pdf = $this->_pdf;
+
+-    $pdf->setColor($color);
++    $pdf->setColor($color, true);
+
+     $font .= ".afm";
+     $pdf->selectFont($font);
