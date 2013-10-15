@@ -1777,12 +1777,6 @@ function quiz_get_navigation_options() {
 function quiz_archive_completion($userid, $courseid) {
     global $DB, $CFG;
 
-    require_once($CFG->libdir . '/completionlib.php');
-    require_once($CFG->dirroot . '/mod/quiz/locallib.php');
-
-    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
-    $completion = new completion_info($course);
-
     $sql = 'SELECT q.*
             FROM {quiz} q
             WHERE q.course = :courseid
@@ -1791,13 +1785,33 @@ function quiz_archive_completion($userid, $courseid) {
                         WHERE qa.quiz = q.id
                         AND userid = :userid)';
     if ($quizs = $DB->get_records_sql($sql, array('courseid' => $courseid, 'userid' => $userid))) {
+        require_once($CFG->libdir . '/completionlib.php');
+        require_once($CFG->dirroot . '/mod/quiz/locallib.php');
+
+        $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+        $completion = new completion_info($course);
+
         foreach ($quizs as $quiz) {
+            // Deletion code copied from function quiz_delete_attempt() in /mod/quiz/locallib.php.
+            // Looks like quiz_delete_attempt() will try to redo the grading if there are several attempts.
+            // So deleting all the attempts here first and then resetting the grade.
+            // Delete attempts.
             if ($attempts = $DB->get_records('quiz_attempts', array('quiz' => $quiz->id, 'userid' => $userid))) {
                 foreach ($attempts as $attempt) {
-                    quiz_delete_attempt($attempt, $quiz);
+                    question_engine::delete_questions_usage_by_activity($attempt->uniqueid);
+                    $DB->delete_records('quiz_attempts', array('id' => $attempt->id));
                 }
             }
-            // Set as not viewed
+            // Delete overrides.
+            if ($overrides = $DB->get_records('quiz_overrides', array('quiz' => $quiz->id, 'userid' => $userid), 'id')) {
+                foreach ($overrides as $override) {
+                    quiz_delete_override($quiz, $override->id);
+                }
+            }
+            // Reset grades - this will delete the quiz grades and grade grades because there are no attempts.
+            quiz_save_best_grade($quiz, $userid);
+
+            // Reset completion.
             $course_module = get_coursemodule_from_instance('quiz', $quiz->id, $courseid);
             // Reset viewed
             $completion->set_module_viewed_reset($course_module, $userid);
