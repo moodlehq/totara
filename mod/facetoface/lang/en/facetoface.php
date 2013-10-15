@@ -390,6 +390,7 @@ $string['placeholder:firstname'] = '[firstname]';
 $string['placeholder:lastname'] = '[lastname]';
 $string['placeholder:cost'] = '[cost]';
 $string['placeholder:alldates'] = '[alldates]';
+$string['placeholder:reminderperiod'] = '[reminderperiod]';
 $string['placeholder:sessiondate'] = '[sessiondate]';
 $string['placeholder:startdate'] = '[startdate]';
 $string['placeholder:finishdate'] = '[finishdate]';
