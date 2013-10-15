@@ -132,7 +132,7 @@ class rb_source_scorm extends rb_base_source {
                 'sco',
                 'status',
                 get_string('status', 'rb_source_scorm'),
-                'sco_status.value',
+                $DB->sql_compare_text('sco_status.value', 1024),
                 array(
                     'joins' => 'sco_status',
                     'displayfunc' => 'ucfirst',
@@ -142,14 +142,14 @@ class rb_source_scorm extends rb_base_source {
                 'sco',
                 'totaltime',
                 get_string('totaltime', 'rb_source_scorm'),
-                'sco_totaltime.value',
+                $DB->sql_compare_text('sco_totaltime.value', 1024),
                 array('joins' => 'sco_totaltime')
             ),
             new rb_column_option(
                 'sco',
                 'scoreraw',
                 get_string('score', 'rb_source_scorm'),
-                'sco_scoreraw.value',
+                $DB->sql_compare_text('sco_scoreraw.value', 1024),
                 array('joins' => 'sco_scoreraw')
             ),
             new rb_column_option(
@@ -166,14 +166,14 @@ class rb_source_scorm extends rb_base_source {
                 'sco',
                 'scoremin',
                 get_string('minscore', 'rb_source_scorm'),
-                'sco_scoremin.value',
+                $DB->sql_compare_text('sco_scoremin.value', 1024),
                 array('joins' => 'sco_scoremin')
             ),
             new rb_column_option(
                 'sco',
                 'scoremax',
                 get_string('maxscore', 'rb_source_scorm'),
-                'sco_scoremax.value',
+                $DB->sql_compare_text('sco_scoremax.value', 1024),
                 array('joins' => 'sco_scoremax')
             ),
             new rb_column_option(
