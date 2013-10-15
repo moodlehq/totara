@@ -1074,6 +1074,15 @@ function facetoface_message_substitutions($msg, $facetofacename, $user, $data, $
     $link = html_writer::link($attendees_url, $attendees_url, array('title' => get_string('attendees', 'facetoface')));
     $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), $link, $msg);
 
+    if (strstr($msg, get_string('placeholder:reminderperiod', 'facetoface'))) {
+        // Handle the legacy reminderperiod placeholder.
+        $reminderperiod = $DB->get_field('facetoface_notification', 'MAX(scheduleamount)',
+            array('facetofaceid' => $data->facetoface, 'conditiontype' => MDL_F2F_CONDITION_BEFORE_SESSION,
+            'scheduleunit' => MDL_F2F_SCHEDULE_UNIT_DAY, 'status' => 1), IGNORE_MULTIPLE);
+        $reminderperiod = empty($reminderperiod) ? 0 : $reminderperiod;
+        $msg = str_replace(get_string('placeholder:reminderperiod', 'facetoface'), $reminderperiod, $msg);
+    }
+
     // Custom session fields (they look like "session:shortname" in the templates)
     $customfields = facetoface_get_session_customfields();
     $customdata = $DB->get_records('facetoface_session_data', array('sessionid' => $sessionid), '', 'fieldid, data');
