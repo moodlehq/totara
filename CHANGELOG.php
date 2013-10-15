@@ -3,6 +3,19 @@
 
 Totara LMS Changelog
 
+Release 2.4.12 (15th October 2013):
+==================================================
+
+Improvements:
+    T-11363    Improved formatting of session times in face-to-face block report
+    T-5879     Fixed spelling/grammar for teammembers string (en lang pack)
+
+Bug Fixes:
+    T-11410    Fixed custom textarea user profile fields not being displayed on the sign-up page
+    T-11468    Fixed serious issue causing loss of program completion dates when assignments saved when using imported language
+    T-11470    Restricted unauthorised access for learners in program details page
+
+
 Release 2.4.11 (1st October 2013):
 ==================================================
 
