@@ -48,3 +48,7 @@ span.coursecompletionstatus span.completion-completeviarpl {
 div.datepicker-wrapper {
     display: inline-block;
 }
+
+table.namewithlinks-layout {
+    width: 100%;
+}

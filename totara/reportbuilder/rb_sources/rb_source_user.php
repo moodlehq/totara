@@ -379,7 +379,7 @@ class rb_source_user extends rb_base_source {
 
 
     function rb_display_user_with_links($user, $row, $isexport = false) {
-        global $CFG, $OUTPUT;
+        global $CFG, $OUTPUT, $USER;
         $userid = $row->user_id;
 
         if ($isexport) {
@@ -419,7 +419,11 @@ class rb_source_user extends rb_base_source {
         $links .= $profile_link.'&nbsp;|&nbsp;';
         $links .= $booking_link.'&nbsp;|&nbsp;';
         $links .= $rol_link.'&nbsp;|&nbsp;';
-        $links .= $appraisal_link.'&nbsp;|&nbsp;';
+        // Hide link for temporary managers.
+        $tempman = totara_get_manager($userid, null, false, true);
+        if (!$tempman || $tempman->id != $USER->id) {
+            $links .= $appraisal_link.'&nbsp;|&nbsp;';
+        }
         $links .= $feedback_link.'&nbsp;|&nbsp;';
         $links .= $goal_link.'&nbsp;|&nbsp;';
         $links .= $required_link;
