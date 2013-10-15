@@ -1024,6 +1024,30 @@ class prog_content {
 
         return $templatehtml;
     }
+
+    /**
+     * Returns program coursesets based on the search parameters ($operator and $visibility)
+     *
+     * @param int $operator Constant to search for a value in totara_search_for_value function
+     * @param int $visibility Audience visibility constant
+     * @return array of coursesets
+     */
+    public function get_visibility_coursesets($operator, $visibility) {
+        $courseaudiencevisibility = array();
+        foreach ($this->coursesets as $set) {
+            if (get_class($set) === $this->courseset_classnames[CONTENTTYPE_MULTICOURSE]) {
+                $courseaudiencevisibility += totara_search_for_value($set->courses, 'audiencevisible', $operator, $visibility);
+            } else if (get_class($set) === $this->courseset_classnames[CONTENTTYPE_COMPETENCY]){
+                $courses = $set->get_competency_courses();
+                $courseaudiencevisibility += totara_search_for_value($courses, 'audiencevisible', $operator, $visibility);
+            }
+        }
+        if (!empty($courseaudiencevisibility)) {
+            $courseaudiencevisibility = array_unique($courseaudiencevisibility, SORT_REGULAR);
+        }
+
+        return $courseaudiencevisibility;
+    }
 }
 
 class ProgramContentException extends Exception { }

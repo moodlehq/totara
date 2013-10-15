@@ -1439,13 +1439,22 @@ class program {
      * @return string
      */
     public function display_current_status() {
-        global $PAGE;
+        global $PAGE, $CFG;
         $data = new stdClass();
         $data->assignments = $this->assignments->count_active_user_assignments();
         $data->exceptions = $this->assignments->count_user_assignment_exceptions();
         $data->total = $this->assignments->count_total_user_assignments();
         $data->statusstr = '';
         $data->visible = $this->visible;
+        $data->audiencevisibilitywarning = false;
+
+        // Notify if there are courses in this program which don't have audience visibility to all.
+        if (!empty($CFG->audiencevisibility)) {
+            $coursesnovisible = $this->content->get_visibility_coursesets(TOTARA_SEARCH_OP_NOT_EQUAL, COHORT_VISIBLE_ALL);
+            if (!empty($coursesnovisible)) {
+                $data->audiencevisibilitywarning = true;
+            }
+        }
 
         if (!$this->is_accessible()) {
             $data->statusstr = 'programnotavailable';

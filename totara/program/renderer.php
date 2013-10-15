@@ -95,6 +95,7 @@ class totara_program_renderer extends plugin_renderer_base {
         } else {
             $programstatusstring = get_string('programnotlive', 'totara_program');
         }
+
         $learnerinfo = html_writer::empty_tag('br') . html_writer::start_tag('span', array('class' => 'assignmentcount'));
         if ($data->exceptions > 0) {
             $learnerinfo .= get_string('learnersassignedexceptions', 'totara_program', $data);
@@ -102,7 +103,14 @@ class totara_program_renderer extends plugin_renderer_base {
             $learnerinfo .= get_string('learnersassigned', 'totara_program', $data);
         }
         $learnerinfo .= html_writer::end_tag('span');
-        $out = $this->output->notification($programstatusstring . $learnerinfo, $programstatusclass);
+
+        $coursevisibilityinfo = html_writer::empty_tag('br') . html_writer::start_tag('span');
+        if ($data->audiencevisibilitywarning) {
+            $coursevisibilityinfo .= get_string('audiencevisibilityconflictmessage', 'totara_program');
+        }
+        $coursevisibilityinfo .= html_writer::end_tag('span');
+
+        $out = $this->output->notification($programstatusstring . $learnerinfo . $coursevisibilityinfo, $programstatusclass);
 
         // This js variable is added so that is available to javascript and can
         // be retrieved and displayed in the dialog when saving the content

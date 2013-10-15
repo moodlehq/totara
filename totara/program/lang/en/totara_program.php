@@ -94,6 +94,8 @@ $string['assignindividual'] = '{$a->fullname} ({$a->email})';
 $string['assignmentcriterialearner'] = 'You are required to complete this program under the following criteria:';
 $string['assignmentcriteriamanager'] = 'The learner is required to complete this program under the following criteria:';
 $string['assignments'] = 'Assignments';
+$string['audiencevisibilityconflictmessage'] = '<strong>Important:</strong>
+Users assigned to this program will not necessarily have access to the courses in it. Please review visibility of the courses.';
 $string['availability'] = 'Availability';
 $string['availablefrom'] = 'Available from';
 $string['availabletostudents'] = 'Available to students';

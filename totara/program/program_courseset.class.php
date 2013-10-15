@@ -1452,7 +1452,7 @@ class competency_course_set extends course_set {
         return false;
     }
 
-    private function get_competency_courses() {
+    public function get_competency_courses() {
         global $DB;
 
         $sql = "SELECT c.*
