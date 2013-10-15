@@ -381,16 +381,16 @@ The message body can contain variables which will be replaced when the message i
 
 ## Variable substitution
 
-In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the the text exactly as they are shown below. The following variables can be used:
+In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the text exactly as they are shown below. The following variables can be used:
 
 %userfullname%
 :   This will be replaced by the recipient\'s full name
 
 %programfullname%
-:   This will be replaced by the the program\'s full name
+:   This will be replaced by the program\'s full name
 
 %setlabel%
-:   This will be replaced the the course set label (it will only be replaced if the message relates to a course set';
+:   This will be replaced by the course set label (it will only be replaced if the message relates to a course set';
 $string['managecoursesinthiscat'] = 'Manage courses in this category';
 $string['manageextensionrequests'] = 'View exception report to grant or deny extension requests';
 $string['manageextensions'] = 'Manage Extensions';
@@ -403,16 +403,16 @@ The notice for manager can contain variables which will be replaced when the mes
 
 ## Variable substitution
 
-In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the the text exactly as they are shown below. The following variables can be used:
+In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the text exactly as they are shown below. The following variables can be used:
 
 %userfullname%
 :   This will be replaced by the recipient\'s full name
 
 %programfullname%
-:   This will be replaced by the the program\'s full name
+:   This will be replaced by the program\'s full name
 
 %setlabel%
-:   This will be replaced the the course set label (it will only be replaced if the message relates to a course set';
+:   This will be replaced by the course set label (it will only be replaced if the message relates to a course set';
 $string['managername'] = 'Manager name';
 $string['managers_category'] = 'management team(s)';
 $string['mandatory'] = 'Mandatory';
@@ -428,16 +428,16 @@ The subject can contain variables which will be replaced when the message is sen
 
 ## Variable substitution
 
-In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the the text exactly as they are shown below. The following variables can be used:
+In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the text exactly as they are shown below. The following variables can be used:
 
 %userfullname%
 :   This will be replaced by the recipient\'s full name
 
 %programfullname%
-:   This will be replaced by the the program\'s full name
+:   This will be replaced by the program\'s full name
 
 %setlabel%
-:   This will be replaced the the course set label (it will only be replaced if the message relates to a course set';
+:   This will be replaced by the course set label (it will only be replaced if the message relates to a course set';
 $string['minimumtimerequired'] = 'Minimum time required';
 $string['minimumtimerequired_help'] = 'This value indicates a minimum amount of time that a user might realistically be able to complete the course set. It is used to determine if the completion period set on the "assignments" tab is realistic for a particular group of users. If the assignment is not realistic, a "time allowance" exception will be generated and the user will not be assigned to the program until the exception has been resolved.
 
@@ -699,16 +699,16 @@ $string['variablesubstitution_help'] = '
 
 ## Variable substitution
 
-In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the the text exactly as they are shown below. The following variables can be used:
+In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the text exactly as they are shown below. The following variables can be used:
 
 %userfullname%
 :   This will be replaced by the recipient\'s full name
 
 %programfullname%
-:   This will be replaced by the the program\'s full name
+:   This will be replaced by the program\'s full name
 
 %setlabel%
-:   This will be replaced the the course set label (it will only be replaced if the message relates to a course set';
+:   This will be replaced by the course set label (it will only be replaced if the message relates to a course set';
 $string['viewallprograms'] = 'View all programs';
 $string['viewallrequiredlearning'] = 'View all';
 $string['viewcourse'] = 'View course';

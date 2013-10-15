@@ -1110,7 +1110,7 @@ function delete_removed_users($program) {
 }
 
 /**
- * Reset the componet records of the certifciation so user can take the certification-program again
+ * Reset the component records of the certification so user can take the certification-program again
  *
  * @param StdClass $certifcompletion
  * @param array $courses

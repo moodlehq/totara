@@ -86,7 +86,7 @@ if (!has_capability('totara/program:configuremessages', $programcontext)) {
 $currenturl = qualified_me();
 $currenturl_noquerystring = strip_querystring($currenturl);
 $viewurl = $currenturl_noquerystring."?id={$id}";
-$overviewurl = $CFG->wwwroot."/totara/certifciation/edit_certification.php?id={$id}&action=view";
+$overviewurl = $CFG->wwwroot."/totara/certification/edit_certification.php?id={$id}&action=view";
 $customdata = array('certification' => $certification, 'timeallowance' => $timeallowance);
 $form = new edit_certification_form($currenturl, $customdata, 'post', '', array('name'=>'form_certif_details'));
 

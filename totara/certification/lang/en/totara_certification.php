@@ -33,7 +33,7 @@ An example program with four course sets defined could have dependencies as foll
 *   From set two the learner must complete all courses (courseC and courseD and courseE) before proceeding to set three or set four.
 *   From set three the learner must complete one course (courseE) or all courses from set four (courseF and courseG).
 
-Once the learning path is completed, the learner has finished the certifciation program.';
+Once the learning path is completed, the learner has finished the certification program.';
 $string['addnewcertification'] = 'Add new certification';
 $string['beforewindowduetoclose'] = 'Before window is due to close';
 $string['cancelcertificationmanagement'] = 'Clear unsaved changes';
@@ -43,7 +43,7 @@ $string['certifcategories'] = 'Certification Categories';
 $string['certification'] = 'Certification';
 $string['certification:accessanycertification'] = 'Access any certification';
 $string['certification:configurecertification'] = 'Configure certification';
-$string['certification:configurecontent'] = 'Configure certifification content';
+$string['certification:configurecontent'] = 'Configure certification content';
 $string['certification:configuredetails'] = 'Configure certification details';
 $string['certification:configuremessages'] = 'Configure certification messages';
 $string['certification:configurerecertificationdetails'] = 'Configure certification details';
@@ -116,7 +116,7 @@ $string['moveselectedcertificationsto'] = 'Move selected certifications to...';
 $string['nocertifdetailsfound'] = 'No certification details setup';
 $string['nocertifications'] = 'No certifications';
 $string['oricertpath'] = 'Original certification path';
-$string['oricertpathdesc'] = 'Define the content required for the original certifciation path.';
+$string['oricertpathdesc'] = 'Define the content required for the original certification path.';
 $string['pluginname'] = 'Certification';
 $string['prog_recert_failrecert_message'] = 'Program recertification failure message';
 $string['prog_recert_windowdueclose_message'] = 'Program Recertification Window due close message';
@@ -127,7 +127,7 @@ $string['recertfailrecertmessage'] = 'Failure to recertify message';
 $string['recertfailrecertmessage_help'] = 'This message will be sent when a recertification period has expired and the learner will need to repeat the original certification.';
 $string['recertification'] = 'Recertification';
 $string['recertpath'] = 'Recertification path';
-$string['recertpathdesc'] = 'Define the recertifciation path';
+$string['recertpathdesc'] = 'Define the recertification path';
 $string['recertwindowdueclose'] = 'Recertification window due to close';
 $string['recertwindowdueclosemessage'] = 'Recertification window due to close message';
 $string['recertwindowdueclosemessage_help'] = 'This message will be sent when a recertification period is about to expire.';
