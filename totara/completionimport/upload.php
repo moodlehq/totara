@@ -39,7 +39,7 @@ require_capability('totara/completionimport:import', $context);
 
 $PAGE->set_context($context);
 
-// Create the forms before $OUTPUT
+// Create the forms before $OUTPUT.
 $coursedata = get_config_data($filesource, 'course');
 $coursedata->importname = 'course';
 $courseform = new upload_form(null, $coursedata);
@@ -78,16 +78,16 @@ if (!empty($importname)) {
     // Lets do it!
     require_sesskey();
 
-    // Save the form settings for next time
+    // Save the form settings for next time.
     set_config_data($data, $importname);
 
-    // Get the temporary path
+    // Get the temporary path.
     if (!($temppath = get_temppath())) {
         echo $OUTPUT->footer();
         exit;
     }
 
-    // Create a temporary file name
+    // Create a temporary file name.
     if (!($tempfilename = tempnam($temppath, get_tempprefix($importname)))) {
         echo $OUTPUT->notification(get_string('cannotcreatetempname', 'totara_completionimport'), 'notifyproblem');
         echo $OUTPUT->footer();
@@ -95,16 +95,16 @@ if (!empty($importname)) {
     }
     $tempfilename .= '.csv';
 
-    // Move the file to the temporary filename
+    // Move the file to the temporary filename.
     if ($filesource == TCI_SOURCE_EXTERNAL) {
-        // File should already be uploaded by FTP
+        // File should already be uploaded by FTP.
         if (!move_sourcefile($data->sourcefile)) {
             echo $OUTPUT->footer();
             unlink($tempfilename);
             exit;
         }
     } else if ($filesource == TCI_SOURCE_UPLOAD) {
-        // Uploading via a form
+        // Uploading via a form.
         if ($importname == 'course') {
             if (!$courseform->save_file('uploadfile', $tempfilename, true)) {
                 echo $OUTPUT->notification(get_string('cannotsaveupload', 'totara_completionimport', $tempfilename),
@@ -129,7 +129,7 @@ if (!empty($importname)) {
         exit;
     }
 
-    // Importtime is used to filter the import table for this run
+    // Importtime is used to filter the import table for this run.
     $importtime = time();
     import_completions($tempfilename, $importname, $importtime);
 
@@ -138,13 +138,13 @@ if (!empty($importname)) {
     exit;
 }
 
-// Display upload course heading + fields to import
+// Display upload course heading + fields to import.
 echo $OUTPUT->heading(get_string('uploadcourse', 'totara_completionimport'), 3);
 $columnnames = implode(',', get_columnnames('course'));
 echo format_text(get_string('uploadcourseintro', 'totara_completionimport', $columnnames));
 $courseform->display();
 
-// Display upload certification heading + fields to import
+// Display upload certification heading + fields to import.
 echo $OUTPUT->heading(get_string('uploadcertification', 'totara_completionimport'), 3);
 $columnnames = implode(',', get_columnnames('certification'));
 echo format_text(get_string('uploadcertificationintro', 'totara_completionimport', $columnnames));

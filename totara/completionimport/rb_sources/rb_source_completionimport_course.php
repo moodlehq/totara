@@ -2,8 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010 - 2013 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas
+ * Copyright (C) 2010-2013 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Russell England <russell.england@catalyst-eu.net>
- * @package totara
- * @subpackage reportbuilder
+ * @package    totara
+ * @subpackage completionimport
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -57,7 +56,7 @@ class rb_source_completionimport_course extends rb_base_source {
 
     //
     //
-    // Methods for defining contents of source
+    // Methods for defining contents of source.
     //
     //
 
@@ -413,7 +412,7 @@ class rb_source_completionimport_course extends rb_base_source {
     }
 
 
-    function rb_display_importerrormsg($importerrormsg, $row) {
+    public function rb_display_importerrormsg($importerrormsg, $row) {
         $errors = array();
         $errorcodes = explode(';', $importerrormsg);
         foreach ($errorcodes as $errorcode) {
@@ -425,7 +424,7 @@ class rb_source_completionimport_course extends rb_base_source {
         return html_writer::alist($errors);
     }
 
-    function rb_filter_timecreated() {
+    public function rb_filter_timecreated() {
         global $DB;
 
         $out = array();

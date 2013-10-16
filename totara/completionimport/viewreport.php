@@ -68,7 +68,7 @@ $report->include_js();
 
 echo $OUTPUT->header();
 
-// Standard report stuff
+// Standard report stuff.
 echo $OUTPUT->container_start('', 'completion_import');
 
 $countfiltered = $report->get_filtered_count();
@@ -84,7 +84,7 @@ $report->display_search();
 if ($countfiltered > 0) {
     echo $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
-    // export button
+    // Export button.
     $renderer->export_select($report->_id, $sid);
 }
 

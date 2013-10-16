@@ -71,8 +71,8 @@ class csv_iterator extends SplFileObject
     public function __construct($filename, $separator, $delimiter, $encoding, $requiredfields, $importtime) {
         global $USER;
         parent::__construct($filename, 'r');
-        // Drop new line doesn't work - not keen on using SplFileObject::SKIP_EMPTY because the rownumber will be incorect
-        // https://bugs.php.net/bug.php?id=61032&edit=1
+        // Drop new line doesn't work - not keen on using SplFileObject::SKIP_EMPTY because the rownumber will be incorect.
+        // See here https://bugs.php.net/bug.php?id=61032&edit=1 .
         $this->setFlags(SplFileObject::READ_CSV | SplFileObject::READ_AHEAD | SplFileObject::DROP_NEW_LINE);
         $this->setCsvControl($separator, $delimiter);
 
@@ -84,22 +84,22 @@ class csv_iterator extends SplFileObject
         $this->importfields = array();
         $this->headerfields = array();
         $this->userid = $USER->id;
-     }
+    }
 
     public function rewind() {
         parent::rewind();
 
-        // First row has the column names
+        // First row has the column names.
         $this->headerfields = $this->clean_fields(parent::current());
         $this->rowcount++;
 
         if (!empty($this->headerfields)) {
-            // Check which columns are to be imported
+            // Check which columns are to be imported.
             foreach ($this->headerfields as $field) {
                 if (in_array($field, $this->requiredfields)) {
                     $this->importfields[$field] = true;
                 } else {
-                    // Not a required column so ignore it
+                    // Not a required column so ignore it.
                     $this->importfields[$field] = false;
                 }
             }
@@ -113,7 +113,7 @@ class csv_iterator extends SplFileObject
     public function current() {
         $fields = parent::current();
 
-        // test for EOF
+        // Test for EOF.
         if (!$this->valid()) {
             return null;
         }

@@ -28,7 +28,7 @@ require_once($CFG->dirroot . '/totara/completionimport/lib.php');
 require_once($CFG->libdir . '/csvlib.class.php');
 
 class upload_form extends moodleform {
-    function definition() {
+    public function definition() {
         global $DB;
         $mform =& $this->_form;
 
@@ -53,7 +53,7 @@ class upload_form extends moodleform {
             $mform->addRule('uploadfile', get_string('uploadfilerequired', 'totara_completionimport'), 'required');
         }
 
-        // Evidence type
+        // Evidence type.
         $options = $DB->get_records_select_menu('dp_evidence_type', null, null, 'sortorder', 'id, name');
         $selector = array(0 => get_string('selectanevidencetype', 'totara_plan'));
         $selectoptions = $selector + $options;
@@ -65,7 +65,7 @@ class upload_form extends moodleform {
         $mform->addElement('select', 'csvdateformat', get_string('csvdateformat', 'totara_completionimport'), $dateformats);
         $mform->setType('csvdateformat', PARAM_TEXT);
 
-        // get_delimiter_list() actually returns the list of separators as in "comma *separated* values"
+        // Function get_delimiter_list() actually returns the list of separators as in "comma *separated* values".
         $separators = csv_import_reader::get_delimiter_list();
         $mform->addElement('select', 'csvseparator', get_string('csvseparator', 'totara_completionimport'), $separators);
         $mform->setType('csvseparator', PARAM_TEXT);

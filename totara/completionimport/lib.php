@@ -24,14 +24,14 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-// TCI = Totara Completion Import
+// TCI = Totara Completion Import.
 define('TCI_SOURCE_EXTERNAL', 0);
 define('TCI_SOURCE_UPLOAD', 1);
 
-define('TCI_CSV_DELIMITER', '"'); // Default for fgetcsv() although the naming in fgetcsv is the wrong way around IMHO
-define('TCI_CSV_SEPARATOR', 'comma'); // Default for fgetcsv() although the naming in fgetcsv is the wrong way around IMHO
-define('TCI_CSV_DATE_FORMAT', 'Y-m-d'); // Default date format
-define('TCI_CSV_ENCODING', 'UTF8'); // Default file encoding
+define('TCI_CSV_DELIMITER', '"'); // Default for fgetcsv() although the naming in fgetcsv is the wrong way around IMHO.
+define('TCI_CSV_SEPARATOR', 'comma'); // Default for fgetcsv() although the naming in fgetcsv is the wrong way around IMHO.
+define('TCI_CSV_DATE_FORMAT', 'Y-m-d'); // Default date format.
+define('TCI_CSV_ENCODING', 'UTF8'); // Default file encoding.
 
 /**
  * Returns a 3 character prefix for a temporary file name
@@ -170,12 +170,12 @@ function check_fields_exist($filename, $importname) {
     } else if (!$handle = fopen($filename, 'r')) {
         $errors[] = get_string('erroropeningfile', 'totara_completionimport', $filename);
     } else {
-        // Read the first line
+        // Read the first line.
         $csvfields = fgetcsv($handle, 0, $csvseparator, $csvdelimiter);
         if (empty($csvfields)) {
             $errors[] = get_string('emptyfile', 'totara_completionimport', $filename);
         } else {
-            // Clean and convert to UTF-8 and check for unknown field
+            // Clean and convert to UTF-8 and check for unknown field.
             foreach ($csvfields as $key => $value) {
                 $csvfields[$key] = clean_param(trim($value), PARAM_TEXT);
                 $csvfields[$key] = textlib::convert($value, $csvencoding, 'utf-8');
@@ -187,7 +187,7 @@ function check_fields_exist($filename, $importname) {
                 }
             }
 
-            // Check for required fields
+            // Check for required fields.
             foreach ($columnnames as $columnname) {
                 if (!in_array($columnname, $csvfields)) {
                     $field = new stdClass();
@@ -227,14 +227,14 @@ function import_csv($tempfilename, $importname, $importtime) {
     $csvseparator = csv_import_reader::get_delimiter(get_default_config($pluginname, 'csvseparator', TCI_CSV_SEPARATOR));
     $csvencoding = get_default_config($pluginname, 'csvencoding', TCI_CSV_ENCODING);
 
-    // Assume that file checks and column name checks have already been done
+    // Assume that file checks and column name checks have already been done.
     $importcsv = new csv_iterator($tempfilename, $csvseparator, $csvdelimiter, $csvencoding, $columnnames, $importtime);
     $DB->insert_records_via_batch($tablename, $importcsv);
 
-    // Remove any empty rows at the end of the import file
-    // But leave empty rows in the middle for error reporting
-    // Here mainly because of a PHP bug in csv_iterator
-    // but also to remove any unneccessary empty lines at the end of the csv file
+    // Remove any empty rows at the end of the import file.
+    // But leave empty rows in the middle for error reporting.
+    // Here mainly because of a PHP bug in csv_iterator.
+    // But also to remove any unneccessary empty lines at the end of the csv file.
     $sql = "SELECT id, rownumber
             FROM {{$tablename}}
             WHERE importuserid = :userid
@@ -249,7 +249,7 @@ function import_csv($tempfilename, $importname, $importtime) {
         if ($rownumber == 0) {
             $rownumber = $emptyrow->rownumber;
         } else if (--$rownumber != $emptyrow->rownumber) {
-            // Not at the end any more
+            // Not at the end any more.
             break;
         }
         $deleteids[] = $emptyrow->id;
@@ -282,7 +282,7 @@ function import_data_checks($importname, $importtime) {
     $csvdateformat = get_default_config($pluginname, 'csvdateformat', TCI_CSV_DATE_FORMAT);
 
     if (in_array('username', $columnnames)) {
-        // Blank User names
+        // Blank User names.
         $params = array_merge($stdparams, array('errorstring' => 'blankusername;'));
         $sql = "UPDATE {{$tablename}}
                 SET importerrormsg = " . $DB->sql_concat('importerrormsg', ':errorstring') . "
@@ -290,7 +290,7 @@ function import_data_checks($importname, $importtime) {
                 AND " . $DB->sql_isempty($tablename, 'username', true, false);
         $DB->execute($sql, $params);
 
-        // Missing User names
+        // Missing User names.
         $params = array_merge($stdparams, array('errorstring' => 'usernamenotfound;'));
         $sql = "UPDATE {{$tablename}}
                 SET importerrormsg = " . $DB->sql_concat('importerrormsg', ':errorstring') . "
@@ -301,7 +301,7 @@ function import_data_checks($importname, $importtime) {
     }
 
     if (in_array('completiondate', $columnnames)) {
-        // Blank completion date
+        // Blank completion date.
         $params = array_merge($stdparams, array('errorstring' => 'blankcompletiondate;'));
         $sql = "UPDATE {{$tablename}}
                 SET importerrormsg = " . $DB->sql_concat('importerrormsg', ':errorstring') . "
@@ -309,9 +309,9 @@ function import_data_checks($importname, $importtime) {
                 AND " . $DB->sql_isempty($tablename, 'completiondate', true, false);
         $DB->execute($sql, $params);
 
-        // Check for invalid completion date
+        // Check for invalid completion date.
         if (!empty($csvdateformat)) {
-            // There is a date format so check it
+            // There is a date format so check it.
             $sql = "SELECT id, completiondate
                     FROM {{$tablename}}
                     {$sqlwhere}
@@ -333,10 +333,7 @@ function import_data_checks($importname, $importtime) {
     }
 
     if (in_array('grade', $columnnames)) {
-        /**
-         * @todo - not sure if the grade is mandatory? Can it be blank?
-         */
-        // Blank grade
+        // Assuming the grade is mandatory, so check for blank grade.
         $params = array_merge($stdparams, array('errorstring' => 'blankgrade;'));
         $sql = "UPDATE {{$tablename}}
                 SET importerrormsg = " . $DB->sql_concat('importerrormsg', ':errorstring') . "
@@ -345,7 +342,7 @@ function import_data_checks($importname, $importtime) {
         $DB->execute($sql, $params);
     }
 
-    // Duplicates
+    // Duplicates.
     if (in_array($importname . 'username', $columnnames) && in_array($shortnamefield, $columnnames)
             && in_array($idnumberfield, $columnnames)) {
         $sql = "SELECT " . $DB->sql_concat('username', $shortnamefield, $idnumberfield) . " AS uniqueid,
@@ -360,7 +357,7 @@ function import_data_checks($importname, $importtime) {
         $duplicategroups = $DB->get_recordset_sql($sql, $stdparams);
         if ($duplicategroups->valid()) {
             foreach ($duplicategroups as $duplicategroup) {
-                // Keep the first record, consider the others as duplicates
+                // Keep the first record, consider the others as duplicates.
                 $sql = "SELECT id
                         FROM {{$tablename}}
                         {$sqlwhere}
@@ -419,7 +416,7 @@ function import_data_checks($importname, $importtime) {
     }
 
     if (in_array($shortnamefield, $columnnames) && in_array($idnumberfield, $columnnames)) {
-        // Blank shortname and id number
+        // Blank shortname and id number.
         $params = array_merge($stdparams, array('errorstring' => $importname . 'blankrefs;'));
         $sql = "UPDATE {{$tablename}}
                 SET importerrormsg = " . $DB->sql_concat('importerrormsg', ':errorstring') . "
@@ -429,7 +426,7 @@ function import_data_checks($importname, $importtime) {
         $DB->execute($sql, $params);
 
         if (in_array($importname, array('course'))) {
-            // Course exists but there is no manual enrol record
+            // Course exists but there is no manual enrol record.
             $params = array('enrolname' => 'manual', 'errorstring' => 'nomanualenrol;');
             $params = array_merge($stdparams, $params);
             $shortnameoridnumber = get_shortnameoridnumber("{course}", "{{$tablename}}", $shortnamefield, $idnumberfield);
@@ -449,12 +446,12 @@ function import_data_checks($importname, $importtime) {
 
     }
 
-    // Set import error so we ignore any records that have an error message from above
+    // Set import error so we ignore any records that have an error message from above.
     $params = array_merge($stdparams, array('importerror' => 1));
     $sql = "UPDATE {{$tablename}}
             SET importerror = :importerror
             {$sqlwhere}
-            AND " . $DB->sql_isnotempty($tablename, 'importerrormsg', true, true); // Note text = true
+            AND " . $DB->sql_isnotempty($tablename, 'importerrormsg', true, true); // Note text = true.
     $DB->execute($sql, $params);
 
 }
@@ -477,7 +474,7 @@ function create_evidence($importname, $importtime) {
     $idnumberfield = $importname . 'idnumber';
 
     if ($importname == 'course') {
-        // Add any missing courses to other training (evidence)
+        // Add any missing courses to other training (evidence).
         $shortnameoridnumber = get_shortnameoridnumber('c', 'i', $shortnamefield, $idnumberfield);
         $sql = "SELECT i.id as importid, u.id userid, i.{$shortnamefield}, i.{$idnumberfield}, i.completiondate, i.grade
                 FROM {{$tablename}} i
@@ -487,7 +484,7 @@ function create_evidence($importname, $importtime) {
                                 FROM {course} c
                                 WHERE {$shortnameoridnumber})";
     } else if ($importname == 'certification') {
-        // Add any missing certifications to other training (evidence)
+        // Add any missing certifications to other training (evidence).
         $shortnameoridnumber = get_shortnameoridnumber('p', 'i', $shortnamefield, $idnumberfield);
         $sql = "SELECT i.id as importid, u.id userid, i.{$shortnamefield},  i.{$idnumberfield}, i.completiondate
                 FROM {{$tablename}} i
@@ -500,7 +497,7 @@ function create_evidence($importname, $importtime) {
 
     $extraparams = array();
     $pluginname = 'totara_completionimport_' . $importname;
-    // Note the order of these must match the order of parameters in create_evidence_item()
+    // Note the order of these must match the order of parameters in create_evidence_item().
     $extraparams['evidencetype'] = get_default_config($pluginname, 'evidencetype', null);
     $extraparams['csvdateformat'] = get_default_config($pluginname, 'csvdateformat', TCI_CSV_DATE_FORMAT);
     $extraparams['tablename'] = $tablename;
@@ -585,7 +582,7 @@ function create_evidence_item($item, $evidencetype, $csvdateformat, $tablename, 
 function import_course($importname, $importtime) {
     global $DB, $CFG;
 
-    require_once($CFG->libdir . '/enrollib.php'); // Used for enroling users on courses
+    require_once($CFG->libdir . '/enrollib.php'); // Used for enroling users on courses.
 
     $errors = array();
     $updateids = array();
@@ -619,7 +616,7 @@ function import_course($importname, $importtime) {
             LEFT JOIN {user_enrolments} ue ON (ue.enrolid = e.id AND ue.userid = u.id)
             LEFT JOIN {course_completions} cc ON cc.userid = u.id AND cc.course = c.id
             {$sqlwhere}
-            ORDER BY e.id, i.rownumber"; // Note order by enrolid
+            ORDER BY e.id, i.rownumber"; // Note order by enrolid.
 
     $courses = $DB->get_recordset_sql($sql, $params);
     if ($courses->valid()) {
@@ -631,9 +628,9 @@ function import_course($importname, $importtime) {
 
         foreach ($courses as $course) {
             if (empty($enrolid) || ($enrolid != $course->enrolid) || (($enrolcount++ % BATCH_INSERT_MAX_ROW_COUNT) == 0)) {
-                // New enrol record or reached the next batch insert
+                // New enrol record or reached the next batch insert.
                 if (!empty($users)) {
-                    // Batch enrol users
+                    // Batch enrol users.
                     $plugin->enrol_user_bulk($instance, $users, $instance->roleid, $timestart, $timeend);
                     $enrolcount = 0;
                     unset($users);
@@ -641,7 +638,7 @@ function import_course($importname, $importtime) {
                 }
 
                 if (!empty($completions)) {
-                    // Batch import completions
+                    // Batch import completions.
                     $DB->insert_records_via_batch('course_completions', $completions);
                     unset($completions);
                     $completions = array();
@@ -655,7 +652,7 @@ function import_course($importname, $importtime) {
                 }
 
                 if (!empty($updateids)) {
-                    // Update the timeupdated
+                    // Update the timeupdated.
                     list($insql, $params) = $DB->get_in_or_equal($updateids, SQL_PARAMS_NAMED, 'param');
                     $params['timeupdated'] = $importtime;
                     $sql = "UPDATE {{$tablename}}
@@ -666,7 +663,7 @@ function import_course($importname, $importtime) {
                     $updateids = array();
                 }
 
-                // Reset enrol instance after enroling the users
+                // Reset enrol instance after enroling the users.
                 $enrolid = $course->enrolid;
                 $instance = $DB->get_record('enrol', array('id' => $enrolid));
             }
@@ -681,14 +678,14 @@ function import_course($importname, $importtime) {
             $timestarted = $course->timestarted;
 
             if (empty($course->userenrolid) || ($course->userenrolstatus == ENROL_USER_SUSPENDED)) {
-                // User isn't already enrolled or has been suspended, so add them to the enrol list
+                // User isn't already enrolled or has been suspended, so add them to the enrol list.
                 $user = new stdClass();
                 $user->userid = $course->userid;
                 $users[] = $user;
                 $timeenrolled = $timecompleted;
                 $timestarted = $timecompleted;
             } else if (!empty($timecompleted)) {
-                // Best guess at enrollment times
+                // Best guess at enrollment times.
                 if (($timeenrolled > $timecompleted) || (empty($timeenrolled))) {
                     $timeenrolled = $timecompleted;
                 }
@@ -698,7 +695,7 @@ function import_course($importname, $importtime) {
             }
 
             if (empty($course->coursecompletionid)) {
-                // New record
+                // New record.
                 $completion = new stdClass();
                 $completion->rpl = get_string('rpl', 'totara_completionimport', $course->grade);
                 $completion->rplgrade = $course->grade;
@@ -726,9 +723,9 @@ function import_course($importname, $importtime) {
     }
     $courses->close();
 
-    // Add any remaining records
+    // Add any remaining records.
     if (!empty($users)) {
-        // Batch enrol users
+        // Batch enrol users.
         $plugin->enrol_user_bulk($instance, $users, $instance->roleid, $timestart, $timeend);
         $enrolcount = 0;
         unset($users);
@@ -736,7 +733,7 @@ function import_course($importname, $importtime) {
     }
 
     if (!empty($completions)) {
-        // Batch import completions
+        // Batch import completions.
         $DB->insert_records_via_batch('course_completions', $completions);
         unset($completions);
         $completions = array();
@@ -750,7 +747,7 @@ function import_course($importname, $importtime) {
     }
 
     if (!empty($updateids)) {
-        // Update the timeupdated
+        // Update the timeupdated.
         list($insql, $params) = $DB->get_in_or_equal($updateids, SQL_PARAMS_NAMED, 'param');
         $params['timeupdated'] = $importtime;
         $sql = "UPDATE {{$tablename}}
@@ -798,9 +795,9 @@ function import_certification($importname, $importtime) {
 
     $tablename = get_tablename($importname);
 
-    // Create missing program assignments for individuals, in a form that will work for insert_records_via_batch()
-    // Note: Postgres objects to manifest constants being used as parameters where they are the left hand
-    // of an SQL clause (eg 5 AS assignmenttype) so manifest constants are placed in the query directly (better anyway!)
+    // Create missing program assignments for individuals, in a form that will work for insert_records_via_batch().
+    // Note: Postgres objects to manifest constants being used as parameters where they are the left hand.
+    // of an SQL clause (eg 5 AS assignmenttype) so manifest constants are placed in the query directly (better anyway!).
     $shortnameoridnumber = get_shortnameoridnumber('p', 'i', 'certificationshortname', 'certificationidnumber');
     $sql = "SELECT p.id AS programid,
             ".ASSIGNTYPE_INDIVIDUAL." AS assignmenttype,
@@ -822,7 +819,7 @@ function import_certification($importname, $importtime) {
     $DB->insert_records_via_batch('prog_assignment', $assignments);
     $assignments->close();
 
-    // Now get the records to import
+    // Now get the records to import.
     $params = array_merge(array('assignmenttype' => ASSIGNTYPE_INDIVIDUAL), $stdparams);
     $sql = "SELECT i.id as importid,
                     i.completiondate,
@@ -858,7 +855,7 @@ function import_certification($importname, $importtime) {
     if ($programs->valid()) {
         foreach ($programs as $program) {
             if (empty($programid) || ($programid != $program->progid) || (($insertcount++ % BATCH_INSERT_MAX_ROW_COUNT) == 0)) {
-                // Insert a batch for a given programid (as need to insert user roles with program context)
+                // Insert a batch for a given programid (as need to insert user roles with program context).
                 if (!empty($cc)) {
                     $DB->insert_records_via_batch('certif_completion', $cc);
                     unset($cc);
@@ -891,7 +888,7 @@ function import_certification($importname, $importtime) {
                     $users = array();
                 }
                 if (!empty($updateids)) {
-                    // Update the timeupdated
+                    // Update the timeupdated.
                     list($updateinsql, $params) = $DB->get_in_or_equal($updateids, SQL_PARAMS_NAMED, 'param');
                     $params['timeupdated'] = $importtime;
                     $sql = "UPDATE {{$tablename}}
@@ -905,7 +902,7 @@ function import_certification($importname, $importtime) {
                 $programid = $program->progid;
             }
 
-            // Create Certification completion record
+            // Create Certification completion record.
             $ccdata = new stdClass();
             $ccdata->certifid = $program->certifid;
             $ccdata->userid = $program->userid;
@@ -913,7 +910,7 @@ function import_certification($importname, $importtime) {
             $ccdata->status = CERTIFSTATUS_COMPLETED;
             $ccdata->renewalstatus = CERTIFRENEWALSTATUS_NOTDUE;
 
-            // do recert times
+            // Do recert times.
             $timecompleted = totara_date_parse_from_format($csvdateformat, $program->completiondate);
             if (!$timecompleted) {
                 $timecompleted = now();
@@ -925,7 +922,7 @@ function import_certification($importname, $importtime) {
             $ccdata->timecompleted = $timecompleted;
             $ccdata->timemodified = time();
 
-            // overwrite completion if already exists, else add TODO should overwrite?
+            // Overwrite completion if already exists, else add.
             if (empty($program->ccid)) {
                 $cc[] = $ccdata;
             } else {
@@ -933,12 +930,12 @@ function import_certification($importname, $importtime) {
                 $cchistory[] = $ccdata;
             }
 
-            // Program completion
+            // Program completion.
             $pcdata = new stdClass();
             $pcdata->programid = $program->progid;
             $pcdata->userid = $program->userid;
             $pcdata->coursesetid = 0;
-            $pcdata->status = STATUS_PROGRAM_COMPLETE; // assume complete
+            $pcdata->status = STATUS_PROGRAM_COMPLETE; // Assume complete.
             $pcdata->timestarted = $timecompleted;
             $pcdata->timedue = $timecompleted;
             $pcdata->timecompleted = $timecompleted;
@@ -951,7 +948,7 @@ function import_certification($importname, $importtime) {
                 $pchistory[] = $pcdata;
             }
 
-            // Program user assignment
+            // Program user assignment.
             $puadata = new stdClass();
             $puadata->programid = $program->progid;
             $puadata->userid = $program->userid;
@@ -966,10 +963,10 @@ function import_certification($importname, $importtime) {
                 $DB->update_record('prog_user_assignment', $puadata);
             }
 
-            // user array for role addition
+            // User array for role addition.
             $users[] = $program->userid;
 
-            // totara_compl_import_cert ids
+            // Totara_compl_import_cert ids.
             $updateids[] = $program->importid;
 
         }
@@ -1008,7 +1005,7 @@ function import_certification($importname, $importtime) {
         $users = array();
     }
     if (!empty($updateids)) {
-        // Update the timeupdated
+        // Update the timeupdated.
         list($insql, $params) = $DB->get_in_or_equal($updateids, SQL_PARAMS_NAMED, 'param');
         $params['timeupdated'] = $importtime;
         $sql = "UPDATE {{$tablename}}
@@ -1036,7 +1033,7 @@ function get_dateformats() {
         foreach ($separators as $separator) {
             $display = str_replace( '~', $separator, $endian);
             $format = str_replace('yyyy', 'Y', $display);
-            $format = str_replace('yy', 'y', $format); // Don't think 2 digit years should be allowed
+            $format = str_replace('yy', 'y', $format); // Don't think 2 digit years should be allowed.
             $format = str_replace('mm', 'm', $format);
             $format = str_replace('dd', 'd', $format);
             $formats[$format] = $display;
@@ -1098,7 +1095,7 @@ function display_report_link($importname, $importtime) {
  */
 function get_temppath() {
     global $CFG, $OUTPUT;
-    // Create the temporary path if it doesn't already exist
+    // Create the temporary path if it doesn't already exist.
     $temppath = $CFG->dataroot . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . 'totara_completionimport';
     if (!file_exists($temppath)) {
         if (!mkdir($temppath, $CFG->directorypermissions, true)) {
@@ -1160,7 +1157,7 @@ function set_config_data($data, $importname) {
  */
 function move_sourcefile($filename, $tempfilename) {
     global $OUTPUT;
-    // Check if file is accessible
+    // Check if file is accessible.
     $handle = false;
     if (!is_readable($filename)) {
         echo $OUTPUT->notification(get_string('unreadablefile', 'totara_completionimport', $filename), 'notifyproblem');
@@ -1173,7 +1170,7 @@ function move_sourcefile($filename, $tempfilename) {
         fclose($handle);
         return false;
     }
-    // Don't need the handle any more so close it
+    // Don't need the handle any more so close it.
     fclose($handle);
 
     if (!rename($filename, $tempfilename)) {
@@ -1207,14 +1204,14 @@ function move_sourcefile($filename, $tempfilename) {
 function import_completions($tempfilename, $importname, $importtime, $quiet = false) {
     global $OUTPUT, $DB;
 
-    // Increase memory limit
+    // Increase memory limit.
     raise_memory_limit(MEMORY_EXTRA);
 
-    // Stop time outs, this might take a while
+    // Stop time outs, this might take a while.
     set_time_limit(0);
 
     if ($errors = check_fields_exist($tempfilename, $importname)) {
-        // Source file header doesn't have the required fields
+        // Source file header doesn't have the required fields.
         if (!$quiet) {
             echo $OUTPUT->notification(get_string('missingfields', 'totara_completionimport'), 'notifyproblem');
             echo html_writer::alist($errors);
@@ -1224,7 +1221,7 @@ function import_completions($tempfilename, $importname, $importtime, $quiet = fa
     }
 
     if ($errors = import_csv($tempfilename, $importname, $importtime)) {
-        // Something went wrong with import
+        // Something went wrong with import.
         if (!$quiet) {
             echo $OUTPUT->notification(get_string('csvimportfailed', 'totara_completionimport'), 'notifyproblem');
             echo html_writer::alist($errors);
@@ -1232,22 +1229,22 @@ function import_completions($tempfilename, $importname, $importtime, $quiet = fa
         unlink($tempfilename);
         return false;
     }
-    // Don't need the temporary file any more
+    // Don't need the temporary file any more.
     unlink($tempfilename);
     if (!$quiet) {
         echo $OUTPUT->notification(get_string('csvimportdone', 'totara_completionimport'), 'notifysuccess');
     }
 
-    // Data checks - no errors returned, it adds errors to each row in the import table
+    // Data checks - no errors returned, it adds errors to each row in the import table.
     import_data_checks($importname, $importtime);
 
     // Start transaction, we are dealing with live data now...
     $transaction = $DB->start_delegated_transaction();
 
-    // Put into evidence any courses / certifications not found
+    // Put into evidence any courses / certifications not found.
     create_evidence($importname, $importtime);
 
-    // Run the specific course enrolment / certification assignment
+    // Run the specific course enrolment / certification assignment.
     $functionname = 'import_' . $importname;
     $errors = $functionname($importname, $importtime);
     if (!empty($errors)) {
@@ -1261,7 +1258,7 @@ function import_completions($tempfilename, $importname, $importtime, $quiet = fa
         echo $OUTPUT->notification(get_string('dataimportdone', 'totara_completionimport', $importname), 'notifysuccess');
     }
 
-    // End the transaction
+    // End the transaction.
     $transaction->allow_commit();
 
     return true;
