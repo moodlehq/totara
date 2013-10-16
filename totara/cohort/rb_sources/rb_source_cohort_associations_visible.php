@@ -226,7 +226,7 @@ class rb_source_cohort_associations_visible extends rb_base_source {
             array(
                 'selectchoices' => array(
                     COHORT_ASSN_ITEMTYPE_COURSE => get_string('associationcoursesonly', 'totara_cohort'),
-                    COHORT_ASSN_ITEMTYPE_PROGRAM  => get_string('assocationprogramsonly', 'totara_cohort'),
+                    COHORT_ASSN_ITEMTYPE_PROGRAM  => get_string('associationprogramsonly', 'totara_cohort'),
                 ),
                 'simplemode' => true,
             )
@@ -254,11 +254,11 @@ class rb_source_cohort_associations_visible extends rb_base_source {
                 'value' => 'name',
             ),
             array(
-                'type' => 'assocations',
+                'type' => 'associations',
                 'value' => 'type',
             ),
             array(
-                'type' => 'assocations',
+                'type' => 'associations',
                 'value' => 'status',
             )
         );
