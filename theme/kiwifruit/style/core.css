@@ -877,17 +877,20 @@ input[type="password"] {
     margin:0.08em 0.2em;
     padding:0.2em;
 }
-input[disabled="true"],
+textarea[disabled="disabled"],
+textarea[disabled="disabled"]:hover,
+textarea[readonly="readonly"],
+textarea[readonly="readonly"]:hover,
 input[disabled="disabled"],
+input[disabled="disabled"]:hover,
+input[readonly="readonly"],
+input[readonly="readonly"]:hover,
 select[disabled="disabled"],
 input#id_buttonfield[disabled="disabled"],
-input[disabled="true"]:hover,
-input[disabled="disabled"]:hover,
-input#id_buttonfield[disabled="true"]:hover,
 input#id_buttonfield[disabled="disabled"]:hover {
-    color:#999999;
-    cursor:inherit;
-    background:#DDDDDD;
+    color: #999999;
+    cursor: not-allowed;
+    background-color: #DDDDDD;
 }
 input[type="checkbox"] {
     margin:0 5px 0 0;

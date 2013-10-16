@@ -141,7 +141,7 @@ class standard_form_elements extends moodleform {
         $mform->disabledIf('textfield', 'disableelements', 'checked');
         $mform->setType('textfield', PARAM_CLEANHTML);
 
-        $mform->addElement('textarea', 'textareafield', 'Textarea field', 'wrap="virtual" rows="20" cols="50"');
+        $mform->addElement('textarea', 'textareafield', 'Textarea field', 'wrap="virtual" rows="10" cols="50"');
         $mform->setDefault('textareafield', 'Default text');
         $mform->disabledIf('textareafield', 'disableelements', 'checked');
 
@@ -157,6 +157,16 @@ class standard_form_elements extends moodleform {
         $mform->addElement('header', null, 'Another Header element');
 
         $mform->addElement('static', 'staticfield', 'A static element', 'A static field\'s value');
+
+        $mform->addElement('header', null, 'Frozen form elements');
+
+        $mform->addElement('text', 'frozentextfield', 'A frozen (readonly) text field');
+        $mform->setDefault('frozentextfield', 'Default text');
+        $mform->setType('frozentextfield', PARAM_TEXT);
+        $mform->freeze('frozentextfield');
+
+        $mform->addElement('textarea', 'frozentextareafield', 'A frozen (readonly) textarea', 'wrap="virtual" rows="10" cols="50" disabled');
+        $mform->setDefault('frozentextareafield', 'Default text in textarea');
 
         $this->add_action_buttons(true, 'Submit button');
     }

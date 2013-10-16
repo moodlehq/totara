@@ -104,10 +104,16 @@ a.link-as-button:hover {
 }
 
 /* override to remove hover state for disabled buttons */
+textarea[disabled="disabled"],
+textarea[disabled="disabled"]:hover,
+textarea[readonly="readonly"],
+textarea[readonly="readonly"]:hover,
 input[disabled="disabled"],
+input[disabled="disabled"]:hover,
+input[readonly="readonly"],
+input[readonly="readonly"]:hover,
 select[disabled="disabled"],
 input#id_buttonfield[disabled="disabled"],
-input[disabled="disabled"]:hover,
 input#id_buttonfield[disabled="disabled"]:hover {
     color: #999999;
     cursor: not-allowed;
