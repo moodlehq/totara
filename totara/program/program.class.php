@@ -709,9 +709,11 @@ class program {
                 FROM {dp_plan} AS p
                 JOIN {dp_plan_program_assign} AS ppa ON p.id = ppa.planid
                 WHERE p.userid = ?
-                AND ppa.programid = ?";
+                AND ppa.programid = ?
+                AND p.status != ?
+                AND ppa.approved = ?";
 
-        return $DB->record_exists_sql($sql, array($userid, $this->id));
+        return $DB->record_exists_sql($sql, array($userid, $this->id, DP_PLAN_STATUS_UNAPPROVED, DP_APPROVAL_APPROVED));
     }
 
     /**
