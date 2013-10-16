@@ -37,6 +37,8 @@ $reportid = required_param('id', PARAM_INT);
 switch ($action) {
     case 'add' :
         $filter = required_param('filter', PARAM_TEXT);
+        $filtername = optional_param('filtername', '', PARAM_TEXT);
+        $customname = optional_param('customname', 0, PARAM_BOOL);
         $advanced = optional_param('advanced', 0, PARAM_BOOL);
 
         $filter = explode('-', $filter);
@@ -44,7 +46,8 @@ switch ($action) {
         $fvalue = $filter[1];
 
         /// Prevent duplicates
-        $params = array('reportid' => $reportid, 'type' => $ftype, 'value' => $fvalue);
+        $params = array('reportid' => $reportid, 'type' => $ftype, 'value' => $fvalue,
+                        'customname' => $customname, 'filtername' => $filtername);
         if ($DB->record_exists('report_builder_filters', $params)) {
             echo false;
             exit;
@@ -56,6 +59,8 @@ switch ($action) {
         $todb->type = $ftype;
         $todb->value = $fvalue;
         $todb->advanced = $advanced;
+        $todb->customname = $customname;
+        $todb->filtername = $filtername;
         $sortorder = $DB->get_field('report_builder_filters', 'MAX(sortorder) + 1', array('reportid' => $reportid));
         if (!$sortorder) {
             $sortorder = 1;

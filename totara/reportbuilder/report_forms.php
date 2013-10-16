@@ -272,7 +272,7 @@ class report_builder_edit_filters_form extends moodleform {
                     $mform->setType("filtername{$filterid}", PARAM_TEXT);
                     $mform->setDefault("filtername{$filterid}", (empty($filter->filtername) ? $filter->label : $filter->filtername));
                     $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
-                    $mform->addElement('advcheckbox', "advanced{$filterid}");
+                    $mform->addElement('advcheckbox', "advanced{$filterid}", '', '', array('class' => 'filter_advanced_checkbox'));
                     $mform->setDefault("advanced{$filterid}", $filter->advanced);
                     $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
                     $deleteurl = new moodle_url('/totara/reportbuilder/filters.php',
@@ -333,7 +333,7 @@ class report_builder_edit_filters_form extends moodleform {
             $mform->addElement('text', 'newfiltername', '', 'class="filter_name_text"');
             $mform->setType('newfiltername', PARAM_TEXT);
             $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
-            $mform->addElement('advcheckbox', 'newadvanced', '', '');
+            $mform->addElement('advcheckbox', 'newadvanced', '', '', array('class' => 'filter_advanced_checkbox'));
             $mform->disabledIf('newadvanced', 'newfilter', 'eq', 0);
             $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
             $mform->addElement('html', html_writer::end_tag('td') . html_writer::end_tag('tr'));

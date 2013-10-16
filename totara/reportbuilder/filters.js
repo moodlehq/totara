@@ -71,9 +71,16 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
             textElement.prop('disabled', true);
         });
 
+        // Disable onbeforeunload for advanced checkbox.
+        $('input.filter_advanced_checkbox').unbind('click');
+        $('input.filter_advanced_checkbox').bind('click', function() {
+            window.onbeforeunload = null;
+        });
+
         // Handle changes to the filter pulldowns.
         $('select.filter_selector').unbind('change');
         $('select.filter_selector').bind('change', function() {
+            window.onbeforeunload = null;
             var changedSelector = $(this).val();
             var newContent = module.config.rb_filter_headings[changedSelector];
             var textElement = $('input.filter_name_text', $(this).parents('tr:first'));
@@ -85,6 +92,7 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
         // Use click instead of change event for IE.
         $('input.filter_custom_name_checkbox').unbind('click');
         $('input.filter_custom_name_checkbox').bind('click', function() {
+            window.onbeforeunload = null;
             var textElement = $('input.filter_name_text', $(this).parents('tr:first'));
             if ($(this).is(':checked')) {
                 // Enable the textbox when checkbox isn't checked.
@@ -101,6 +109,7 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
 
         // Handle changes to the 'Add another filter...' selector.
         $('select.new_filter_selector').bind('change', function() {
+            window.onbeforeunload = null;
             var addbutton = module.rb_init_addbutton($(this));
             var advancedCheck = $('#id_newadvanced');
             var newNameBox = $('input.filter_name_text', $(this).parents('tr:first'));
@@ -134,6 +143,7 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
 
         var module = this;
         var advancedCheck = $('#id_newadvanced');
+        var customnameCheck = $('#id_newcustomname');
         var optionsbox = advancedCheck.closest('td').next('td');
         var selector = filterselector.closest('td');
         var newfilterinput = filterselector.closest('tr').clone();  // Clone of current 'Add new filter...' tr.
@@ -151,10 +161,13 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
         addbutton.unbind('click');
         addbutton.bind('click', function(e) {
             e.preventDefault();
+            var newfiltername = $('#id_newfiltername').val();
             $.ajax({
                 url: M.cfg.wwwroot + '/totara/reportbuilder/ajax/filter.php',
                 type: "POST",
-                data: ({action: 'add', sesskey: module.config.user_sesskey, id: module.config.rb_reportid, filter: filterselector.val(), advanced: Number(advancedCheck.is(':checked'))}),
+                data: ({action: 'add', sesskey: module.config.user_sesskey, id: module.config.rb_reportid,
+                        filter: filterselector.val(), advanced: Number(advancedCheck.is(':checked')),
+                        customname: Number(customnameCheck.is(':checked')), filtername: newfiltername}),
                 beforeSend: function() {
                     addbutton.html(module.loadingimg);
                 },

@@ -78,6 +78,7 @@ M.totara_reportbuildercolumns = M.totara_reportbuildercolumns || {
         // handle changes to the column pulldowns
         $('select.column_selector').unbind('change');
         $('select.column_selector').bind('change', function() {
+            window.onbeforeunload = null;
             var changedSelector = $(this).val();
             var newContent = module.config.rb_column_headings[changedSelector];
             var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
@@ -89,6 +90,7 @@ M.totara_reportbuildercolumns = M.totara_reportbuildercolumns || {
         // use click instead of change event for IE
         $('input.column_custom_heading_checkbox').unbind('click');
         $('input.column_custom_heading_checkbox').bind('click', function() {
+            window.onbeforeunload = null;
             var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
             if ($(this).is(':checked')) {
                 // enable the textbox when checkbox isn't checked
@@ -106,6 +108,7 @@ M.totara_reportbuildercolumns = M.totara_reportbuildercolumns || {
 
         // special case for the 'Add another column...' selector
         $('select.new_column_selector').bind('change', function() {
+            window.onbeforeunload = null;
             var newHeadingBox = $('input.column_heading_text', $(this).parents('tr:first'));
             var newCheckBox = $('input.column_custom_heading_checkbox', $(this).parents('tr:first'));
             var addbutton = module.rb_init_addbutton($(this));
