@@ -46,7 +46,7 @@ $nojs = optional_param('nojs', false, PARAM_BOOL);
 $question = new appraisal_question($questionid);
 $datatype = $question->get_element()->datatype;
 
-if ($planid == 0 && $datatype != 'goals') {
+if ($planid == 0 && $datatype != 'goals' && $datatype != 'requiredlearning') {
     $params = array('userid' => $subjectid, 'status' => DP_PLAN_STATUS_APPROVED);
     $plan = $DB->get_record('dp_plan', $params, '*', IGNORE_MULTIPLE);
     $planid = $plan->id;
