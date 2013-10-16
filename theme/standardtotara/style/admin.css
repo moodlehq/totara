@@ -19,3 +19,11 @@
   display: inline;
   padding: 5px;
 }
+
+/* Fixes for some RTL problems in base */
+.dir-rtl .path-admin .roleassigntable p {text-align: right;}
+.dir-rtl #adminsettings .form-item .form-label {text-align: left;}
+.dir-rtl #adminsettings .form-item .form-description {text-align: right;}
+.dir-rtl .admin_colourpicker .colourdialogue {float:right;}
+.dir-rtl .admin_colourpicker .previewcolour {margin-right:301px;}
+.dir-rtl .admin_colourpicker .currentcolour {margin-right:301px;}

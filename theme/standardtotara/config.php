@@ -42,7 +42,8 @@ $THEME->sheets = array(
     'modules',
     'question',
     'pagelayout',
-    'css3'      /** Sets up CSS 3 + browser specific styles **/
+    'css3',      /** Sets up CSS 3 + browser specific styles **/
+    'filemanager'
 );
 
 $THEME->layouts = array(
