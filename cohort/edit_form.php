@@ -144,7 +144,7 @@ class cohort_edit_form extends moodleform {
             if (!$startdateint) {
                  $mform->setDefault('startdate', '');
             } else {
-                 $mform->setDefault('startdate', date(get_string('datepickerlongyearparseformat', 'totara_core'), $startdateint));
+                 $mform->setDefault('startdate', userdate($startdateint, get_string('datepickerlongyearphpuserdate', 'totara_core')));
             }
         }
 
@@ -157,7 +157,7 @@ class cohort_edit_form extends moodleform {
             if (!$enddateint) {
                  $mform->setDefault('enddate', '');
             } else {
-                 $mform->setDefault('enddate', date(get_string('datepickerlongyearparseformat', 'totara_core'), $enddateint));
+                 $mform->setDefault('enddate', userdate($enddateint, get_string('datepickerlongyearphpuserdate', 'totara_core')));
             }
         }
     }
