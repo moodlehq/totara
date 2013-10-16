@@ -42,6 +42,11 @@ require_login();
 $plan = new development_plan($planid);
 $userid = $plan->userid;
 
+$context = context_system::instance();
+$PAGE->set_context($context);
+$PAGE->set_url(new moodle_url('/totara/plan/components/competency/update-competency-setting.php',
+    array('competencyid' => $competencyid, 'prof' => $prof, 'planid' => $planid)));
+
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
 

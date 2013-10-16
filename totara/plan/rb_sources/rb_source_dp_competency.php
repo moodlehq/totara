@@ -726,16 +726,13 @@ from
 
                 local_js();
 
-                $action = "if (this.value > 0) { ".
-                              "var response; ".
-                              "response = \$.get(".
+                $action = "var response; ".
+                          "response = \$.get(".
                               "'{$CFG->wwwroot}/totara/plan/components/competency/update-competency-setting.php".
                               "?competencyid={$competencyid}".
-                              "&amp;planid={$planid}".
-                              "&amp;prof=' + $(this).val()".
-                              "); ".
-                              "$(this).children('[option[value=\'0\']').remove(); ".
-                          "}";
+                              "&planid={$planid}".
+                              "&prof=' + $(this).val()".
+                              "); ";
                 $attributes = array('onchange' => $action);
                 $content[] = html_writer::select($compscale,
                                               'competencyevidencestatus'.$plancompid,
