@@ -473,7 +473,7 @@ M.totara_programcontent = M.totara_programcontent || {
         });
 
         // delegate course deletion to delete buttons rendered or created dynamically
-        $('#programcontent .coursedeletelink').click(function(){
+        $('.edit-program .coursedeletelink').click(function(){
             module.deleteCourse(this.getAttribute('data-coursesetid'),
                                 this.getAttribute('data-coursesetprefix'),
                                 this.getAttribute('data-coursetodelete_id'));
@@ -640,7 +640,7 @@ M.totara_programcontent = M.totara_programcontent || {
             //$('form[name="form_prog_content"]').submit(); // deliberately off
 
             // re-setup delete handlers after courses re-drawn by AJAX response
-            $('#programcontent .coursedeletelink').click(function(){
+            $('.edit-program .coursedeletelink').click(function(){
                 M.totara_programcontent.deleteCourse(this.getAttribute('data-coursesetid'),
                                                      this.getAttribute('data-coursesetprefix'),
                                                      this.getAttribute('data-coursetodelete_id'));
