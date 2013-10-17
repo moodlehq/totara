@@ -133,7 +133,8 @@ local_js(array(
 $PAGE->requires->strings_for_js(array('chooseposition', 'chooseappraiser', 'choosemanager',
     'chooseorganisation', 'currentlyselected'), 'totara_hierarchy');
 $PAGE->requires->strings_for_js(array('choosetempmanager'), 'totara_core');
-$PAGE->requires->strings_for_js(array('error:positionnotselected','error:organisationnotselected','error:managernotselected'), 'totara_core');
+$PAGE->requires->strings_for_js(array('error:positionnotselected', 'error:organisationnotselected', 'error:managernotselected',
+                                       'error:tempmanagernotselected', 'error:appraisernotselected'), 'totara_core');
 $jsmodule = array(
         'name' => 'totara_positionuser',
         'fullpath' => '/totara/core/js/position.user.js',

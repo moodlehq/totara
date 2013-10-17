@@ -271,6 +271,7 @@ $string['competency_typeicon'] = 'Competency type icon';
 $string['organisation_typeicon'] = 'Organisation type icon';
 
 //Errors
+$string['error:appraisernotselected'] = 'Please select an appraiser';
 $string['error:courseidincorrect'] = 'Course id is incorrect.';
 $string['error:useridincorrect'] = 'User id is incorrect.';
 $string['error:norolesfound'] = 'No roles found';
@@ -283,6 +284,7 @@ $string['error:duplicaterecordsdeleted'] = 'Duplicate {$a} record deleted: ';
 $string['error:positionnotselected'] = 'Please select a position';
 $string['error:organisationnotselected'] = 'Please select an organisation';
 $string['error:managernotselected'] = 'Please select a manager';
+$string['error:tempmanagernotselected'] = 'Please select a temporary manager';
 $string['error:addpdroom-dialognotselected'] = 'Please select a room';
 //My Team strings
 $string['teammembers_text'] = 'All members of your team are shown below.';
@@ -354,7 +356,6 @@ $string['tempmanagerexpirydays'] = 'Temporary manager expiry days';
 $string['tempmanagerexpirydaysdesc'] = 'Set a default temporary manager expiry period (in days).';
 $string['unassignall'] = 'Unassign all';
 $string['error:tempmanagernotset'] = 'Temporary manager needs to be set';
-$string['error:tempmanagernotselected'] = 'No temporary manager selected';
 $string['error:tempmanagerexpirynotset'] = 'An expiry date for the temporary manager needs to be set';
 $string['error:datenotinfuture'] = 'The date needs to be in the future';
 $string['error:positionvalidationfailed'] = 'The problems indicated below must be fixed before your changes can be saved.';
