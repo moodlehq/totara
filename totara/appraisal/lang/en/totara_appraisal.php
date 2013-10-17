@@ -176,6 +176,7 @@ $string['example:stage3page2quest2name'] = 'Overall competency rating (End-year)
 $string['example:stage3page3quest1name'] = 'Overall comments';
 $string['error:cannotaccessappraisal'] = 'You do not have the capabilities required to access this appraisal';
 $string['error:appraisalisactive'] = 'Appraisal cannot be removed if it is active';
+$string['error:appraisalnoteditable'] = 'Appraisal can not be edited while it is in an \'Active\' state';
 $string['error:appraisalmustdraft'] = 'Parts of appraisal cannot be removed after appraisal activation';
 $string['error:appraisalnotdraft'] = 'Appraisal must be in \'Draft\' or \'Closed\' state to be modified';
 $string['error:beforedisabled'] = 'This type of event cannot be predicted';

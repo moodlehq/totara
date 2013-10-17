@@ -67,6 +67,7 @@ class totara_appraisal_renderer extends plugin_renderer_base {
         $strsettings = get_string('settings', 'totara_appraisal');
         $strdelete = get_string('delete', 'totara_appraisal');
         $strcannotdelete = get_string('error:appraisalisactive', 'totara_appraisal');
+        $strnoteditable = get_string('error:appraisalnoteditable', 'totara_appraisal');
         $strclone = get_string('copy', 'moodle');
 
         $systemcontext = context_system::instance();
@@ -101,14 +102,14 @@ class totara_appraisal_renderer extends plugin_renderer_base {
 
             $options = '';
             if (has_capability('totara/appraisal:manageappraisals', $systemcontext, $userid)) {
-                $options .= $this->output->action_icon($editurl, new pix_icon('/t/edit', $strsettings, 'moodle'));
-                $options .= $this->output->action_icon($cloneurl, new pix_icon('/t/copy', $strclone, 'moodle'));
                 if ($appraisal->status == appraisal::STATUS_ACTIVE) {
-                    $options .= $this->output->action_icon($deleteurl,
-                            new pix_icon('/t/delete_gray', $strcannotdelete, 'moodle'));
+                    $options .= $this->output->pix_icon('/t/edit_gray', $strnoteditable) . ' ';
+                    $options .= $this->output->action_icon($cloneurl, new pix_icon('/t/copy', $strclone, 'moodle'));
+                    $options .= $this->output->pix_icon('/t/delete_gray', $strcannotdelete, 'moodle');
                 } else {
-                    $options .= $this->output->action_icon($deleteurl,
-                            new pix_icon('/t/delete', $strdelete, 'moodle'));
+                    $options .= $this->output->action_icon($editurl, new pix_icon('/t/edit', $strsettings, 'moodle'));
+                    $options .= $this->output->action_icon($cloneurl, new pix_icon('/t/copy', $strclone, 'moodle'));
+                    $options .= $this->output->action_icon($deleteurl, new pix_icon('/t/delete', $strdelete, 'moodle'));
                 }
             }
 
@@ -531,6 +532,7 @@ class totara_appraisal_renderer extends plugin_renderer_base {
 
         $strsettings = get_string('settings', 'totara_appraisal');
         $strdelete = get_string('delete', 'totara_appraisal');
+        $strview = get_string('view');
 
         $data = array();
         foreach ($stages as $stage) {
@@ -541,6 +543,7 @@ class totara_appraisal_renderer extends plugin_renderer_base {
             $deleteurl = new moodle_url('/totara/appraisal/stage.php',
                     array('appraisalid' => $stage->appraisalid, 'action' => 'delete', 'id' => $stage->id));
             $settings = $this->output->action_icon($editurl, new pix_icon('/t/edit', $strsettings, 'moodle'));
+            $viewsettings = $this->output->action_icon($editurl, new pix_icon('/t/preview', $strview, 'moodle'));
             $delete = $this->output->action_icon($deleteurl, new pix_icon('/t/delete', $strdelete, 'moodle'), null,
                     array('class' => 'action-icon delete'));
 
@@ -574,7 +577,7 @@ class totara_appraisal_renderer extends plugin_renderer_base {
             if (appraisal::is_draft($stage->appraisalid)) {
                 $row->cells[] = "{$settings}{$delete}";
             } else {
-                $row->cells[] = $settings;
+                $row->cells[] = $viewsettings;
             }
 
             $data[] = $row;
@@ -791,6 +794,7 @@ class totara_appraisal_renderer extends plugin_renderer_base {
             $strdelete = get_string('delete', 'totara_question');
             $strup =  get_string('moveup', 'totara_question');
             $strdown =  get_string('movedown', 'totara_question');
+            $strview = get_string('view');
             $last = end($quests);
             $first = reset($quests);
             $questtypes = question_manager::get_registered_elements();
@@ -831,6 +835,8 @@ class totara_appraisal_renderer extends plugin_renderer_base {
                 }
 
                 $dragdrop = $this->pix_icon('/i/dragdrop', '', 'moodle', array('class' => 'smallicon js-show-inline move'));
+                $viewlink = $this->output->action_icon($editurl, new pix_icon('/t/preview', $strview, 'moodle'), null,
+                    array('class' => 'action-icon view'));
                 $editlink = $this->output->action_icon($editurl, new pix_icon('/t/edit', $stredit, 'moodle'), null,
                         array('class' => 'action-icon edit'));
                 $duplicatelink = $this->output->action_icon($duplicateurl, new pix_icon('/t/copy', $strduplicate, 'moodle'), null,
@@ -854,7 +860,7 @@ class totara_appraisal_renderer extends plugin_renderer_base {
                             $redisplayed . $posuplink . $posdownlink . $dragdrop . $editlink . $duplicatelink . $deletelink,
                             array('class'=>'appraisal-quest-actions'));
                 } else {
-                    $actions = html_writer::tag('span', $editlink, array('class'=>'appraisal-quest-actions'));
+                    $actions = html_writer::tag('span', $viewlink, array('class'=>'appraisal-quest-actions'));
                 }
                 $list[] = html_writer::tag('li', $actions.$strquest, $attrs);
             }
