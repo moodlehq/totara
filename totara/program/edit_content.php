@@ -39,36 +39,26 @@ require_login();
 
 $systemcontext = context_system::instance();
 
-// constructors called in turn are: program, prog_content, prog_courseset, (multi_course_set)
-// so all existing data loaded
+// Constructors called in turn are: program, prog_content, prog_courseset, (multi_course_set).
+// So all existing data loaded.
 $program = new program($id);
 $iscertif = $program->certifid ? true : false;
 $programcontext = $program->get_context();
 
-// Integrate into the admin tree only if the user can edit program content at the top level,
-// otherwise the admin block does not appear to this user, and you get an error.
-if (has_capability('totara/program:configurecontent', $systemcontext)) {
-    $adminpage = $iscertif ? 'managecertifications' : 'programmgmt';
-    admin_externalpage_setup($adminpage, '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_content.php',
-                             array('context' => $programcontext));
-} else {
-    $PAGE->set_context($programcontext);
-    $PAGE->set_url(new moodle_url('/totara/program/edit_content.php', array('id' => $id)));
-    $PAGE->set_title($program->fullname);
-    $PAGE->set_heading($program->fullname);
+if (!has_capability('totara/program:configurecontent', $programcontext)) {
+    print_error('error:nopermissions', 'totara_program');
 }
 
-//Javascript include
+$PAGE->set_url(new moodle_url('/totara/program/edit_content.php', array('id' => $id)));
+$PAGE->set_context($programcontext);
+$PAGE->set_title(format_string($program->fullname));
+$PAGE->set_heading(format_string($program->fullname));
+
+// Javascript include.
 local_js(array(
     TOTARA_JS_DIALOG,
     TOTARA_JS_TREEVIEW
 ));
-
-// Permissions checks
-
-if (!has_capability('totara/program:configurecontent', $programcontext)) {
-    print_error('error:nopermissions', 'totara_program');
-}
 
 $programcontent = $program->get_content();
 
@@ -195,24 +185,12 @@ if ($data = $contenteditform->get_data()) {
 // log this request
 add_to_log(SITEID, 'program', 'view content', "edit_content.php?id={$program->id}", $program->fullname);
 
-///
-/// Display
-///
-
+// Display.
 $heading = format_string($program->fullname);
 
 if ($iscertif) {
     $heading .= ' ('.get_string('certification', 'totara_certification').')';
 }
-
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
-
-foreach ($category_breadcrumbs as $crumb) {
-    $PAGE->navbar->add($crumb['name'], $crumb['link']);
-}
-
-$PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
-$PAGE->navbar->add(get_string('editprogramcontent', 'totara_program'));
 
 //Javascript includes
 $PAGE->requires->strings_for_js(array('addcourseset', 'addcourses', 'cancel', 'ok', 'addcompetency',

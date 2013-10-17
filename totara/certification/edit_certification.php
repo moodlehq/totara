@@ -53,35 +53,19 @@ if (!$certification) {
 
 $iscertif = 1;
 
-// Integrate into the admin tree only if the user can edit program messages at the top level,
-// otherwise the admin block does not appear to this user, and you get an error.
-if (has_capability('totara/certification:configurecertification', $systemcontext)) {
-    admin_externalpage_setup('managecertifications', '', array('id' => $id),
-        $CFG->wwwroot.'/totara/certification/edit_certification.php', array('context' => $programcontext));
-} else {
-    $PAGE->set_context($programcontext);
-    $PAGE->set_url(new moodle_url('/totara/certification/edit_messages.php', array('id' => $id)));
-    $PAGE->set_title(format_string($program->fullname));
-    $PAGE->set_heading(format_string($program->fullname));
+if (!has_capability('totara/certification:configurecertification', $programcontext)) {
+    print_error('error:nopermissions', 'totara_program');
 }
 
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
-foreach ($category_breadcrumbs as $crumb) {
-    $PAGE->navbar->add($crumb['name'], $crumb['link']);
-}
-
-$PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
-$PAGE->navbar->add(get_string('editcertif', 'totara_certification'));
+$PAGE->set_url(new moodle_url('/totara/certification/edit_certification.php', array('id' => $id)));
+$PAGE->set_context($programcontext);
+$PAGE->set_title(format_string($program->fullname));
+$PAGE->set_heading(format_string($program->fullname));
 
 // Javascript include.
 local_js(array(
     TOTARA_JS_DIALOG)
 );
-
-// Additional permissions check.
-if (!has_capability('totara/program:configuremessages', $programcontext)) {
-    print_error('error:nopermissions', 'totara_program');
-}
 
 $currenturl = qualified_me();
 $currenturl_noquerystring = strip_querystring($currenturl);

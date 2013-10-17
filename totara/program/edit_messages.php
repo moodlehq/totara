@@ -42,38 +42,19 @@ $program = new program($id);
 $iscertif = $program->certifid ? true : false;
 $programcontext = $program->get_context();
 
-
-// Integrate into the admin tree only if the user can edit program messages at the top level,
-// otherwise the admin block does not appear to this user, and you get an error.
-if (has_capability('totara/program:configuremessages', $systemcontext)) {
-    $adminpage = $iscertif ? 'managecertifications' : 'programmgmt';
-    admin_externalpage_setup($adminpage, '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_messages.php',
-                             array('context' => $programcontext));
-} else {
-    $PAGE->set_context($programcontext);
-    $PAGE->set_url(new moodle_url('/totara/program/edit_messages.php', array('id' => $id)));
-    $PAGE->set_title($program->fullname);
-    $PAGE->set_heading($program->fullname);
-}
-
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
-foreach ($category_breadcrumbs as $crumb) {
-    $PAGE->navbar->add($crumb['name'], $crumb['link']);
-}
-
-$PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
-$PAGE->navbar->add(get_string('editprogrammessages', 'totara_program'));
-
-//Javascript include
-local_js(array(
-    TOTARA_JS_DIALOG
-));
-
-// Additional permissions check
-
 if (!has_capability('totara/program:configuremessages', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
 }
+
+$PAGE->set_url(new moodle_url('/totara/program/edit_messages.php', array('id' => $id)));
+$PAGE->set_context($programcontext);
+$PAGE->set_title(format_string($program->fullname));
+$PAGE->set_heading(format_string($program->fullname));
+
+// Javascript include.
+local_js(array(
+    TOTARA_JS_DIALOG
+));
 
 $programmessagemanager = $program->get_messagesmanager();
 
@@ -162,17 +143,14 @@ if ($data = $messageseditform->get_data()) {
 // log this request
 add_to_log(SITEID, 'program', 'view messages', "edit_messages.php?id={$program->id}", $program->fullname);
 
-///
-/// Display
-///
-
+// Display.
 $heading = format_string($program->fullname);
 
 if ($iscertif) {
     $heading .= ' ('.get_string('certification','totara_certification').')';
 }
 
-//Javascript includes
+// Javascript includes.
 $PAGE->requires->strings_for_js(array('editmessages','saveallchanges',
          'confirmmessagechanges','youhaveunsavedchanges','youhaveunsavedchanges',
          'tosavemessages'),

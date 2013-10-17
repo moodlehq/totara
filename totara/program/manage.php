@@ -413,7 +413,7 @@ if ($canmanage) {
     } else {
         // Print button for switching to program management.
         $url = new moodle_url('/totara/program/manage.php', array('categoryid' => $id));
-        $programcaps = array('totara/program:createprogram', 'totara/program:deleteprogram', 'totara/program:configureprogram');
+        $programcaps = array('totara/program:createprogram', 'totara/program:deleteprogram', 'totara/program:configuredetails');
         if (has_any_capability($programcaps, $context)) {
             $title = get_string('manageprogramsinthiscat', 'totara_program');
         }

@@ -147,59 +147,59 @@ fieldset.display-program {
  * Display up/down/delete buttons for coursesets/messages.
  * Make to look like links with icons.
  */
-.path-admin-totara-program fieldset .setbuttons,
-.path-admin-totara-program fieldset .messagebuttons {
+.path-totara-program fieldset .setbuttons,
+.path-totara-program fieldset .messagebuttons {
     width: 100%;
     margin-top: -10px;
 }
 
-.dir-ltr.path-admin-totara-program fieldset .setbuttons,
-.dir-ltr.path-admin-totara-program fieldset .messagebuttons {
+.dir-ltr.path-totara-program fieldset .setbuttons,
+.dir-ltr.path-totara-program fieldset .messagebuttons {
     text-align: right;
 }
 
-.dir-rtl.path-admin-totara-program fieldset .setbuttons,
-.dir-rtl.path-admin-totara-program fieldset .messagebuttons {
+.dir-rtl.path-totara-program fieldset .setbuttons,
+.dir-rtl.path-totara-program fieldset .messagebuttons {
     text-align: left;
 }
 
-.dir-ltr.path-admin-totara-program fieldset .setbuttons input,
-.dir-ltr.path-admin-totara-program fieldset .messagebuttons input {
+.dir-ltr.path-totara-program fieldset .setbuttons input,
+.dir-ltr.path-totara-program fieldset .messagebuttons input {
     padding-right: 17px;
     background-position: right center;
     background-repeat: no-repeat;
 }
 
-.dir-rtl.path-admin-totara-program fieldset .setbuttons input,
-.dir-rtl.path-admin-totara-program fieldset .messagebuttons input {
+.dir-rtl.path-totara-program fieldset .setbuttons input,
+.dir-rtl.path-totara-program fieldset .messagebuttons input {
     padding-left: 17px;
     background-position: left center;
     background-repeat: no-repeat;
 }
 
-.path-admin-totara-program fieldset .setbuttons input.moveup,
-.path-admin-totara-program fieldset .messagebuttons input.moveup {
+.path-totara-program fieldset .setbuttons input.moveup,
+.path-totara-program fieldset .messagebuttons input.moveup {
     background-image: url([[pix:t/up]]);
 }
 
-.path-admin-totara-program fieldset .setbuttons input.movedown,
-.path-admin-totara-program fieldset .messagebuttons input.movedown {
+.path-totara-program fieldset .setbuttons input.movedown,
+.path-totara-program fieldset .messagebuttons input.movedown {
     background-image: url([[pix:t/down]]);
 }
 
-.path-admin-totara-program fieldset .setbuttons input.delete,
-.path-admin-totara-program fieldset .messagebuttons input.delete {
+.path-totara-program fieldset .setbuttons input.delete,
+.path-totara-program fieldset .messagebuttons input.delete {
     background-image: url([[pix:t/delete]]);
 }
 
-.path-admin-totara-program fieldset .setbuttons input.movedown[disabled],
-.path-admin-totara-program fieldset .messagebuttons input.movedown[disabled] {
+.path-totara-program fieldset .setbuttons input.movedown[disabled],
+.path-totara-program fieldset .messagebuttons input.movedown[disabled] {
     background-image: url([[pix:t/disable_down]]);
     color:#bdbdc8;
 }
 
-.path-admin-totara-program fieldset .setbuttons input.moveup[disabled],
-.path-admin-totara-program fieldset .messagebuttons input.moveup[disabled] {
+.path-totara-program fieldset .setbuttons input.moveup[disabled],
+.path-totara-program fieldset .messagebuttons input.moveup[disabled] {
     background-image: url([[pix:t/disable_up]]);
     color:#bdbdc8;
 }
@@ -325,24 +325,24 @@ div#prog-completion-relative-date label {
 /*
  * Assignment count totals displayed on Assignments tab.
  */
-.path-admin-totara-program.dir-ltr .total_user_count {
+.path-totara-program.dir-ltr .total_user_count {
     text-align: right;
     padding-right: 6px;
     padding-left: 0px;
 }
 
-.path-admin-totara-program.dir-rtl .total_user_count {
+.path-totara-program.dir-rtl .total_user_count {
     text-align: left;
     padding-left: 6px;
     padding-right: 0px;
 }
 
-.path-admin-totara-program.dir-ltr .overall_total {
+.path-totara-program.dir-ltr .overall_total {
     padding: 6px;
     text-align: right;
 }
 
-.path-admin-totara-program.dir-rtl .overall_total {
+.path-totara-program.dir-rtl .overall_total {
     padding: 6px;
     text-align: left;
 }

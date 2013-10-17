@@ -40,18 +40,21 @@ $program = new program($id);
 
 $systemcontext = context_system::instance();
 $programcontext = $program->get_context();
-$PAGE->set_context($programcontext);
 
-$page_params = array('id' => $program->id, 'page' => $page);
+$pageparams = array('id' => $program->id, 'page' => $page);
 if (!empty($searchterm)) {
-    $page_params['search'] = $searchterm;
+    $pageparams['search'] = $searchterm;
 }
-$base_url = new moodle_url('/totara/program/exceptions.php', $page_params);
-$PAGE->set_url($base_url);
-// Permissions check
+$baseurl = new moodle_url('/totara/program/exceptions.php', $pageparams);
+
 if (!has_capability('totara/program:handleexceptions', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
 }
+
+$PAGE->set_url($baseurl);
+$PAGE->set_context($programcontext);
+$PAGE->set_title(format_string($program->fullname));
+$PAGE->set_heading(format_string($program->fullname));
 
 // This session variable will be set to true following resolution of issues.
 // This allows the page number to be reset (otherwise there is a chance that the
@@ -60,7 +63,6 @@ if (isset($_SESSION['exceptions_resolved']) && $_SESSION['exceptions_resolved']=
     unset($_SESSION['exceptions_resolved']);
     $page = 0;
 }
-
 
 $currenturl = qualified_me();
 $currenturl_noquerystring = strip_querystring($currenturl);
@@ -91,31 +93,15 @@ local_js(array(
     TOTARA_JS_DIALOG
 ));
 
-// log this request
+// Log this request.
 add_to_log(SITEID, 'program', 'view exceptions', "exceptions.php?id={$program->id}", $program->fullname);
 
-///
-/// Display
-///
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
-
-$heading = $program->fullname;
-$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
-$PAGE->navbar->add(get_string('programadministration', 'totara_program'));
-$PAGE->navbar->add(get_string('exceptions', 'admin'), new moodle_url('/totara/program/exceptions.php', array('id' => $id)));
-
-foreach ($category_breadcrumbs as $crumb) {
-    $PAGE->navbar->add($crumb['name'], $crumb['link']);
-}
-
-$PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
-$PAGE->navbar->add(get_string('exceptionsreport', 'totara_program'));
-
+// Display.
 echo $OUTPUT->header();
 
 echo $OUTPUT->container_start('program exceptions', 'program-exceptions');
 
-echo $OUTPUT->heading($heading);
+echo $OUTPUT->heading(format_string($program->fullname));
 
 echo $program->display_current_status();
 
@@ -130,7 +116,7 @@ echo $renderer->print_search($id, $searchterm, $foundexceptionscount);
 
 $programexceptionsmanager->print_exceptions_form($id, $programexceptions, $selected_exceptions, $selectiontype);
 
-$pagingbar = new paging_bar($foundexceptionscount, $page, RESULTS_PER_PAGE, $base_url);
+$pagingbar = new paging_bar($foundexceptionscount, $page, RESULTS_PER_PAGE, $baseurl);
 echo $OUTPUT->render($pagingbar);
 
 echo $OUTPUT->container_end();

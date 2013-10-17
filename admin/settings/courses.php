@@ -8,7 +8,7 @@ if ($hassiteconfig
  or has_capability('moodle/course:create', $systemcontext)
  or has_capability('moodle/site:approvecourse', $systemcontext)
  or has_capability('moodle/course:update', $systemcontext)
- or has_capability('totara/program:configureprogram', $systemcontext)
+ or has_capability('totara/program:configuredetails', $systemcontext)
  or has_capability('totara/program:createprogram', $systemcontext)
 ) { // speedup for non-admins, add all caps used on this page
 
@@ -16,7 +16,7 @@ if ($hassiteconfig
             array('moodle/category:manage', 'moodle/course:create')));
 
     $ADMIN->add('courses', new admin_externalpage('programmgmt', new lang_string('manageprograms', 'admin'), $CFG->wwwroot . '/totara/program/manage.php',
-                    array('totara/program:createprogram', 'totara/program:configureprogram')));
+                    array('totara/program:createprogram', 'totara/program:configuredetails')));
 
     $ADMIN->add('courses', new admin_externalpage('managecertifications', new lang_string('managecertifications', 'totara_core'),
             $CFG->wwwroot . '/totara/program/manage.php?viewtype=certification',

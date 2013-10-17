@@ -3528,7 +3528,11 @@ class settings_navigation extends navigation_node {
         if ($forceopen) {
             $adminnode->force_open();
         }
-        //standard tabs
+        // Standard tabs.
+        if (has_capability('totara/program:viewprogram', $context)) {
+            $url = new moodle_url('/totara/program/edit.php', array('id' => $program->id, 'action' => 'view'));
+            $adminnode->add(get_string('overview', 'totara_program'), $url, self::TYPE_SETTING, null, 'progoverview', new pix_icon('i/settings', ''));
+        }
         if (has_capability('totara/program:configuredetails', $context)) {
             $url = new moodle_url('/totara/program/edit.php', array('id' => $program->id, 'action' => 'edit'));
             $adminnode->add(get_string('details', 'totara_program'), $url, self::TYPE_SETTING, null, 'progdetails', new pix_icon('i/settings', ''));
@@ -3549,9 +3553,13 @@ class settings_navigation extends navigation_node {
             $url = new moodle_url('/totara/program/exceptions.php', array('id' => $program->id, 'page' => 0));
             $adminnode->add(get_string('exceptions', 'totara_program', $exceptioncount), $url, self::TYPE_SETTING, null, 'progexceptions', new pix_icon('i/settings', ''));
         }
-        //roles and permissions
+        if ($program->certifid && has_capability('totara/certification:configurecertification', $context)) {
+            $url = new moodle_url('/totara/certification/edit_certification.php', array('id' => $program->id));
+            $adminnode->add(get_string('certification', 'totara_certification'), $url, self::TYPE_SETTING, null, 'certification', new pix_icon('i/settings', ''));
+        }
+        // Roles and permissions.
         $usersnode = $adminnode->add(get_string('users'), null, navigation_node::TYPE_CONTAINER, null, 'users');
-        // Override roles
+        // Override roles.
         if (has_capability('moodle/role:review', $context)) {
             $url = new moodle_url('/admin/roles/permissions.php', array('contextid' => $context->id));
         } else {

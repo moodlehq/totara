@@ -45,29 +45,22 @@ $program = new program($id);
 $iscertif = $program->certifid ? true : false;
 $programcontext = $program->get_context();
 
-// Integrate into the admin tree only if the user can edit programs at the top level,
-// otherwise the admin block does not appear to this user, and you get an error.
-if (has_capability('totara/program:configureprogram', $systemcontext)) {
-    $adminpage = $iscertif ? 'managecertifications' : 'programmgmt';
-    admin_externalpage_setup($adminpage, '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php',
-                             array('context' => $programcontext));
-} else {
-    $PAGE->set_url(new moodle_url('/totara/program/edit.php', array('id' => $id)));
-    $PAGE->set_context($programcontext);
-    $PAGE->set_title($program->fullname);
-    $PAGE->set_heading($program->fullname);
+// Redirect to delete page if deleting.
+if ($action == 'delete') {
+    redirect(new moodle_url('/totara/program/delete.php', array('id' => $id, 'category' => $category)));
 }
 
-// Permissions checks.
-if (!has_capability('totara/program:configureprogram', $programcontext) &&
-    !has_capability('totara/program:configuredetails', $programcontext)) {
+if (!has_capability('totara/program:configuredetails', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
 }
 
-if ($action == 'edit') {
-    require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
+$PAGE->set_url(new moodle_url('/totara/program/edit.php', array('id' => $id, 'action' => $action)));
+$PAGE->set_context($programcontext);
+$PAGE->set_title(format_string($program->fullname));
+$PAGE->set_heading(format_string($program->fullname));
 
-    //Javascript include
+if ($action == 'edit') {
+    // Javascript include.
     local_js(array(
         TOTARA_JS_DIALOG,
         TOTARA_JS_UI,
@@ -159,10 +152,7 @@ if ($detailsform->is_cancelled()) {
     totara_set_notification(get_string('programupdatecancelled', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));
 }
 
-// Redirect to delete page if deleting
-if ($action == 'delete') {
-    redirect("{$CFG->wwwroot}/totara/program/delete.php?id={$id}&amp;category={$category}");
-}
+
 
 // Handle form submits
 if ($data = $detailsform->get_data()) {
@@ -240,34 +230,16 @@ $pageid = 'program-overview';
 
 if ($action == 'edit') {
     $currenttab = 'details';
-    $heading = format_string($program->fullname);
     $pageid = 'program-overview-details';
 } else {
     $currenttab = 'overview';
-    $heading = format_string($program->fullname);
-}
-
-if ($iscertif) {
-    $heading .= ' ('.get_string('certification', 'totara_certification').')';
-}
-
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
-
-foreach ($category_breadcrumbs as $crumb) {
-    $PAGE->navbar->add($crumb['name'], $crumb['link']);
-}
-
-$PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
-
-if ($action == 'edit') {
-    $PAGE->navbar->add(get_string('edit', 'moodle'));
 }
 
 echo $OUTPUT->header();
 
 echo $OUTPUT->container_start('program overview', $pageid);
 
-echo $OUTPUT->heading($heading);
+echo $OUTPUT->heading(format_string($program->fullname));
 
 $renderer = $PAGE->get_renderer('totara_program');
 // Display the current status

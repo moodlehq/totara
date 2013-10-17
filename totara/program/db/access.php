@@ -93,18 +93,6 @@ $capabilities = array(
     ),
     // Ability to edit aspects of a program - specific abilities governed by further capabilities below
 
-
-    // Ability to edit and delete programs
-    'totara/program:configureprogram' => array(
-        'riskbitmask' => RISK_DATALOSS | RISK_XSS |
-            RISK_CONFIG,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_PROGRAM,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW,
-        )
-    ),
-
     // Ability to edit the program details tab
     'totara/program:configuredetails' => array(
         'riskbitmask' => RISK_DATALOSS | RISK_XSS |
@@ -113,8 +101,7 @@ $capabilities = array(
         'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
-        ),
-        'clonepermissionsfrom' => 'totara/program:configureprogram'
+        )
     ),
 
 

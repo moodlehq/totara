@@ -34,32 +34,23 @@ require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 require_login();
 
-$id = required_param('id', PARAM_INT); // program id
+$id = required_param('id', PARAM_INT);
 
 $systemcontext = context_system::instance();
 $program = new program($id);
 $iscertif = $program->certifid ? true : false;
 $programcontext = $program->get_context();
 
-// Integrate into the admin tree only if the user can edit program assignments at the top level,
-// otherwise the admin block does not appear to this user, and you get an error.
-if (has_capability('totara/program:configureassignments', $systemcontext)) {
-    $adminpage = $iscertif ? 'managecertifications' : 'programmgmt';
-    admin_externalpage_setup($adminpage, '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_assignments.php',
-                             array('context' => $programcontext));
-} else {
-    $PAGE->set_context($programcontext);
-    $PAGE->set_url(new moodle_url('/totara/program/edit_assignments.php', array('id' => $id)));
-    $PAGE->set_title($program->fullname);
-    $PAGE->set_heading($program->fullname);
-}
-
-// Additional permissions check
 if (!has_capability('totara/program:configureassignments', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
 }
 
-//Javascript include
+$PAGE->set_url(new moodle_url('/totara/program/edit_assignments.php', array('id' => $id)));
+$PAGE->set_context($programcontext);
+$PAGE->set_title(format_string($program->fullname));
+$PAGE->set_heading(format_string($program->fullname));
+
+// Javascript include.
 local_js(array(
 TOTARA_JS_DIALOG,
 TOTARA_JS_TREEVIEW,
@@ -132,24 +123,12 @@ $viewurl = $currenturl_noquerystring."?id={$id}&action=view";
 // log this request
 add_to_log(SITEID, 'program', 'view assignments', "edit_assignments.php?id={$program->id}", $program->fullname);
 
-///
-/// Display
-///
-
-$category_breadcrumbs = prog_get_category_breadcrumbs($program->category, 'certification');
-
+// Display.
 $heading = format_string($program->fullname);
 
 if ($iscertif) {
     $heading .= ' ('.get_string('certification', 'totara_certification').')';
 }
-
-foreach ($category_breadcrumbs as $crumb) {
-    $PAGE->navbar->add($crumb['name'], $crumb['link']);
-}
-
-$PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
-$PAGE->navbar->add(get_string('editprogramassignments', 'totara_program'));
 
 echo $OUTPUT->header();
 
