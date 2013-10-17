@@ -212,8 +212,8 @@ if (!$nojs) {
                 'frameworkid' => $frameworkid,
             )
         );
-        $out .= html_writer::tag('p', get_string('clicktoassign', 'totara_hierarchy') . ' ' .
-                                      get_string('clicktoviewchildren', 'totara_hierarchy'));
+        $out .= html_writer::tag('p', get_string('clicktoassigngoal', 'totara_hierarchy') . ' ' .
+                                      get_string('clicktoviewchildrengoal', 'totara_hierarchy'));
         $out .= html_writer::end_tag('div');
 
         $out .= html_writer::start_tag('div', array('class' => 'nojsselect'));

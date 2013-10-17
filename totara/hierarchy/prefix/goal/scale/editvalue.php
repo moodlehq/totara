@@ -136,7 +136,7 @@ if ($valueform->is_cancelled()) {
             // Log.
             $urlpart = "prefix/goal/scale/view.php?id={$valuenew->scaleid}&amp;prefix=goal";
             add_to_log(SITEID, 'goal', 'update scale value', $urlpart);
-            $notification->text = 'scalevalueupdated';
+            $notification->text = 'scalevalueupdatedgoal';
             $notification->url = "$CFG->wwwroot/totara/hierarchy/" . $urlpart;
             $notification->params = array('class' => 'notifysuccess');
         } else {

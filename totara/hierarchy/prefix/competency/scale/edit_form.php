@@ -45,7 +45,7 @@ class edit_scale_form extends moodleform {
             $mform->setType('scalevalues', PARAM_TEXT);
         } else {
             $html = html_writer::start_tag('div', array('class' => 'fitem')) . html_writer::tag('div', '&nbsp;', array('class' => 'fitemtitle'));
-            $html .= html_writer::tag('div', get_string('linktoscalevalues11','totara_hierarchy',clean_param($this->_customdata['scaleid'], PARAM_INT)), array('class' => 'felement'));
+            $html .= html_writer::tag('div', get_string('linktoscalevalues','totara_hierarchy',clean_param($this->_customdata['scaleid'], PARAM_INT)), array('class' => 'felement'));
             $html .= html_writer::end_tag('div');
             $mform->addElement('html', $html);
         }

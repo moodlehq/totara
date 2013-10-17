@@ -120,7 +120,7 @@ if ($mform->is_cancelled()) {
         $transaction->allow_commit();
         // Log.
         add_to_log(SITEID, 'goal', 'added scale', "prefix/goal/scale/view.php?id={$scalenew->id}&amp;prefix=goal", '');
-        $notification->text = 'scaleadded';
+        $notification->text = 'scaleaddedgoal';
         $notification->url = "$CFG->wwwroot/totara/hierarchy/prefix/goal/scale/view.php?id={$scalenew->id}&amp;prefix=goal";
         $notification->params = array('class' => 'notifysuccess');
     } else {
@@ -128,7 +128,7 @@ if ($mform->is_cancelled()) {
         $DB->update_record('goal_scale', $scalenew);
         // Log.
         add_to_log(SITEID, 'goal', 'update scale', "prefix/goal/scale/view.php?id={$scalenew->id}&amp;prefix=goal", '');
-        $notification->text = 'scaleupdated';
+        $notification->text = 'scaleupdatedgoal';
         $notification->url = "$CFG->wwwroot/totara/hierarchy/prefix/goal/scale/view.php?id={$scalenew->id}&amp;prefix=goal";
         $notification->params = array('class' => 'notifysuccess');
     }
