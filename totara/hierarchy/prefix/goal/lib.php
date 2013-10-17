@@ -272,7 +272,6 @@ class goal extends hierarchy {
         return $scale;
     }
 
-
     /**
      * Get scales for a goal
      *
@@ -339,6 +338,90 @@ class goal extends hierarchy {
         $mform->setType('evidencecount', PARAM_INT);
     }
 
+    /**
+     * Set goal specific fields in the add/edit form, e.g. targetdate.
+     *
+     * @param $data object      Database record of the hierarchy item
+     */
+    public function set_additional_item_form_fields($data) {
+        global $CFG;
+
+        // Fix up the format of the goal target date.
+        if (!empty($data->targetdate)) {
+            $data->targetdateselector = userdate($data->targetdate,
+                get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false);
+        }
+    }
+
+    /**
+     * Override this function in prefix lib.php to add validation for
+     * type specific fields when submitting an edit/add form. e.g. targetdate
+     *
+     * @param $data object      The forms returned dataobject
+     * @return array            An array containing any errors
+     */
+    public function validate_additional_item_form_fields($data) {
+        $errors = array();
+
+        if (!empty($data->targetdateselector)) {
+            $targetdate = $data->targetdateselector;
+            $dateparseformat = get_string('datepickerlongyearparseformat', 'totara_core');
+            $datepattern = get_string('datepickerlongyearregexphp', 'totara_core');
+
+            if (preg_match($datepattern, $targetdate) == 0) {
+                // The date doesn't match the expected format.
+                $errors['targetdateselector'] = get_string('error:invaliddate', 'totara_program');
+            } else if (!empty($targetdate) && !totara_date_parse_from_format($dateparseformat, $targetdate)) {
+                // The date can not be parsed.
+                $errors['targetdateselector'] = get_string('error:invaliddate', 'totara_program');
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Format additional fields shown in the goals add/edit forms, namely the target date.
+     *
+     * @param $item object      The form data object to be formatted
+     * @return object           The same object after formatting
+     */
+    public function process_additional_item_form_fields($item) {
+
+        // Format the goal's target date.
+        if (!empty($item->targetdateselector)) {
+            // Set up formatting the date for goals.
+            $dateformat = get_string('datepickerlongyearparseformat', 'totara_core');
+            $targetdate = totara_date_parse_from_format($dateformat, $item->targetdateselector);
+
+            $item->targetdate = $targetdate;
+            unset($item->targetdateselector);
+        }
+
+        return $item;
+    }
+
+    /**
+     * Display addition fields in the goals description, namely the target date.
+     *
+     * @param $item object          The database record of a goal to display
+     * @param $cssclass string      Any extra css to apply to the extra fields
+     * @return string               The html output for the extra fields
+     */
+    public function display_additional_item_form_fields($item, $cssclass) {
+        global $CFG;
+
+        $out = '';
+
+        // Display the goal's target date.
+        if (!empty($item->targetdate)) {
+            $targetdate = userdate($item->targetdate, get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false);
+            $out .= html_writer::tag('div', html_writer::tag('strong', get_string('goaltargetdate', 'totara_hierarchy') . ': ') . $targetdate,
+                array('class' => 'itemtargetdate ' . $cssclass));
+        }
+
+        return $out;
+    }
 
     /**
      * Returns various stats about an item, used for listed what will be deleted

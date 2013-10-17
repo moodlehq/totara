@@ -843,6 +843,26 @@ class competency extends hierarchy {
         $mform->setType('evidencecount', PARAM_INT);
     }
 
+    /**
+     * Format additional fields shown in the competency add/edit forms, proficiencyexpected and evidencecount.
+     *
+     * @param $item object      The form data object to be formatted
+     * @return object           The same object after formatting
+     */
+    public function process_additional_item_form_fields($item) {
+
+        // Set the default proficiency expected.
+        if (!isset($item->proficiencyexpected)) {
+            $item->proficiencyexpected = 1;
+        }
+
+        // Set the default evidence count.
+        if (!isset($item->evidencecount)) {
+            $item->evidencecount = 0;
+        }
+
+        return $item;
+    }
 
     /**
      * Returns various stats about an item, used for listed what will be deleted

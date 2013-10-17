@@ -95,7 +95,7 @@ $item->framework = $framework->fullname;
 $item->descriptionformat = FORMAT_HTML;
 $item = file_prepare_standard_editor($item, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
                                           'totara_hierarchy', $shortprefix, $item->id);
-$datatosend = array('prefix' => $prefix, 'item' => $item, 'page' => $page);
+$datatosend = array('prefix' => $prefix, 'item' => $item, 'page' => $page, 'hierarchy' => $hierarchy);
 $itemform = new item_edit_form(null, $datatosend);
 $itemform->set_data($item);
 
@@ -110,26 +110,12 @@ if ($itemform->is_cancelled()) {
     if (isset($itemnew->changetype)) {
         redirect($CFG->wwwroot . "/totara/hierarchy/type/change.php?prefix=$prefix&amp;frameworkid={$item->frameworkid}&amp;page={$page}&typeid={$itemnew->typeid}&amp;itemid={$itemnew->id}");
     }
+
     $itemnew->timemodified = time();
     $itemnew->usermodified = $USER->id;
 
-    if (!isset($itemnew->proficiencyexpected)) {
-        $itemnew->proficiencyexpected = 1;
-    }
-    if (!isset($itemnew->evidencecount)) {
-        $itemnew->evidencecount = 0;
-    }
-
-    // Handle target dates for goal hierarchies.
-    if (isset($itemnew->targetdateselector)) {
-        if (empty($itemnew->targetdateselector)) {
-            $itemnew->targetdate = 0;
-        } else {
-            $itemnew->targetdate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'),
-                    $itemnew->targetdateselector);
-        }
-        unset($itemnew->targetdateselector);
-    }
+    // Format any fields unique to this type of hierarchy.
+    $itemnew = $hierarchy->process_additional_item_form_fields($itemnew);
 
     // Save
     // Class to hold totara_set_notification info.

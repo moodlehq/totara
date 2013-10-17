@@ -1219,14 +1219,8 @@ class hierarchy {
                 $out .= html_writer::tag('div', html_writer::tag('strong', get_string('description') . ': ') . $safetext, array('class' => 'itemdescription ' . $cssclass));
             }
 
-            // Print target date if available.
-            if (!empty($record->targetdate)) {
-                $targetdate = userdate($record->targetdate, get_string('datepickerlongyearphpuserdate', 'totara_core'),
-                        $CFG->timezone, false);
-                $out .= html_writer::tag('div', html_writer::tag('strong',
-                        get_string('goaltargetdate', 'totara_hierarchy') . ': ') . $targetdate,
-                        array('class' => 'itemtargetdate ' . $cssclass));
-            }
+            // Display any fields unique to this type of hierarchy.
+            $out .= $this->display_additional_item_form_fields($record, $cssclass);
 
             // Print type, unless unclassified.
             if ($record->typeid !=0 && is_array($types) && array_key_exists($record->typeid, $types)) {
@@ -1406,11 +1400,8 @@ class hierarchy {
                 $item->visible = 1;
             }
 
-            if (!empty($item->targetdateselector)) {
-                // Set up formatting the date for goals.
-                $item->targetdate = totara_date_parse_from_format(get_string('datepickerlongyearparseformat', 'totara_core'),
-                        $item->targetdateselector);
-            }
+            // Format any fields unique to this type of hierarchy.
+            $item = $this->process_additional_item_form_fields($item);
 
             $item->timemodified = $now;
             $item->usermodified = $USER->id;
@@ -1802,7 +1793,47 @@ class hierarchy {
         return;
     }
 
+    /**
+     * Override this function in prefix lib.php to set the data in the add/edit form
+     * for type specific fields when updating.
+     *
+     * @param $data object      Database record of the hierarchy item
+     */
+    function set_additional_item_form_fields($data) {
+        return;
+    }
 
+    /**
+     * Override this function in prefix lib.php to add validation for
+     * type specific fields when submitting an edit/add form.
+     *
+     * @param $data object      The forms returned dataobject
+     * @return array            An array containing any errors
+     */
+    function validate_additional_item_form_fields($data) {
+        return array();
+    }
+
+    /**
+     * Override this function in prefix lib.php to format additional description fields.
+     *
+     * @param $item object      This should be the data object returned by the array for formatting
+     * @return object
+     */
+    function process_additional_item_form_fields($item) {
+        return $item;
+    }
+
+    /**
+     * Override this function in prefix lib.php to display additional description fields.
+     *
+     * @param $item object      This should be the formatted database record for the hierarchy item
+     * @param $cssclass string  Extra css to be applied, at the moment only uses 'dimmed'
+     * @return string
+     */
+    function display_additional_item_form_fields($item, $cssclass) {
+        return '';
+    }
 
     /** Prints select box and Export button to export current report.
      *

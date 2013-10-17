@@ -60,10 +60,6 @@ class item_edit_form extends moodleform {
         $mform->setType('sortorder', PARAM_INT);
         $mform->addElement('hidden', 'page', $page);
         $mform->setType('page', PARAM_INT);
-        $mform->addElement('hidden', 'evidencecount');
-        $mform->setType('evidencecount', PARAM_INT);
-        $mform->addElement('hidden', 'proficiencyexpected');
-        $mform->setType('proficiencyexpected', PARAM_INT);
 
         $mform->addElement('text', 'framework', get_string($prefix.'framework', 'totara_hierarchy'));
         $mform->hardFreeze('framework');
@@ -153,16 +149,9 @@ class item_edit_form extends moodleform {
     }
 
     function set_data($data) {
-        global $CFG;
-        $prefix = $this->_customdata['prefix'];
-
-        if ($prefix == 'goal') {
-            // Fix up the format of the goal target date.
-            if (!empty($data->targetdate)) {
-                    $data->targetdateselector = userdate($data->targetdate,
-                            get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false);
-            }
-        }
+        // Set the data for any fields specific to the hierarchy type.
+        $hierarchy = $this->_customdata['hierarchy'];
+        $hierarchy->set_additional_item_form_fields($data);
 
         parent::set_data($data);
     }
@@ -184,24 +173,19 @@ class item_edit_form extends moodleform {
     }
 
     function validation($itemnew, $files) {
-
         global $DB;
+
+        $hierarchy = $this->_customdata['hierarchy'];
         $errors = parent::validation($itemnew, $files);
         $itemnew = (object)$itemnew;
-        $item    = $DB->get_record(hierarchy::get_short_prefix($itemnew->prefix), array('id' => $itemnew->id));
         $shortprefix = hierarchy::get_short_prefix($itemnew->prefix);
 
-        if ($itemnew->id) {
-            /// Check custom fields
-            $errors += customfield_validation($itemnew, $itemnew->prefix, $shortprefix.'_type');
-        }
+        // Check any fields unique to this hierarchy type.
+        $errors += $hierarchy->validate_additional_item_form_fields($itemnew);
 
-        $dateparseformat = get_string('datepickerlongyearparseformat', 'totara_core');
-        if (!empty($data['targetdateselector'])) {
-            $targetdate = $data['targetdateselector'];
-            if (!empty($targetdate) && !totara_date_parse_from_format($dateparseformat, $targetdate)) {
-                $errors['targetdate'] = get_string('error:invaliddate', 'totara_program');
-            }
+        if ($itemnew->id) {
+            // Check custom fields.
+            $errors += customfield_validation($itemnew, $itemnew->prefix, $shortprefix.'_type');
         }
 
         if (!empty($itemnew->idnumber) && totara_idnumber_exists($shortprefix, $itemnew->idnumber, $itemnew->id)) {
