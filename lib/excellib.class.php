@@ -41,6 +41,9 @@ class MoodleExcelWorkbook {
     /** @var string */
     protected $filename;
 
+    /** @var boolean */
+    protected $save;
+
     /** @var string format type */
     protected $type;
 
@@ -49,8 +52,9 @@ class MoodleExcelWorkbook {
      *
      * @param string $filename The name of the file
      * @param string $type file format type 'Excel5' or 'Excel2007'
+     * @param boolean $save true if the file will be saved to the filesystem, false otherwise
      */
-    public function __construct($filename, $type = 'Excel2007') {
+    public function __construct($filename, $type = 'Excel2007', $save = false) {
         global $CFG;
         require_once("$CFG->libdir/phpexcel/PHPExcel.php");
 
@@ -64,6 +68,8 @@ class MoodleExcelWorkbook {
         } else {
             $this->type = 'Excel2007';
         }
+
+        $this->save = $save;
     }
 
     /**
@@ -110,27 +116,31 @@ class MoodleExcelWorkbook {
             $filename = $filename.'.xlsx';
         }
 
-        if (strpos($CFG->wwwroot, 'https://') === 0) { //https sites - watch out for IE! KB812935 and KB316431
-            header('Cache-Control: max-age=10');
-            header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
-            header('Pragma: ');
-        } else { //normal http - prevent caching at all cost
-            header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
-            header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
-            header('Pragma: no-cache');
-        }
-
-        if (check_browser_version('MSIE')) {
-            $filename = rawurlencode($filename);
-        } else {
-            $filename = s($filename);
-        }
-
-        header('Content-Type: '.$mimetype);
-        header('Content-Disposition: attachment;filename="'.$filename.'"');
-
         $objWriter = PHPExcel_IOFactory::createWriter($this->objPHPExcel, $this->type);
-        $objWriter->save('php://output');
+        if (!$this->save) {
+            if (strpos($CFG->wwwroot, 'https://') === 0) { // Https sites - watch out for IE! KB812935 and KB316431.
+                header('Cache-Control: max-age=10');
+                header('Pragma: ');
+            } else { // Normal http - prevent caching at all cost.
+                header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
+                header('Pragma: no-cache');
+            }
+            header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
+
+            if (check_browser_version('MSIE')) {
+                $filename = rawurlencode($filename);
+            } else {
+                $filename = s($filename);
+            }
+
+            header('Content-Type: '.$mimetype);
+            header('Content-Disposition: attachment;filename="'.$filename.'"');
+
+            $objWriter->save('php://output');
+        } else {
+            $objWriter->save($this->filename);
+        }
+
     }
 
     /**

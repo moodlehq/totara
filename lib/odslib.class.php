@@ -36,11 +36,24 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class MoodleODSWorkbook {
+    /** @var array */
     protected $worksheets = array();
+
+    /** @var string */
     protected $filename;
 
-    public function __construct($filename) {
+    /** @var boolean */
+    protected $save;
+
+    /**
+     * Constructs one Moodle ODS Workbook.
+     *
+     * @param string $filename The name of the file
+     * @param boolean $save true if the file will be saved to the filesystem, false otherwise
+     */
+    public function __construct($filename, $save = false) {
         $this->filename = $filename;
+        $this->save = $save;
     }
 
     /**
@@ -75,7 +88,13 @@ class MoodleODSWorkbook {
         $writer = new MoodleODSWriter($this->worksheets);
         $contents = $writer->get_file_content();
 
-        send_file($contents, $this->filename, 0, 0, true, true, $writer->get_ods_mimetype());
+        if (!$this->save) {
+            send_file($contents, $this->filename, 0, 0, true, true, $writer->get_ods_mimetype());
+        } else {
+            $handle = fopen($this->filename, 'w');
+            fwrite($handle, $contents);
+            fclose($handle);
+        }
     }
 
     /**

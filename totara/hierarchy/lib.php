@@ -1925,7 +1925,8 @@ class hierarchy {
     /** Download current table in ODS format
      * @param array $fields Array of column headings
      * @param string $query SQL query to run to get results
-     * @param integer $count Number of filtered records in query
+     * @param integer $maxdepth Number of the deepest depth in this hierarchy
+     * @param string $file path to the directory where the file will be saved
      * @return Returns the ODS file
      */
     function download_ods($fields, $query, $params, $maxdepth, $file=null, $searchactive=false) {
@@ -1940,14 +1941,10 @@ class hierarchy {
             header("Expires: 0");
             header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
             header("Pragma: public");
-        }
 
-        if ($file) {
+            $workbook = new MoodleODSWorkbook($filename);
+        } else {
             $workbook = new MoodleODSWorkbook($file, true);
-        }
-        else{
-            $workbook = new MoodleODSWorkbook('-');
-            $workbook->send($filename);
         }
 
         $worksheet = array();
@@ -1971,7 +1968,7 @@ class hierarchy {
 
         $numfields = count($fields);
 
-        //Use recordset to keep memory use down
+        // Use recordset to keep memory use down.
         $data = $DB->get_recordset_sql($query, $params);
         if ($data) {
             foreach ($data as $datarow) {
@@ -2003,6 +2000,7 @@ class hierarchy {
      * @param array $fields Array of column headings
      * @param string $query SQL query to run to get results
      * @param integer $maxdepth Number of the deepest depth in this hierarchy
+     * @param string $file path to the directory where the file will be saved
      * @return Returns the Excel file
      */
     function download_xls($fields, $query, $params, $maxdepth, $file=null, $searchactive=false) {
@@ -2020,11 +2018,9 @@ class hierarchy {
             header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
             header("Pragma: public");
 
-            $workbook = new MoodleExcelWorkbook('-');
-            $workbook->send($filename);
-        }
-        else {
-            $workbook = new MoodleExcelWorkbook($file);
+            $workbook = new MoodleExcelWorkbook($filename);
+        } else {
+            $workbook = new MoodleExcelWorkbook($file, 'Excel2007', true);
         }
 
         $worksheet = array();
@@ -2048,7 +2044,7 @@ class hierarchy {
 
         $numfields = count($fields);
 
-        //Use recordset to keep memory use down
+        // Use recordset to keep memory use down.
         $data = $DB->get_recordset_sql($query, $params);
         if ($data) {
             foreach ($data as $datarow) {

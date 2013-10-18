@@ -2945,6 +2945,7 @@ class reportbuilder {
      * @param integer $count Number of filtered records in query
      * @param array $restrictions Array of strings containing info
      *                            about the content of the report
+     * @param string $file path to the directory where the file will be saved
      * @param array $cache report cache information
      * @return Returns the ODS file
      */
@@ -2961,13 +2962,10 @@ class reportbuilder {
             header("Expires: 0");
             header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
             header("Pragma: public");
-        }
-        if ($file) {
+
+            $workbook = new MoodleODSWorkbook($filename);
+        } else {
             $workbook = new MoodleODSWorkbook($file, true);
-        }
-        else{
-            $workbook = new MoodleODSWorkbook('-');
-            $workbook->send($filename);
         }
 
         $worksheet = array();
@@ -2985,7 +2983,7 @@ class reportbuilder {
             }
         }
 
-        // add report caching data
+        // Add report caching data.
         if ($cache) {
             $usertz = totara_get_clean_timezone();
             $a = userdate($cache['lastreport'], '', $usertz);
@@ -2993,7 +2991,7 @@ class reportbuilder {
             $row++;
         }
 
-        // leave an empty row between any initial info and the header row
+        // Leave an empty row between any initial info and the header row.
         if ($row != 0) {
             $row++;
         }
@@ -3006,7 +3004,7 @@ class reportbuilder {
 
         $numfields = count($fields);
 
-        //use recordset so we can manage very large datasets
+        // Use recordset so we can manage very large datasets.
         if ($records = $DB->get_recordset_sql($query, $params)) {
             foreach ($records as $record) {
                 $record_data = $this->process_data_row($record, true, true);
@@ -3020,7 +3018,7 @@ class reportbuilder {
             }
             $records->close();
         } else {
-            // this indicates a failed query, not just 0 results
+            // This indicates a failed query, not just 0 results.
             return false;
         }
 
@@ -3037,6 +3035,7 @@ class reportbuilder {
      * @param integer $count Number of filtered records in query
      * @param array $restrictions Array of strings containing info
      *                            about the content of the report
+     * @param string $file path to the directory where the file will be saved
      * @param array $cache Report cache information
      * @return Returns the Excel file
      */
@@ -3049,17 +3048,9 @@ class reportbuilder {
         $filename = clean_filename($fullname . '_report.xls');
 
         if (!$file) {
-            header("Content-Type: application/download\n");
-            header("Content-Disposition: attachment; filename=$filename");
-            header("Expires: 0");
-            header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
-            header("Pragma: public");
-
-            $workbook = new MoodleExcelWorkbook('-');
-            $workbook->send($filename);
-        }
-        else {
-            $workbook = new MoodleExcelWorkbook($file);
+            $workbook = new MoodleExcelWorkbook($filename);
+        } else {
+            $workbook = new MoodleExcelWorkbook($file, 'Excel2007', true);
         }
 
         $worksheet = array();
@@ -3081,7 +3072,7 @@ class reportbuilder {
             }
         }
 
-        // add report caching data
+        // Add report caching data.
         if ($cache) {
             $usertz = totara_get_clean_timezone();
             $a = userdate($cache['lastreport'], '', $usertz);
@@ -3089,7 +3080,7 @@ class reportbuilder {
             $row++;
         }
 
-        // leave an empty row between any initial info and the header row
+        // Leave an empty row between any initial info and the header row.
         if ($row != 0) {
             $row++;
         }
@@ -3102,7 +3093,7 @@ class reportbuilder {
 
         $numfields = count($fields);
 
-        // user recordset so we can handle large datasets
+        // User recordset so we can handle large datasets.
         if ($records = $DB->get_recordset_sql($query, $params)) {
             foreach ($records as $record) {
                 $record_data = $this->process_data_row($record, true, true, true);
@@ -3121,7 +3112,7 @@ class reportbuilder {
             }
             $records->close();
         } else {
-            // this indicates a failed query, not just 0 results
+            // This indicates a failed query, not just 0 results.
             return false;
         }
 
@@ -4389,7 +4380,7 @@ function send_scheduled_report($sched) {
 
     switch($sched->format) {
         case REPORT_BUILDER_EXPORT_EXCEL:
-            $attachmentfilename = 'report.xls';
+            $attachmentfilename = 'report.xlsx';
             break;
         case REPORT_BUILDER_EXPORT_CSV:
             $attachmentfilename = 'report.csv';
@@ -4491,7 +4482,7 @@ function create_attachment($reportid, $format, $userid, $exporttofilesystem, $si
         case REPORT_BUILDER_EXPORT_EXCEL:
             $filename = $report->download_xls($headings, $sql, $params, $count, $restrictions, $tempfilepathname);
             if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
-                $reportfilepathname = get_directory($report, $userid) . '.xls';
+                $reportfilepathname = get_directory($report, $userid) . '.xlsx';
                 $filename = $report->download_xls($headings, $sql, $params, $count, $restrictions, $reportfilepathname);
             }
             break;
