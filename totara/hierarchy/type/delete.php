@@ -60,7 +60,12 @@ if (!$delete) {
     echo $OUTPUT->header();
     echo $OUTPUT->heading(get_string('deletetype', 'totara_hierarchy', format_string($type->fullname)), 1);
 
-    $strdelete = get_string('deletechecktype', 'totara_hierarchy');
+    // Review if there are items assigned to this type.
+    if ($itemsassigned = $DB->count_records($hierarchy->shortprefix, array('typeid' => $type->id))) {
+        $strdelete = get_string('deletechecktypeassociated', 'totara_hierarchy', $itemsassigned);
+    } else {
+        $strdelete = get_string('deletechecktype', 'totara_hierarchy');
+    }
     echo $OUTPUT->confirm($strdelete . html_writer::empty_tag('br') . html_writer::empty_tag('br'), "{$CFG->wwwroot}/totara/hierarchy/type/delete.php?prefix=$prefix&amp;id={$type->id}&amp;delete=".md5($type->timemodified)."&amp;sesskey={$USER->sesskey}", $back_url);
 
     echo $OUTPUT->footer();
