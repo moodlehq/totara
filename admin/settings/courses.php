@@ -116,6 +116,11 @@ if ($hassiteconfig
     $temp->add(new admin_setting_configselect('moodlecourse/enablecompletion', new lang_string('completion', 'completion'),
         new lang_string('enablecompletion_help', 'completion'), 0, array(0 => new lang_string('no'), 1 => new lang_string('yes'))));
 
+    $temp->add(new admin_setting_heading('progress', new lang_string('progress','completion'), ''));
+    $temp->add(new admin_setting_configselect('moodlecourse/enablecompletion', new lang_string('completion','completion'), '',
+        1, array(0 => new lang_string('completiondisabled','completion'), 1 => new lang_string('completionenabled','completion'))));
+
+    $temp->add(new admin_setting_configcheckbox('moodlecourse/completionprogressonview', new lang_string('completionprogressonview', 'completion'), new lang_string('completionprogressonviewhelp', 'completion'), 0));
 
     // Groups.
     $temp->add(new admin_setting_heading('groups', new lang_string('groups', 'group'), ''));
@@ -138,12 +143,6 @@ if ($hassiteconfig
     $languages[''] = new lang_string('forceno');
     $languages += get_string_manager()->get_list_of_translations();
     $temp->add(new admin_setting_configselect('moodlecourse/lang', new lang_string('forcelanguage'), '',key($languages),$languages));
-
-    $temp->add(new admin_setting_heading('progress', new lang_string('progress','completion'), ''));
-    $temp->add(new admin_setting_configselect('moodlecourse/enablecompletion', new lang_string('completion','completion'), '',
-        1, array(0 => new lang_string('completiondisabled','completion'), 1 => new lang_string('completionenabled','completion'))));
-
-    $temp->add(new admin_setting_configcheckbox('moodlecourse/completionprogressonview', new lang_string('completionprogressonview', 'completion'), new lang_string('completionprogressonviewhelp', 'completion'), 0));
 
     $temp->add(new admin_setting_configcheckbox('moodlecourse/coursetagging', new lang_string('coursetagging','tag'), new lang_string('coursetagginghelp','tag'), 0));
 
