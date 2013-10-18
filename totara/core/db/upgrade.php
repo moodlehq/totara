@@ -866,5 +866,31 @@ function xmldb_totara_core_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2013101100, 'totara_core');
     }
 
+    // Remove duplicate 1.1 legacy event handlers.
+    if ($oldversion < 2013101800) {
+        $handlers = array(
+            'local_cohort#organisation_deleted',
+            'local_cohort#organisation_updated',
+            'local_cohort#position_deleted',
+            'local_cohort#position_updated',
+            'local_cohort#profilefield_deleted',
+            'local_program#program_assigned',
+            'local_program#program_completed',
+            'local_program#program_courseset_completed',
+            'local_program#program_unassigned',
+            'local_program#user_firstaccess',
+            'local#role_assigned',
+            'local#user_deleted',
+        );
+
+        // Delete the outdated handlers.
+        foreach ($handlers as $handler) {
+            $hinfo = explode('#', $handler);
+            $DB->delete_records('events_handlers', array('component' => $hinfo[0], 'eventname' => $hinfo[1]));
+        }
+
+        totara_upgrade_mod_savepoint(true, 2013101800, 'totara_core');
+    }
+
     return true;
 }
