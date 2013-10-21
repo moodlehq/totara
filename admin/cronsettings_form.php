@@ -36,7 +36,8 @@ class cronsettings_form extends moodleform {
 
         $mform =& $this->_form;
 
-        $mform->addElement('header', 'settingsheader', '&nbsp;');
+        $mform->addElement('header', 'settingsheader', get_string('generalsettings', 'admin'));
+        $mform->setExpanded('settingsheader');
 
         $data = array();
         for($pos=0; $pos < 73 ;$pos++) {
@@ -55,14 +56,9 @@ class cronsettings_form extends moodleform {
                            '&nbsp;',
                            get_string('cron_max_time_info','admin'));
 
-        $cwatcher = "<h3 id=\"cron_watcher_info\" class=\"main\">".
-                    get_string('cron_watcher_info','admin').
-                    "</h3>";
-        $mform->addElement('static',
-                           'cron_watcher_info',
-                           '&nbsp;',
-                           $cwatcher);
-        $mform->addHelpButton('cron_watcher_info', 'cron_watcher_info', 'admin');
+        $mform->addElement('header', 'cronwatcherheader', get_string('cron_watcher_info', 'admin'));
+        $mform->setExpanded('cronwatcherheader');
+        $mform->addHelpButton('cronwatcherheader', 'cron_watcher_info', 'admin');
 
         $mform->addElement('checkbox',
                            'cron_max_time_mail_notify',
@@ -78,15 +74,11 @@ class cronsettings_form extends moodleform {
         $mform->setType('cron_max_time_kill', PARAM_BOOL);
         $mform->setDefault('cron_max_time_kill', 0);
 
+        $mform->addElement('header', 'cronstatusheader', get_string('cron_status_info', 'admin'));
+        $mform->setExpanded('cronstatusheader');
 
-        $cstatus = "<h3 id=\"cron_status_info\" class=\"main\">".
-                    get_string('cron_status_info','admin').
-                    "</h3>";
-        $mform->addElement('static',
-                           'cron_status_info',
-                           '&nbsp;',
-                           $cstatus);
         $elements = array();
+
         $stvalue = '<span id="cron_execution_status">'.cron_status().'</span>';
         $elements[] = $mform->createElement('static',
                                             'cron_execution_status',
