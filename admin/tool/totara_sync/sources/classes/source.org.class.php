@@ -75,6 +75,7 @@ abstract class totara_sync_source_org extends totara_sync_source {
     function config_form(&$mform) {
         // Fields to import.
         $mform->addElement('header', 'importheader', get_string('importfields', 'tool_totara_sync'));
+        $mform->setExpanded('importheader');
 
         foreach ($this->fields as $f) {
             $name = 'import_'.$f;
@@ -102,6 +103,7 @@ abstract class totara_sync_source_org extends totara_sync_source {
         }
         $mform->setDefault('delimiter', $default);
         $mform->addElement('header', 'dbfieldmappings', get_string('fieldmappings', 'tool_totara_sync'));
+        $mform->setExpanded('dbfieldmappings');
 
         foreach ($this->fields as $f) {
             $mform->addElement('text', "fieldmapping_{$f}", $f);

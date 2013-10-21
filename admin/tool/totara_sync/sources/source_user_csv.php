@@ -87,6 +87,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
 
         // Add some source file details
         $mform->addElement('header', 'fileheader', get_string('filedetails', 'tool_totara_sync'));
+        $mform->setExpanded('fileheader');
         if (get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
             $mform->addElement('static', 'nameandloc', get_string('nameandloc', 'tool_totara_sync'),
                 html_writer::tag('strong', $filepath));

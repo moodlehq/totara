@@ -218,6 +218,7 @@ class totara_sync_source_files_form extends moodleform {
             }
             $mform->addElement('header', "header_{$name}",
                 get_string("displayname:{$name}", 'tool_totara_sync'));
+            $mform->setExpanded("header_{$name}");
 
             try {
                 $source = $e->get_source();

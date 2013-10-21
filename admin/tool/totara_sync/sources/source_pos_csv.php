@@ -70,6 +70,7 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
 
         // Add some source file details
         $mform->addElement('header', 'fileheader', get_string('filedetails', 'tool_totara_sync'));
+        $mform->setExpanded('fileheader');
         if (get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
             $mform->addElement('static', 'nameandloc', get_string('nameandloc', 'tool_totara_sync'), html_writer::tag('strong', $filepath));
         } else {
