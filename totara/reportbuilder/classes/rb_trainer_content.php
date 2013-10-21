@@ -122,6 +122,7 @@ class rb_trainer_content extends rb_base_content {
 
         $mform->addElement('header', 'trainer_header', get_string('showbyx',
             'totara_reportbuilder', lcfirst($title)));
+        $mform->setExpanded('trainer_header');
         $mform->addElement('checkbox', 'trainer_enable', '',
             get_string('showbasedonx', 'totara_reportbuilder', lcfirst($title)));
         $mform->disabledIf('trainer_enable', 'contentenabled', 'eq', 0);

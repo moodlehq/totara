@@ -166,6 +166,7 @@ class rb_current_pos_content extends rb_base_content {
 
         $mform->addElement('header', 'current_pos_header',
             get_string('showbyx', 'totara_reportbuilder', lcfirst($title)));
+        $mform->setExpanded('current_pos_header');
         $mform->addElement('checkbox', 'current_pos_enable', '',
             get_string('currentposenable', 'totara_reportbuilder'));
         $mform->setDefault('current_pos_enable', $enable);
@@ -331,6 +332,7 @@ class rb_current_org_content extends rb_base_content {
 
         $mform->addElement('header', 'current_org_header',
             get_string('showbyx', 'totara_reportbuilder', lcfirst($title)));
+        $mform->setExpanded('current_org_header');
         $mform->addElement('checkbox', 'current_org_enable', '',
             get_string('currentorgenable', 'totara_reportbuilder'));
         $mform->setDefault('current_org_enable', $enable);
@@ -497,6 +499,7 @@ class rb_completed_org_content extends rb_base_content {
 
         $mform->addElement('header', 'completed_org_header',
             get_string('showbyx', 'totara_reportbuilder', lcfirst($title)));
+        $mform->setExpanded('completed_org_header');
         $mform->addElement('checkbox', 'completed_org_enable', '',
             get_string('completedorgenable', 'totara_reportbuilder'));
         $mform->setDefault('completed_org_enable', $enable);
@@ -653,6 +656,7 @@ class rb_user_content extends rb_base_content {
 
         $mform->addElement('header', 'user_header', get_string('showbyx',
             'totara_reportbuilder', lcfirst($title)));
+        $mform->setExpanded('user_header');
         $mform->addElement('checkbox', 'user_enable', '',
             get_string('showbasedonx', 'totara_reportbuilder', lcfirst($title)));
         $mform->disabledIf('user_enable', 'contentenabled', 'eq', 0);
@@ -847,6 +851,7 @@ class rb_date_content extends rb_base_content {
 
         $mform->addElement('header', 'date_header', get_string('showbyx',
             'totara_reportbuilder', lcfirst($title)));
+        $mform->setExpanded('date_header');
         $mform->addElement('checkbox', 'date_enable', '',
             get_string('showbasedonx', 'totara_reportbuilder',
             lcfirst($title)));
@@ -1110,6 +1115,7 @@ class rb_tag_content extends rb_base_content {
 
         $mform->addElement('header', 'tag_header',
             get_string('showbytag', 'totara_reportbuilder'));
+        $mform->setExpanded('tag_header');
         $mform->addHelpButton('tag_header', 'reportbuildertag', 'totara_reportbuilder');
 
         $mform->addElement('checkbox', 'tag_enable', '',
