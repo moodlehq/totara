@@ -79,6 +79,12 @@ $settings->add(new admin_setting_configselect('facetoface_bulkaddsource',
         new lang_string('setting:bulkaddsource_caption', 'facetoface'),
         new lang_string('setting:bulkaddsource', 'facetoface'), 'bulkaddsourceidnumber', $menu));
 
+// Export
+$settings->add(new admin_setting_heading('facetoface_export_header', new lang_string('exportheading', 'facetoface'), ''));
+$settings->add(new admin_setting_configtext('facetoface_export_userprofilefields', new lang_string('exportuserprofilefields', 'facetoface'), new lang_string('exportuserprofilefields_desc', 'facetoface'), 'firstname,lastname,idnumber,institution,department,email', PARAM_TEXT));
+
+$settings->add(new admin_setting_configtext('facetoface_export_customprofilefields', new lang_string('exportcustomprofilefields', 'facetoface'), new lang_string('exportcustomprofilefields_desc', 'facetoface'), '', PARAM_TEXT));
+
 // List of existing custom fields
 $html = facetoface_list_of_customfields();
 $html .= html_writer::start_tag('p');
