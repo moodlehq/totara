@@ -106,7 +106,14 @@ class rb_source_facetoface_sessions extends rb_base_source {
                     cancellationstatus.superceded = 0 AND
                     cancellationstatus.statuscode = '.MDL_F2F_STATUS_USER_CANCELLED.')',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
-            )
+            ),
+            new rb_join(
+                'room',
+                'LEFT',
+                '{facetoface_room}',
+                'sessions.roomid = room.id',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
         );
 
 
@@ -294,6 +301,41 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'cancellationstatus.note',
                 array('joins' => 'cancellationstatus')
             ),
+            new rb_column_option(
+                'room',
+                'name',
+                get_string('roomname', 'rb_source_facetoface_sessions'),
+                'room.name',
+                array('joins' => 'room')
+            ),
+            new rb_column_option(
+                'room',
+                'building',
+                get_string('building', 'rb_source_facetoface_sessions'),
+                'room.building',
+                array('joins' => 'room')
+            ),
+            new rb_column_option(
+                'room',
+                'address',
+                get_string('address', 'rb_source_facetoface_sessions'),
+                'room.address',
+                array('joins' => 'room')
+            ),
+            new rb_column_option(
+                'room',
+                'capacity',
+                get_string('roomcapacity', 'rb_source_facetoface_sessions'),
+                'room.capacity',
+                array('joins' => 'room')
+            ),
+            new rb_column_option(
+                'room',
+                'description',
+                get_string('roomdescription', 'rb_source_facetoface_sessions'),
+                'room.description',
+                array('joins' => 'room')
+            ),
         );
 
         // include some standard columns
@@ -371,6 +413,36 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'session',
                 'discountcost',
                 get_string('discountcost', 'rb_source_facetoface_sessions'),
+                'text'
+            ),
+            new rb_filter_option(
+                'room',
+                'name',
+                get_string('roomname', 'rb_source_facetoface_sessions'),
+                'text'
+            ),
+            new rb_filter_option(
+                'room',
+                'building',
+                get_string('building', 'rb_source_facetoface_sessions'),
+                'text'
+            ),
+            new rb_filter_option(
+                'room',
+                'address',
+                get_string('address', 'rb_source_facetoface_sessions'),
+                'text'
+            ),
+            new rb_filter_option(
+                'room',
+                'capacity',
+                get_string('roomcapacity', 'rb_source_facetoface_sessions'),
+                'number'
+            ),
+            new rb_filter_option(
+                'room',
+                'description',
+                get_string('roomdescription', 'rb_source_facetoface_sessions'),
                 'text'
             ),
         );
