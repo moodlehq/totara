@@ -2,6 +2,9 @@
 // lang file for mod/facetoface/rb_sources/rb_source_facetoface_sessions.php
 $string['sourcetitle'] = 'Face-to-face sessions';
 // columns
+$string['address'] = 'Address';
+$string['building'] = 'Building';
+$string['roomcapacity'] = 'Room capacity';
 $string['discountcode'] = 'Discount code';
 $string['normalcost'] = 'Normal cost';
 $string['discountcost'] = 'Discount cost';
@@ -14,6 +17,8 @@ $string['endtime'] = 'End Time';
 $string['facilitator'] = 'Facilitator';
 $string['ftfname'] = 'Face to Face Name';
 $string['ftfnamelink'] = 'Face to Face Name (linked to session page)';
+$string['roomdescription'] = 'Room description';
+$string['roomname'] = 'Room name';
 $string['sessdate'] = 'Session Start Date';
 $string['sessdatefinish'] = 'Session Finish Date';
 $string['sessdatelink'] = 'Session Start Date (linked to actvity)';
@@ -31,9 +36,6 @@ $string['currentpos'] = 'The user\'s current position';
 $string['user'] = 'The user';
 $string['thedate'] = 'The session date';
 // filters
-$string['sesslocation'] = 'Session Location';
-$string['sessvenue'] = 'Session Venue';
-$string['sessroom'] = 'Session Room';
 $string['pilot'] = 'Pilot';
 $string['audit'] = 'Audit';
 $string['coursedelivery'] = 'Course Delivery';
