@@ -1072,26 +1072,41 @@ function facetoface_get_attendee($sessionid, $userid) {
  * Return all user fields to include in exports
  */
 function facetoface_get_userfields() {
+    global $CFG, $DB;
+
     static $userfields = null;
     if (null == $userfields) {
         $userfields = array();
 
-        if (function_exists('grade_export_user_fields')) {
-            $fieldnames = grade_export_user_fields();
-            foreach ($fieldnames as $key => $obj) {
-                $userfields[$obj->shortname] = $obj->fullname;
-            }
+        $fieldnames = array('firstname', 'lastname', 'email', 'city',
+                            'idnumber', 'institution', 'department', 'address');
+        if (!empty($CFG->facetoface_export_userprofilefields)) {
+            $fieldnames = array_map('trim', explode(',', $CFG->facetoface_export_userprofilefields));
         }
-        else {
-            // Set default fields if the grade export patch is not
-            // detected (see MDL-17346)
-            $fieldnames = array('firstname', 'lastname', 'email', 'city',
-                                'idnumber', 'institution', 'department', 'address');
-            foreach ($fieldnames as $shortname) {
+        foreach ($fieldnames as $shortname) {
+            if (get_string_manager()->string_exists($shortname, 'moodle')) {
                 $userfields[$shortname] = get_string($shortname);
+            } else {
+                $userfields[$shortname] = $shortname;
             }
-            $userfields['managersemail'] = get_string('manageremail', 'facetoface');
         }
+
+        // Add custom fields.
+        if (!empty($CFG->facetoface_export_customprofilefields)) {
+            $customfields = array_map('trim', explode(',', $CFG->facetoface_export_customprofilefields));
+            list($insql, $params) = $DB->get_in_or_equal($customfields);
+            $sql = 'SELECT '.$DB->sql_concat("'customfield_'", 'f.shortname').' AS shortname, f.name
+                FROM {user_info_field} f
+                JOIN {user_info_category} c ON f.categoryid = c.id
+                WHERE f.shortname '.$insql.'
+                ORDER BY c.sortorder, f.sortorder';
+
+            $customfields = $DB->get_records_sql_menu($sql, $params);
+            if (!empty($customfields)) {
+                $userfields = array_merge($userfields, $customfields);
+            }
+        }
+        $userfields['managersemail'] = get_string('manageremail', 'facetoface');
     }
 
     return $userfields;
@@ -1275,7 +1290,9 @@ function facetoface_write_activity_attendance(&$worksheet, $coursecontext, $star
         foreach ($signups as $signup) {
             $userid = $signup->id;
 
-            if ($customuserfields = facetoface_get_user_customfields($userid, $userfields)) {
+            if (!empty($CFG->facetoface_export_customprofilefields)) {
+                $customuserfields = facetoface_get_user_customfields($userid,
+                    array_map('trim', explode(',', $CFG->facetoface_export_customprofilefields)));
                 foreach ($customuserfields as $fieldname => $value) {
                     if (!isset($signup->$fieldname)) {
                         $signup->$fieldname = $value;
@@ -1546,7 +1563,7 @@ function facetoface_write_activity_attendance(&$worksheet, $coursecontext, $star
  *
  * @param array $fieldstoinclude Limit the fields returned/cached to these ones (optional)
  */
-function facetoface_get_user_customfields($userid, $fieldstoinclude=false)
+function facetoface_get_user_customfields($userid, $fieldstoinclude=null)
 {
     global $CFG, $DB;
 
@@ -1562,17 +1579,23 @@ function facetoface_get_user_customfields($userid, $fieldstoinclude=false)
 
     $ret = new stdClass();
 
-    $sql = "SELECT uif.shortname, id.data
+    $sql = 'SELECT '.$DB->sql_concat("'customfield_'", 'uif.shortname').' AS shortname, id.data
               FROM {user_info_field} uif
               JOIN {user_info_data} id ON id.fieldid = uif.id
-              WHERE id.userid = ?";
+              JOIN {user_info_category} c ON uif.categoryid = c.id
+              WHERE id.userid = ? ';
+    $params = array($userid);
+    if (!empty($fieldstoinclude)) {
+        list($insql, $inparams) = $DB->get_in_or_equal($fieldstoinclude);
+        $sql .= ' AND uif.shortname '.$insql;
+        $params = array_merge($params, $inparams);
+    }
+    $sql .= ' ORDER BY c.sortorder, uif.sortorder';
 
-    $customfields = $DB->get_records_sql($sql, array($userid));
+    $customfields = $DB->get_records_sql($sql, $params);
     foreach ($customfields as $field) {
         $fieldname = $field->shortname;
-        if (false === $fieldstoinclude or !empty($fieldstoinclude[$fieldname])) {
-            $ret->$fieldname = $field->data;
-        }
+        $ret->$fieldname = $field->data;
     }
 
     $customfields[$userid] = $ret;
