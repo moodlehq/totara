@@ -138,7 +138,7 @@ $customfields = facetoface_get_session_customfields();
 $sessionid = isset($session->id) ? $session->id : 0;
 
 $details = new stdClass();
-$details->id = isset($session) ? $session->id : 0;
+$details->id = $sessionid;
 $details->details = isset($session->details) ? $session->details : '';
 $details->detailsformat = FORMAT_HTML;
 $details = file_prepare_standard_editor($details, 'details', $editoroptions, $module_context, 'mod_facetoface', 'session', $sessionid);
@@ -208,24 +208,17 @@ if ($fromform = $mform->get_data()) { // Form submitted
     $todb->discountcost = $fromform->discountcost;
     $todb->usermodified = $USER->id;
     $todb->roomid = 0;
-    $sessionid = null;
 
-    //We cannot use transactions here because of the current issue in messagelib.php
+    $transaction = $DB->start_delegated_transaction();
 
     $update = false;
     if (!$c and $session != null) {
         $update = true;
+        $todb->id = $session->id;
         $sessionid = $session->id;
-
-        $todb->id = $sessionid;
         if (!facetoface_update_session($todb, $sessiondates)) {
             add_to_log($course->id, 'facetoface', 'update session (FAILED)', "sessions.php?s=$session->id", $facetoface->id, $cm->id);
             print_error('error:couldnotupdatesession', 'facetoface', $returnurl);
-        }
-
-        // Remove old site-wide calendar entry
-        if (!facetoface_remove_session_from_calendar($session, SITEID)) {
-            print_error('error:couldnotupdatecalendar', 'facetoface', $returnurl);
         }
     } else {
         if (!$sessionid = facetoface_add_session($todb, $sessiondates)) {
@@ -234,16 +227,17 @@ if ($fromform = $mform->get_data()) { // Form submitted
         }
     }
 
-    // Save session room info
+    // Save session room info.
     if (!facetoface_save_session_room($sessionid, $fromform)) {
         add_to_log($course->id, 'facetoface', 'save room (FAILED)', 'room/manage.php', $facetoface->id, $cm->id);
         print_error('error:couldnotsaveroom', 'facetoface');
     }
 
     foreach ($customfields as $field) {
+        // Need to be able to clear fields.
         $fieldname = "custom_$field->shortname";
         if (!isset($fromform->$fieldname)) {
-            $fromform->$fieldname = ''; // need to be able to clear fields
+            $fromform->$fieldname = '';
         }
 
         if (!facetoface_save_customfield_value($field->id, $fromform->$fieldname, $sessionid, 'session')) {
@@ -251,22 +245,30 @@ if ($fromform = $mform->get_data()) { // Form submitted
         }
     }
 
-    // Retrieve record that was just inserted/updated
+    $transaction->allow_commit();
+
+    // Retrieve record that was just inserted/updated.
     if (!$session = facetoface_get_session($sessionid)) {
         print_error('error:couldnotfindsession', 'facetoface', $returnurl);
     }
 
-    // Save trainer roles
+    if ($update) {
+        // Now that we have updated the session record fetch the rest of the data we need.
+        facetoface_update_attendees($session);
+    }
+
+    // Save trainer roles.
     if (isset($fromform->trainerrole)) {
         facetoface_update_trainers($facetoface, $session, $fromform->trainerrole);
     }
 
+    // Save any calendar entries.
+    $session->sessiondates = $sessiondates;
     facetoface_update_calendar_entries($session, $facetoface);
 
     if ($update) {
         add_to_log($course->id, 'facetoface', 'updated session', "sessions.php?s=$session->id", $facetoface->id, $cm->id);
-    }
-    else {
+    } else {
         add_to_log($course->id, 'facetoface', 'added session', 'sessions.php?f='.$facetoface->id, $facetoface->id, $cm->id);
     }
 

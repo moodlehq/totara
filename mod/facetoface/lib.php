@@ -582,12 +582,10 @@ function facetoface_add_session($session, $sessiondates) {
     $session->timecreated = time();
     $session = cleanup_session_data($session);
 
-    $eventname = $DB->get_field('facetoface', 'name,id', array('id' => $session->facetoface));
-
     $session->id = $DB->insert_record('facetoface_sessions', $session);
 
     if (empty($sessiondates)) {
-        // Insert a dummy date record
+        // Insert a dummy date record.
         $date = new stdClass();
         $date->sessionid = $session->id;
         $date->timestart = 0;
@@ -597,14 +595,9 @@ function facetoface_add_session($session, $sessiondates) {
     } else {
         foreach ($sessiondates as $date) {
             $date->sessionid = $session->id;
-
             $DB->insert_record('facetoface_sessions_dates', $date);
         }
     }
-
-    //create any calendar entries
-    $session->sessiondates = $sessiondates;
-    facetoface_update_calendar_entries($session);
 
     return $session->id;
 }
@@ -617,16 +610,12 @@ function facetoface_update_session($session, $sessiondates) {
 
     $session->timemodified = time();
     $session = cleanup_session_data($session);
-    $transaction = $DB->start_delegated_transaction();
 
     $DB->update_record('facetoface_sessions', $session);
     $DB->delete_records('facetoface_sessions_dates', array('sessionid' => $session->id));
 
-    // Now that we have updated the session record fetch the rest of the data we need
-    $session = $DB->get_record('facetoface_sessions', array('id' =>$session->id));
-
     if (empty($sessiondates)) {
-        // Insert a dummy date record
+        // Insert a dummy date record.
         $date = new stdClass();
         $date->sessionid = $session->id;
         $date->timestart = 0;
@@ -640,14 +629,7 @@ function facetoface_update_session($session, $sessiondates) {
         }
     }
 
-    //update any calendar entries
-    $session->sessiondates = $sessiondates;
-
-    facetoface_update_calendar_entries($session);
-
-    $transaction->allow_commit();
-
-    return facetoface_update_attendees($session);
+    return $session->id;
 }
 
 function facetoface_update_calendar_entries($session, $facetoface = null){

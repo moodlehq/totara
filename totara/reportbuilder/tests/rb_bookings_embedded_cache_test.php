@@ -154,6 +154,9 @@ class rb_bookings_embedded_cache_test extends reportcache_advanced_testcase {
         $sessiondates = array($dates);
         facetoface_add_session($session, $sessiondates);
 
+        $session->sessiondates = $sessiondates;
+        facetoface_update_calendar_entries($session, $facetoface);
+
         // Signup for session
         facetoface_user_signup($session, $facetoface, $course, 0, MDL_F2F_INVITE, MDL_F2F_STATUS_BOOKED,
             $initiator->id, false);
