@@ -453,6 +453,15 @@ function xmldb_totara_core_install() {
         $dbman->add_field($table, $field);
     }
 
+    // Define field invalidatecache to be added to course_completions.
+    $table = new xmldb_table('course_completions');
+    $field = new xmldb_field('invalidatecache', XMLDB_TYPE_INTEGER, '1', null, null, null, '0');
+
+    // Conditionally launch add field invalidatecache.
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
     // Backporting MDL-41914 to add new webservice core_user_add_user_device.
     $table = new xmldb_table('user_devices');
 

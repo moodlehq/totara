@@ -1692,6 +1692,7 @@ function certificate_archive_completion($userid, $courseid) {
                 $DB->delete_records('certificate_issues', array('id' => $cert->id));
             }
         }
+        $completion->invalidatecache($courseid, $userid, true);
     }
     return true;
 }

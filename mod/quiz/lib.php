@@ -1818,5 +1818,6 @@ function quiz_archive_completion($userid, $courseid) {
             // And reset completion, as a fail safe
             $completion->update_state($course_module, COMPLETION_INCOMPLETE, $userid);
         }
+        $completion->invalidatecache($courseid, $userid, true);
     }
 }

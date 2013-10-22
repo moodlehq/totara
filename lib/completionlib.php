@@ -1075,8 +1075,10 @@ class completion_info {
             }
             // Expire any old data from cache
             foreach ($SESSION->completioncache as $courseid=>$activities) {
-                if (empty($activities['updated']) || $activities['updated'] < time()-COMPLETION_CACHE_EXPIRY) {
+                if (empty($activities['updated']) || $activities['updated'] < time()-COMPLETION_CACHE_EXPIRY ||
+                        !$DB->record_exists('course_completions', array('userid' => $USER->id, 'course' => $courseid, 'invalidatecache' => 0))) {
                     unset($SESSION->completioncache[$courseid]);
+                    $this->invalidatecache($courseid, $USER->id, false);
                 }
             }
             // See if requested data is present, if so use cache to get it
@@ -1085,6 +1087,11 @@ class completion_info {
                 array_key_exists($cm->id, $SESSION->completioncache[$this->course->id])) {
                 return $SESSION->completioncache[$this->course->id][$cm->id];
             }
+        }
+
+        if ($currentuser) {
+            // Rebuilding the cache so set invalidate to false.
+            $this->invalidatecache($this->course->id, $USER->id, false);
         }
 
         // Not there, get via SQL
@@ -1158,6 +1165,26 @@ class completion_info {
         }
 
         return $data;
+    }
+
+    /**
+     * Sets invalidatecache - if true, the completion cache will be reset in the the user's session
+     *
+     * @param int $courseid
+     * @param int $userid
+     * @param bool $value true = reset the cache in the session for this course
+     */
+    public function invalidatecache($courseid = null, $userid = null, $value = false) {
+        global $DB, $USER;
+        if (empty($courseid)) {
+            $courseid = $this->course->id;
+        }
+        if (empty($userid)) {
+            $userid = $USER->id;
+        }
+        if (!empty($courseid) && !empty($userid)) {
+            $DB->set_field('course_completions', 'invalidatecache', $value, array('userid' => $userid, 'course' => $courseid));
+        }
     }
 
     /**

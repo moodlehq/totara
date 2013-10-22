@@ -1265,6 +1265,7 @@ function assign_archive_completion($userid, $courseid) {
             // And reset completion, in case viewed is not a required condition.
             $completion->update_state($cm, COMPLETION_INCOMPLETE, $userid);
         }
+        $completion->invalidatecache($courseid, $userid, true);
     }
 
     return true;

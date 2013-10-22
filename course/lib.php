@@ -3332,6 +3332,9 @@ function archive_course_activities($userid, $courseid) {
 
                         // Reset completion.
                         $completion->update_state($cm, COMPLETION_INCOMPLETE, $userid);
+
+                        // Reset cache after each activity just in case the user reattempts.
+                        $completion->invalidatecache($courseid, $userid, true);
                     }
 
                 }

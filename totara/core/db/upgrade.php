@@ -892,5 +892,20 @@ function xmldb_totara_core_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2013101800, 'totara_core');
     }
 
+    if ($oldversion < 2013102300) {
+
+        // Define field invalidatecache to be added to course_completions.
+        $table = new xmldb_table('course_completions');
+        $field = new xmldb_field('invalidatecache', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'status');
+
+        // Conditionally launch add field invalidatecache.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Main savepoint reached.
+        totara_upgrade_mod_savepoint(true, 2013102300, 'totara_core');
+    }
+
     return true;
 }

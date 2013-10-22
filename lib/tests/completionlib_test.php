@@ -392,6 +392,10 @@ WHERE
 
         // 3. Current user, single record, not from cache
         $DB->expects($this->at(0))
+            ->method('set_field')
+            ->with('course_completions', 'invalidatecache', false, array('course' => 42, 'userid' => 314159))
+            ->will($this->returnValue(true));
+        $DB->expects($this->at(1))
             ->method('get_record')
             ->with('course_modules_completion', array('coursemoduleid'=>13,'userid'=>314159))
             ->will($this->returnValue($sillyrecord));
@@ -402,6 +406,10 @@ WHERE
         $this->assertTrue(time()-$SESSION->completioncache[42]['updated']<2);
 
         // 4. Current user, 'whole course', but from cache
+        $DB->expects($this->at(0))
+            ->method('record_exists')
+            ->with('course_completions', array('course' => 42, 'userid' => 314159, 'invalidatecache' => 0))
+            ->will($this->returnValue(true));
         $result = $c->get_data($cm, true);
         $this->assertEquals($sillyrecord, $result);
 
@@ -411,6 +419,22 @@ WHERE
         $SESSION->completioncache[17]['updated']=$now;
         $SESSION->completioncache[39]['updated']=72; // Also a long time ago
         $DB->expects($this->at(0))
+            ->method('set_field')
+            ->with('course_completions', 'invalidatecache', false, array('course' => 42, 'userid' => 314159))
+            ->will($this->returnValue(true));
+        $DB->expects($this->at(1))
+            ->method('record_exists')
+            ->with('course_completions', array('course' => 17, 'userid' => 314159, 'invalidatecache' => 0))
+            ->will($this->returnValue(true));
+        $DB->expects($this->at(2))
+            ->method('set_field')
+            ->with('course_completions', 'invalidatecache', false, array('course' => 39, 'userid' => 314159))
+            ->will($this->returnValue(true));
+        $DB->expects($this->at(3))
+            ->method('set_field')
+            ->with('course_completions', 'invalidatecache', false, array('course' => 42, 'userid' => 314159))
+            ->will($this->returnValue(true));
+        $DB->expects($this->at(4))
             ->method('get_record')
             ->with('course_modules_completion', array('coursemoduleid'=>13,'userid'=>314159))
             ->will($this->returnValue($sillyrecord));
@@ -428,8 +452,12 @@ WHERE
         unset($SESSION->completioncache);
 
         // Scenario: Completion data exists for one CMid
-        $basicrecord = (object)array('coursemoduleid'=>13);
         $DB->expects($this->at(0))
+            ->method('set_field')
+            ->with('course_completions', 'invalidatecache', false, array('course' => 42, 'userid' => 314159))
+            ->will($this->returnValue(true));
+        $basicrecord = (object)array('coursemoduleid'=>13);
+        $DB->expects($this->at(1))
             ->method('get_records_sql')
             ->will($this->returnValue(array('1'=>$basicrecord)));
 

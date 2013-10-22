@@ -1521,4 +1521,5 @@ function scorm_archive_completion($userid, $courseid) {
         $course_module = get_coursemodule_from_instance('scorm', $scorm->id, $courseid);
         $completion->set_module_viewed_reset($course_module, $userid);
     }
+    $completion->invalidatecache($courseid, $userid, true);
 }

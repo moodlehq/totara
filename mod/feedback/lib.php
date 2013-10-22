@@ -3247,6 +3247,7 @@ function feedback_archive_completion($userid, $courseid) {
                 $completion->update_state($course_module, COMPLETION_INCOMPLETE, $userid);
             }
         }
+        $completion->invalidatecache($courseid, $userid, true);
     }
 
     return true;

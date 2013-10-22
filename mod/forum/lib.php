@@ -8632,7 +8632,10 @@ function forum_archive_completion($userid, $courseid) {
                         FROM {forum_discussions} d
                         WHERE d.forum = f.id
                         AND d.userid = :userid2)';
-    $forums = $DB->get_records_sql($sql, array('courseid' => $courseid, 'userid1' => $userid, 'userid2' => $userid));
+    if (!$forums = $DB->get_records_sql($sql,
+        array('courseid' => $courseid, 'userid1' => $userid, 'userid2' => $userid))) {
+        return;
+    }
 
     foreach ($forums as $forum) {
         $params = array('userid' => $userid, 'courseid' => $courseid, 'forumid' => $forum->id, 'archived' => 1);
@@ -8687,4 +8690,6 @@ function forum_archive_completion($userid, $courseid) {
         // And reset completion, in case viewed is not a required condition
         $completion->update_state($course_module, COMPLETION_INCOMPLETE, $userid);
     }
+
+    $completion->invalidatecache($courseid, $userid, true);
 }
