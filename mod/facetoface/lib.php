@@ -126,6 +126,82 @@ function facetoface_get_status($statuscode) {
 }
 
 /**
+ * Obtains the automatic completion state for this face to face activity based on any conditions
+ * in face to face settings.
+ *
+ * @param object $course Course
+ * @param object $cm Course-module
+ * @param int $userid User ID
+ * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
+ * @return bool True if completed, false if not. (If no conditions, then return
+ *   value depends on comparison type)
+ */
+function facetoface_get_completion_state($course, $cm, $userid, $type) {
+    global $DB;
+
+    $result = $type;
+
+    // Get face to face.
+    if (!$facetoface = $DB->get_record('facetoface', array('id' => $cm->instance))) {
+        print_error('cannotfindfacetoface');
+    }
+
+    // Only check for existence of tracks and return false if completionstatusrequired.
+    // This means that if only view is required we don't end up with a false state.
+    if ($facetoface->completionstatusrequired) {
+        $completionstatusrequired = json_decode($facetoface->completionstatusrequired, true);
+        if (empty($completionstatusrequired)) {
+            return $result;
+        }
+        list($insql, $inparams) = $DB->get_in_or_equal(array_keys($completionstatusrequired));
+
+        // Get user's face to face status.
+        $sql = "SELECT f2fss.id AS signupstatusid, f2fss.statuscode, f2fsd.timefinish
+                FROM {facetoface_sessions} f2fses
+                LEFT JOIN {facetoface_signups} f2fs ON (f2fs.sessionid = f2fses.id)
+                LEFT JOIN {facetoface_signups_status} f2fss ON (f2fss.signupid = f2fs.id)
+                LEFT JOIN {facetoface_sessions_dates} f2fsd ON (f2fsd.sessionid = f2fses.id)
+                WHERE f2fses.facetoface = ? AND f2fs.userid = ?
+                  AND f2fss.statuscode $insql
+                ORDER BY f2fsd.timefinish";
+        $params = array_merge(array($facetoface->id, $userid), $inparams);
+        $status = $DB->get_record_sql($sql, $params, IGNORE_MULTIPLE);
+        if ($status) {
+            // Tell completion_criteria_activity::review exact time of completion, otherwise it will use time of review run.
+            $cm->timecompleted = $status->timefinish;
+            return completion_info::aggregate_completion_states($type, $result, true);
+        }
+        return completion_info::aggregate_completion_states($type, $result, false);
+    }
+    return $result;
+}
+
+/**
+ * Sets activity completion state
+ *
+ * @param stdClass $facetoface object
+ * @param int $userid User ID
+ * @param int $completionstate Completion state
+ */
+function facetoface_set_completion($facetoface, $userid, $completionstate = COMPLETION_COMPLETE) {
+    $course = new stdClass();
+    $course->id = $facetoface->course;
+    $completion = new completion_info($course);
+
+    // Check if completion is enabled site-wide, or for the course
+    if (!$completion->is_enabled()) {
+        return;
+    }
+
+    $cm = get_coursemodule_from_instance('facetoface', $facetoface->id, $facetoface->course);
+    if (empty($cm) || !$completion->is_enabled($cm)) {
+            return;
+    }
+
+    $completion->update_state($cm, $completionstate, $userid);
+}
+
+/**
  * Returns the effective cost of a session depending on the presence
  * or absence of a discount code.
  *
@@ -384,6 +460,9 @@ function facetoface_update_instance($facetoface, $instanceflag = true) {
 
     if ($instanceflag) {
         $facetoface->id = $facetoface->instance;
+    }
+    if (empty($facetoface->completionstatusrequired)) {
+        $facetoface->completionstatusrequired = null;
     }
 
    facetoface_fix_settings($facetoface);
@@ -1778,6 +1857,16 @@ function facetoface_update_signup_status($signupid, $statuscode, $createdby, $no
         $where = "signupid = ? AND ( superceded = 0 OR superceded IS NULL ) AND id != ?";
         $whereparams = array($signupid, $statusid);
         $DB->set_field_select('facetoface_signups_status', 'superceded', 1, $where, $whereparams);
+
+        // Check for completions.
+        $sql = "SELECT f2f.id, f2f.course, f2fs.userid
+                FROM {facetoface_signups} f2fs
+                    LEFT JOIN {facetoface_sessions} f2fses ON (f2fses.id = f2fs.sessionid)
+                    LEFT JOIN {facetoface} f2f ON (f2f.id = f2fses.facetoface)
+                WHERE f2fs.id = ?";
+        $status = $DB->get_record_sql($sql, array($signupid));
+        facetoface_set_completion($status, $status->userid, COMPLETION_UNKNOWN);
+
         $transaction->allow_commit();
         return $statusid;
     } else {
@@ -3512,6 +3601,7 @@ function facetoface_supports($feature) {
         case FEATURE_GRADE_HAS_GRADE:         return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
         case FEATURE_ARCHIVE_COMPLETION:      return true;
+        case FEATURE_COMPLETION_HAS_RULES:    return true;
 
         default: return null;
     }

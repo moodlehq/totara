@@ -134,7 +134,7 @@ class completion_criteria_activity extends completion_criteria {
     /**
      * Review this criteria and decide if the user has completed
      *
-     * @param completion_completion $completion     The user's completion record
+     * @param completion_criteria_completion $completion The user's completion record
      * @param bool $mark Optionally set false to not save changes to database
      * @return bool
      */
@@ -150,7 +150,9 @@ class completion_criteria_activity extends completion_criteria {
         // If the activity is complete
         if (in_array($data->completionstate, array(COMPLETION_COMPLETE, COMPLETION_COMPLETE_PASS))) {
             if ($mark) {
-                $completion->mark_complete();
+                // If course module indicated it's completion time, this time will be used. Otherwise current time will set.
+                $timecompleted = (isset($data->timecompleted)) ? $data->timecompleted : null;
+                $completion->mark_complete($timecompleted);
             }
 
             return true;

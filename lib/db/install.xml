@@ -358,6 +358,7 @@
         <FIELD NAME="completionstate" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" COMMENT="Whether or not the user has completed the activity. Available states: 0 = not completed [if there's no row in this table, that also counts as 0] 1 = completed 2 = completed, show passed 3 = completed, show failed"/>
         <FIELD NAME="viewed" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false" COMMENT="Tracks whether or not this activity has been viewed. NULL = we are not tracking viewed for this activity 0 = not viewed 1 = viewed"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time at which the completion state last changed."/>
+        <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Time at which the module was completed."/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

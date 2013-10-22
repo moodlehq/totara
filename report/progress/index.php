@@ -364,7 +364,9 @@ foreach($progress as $user) {
         if (array_key_exists($activity->id,$user->progress)) {
             $thisprogress=$user->progress[$activity->id];
             $state=$thisprogress->completionstate;
-            if (!empty($thisprogress->timemodified)) {
+            if (!empty($thisprogress->timecompleted)) {
+                $date = userdate($thisprogress->timecompleted);
+            } else if (!empty($thisprogress->timemodified)) {
                 $date = userdate($thisprogress->timemodified);
             } else {
                 $date = '';

@@ -488,5 +488,13 @@ function xmldb_totara_core_install() {
         $dbman->create_table($table);
     }
 
+    // Add timecompleted for module completion.
+    $table = new xmldb_table('course_modules_completion');
+    $field = new xmldb_field('timecompleted', XMLDB_TYPE_INTEGER, '10');
+
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
     return true;
 }

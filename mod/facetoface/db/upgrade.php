@@ -1690,6 +1690,20 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2013101500, 'facetoface');
     }
 
+    if ($oldversion < 2013102100) {
+
+        $table = new xmldb_table('facetoface');
+        $field = new xmldb_field('completionstatusrequired', XMLDB_TYPE_CHAR, '255');
+
+        // Conditionally add field.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Facetoface savepoint reached.
+        upgrade_mod_savepoint(true, 2013102100, 'facetoface');
+    }
+
     return $result;
 }
 

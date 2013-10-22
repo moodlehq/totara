@@ -103,5 +103,75 @@ class mod_facetoface_mod_form extends moodleform_mod {
         else {
             $default_values['emailmanagercancellation'] = 1;
         }
+
+        // Set some completion default data.
+        if (!empty($default_values['completionstatusrequired']) && !is_array($default_values['completionstatusrequired'])) {
+            // Unpack values.
+            $cvalues = json_decode($default_values['completionstatusrequired'], true);
+            $default_values['completionstatusrequired'] = $cvalues;
+        }
+    }
+
+    function add_completion_rules() {
+        global $MDL_F2F_STATUS;
+        $mform =& $this->_form;
+        $items = array();
+
+        // Require status.
+        $first = true;
+        $firstkey = null;
+        foreach (array(MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED) as $key) {
+            $value = get_string('status_'.$MDL_F2F_STATUS[$key], 'facetoface');
+            $name = null;
+            $keyind = $key;
+            $key = 'completionstatusrequired['.$key.']';
+            if ($first) {
+                $name = get_string('completionstatusrequired', 'facetoface');
+                $first = false;
+                $firstkey = $key;
+            }
+            $mform->addElement('checkbox', $key, $name, $value);
+            $mform->setType($key, PARAM_BOOL);
+            $items[] = $key;
+        }
+        $mform->addHelpButton($firstkey, 'completionstatusrequired', 'facetoface');
+
+        return $items;
+    }
+
+    function completion_rule_enabled($data) {
+        return (!empty($data['completionstatusrequired']));
+    }
+
+    function get_data($slashed = true) {
+        $data = parent::get_data($slashed);
+
+        if (!$data) {
+            return false;
+        }
+
+        // Convert completionstatusrequired to a proper integer, if any.
+        $total = 0;
+        if (isset($data->completionstatusrequired) && is_array($data->completionstatusrequired)) {
+            $data->completionstatusrequired = json_encode($data->completionstatusrequired);
+        }
+
+        if (!empty($data->completionunlocked)) {
+            // Turn off completion settings if the checkboxes aren't ticked.
+            $autocompletion = isset($data->completion) && $data->completion == COMPLETION_TRACKING_AUTOMATIC;
+
+            if (isset($data->completionstatusrequired) && $autocompletion) {
+                // Do nothing: completionstatusrequired has been already converted
+                //             into a correct integer representation.
+            } else {
+                $data->completionstatusrequired = null;
+            }
+
+            if (!empty($data->completionscoredisabled) || !$autocompletion) {
+                $data->completionscorerequired = null;
+            }
+        }
+
+        return $data;
     }
 }
