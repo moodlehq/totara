@@ -1213,4 +1213,4 @@ Cron Watcher is a script located in
 
 We recommend you set the script to run every 5 minutes.
 
-See also <a href="http://docs.moodle.org/22/en/Cron" title="Cron help" target="_blank">Cron (at Moodle Wiki)</a>, <a href="http://en.wikipedia.org/wiki/Cron" title="Cron" target="_blank">Cron (at Wikipedia)</a>';
+See also <a href="http://docs.moodle.org/25/en/Cron" title="Cron help" target="_blank">Cron (at Moodle Wiki)</a>, <a href="http://en.wikipedia.org/wiki/Cron" title="Cron" target="_blank">Cron (at Wikipedia)</a>';
