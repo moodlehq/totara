@@ -139,6 +139,16 @@ function xmldb_totara_core_install() {
     set_config('frontpageloggedin', '');
     set_config('allowvisiblecoursesinhiddencategories', '1');
 
+    // Add completionstartonenrol column to course table.
+    $table = new xmldb_table('course');
+
+    // Define field completionstartonenrol to be added to course.
+    $field = new xmldb_field('completionstartonenrol', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
+
+    // Conditionally launch add field completionstartonenrol.
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
 
     // Add RPL column to course_completions table
     $table = new xmldb_table('course_completions');

@@ -1975,21 +1975,6 @@ function xmldb_main_upgrade($oldversion) {
         upgrade_main_savepoint(true, 2013040201.00);
     }
 
-    if ($oldversion < 2013040300.01) {
-
-        // Define field completionstartonenrol to be dropped from course.
-        $table = new xmldb_table('course');
-        $field = new xmldb_field('completionstartonenrol');
-
-        // Conditionally launch drop field completionstartonenrol.
-        if ($dbman->field_exists($table, $field)) {
-            $dbman->drop_field($table, $field);
-        }
-
-        // Main savepoint reached.
-        upgrade_main_savepoint(true, 2013040300.01);
-    }
-
     if ($oldversion < 2013041200.00) {
         // MDL-29877 Some bad restores created grade items with no category information.
         $sql = "UPDATE {grade_items}

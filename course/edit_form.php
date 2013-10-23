@@ -255,6 +255,10 @@ class course_edit_form extends moodleform {
             $mform->setDefault('enablecompletion', $courseconfig->enablecompletion);
             $mform->addHelpButton('enablecompletion', 'enablecompletion', 'completion');
 
+            $mform->addElement('advcheckbox', 'completionstartonenrol', get_string('completionstartonenrol', 'completion'));
+            $mform->setDefault('completionstartonenrol', $courseconfig->completionstartonenrol);
+            $mform->disabledIf('completionstartonenrol', 'enablecompletion', 'eq', 0);
+
             $mform->addElement('advcheckbox', 'completionprogressonview', get_string('completionprogressonview', 'completion'));
             $mform->setDefault('completionprogressonview', $courseconfig->completionprogressonview);
             $mform->disabledIf('completionprogressonview', 'enablecompletion', 'eq', 0);
@@ -263,6 +267,10 @@ class course_edit_form extends moodleform {
             $mform->addElement('hidden', 'enablecompletion');
             $mform->setType('enablecompletion', PARAM_INT);
             $mform->setDefault('enablecompletion', 0);
+
+            $mform->addElement('hidden', 'completionstartonenrol');
+            $mform->setType('completionstartonenrol', PARAM_INT);
+            $mform->setDefault('completionstartonenrol',0);
 
             $mform->addElement('hidden', 'completionprogressonview');
             $mform->setType('completionprogressonview', PARAM_INT);

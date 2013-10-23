@@ -349,6 +349,7 @@ class core_course_external extends external_api {
                 $courseinfo['timemodified'] = $course->timemodified;
                 $courseinfo['forcetheme'] = $course->theme;
                 $courseinfo['enablecompletion'] = $course->enablecompletion;
+                $courseinfo['completionstartonenrol'] = $course->completionstartonenrol;
                 $courseinfo['completionnotify'] = $course->completionnotify;
                 $courseinfo['courseformatoptions'] = array();
                 foreach ($courseformatoptions as $key => $value) {
@@ -422,6 +423,10 @@ class core_course_external extends external_api {
                                     'Enabled, control via completion and activity settings. Disbaled,
                                         not shown in activity settings.',
                                     VALUE_OPTIONAL),
+                            'completionstartonenrol' => new external_value(PARAM_INT,
+                                    '1: begin tracking a student\'s progress in course completion
+                                        after course enrolment. 0: does not',
+                                    VALUE_OPTIONAL),
                             'completionnotify' => new external_value(PARAM_INT,
                                     '1: yes 0: no', VALUE_OPTIONAL),
                             'lang' => new external_value(PARAM_SAFEDIR,
@@ -493,6 +498,10 @@ class core_course_external extends external_api {
                             'enablecompletion' => new external_value(PARAM_INT,
                                     'Enabled, control via completion and activity settings. Disabled,
                                         not shown in activity settings.',
+                                    VALUE_OPTIONAL),
+                            'completionstartonenrol' => new external_value(PARAM_INT,
+                                    '1: begin tracking a student\'s progress in course completion
+                                        after course enrolment. 0: does not',
                                     VALUE_OPTIONAL),
                             'completionnotify' => new external_value(PARAM_INT,
                                     '1: yes 0: no', VALUE_OPTIONAL),
@@ -575,8 +584,12 @@ class core_course_external extends external_api {
                 if (!array_key_exists('enablecompletion', $course)) {
                     $course['enablecompletion'] = $courseconfig->enablecompletion;
                 }
+                if (!array_key_exists('completionstartonenrol', $course)) {
+                    $course['completionstartonenrol'] = $courseconfig->completionstartonenrol;
+                }
             } else {
                 $course['enablecompletion'] = 0;
+                $course['completionstartonenrol'] = 0;
             }
 
             $course['category'] = $course['categoryid'];
@@ -662,6 +675,9 @@ class core_course_external extends external_api {
                             'enablecompletion' => new external_value(PARAM_INT,
                                     'Enabled, control via completion and activity settings. Disabled,
                                         not shown in activity settings.', VALUE_OPTIONAL),
+                            'completionstartonenrol' => new external_value(PARAM_INT,
+                                    '1: begin tracking a student\'s progress in course completion after
+                                        course enrolment. 0: does not', VALUE_OPTIONAL),
                             'completionnotify' => new external_value(PARAM_INT, '1: yes 0: no', VALUE_OPTIONAL),
                             'lang' => new external_value(PARAM_SAFEDIR, 'forced course language', VALUE_OPTIONAL),
                             'forcetheme' => new external_value(PARAM_PLUGIN, 'name of the force theme', VALUE_OPTIONAL),
@@ -766,8 +782,10 @@ class core_course_external extends external_api {
                 }
 
                 // Make sure completion is enabled before setting it.
-                if (array_key_exists('enabledcompletion', $course) && !completion_info::is_enabled_for_site()) {
+                if ((array_key_exists('enabledcompletion', $course) || array_key_exists('completionstartonenrol', $course)) &&
+                    !completion_info::is_enabled_for_site()) {
                     $course['enabledcompletion'] = 0;
+                    $course['completionstartonenrol'] = 0;
                 }
 
                 // Make sure maxbytes are less then CFG->maxbytes.
