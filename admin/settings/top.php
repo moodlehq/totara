@@ -24,6 +24,7 @@ if ($hassiteconfig) {
 $ADMIN->add('root', new admin_category('users', new lang_string('users','admin')));
 $ADMIN->add('root', new admin_category('hierarchies', new lang_string('hierarchies','totara_hierarchy')));
 $ADMIN->add('root', new admin_category('totara_plan', new lang_string('learningplans', 'totara_plan')));
+$ADMIN->add('root', new admin_category('appraisals', new lang_string('appraisals', 'totara_appraisal')));
 $ADMIN->add('root', new admin_category('courses', new lang_string('courses','admin')));
 $ADMIN->add('root', new admin_category('grades', new lang_string('grades')));
 $ADMIN->add('root', new admin_category('badges', new lang_string('badges'), empty($CFG->enablebadges)));
@@ -36,7 +37,6 @@ $ADMIN->add('root', new admin_category('frontpage', new lang_string('frontpage',
 $ADMIN->add('root', new admin_category('server', new lang_string('server','admin')));
 $ADMIN->add('root', new admin_category('mnet', new lang_string('net','mnet'), (isset($CFG->mnet_dispatcher_mode) and $CFG->mnet_dispatcher_mode === 'off')));
 $ADMIN->add('root', new admin_category('reports', new lang_string('reports')));
-$ADMIN->add('root', new admin_category('appraisals', new lang_string('appraisals', 'totara_appraisal')));
 $ADMIN->add('root', new admin_category('development', new lang_string('development', 'admin')));
 
 // hidden unsupported category
