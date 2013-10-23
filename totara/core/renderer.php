@@ -724,4 +724,69 @@ class totara_core_renderer extends plugin_renderer_base {
             echo html_writer::tag('dd', html_writer::link($urlplans, $strplans));
         }
     }
+
+    /**
+     * Get a rule description.
+     *
+     * @param int $ruleid The rule's id.
+     * @param $ruledefinition
+     * @param int $ruleparamid Param id of the rule.
+     * @return string Rule description of the rule.
+     */
+    public function get_rule_description($ruleid, $ruledefinition, $ruleparamid) {
+        $ruledefinition->sqlhandler->fetch($ruleid);
+
+        $ruledefinition->ui->setParamValues($ruledefinition->sqlhandler->paramvalues);
+
+        return $ruledefinition->ui->getRuleDescription($ruleparamid, false);
+    }
+
+    /**
+     * Render text broken rules in a HTML table.
+     *
+     * @return string $output HTML to output.
+     */
+    public function show_text_broken_rules($brokenrules = null) {
+        $output = '';
+        if (is_null($brokenrules)) {
+            $brokenrules = totara_get_text_broken_rules();
+        }
+
+        if (!empty($brokenrules)) {
+            $content = array();
+            $warning = get_string('cohortbugneedfixing', 'totara_cohort');
+            $output .= $this->container($warning, 'notifynotice');
+            $table = new html_table();
+
+            // Avoid duplicate rules. Display draft rules which contain the most recent changes.
+            $brokenrules = array_filter($brokenrules, function ($objtofind) {
+                return $objtofind->activecollectionid != $objtofind->rulecollectionid;
+            });
+
+            foreach ($brokenrules as $ruleparam) {
+                $rule = cohort_rules_get_rule_definition($ruleparam->ruletype, $ruleparam->rulename);
+                if (get_class($rule->ui) === 'cohort_rule_ui_text') {
+                    $description = $this->get_rule_description($ruleparam->ruleid, $rule, $ruleparam->id);
+                    $index = $ruleparam->cohortid . ',' . $ruleparam->cohortname;
+                    if (!isset($content[$index])) {
+                        $content[$index] = '';
+                    }
+                    $content[$index] .= html_writer::tag('div', $description);
+                }
+            }
+
+            $table->head = array(get_string('cohorts', 'totara_cohort'), get_string('rules', 'totara_cohort'));
+            foreach ($content as $key => $value) {
+                list($id, $name) = explode(',', $key);
+                $cohortlink = html_writer::link(new moodle_url('/totara/cohort/rules.php', array('id' => $id)), $name,
+                    array('target' => '_blank'));
+                $cells = array(new html_table_cell($cohortlink), new html_table_cell($value));
+                $table->data[] = new html_table_row($cells);
+            }
+            $output .= $this->container(html_writer::table($table));
+        }
+
+        return $output;
+    }
+
 }

@@ -61,6 +61,7 @@ require_once($CFG->libdir . '/adminlib.php');    // various admin-only functions
 require_once($CFG->libdir . '/upgradelib.php');  // general upgrade/install related functions
 require_once($CFG->libdir . '/pluginlib.php');   // available updates notifications
 require_once($CFG->dirroot . '/version.php');
+require_once($CFG->dirroot . '/totara/core/db/utils.php');
 
 $id             = optional_param('id', '', PARAM_TEXT);
 $confirmupgrade = optional_param('confirmupgrade', 0, PARAM_BOOL);
@@ -264,6 +265,8 @@ if ($version > $CFG->version
     cache_helper::purge_all(true);
     // We then purge the regular caches.
     purge_all_caches();
+
+    totara_preupgrade($a);
 
     $PAGE->set_pagelayout('maintenance');
     $PAGE->set_popup_notification_allowed(false);

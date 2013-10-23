@@ -105,6 +105,12 @@ The following dynamic audience needs your attention:
 ';
 $string['cohortbrokenrulesnotice'] = 'Some broken rules have been found. While there are broken rules the audience membership will not be updated';
 $string['cohortbrokenrulesubject'] = 'Some broken rules have been found';
+$string['cohortbugheading'] = 'There was a bug in Totara 2.4.8 - 2.4.12 which may have affected your
+site. <a href="http://community.totaralms.com/mod/forum/discuss.php?d=3407" target="_blank">Click here</a> for more information about this issue.';
+$string['cohortbugfixingxrules'] = 'The system has been able to fix {$a} cohort rule(s) automatically.';
+$string['cohortbugnounfixable'] = 'All the detected issues were able to be fixed. No more action is required.';
+$string['cohortbugneedfixing'] = 'The system has determined that the following rules may have been affected, but is unable to fix them automatically. Once the upgrade is complete, please review these
+rules and verify they are correct.';
 $string['cohortdateactive'] = 'Active';
 $string['cohortdatealreadyended'] = 'Already ended';
 $string['cohortdatenotyetstarted'] = 'Not yet started';
@@ -320,6 +326,7 @@ $string['pluginname'] = 'Totara Audiences';
 $string['position'] = 'Position';
 $string['potusers'] = 'Potential users';
 $string['potusersmatching'] = 'Potential matching users';
+$string['proceedtochangerules'] = '<br /> Do you want to proceed? <br />';
 $string['programcohortsvisible'] = 'Program audiences (visible)';
 $string['querydebugheader'] = 'Query:';
 $string['reportsdirectlyto'] = 'reports directly to';
@@ -394,6 +401,7 @@ $string['rulename-user-lang'] = 'Language preference';
 $string['rulename-user-lastname'] = 'Last name';
 $string['rulename-user-username'] = 'Username';
 $string['ruleneedsnoconfiguration'] = 'This rule needs no configuration.';
+$string['rules'] = 'Rules';
 $string['rulesapprovesuccess'] = 'Rule changes approved';
 $string['rulescancelsuccess'] = 'Rule changes cancelled';
 $string['rulesetname'] = 'Ruleset #{$a}';
