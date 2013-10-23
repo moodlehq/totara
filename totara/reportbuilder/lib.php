@@ -126,11 +126,8 @@ define('REPORT_CACHING_TIMEOUT', 3600);
  *  Pdf export constants.
  *
  */
-define('PDF_FONT_NAME_DATA', 'Helvetica');
 define('PDF_FONT_SIZE_DATA', 10);
-define('PDF_FONT_NAME_RECORD', 'FreeSans');
 define('PDF_FONT_SIZE_RECORD', 14);
-define('PDF_FONT_NAME_TITLE', 'FreeSans');
 define('PDF_FONT_SIZE_TITLE', 20);
 define('PDF_MARGIN_FOOTER', 10);
 define('PDF_MARGIN_BOTTOM', 20);
@@ -3222,15 +3219,23 @@ class reportbuilder {
         $pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
         $pdf->AddPage();
 
-        $pdf->SetFont(PDF_FONT_NAME_TITLE, 'B', PDF_FONT_SIZE_TITLE);
+        // Get current language to set the font properly.
+        $language = current_language();
+        $font = $this->get_font($language);
+        // Check if language is RTL.
+        if (right_to_left()) {
+            $pdf->setRTL(true);
+        }
+
+        $pdf->SetFont($font, 'B', PDF_FONT_SIZE_TITLE);
         $pdf->Write(0, format_string($this->fullname), '', 0, 'L', true, 0, false, false, 0);
 
         $resultstr = $count == 1 ? 'record' : 'records';
         $recordscount = get_string('x' . $resultstr, 'totara_reportbuilder', $count);
-        $pdf->SetFont(PDF_FONT_NAME_RECORD, 'B', PDF_FONT_SIZE_RECORD);
+        $pdf->SetFont($font, 'B', PDF_FONT_SIZE_RECORD);
         $pdf->Write(0, $recordscount, '', 0, 'L', true, 0, false, false, 0);
 
-        $pdf->SetFont(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA);
+        $pdf->SetFont($font, '', PDF_FONT_SIZE_DATA);
 
         if (is_array($restrictions) && count($restrictions) > 0) {
             $pdf->Write(0, get_string('reportcontents', 'totara_reportbuilder'), '', 0, 'L', true, 0, false, false, 0);
@@ -3290,6 +3295,22 @@ class reportbuilder {
             $pdf->Output($filename, 'D');
         } else {
             $pdf->Output($file, 'F');
+        }
+    }
+
+    /**
+     * Returns the font that must be used based on the language
+     *
+     * @param string $language Language that is being used
+     * @return string The appropriate font based on the language
+     */
+    function get_font($language) {
+        if (in_array($language, array('zh_cn', 'ja'))) {
+            return 'droidsansfallback';
+        } else if ($language == 'th') {
+            return 'cordiaupc';
+        } else {
+            return 'dejavusans';
         }
     }
 
