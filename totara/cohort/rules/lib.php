@@ -49,6 +49,7 @@ define('COHORT_RULES_OP_IN_ISEQUALTO', 2);
 define('COHORT_RULES_OP_IN_STARTSWITH', 3);
 define('COHORT_RULES_OP_IN_ENDSWITH', 4);
 define('COHORT_RULES_OP_IN_ISEMPTY', 5);
+define('COHORT_RULES_OP_IN_NOTEQUALTO', 6);
 
 global $COHORT_RULES_OP_IN_LIST;
 global $COHORT_RULES_OP_IN;
@@ -65,6 +66,7 @@ $COHORT_RULES_OP_IN_LIST = array(
     COHORT_RULES_OP_IN_STARTSWITH => get_string('startswith', 'totara_cohort'),
     COHORT_RULES_OP_IN_ENDSWITH   => get_string('endswith', 'totara_cohort'),
     COHORT_RULES_OP_IN_ISEMPTY    => get_string('isempty', 'totara_cohort'),
+    COHORT_RULES_OP_IN_NOTEQUALTO => get_string('isnotequalto', 'totara_cohort'),
 );
 
 define('COHORT_RULES_UI_MENU_LIMIT', 2500);

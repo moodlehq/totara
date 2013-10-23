@@ -307,6 +307,7 @@ $string['pleaseusesearch'] = 'Please use the search';
 $string['position'] = 'Position';
 $string['potusers'] = 'Potential users';
 $string['potusersmatching'] = 'Potential matching users';
+$string['proceedtochangerules'] = '<br /> Do you want to proceed? <br />';
 $string['querydebugheader'] = 'Query:';
 $string['reportsto'] = 'reports to';
 $string['reportsdirectlyto'] = 'reports directly to';
@@ -432,6 +433,9 @@ $string['ruledesc-systemaccess-firstlogin'] = 'user\'s first login date';
 $string['rulename-systemaccess-lastlogin'] = 'Last login date';
 $string['ruledesc-systemaccess-lastlogin'] = 'user\'s last login date';
 $string['rulegroup-usercustomfields'] = 'User custom fields';
+$string['rules'] = 'Rules';
+$string['rulesabouttochange'] = 'There have been internal changes for the options used in dynamic rules.
+<br />If you proceed you cannot go back and keep compatibility with these rules as there is going to be changes in the database';
 $string['addcourses'] = 'Add courses';
 $string['addprograms'] = 'Add programs';
 $string['deletelearningconfirm'] = 'Are you sure you want to delete this learning item?';
@@ -439,3 +443,8 @@ $string['savinglearning'] = 'Saving learning...';
 $string['na'] = 'n/a';
 $string['useriscohortmember'] = 'User is a member of any of these audiences:';
 $string['userisnotcohortmember'] = 'User is NOT a member of any of these audiences:';
+$string['cohortbugheading'] = 'There was a bug in Totara 2.4.8 - 2.4.12 which may have affected your site. <a href="http://community.totaralms.com/mod/forum/discuss.php?d=3407" target="_blank">Click here</a> for more information about this issue.';
+$string['cohortbugfixingxrules'] = 'The system has been able to fix {$a} cohort rule(s) automatically.';
+$string['cohortbugnounfixable'] = 'All the detected issues were able to be fixed. No more action is required.';
+$string['cohortbugneedfixing'] = 'The system has determined that the following rules may have been affected, but is unable to fix them automatically. Once the upgrade is complete, please review these rules and verify they are correct.';
+
