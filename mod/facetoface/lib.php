@@ -1129,7 +1129,7 @@ function facetoface_download_attendance($facetofacename, $facetofaceid, $locatio
         require_once($CFG->dirroot.'/lib/excellib.class.php');
         $downloadfilename .= '.xls';
         $workbook = new MoodleExcelWorkbook('-');
-        $dateformat =& $workbook->add_format();
+        $dateformat = $workbook->add_format();
         $dateformat->set_num_format('d mmm yy'); // TODO: use format specified in language pack
     }
 
