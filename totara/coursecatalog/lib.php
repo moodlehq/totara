@@ -185,7 +185,7 @@ function totara_print_main_subcategories($parentid, $secondarycats, $secondary_i
     // if there are some left, print a "more" link to the parent category
     if ($showmorelink) {
         $out .= html_writer::tag('li', html_writer::link(new moodle_url('/course/category.php',
-                        array('id' => $parentid)), get_string('more').'&hellip;', array('class' => 'more')));
+                        array('id' => $parentid, 'viewtype' => $viewtype)), get_string('more').'&hellip;', array('class' => 'more')));
     }
     $out = html_writer::tag('ul', $out, array('class' => "course-subcat-listing"));
     return $out;
