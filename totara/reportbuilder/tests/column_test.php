@@ -225,13 +225,18 @@ class columns_test extends reportcache_advanced_testcase {
         'id' => 1, 'data' => 1, 'fieldid' => 1, 'competencyid' => 2, 'typeid' => 1,
     );
 
+    protected $f2f_room_data = array(
+        'id' => 1, 'name' => 'F2F room', 'building' => 'Building 1', 'address' => 'Wellington', 'capacity' => 10, 'type' => 'internal',
+        'description' => 'Room description', 'custom' => 0, 'timecreated' => 1265963591, 'timemodified' => 1265963591
+    );
+
     protected $f2f_data = array(
         'id' => 1, 'course' => 1, 'name' => 'F2F name', 'shortname' => 'f2f', 'details' => 'details',
     );
 
     protected $f2f_session_data = array(
         'id' => 1, 'facetoface' => 1, 'capacity' => 10, 'details' => 'details', 'duration' => 60,
-        'datetimeknown' => 1, 'normalcost' => 100, 'discountcost' => 90, 'usermodified' => 2,
+        'datetimeknown' => 1, 'normalcost' => 100, 'discountcost' => 90, 'usermodified' => 2, 'roomid' => 1
     );
 
     protected $f2f_session_dates_data = array(
@@ -571,6 +576,7 @@ class columns_test extends reportcache_advanced_testcase {
             'goal_personal' => array($this->goal_personal_data),
             'goal_record' => array($this->goal_record),
             'goal_item_history' => array($this->goal_item_history_data),
+            'facetoface_room' => array($this->f2f_room_data),
             'facetoface' => array($this->f2f_data),
             'facetoface_sessions' => array($this->f2f_session_data),
             'facetoface_sessions_dates' => array($this->f2f_session_dates_data),

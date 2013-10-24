@@ -112,7 +112,8 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'LEFT',
                 '{facetoface_room}',
                 'sessions.roomid = room.id',
-                REPORT_BUILDER_RELATION_ONE_TO_ONE
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'sessions'
             ),
         );
 
