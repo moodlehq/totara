@@ -224,11 +224,8 @@ class time_allowance_exception extends prog_exception {
     }
 
     public function handles($action) {
-        if (in_array($action, array(SELECTIONACTION_OVERRIDE_EXCEPTION, SELECTIONACTION_AUTO_TIME_ALLOWANCE, SELECTIONACTION_DISMISS_EXCEPTION))) {
-            return true;
-        }
-
-        return false;
+        return in_array($action, array(SELECTIONACTION_OVERRIDE_EXCEPTION,
+            SELECTIONACTION_AUTO_TIME_ALLOWANCE, SELECTIONACTION_DISMISS_EXCEPTION));
     }
 
     public function handle($action=null) {
@@ -259,11 +256,38 @@ class already_assigned_exception extends prog_exception {
     }
 
     public function handles($action) {
-        if (in_array($action, array(SELECTIONACTION_OVERRIDE_EXCEPTION, SELECTIONACTION_DISMISS_EXCEPTION))) {
+        return in_array($action, array(SELECTIONACTION_OVERRIDE_EXCEPTION,
+            SELECTIONACTION_DISMISS_EXCEPTION));
+    }
+
+    public function handle($action=null) {
+
+        if (!$this->handles($action)) {
             return true;
         }
 
-        return false;
+        switch ($action) {
+            case SELECTIONACTION_OVERRIDE_EXCEPTION:
+                return $this->override_and_add_program();
+                break;
+            default:
+                return parent::handle($action);;
+                break;
+        }
+    }
+
+}
+
+class duplicate_course_exception extends prog_exception {
+
+    public function __construct($programid, $exceptionob=null) {
+        parent::__construct($programid, $exceptionob);
+        $this->exceptiontype = EXCEPTIONTYPE_DUPLICATE_COURSE;
+    }
+
+    public function handles($action) {
+        return in_array($action, array(SELECTIONACTION_OVERRIDE_EXCEPTION,
+            SELECTIONACTION_DISMISS_EXCEPTION));
     }
 
     public function handle($action=null) {
@@ -291,11 +315,8 @@ class completion_time_unknown_exception extends prog_exception {
     }
 
     public function handles($action) {
-        if (in_array($action, array(SELECTIONACTION_AUTO_TIME_ALLOWANCE, SELECTIONACTION_DISMISS_EXCEPTION))) {
-            return true;
-        }
-
-        return false;
+        return in_array($action, array(SELECTIONACTION_AUTO_TIME_ALLOWANCE,
+            SELECTIONACTION_DISMISS_EXCEPTION));
     }
 
     public function handle($action=null) {

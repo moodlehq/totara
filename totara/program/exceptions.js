@@ -77,6 +77,9 @@ M.totara_programexceptions = M.totara_programexceptions || {
             else if (typeId === module.config.EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN) {
                 selectionId = module.config.SELECTIONTYPE_COMPLETION_TIME_UNKNOWN;
             }
+            else if (typeId === module.config.EXCEPTIONTYPE_DUPLICATE_COURSE) {
+                selectionId = module.config.SELECTIONTYPE_DUPLICATE_COURSE;
+            }
             module.items.addItem(module.createItem(selectionId,typeId,this));
         });
 

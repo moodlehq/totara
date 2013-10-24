@@ -30,12 +30,14 @@ define('EXCEPTIONTYPE_TIME_ALLOWANCE', 1);
 define('EXCEPTIONTYPE_ALREADY_ASSIGNED', 2);
 define('EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN', 4);
 define('EXCEPTIONTYPE_UNKNOWN', 5);
+define('EXCEPTIONTYPE_DUPLICATE_COURSE', 6);
 
 define('SELECTIONTYPE_NONE', 0);
 define('SELECTIONTYPE_ALL', -1);
 define('SELECTIONTYPE_TIME_ALLOWANCE', 1);
 define('SELECTIONTYPE_ALREADY_ASSIGNED', 2);
 define('SELECTIONTYPE_COMPLETION_TIME_UNKNOWN', 4);
+define('SELECTIONTYPE_DUPLICATE_COURSE', 5);
 
 define('SELECTIONACTION_NONE', 0);
 define('SELECTIONACTION_AUTO_TIME_ALLOWANCE', 1);
@@ -61,14 +63,16 @@ class prog_exceptions_manager {
             EXCEPTIONTYPE_TIME_ALLOWANCE    => 'time_allowance_exception',
             EXCEPTIONTYPE_ALREADY_ASSIGNED  => 'already_assigned_exception',
             EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN => 'completion_time_unknown_exception',
-            EXCEPTIONTYPE_UNKNOWN => 'unknown_exception'
+            EXCEPTIONTYPE_UNKNOWN => 'unknown_exception',
+            EXCEPTIONTYPE_DUPLICATE_COURSE  => 'duplicate_course_exception'
         );
 
         $this->exceptiontype_descriptors = array(
             EXCEPTIONTYPE_TIME_ALLOWANCE    => get_string('timeallowance', 'totara_program'),
             EXCEPTIONTYPE_ALREADY_ASSIGNED  => get_string('currentlyassigned', 'totara_program'),
             EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN  => get_string('completiontimeunknown', 'totara_program'),
-            EXCEPTIONTYPE_UNKNOWN => get_string('unknownexception', 'totara_program')
+            EXCEPTIONTYPE_UNKNOWN => get_string('unknownexception', 'totara_program'),
+            EXCEPTIONTYPE_DUPLICATE_COURSE  => get_string('duplicatecourse', 'totara_program')
         );
 
         $this->exception_actions = array(
@@ -211,6 +215,9 @@ class prog_exceptions_manager {
                     break;
                 case SELECTIONTYPE_COMPLETION_TIME_UNKNOWN:
                     $exceptiontype = EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN;
+                    break;
+                case SELECTIONTYPE_DUPLICATE_COURSE:
+                    $exceptiontype = EXCEPTIONTYPE_DUPLICATE_COURSE;
                     break;
                 default:
                     $exceptiontype = EXCEPTIONTYPE_UNKNOWN;

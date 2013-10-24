@@ -717,6 +717,34 @@ class program {
     }
 
     /**
+     * Looks for courses that have been assigned to this certification but exists in another certification
+     * that this user has already been assigned to.
+     *
+     * @global object $DB
+     * @param int $userid
+     * @return bool true if the user is on another certification with the same course
+     */
+    public function duplicate_course($userid) {
+        global $DB;
+        if (!isset($this->certifid) || empty($this->certifid)) {
+            return false;
+        }
+        $sql = "SELECT DISTINCT pcc.courseid
+                FROM {prog} p
+                JOIN {prog_user_assignment} pua ON pua.programid = p.id AND pua.userid = :userid
+                JOIN {prog_courseset} pc ON pc.programid = p.id
+                JOIN {prog_courseset_course} pcc ON pcc.coursesetid = pc.id
+                WHERE p.certifid IS NOT NULL
+                AND p.id <> :programid1
+                AND EXISTS (SELECT thispcc.courseid
+                            FROM {prog_courseset} thispc
+                            JOIN {prog_courseset_course} thispcc ON thispcc.coursesetid = thispc.id
+                            WHERE thispcc.courseid = pcc.courseid
+                            AND thispc.programid = :programid2)";
+        return $DB->record_exists_sql($sql, array('userid' => $userid, 'programid1' => $this->id, 'programid2' => $this->id));
+    }
+
+    /**
      * Return true or false depending on whether or not the specified user has
      * completed this program
      *
@@ -1595,6 +1623,9 @@ class program {
             return true;
         } else if ($this->assigned_to_users_non_required_learning($userid)) {
             $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_ALREADY_ASSIGNED, $userid, $assignment->id, $now);
+            return true;
+        } else if ($this->duplicate_course($userid)) {
+            $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_DUPLICATE_COURSE, $userid, $assignment->id, $now);
             return true;
         }
 

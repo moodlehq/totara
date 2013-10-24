@@ -133,11 +133,13 @@ $args = array('args'=> '{"id":'.$id.','.
                         '"EXCEPTIONTYPE_TIME_ALLOWANCE":'.EXCEPTIONTYPE_TIME_ALLOWANCE.','.
                         '"EXCEPTIONTYPE_ALREADY_ASSIGNED":'.EXCEPTIONTYPE_ALREADY_ASSIGNED.','.
                         '"EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN":'.EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN.','.
+                        '"EXCEPTIONTYPE_DUPLICATE_COURSE":'.EXCEPTIONTYPE_DUPLICATE_COURSE.','.
                         '"SELECTIONTYPE_ALL":'.SELECTIONTYPE_ALL.','.
                         '"SELECTIONTYPE_NONE":'.SELECTIONTYPE_NONE.','.
                         '"SELECTIONTYPE_TIME_ALLOWANCE":'.SELECTIONTYPE_TIME_ALLOWANCE.','.
                         '"SELECTIONTYPE_ALREADY_ASSIGNED":'.SELECTIONTYPE_ALREADY_ASSIGNED.','.
-                        '"SELECTIONTYPE_COMPLETION_TIME_UNKNOWN":'.SELECTIONTYPE_COMPLETION_TIME_UNKNOWN.'}');
+                        '"SELECTIONTYPE_COMPLETION_TIME_UNKNOWN":'.SELECTIONTYPE_COMPLETION_TIME_UNKNOWN.','.
+                        '"SELECTIONTYPE_DUPLICATE_COURSE":'.SELECTIONTYPE_DUPLICATE_COURSE.'}');
 $jsmodule = array(
      'name' => 'totara_programexceptions',
      'fullpath' => '/totara/program/exceptions.js',
