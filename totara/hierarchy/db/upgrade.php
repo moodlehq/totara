@@ -740,5 +740,111 @@ function xmldb_totara_hierarchy_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2013101500, 'totara', 'hierarchy');
     }
 
+    if ($oldversion < 2013103000) {
+        // Adding foreign keys.
+        $tables = array(
+            'comp' => array(
+                new xmldb_key('comp_com_fk', XMLDB_KEY_FOREIGN, array('parentid'), 'comp', 'id'),
+                new xmldb_key('comp_comtyp_fk', XMLDB_KEY_FOREIGN, array('typeid'), 'comp_type', 'id'),
+                new xmldb_key('comp_comfra_fk', XMLDB_KEY_FOREIGN, array('frameworkid'), 'comp_framework', 'id')),
+            'comp_record' => array(
+                new xmldb_key('compreco_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id'),
+                new xmldb_key('compreco_com_fk', XMLDB_KEY_FOREIGN, array('competencyid'), 'comp', 'id'),
+                new xmldb_key('compreco_pos_fk', XMLDB_KEY_FOREIGN, array('positionid'), 'pos', 'id'),
+                new xmldb_key('compreco_org_fk', XMLDB_KEY_FOREIGN, array('organisationid'), 'org', 'id'),
+                new xmldb_key('compreco_ass_fk', XMLDB_KEY_FOREIGN, array('assessorid'), 'userid', 'id'),
+                new xmldb_key('compreco_pro_fk', XMLDB_KEY_FOREIGN, array('proficiency'), 'comp_scale_values', 'id')),
+            'comp_record_history' => array(
+                new xmldb_key('comprecohist_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id'),
+                new xmldb_key('comprecohist_com_fk', XMLDB_KEY_FOREIGN, array('competencyid'), 'comp', 'id'),
+                new xmldb_key('comprecohist_pro_fk', XMLDB_KEY_FOREIGN, array('proficiency'), 'comp_scale_values', 'id')),
+            'comp_criteria' => array(
+                new xmldb_key('compcrit_com_fk', XMLDB_KEY_FOREIGN, array('competencyid'), 'comp', 'id')),
+            'comp_criteria_record' => array(
+                new xmldb_key('compcritreco_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id'),
+                new xmldb_key('compcritreco_com_fk', XMLDB_KEY_FOREIGN, array('competencyid'), 'comp', 'id'),
+                new xmldb_key('compcritreco_ite_fk', XMLDB_KEY_FOREIGN, array('itemid'), 'comp_criteria', 'id')),
+            'comp_scale_assignments' => array(
+                new xmldb_key('compscalassi_sca_fk', XMLDB_KEY_FOREIGN, array('scaleid'), 'comp_scale', 'id'),
+                new xmldb_key('compscalassi_fra_fk', XMLDB_KEY_FOREIGN, array('frameworkid'), 'comp_framework', 'id')),
+            'comp_scale_values' => array(
+                new xmldb_key('compscalvalu_sca_fk', XMLDB_KEY_FOREIGN, array('scaleid'), 'comp_scale', 'id')),
+            'comp_template' => array(
+                new xmldb_key('comptemp_fra_fk', XMLDB_KEY_FOREIGN, array('frameworkid'), 'comp_framework', 'id')),
+            'comp_template_assignment' => array(
+                new xmldb_key('comptempassi_tem_fk', XMLDB_KEY_FOREIGN, array('templateid'), 'comp_template', 'id'),
+                new xmldb_key('comptempassi_ins_fk', XMLDB_KEY_FOREIGN, array('instanceid'), 'comp', 'id'),
+                new xmldb_key('comptempassi_use_fk', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', 'id')),
+            'comp_type_info_data' => array(
+                new xmldb_key('comptypeinfodata_fie_fk', XMLDB_KEY_FOREIGN, array('fieldid'), 'comp_type_info_field', 'id'),
+                new xmldb_key('comptypeinfodata_com_fk', XMLDB_KEY_FOREIGN, array('competencyid'), 'comp', 'id')),
+            'comp_type_info_field' => array(
+                new xmldb_key('comptypeinfofiel_typ_fk', XMLDB_KEY_FOREIGN, array('typeid'), 'comp_type', 'id')),
+            'pos' => array(
+                new xmldb_key('pos_fra_fk', XMLDB_KEY_FOREIGN, array('frameworkid'), 'pos_framework', 'id'),
+                new xmldb_key('pos_typ_fk', XMLDB_KEY_FOREIGN, array('typeid'), 'pos_type', 'id'),
+                new xmldb_key('pos_par_fk', XMLDB_KEY_FOREIGN, array('parentid'), 'pos', 'id')),
+            'pos_assignment' => array(
+                new xmldb_key('posassi_org_fk', XMLDB_KEY_FOREIGN, array('organisationid'), 'org', 'id'),
+                new xmldb_key('posassi_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id'),
+                new xmldb_key('posassi_app_fk', XMLDB_KEY_FOREIGN, array('appraiserid'), 'user', 'id'),
+                new xmldb_key('posassi_pos_fk', XMLDB_KEY_FOREIGN, array('positionid'), 'pos', 'id'),
+                new xmldb_key('posassi_rep_fk', XMLDB_KEY_FOREIGN, array('reportstoid'), 'role_assignments', 'id'),
+                new xmldb_key('posassi_man_fk', XMLDB_KEY_FOREIGN, array('managerid'), 'user', 'id')),
+            'pos_assignment_history' => array(
+                new xmldb_key('posassihist_org_fk', XMLDB_KEY_FOREIGN, array('organisationid'), 'org', 'id'),
+                new xmldb_key('posassihist_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id'),
+                new xmldb_key('posassihist_pos_fk', XMLDB_KEY_FOREIGN, array('positionid'), 'pos', 'id'),
+                new xmldb_key('posassihist_rep_fk', XMLDB_KEY_FOREIGN, array('reportstoid'), 'role_assignments', 'id')),
+            'pos_competencies' => array(
+                new xmldb_key('poscomp_pos_fk', XMLDB_KEY_FOREIGN, array('positionid'), 'pos', 'id'),
+                new xmldb_key('poscomp_com_fk', XMLDB_KEY_FOREIGN, array('competencyid'), 'comp', 'id')),
+            'pos_type_info_data' => array(
+                new xmldb_key('postypeinfodata_fie_fk', XMLDB_KEY_FOREIGN, array('fieldid'), 'pos_type_info_field', 'id'),
+                new xmldb_key('postypeinfodata_pos_fk', XMLDB_KEY_FOREIGN, array('positionid'), 'pos', 'id')),
+            'pos_type_info_field' => array(
+                new xmldb_key('postypeinfofiel_typ_fk', XMLDB_KEY_FOREIGN, array('typeid'), 'pos_type', 'id')),
+            'org' => array(
+                new xmldb_key('org_fra_fk', XMLDB_KEY_FOREIGN, array('frameworkid'), 'org_framework', 'id'),
+                new xmldb_key('org_par_fk', XMLDB_KEY_FOREIGN, array('parentid'), 'org', 'id'),
+                new xmldb_key('org_typ_fk', XMLDB_KEY_FOREIGN, array('typeid'), 'org_type', 'id')),
+            'org_competencies' => array(
+                new xmldb_key('orgcomp_org_fk', XMLDB_KEY_FOREIGN, array('organisationid'), 'org', 'id'),
+                new xmldb_key('orgcomp_com_fk', XMLDB_KEY_FOREIGN, array('competencyid'), 'comp', 'id')),
+            'org_relations' => array(
+                new xmldb_key('orgrela_id1_fk', XMLDB_KEY_FOREIGN, array('id1'), 'org', 'id'),
+                new xmldb_key('orgrela_id2_fk', XMLDB_KEY_FOREIGN, array('id2'), 'org', 'id')),
+            'org_type_info_data' => array(
+                new xmldb_key('orgtypeinfodata_fie_fk', XMLDB_KEY_FOREIGN, array('fieldid'), 'org_type_info_field', 'id'),
+                new xmldb_key('orgtypeinfodata_org_fk', XMLDB_KEY_FOREIGN, array('organisationid'), 'org', 'id')),
+            'org_type_info_field' => array(
+                new xmldb_key('orgtypeinfofield_typ_fk', XMLDB_KEY_FOREIGN, array('typeid'), 'org_type', 'id')),
+            'goal' => array(
+                new xmldb_key('goal_par_fk', XMLDB_KEY_FOREIGN, array('parentid'), 'goal', 'id'),
+                new xmldb_key('goal_typ_fk', XMLDB_KEY_FOREIGN, array('typeid'), 'goal_type', 'id')),
+            'goal_scale' => array(
+                new xmldb_key('goalscal_def_fk', XMLDB_KEY_FOREIGN, array('defaultid'), 'goal_scale_values', 'id')),
+            'goal_scale_assignments' => array(
+                new xmldb_key('goalscalassi_sca_fk', XMLDB_KEY_FOREIGN, array('scaleid'), 'goal_scale', 'id'),
+                new xmldb_key('goalscalassi_fra_fk', XMLDB_KEY_FOREIGN, array('frameworkid'), 'goal_framework', 'id')),
+            'goal_scale_values' => array(
+                new xmldb_key('goalscalvalu_sca_fk', XMLDB_KEY_FOREIGN, array('scaleid'), 'goal_scale', 'id')),
+            'goal_type_info_data' => array(
+                new xmldb_key('goaltypeinfodata_goa_fk', XMLDB_KEY_FOREIGN, array('goalid'), 'goal', 'id')),
+            'goal_type_info_field' => array(
+                new xmldb_key('goaltypeinfodata_typ_fk', XMLDB_KEY_FOREIGN, array('typeid'), 'goal_type', 'id')),
+            'goal_item_history' => array(
+                new xmldb_key('goalitemhist_sca_fk', XMLDB_KEY_FOREIGN, array('scalevalueid'), 'goal_scale_values', 'id')));
+
+        foreach ($tables as $tablename => $keys) {
+            $table = new xmldb_table($tablename);
+            foreach ($keys as $key) {
+                $dbman->add_key($table, $key);
+            }
+        }
+        // Cohort savepoint reached.
+        upgrade_plugin_savepoint(true, 2013103000, 'totara', 'hierarchy');
+    }
+
     return true;
 }

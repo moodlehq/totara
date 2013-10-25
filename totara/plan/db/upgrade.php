@@ -236,5 +236,76 @@ function xmldb_totara_plan_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2013040201, 'totara', 'plan');
     }
 
+    if ($oldversion < 2013103000) {
+        // Adding foreign keys.
+        $tables = array(
+        'dp_permissions' => array(
+            new xmldb_key('dpperm_tem_fk', XMLDB_KEY_FOREIGN, array('templateid'), 'dp_template', 'id')),
+        'dp_component_settings' => array(
+            new xmldb_key('dpcompsett_tem_fk', XMLDB_KEY_FOREIGN, array('templateid'), 'dp_template', 'id')),
+        'dp_course_settings' => array(
+            new xmldb_key('dpcoursett_tem_fk', XMLDB_KEY_FOREIGN_UNIQUE, array('templateid'), 'dp_template', 'id'),
+            new xmldb_key('dpcoursett_pri_fk', XMLDB_KEY_FOREIGN, array('priorityscale'), 'dp_priority_scale', 'id')),
+        'dp_plan_course_assign' => array(
+            new xmldb_key('dpplancourassi_pla_fk', XMLDB_KEY_FOREIGN, array('planid'), 'dp_plan', 'id'),
+            new xmldb_key('dpplancourassi_cou_fk', XMLDB_KEY_FOREIGN, array('courseid'), 'course', 'id'),
+            new xmldb_key('dpplancourassi_pri_fk', XMLDB_KEY_FOREIGN, array('priority'), 'dp_priority_scale_value', 'id'),
+            new xmldb_key('dpplancourassi_com_fk', XMLDB_KEY_FOREIGN, array('completionstatus'), 'course_completions', 'id')),
+        'dp_plan_competency_assign' => array(
+            new xmldb_key('dpplancompassi_pla_fk', XMLDB_KEY_FOREIGN, array('planid'), 'dp_plan', 'id'),
+            new xmldb_key('dpplancompassi_com_fk', XMLDB_KEY_FOREIGN, array('competencyid'), 'comp', 'id'),
+            new xmldb_key('dpplancompassi_pri_fk', XMLDB_KEY_FOREIGN, array('priority'), 'dp_priority_scale_value', 'id'),
+            new xmldb_key('dpplancompassi_sca_fk', XMLDB_KEY_FOREIGN, array('scalevalueid'), 'comp_scale_values', 'id')),
+        'dp_competency_settings' => array(
+            new xmldb_key('dpcompsett_tem_fk', XMLDB_KEY_FOREIGN_UNIQUE, array('templateid'), 'dp_template', 'id'),
+            new xmldb_key('dpcompsett_pri_fk', XMLDB_KEY_FOREIGN, array('priorityscale'), 'dp_priority_scale', 'id')),
+        'dp_priority_scale' => array(
+            new xmldb_key('dpprioscal_def_fk', XMLDB_KEY_FOREIGN, array('defaultid'), 'dp_priority_scale_value', 'id'),
+            new xmldb_key('dpprioscal_use_fk', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', 'id')),
+        'dp_priority_scale_value' => array(
+            new xmldb_key('dpprioscalvalu_use_fk', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', 'id'),
+            new xmldb_key('dpprioscalvalu_pri_fk', XMLDB_KEY_FOREIGN, array('priorityscaleid'), 'dp_priority_scale', 'id')),
+        'dp_objective_scale' => array(
+            new xmldb_key('dpobjescal_use_fk', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', 'id'),
+            new xmldb_key('dpobjescal_def_fk', XMLDB_KEY_FOREIGN, array('defaultid'), 'dp_objective_scale_value', 'id')),
+        'dp_objective_scale_value' => array(
+            new xmldb_key('dpobjescalvalu_obj_fk', XMLDB_KEY_FOREIGN, array('objscaleid'), 'dp_objective_scale', 'id'),
+            new xmldb_key('dpobjescalvalu_use_fk', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', 'id')),
+        'dp_plan_history' => array(
+            new xmldb_key('dpplanhist_pla_fk', XMLDB_KEY_FOREIGN, array('planid'), 'dp_plan', 'id'),
+            new xmldb_key('dpplanhist_use_fk', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', 'id')),
+        'dp_plan_evidence' => array(
+            new xmldb_key('dpplanevid_user_fk', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', 'id'),
+            new xmldb_key('dpplanevid_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id')),
+        'dp_objective_settings' => array(
+            new xmldb_key('dpobjesett_tem_fk', XMLDB_KEY_FOREIGN, array('templateid'), 'dp_template', 'id'),
+            new xmldb_key('dpobjesett_pri_fk', XMLDB_KEY_FOREIGN, array('priorityscale'), 'dp_priority_scale', 'id'),
+            new xmldb_key('dpobjesett_obj_fk', XMLDB_KEY_FOREIGN, array('objectivescale'), 'dp_objective_scale', 'id')),
+        'dp_plan_objective' => array(
+            new xmldb_key('dpplanobje_pla_fk', XMLDB_KEY_FOREIGN, array('planid'), 'dp_plan', 'id'),
+            new xmldb_key('dpplanobje_pri_fk', XMLDB_KEY_FOREIGN, array('priority'), 'dp_priority_scale_value', 'id'),
+            new xmldb_key('dpplanobje_sca_fk', XMLDB_KEY_FOREIGN, array('scalevalueid'), 'dp_objective_scale_value', 'id')),
+        'dp_plan_settings' => array(
+            new xmldb_key('dpplansett_tem_fk', XMLDB_KEY_FOREIGN_UNIQUE, array('templateid'), 'dp_template', 'id')),
+        'dp_plan_program_assign' => array(
+            new xmldb_key('dpplanprogassi_pla_fk', XMLDB_KEY_FOREIGN, array('planid'), 'dp_plan', 'id'),
+            new xmldb_key('dpplanprogassi_pro_fk', XMLDB_KEY_FOREIGN, array('programid'), 'prog', 'id'),
+            new xmldb_key('dpplanprogassi_pri_fk', XMLDB_KEY_FOREIGN, array('priority'), 'dp_priority_scale_value', 'id')),
+        'dp_program_settings' => array(
+            new xmldb_key('dpprogsett_tem_fk', XMLDB_KEY_FOREIGN_UNIQUE, array('templateid'), 'dp_template', 'id')),
+        'dp_evidence_type' => array(
+            new xmldb_key('dpevidtype_use_fk', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', 'id')));
+
+        foreach ($tables as $tablename => $keys) {
+            $table = new xmldb_table($tablename);
+            foreach ($keys as $key) {
+                $dbman->add_key($table, $key);
+            }
+        }
+
+        // Plan savepoint reached.
+        upgrade_plugin_savepoint(true, 2013103000, 'totara', 'plan');
+    }
+
     return true;
 }

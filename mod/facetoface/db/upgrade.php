@@ -1704,6 +1704,43 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2013102100, 'facetoface');
     }
 
+    if ($oldversion < 2013103000) {
+        // Adding foreign keys.
+        $tables = array(
+            'facetoface' => array(
+                new xmldb_key('face_cou_fk', XMLDB_KEY_FOREIGN, array('course'), 'course', 'id')),
+            'facetoface_session_roles' => array(
+                new xmldb_key('facesessrole_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id')),
+            'facetoface_sessions' => array(
+                new xmldb_key('facesess_roo_fk', XMLDB_KEY_FOREIGN, array('roomid'), 'facetoface_room', 'id'),
+                new xmldb_key('facesess_use_fk', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', 'id')),
+            'facetoface_signups' => array(
+                new xmldb_key('facesign_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id')),
+            'facetoface_signups_status' => array(
+                new xmldb_key('facesignstat_cre_fk', XMLDB_KEY_FOREIGN, array('createdby'), 'user', 'id')),
+            'facetoface_session_data' => array(
+                new xmldb_key('facesessdata_fie_fk', XMLDB_KEY_FOREIGN, array('fieldid'), 'facetoface_session_field', 'id'),
+                new xmldb_key('facesessdata_ses_fk', XMLDB_KEY_FOREIGN, array('sessionid'), 'facetoface_sessions', 'id')),
+            'facetoface_notice_data' => array(
+                new xmldb_key('facenotidata_fie_fk', XMLDB_KEY_FOREIGN, array('fieldid'), 'facetoface_session_field', 'id'),
+                new xmldb_key('facenotidata_not_fk', XMLDB_KEY_FOREIGN, array('noticeid'), 'facetoface_notice', 'id')),
+            'facetoface_notification' => array(
+                new xmldb_key('facenoti_use_fk', XMLDB_KEY_FOREIGN, array('usermodified'), 'user', 'id')),
+            'facetoface_notification_hist' => array(
+                new xmldb_key('facenotihist_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id')));
+
+
+        foreach ($tables as $tablename => $keys) {
+            $table = new xmldb_table($tablename);
+            foreach ($keys as $key) {
+                $dbman->add_key($table, $key);
+            }
+        }
+
+        // Facetoface savepoint reached.
+        upgrade_mod_savepoint(true, 2013103000, 'facetoface');
+    }
+
     return $result;
 }
 

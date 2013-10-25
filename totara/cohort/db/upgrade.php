@@ -585,6 +585,35 @@ function xmldb_totara_cohort_upgrade($oldversion) {
             }
         }
 
+        // Adding foreign keys.
+        $tables = array(
+            'cohort_rule_collections' => array(
+                new xmldb_key('cohorulecoll_coh_fk', XMLDB_KEY_FOREIGN, array('cohortid'), 'cohort', 'id'),
+                new xmldb_key('cohorulecoll_mod_fk', XMLDB_KEY_FOREIGN, array('modifierid'), 'user', 'id')),
+            'cohort_rulesets' => array(
+                new xmldb_key('cohorule_rul_fk', XMLDB_KEY_FOREIGN, array('rulecollectionid'), 'cohort_rule_collections', 'id'),
+                new xmldb_key('cohorule_mod_fk', XMLDB_KEY_FOREIGN, array('modifierid'), 'user', 'id')),
+            'cohort_rules' => array(
+                new xmldb_key('cohorules_rul_fk', XMLDB_KEY_FOREIGN, array('rulesetid'), 'cohort_rulesets', 'id'),
+                new xmldb_key('cohorules_mod_fk', XMLDB_KEY_FOREIGN, array('modifierid'), 'user', 'id')),
+            'cohort_rule_params' => array(
+                new xmldb_key('cohorulepara_rul_fk', XMLDB_KEY_FOREIGN, array('ruleid'), 'cohort_rules', 'id'),
+                new xmldb_key('cohorulepara_mod_fk', XMLDB_KEY_FOREIGN, array('modifierid'), 'user', 'id')),
+            'cohort_msg_queue' => array(
+                new xmldb_key('cohomsgqueu_coh_fk', XMLDB_KEY_FOREIGN, array('cohortid'), 'cohort', 'id'),
+                new xmldb_key('cohomsgqueu_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id'),
+                new xmldb_key('cohomsgqueu_mod_fk', XMLDB_KEY_FOREIGN, array('modifierid'), 'user', 'id')),
+            'cohort_plan_history' => array(
+                new xmldb_key('cohoplanhist_use_fk', XMLDB_KEY_FOREIGN, array('usercreated'), 'user', 'id')));
+
+        foreach ($tables as $tablename => $keys) {
+            $table = new xmldb_table($tablename);
+            foreach ($keys as $key) {
+                $dbman->add_key($table, $key);
+            }
+        }
+
+        // Cohort savepoint reached.
         upgrade_plugin_savepoint(true, 2013103000, 'totara', 'cohort');
     }
 

@@ -27,11 +27,10 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="comp_com_fk" TYPE="foreign" FIELDS="parentid" REFTABLE="comp" REFFIELDS="id"/>
+        <KEY NAME="comp_comtyp_fk" TYPE="foreign" FIELDS="typeid" REFTABLE="comp_type" REFFIELDS="id"/>
+        <KEY NAME="comp_comfra_fk" TYPE="foreign" FIELDS="frameworkid" REFTABLE="comp_framework" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="comp_fra_ix" UNIQUE="false" FIELDS="frameworkid"/>
-        <INDEX NAME="comp_par_ix" UNIQUE="false" FIELDS="parentid"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="comp_record" COMMENT="Track current proficiency of a user in each competency">
       <FIELDS>
@@ -51,13 +50,17 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="compreco_use_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="compreco_com_fk" TYPE="foreign" FIELDS="competencyid" REFTABLE="comp" REFFIELDS="id"/>
+        <KEY NAME="compreco_pos_fk" TYPE="foreign" FIELDS="positionid" REFTABLE="pos" REFFIELDS="id"/>
+        <KEY NAME="compreco_org_fk" TYPE="foreign" FIELDS="organisationid" REFTABLE="org" REFFIELDS="id"/>
+        <KEY NAME="compreco_ass_fk" TYPE="foreign" FIELDS="assessorid" REFTABLE="userid" REFFIELDS="id"/>
+        <KEY NAME="compreco_pro_fk" TYPE="foreign" FIELDS="proficiency" REFTABLE="comp_scale_values" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="compreco_usecom_uix" UNIQUE="true" FIELDS="userid, competencyid"/>
-        <INDEX NAME="compreco_com_ix" UNIQUE="false" FIELDS="competencyid"/>
         <INDEX NAME="compreco_man_ix" UNIQUE="false" FIELDS="manual"/>
         <INDEX NAME="compreco_rea_ix" UNIQUE="false" FIELDS="reaggregate"/>
-        <INDEX NAME="compreco_use_ix" UNIQUE="false" FIELDS="userid"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="comp_record_history" COMMENT="Store changes to proficiency in comp_record.">
@@ -71,6 +74,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="comprecohist_use_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="comprecohist_com_fk" TYPE="foreign" FIELDS="competencyid" REFTABLE="comp" REFFIELDS="id"/>
+        <KEY NAME="comprecohist_pro_fk" TYPE="foreign" FIELDS="proficiency" REFTABLE="comp_scale_values" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="comprechist_usecom_ix" UNIQUE="false" FIELDS="userid, competencyid"/>
@@ -90,9 +96,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="compcrit_com_fk" TYPE="foreign" FIELDS="competencyid" REFTABLE="comp" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="compcrit_com_ix" UNIQUE="false" FIELDS="competencyid"/>
         <INDEX NAME="compcrit_ite2_ix" UNIQUE="false" FIELDS="iteminstance"/>
         <INDEX NAME="compcrit_ite_ix" UNIQUE="false" FIELDS="itemtype"/>
       </INDEXES>
@@ -110,13 +116,14 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="compcritreco_use_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="compcritreco_com_fk" TYPE="foreign" FIELDS="competencyid" REFTABLE="comp" REFFIELDS="id"/>
+        <KEY NAME="compcritreco_ite_fk" TYPE="foreign" FIELDS="itemid" REFTABLE="comp_criteria" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="compcritreco_usecomite_uix" UNIQUE="true" FIELDS="userid, competencyid, itemid"/>
-        <INDEX NAME="compcritreco_ite_ix" UNIQUE="false" FIELDS="itemid"/>
         <INDEX NAME="compcritreco_pro_ix" UNIQUE="false" FIELDS="proficiencymeasured"/>
         <INDEX NAME="compcritreco_tim_ix" UNIQUE="false" FIELDS="timemodified"/>
-        <INDEX NAME="compcritreco_use_ix" UNIQUE="false" FIELDS="userid"/>
         <INDEX NAME="compcritreco_useite_ix" UNIQUE="false" FIELDS="userid, itemid"/>
       </INDEXES>
     </TABLE>
@@ -175,6 +182,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="compscalassi_sca_fk" TYPE="foreign" FIELDS="scaleid" REFTABLE="comp_scale" REFFIELDS="id"/>
+        <KEY NAME="compscalassi_fra_fk" TYPE="foreign" FIELDS="frameworkid" REFTABLE="comp_framework" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="comp_scale_values" COMMENT="The individual values that make up a competency scale">
@@ -192,6 +201,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="compscalvalu_sca_fk" TYPE="foreign" FIELDS="scaleid" REFTABLE="comp_scale" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="comp_template" COMMENT="A template is used to group competencies">
@@ -209,6 +219,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="comptemp_fra_fk" TYPE="foreign" FIELDS="frameworkid" REFTABLE="comp_framework" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="comp_template_assignment" COMMENT="Track competencies belonging to a template">
@@ -222,6 +233,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="comptempassi_tem_fk" TYPE="foreign" FIELDS="templateid" REFTABLE="comp_template" REFFIELDS="id"/>
+        <KEY NAME="comptempassi_ins_fk" TYPE="foreign" FIELDS="instanceid" REFTABLE="comp" REFFIELDS="id"/>
+        <KEY NAME="comptempassi_use_fk" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="comp_type" COMMENT="Competency types are used to manage custom fields">
@@ -251,10 +265,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+         <KEY NAME="comptypeinfodata_fie_fk" TYPE="foreign" FIELDS="fieldid" REFTABLE="comp_type_info_field" REFFIELDS="id"/>
+         <KEY NAME="comptypeinfodata_com_fk" TYPE="foreign" FIELDS="competencyid" REFTABLE="comp" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="comptyp_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="comp_type_info_field" COMMENT="Stores the custom fields for each competency type">
       <FIELDS>
@@ -278,6 +291,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="comptypeinfofiel_typ_fk" TYPE="foreign" FIELDS="typeid" REFTABLE="comp_type" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="pos" COMMENT="Totara positions">
@@ -302,6 +316,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="pos_fra_fk" TYPE="foreign" FIELDS="frameworkid" REFTABLE="pos_framework" REFFIELDS="id"/>
+        <KEY NAME="pos_typ_fk" TYPE="foreign" FIELDS="typeid" REFTABLE="pos_type" REFFIELDS="id"/>
+        <KEY NAME="pos_par_fk" TYPE="foreign" FIELDS="parentid" REFTABLE="pos" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="pos_assignment" COMMENT="Tracks a users current position assignments">
@@ -327,11 +344,15 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="posassi_org_fk" TYPE="foreign" FIELDS="organisationid" REFTABLE="org" REFFIELDS="id"/>
+        <KEY NAME="posassi_use_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="posassi_app_fk" TYPE="foreign" FIELDS="appraiserid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="posassi_pos_fk" TYPE="foreign" FIELDS="positionid" REFTABLE="pos" REFFIELDS="id"/>
+        <KEY NAME="posassi_rep_fk" TYPE="foreign" FIELDS="reportstoid" REFTABLE="role_assignments" REFFIELDS="id"/>
+        <KEY NAME="posassi_man_fk" TYPE="foreign" FIELDS="managerid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="posassi_usetyp_uix" UNIQUE="true" FIELDS="userid, type"/>
-        <INDEX NAME="posassi_man_ix" UNIQUE="false" FIELDS="managerid"/>
-        <INDEX NAME="posassi_use_ix" UNIQUE="false" FIELDS="userid"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="pos_assignment_history" COMMENT="Tracks a users historical position assignments">
@@ -353,6 +374,10 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="posassihist_org_fk" TYPE="foreign" FIELDS="organisationid" REFTABLE="org" REFFIELDS="id"/>
+        <KEY NAME="posassihist_use_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="posassihist_pos_fk" TYPE="foreign" FIELDS="positionid" REFTABLE="pos" REFFIELDS="id"/>
+        <KEY NAME="posassihist_rep_fk" TYPE="foreign" FIELDS="reportstoid" REFTABLE="role_assignments" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="pos_competencies" COMMENT="Tracks competencies assigned to a particular position">
@@ -367,6 +392,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="poscomp_pos_fk" TYPE="foreign" FIELDS="positionid" REFTABLE="pos" REFFIELDS="id"/>
+        <KEY NAME="poscomp_com_fk" TYPE="foreign" FIELDS="competencyid" REFTABLE="comp" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="pos_framework" COMMENT="A collection of positions">
@@ -428,10 +455,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="postypeinfodata_fie_fk" TYPE="foreign" FIELDS="fieldid" REFTABLE="pos_type_info_field" REFFIELDS="id"/>
+        <KEY NAME="postypeinfodata_pos_fk" TYPE="foreign" FIELDS="positionid" REFTABLE="pos" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="postype_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="pos_type_info_field" COMMENT="Stores the custom fields for each position type">
       <FIELDS>
@@ -455,6 +481,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="postypeinfofiel_typ_fk" TYPE="foreign" FIELDS="typeid" REFTABLE="pos_type" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="org" COMMENT="Totara organisations">
@@ -477,6 +504,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="org_fra_fk" TYPE="foreign" FIELDS="frameworkid" REFTABLE="org_framework" REFFIELDS="id"/>
+        <KEY NAME="org_par_fk" TYPE="foreign" FIELDS="parentid" REFTABLE="org" REFFIELDS="id"/>
+        <KEY NAME="org_typ_fk" TYPE="foreign" FIELDS="typeid" REFTABLE="org_type" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="org_competencies" COMMENT="Track competencies assigned to a particular organisation">
@@ -491,6 +521,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="orgcomp_org_fk" TYPE="foreign" FIELDS="organisationid" REFTABLE="org" REFFIELDS="id"/>
+        <KEY NAME="orgcomp_com_fk" TYPE="foreign" FIELDS="competencyid" REFTABLE="comp" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="org_framework" COMMENT="A collection of organisations">
@@ -523,6 +555,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="orgrela_id1_fk" TYPE="foreign" FIELDS="id1" REFTABLE="org" REFFIELDS="id"/>
+        <KEY NAME="orgrela_id2_fk" TYPE="foreign" FIELDS="id2" REFTABLE="org" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="org_type" COMMENT="Organisation types are used to manage custom fields">
@@ -552,6 +586,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="orgtypeinfodata_fie_fk" TYPE="foreign" FIELDS="fieldid" REFTABLE="org_type_info_field" REFFIELDS="id"/>
+        <KEY NAME="orgtypeinfodata_org_fk" TYPE="foreign" FIELDS="organisationid" REFTABLE="org" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="orgtype_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
@@ -579,6 +615,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="orgtypeinfofield_typ_fk" TYPE="foreign" FIELDS="typeid" REFTABLE="org_type" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="goal" COMMENT="Totara goals">
@@ -604,6 +641,8 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="frameworkid" TYPE="foreign" FIELDS="frameworkid" REFTABLE="goal_framework" REFFIELDS="id"/>
+        <KEY NAME="goal_par_fk" TYPE="foreign" FIELDS="parentid" REFTABLE="goal" REFFIELDS="id"/>
+        <KEY NAME="goal_typ_fk" TYPE="foreign" FIELDS="typeid" REFTABLE="goal_type" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
           <INDEX NAME="parentid" UNIQUE="false" FIELDS="parentid"/>
@@ -641,6 +680,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="goalscal_def_fk" TYPE="foreign" FIELDS="defaultid" REFTABLE="goal_scale_values" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="goal_scale_assignments" COMMENT="Tracks which scales are assigned to which goal frameworks">
@@ -653,6 +693,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="goalscalassi_sca_fk" TYPE="foreign" FIELDS="scaleid" REFTABLE="goal_scale" REFFIELDS="id"/>
+        <KEY NAME="goalscalassi_fra_fk" TYPE="foreign" FIELDS="frameworkid" REFTABLE="goal_framework" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="goal_scale_values" COMMENT="The individual values that make up a goal scale">
@@ -670,6 +712,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="goalscalvalu_sca_fk" TYPE="foreign" FIELDS="scaleid" REFTABLE="goal_scale" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="goaltype_idn_ix" UNIQUE="false" FIELDS="idnumber"/>
@@ -714,6 +757,7 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="fieldid" TYPE="foreign" FIELDS="fieldid" REFTABLE="goal_type_info_field" REFFIELDS="id"/>
+        <KEY NAME="goaltypeinfodata_goa_fk" TYPE="foreign" FIELDS="goalid" REFTABLE="goal" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="goal_type_info_field" COMMENT="Stores the custom fields for each goal type">
@@ -738,6 +782,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="goaltypeinfodata_typ_fk" TYPE="foreign" FIELDS="typeid" REFTABLE="goal_type" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="goal_user_assignment" COMMENT="Stores the user assignments of goals">
@@ -835,6 +880,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="goalitemhist_sca_fk" TYPE="foreign" FIELDS="scalevalueid" REFTABLE="goal_scale_values" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="itemscope" UNIQUE="false" FIELDS="scope, itemid"/>

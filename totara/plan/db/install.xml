@@ -38,10 +38,6 @@
         <KEY NAME="templateid" TYPE="foreign" FIELDS="templateid" REFTABLE="dp_template" REFFIELDS="id"/>
         <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="templateid" UNIQUE="false" FIELDS="templateid"/>
-        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="dp_permissions" COMMENT="Stores the permission settings for plan templates">
       <FIELDS>
@@ -54,10 +50,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpperm_tem_fk" TYPE="foreign" FIELDS="templateid" REFTABLE="dp_template" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="templateid" UNIQUE="false" FIELDS="templateid"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="dp_component_settings" COMMENT="Stores the names and component-independent settings for each installed component.">
       <FIELDS>
@@ -69,6 +63,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpcompsett_tem_fk" TYPE="foreign" FIELDS="templateid" REFTABLE="dp_template" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="templateid-component" UNIQUE="true" FIELDS="templateid, component" COMMENT="Prevent a component from being included in a template more than once."/>
@@ -84,10 +79,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpcoursett_tem_fk" TYPE="foreign-unique" FIELDS="templateid" REFTABLE="dp_template" REFFIELDS="id"/>
+        <KEY NAME="dpcoursett_pri_fk" TYPE="foreign" FIELDS="priorityscale" REFTABLE="dp_priority_scale" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="templateid" UNIQUE="true" FIELDS="templateid" COMMENT="Ensure that course settings are only applied to each template once"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="dp_plan_course_assign" COMMENT="Stores courses assigned to a particular plan">
       <FIELDS>
@@ -103,9 +97,12 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpplancourassi_pla_fk" TYPE="foreign" FIELDS="planid" REFTABLE="dp_plan" REFFIELDS="id"/>
+        <KEY NAME="dpplancourassi_cou_fk" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="dpplancourassi_pri_fk" TYPE="foreign" FIELDS="priority" REFTABLE="dp_priority_scale_value" REFFIELDS="id"/>
+        <KEY NAME="dpplancourassi_com_fk" TYPE="foreign" FIELDS="completionstatus" REFTABLE="course_completions" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="planid" UNIQUE="false" FIELDS="planid" COMMENT="Index on plan ID"/>
         <INDEX NAME="planidcourseid" UNIQUE="true" FIELDS="planid, courseid" COMMENT="Index on courseid. Ensures each course is only shown once per plan."/>
       </INDEXES>
     </TABLE>
@@ -122,9 +119,12 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpplancompassi_pla_fk" TYPE="foreign" FIELDS="planid" REFTABLE="dp_plan" REFFIELDS="id"/>
+        <KEY NAME="dpplancompassi_com_fk" TYPE="foreign" FIELDS="competencyid" REFTABLE="comp" REFFIELDS="id"/>
+        <KEY NAME="dpplancompassi_pri_fk" TYPE="foreign" FIELDS="priority" REFTABLE="dp_priority_scale_value" REFFIELDS="id"/>
+        <KEY NAME="dpplancompassi_sca_fk" TYPE="foreign" FIELDS="scalevalueid" REFTABLE="comp_scale_values" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="planid" UNIQUE="false" FIELDS="planid" COMMENT="Index on plan ID"/>
         <INDEX NAME="planidcompetencyid" UNIQUE="true" FIELDS="planid, competencyid" COMMENT="Index on competencyid. Ensures each competency is only shown once per plan."/>
       </INDEXES>
     </TABLE>
@@ -143,10 +143,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpcompsett_tem_fk" TYPE="foreign-unique" FIELDS="templateid" REFTABLE="dp_template" REFFIELDS="id"/>
+        <KEY NAME="dpcompsett_pri_fk" TYPE="foreign" FIELDS="priorityscale" REFTABLE="dp_priority_scale" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="templateid" UNIQUE="true" FIELDS="templateid" COMMENT="Ensure that competency settings are only applied to each template once"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="dp_priority_scale" COMMENT="Contains priority scales for development plans">
       <FIELDS>
@@ -160,6 +159,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpprioscal_def_fk" TYPE="foreign" FIELDS="defaultid" REFTABLE="dp_priority_scale_value" REFFIELDS="id"/>
+        <KEY NAME="dpprioscal_use_fk" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="dp_priority_scale_value" COMMENT="Scale values for development plan priority scales">
@@ -176,6 +177,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpprioscalvalu_use_fk" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="dpprioscalvalu_pri_fk" TYPE="foreign" FIELDS="priorityscaleid" REFTABLE="dp_priority_scale" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="dp_objective_scale" COMMENT="Contains objective scales for development plans">
@@ -190,6 +193,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpobjescal_use_fk" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="dpobjescal_def_fk" TYPE="foreign" FIELDS="defaultid" REFTABLE="dp_objective_scale_value" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="dp_objective_scale_value" COMMENT="Objective Scale values for development plan priority scales">
@@ -207,6 +212,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpobjescalvalu_obj_fk" TYPE="foreign" FIELDS="objscaleid" REFTABLE="dp_objective_scale" REFFIELDS="id"/>
+        <KEY NAME="dpobjescalvalu_use_fk" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="dp_plan_history" COMMENT="A table for tracking and recording modifications to a related dp_plan">
@@ -220,11 +227,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpplanhist_pla_fk" TYPE="foreign" FIELDS="planid" REFTABLE="dp_plan" REFFIELDS="id"/>
+        <KEY NAME="dpplanhist_use_fk" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="planid" UNIQUE="false" FIELDS="planid"/>
-        <INDEX NAME="usermodified" UNIQUE="false" FIELDS="usermodified"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="dp_plan_component_relation" COMMENT="Provides a way to link together items from different components within a plan">
       <FIELDS>
@@ -257,10 +262,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="evidencetypeid" TYPE="foreign" FIELDS="evidencetypeid" REFTABLE="dp_evidence_type" REFFIELDS="id"/>
+        <KEY NAME="dpplanevid_user_fk" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="dpplanevid_use_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="dpplanev_userid_ix" UNIQUE="false" FIELDS="userid"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="dp_objective_settings" COMMENT="Settings for a template's objectives">
       <FIELDS>
@@ -273,6 +277,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpobjesett_tem_fk" TYPE="foreign" FIELDS="templateid" REFTABLE="dp_template" REFFIELDS="id"/>
+        <KEY NAME="dpobjesett_pri_fk" TYPE="foreign" FIELDS="priorityscale" REFTABLE="dp_priority_scale" REFFIELDS="id"/>
+        <KEY NAME="dpobjesett_obj_fk" TYPE="foreign" FIELDS="objectivescale" REFTABLE="dp_objective_scale" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="dp_plan_objective" COMMENT="One row for each objective in a plan">
@@ -290,6 +297,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpplanobje_pla_fk" TYPE="foreign" FIELDS="planid" REFTABLE="dp_plan" REFFIELDS="id"/>
+        <KEY NAME="dpplanobje_pri_fk" TYPE="foreign" FIELDS="priority" REFTABLE="dp_priority_scale_value" REFFIELDS="id"/>
+        <KEY NAME="dpplanobje_sca_fk" TYPE="foreign" FIELDS="scalevalueid" REFTABLE="dp_objective_scale_value" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="dp_plan_settings" COMMENT="Contains settings for the plan">
@@ -302,10 +312,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpplansett_tem_fk" TYPE="foreign-unique" FIELDS="templateid" REFTABLE="dp_template" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="templateid" UNIQUE="true" FIELDS="templateid" COMMENT="Ensure that plan settings are only applied to each template once"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="dp_plan_program_assign" COMMENT="Stores program assigned to a particular plan">
       <FIELDS>
@@ -319,10 +327,12 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpplanprogassi_pla_fk" TYPE="foreign" FIELDS="planid" REFTABLE="dp_plan" REFFIELDS="id"/>
+        <KEY NAME="dpplanprogassi_pro_fk" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id"/>
+        <KEY NAME="dpplanprogassi_pri_fk" TYPE="foreign" FIELDS="priority" REFTABLE="dp_priority_scale_value" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="planidprogramid" UNIQUE="true" FIELDS="planid, programid" COMMENT="Index on programid. Ensures each program is only shown once per plan."/>
-        <INDEX NAME="planid" UNIQUE="false" FIELDS="planid" COMMENT="Index on plan ID"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="dp_program_settings" COMMENT="Contains settings specific to the program component">
@@ -335,10 +345,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpprogsett_tem_fk" TYPE="foreign-unique" FIELDS="templateid" REFTABLE="dp_template" REFFIELDS="id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="templateid" UNIQUE="true" FIELDS="templateid" COMMENT="Ensure that program settings are only applied to each template once"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="dp_evidence_type" COMMENT="Table to store evidence type menu">
       <FIELDS>
@@ -351,6 +359,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="dpevidtype_use_fk" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="dp_plan_evidence_relation" COMMENT="Related courses / objectives / competencies">

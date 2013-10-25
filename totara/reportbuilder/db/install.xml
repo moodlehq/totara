@@ -41,6 +41,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="repobuilcolu_rep_fk" TYPE="foreign" FIELDS="reportid" REFTABLE="report_builder" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="report_builder_filters" COMMENT="Defines filters belonging to each report">
@@ -56,6 +57,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="repobuilfilt_rep_fk" TYPE="foreign" FIELDS="reportid" REFTABLE="report_builder" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="report_builder_settings" COMMENT="Contains settings for individual reports">
@@ -69,6 +71,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="repobuilsett_rep_fk" TYPE="foreign" FIELDS="reportid" REFTABLE="report_builder" REFFIELDS="id"/>
         <KEY NAME="reportid-type-name" TYPE="unique" FIELDS="reportid, type, name" COMMENT="Each setting should only be set once"/>
       </KEYS>
     </TABLE>
@@ -83,6 +86,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="repobuilsave_rep_fk" TYPE="foreign" FIELDS="reportid" REFTABLE="report_builder" REFFIELDS="id"/>
+        <KEY NAME="repobuilsave_use_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="reportid" UNIQUE="false" FIELDS="reportid" COMMENT="Index on reportid field"/>
@@ -110,6 +115,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="repobuilgrouassi_gro_fk" TYPE="foreign" FIELDS="groupid" REFTABLE="report_builder_group" REFFIELDS="id"/>
         <KEY NAME="groupid-itemid" TYPE="unique" FIELDS="groupid, itemid" COMMENT="Prevent an item being assigned to the same group multiple times"/>
       </KEYS>
     </TABLE>
@@ -123,6 +129,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="repobuilpreptrac_gro_fk" TYPE="foreign" FIELDS="groupid" REFTABLE="report_builder_group" REFFIELDS="id"/>
         <KEY NAME="groupid-itemid" TYPE="unique" FIELDS="groupid, itemid" COMMENT="To prevent an item being tracked twice within the same group"/>
       </KEYS>
     </TABLE>
@@ -140,6 +147,9 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="repobuilsche_rep_fk" TYPE="foreign" FIELDS="reportid" REFTABLE="report_builder" REFFIELDS="id"/>
+        <KEY NAME="repobuilsche_use_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="repobuilsche_sav_fk" TYPE="foreign" FIELDS="savedsearchid" REFTABLE="report_builder_saved" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="report_builder_cache" COMMENT="Storing details of scheduled reports caching">

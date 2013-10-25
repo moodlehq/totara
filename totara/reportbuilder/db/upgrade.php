@@ -230,5 +230,43 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2013092400, 'totara_reportbuilder');
     }
 
+    if ($oldversion < 2013103000) {
+        // Adding foreign keys.
+        $tables = array(
+            'report_builder_columns' => array(
+                new xmldb_key('repobuilcolu_rep_fk', XMLDB_KEY_FOREIGN, array('reportid'), 'report_builder', 'id')),
+
+            'report_builder_filters' => array(
+                new xmldb_key('repobuilfilt_rep_fk', XMLDB_KEY_FOREIGN, array('reportid'), 'report_builder', 'id')),
+
+            'report_builder_settings' => array(
+                new xmldb_key('repobuilsett_rep_fk', XMLDB_KEY_FOREIGN, array('reportid'), 'report_builder', 'id')),
+
+            'report_builder_saved' => array(
+                new xmldb_key('repobuilsave_rep_fk', XMLDB_KEY_FOREIGN, array('reportid'), 'report_builder', 'id'),
+                new xmldb_key('repobuilsave_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id')),
+
+            'report_builder_group_assign' => array(
+                new xmldb_key('repobuilgrouassi_gro_fk', XMLDB_KEY_FOREIGN, array('groupid'), 'report_builder_group', 'id')),
+
+            'report_builder_preproc_track' => array(
+                new xmldb_key('repobuilpreptrac_gro_fk', XMLDB_KEY_FOREIGN, array('groupid'), 'report_builder_group', 'id')),
+
+            'report_builder_schedule' => array(
+                new xmldb_key('repobuilsche_rep_fk', XMLDB_KEY_FOREIGN, array('reportid'), 'report_builder', 'id'),
+                new xmldb_key('repobuilsche_use_fk', XMLDB_KEY_FOREIGN, array('userid'), 'user', 'id'),
+                new xmldb_key('repobuilsche_sav_fk', XMLDB_KEY_FOREIGN, array('savedsearchid'), 'report_builder_saved', 'id')));
+
+        foreach ($tables as $tablename => $keys) {
+            $table = new xmldb_table($tablename);
+            foreach ($keys as $key) {
+                $dbman->add_key($table, $key);
+            }
+        }
+
+        // Report builder savepoint reached.
+        totara_upgrade_mod_savepoint(true, 2013103000, 'totara_reportbuilder');
+    }
+
     return true;
 }
