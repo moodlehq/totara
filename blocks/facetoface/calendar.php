@@ -854,7 +854,8 @@ function print_tooltips($sessions) {
 
     // Print last tooltip.
     $html = tooltip_contents($sessionlist);
-    $jstooltip .= " Y.one('#cell$currentday').setAttribute('tooltip', '$html').setAttribute('tooltip:alignment', 'bottom');\n";
+    $jstooltip .= " if (Y.one('#cell$currentday')) {
+                        Y.one('#cell$currentday').setAttribute('tooltip', '$html').setAttribute('tooltip:alignment', 'bottom'); }\n";
 
     $js = "Y.use('gallery-yui-tooltip', 'node', function(Y) { $jstooltip var t = new Y.Tooltip().render(); }); \n";
     echo html_writer::script($js);
