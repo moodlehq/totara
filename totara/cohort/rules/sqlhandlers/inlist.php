@@ -104,10 +104,7 @@ abstract class cohort_rule_sqlhandler_in extends cohort_rule_sqlhandler {
                 list($sqlhandler->sql, $sqlhandler->params) = search_get_keyword_where_clause_options($query, $lov, false, 'endswith');
                 break;
             case COHORT_RULES_OP_IN_ISEMPTY:
-                list($sqlhandler->sql, $sqlhandler->params) = array("({$query} = ':empty' OR ({$query}) IS NULL)", array('empty' => '' ));
-                break;
-            case COHORT_RULES_OP_IN_NOTEQUALTO:
-                list($sqlhandler->sql, $sqlhandler->params) = search_get_keyword_where_clause_options($query, $lov, true, 'notequal');
+                list($sqlhandler->sql, $sqlhandler->params) = array("({$query} = '' OR ({$query}) IS NULL)", array());
                 break;
             default:
                 list($sqlhandler->sql, $sqlhandler->params) = array('', array());

@@ -53,7 +53,6 @@ require_once($CFG->libdir . '/adminlib.php');    // various admin-only functions
 require_once($CFG->libdir . '/upgradelib.php');  // general upgrade/install related functions
 require_once($CFG->libdir . '/pluginlib.php');   // available updates notifications
 require_once($CFG->dirroot . '/version.php');
-require_once($CFG->dirroot . '/totara/core/db/utils.php');
 
 $id             = optional_param('id', '', PARAM_TEXT);
 $confirmupgrade = optional_param('confirmupgrade', 0, PARAM_BOOL);
@@ -63,7 +62,6 @@ $showallplugins = optional_param('showallplugins', 0, PARAM_BOOL);
 $agreelicense   = optional_param('agreelicense', 0, PARAM_BOOL);
 $geterrors = optional_param('geterrors', 0, PARAM_BOOL);
 $fetchupdates   = optional_param('fetchupdates', 0, PARAM_BOOL);
-$confirmupgraderules = optional_param('confirmupgraderules', 0, PARAM_BOOL);
 
 // Check some PHP server settings
 $PAGE->set_url('/admin/index.php');
@@ -229,8 +227,6 @@ if ($version > $CFG->version
 
     purge_all_caches();
 
-    totara_preupgrade($a);
-
     $PAGE->set_pagelayout('maintenance');
     $PAGE->set_popup_notification_allowed(false);
 
@@ -316,8 +312,6 @@ if ($version > $CFG->version
     } else {
         // Launch main upgrade
         upgrade_core($version, true);
-        // Set previous version
-        set_config('previous_version', $a->existingtotaraversion, 'totara_core');
     }
 } else if ($version < $CFG->version) {
     // better stop here, we can not continue with plugin upgrades or anything else

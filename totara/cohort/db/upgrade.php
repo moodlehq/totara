@@ -29,7 +29,7 @@
 
 function xmldb_totara_cohort_upgrade($oldversion) {
 
-    global $CFG, $DB, $OUTPUT, $USER, $PAGE;
+    global $CFG, $DB, $OUTPUT, $USER;
 
     require_once($CFG->dirroot . '/totara/cohort/rules/lib.php');
     require_once($CFG->dirroot . '/totara/cohort/lib.php');
@@ -507,56 +507,5 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2013100100, 'totara', 'cohort');
     }
 
-    if ($oldversion < 2013100101) {
-        // Don't run again if this upgrade has occurred before.
-        $hasrun = get_config('totara_cohort', 'cohort_rule_fix_has_run');
-        if (empty($hasrun)) {
-
-            $brokenrules = totara_get_text_broken_rules();
-
-            if (!empty($brokenrules)) {
-                echo $OUTPUT->notification(
-                    get_string('cohortbugheading', 'totara_cohort'),
-                    'notifysuccess');
-
-                $rulestofix = array();
-                $unfixablerules = array();
-
-                // Determine which of the broken rules we can fix automatically.
-                foreach ($brokenrules as $rule) {
-                    if (totara_cohort_is_rule_fixable($rule)) {
-                        $rulestofix[] = $rule;
-                    } else {
-                        $unfixablerules[] = $rule;
-                    }
-                }
-
-                // Fix those that we can.
-                if (!empty($rulestofix)) {
-                    echo $OUTPUT->notification(
-                        get_string('cohortbugfixingxrules', 'totara_cohort', count($rulestofix)),
-                        'notifysuccess');
-                    totara_cohort_remap_rules($rulestofix);
-                }
-
-                // Record that we've run this upgrade now.
-                set_config('cohort_rule_fix_has_run', 1, 'totara_cohort');
-
-                // Advise users about remaining bad rules.
-                if (!empty($unfixablerules)) {
-                    $output = $PAGE->get_renderer('totara_core', null);
-                    echo $output->show_text_broken_rules($unfixablerules);
-                } else {
-                    echo $OUTPUT->notification(
-                        get_string('cohortbugnounfixable', 'totara_cohort'),
-                        'notifysuccess');
-                }
-
-            }
-        }
-
-        upgrade_plugin_savepoint(true, 2013100101, 'totara', 'cohort');
-    }
-
-    return true;
+        return true;
 }
