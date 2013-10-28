@@ -403,6 +403,9 @@ fieldset.surround legend,
     font-weight:bold;
     font-size:16px;
     padding: 0px 5px;
+    border: none;
+    width: auto;
+    margin: 0;
 }
 /**
  * Moodle Forms
