@@ -51,7 +51,7 @@ echo $OUTPUT->doctype() ?>
 
 <?php echo $OUTPUT->standard_top_of_body_html() ?>
 
-<header role="banner" class="navbar navbar-fixed-top">
+<header role="banner" class="navbar">
     <nav role="navigation" class="navbar-inner">
         <div class="container-fluid">
             <?php if ($logourl == NULL) { ?>
