@@ -54,6 +54,11 @@ $THEME->layouts = array(
         'file' => 'columns1.php',
         'regions' => array(),
         'options' => array('noblocks'=>true, 'langmenu'=>true),
+    ),
+    'login' => array(
+        'file' => 'columns1.php',
+        'regions' => array(),
+        'options' => array('nologininfo' => true, 'nocustommenu' => true, 'nonavbar' => true),
     )
 );
 

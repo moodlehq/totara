@@ -25,7 +25,10 @@ if (!empty($PAGE->theme->settings->frontpagelogo)) {
 $custommenu = $OUTPUT->custom_menu();
 $hascustommenu = !empty($custommenu);
 
-if (!$hascustommenu) {
+$haslogininfo = (empty($PAGE->layout_options['nologininfo']));
+$showmenu = empty($PAGE->layout_options['nocustommenu']);
+
+if ($showmenu && !$hascustommenu) {
     // load totara menu
     $menudata = totara_build_menu();
     $totara_core_renderer = $PAGE->get_renderer('totara_core');
@@ -67,12 +70,16 @@ echo $OUTPUT->doctype() ?>
             <div class="nav-collapse collapse">
                 <ul class="nav pull-right">
                     <li><?php echo $OUTPUT->page_heading_menu(); ?></li>
-                    <li class="navbar-text"><?php echo $OUTPUT->login_info() ?></li>
+                    <?php if ($haslogininfo) { ?>
+                        <li class="navbar-text"><?php echo $OUTPUT->login_info() ?></li>
+                    <?php } ?>
                 </ul>
-                <?php if ($hascustommenu) { ?>
-                <div id="custommenu"><?php echo $custommenu; ?></div>
-                <?php } else { ?>
-                <div id="totaramenu"><?php echo $totaramenu; ?></div>
+                <?php if ($showmenu) { ?>
+                    <?php if ($hascustommenu) { ?>
+                    <div id="custommenu"><?php echo $custommenu; ?></div>
+                    <?php } else { ?>
+                    <div id="totaramenu"><?php echo $totaramenu; ?></div>
+                    <?php } ?>
                 <?php } ?>
             </div>
         </div>
