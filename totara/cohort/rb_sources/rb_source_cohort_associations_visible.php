@@ -151,24 +151,12 @@ class rb_source_cohort_associations_visible extends rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'associations',
-            'actionsenrolled',
-            get_string('associationactionsenrolled', 'totara_cohort'),
-            'base.id',
-            array(
-                'displayfunc' => 'associationactionsenrolled',
-                'extrafields' => array('cohortid'=>'base.cohortid'),
-                'nosort' => true,
-                'noexport' => true
-            )
-        );
-        $columnoptions[] = new rb_column_option(
-            'associations',
             'actionsvisible',
             get_string('associationactionsvisible', 'totara_cohort'),
             'base.id',
             array(
                 'displayfunc' => 'associationactionsvisible',
-                'extrafields' => array('cohortid' => 'base.cohortid'),
+                'extrafields' => array('cohortid' => 'base.cohortid', 'type' => 'base.instancetype'),
                 'nosort' => true,
                 'noexport' => true
             )
@@ -357,33 +345,13 @@ class rb_source_cohort_associations_visible extends rb_base_source {
         if ($strdelete === false) {
             $strdelete = get_string('deletelearningitem', 'totara_cohort');
         }
-        $backurl = new moodle_url('/totara/cohort/enrolledlearning.php', array('id' => $row->cohortid));
         $delurl = new moodle_url('/totara/cohort/dialog/updatelearning.php',
             array('cohortid' => $row->cohortid,
             'type' => $row->type,
             'd' => $associationid,
             'v' => COHORT_ASSN_VALUE_VISIBLE,
-            'sesskey' => sesskey(),
-            'backurl' => $backurl->out()));
+            'sesskey' => sesskey()));
         return $OUTPUT->action_icon($delurl, new pix_icon('t/delete', $strdelete), null, array('title' => $strdelete, 'class' => 'learning-delete'));
-    }
-
-    /**
-     * Helper function to display the action links for the "enrolled learning" page
-     * @param int $associationid
-     * @param object $row
-     * @return str
-     */
-    public function rb_display_associationactionsenrolled($associationid, $row) {
-        static $canedit = null;
-        if ($canedit === null) {
-            $canedit = has_capability('moodle/cohort:manage', context_system::instance());
-        }
-
-        if ($canedit) {
-            return $this->cohort_association_delete_link($associationid, $row);
-        }
-        return '';
     }
 
     /**

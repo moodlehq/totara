@@ -1267,8 +1267,6 @@ class reportbuilderlib_test extends advanced_testcase {
     }
 
     function test_create_attachment() {
-        //TODO Marked to skip after merging M2.5
-        $this->markTestSkipped('Cannot create attachments due to changes in excellib and odslib.');
         global $CFG;
 
         $filename = create_attachment(1, 1, 2, 0);

@@ -36,32 +36,7 @@ require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/tests/reportcache_advanced_testcase.php');
 
 class columns_test extends reportcache_advanced_testcase {
-
-    // Warning: Massive amount oftest data ahead.
-    protected $rb_data = array(
-        'id' => 1,
-        'fullname' => 'Test Report', 'shortname' => 'test_report', 'source' => 'competency_evidence','hidden' => 0,
-        'accessmode' => '0', 'contentmode' => 0, 'description' => '', 'recordsperpage' => 40, 'defaultsortcolumn' => 'user_fullname',
-        'defaultsortorder' => 4, 'embedded' => 0);
-
-    protected $rb_col_data = array(
-        'id' => 1, 'reportid' => 1, 'type' => 'user', 'value' => 'namelink', 'heading' => 'Participant',
-        'sortorder' => 1, 'hidden' => 0, 'customheading' => 0,
-    );
-
-    protected $rb_filter_data = array(
-        'id' => 1, 'reportid' => 1, 'type' => 'user', 'value' => 'fullname', 'advanced' => 0, 'sortorder' => 1,
-    );
-
-    protected $rb_settings_data = array(
-       array('id' => 1, 'reportid' => 1, 'type' => 'rb_role_access', 'name' => 'activeroles', 'value' => '1|2',),
-       array('id' => 2, 'reportid' => 1, 'type' => 'rb_role_access', 'name' => 'enable', 'value' => 1,),
-    );
-
-    protected $rb_group_data = array(
-       'id' => 1, 'name' => 'My Group', 'preproc' => 'test', 'baseitem' => 'something', 'assigntype' => 'else', 'assignvalue' => 1,
-    );
-
+    // Warning: Massive amount of test data ahead.
     protected $user_info_field_data = array(
        'id' => 1, 'shortname' => 'datejoined', 'name' => 'Date Joined', 'datatype' => 'text', 'description' => '', 'categoryid' => 1,
        'sortorder' => 1, 'required' => 0, 'locked' => 0, 'visible' => 1, 'forceunique' => 0, 'signup' => 0, 'defaultdata' => '',
@@ -97,7 +72,7 @@ class columns_test extends reportcache_advanced_testcase {
 
     protected $pos_assignment_data = array(
         'id' => 1, 'fullname' => 'Title', 'shortname' => 'Title', 'organisationid' => 1, 'positionid' => 1,
-        'userid' => 2, 'type' => 1, 'timecreated' => 1, 'timemodified' => 1, 'usermodified' => 1,
+        'userid' => 2, 'type' => 1, 'timecreated' => 1, 'timemodified' => 1, 'usermodified' => 2,
     );
 
     protected $f2f_session_data_data = array(
@@ -349,7 +324,7 @@ class columns_test extends reportcache_advanced_testcase {
     );
 
     protected $cohort_data = array(
-        'id' => 1, 'name' => 'cohort', 'contextid' => 0, 'descriptionformat' => 0, 'timecreated' => 0, 'timemodified' => 0, 'cohorttype' => 0,
+        'id' => 1, 'name' => 'cohort', 'contextid' => 0, 'descriptionformat' => 0, 'timecreated' => 0, 'timemodified' => 0, 'cohorttype' => 1,
     );
 
     protected $cohort_members_data = array(
@@ -433,19 +408,11 @@ class columns_test extends reportcache_advanced_testcase {
 
     protected $scale_data = array(
         array(
-            'id' => 1, 'courseid' => 0, 'userid' => 2, 'name' => 'Scale 001', 'scale' =>'Bad,Average,Good', 'description' => '', 'timemodified' => 1332243112,
+            'id' => 1, 'courseid' => 0, 'userid' => 2, 'name' => 'Scale 001', 'scale' => 'Bad,Average,Good', 'description' => '', 'timemodified' => 1332243112,
         ),
         array(
-            'id' => 2, 'courseid' => 0, 'userid' => 2, 'name' => 'Scale 002', 'scale' =>'Awful,Satisfactory,Good,Excellent', 'description' => '', 'timemodified' => 1332243112,
+            'id' => 2, 'courseid' => 0, 'userid' => 2, 'name' => 'Scale 002', 'scale' => 'Awful,Satisfactory,Good,Excellent', 'description' => '', 'timemodified' => 1332243112,
         ),
-    );
-
-    protected $filter_config_data = array(
-        'id' => 1, 'filter' => 'filter/tidy', 'contextid' => 2, 'name' => 'filter_data_config',
-    );
-
-    protected $filter_active_data = array(
-        'id' => 1, 'filter' => 'filter/tidy', 'contextid' => 2, 'active' => 1, 'sortorder' => '1',
     );
 
     protected $files_data = array(
@@ -463,11 +430,11 @@ class columns_test extends reportcache_advanced_testcase {
 
     protected $goal = array(
         'id' => 1, 'frameworkid' => 1, 'fullname' => 'Goal 1', 'parentid' => 0, 'visible' => 1, 'proficiencyexpected' => 0,
-         'timecreated' => 0, 'timemodified' => 0, 'usermodified' => 0,
+         'timecreated' => 0, 'timemodified' => 0, 'usermodified' => 2,
     );
 
     protected $goal_framework = array(
-        'id' => 1, 'fullname' => 'Goal Framework 1', 'sortorder' => 1, 'visible' => 1, 'hidecustomfields' => 0, 'timecreated' => 0, 'timemodified' => 0, 'usermodified' => 0,
+        'id' => 1, 'fullname' => 'Goal Framework 1', 'sortorder' => 1, 'visible' => 1, 'hidecustomfields' => 0, 'timecreated' => 0, 'timemodified' => 0, 'usermodified' => 2,
     );
 
     protected $goal_record = array(
@@ -475,7 +442,7 @@ class columns_test extends reportcache_advanced_testcase {
     );
 
     protected $goal_item_history_data = array(
-        'id' => 1, 'scope' => 2, 'itemid' => 1, 'scalevalueid' => 1, 'timemodified' => 1332153671, 'usermodified' => 1,
+        'id' => 1, 'scope' => 2, 'itemid' => 1, 'scalevalueid' => 1, 'timemodified' => 1332153671, 'usermodified' => 2,
     );
 
     protected $goal_personal_data = array(
@@ -484,7 +451,7 @@ class columns_test extends reportcache_advanced_testcase {
     );
 
     protected $visible_cohort_data = array(
-        'id' => 1, 'cohortid' => 1, 'instanceid' => 1, 'instancetype' => 50, 'timemodified' => 1, 'timecreated' => 1, 'usermodified' => 1,
+        'id' => 1, 'cohortid' => 1, 'instanceid' => 1, 'instancetype' => 50, 'timemodified' => 1, 'timecreated' => 1, 'usermodified' => 2,
     );
 
     protected $totara_compl_import_course_data = array(
@@ -518,17 +485,17 @@ class columns_test extends reportcache_advanced_testcase {
     );
 
     protected $comp_record_history_data = array(
-        'id' => 1, 'userid' => 1, 'competencyid' => 1, 'proficiency' => 1, 'timemodified' => 1332153671, 'usermodified' => 1,
+        'id' => 1, 'userid' => 1, 'competencyid' => 1, 'proficiency' => 1, 'timemodified' => 1332153671, 'usermodified' => 2,
     );
 
     protected $filler_data = array(
         'id' => 1, 'courseid' => 1, 'programid' => 1, 'competencyid' => 1, 'templateid' => 1, 'enabled' => 1,
-        'sortorder' => 1, 'manualcomplete' => 1, 'component' => 'prgram', 'enrol' => 'cohort', 'customint1' => 1,
+        'sortorder' => 1, 'manualcomplete' => 1, 'component' => 'program', 'enrol' => 'cohort', 'customint1' => 1,
     );
 
     protected $dummy_data = array(
         'id' => 1, 'userid' => 2, 'frameworkid' => 1, 'competency' => 1, 'competencyid' => 1, 'competencycount' => 1, 'instanceid' => 1, 'iteminstance' => 1,
-        'itemid' => 1, 'templateid' => 1, 'id1' => 1, 'id2' => 1, 'proficiency' => 1, 'timecreated' => 1, 'timemodified' => 1, 'usermodified' => 1,
+        'itemid' => 1, 'templateid' => 1, 'id1' => 1, 'id2' => 1, 'proficiency' => 1, 'timecreated' => 1, 'timemodified' => 1, 'usermodified' => 2,
         'organisationid' => 1, 'positionid' => 1, 'assessorid' => 1, 'assessorname' => 'Name', 'fullname' => 'fullname', 'visible' => 1, 'type' => 1,
     );
 
@@ -537,10 +504,6 @@ class columns_test extends reportcache_advanced_testcase {
         parent::setup();
 
         $this->loadDataSet($this->createArrayDataset(array(
-            'report_builder' => array($this->rb_data),
-            'report_builder_columns' => array($this->rb_col_data),
-            'report_builder_filters' => array($this->rb_filter_data),
-            'report_builder_settings' => $this->rb_settings_data,
             'user_info_field' => array($this->user_info_field_data),
             'user_info_data' => array($this->user_info_data_data),
             'org_framework' => $this->org_framework_data,
@@ -622,7 +585,6 @@ class columns_test extends reportcache_advanced_testcase {
             'assignment' => array($this->assignment_data),
             'assignment_submissions' => array($this->assignment_submissions_data),
             'scale' => $this->scale_data,
-            'filter_config' => array($this->filter_config_data),
             'files' => array($this->files_data),
             'enrol' => array($this->filler_data),
             'prog_assignment' => array($this->filler_data),
@@ -635,32 +597,35 @@ class columns_test extends reportcache_advanced_testcase {
             'certif_completion' => array($this->certif_completion_data),
             'certif_completion_history' => array($this->certif_completion_history_data),
             'course_completion_history' => array($this->course_completion_history_data),
-
         )));
-
-        // DB version of report.
-        $this->rb = new reportbuilder(1);
     }
 
     /**
      * Check all reports columns and filters
      *
-     * @param bool $usecache
-     * @dataProvider provider_use_cache
      * @group slowtest
      */
-    function test_columns_and_filters($usecache) {
+    function test_columns_and_filters() {
         global $SESSION, $DB;
+
+        $this->resetAfterTest();
         $this->preventResetByRollback();
-        // loop through installed sources
-        foreach (reportbuilder::get_source_list(true) as $sourcename => $title) {
+        $this->setAdminUser();
+
+        $i = 1;
+        $reportname = 'Test Report';
+        $filtername = 'filtering_testreport';
+
+        // Loop through installed sources.
+        $sourcelist = reportbuilder::get_source_list(true);
+        foreach ($sourcelist as $sourcename => $title) {
             // echo '<h3>Title : [' . $title . '] Sourcename : [' . $sourcename . ']</h3>' . "\n";
             $src = reportbuilder::get_source_object($sourcename);
             foreach ($src->columnoptions as $column) {
-                // create a report
+                // Create a report.
                 $report = new stdClass();
-                $report->fullname = 'Test Report';
-                $report->shortname = 'test1';
+                $report->fullname = $reportname;
+                $report->shortname = 'test' . $i++;
                 $report->source = $sourcename;
                 $report->hidden = 0;
                 $report->accessmode = 0;
@@ -673,21 +638,13 @@ class columns_test extends reportcache_advanced_testcase {
                 $col->heading = addslashes($column->defaultheading);
                 $col->sortorder = 1;
                 $colid = $DB->insert_record('report_builder_columns', $col);
-                // create the reportbuilder object
-                // echo '<h5>column option : Test ' . $column->type . '-' . $column->value . ' column:</h5>' . "\n";
 
-                if ($usecache) {
-                    $this->enable_caching($reportid);
-                }
-
+                // Create the reportbuilder object.
                 $rb = new reportbuilder($reportid);
                 $sql = $rb->build_query();
                 // echo '<h5>sql ' . var_export($sql, true) . '</h5>' . "\n";
                 $records = $DB->get_recordset_sql($sql[0], $sql[1], 0, 40);
                 foreach ($records as $record) {
-                    if (array_key_exists('competency_proficiencyandapproval', $record)) {
-                        $this->setAdminUser();
-                    }
                     $data = $rb->process_data_row($record);
                 }
                 $records->close();
@@ -702,52 +659,75 @@ class columns_test extends reportcache_advanced_testcase {
 
                 if ($title == "User" || $title == "Courses" ||
                     in_array($sourcename, array('dp_certification_history', 'program_completion')) ||
-                    // The answer here depends on if the column we are testing
-                    // is grouped or not.
+                    // The answer here depends on if the column we are testing is grouped or not.
                     ($sourcename == 'program_overview' && $columnoption->grouping == 'none')) {
                     $this->assertEquals('2', $rb->get_full_count(), $message);
-                }
-                else{
+                } else {
                     $this->assertEquals('1', $rb->get_full_count(), $message);
                 }
-                // remove afterwards
-                $DB->delete_records('report_builder', array('id' => $reportid));
+
+                // Now, test the same with report caching.
+                $this->enable_caching($reportid);
+                $rb = new reportbuilder($reportid);
+
+                $sql = $rb->build_query();
+                $records = $DB->get_recordset_sql($sql[0], $sql[1], 0, 40);
+                foreach ($records as $record) {
+                    $data = $rb->process_data_row($record);
+                }
+                $records->close();
+                $message = "\nReport title : {$title}\n";
+                $message .= "Report sourcename : {$sourcename}\n";
+                $message .= "Column option : Test {$column->type}_{$column->value} column\n";
+                $message .= "SQL : {$sql[0]}\n";
+                $message .= "SQL Params : " . var_export($sql[1], true) . "\n";
+
+                // Get the column option object.
+                $columnoption = reportbuilder::get_single_item($rb->columnoptions, $column->type, $column->value);
+
+                if ($title == "User" || $title == "Courses" ||
+                    in_array($sourcename, array('dp_certification_history', 'program_completion')) ||
+                    // The answer here depends on if the column we are testing is grouped or not.
+                    ($sourcename == 'program_overview' && $columnoption->grouping == 'none')) {
+                    $this->assertEquals('2', $rb->get_full_count(), $message);
+                } else {
+                    $this->assertEquals('1', $rb->get_full_count(), $message);
+                }
             }
 
             foreach ($src->filteroptions as $filter) {
-                // create a report
+                // Create a report.
                 $report = new stdClass();
-                $report->fullname = 'Test Report';
-                $report->shortname = 'test1';
+                $report->fullname = $reportname;
+                $report->shortname = 'test' . $i++;
                 $report->source = $sourcename;
                 $report->hidden = 0;
                 $report->accessmode = 0;
                 $report->contentmode = 0;
                 $reportid = $DB->insert_record('report_builder', $report);
-                // If the filter is based on a column, include that column
+                // If the filter is based on a column, include that column.
                 if (empty($filter->field)) {
-                    // add a single column
+                    // Add a single column.
                     $col = new stdClass();
                     $col->reportid = $reportid;
                     $col->type = $filter->type;
                     $col->value = $filter->value;
-                    $col->heading = 'Test';
+                    $col->heading = 'Test' . $i++;
                     $col->sortorder = 1;
                     $colid = $DB->insert_record('report_builder_columns', $col);
                 }
-                // add a single filter
+                // Add a single filter.
                 $fil = new stdClass();
                 $fil->reportid = $reportid;
                 $fil->type = $filter->type;
                 $fil->value = $filter->value;
-                //$fil->advanced = addslashes($filter->defaultadvanced);
                 $fil->sortorder = 1;
                 $filid = $DB->insert_record('report_builder_filters', $fil);
-                // create the reportbuilder object
-                // echo '<h5>Filter option : Test ' . $filter->type . '-' . $filter->value . ' filter:</h5>'."\n";
+
+                // Create the reportbuilder object.
                 $rb = new reportbuilder($reportid);
-                // set session to filter by this column
-                $filtername = 'filtering_test1';
+
+                // Set session to filter by this column.
                 $fname = $filter->type . '-' . $filter->value;
                 $SESSION->{$filtername} = array();
                 $SESSION->{$filtername}[$fname] = array();
@@ -778,12 +758,8 @@ class columns_test extends reportcache_advanced_testcase {
                 $message .= "SQL : {$sql[0]}\n";
                 $message .= "SQL Params : " . var_export($sql[1], true) . "\n";
                 $this->assertRegExp('/[012]/', (string)$rb->get_filtered_count(), $message);
-                // remove afterwards
-                $DB->delete_records('report_builder', array('id' => $reportid));
                 unset($SESSION->{$filtername});
             }
         }
-
-        $this->resetAfterTest(true);
     }
 }

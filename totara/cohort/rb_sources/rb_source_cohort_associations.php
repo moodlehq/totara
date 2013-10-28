@@ -146,20 +146,9 @@ class rb_source_cohort_associations extends rb_base_source {
             get_string('associationactionsenrolled', 'totara_cohort'),
             'base.id',
             array(
-                'displayfunc'=>'associationactionsenrolled',
-                'extrafields'=>array('cohortid'=>'base.cohortid'),
-                'nosort'=>true
-            )
-        );
-        $columnoptions[] = new rb_column_option(
-            'associations',
-            'actionsvisible',
-            get_string('associationactionsvisible', 'totara_cohort'),
-            'base.id',
-            array(
-                'displayfunc'=>'associationactionsenrolled',
-                'extrafields'=>array('cohortid'=>'base.cohortid'),
-                'nosort'=>true
+                'displayfunc' => 'associationactionsenrolled',
+                'extrafields' => array('cohortid' => 'base.cohortid', 'type' => 'base.instancetype'),
+                'nosort' => true
             )
         );
         $columnoptions[] = new rb_column_option(
@@ -330,13 +319,11 @@ class rb_source_cohort_associations extends rb_base_source {
         if ($strdelete === false) {
             $strdelete = get_string('deletelearningitem', 'totara_cohort');
         }
-        $backurl = new moodle_url('/totara/cohort/enrolledlearning.php', array('id' => $row->cohortid));
         $delurl = new moodle_url('/totara/cohort/dialog/updatelearning.php',
             array('cohortid' => $row->cohortid,
             'type' => $row->type,
             'd' => $associationid,
-            'sesskey' => sesskey(),
-            'backurl' => $backurl->out()));
+            'sesskey' => sesskey()));
         return html_writer::link($delurl, $OUTPUT->pix_icon('t/delete', $strdelete), array('title' => $strdelete, 'class' => 'learning-delete'));
     }
 
