@@ -1083,9 +1083,13 @@ class appraisal {
                   FROM {appraisal} app
                   JOIN {appraisal_user_assignment} aua
                     ON aua.appraisalid = app.id
+                  JOIN {appraisal_role_assignment} ara
+                    ON ara.appraisaluserassignmentid = aua.id
                  WHERE app.status <> ?
-                   AND aua.userid = ?";
-        $count = $DB->count_records_sql($sql, array(self::STATUS_DRAFT, $userid));
+                   AND aua.userid = ?
+                   AND ara.userid = ?
+                   AND ara.appraisalrole = ?";
+        $count = $DB->count_records_sql($sql, array(self::STATUS_DRAFT, $userid, $userid, self::ROLE_LEARNER));
 
         return ($count > 0);
     }
