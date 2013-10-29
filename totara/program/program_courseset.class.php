@@ -1541,7 +1541,9 @@ class competency_course_set extends course_set {
     }
 
     public function display($userid=null,$previous_sets=array(),$next_sets=array(),$accessible=true, $viewinganothersprogram=false) {
-        global $OUTPUT, $DB;
+        global $OUTPUT, $DB, $CFG;
+
+        require_once($CFG->dirroot . '/totara/coursecatalog/lib.php');
 
         $out = '';
         $out .= html_writer::start_tag('fieldset', array('class' => 'surround display-program'));
