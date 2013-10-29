@@ -25,15 +25,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-    // View a certification.
-    'totara/certification:viewcertification' => array(
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_PROGRAM,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW,
-            'user' => CAP_ALLOW,
-        )
-    ),
     // View hidden certifications.
     'totara/certification:viewhiddencertifications' => array(
         'captype' => 'read',
@@ -42,15 +33,6 @@ $capabilities = array(
             'coursecreator' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
-    // Access any user's certifications.
-    'totara/certification:accessanycertification' => array(
-        'riskbitmask' => RISK_PERSONAL,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_PROGRAM,
-        'archetypes' => array(
             'manager' => CAP_ALLOW
         )
     ),
@@ -94,45 +76,5 @@ $capabilities = array(
             'manager' => CAP_ALLOW,
         ),
         'clonepermissionsfrom' => 'totara/certification:configurecertification'
-    ),
-    // Ability to add and remove certification content and configure the flow of content.
-    'totara/certification:configurecontent' => array(
-        'riskbitmask' => RISK_DATALOSS |
-            RISK_CONFIG,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_PROGRAM,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW,
-        )
-    ),
-    // Ability to add and remove certification recertificationdetails.
-    'totara/certification:configurerecertificationdetails' => array(
-        'riskbitmask' => RISK_DATALOSS |
-            RISK_CONFIG,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_PROGRAM,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW,
-        )
-    ),
-    // Ability to add and remove certification messages.
-    'totara/certification:configuremessages' => array(
-        'riskbitmask' => RISK_DATALOSS |
-            RISK_CONFIG,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_PROGRAM,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW,
-        )
-    ),
-    // Ability to view exception reports and handle exceptions.
-    'totara/certification:handleexceptions' => array(
-        'riskbitmask' => RISK_DATALOSS |
-            RISK_CONFIG,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_PROGRAM,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW,
-        )
     ),
 );
