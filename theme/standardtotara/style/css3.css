@@ -95,7 +95,6 @@ a.link-as-button:hover {
     color: #000000;
     text-decoration:none;
     background-color:#e6e6e6;
-    background-position:0 -15px;
     -webkit-transition:background-position .1s linear;
     -moz-transition:background-position .1s linear;
     -ms-transition:background-position .1s linear;
