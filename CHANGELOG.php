@@ -3,6 +3,24 @@
 
 Totara LMS Changelog
 
+Release 2.4.13 (29th October 2013):
+==================================================
+
+Improvements:
+    T-11506    Added Time signed up to attendees tab for Face to Face
+    T-11337    Added a warning message about associated items when deleting a hierarchy type
+    T-11531    Added the ability to specify which user/custom fields fields to export in Face to Face
+
+Bug Fixes:
+    T-11530    Fixed the calendar tab in Face to Face causing issues with collapsable menus
+    T-11529    Fixed incorrect URL on navigation link in Programs
+    T-11468    Switched start/end date defaults from date() to userdate()
+    T-11515    Fixed tables miscalculating the number of columns for empty rows
+    T-11527    Fixed serious issue causing audience text based rules to invert on upgrades
+    T-11335    Fixed precision issue with numeric value field in Hierarchy scales
+    T-11522    Fixed programs sending multiple duplicate messages
+
+
 Release 2.4.12 (15th October 2013):
 ==================================================
 
