@@ -3,12 +3,17 @@ UPGRADING A MOODLE SITE TO TOTARA
 
 These instructions detail the process for upgrading a Moodle site to Totara.
 
+New requirements in Totara 2.5:
+
+* PHP version 5.3.3.
+* PHP GD module now required.
+
 NOTE: Additional plugins, custom themes or customised Moodle code are likely to
     cause conflicts in the upgrade process.
     Review possible conflicts before upgrading to prevent site stability issues.
 
     As of Totara 2.4 you can no longer upgrade from versions of Moodle prior to 2.2.7.
-    Ensure the Moodle site is updated to Moodle version 2.2.7+ before upgrading to Totara 2.4.
+    Ensure the Moodle site is updated to Moodle version 2.2.7+ before upgrading to Totara 2.5.
 
     For more information see http://docs.moodle.org/en/Upgrading
 
@@ -25,9 +30,13 @@ NOTE: Additional plugins, custom themes or customised Moodle code are likely to
 
 5.  Backup the Moodle source code directory.
 
-6.  Merge the existing Moodle source code and new Totara code. This is best
-    accomplished using a version control tool like GIT or SVN. You will
-    need to:
+6a. If your Moodle site is not customised you can replace your moodle code
+    folder with the new moodle code folder and copy your old config.php file
+    to the new folder.
+
+6b. If you have customised moodle you will need to merge your existing Moodle
+    source code and new Totara code. This is best accomplished using a version
+    control tool like GIT or SVN. You will need to:
     - Reuse the existing Moodle's config.php file
     - Ensure any themes are updated to work with Totara
     - Include any existing modules and filters remain in the code
