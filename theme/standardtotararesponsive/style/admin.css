@@ -42,3 +42,10 @@
     background: transparent;
     border: none;
 }
+
+.admin .generalbox {
+    border: 1px solid #BBBBBB;
+    background-color: #EEEEEE;
+    padding: 10px;
+    margin-bottom: 10px;
+}
