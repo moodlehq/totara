@@ -161,6 +161,7 @@ $string['criteriaoptional'] = 'All criteria are optional but you have to select 
 $string['currentusers'] = 'Current users';
 $string['currentusersmatching'] = 'Current users matching';
 $string['dateformathint'] = '&nbsp;<strong>Format:</strong> dd/mm/yy';
+$string['dateformatlongyearhint'] = '&nbsp;<strong>Format:</strong> {$a}';
 $string['dateisbefore'] = ' is before {$a}';
 $string['dateisafter'] = 'is after {$a}';
 $string['dateisbeforepastduration'] = 'is more than {$a} day(s) ago';
