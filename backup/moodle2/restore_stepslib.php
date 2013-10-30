@@ -2204,7 +2204,7 @@ class restore_calendarevents_structure_step extends restore_structure_step {
         } else {
             $params['instance'] = 0;
         }
-        $sql = 'SELECT id FROM {event} WHERE name = ? AND courseid = ? AND
+        $sql = 'SELECT id FROM {event} WHERE ' . $DB->sql_compare_text('name', 255) . ' = ' . $DB->sql_compare_text('?', 255) . ' AND courseid = ? AND
                 repeatid = ? AND modulename = ? AND timestart = ? AND timeduration =?
                 AND ' . $DB->sql_compare_text('description', 255) . ' = ' . $DB->sql_compare_text('?', 255);
         $arg = array ($params['name'], $params['courseid'], $params['repeatid'], $params['modulename'], $params['timestart'], $params['timeduration'], $params['description']);
