@@ -37,6 +37,8 @@ class cohort_edit_form extends moodleform {
         $mform = $this->_form;
         $editoroptions = $this->_customdata['editoroptions'];
         $cohort = $this->_customdata['data'];
+        $placeholder = get_string('datepickerlongyearplaceholder', 'totara_core');
+        $hint = get_string('dateformatlongyearhint', 'totara_cohort', $placeholder);
 
         $mform->addElement('text', 'name', get_string('name', 'cohort'), 'maxlength="254" size="50"');
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
@@ -60,8 +62,8 @@ class cohort_edit_form extends moodleform {
         // startdate
         $group = array();
         $group[] = $mform->createElement('text', 'startdate', '', array('name' => get_string('startdate', 'totara_cohort'),
-            'placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
-        $group[] = $mform->createElement('static', 'startdate_hint', '', get_string('dateformathint', 'totara_cohort'));
+            'placeholder' => $placeholder));
+        $group[] = $mform->createElement('static', 'startdate_hint', '', $hint);
         $mform->addGroup($group, 'startdate_group', get_string('startdate', 'totara_cohort'), array(' '), false);
         $mform->setType('startdate', PARAM_TEXT);
         $mform->setDefault('startdate', get_string('datepickerlongyeardisplayformat', 'totara_core'));
@@ -70,8 +72,8 @@ class cohort_edit_form extends moodleform {
          // enddate
         $group = array();
         $group[] = $mform->createElement('text', 'enddate', '', array('name' => get_string('enddate', 'totara_cohort'),
-            'placeholder' => get_string('datepickerlongyearplaceholder', 'totara_core')));
-        $group[] = $mform->createElement('static', 'enddate_hint', '', get_string('dateformathint', 'totara_cohort'));
+            'placeholder' => $placeholder));
+        $group[] = $mform->createElement('static', 'enddate_hint', '', $hint);
         $mform->addGroup($group, 'enddate_group', get_string('enddate', 'totara_cohort'), array(' '), false);
         $mform->setType('enddate', PARAM_TEXT);
         $mform->setDefault('enddate', get_string('datepickerlongyeardisplayformat', 'totara_core'));
