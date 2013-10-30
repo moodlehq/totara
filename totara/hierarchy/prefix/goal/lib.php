@@ -738,7 +738,7 @@ class goal extends hierarchy {
     public static function get_user_assignments($userid, $canedit = null, $display = false) {
         global $CFG, $DB, $OUTPUT;
 
-        $sql = "SELECT *
+        $sql = "SELECT gua.*
             FROM {goal_user_assignment} gua
             JOIN {goal} g ON (g.id = gua.goalid AND g.visible = 1)
             WHERE userid = :userid
