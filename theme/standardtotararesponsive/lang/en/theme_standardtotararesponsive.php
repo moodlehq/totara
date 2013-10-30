@@ -27,4 +27,4 @@
 $string['pluginname'] = 'Standard Totara Responsive';
 $string['region-side-post'] = 'Right';
 $string['region-side-pre'] = 'Left';
-$string['choosereadme'] = 'This theme is a simple but clean responsive totara theme, suitable for use as a base when building new themes.';
+$string['choosereadme'] = 'This theme is a simple but clean responsive totara theme, suitable for use as a base when building new responsive themes. Note that currently this theme is experimental. Please report any issues found via the normal support channels.';
