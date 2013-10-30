@@ -48,16 +48,6 @@ if (isset($CFG->totara_release)){
     }
 }
 
-// Switch to default theme in 2.4.
-if ($CFG->version < 2012120303.02) {
-    echo $OUTPUT->heading(get_string('totaraupgradesetstandardtheme', 'totara_core'));
-
-    set_config('theme', 'standardtotara');
-
-    echo $OUTPUT->notification($success, 'notifysuccess');
-    print_upgrade_separator();
-}
-
 // Check unique idnumbers in totara tables.
 if ($CFG->version < 2013051402.00) {
     echo $OUTPUT->heading(get_string('totaraupgradecheckduplicateidnumbers', 'totara_core'));
