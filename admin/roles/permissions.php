@@ -93,6 +93,10 @@ switch ($context->contextlevel) {
     case CONTEXT_COURSECAT:
         $PAGE->set_heading("$SITE->fullname: ".get_string("categories"));
         break;
+    case CONTEXT_PROGRAM:
+        $program = $DB->get_record('prog', array('id' => $context->instanceid), '*', MUST_EXIST);
+        $PAGE->set_heading($program->fullname);
+        break;
     case CONTEXT_COURSE:
         if ($isfrontpage) {
             admin_externalpage_setup('frontpageroles', '', array(), $PAGE->url);
