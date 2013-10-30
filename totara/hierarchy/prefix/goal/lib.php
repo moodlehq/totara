@@ -738,7 +738,12 @@ class goal extends hierarchy {
     public static function get_user_assignments($userid, $canedit = null, $display = false) {
         global $CFG, $DB, $OUTPUT;
 
-        $assignments = $DB->get_records('goal_user_assignment', array('userid' => $userid), 'goalid, assigntype');
+        $sql = "SELECT *
+            FROM {goal_user_assignment} gua
+            JOIN {goal} g ON (g.id = gua.goalid AND g.visible = 1)
+            WHERE userid = :userid
+            ORDER BY goalid, assigntype";
+        $assignments = $DB->get_records_sql($sql, array('userid' => $userid));
 
         $assignment_info = array();
         foreach ($assignments as $assignment) {
