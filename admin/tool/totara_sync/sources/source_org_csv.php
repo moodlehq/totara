@@ -78,7 +78,28 @@ class totara_sync_source_org_csv extends totara_sync_source_org {
              $mform->addElement('static', 'uploadfilelink', get_string('uploadfilelink', 'tool_totara_sync', $link));
         }
 
+        $delimiteroptions = array(
+            ',' => get_string('comma', 'tool_totara_sync'),
+            ';' => get_string('semicolon', 'tool_totara_sync'),
+            ':' => get_string('colon', 'tool_totara_sync'),
+            '\t' => get_string('tab', 'tool_totara_sync'),
+            '|' => get_string('pipe', 'tool_totara_sync')
+        );
+
+        $mform->addElement('select', 'delimiter', get_string('delimiter', 'tool_totara_sync'), $delimiteroptions);
+        $default = $this->config->delimiter;
+        if (empty($default)) {
+            $default = ',';
+        }
+        $mform->setDefault('delimiter', $default);
+
         parent::config_form($mform);
+    }
+
+    function config_save($data) {
+        $this->set_config('delimiter', $data->{'delimiter'});
+
+        parent::config_save($data);
     }
 
     function import_data($temptable) {
