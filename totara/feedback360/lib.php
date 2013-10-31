@@ -1764,13 +1764,13 @@ class request_feedback_potential_user_selector extends user_selector_base {
         if (!empty($this->currentusers)) {
             list($usersql, $userparams) = $DB->get_in_or_equal($this->currentusers, SQL_PARAMS_NAMED, 'param', false);
 
-            $sql .= "AND u.id $usersql";
+            $sql .= " AND u.id $usersql";
             $params = array_merge($params, $userparams);
         }
 
         if (!$this->is_validating()) {
             $potentialmemberscount = $DB->count_records_sql("SELECT COUNT(DISTINCT u.id) $sql", $params);
-            if ($potentialmemberscount > group_non_members_selector::MAX_USERS_PER_PAGE) {
+            if ($potentialmemberscount > $this->maxusersperpage) {
                 return $this->too_many_results($search, $potentialmemberscount);
             }
         }
@@ -1830,7 +1830,7 @@ class request_feedback_current_user_selector extends user_selector_base {
 
         if (!$this->is_validating()) {
             $potentialmemberscount = $DB->count_records_sql("SELECT COUNT(DISTINCT u.id) $sql", $params);
-            if ($potentialmemberscount > group_non_members_selector::MAX_USERS_PER_PAGE) {
+            if ($potentialmemberscount > $this->maxusersperpage) {
                 return $this->too_many_results($search, $potentialmemberscount);
             }
         }
