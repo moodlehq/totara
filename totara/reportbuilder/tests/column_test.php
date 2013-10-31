@@ -619,6 +619,7 @@ class columns_test extends reportcache_advanced_testcase {
         // Loop through installed sources.
         $sourcelist = reportbuilder::get_source_list(true);
         foreach ($sourcelist as $sourcename => $title) {
+            $sourcecheck = in_array($sourcename, array('dp_certification_history', 'program_completion', 'user', 'courses'));
             // echo '<h3>Title : [' . $title . '] Sourcename : [' . $sourcename . ']</h3>' . "\n";
             $src = reportbuilder::get_source_object($sourcename);
             foreach ($src->columnoptions as $column) {
@@ -642,12 +643,7 @@ class columns_test extends reportcache_advanced_testcase {
                 // Create the reportbuilder object.
                 $rb = new reportbuilder($reportid);
                 $sql = $rb->build_query();
-                // echo '<h5>sql ' . var_export($sql, true) . '</h5>' . "\n";
-                $records = $DB->get_recordset_sql($sql[0], $sql[1], 0, 40);
-                foreach ($records as $record) {
-                    $data = $rb->process_data_row($record);
-                }
-                $records->close();
+
                 $message = "\nReport title : {$title}\n";
                 $message .= "Report sourcename : {$sourcename}\n";
                 $message .= "Column option : Test {$column->type}_{$column->value} column\n";
@@ -657,10 +653,8 @@ class columns_test extends reportcache_advanced_testcase {
                 // Get the column option object.
                 $columnoption = reportbuilder::get_single_item($rb->columnoptions, $column->type, $column->value);
 
-                if ($title == "User" || $title == "Courses" ||
-                    in_array($sourcename, array('dp_certification_history', 'program_completion')) ||
-                    // The answer here depends on if the column we are testing is grouped or not.
-                    ($sourcename == 'program_overview' && $columnoption->grouping == 'none')) {
+                // The answer here depends on if the column we are testing is grouped or not.
+                if ($sourcecheck || ($sourcename == 'program_overview' && $columnoption->grouping == 'none')) {
                     $this->assertEquals('2', $rb->get_full_count(), $message);
                 } else {
                     $this->assertEquals('1', $rb->get_full_count(), $message);
@@ -669,13 +663,8 @@ class columns_test extends reportcache_advanced_testcase {
                 // Now, test the same with report caching.
                 $this->enable_caching($reportid);
                 $rb = new reportbuilder($reportid);
-
                 $sql = $rb->build_query();
-                $records = $DB->get_recordset_sql($sql[0], $sql[1], 0, 40);
-                foreach ($records as $record) {
-                    $data = $rb->process_data_row($record);
-                }
-                $records->close();
+
                 $message = "\nReport title : {$title}\n";
                 $message .= "Report sourcename : {$sourcename}\n";
                 $message .= "Column option : Test {$column->type}_{$column->value} column\n";
@@ -685,10 +674,8 @@ class columns_test extends reportcache_advanced_testcase {
                 // Get the column option object.
                 $columnoption = reportbuilder::get_single_item($rb->columnoptions, $column->type, $column->value);
 
-                if ($title == "User" || $title == "Courses" ||
-                    in_array($sourcename, array('dp_certification_history', 'program_completion')) ||
-                    // The answer here depends on if the column we are testing is grouped or not.
-                    ($sourcename == 'program_overview' && $columnoption->grouping == 'none')) {
+                // The answer here depends on if the column we are testing is grouped or not.
+                if ($sourcecheck || ($sourcename == 'program_overview' && $columnoption->grouping == 'none')) {
                     $this->assertEquals('2', $rb->get_full_count(), $message);
                 } else {
                     $this->assertEquals('1', $rb->get_full_count(), $message);
@@ -724,13 +711,8 @@ class columns_test extends reportcache_advanced_testcase {
                 $fil->sortorder = 1;
                 $filid = $DB->insert_record('report_builder_filters', $fil);
 
-                // Create the reportbuilder object.
-                $rb = new reportbuilder($reportid);
-
                 // Set session to filter by this column.
                 $fname = $filter->type . '-' . $filter->value;
-                $SESSION->{$filtername} = array();
-                $SESSION->{$filtername}[$fname] = array();
                 switch($filter->filtertype) {
                     case 'date':
                         $search = array('before' => null, 'after' => 1);
@@ -742,23 +724,19 @@ class columns_test extends reportcache_advanced_testcase {
                         $search = array('operator' => 1, 'value' => 2);
                         break;
                 }
+                $SESSION->{$filtername} = array();
                 $SESSION->{$filtername}[$fname] = array($search);
+
+                // Create the reportbuilder object.
+                $rb = new reportbuilder($reportid);
                 $sql = $rb->build_query(false, true);
 
-                $records = $DB->get_recordset_sql($sql[0], $sql[1]);
-
-                foreach ($records as $record) {
-                    $data = $rb->process_data_row($record);
-                }
-
-                $records->close();
                 $message = "\nReport title : {$title}\n";
                 $message .= "Report sourcename : {$sourcename}\n";
                 $message .= "Filter option : Test {$filter->type}_{$filter->value} filter\n";
                 $message .= "SQL : {$sql[0]}\n";
                 $message .= "SQL Params : " . var_export($sql[1], true) . "\n";
                 $this->assertRegExp('/[012]/', (string)$rb->get_filtered_count(), $message);
-                unset($SESSION->{$filtername});
             }
         }
     }
