@@ -95,7 +95,7 @@ M.totara_version_tracking = M.totara_version_tracking || {
 
                 // if branch is unsupported, tell them the latest version
                 if (currentbranch == BRANCH_UNSUPPORTED) {
-                    var message = M.util.get_string('unsupported_branch_text', 'totara_core', this.config.major_version);
+                    var message = M.util.get_string('unsupported_branch_text', 'totara_core', module.config.major_version);
                     message = message.replace('[[CURRENT_MAJOR_VERSION]]', current_major_version);
                     module.display_message(message);
                     return true;
@@ -104,7 +104,7 @@ M.totara_version_tracking = M.totara_version_tracking || {
                 // release is either up to date or unknown, just let them know it's
                 // not the newest major release
                 if (currentbranch == BRANCH_SUPPORTED && currentrelease != RELEASE_NOT_CURRENT) {
-                    var message = M.util.get_string('supported_branch_text', 'totara_core', this.config.major_version);
+                    var message = M.util.get_string('supported_branch_text', 'totara_core', module.config.major_version);
                     message = message.replace('[[CURRENT_MAJOR_VERSION]]', current_major_version);
                     module.display_message(message);
                     return true;
@@ -123,7 +123,7 @@ M.totara_version_tracking = M.totara_version_tracking || {
                 }
 
                 if (currentbranch == BRANCH_SUPPORTED) {
-                    message += M.util.get_string('supported_branch_old_release_text', 'totara_core', $major_version);;
+                    message += M.util.get_string('supported_branch_old_release_text', 'totara_core', module.config.major_version);
                     message = message.replace('[[CURRENT_MAJOR_VERSION]]', current_major_version);
                 }
                 module.display_message(message);
