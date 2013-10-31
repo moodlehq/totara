@@ -203,7 +203,7 @@ class cohort_rule_sqlhandler_in_usercustomfield extends cohort_rule_sqlhandler_i
                                             FROM {user_info_data} usinda
                                             WHERE usinda.userid = u.id
                                               AND usinda.fieldid = {$field}
-                                              AND usinda.data = '{$rule}'
+                                              AND {$DB->sql_compare_text('usinda.data')} = '{$rule}'
                                        )";
                 } else {
                     $sqlhandler->sql = "NOT EXISTS (
@@ -211,7 +211,7 @@ class cohort_rule_sqlhandler_in_usercustomfield extends cohort_rule_sqlhandler_i
                                             FROM {user_info_data} usinda
                                             WHERE usinda.userid = u.id
                                               AND usinda.fieldid = {$field}
-                                              AND usinda.data != '{$rule}'
+                                              AND {$DB->sql_compare_text('usinda.data')} != '{$rule}'
                                        )";
                 }
             }
@@ -223,7 +223,7 @@ class cohort_rule_sqlhandler_in_usercustomfield extends cohort_rule_sqlhandler_i
                             INNER JOIN {user_info_field} usinfi
                               ON usinda.fieldid = usinfi.id
                             WHERE usinda.userid = u.id
-                              AND usinfi.name = '{$field}'
+                              AND {$DB->sql_compare_text('usinfi.name', 255)} = '{$field}'
                               AND ( ";
 
             $query = " usinda.data ";
