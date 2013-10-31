@@ -177,10 +177,8 @@ class rb_source_appraisal_detail extends rb_source_appraisal {
         return array_merge($extendedcolumnoptions, parent::define_columnoptions());
     }
 
-    public function post_config($params) {
-        if (!empty($params)) {
-            $this->appraisalid = $params[0]->value;
-        }
+    public function post_config(reportbuilder $report) {
+        $this->appraisalid = required_param('appraisalid', PARAM_INT);
 
         $extendedjoinlist = array(
             new rb_join(

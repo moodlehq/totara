@@ -271,7 +271,7 @@ class reportbuilder {
             $this->_embeddedparams = $embed->embeddedparams;
         }
         $this->_params = $this->get_current_params();
-        $this->src->post_config($this->_params);
+        $this->src->post_config($this);
 
         // Pull in the rest of the data for this report from the source.
         $this->_base = $this->src->base . ' base';

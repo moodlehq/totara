@@ -121,14 +121,16 @@ class rb_source_goal_summary extends rb_base_source {
     }
 
 
-    public function post_config($params) {
+    public function post_config(reportbuilder $report) {
         global $DB;
 
-        if (empty($params)) {
+        $goalframeworkid = optional_param('goalframeworkid', 0, PARAM_INT);
+
+        if (!$goalframeworkid) {
             return;
         }
 
-        $this->goalframeworkid = $params[0]->value;
+        $this->goalframeworkid = $goalframeworkid;
 
         $scaleassignment = $DB->get_record('goal_scale_assignments', array('frameworkid' => $this->goalframeworkid));
 

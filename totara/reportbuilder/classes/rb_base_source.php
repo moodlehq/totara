@@ -3211,9 +3211,13 @@ abstract class rb_base_source {
     /**
      * Called after parameters have been read, allows the source to configure source title, additional tables, etc.
      *
+     * post_config() can add extra data to the query by adding to joinlist and columnoptions
+     * or by calling the following method on the $report object:
+     * {@link $report->set_post_config_restrictions()}    Extra WHERE clause
+     *
      * @param array $params
      */
-    public function post_config($params) {
+    public function post_config(reportbuilder $report) {
     }
 
     /**
