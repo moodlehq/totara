@@ -23,6 +23,8 @@
  * @subpackage cohort
  */
 
+require_once($CFG->dirroot . '/totara/core/db/utils.php');
+
 /**
  * DB upgrades for Totara dynamic cohorts
  */
