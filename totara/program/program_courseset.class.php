@@ -43,7 +43,7 @@ abstract class course_set {
     public $uniqueid;
     public $certifpath;
 
-    public function __construct($programid, $setob=null, $uniqueid=null, $certifpath=null) {
+    public function __construct($programid, $setob=null, $uniqueid=null) {
         if (is_object($setob)) {
             $this->id = $setob->id;
             $this->programid = $setob->programid;
@@ -481,7 +481,7 @@ class multi_course_set extends course_set {
 
     public $courses, $courses_deleted_ids;
 
-    public function __construct($programid, $setob=null, $uniqueid=null, $certifpath=null) {
+    public function __construct($programid, $setob=null, $uniqueid=null) {
         global $DB;
         parent::__construct($programid, $setob, $uniqueid);
 

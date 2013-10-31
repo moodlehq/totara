@@ -222,8 +222,8 @@ class prog_content {
                 }
 
                 $courseset_classname = $this->courseset_classnames[$contenttype];
-                // skeleton courseset
-                $courseset = new $courseset_classname($this->programid, null, $prefix, $formdata->{'certifpath'.$suffix});
+                // Skeleton courseset.
+                $courseset = new $courseset_classname($this->programid, null, $prefix);
                 $courseset->certifpath = $formdata->{'certifpath'.$suffix};
                 $courseset->init_form_data($prefix, $formdata);
                 $this->coursesets[] = $courseset;
@@ -258,7 +258,7 @@ class prog_content {
             $courseset_classname = $this->courseset_classnames[$contenttype];
 
             // skeleton courseset eg 'multi_course_set' program_courseset.class.php
-            $courseset = new $courseset_classname($this->programid, null, $prefix, CERTIFPATH_RECERT);
+            $courseset = new $courseset_classname($this->programid, null, $prefix);
             $courseset->certifpath = CERTIFPATH_RECERT;
 
             // adds courses and parent::init_form_data() adds other members

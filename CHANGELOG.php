@@ -155,7 +155,6 @@ UPGRADE.txt for more details.
 * T-11158 Changed 2nd argument of totara_get_category_item_count() from bool to string to support certifications.
 *         Added $certifpath argument to get_total_time_allowance() and get_courseset_groups().
 *         Added optional $iscertif and $certifpath arguments to get_content_form_template().
-*         Added optional $certifpath argument to course_set and multi_course_set class constructors.
 *         New $certificationpath argument to display_edit_assignment_form().
 *         Renamed incorrectly named $userpic argument to $user in display_user_message_box().
 * T-11182 Add 2 new permission related arguments to customfield_edit_icons().
