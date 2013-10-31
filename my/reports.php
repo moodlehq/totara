@@ -33,13 +33,36 @@ require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 
 require_login();
 
+$edit = optional_param('edit', -1, PARAM_BOOL);
+
 $strheading = get_string('myreports', 'totara_core');
 
 $PAGE->set_context(context_system::instance());
+$PAGE->set_pagelayout('standard');
+$PAGE->set_pagetype('my-reports');
 $PAGE->set_title($strheading);
 $PAGE->set_url(new moodle_url('/my/reports.php'));
 $PAGE->set_totara_menu_selected('myreports');
 $PAGE->navbar->add($strheading);
+
+if (!isset($USER->editing)) {
+    $USER->editing = 0;
+}
+if ($PAGE->user_allowed_editing()) {
+    $editbutton = $OUTPUT->edit_button($PAGE->url);
+    $PAGE->set_button($editbutton);
+
+    if ($edit == 1 && confirm_sesskey()) {
+        $USER->editing = 1;
+        $url = new moodle_url($PAGE->url, array('notifyeditingon' => 1));
+        redirect($url);
+    } else if ($edit == 0 && confirm_sesskey()) {
+        $USER->editing = 0;
+        redirect($PAGE->url);
+    }
+} else {
+    $USER->editing = 0;
+}
 
 echo $OUTPUT->header();
 
