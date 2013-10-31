@@ -689,11 +689,9 @@ input[type="checkbox"] {
     background: transparent;
     color: #087BB1;
 }
-.tabtree .tabrow0 li.active ul li > a:hover {
-    text-decoration: underline;
-}
 .tabtree .tabrow0 li.active ul li.selected > a {
     border: none;
+    color: #333333;
 }
 .tabtree .tabrow0 li.here .empty {
     display:block;
@@ -706,6 +704,17 @@ input[type="checkbox"] {
     height: 1px;
     background: transparent;
     border-top: 1px solid #aaa;
+}
+.tabtree .tabrow1 {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    margin: 0;
+    overflow: hidden;
+    border-top: 1px solid #bbbbbb;
+}
+.tabtree .tabrow1 li.here .empty {
+    display: none;
 }
 .dir-rtl .tabtree .tabrow0 li.here .empty {
     right: 0;
