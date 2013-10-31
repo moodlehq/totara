@@ -27,6 +27,8 @@
  * DB upgrades for Totara dynamic cohorts
  */
 
+require_once($CFG->dirroot . '/totara/core/db/utils.php');
+
 function xmldb_totara_cohort_upgrade($oldversion) {
 
     global $CFG, $DB, $OUTPUT, $USER, $PAGE;
