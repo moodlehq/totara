@@ -3150,6 +3150,7 @@ class restore_userscompletion_structure_step extends restore_structure_step {
         $data->coursemoduleid = $this->task->get_moduleid();
         $data->userid = $this->get_mappingid('user', $data->userid);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
+        $data->timecompleted = $this->apply_date_offset($data->timecompleted);
 
         // Find the existing record
         $existing = $DB->get_record('course_modules_completion', array(

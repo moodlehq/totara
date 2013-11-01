@@ -50,7 +50,7 @@ class backup_facetoface_activity_structure_step extends backup_activity_structur
         $facetoface = new backup_nested_element('facetoface', array('id'), array(
             'name', 'intro', 'introformat', 'thirdparty', 'thirdpartywaitlist', 'display',
             'timecreated', 'timemodified', 'shortname', 'showoncalendar', 'approvalreqd', 'usercalentry',
-            'multiplesessions'));
+            'multiplesessions', 'completionstatusrequired'));
         $notifications = new backup_nested_element('notifications');
 
         $notification = new backup_nested_element('notification', array('id'), array(
