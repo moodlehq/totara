@@ -42,7 +42,7 @@ if (file_exists($CFG->libdir.'/completionlib.php')) {
 /**
  * Utility definitions
  */
-define('MDL_F2F_ICAL',          1);
+define('MDL_F2F_NONE',          0);
 define('MDL_F2F_TEXT',          2);
 define('MDL_F2F_BOTH',          3);
 define('MDL_F2F_INVITE',        4);
@@ -1700,7 +1700,7 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
     }
 
     // Send notification.
-    if ($notifyuser) {
+    if ($notifyuser && (int)$notificationtype != MDL_F2F_NONE) {
         switch ($new_status) {
             case MDL_F2F_STATUS_BOOKED:
                 $error = facetoface_send_confirmation_notice($facetoface, $session, $userid, $notificationtype, false);

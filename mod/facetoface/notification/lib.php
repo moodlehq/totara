@@ -742,10 +742,10 @@ class facetoface_notification extends data_object {
  * @param class $session record from the facetoface_sessions table
  * @param integer $userid ID of the recipient of the email
  * @param array $params The parameters for the notification
- * @param mixed $icalattachmenttype The ical attachment type, or null to disable ical attachments
+ * @param mixed $icalattachmenttype The ical attachment type, or MDL_F2F_TEXT to disable ical attachments
  * @return string Error message (or empty string if successful)
  */
-function facetoface_send_notice($facetoface, $session, $userid, $params, $icalattachmenttype = null) {
+function facetoface_send_notice($facetoface, $session, $userid, $params, $icalattachmenttype = MDL_F2F_TEXT) {
     global $DB;
 
     $user = $DB->get_record('user', array('id' => $userid));
@@ -765,7 +765,7 @@ function facetoface_send_notice($facetoface, $session, $userid, $params, $icalat
         $sessiondates = $session->sessiondates;
         foreach ($sessiondates as $sessiondate) {
             $session->sessiondates = array($sessiondate); // One day at a time.
-            if (!empty($icalattachmenttype)) {
+            if ((int)$icalattachmenttype == MDL_F2F_BOTH) {
                 $ical_attach = facetoface_get_ical_attachment($icalattachmenttype, $facetoface, $session, $userid);
                 $notice->set_ical_attachment($ical_attach);
             }
@@ -774,7 +774,7 @@ function facetoface_send_notice($facetoface, $session, $userid, $params, $icalat
         // Restore session dates.
         $session->sessiondates = $sessiondates;
     } else {
-        if (!empty($icalattachmenttype)) {
+        if ((int)$icalattachmenttype == MDL_F2F_BOTH) {
             $ical_attach = facetoface_get_ical_attachment($icalattachmenttype, $facetoface, $session, $userid);
             $notice->set_ical_attachment($ical_attach);
         }
@@ -875,7 +875,7 @@ function facetoface_send_confirmation_notice($facetoface, $session, $userid, $no
         $params['conditiontype'] = MDL_F2F_CONDITION_BOOKING_CONFIRMATION;
     }
 
-    return facetoface_send_notice($facetoface, $session, $userid, $params, MDL_F2F_INVITE);
+    return facetoface_send_notice($facetoface, $session, $userid, $params, $notificationtype);
 }
 
 
