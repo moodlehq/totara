@@ -475,13 +475,22 @@ function get_users($get=true, $search='', $confirmed=false, array $exceptions=nu
  */
 function get_users_listing($sort='lastaccess', $dir='ASC', $page=0, $recordsperpage=0,
                            $search='', $firstinitial='', $lastinitial='', $extraselect='',
-                           array $extraparams=null, $extracontext = null) {
+                           array $extraparams=null, $extracontext = null, $excludedeleted = true) {
     global $DB, $CFG;
 
     $fullname  = $DB->sql_fullname();
 
-    $select = "deleted <> 1 AND id <> :guestid";
+    $select = " id <> :guestid";
     $params = array('guestid' => $CFG->siteguest);
+
+    if ($excludedeleted) {
+        // Moodle core default behaviour - if deleted not specified, or 0, exclude deleted users.
+        $select .= " AND deleted <> 1";
+    } else {
+        // Get deleted users as well, excluding legacy-deleted ones with md5 hash as email.
+        $select .= ' AND ' . $DB->sql_like('email', ':nolegacyemail', false);
+        $params['nolegacyemail'] = '%@%';
+    }
 
     if (!empty($search)) {
         $search = trim($search);

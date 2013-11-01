@@ -247,9 +247,9 @@
 
     list($extrasql, $params) = $ufiltering->get_sql_filter();
     $users = get_users_listing($sort, $dir, $page*$perpage, $perpage, '', '', '',
-            $extrasql, $params, $context);
-    $usercount = get_users(false);
-    $usersearchcount = get_users(false, '', false, null, "", '', '', '', '', '*', $extrasql, $params);
+            $extrasql, $params, $context, $excludedeleted);
+    $usercount = get_users(false, '', false, null, 'firstname ASC', '', '', '', '', '*', '', null, $excludedeleted);
+    $usersearchcount = get_users(false, '', false, null, "", '', '', '', '', '*', $extrasql, $params, $excludedeleted);
 
     if ($extrasql !== '') {
         echo $OUTPUT->heading("$usersearchcount / $usercount ".get_string('users'));
