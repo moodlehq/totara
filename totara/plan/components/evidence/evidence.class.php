@@ -78,7 +78,7 @@ class dp_evidence_relation {
         if ($this->linked_evidence_exists()) {
             $out .=  $this->list_linked_evidence($canupdate && !$plancompleted);
         } else {
-            $out .=  html_writer::tag('p', get_string('nolinkedx', 'totara_plan', strtolower($evidencename)),
+            $out .=  html_writer::tag('p', get_string('nolinkedx', 'totara_plan', mb_strtolower($evidencename, "UTF-8")),
                     array('class' => 'noitems-assignevidence'));
         }
 
