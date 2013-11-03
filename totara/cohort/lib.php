@@ -959,26 +959,32 @@ function totara_cohort_notify_del_users($cohortid, $deluserids, $delaymessages=f
 function totara_cohort_notify_users($cohortid, $userids, $action, $delaymessages=false) {
     global $CFG, $DB, $USER;
 
-    if ($delaymessages) {
-        // Don't send the messages now. Do a bulk insert to queue them for later sending
-        if (!count($userids)) {
-            return true;
-        }
-        $sql = "INSERT INTO {cohort_msg_queue} (cohortid, userid, action, processed, timecreated, timemodified, modifierid) VALUES (";
-        $records = array();
-        foreach ($userids as $userid) {
-            $now = time();
-            $records[] = "{$cohortid}, {$userid}, '{$action}', 0, {$now}, {$now}, {$USER->id}";
-        }
-        $sql .= implode('), (', $records);
-        $sql .= ')';
-
-        return $DB->execute($sql);
-    }
-
     $cohort = $DB->get_record('cohort', array('id' => $cohortid), 'id, name, alertmembers');
     if ($cohort->alertmembers == COHORT_ALERT_NONE) {
         return true;
+    }
+
+    if ($delaymessages) {
+        // Don't send the messages now. Do a bulk insert to queue them for later sending.
+        if (!count($userids)) {
+            return true;
+        }
+
+        $records = array();
+        $msg = new stdClass();
+        $msg->cohortid = $cohortid;
+        $msg->action = $action;
+        $msg->processed = 0;
+        $msg->modifierid = $USER->id;
+        foreach ($userids as $userid) {
+            $now = time();
+            $msg->timecreated = $now;
+            $msg->timemodified = $now;
+            $msg->userid = $userid;
+            $records[] = $msg;
+        }
+
+        return $DB->insert_records_via_batch('cohort_msg_queue', $records);
     }
 
     $memberlist = array();
@@ -1015,7 +1021,7 @@ function totara_cohort_notify_users($cohortid, $userids, $action, $delaymessages
     $eventdata = new stdClass();
 
     foreach ($tousers as $touser) {
-        //send emails in user lang
+        // Send emails in user lang.
         $emailsubject = $strmgr->get_string("msg:{$action}_{$towho}_emailsubject", 'totara_cohort', $a, $touser->lang);
         $notice = $strmgr->get_string("msg:{$action}_{$towho}_notice", 'totara_cohort', $a, $touser->lang);
         $eventdata->subject = $emailsubject;
