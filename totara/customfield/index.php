@@ -36,26 +36,31 @@ $typeid         = optional_param('typeid', '0', PARAM_INT);    // typeid if hier
 $action         = optional_param('action', '', PARAM_ALPHA);    // param for some action
 $id             = optional_param('id', 0, PARAM_INT); // id of a custom field
 
+$sitecontext = context_system::instance();
+
 // use $prefix to determine where to get custom field data from
 if ($prefix == 'course') {
     $shortprefix = 'course';
     $adminpagename = 'coursecustomfields';
     $tableprefix = $shortprefix;
+
+    $can_add = has_capability('totara/core:create'.$prefix.'customfield', $sitecontext);
+    $can_edit = has_capability('totara/core:update'.$prefix.'customfield', $sitecontext);
+    $can_delete = has_capability('totara/core:delete'.$prefix.'customfield', $sitecontext);
 } else {
     // Confirm the hierarchy prefix exists
     $hierarchy = hierarchy::load_hierarchy($prefix);
     $shortprefix = hierarchy::get_short_prefix($prefix);
     $adminpagename = $prefix . 'typemanage';
     $tableprefix = $shortprefix.'_type';
+
+    $can_add = has_capability('totara/hierarchy:create'.$prefix.'customfield', $sitecontext);
+    $can_edit = has_capability('totara/hierarchy:update'.$prefix.'customfield', $sitecontext);
+    $can_delete = has_capability('totara/hierarchy:delete'.$prefix.'customfield', $sitecontext);
 }
 
-$sitecontext = context_system::instance();
 $PAGE->set_url('/totara/customfield/index.php');
 $PAGE->set_context($sitecontext);
-
-$can_add = has_capability('totara/hierarchy:create'.$prefix.'customfield', $sitecontext);
-$can_edit = has_capability('totara/hierarchy:update'.$prefix.'customfield', $sitecontext);
-$can_delete = has_capability('totara/hierarchy:delete'.$prefix.'customfield', $sitecontext);
 
 $redirectoptions = array('prefix' => $prefix);
 if ($typeid) {
@@ -205,14 +210,16 @@ echo html_writer::empty_tag('br');
 // Create a new custom field dropdown menu
 $options = customfield_list_datatypes();
 
-if ($prefix == 'course') {
-    $select = new single_select(new moodle_url('/totara/customfield/index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'datatype' => '')), 'datatype', $options, '', array(''=>'choosedots'), 'newfieldform');
-    $select->set_label(get_string('createnewcustomfield', 'totara_customfield'));
-    echo $OUTPUT->render($select);
-} else {
-    $select = new single_select(new moodle_url('/totara/customfield/index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'typeid' => $typeid, 'datatype' => '')), 'datatype', $options, '', array(''=>'choosedots'), 'newfieldform');
-    $select->set_label(get_string('createnewcustomfield', 'totara_customfield'));
-    echo $OUTPUT->render($select);
+if ($can_add) {
+    if ($prefix == 'course') {
+        $select = new single_select(new moodle_url('/totara/customfield/index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'datatype' => '')), 'datatype', $options, '', array(''=>'choosedots'), 'newfieldform');
+        $select->set_label(get_string('createnewcustomfield', 'totara_customfield'));
+        echo $OUTPUT->render($select);
+    } else {
+        $select = new single_select(new moodle_url('/totara/customfield/index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'typeid' => $typeid, 'datatype' => '')), 'datatype', $options, '', array(''=>'choosedots'), 'newfieldform');
+        $select->set_label(get_string('createnewcustomfield', 'totara_customfield'));
+        echo $OUTPUT->render($select);
+    }
 }
 
 echo $OUTPUT->footer();
