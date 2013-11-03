@@ -177,7 +177,7 @@ if ($competenciesenabled) {
         }
         echo html_writer::end_tag('form');
     } else {
-        echo html_writer::tag('p', get_string('nolinkedx', 'totara_plan', strtolower($competencyname)), array('class' => 'noitems-assigncompetencies'));
+        echo html_writer::tag('p', get_string('nolinkedx', 'totara_plan', mb_strtolower($competencyname, "UTF-8")), array('class' => 'noitems-assigncompetencies'));
     }
     echo $OUTPUT->container_end();
 
@@ -194,7 +194,7 @@ if ($objectivesenabled) {
     if ($linkedobjectives = $component->get_linked_components( $caid, 'objective')) {
         echo $plan->get_component('objective')->display_linked_objectives($linkedobjectives);
     } else {
-        echo html_writer::tag('p', get_string('nolinkedx', 'totara_plan', strtolower($objectivename)));
+        echo html_writer::tag('p', get_string('nolinkedx', 'totara_plan', mb_strtolower($objectivename, "UTF-8")));
     }
 }
 
