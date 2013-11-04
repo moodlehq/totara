@@ -110,3 +110,28 @@ function setup_sync_DB($dbtype, $dbhost, $dbname, $dbuser, $dbpass) {
     return $sync_db;
 }
 
+
+/**
+ * Returns a list of associative array of installed database drivers
+ *
+ * return arrray
+ */
+function get_installed_db_drivers() {
+    $databases = array('mysqli' => moodle_database::get_driver_instance('mysqli', 'native'),
+        'pgsql'  => moodle_database::get_driver_instance('pgsql',  'native'),
+        'oci'    => moodle_database::get_driver_instance('oci',    'native'),
+        'sqlsrv' => moodle_database::get_driver_instance('sqlsrv', 'native'), // MS SQL*Server PHP driver.
+        'mssql'  => moodle_database::get_driver_instance('mssql',  'native'), // FreeTDS driver.
+    );
+
+    $disabled = array();
+    $installed = array();
+    foreach ($databases as $type => $database) {
+        if ($database->driver_installed() !== true) {
+            continue;
+        }
+        $installed[$type] = $database->get_name();
+    }
+
+    return $installed;
+}
