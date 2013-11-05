@@ -47,6 +47,7 @@ if (empty($CFG->tempmanagerrestrictselection)) {
     $sql = "SELECT u.id, u.email, ".$DB->sql_fullname('u.firstname', 'u.lastname')." AS fullname
               FROM {user} u
              WHERE u.deleted = 0
+               AND u.suspended = 0
                AND u.id NOT IN(?, ?, ?)
           ORDER BY fullname, u.id";
 } else {
@@ -54,6 +55,7 @@ if (empty($CFG->tempmanagerrestrictselection)) {
               FROM {pos_assignment} pa
               JOIN {user} u ON pa.managerid = u.id
              WHERE u.deleted = 0
+               AND u.suspended = 0
                AND u.id NOT IN(?, ?, ?)
           ORDER BY fullname, u.id";
 }

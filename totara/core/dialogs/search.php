@@ -425,6 +425,8 @@ switch ($searchtype) {
         $search_info->email = 'email';
         $search_info->sql = "FROM {user} u
                             WHERE {$searchsql} {$managersql}
+                              AND u.deleted = 0
+                              AND u.suspended = 0
                               AND u.id NOT IN (?, ?)";
         $params[] = $this->customdata['current_user'];
         $params[] = $this->customdata['current_manager'];

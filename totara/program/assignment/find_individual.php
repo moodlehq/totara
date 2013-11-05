@@ -41,7 +41,8 @@ if ($selected != false) {
 // Get all users
 $guest = guest_user();
 
-$items = $DB->get_records_select('user', 'deleted = 0 AND id != ?', array($guest->id), '', 'id, ' . $DB->sql_fullname() . ' as fullname, email');
+$items = $DB->get_records_select('user', 'deleted = 0 AND suspended = 0 AND id != ?', array($guest->id), '',
+    'id, ' . $DB->sql_fullname() . ' as fullname, email');
 
 // Don't let them remove the currently selected ones
 $unremovable = $selected;
