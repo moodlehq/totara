@@ -50,6 +50,11 @@ $THEME->sheets = array(
 );
 
 $THEME->layouts = array(
+    'base' => array(
+        'file' => 'columns1.php',
+        'regions' => array('side-pre'),
+        'defaultregion' => 'side-pre',
+    ),
     'noblocks' => array(
         'file' => 'columns1.php',
         'regions' => array(),
