@@ -1524,7 +1524,16 @@ totaraDialog_handler_selectable.prototype.every_load = function() {
 totaraDialog_handler_selectable.prototype._updatePage = function(response) {
     // Replace any items on the main page with their content (if IDs match)
     var src = $('#icon_preview').attr('src');
-    src = src.replace(/image=(.*?)icons%2F(.*?)(&.*?){0,1}$/, 'image=$1'+'icons%2F'+response+'$3');
+
+    // Parse URL to check if it uses slash arguments or not.
+    var parser = document.createElement('a');
+    parser.href = src;
+    if (parser.search == '') {
+        src = src.substring(0, src.lastIndexOf("/") + 1) + response;
+    } else {
+        src = src.replace(/image=(.*?)icons%2F(.*?)(&.*?){0,1}$/, 'image=$1'+'icons%2F'+response+'$3');
+    }
+
     $('#icon_preview').attr('src', src);
     $('#icon_preview').attr('title', response.replace(/-|_/g, " ").toTitleCase());
     $("input[name=icon]").val(response);
