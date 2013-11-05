@@ -2067,15 +2067,6 @@ function xmldb_main_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        // Perform user data migration.
-        $usercollections = $DB->get_records('badge_backpack');
-        foreach ($usercollections as $usercollection) {
-            $collection = new stdClass();
-            $collection->backpackid = $usercollection->id;
-            $collection->collectionid = $usercollection->backpackgid;
-            $DB->insert_record('badge_external', $collection);
-        }
-
         // Finally, drop the column.
         // Define field backpackgid to be dropped from 'badge_backpack'.
         $table = new xmldb_table('badge_backpack');
@@ -2083,6 +2074,15 @@ function xmldb_main_upgrade($oldversion) {
 
         // Conditionally launch drop field backpackgid.
         if ($dbman->field_exists($table, $field)) {
+            // Perform user data migration.
+            $usercollections = $DB->get_records('badge_backpack');
+            foreach ($usercollections as $usercollection) {
+                $collection = new stdClass();
+                $collection->backpackid = $usercollection->id;
+                $collection->collectionid = $usercollection->backpackgid;
+                $DB->insert_record('badge_external', $collection);
+            }
+
             $dbman->drop_field($table, $field);
         }
 
