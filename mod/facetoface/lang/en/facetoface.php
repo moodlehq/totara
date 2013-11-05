@@ -345,7 +345,7 @@ $string['notificationtype_2'] = 'Scheduled';
 $string['notificationtype_4'] = 'Auto';
 $string['notificationboth'] = 'Email Notification and iCalendar Appointment';
 $string['notificationemail'] = 'Email Notification only';
-$string['notificationical'] = 'iCalendar Appointment only';
+$string['notificationnone'] = 'No Email Notification';
 $string['notifications_help'] = 'Here you can manage notifications for this Face-to-face acitivity'; //TODO: write better help
 $string['noticedeleteconfirm'] = 'Delete site notice \'{$a->name}\'?<br/><blockquote>{$a->text}</blockquote>';
 $string['noticetext'] = 'Notice text';
@@ -932,9 +932,9 @@ $string['normalcost_help'] = 'Normal cost is the amount charged to staff members
 
 $string['notificationtype_help'] = 'Notification Type allows the learner to select how they would like to be notified of their booking.
 
-* iCalendar appointment only
+* Email notification and iCalendar appointment
 * Email notification only
-* Email notification and iCalendar appointment ';
+* No Email notification ';
 
 $string['reminderinstrmngr'] = '# Notice for Manager';
 $string['reminderinstrmngr_help'] = 'When **Send notice to manager** is checked, the text in the **Notice for Manager** field is sent to a learner\'s manager advising that they have signed up for a face-to-face session.';
