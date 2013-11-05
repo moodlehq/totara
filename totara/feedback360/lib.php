@@ -1757,7 +1757,8 @@ class request_feedback_potential_user_selector extends user_selector_base {
 
         $sql = " FROM {user} u
                  WHERE
-                    u.deleted = 0
+                     u.deleted = 0
+                 AND u.suspended = 0
                  AND u.id != :userid
                  AND $wherecondition";
 
@@ -1823,8 +1824,9 @@ class request_feedback_current_user_selector extends user_selector_base {
         $sql = " FROM {user} u
                  WHERE
                      u.deleted = 0
-                     AND u.id $userssql
-                     AND $wherecondition";
+                 AND u.suspended = 0
+                 AND u.id $userssql
+                 AND $wherecondition";
 
         $params = array_merge($userparams, $params);
 

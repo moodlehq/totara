@@ -107,6 +107,7 @@ switch ($searchtype) {
             WHERE
                 {$searchsql}
                 AND deleted = 0
+                AND suspended = 0
                 AND id != ?
         ";
         $params[] = $guest->id;

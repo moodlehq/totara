@@ -89,6 +89,7 @@ $availableusers = $DB->get_records_sql(
             {user} u
         WHERE
             u.deleted = 0
+        AND u.suspended = 0
         AND u.id != ?
         AND u.id != ?
         ORDER BY
