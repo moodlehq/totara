@@ -109,8 +109,14 @@ local_js(array(
     TOTARA_JS_TREEVIEW
 ));
 
+$showhide_params = array('userid' => $userid, 'display' => !$display);
+$showhide_url = new moodle_url('/totara/hierarchy/prefix/goal/mygoals.php', $showhide_params);
+$showhide_text = $display ? get_string('hidedetails', 'totara_hierarchy') : get_string('showdetails', 'totara_hierarchy');
+
 $args = array('args'=>'{"id":"'.$userid.'",
-    "sesskey":"'.sesskey().'"}');
+                        "showhide_url":"'.$showhide_url->out().'",
+                        "showhide_text":"'.$showhide_text.'",
+                        "sesskey":"'.sesskey().'"}');
 
 // Include position user js modules.
 $PAGE->requires->strings_for_js(array('addgoal', 'assigngoals'), 'totara_hierarchy');
@@ -135,20 +141,14 @@ $header .= html_writer::end_tag('div');
 $company = '';
 if ($can_view_company) {
 
-    // If the current user can add individual goal assignments, set up the button.
+    // Set up the buttons for the company table.
+    $company_edit = html_writer::start_tag('div', array('class' => 'buttons'));
     if ($can_edit_company) {
+        // If the current user can add individual goal assignments, set up the button.
         $add_params = array('assignto' => $userid, 'assigntype' => GOAL_ASSIGNMENT_INDIVIDUAL);
         $addgoalurl = new moodle_url('/totara/hierarchy/prefix/goal/assign/find.php', $add_params);
         $add_button_text = get_string('addgoalcompany', 'totara_hierarchy');
-        $showhide_params = array('userid' => $userid, 'display' => !$display);
-        $showhide_url = new moodle_url('/totara/hierarchy/prefix/goal/mygoals.php', $showhide_params);
-        $showhide_text = $display ? get_string('hidedetails', 'totara_hierarchy') :
-            get_string('showdetails', 'totara_hierarchy');
-        $detailsurl = new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => 'goal', 'readonly' => true));
 
-        // Set up the buttons for the company table.
-        $company_edit = html_writer::start_tag('div',
-                array('class' => 'buttons'));
         // Add new goals button.
         $company_edit .= html_writer::start_tag('div',
                 array('class' => 'singlebutton'));
@@ -170,7 +170,12 @@ if ($can_view_company) {
         $company_edit .= html_writer::end_tag('div');
         $company_edit .= html_writer::end_tag('form');
         $company_edit .= html_writer::end_tag('div');
+    }
+
+    $company_edit .= html_writer::start_tag('div', array('class' => 'companygoals detailswrapper'));
+    if ($DB->record_exists('goal_user_assignment', array('userid' => $userid))) {
         // Show details button.
+
         $company_edit .= html_writer::start_tag('div',
                 array('class' => 'singlebutton'));
         $company_edit .= html_writer::start_tag('form',
@@ -185,13 +190,16 @@ if ($can_view_company) {
         $company_edit .= html_writer::end_tag('div');
         $company_edit .= html_writer::end_tag('form');
         $company_edit .= html_writer::end_tag('div');
-        // The view goals details link to hierarchy framework pages.
-        $company_edit .= html_writer::link($detailsurl, get_string('companygoaldetails', 'totara_hierarchy'));
-        $company_edit .= html_writer::end_tag('div');
-
-    } else {
-        $company_edit = null;
     }
+    $company_edit .= html_writer::end_tag('div');
+
+    if ($can_edit_company) {
+        // The view goals details link to hierarchy framework pages.
+        $detailsurl = new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => 'goal', 'readonly' => true));
+        $company_edit .= html_writer::link($detailsurl, get_string('companygoaldetails', 'totara_hierarchy'));
+    }
+
+    $company_edit .= html_writer::end_tag('div');
 
     // Set upt the title and edit button.
     $company .= html_writer::start_tag('div', array('id' => 'companygoals'));

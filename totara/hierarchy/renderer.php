@@ -619,8 +619,6 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
         $header_cells = array();
         $header_cells['name'] = new html_table_cell(get_string('goaltable:name', 'totara_hierarchy'));
         $header_cells['name']->header = true;
-        $header_cells['due'] = new html_table_cell(get_string('goaltable:due', 'totara_hierarchy'));
-        $header_cells['due']->header = true;
         $header_cells['status'] = new html_table_cell(get_string('goaltable:status', 'totara_hierarchy'));
         $header_cells['status']->header = true;
         $header_cells['assign'] = new html_table_cell(get_string('goaltable:assigned', 'totara_hierarchy'));
@@ -632,10 +630,11 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
         $company_table = new html_table();
         $company_table->data[] = $header_row;
 
+        $goaltypes = $DB->get_records('goal_type');
+        $customfields = $DB->get_records('goal_type_info_field');
+
         // Add any company goals the user has assigned to the table.
         foreach ($assignments as $goalid => $assignment) {
-            $duedate = !empty($assignment->targetdate) ? userdate($assignment->targetdate,
-                get_string('datepickerlongyearphpuserdate', 'totara_core'), $CFG->timezone, false) : '';
 
             // Set up the scale value selector.
             if ($can_edit) {
@@ -694,14 +693,15 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
 
             $cells = array();
 
-            $namedata = $assignment->goalname;
-            if ($display && !empty($assignment->customfields)) {
-                $namedata .= html_writer::empty_tag('br');
-                $namedata .= implode(html_writer::empty_tag('br'), $assignment->customfields);
+            if ($display) {
+                $hierarchy = hierarchy::load_hierarchy('goal');
+                $namedata = $hierarchy->display_hierarchy_item($assignment->goal, true, false, $customfields, $goaltypes, true);
+            } else {
+                $namedata = $assignment->goalname;
             }
 
+
             $cells['name'] = new html_table_cell($namedata);
-            $cells['due'] = new html_table_cell($duedate);
             $cells['status'] = new html_table_cell($scalevalue);
             $cells['assign'] = new html_table_cell($assignment->via);
 

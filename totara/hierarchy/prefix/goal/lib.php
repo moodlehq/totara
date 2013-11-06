@@ -773,7 +773,24 @@ class goal extends hierarchy {
                 $assignment_info[$goalid] = new stdClass();
 
                 // Just get the goal out of the database.
-                $goal = $DB->get_record('goal', array('id' => $goalid));
+                if ($display) {
+                    // Join in the custom field data required by hierarchy_display_item().
+                    $custom_fields = $DB->get_records('goal_type_info_field');
+                    $select = "SELECT g.*";
+                    $from   = " FROM {goal} g";
+                    foreach ($custom_fields as $custom_field) {
+                        // Add one join per custom field.
+                        $fieldid = $custom_field->id;
+                        $select .= ", cf_{$fieldid}.id AS cf_{$fieldid}_itemid, cf_{$fieldid}.data AS cf_{$fieldid}";
+                        $from .= " LEFT JOIN {goal_type_info_data} cf_{$fieldid}
+                                ON g.id = cf_{$fieldid}.goalid AND cf_{$fieldid}.fieldid = {$fieldid}";
+                    }
+                    $where = " WHERE g.id = :goalid";
+                    $goal = $DB->get_record_sql($select.$from.$where, array('goalid' => $goalid));
+                    $assignment_info[$goalid]->goal = $goal;
+                } else {
+                    $goal = $DB->get_record('goal', array('id' => $goalid));
+                }
 
                 if (has_capability('totara/hierarchy:viewgoal', context_system::instance())) {
                     // Put a link in so they can actually see what the goal is.
@@ -790,39 +807,8 @@ class goal extends hierarchy {
                 $assignment_info[$goalid]->targetdate = $goal->targetdate;
                 $assignment_info[$goalid]->scalevalueid = $scalevalueid;
                 $assignment_info[$goalid]->via = self::get_assignment_string(self::SCOPE_COMPANY, $assignment) . $del_button;
-                $assignment_info[$goalid]->customfields = array();
-
-                if ($display) {
-                    // Get the goal and all related custom field information.
-                    $sql = "SELECT tif.id, tif.fullname, tif.datatype, tid.data
-                            FROM {goal_type_info_field} tif
-                            JOIN {goal_type_info_data} tid
-                            ON tid.fieldid = tif.id
-                            WHERE tid.goalid = ?";
-                    $custom_fields = $DB->get_records_sql($sql, array($goalid));
-
-                    foreach ($custom_fields as $cf) {
-                        require_once($CFG->dirroot.'/totara/customfield/field/'.$cf->datatype.'/field.class.php');
-
-                        $safetext = format_text($cf->data, FORMAT_HTML);
-                        $data = call_user_func(array("customfield_{$cf->datatype}", 'display_item_data'), $safetext,
-                                array('prefix' => 'goal', 'itemid' => $cf->id));
-                        $name = html_writer::tag('strong', format_string($cf->fullname) . ': ');
-
-                        $assignment_info[$goalid]->customfields[$cf->id] = $name . ': ' . $data;
-                    }
-                }
             }
         }
-
-        /* $assignments
-         *      ->goalname
-         *      ->assignmentid
-         *      ->targetdate
-         *      ->scalevalueid
-         *      ->via
-         *      ->customfields  (where viable)
-         */
 
         return $assignment_info;
     }

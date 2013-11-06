@@ -115,6 +115,9 @@ M.totara_assignindividual = M.totara_assignindividual || {
 
                 dialog.default_url = findurl + '?assigntype=1&assignto=' + id;
                 dialog.saveurl = saveurl + '?assigntype=1&assignto=' + id + '&sesskey=' + sesskey + '&add=1' ;
+                dialog.showhide_url = M.totara_assignindividual.config.showhide_url;
+                dialog.showhide_text = M.totara_assignindividual.config.showhide_text;
+                dialog.showhide_id = M.totara_assignindividual.config.id;
                 dialog.open();
 
             });
@@ -165,13 +168,13 @@ totaraDialog_handler_assigngoaltreeview.prototype._save = function() {
             this._cancel();
             return;
         } else if (this.responsetype == 'update') {
-            // Trigger the "delete" link, closing this dialog if it's successful
+            // Trigger the "delete" link, closing this dialog if it's successful.
             $('a.group-delete', this.responsegoeshere).trigger('click', {object: this, method: '_cancel'});
             return;
         }
     }
 
-    // Check for any validation functions
+    // Check for any validation functions.
     var success = true;
     extrafields.each(
         function(intIndex) {
@@ -187,7 +190,7 @@ totaraDialog_handler_assigngoaltreeview.prototype._save = function() {
 
     var selected_str = selected.join(',');
 
-    // Add to url
+    // Add to url.
     var url = this._dialog.saveurl + '&selected=' + selected_str;
     extrafields.each(
         function(intIndex) {
@@ -197,8 +200,30 @@ totaraDialog_handler_assigngoaltreeview.prototype._save = function() {
         }
     );
 
-    // Send to server
+    // Display details button.
+    if (selected.length > 0) {
+        this._display_details();
+    }
+
+    // Send to server.
     this._dialog._request(url, {object: this, method: '_update'});
+}
+
+totaraDialog_handler_assigngoaltreeview.prototype._display_details = function () {
+    var details = $(".companygoals.detailswrapper");
+    var display_button = '';
+
+    display_button += '<div class="singlebutton">';
+    display_button += '<form action="'+this._dialog.showhide_url+'" method="get">';
+    display_button += '<div>';
+    display_button += '<input type="submit" id="showhide-goal-details" value="'+this._dialog.showhide_text+'"></input>';
+    display_button += '<input type="hidden" name="id" value="'+this._dialog.showhide_id+'"></input>';
+    display_button += '<input type="hidden" name="display" value="1"></input>';
+    display_button += '</div>';
+    display_button += '</form>';
+    display_button += '</div>';
+
+    details.replaceWith(display_button);
 }
 
 // TODO: T-11233 need to figure out a better way to share this common code between this and the formpicker.

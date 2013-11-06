@@ -1208,7 +1208,7 @@ class hierarchy {
         // @todo get based on item type or better still, don't use inline styles :-(
         $itemicon = $OUTPUT->pix_url('/i/item');
         $cssclass = !$record->visible ? 'dimmed' : '';
-        $out = html_writer::start_tag('div', array('class' => 'hierarchyitem ' . $itemdepth, 'style' => 'background-image: url("' . $itemicon . '")'));
+        $out = html_writer::start_tag('div', array('class' => 'hierarchyitem ' . $itemdepth));
         $out .= $OUTPUT->action_link(new moodle_url('item/view.php', array('prefix' => $this->prefix, 'id' => $record->id)), format_string($record->fullname), null, array('class' => $cssclass));
         if ($include_custom_fields) {
             $out .= html_writer::empty_tag('br');
