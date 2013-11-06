@@ -943,22 +943,22 @@ function totara_setup_assigndialogs($module, $itemid, $datatable = false) {
                             aoData.push( { "name": "itemid", "value": "'.$itemid.'" } );
                     },
                     "oLanguage" : {
-                        "sEmptyTable":     "'.get_string('datatable:sEmptyTable', 'totara_core').'",
-                        "sInfo":           "'.get_string('datatable:sInfo', 'totara_core').'",
-                        "sInfoEmpty":      "'.get_string('datatable:sInfoEmpty', 'totara_core').'",
-                        "sInfoFiltered":   "'.get_string('datatable:sInfoFiltered', 'totara_core').'",
-                        "sInfoPostFix":    "'.get_string('datatable:sInfoPostFix', 'totara_core').'",
-                        "sInfoThousands":  "'.get_string('datatable:sInfoThousands', 'totara_core').'",
-                        "sLengthMenu":     "'.get_string('datatable:sLengthMenu', 'totara_core').'",
-                        "sLoadingRecords": "'.get_string('datatable:sLoadingRecords', 'totara_core').'",
-                        "sProcessing":     "'.get_string('datatable:sProcessing', 'totara_core').'",
-                        "sSearch":         "'.get_string('datatable:sSearch', 'totara_core').'",
-                        "sZeroRecords":    "'.get_string('datatable:sZeroRecords', 'totara_core').'",
+                        "sEmptyTable":     "'.addslashes_js(get_string('datatable:sEmptyTable', 'totara_core')).'",
+                        "sInfo":           "'.addslashes_js(get_string('datatable:sInfo', 'totara_core')).'",
+                        "sInfoEmpty":      "'.addslashes_js(get_string('datatable:sInfoEmpty', 'totara_core')).'",
+                        "sInfoFiltered":   "'.addslashes_js(get_string('datatable:sInfoFiltered', 'totara_core')).'",
+                        "sInfoPostFix":    "'.addslashes_js(get_string('datatable:sInfoPostFix', 'totara_core')).'",
+                        "sInfoThousands":  "'.addslashes_js(get_string('datatable:sInfoThousands', 'totara_core')).'",
+                        "sLengthMenu":     "'.addslashes_js(get_string('datatable:sLengthMenu', 'totara_core')).'",
+                        "sLoadingRecords": "'.addslashes_js(get_string('datatable:sLoadingRecords', 'totara_core')).'",
+                        "sProcessing":     "'.addslashes_js(get_string('datatable:sProcessing', 'totara_core')).'",
+                        "sSearch":         "'.addslashes_js(get_string('datatable:sSearch', 'totara_core')).'",
+                        "sZeroRecords":    "'.addslashes_js(get_string('datatable:sZeroRecords', 'totara_core')).'",
                         "oPaginate": {
-                            "sFirst":    "'.get_string('datatable:oPaginate:sFirst', 'totara_core').'",
-                            "sLast":     "'.get_string('datatable:oPaginate:sLast', 'totara_core').'",
-                            "sNext":     "'.get_string('datatable:oPaginate:sNext', 'totara_core').'",
-                            "sPrevious": "'.get_string('datatable:oPaginate:sPrevious', 'totara_core').'"
+                            "sFirst":    "'.addslashes_js(get_string('datatable:oPaginate:sFirst', 'totara_core')).'",
+                            "sLast":     "'.addslashes_js(get_string('datatable:oPaginate:sLast', 'totara_core')).'",
+                            "sNext":     "'.addslashes_js(get_string('datatable:oPaginate:sNext', 'totara_core')).'",
+                            "sPrevious": "'.addslashes_js(get_string('datatable:oPaginate:sPrevious', 'totara_core')).'"
                         }
                     }
                 } );
