@@ -105,6 +105,7 @@ $string['menuoptions'] = 'Menu options (one per line)';
 $string['menutoofewoptions'] = 'You must provide at least 2 options';
 $string['nocustomfieldsdefined'] = 'No fields have been defined';
 $string['notset'] = 'Not set';
+$string['nofileselected'] = 'No file selected';
 $string['pluginname'] = 'Customfields';
 $string['returntoframework'] = 'Return to Framework';
 $string['shortname'] = 'Short name (must be unique)';

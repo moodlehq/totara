@@ -109,8 +109,8 @@ class customfield_file extends customfield_base {
         $context = context_system::instance();
         $fs = get_file_storage();
         $files = $fs->get_area_files($context->id, 'totara_customfield', $extradata['prefix'] . '_filemgr', $data, null, false);
-        if (count($files)!=1) {
-            return get_string('filenotfound', 'error');
+        if (count($files) < 1) {
+            return get_string('nofileselected', 'totara_customfield');
         } else {
             //get the first file in this array (assoc array keyed by internal moodle hashes so use array_shift)
             $file = array_shift($files);
