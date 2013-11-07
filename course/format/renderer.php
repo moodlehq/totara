@@ -741,7 +741,7 @@ abstract class format_section_renderer_base extends plugin_renderer_base {
                 array('courseid' => $course->id,
                       'increase' => true,
                       'sesskey' => sesskey()));
-            $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
+            $icon = $this->output->pix_icon('t/more', $straddsection);
             echo html_writer::link($url, $icon.get_accesshide($straddsection), array('class' => 'increase-sections'));
 
             if ($course->numsections > 0) {
@@ -751,7 +751,7 @@ abstract class format_section_renderer_base extends plugin_renderer_base {
                     array('courseid' => $course->id,
                           'increase' => false,
                           'sesskey' => sesskey()));
-                $icon = $this->output->pix_icon('t/switch_minus', $strremovesection);
+                $icon = $this->output->pix_icon('t/less', $strremovesection);
                 echo html_writer::link($url, $icon.get_accesshide($strremovesection), array('class' => 'reduce-sections'));
             }
 
