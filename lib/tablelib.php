@@ -1101,6 +1101,12 @@ class flexible_table {
     }
 
     /**
+     * Override this function to add custom header table rows.
+     */
+    function print_extended_headers() {
+    }
+
+    /**
      * This function is not part of the public api.
      */
     function print_headers() {
@@ -1119,6 +1125,7 @@ class flexible_table {
         // end added in totara
 
         echo html_writer::start_tag('thead');
+        $this->print_extended_headers();
         echo html_writer::start_tag('tr');
         foreach ($this->columns as $column => $index) {
 

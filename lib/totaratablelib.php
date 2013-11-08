@@ -131,6 +131,9 @@ class totara_table extends flexible_table {
             $pagingbar->pagevar = $this->request[TABLE_VAR_PAGE];
 
             $content = $OUTPUT->render($pagingbar);
+        } else {
+            throw new Exception("Paging must be turned on before pagination can be added to the toolbar. Put the call to
+                add_toolbar_pagination() after you call pagesize().");
         }
 
         // don't add if there's nothing to show
@@ -163,8 +166,6 @@ class totara_table extends flexible_table {
 
         echo html_writer::start_tag('div', array('class' => 'no-overflow'));
         echo html_writer::start_tag('table', $this->attributes);
-
-        $this->print_toolbars('top');
     }
 
     /**
@@ -193,6 +194,10 @@ class totara_table extends flexible_table {
 
     }
 
+    function print_extended_headers() {
+        $this->print_toolbars('top');
+    }
+
     /**
      * In Totara tables, we print the table anyway, just with a message
      * saying there are no records
@@ -201,6 +206,7 @@ class totara_table extends flexible_table {
         $this->print_initials_bar();
 
         echo $this->start_html();
+        $this->print_extended_headers();
         echo html_writer::tag('tr',
             html_writer::tag('td',
                 $this->get_no_records_message(),
