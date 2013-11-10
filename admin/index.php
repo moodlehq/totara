@@ -76,17 +76,24 @@ $cache          = optional_param('cache', 0, PARAM_BOOL);
 
 // Set up PAGE.
 $url = new moodle_url('/admin/index.php');
-if (!is_null($newaddonreq)) {
-    // We need to set the eventual add-on installation request in the $PAGE's URL
-    // so that it is stored in $SESSION->wantsurl and the admin is redirected
-    // correctly once they are logged-in.
-    $url->param('installaddonrequest', $newaddonreq);
-}
 if ($cache) {
     $url->param('cache', $cache);
 }
 $PAGE->set_url($url);
 unset($url);
+
+// Are we returning from an add-on installation request at moodle.org/plugins?
+if ($newaddonreq and !$cache and empty($CFG->disableonclickaddoninstall)) {
+    $target = new moodle_url('/admin/tool/installaddon/index.php', array(
+        'installaddonrequest' => $newaddonreq,
+        'confirm' => 0));
+    if (!isloggedin() or isguestuser()) {
+        // Login and go the the add-on tool page.
+        $SESSION->wantsurl = $target->out();
+        redirect(get_login_url());
+    }
+    redirect($target);
+}
 
 $PAGE->set_pagelayout('admin'); // Set a default pagelayout
 
@@ -257,6 +264,13 @@ if ($cache) {
 
 if ($version > $CFG->version
         || (isset($CFG->totara_build) && version_compare($a->newtotaraversion, $a->existingtotaraversion, '>'))) {  // upgrade
+
+    // Warning about upgrading a test site.
+    $testsite = false;
+    if (defined('BEHAT_SITE_RUNNING')) {
+        $testsite = 'behat';
+    }
+
     // We purge all of MUC's caches here.
     // Caches are disabled for upgrade by CACHE_DISABLE_ALL so we must set the first arg to true.
     // This ensures a real config object is loaded and the stores will be purged.
@@ -288,7 +302,7 @@ if ($version > $CFG->version
         $PAGE->set_cacheable(false);
 
         $output = $PAGE->get_renderer('core', 'admin');
-        echo $output->upgrade_confirm_page(get_string('cliupgradesure', 'totara_core', $a), $maturity);
+        echo $output->upgrade_confirm_page(get_string('cliupgradesure', 'totara_core', $a), $maturity, $testsite);
         die();
 
     } else if (empty($confirmrelease)){
@@ -501,17 +515,6 @@ if (empty($site->shortname)) {
     // remove settings that we want uninitialised
     unset_config('registerauth');
     redirect('upgradesettings.php?return=site');
-}
-
-// Check if we are returning from an add-on installation request at moodle.org/plugins
-if (!is_null($newaddonreq)) {
-    if (!empty($CFG->disableonclickaddoninstall)) {
-        // The feature is disabled in config.php, ignore the request.
-    } else {
-        redirect(new moodle_url('/admin/tool/installaddon/index.php', array(
-            'installaddonrequest' => $newaddonreq,
-            'confirm' => 0)));
-    }
 }
 
 // setup critical warnings before printing admin tree block

@@ -40,6 +40,7 @@
 .path-mod-scorm.jsenabled .scorm-center { display:block;}
 .path-mod-scorm.jsenabled .toc { display:block;}
 .path-mod-scorm.jsenabled #scormpage #tocbox { display:block;}
+#page-mod-scorm-userreport table .c2 { word-wrap:break-word; word-break: break-all;}
 
 /* Puts scorm content-level scroll bars on desktop popup. */
 #page-mod-scorm-player.pagelayout-popup { overflow: hidden; }

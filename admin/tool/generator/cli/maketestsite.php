@@ -27,6 +27,7 @@ define('NO_OUTPUT_BUFFERING', true);
 
 require(__DIR__ . '/../../../../config.php');
 require_once($CFG->libdir. '/clilib.php');
+require_once($CFG->dirroot . '/' . $CFG->admin . '/tool/generator/classes/site_backend.php');
 
 // CLI options.
 list($options, $unrecognized) = cli_get_params(
@@ -34,6 +35,7 @@ list($options, $unrecognized) = cli_get_params(
         'help' => false,
         'size' => false,
         'fixeddataset' => false,
+        'filesizelimit' => false,
         'bypasscheck' => false,
         'quiet' => false
     ),
@@ -57,15 +59,16 @@ Consider that, depending on the size you select, this CLI tool can really genera
 $sitesizes
 
 Options:
---size         Size of the generated site, this value affects the number of courses and their size. Accepted values: XS, S, M, L, XL, or XXL (required)
---fixeddataset Use a fixed data set instead of randomly generated data
---bypasscheck  Bypasses the developer-mode check (be careful!)
---quiet        Do not show any output
+--size           Size of the generated site, this value affects the number of courses and their size. Accepted values: XS, S, M, L, XL, or XXL (required)
+--fixeddataset   Use a fixed data set instead of randomly generated data
+--filesizelimit  Limits the size of the generated files to the specified bytes
+--bypasscheck    Bypasses the developer-mode check (be careful!)
+--quiet          Do not show any output
 
 -h, --help     Print out this help
 
 Example from Moodle root directory:
-\$ php admin/tool/generator/cli/maketestsite.php --size=S
+\$sudo -u www-data /usr/bin/php admin/tool/generator/cli/maketestsite.php --size=S
 ";
     // Exit with error unless we're showing this because they asked for it.
     exit(empty($options['help']) ? 1 : 0);
@@ -79,6 +82,7 @@ if (empty($options['bypasscheck']) && !debugging('', DEBUG_DEVELOPER)) {
 // Get options.
 $sizename = $options['size'];
 $fixeddataset = $options['fixeddataset'];
+$filesizelimit = $options['filesizelimit'];
 
 // Check size.
 try {
@@ -91,5 +95,5 @@ try {
 session_set_user(get_admin());
 
 // Do backend code to generate site.
-$backend = new tool_generator_site_backend($size, $options['bypasscheck'], $fixeddataset, empty($options['quiet']));
+$backend = new tool_generator_site_backend($size, $options['bypasscheck'], $fixeddataset, $filesizelimit, empty($options['quiet']));
 $backend->make();

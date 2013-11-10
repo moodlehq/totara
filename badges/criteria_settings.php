@@ -78,8 +78,10 @@ $PAGE->navbar->add($badge->name, new moodle_url('overview.php', array('id' => $b
 $cparams = array('criteriatype' => $type, 'badgeid' => $badge->id);
 if ($edit) {
     $criteria = $badge->criteria[$type];
+    $msg = 'criteriaupdated';
 } else {
     $criteria = award_criteria::build($cparams);
+    $msg = 'criteriacreated';
 }
 
 $mform = new edit_criteria_form($FULLME, array('criteria' => $criteria, 'addcourse' => $addcourse, 'course' => $badge->courseid));
@@ -103,7 +105,7 @@ if (!empty($addcourse)) {
         $criteria_overall->save(array('agg' => BADGE_CRITERIA_AGGREGATION_ALL));
     }
     $criteria->save($data);
-    $return->param('msg', get_string('changessaved'));
+    $return->param('msg', $msg);
     redirect($return);
 }
 
