@@ -2215,45 +2215,38 @@ function facetoface_format_session_times($start, $end, $tz) {
     return $formattedsession;
 }
 /**
- * Used by course/lib.php to display a few sessions besides the
- * facetoface activity on the course page
+ * Called when viewing course page.
  *
- * @global class $USER used to get the current userid
- * @global class $CFG used to get the path to the module
+ * @param cm_info $coursemodule
  */
-function facetoface_print_coursemodule_info($coursemodule) {
-    global $CFG, $USER, $DB, $OUTPUT;
+function facetoface_cm_info_view(cm_info $coursemodule) {
+    global $USER, $DB;
+
+    if (!($facetoface = $DB->get_record('facetoface', array('id' => $coursemodule->instance)))) {
+        return null;
+    }
+
+    $coursemodule->set_name($facetoface->name);
 
     $contextmodule = context_module::instance($coursemodule->id);
     if (!has_capability('mod/facetoface:view', $contextmodule)) {
-        return ''; // not allowed to view this activity
+        return null; // Not allowed to view this activity.
     }
     $contextcourse = context_course::instance($coursemodule->course);
-    // can view attendees
+    // Can view attendees.
     $viewattendees = has_capability('mod/facetoface:viewattendees', $contextcourse);
 
     $table = '';
     $timenow = time();
-    $facetofacepath = "$CFG->wwwroot/mod/facetoface";
 
-    $facetofaceid = $coursemodule->instance;
-    $facetoface = $DB->get_record('facetoface', array('id' => $facetofaceid));
-    if (!$facetoface) {
-        error_log("facetoface: ask to print coursemodule info for a non-existent activity ($facetofaceid)");
-        return '';
-    }
-
-    $htmlactivitynameonly = $OUTPUT->pix_icon('icon', $facetoface->name, 'facetoface', array('class' => 'activityicon'));
     $strviewallsessions = get_string('viewallsessions', 'facetoface');
-    $sessions_url = new moodle_url('/mod/facetoface/view.php', array('f' => $facetofaceid));
+    $sessions_url = new moodle_url('/mod/facetoface/view.php', array('f' => $facetoface->id));
     $htmlviewallsessions = html_writer::link($sessions_url, $strviewallsessions, array('class' => 'f2fsessionlinks f2fviewallsessions', 'title' => $strviewallsessions));
-    // F2F name is required to be a link to make the AJAX buttons work in 2.4.
-    $htmlactivitynamelink = $htmlactivitynameonly . html_writer::link($sessions_url, html_writer::tag('span', $facetoface->name, array('class' => 'instancename')), array('class' => 'f2fsessionlinks f2fviewallsessions', 'title' => $facetoface->name));
 
-    if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
-        // User has signedup for the instance
+    if ($submissions = facetoface_get_user_submissions($facetoface->id, $USER->id)) {
+        // User has signedup for the instance.
         if (!$facetoface->multiplesessions) {
-            // First submission only
+            // First submission only.
             $submissions = array(array_shift($submissions));
         }
         foreach ($submissions as $submission) {
@@ -2306,9 +2299,6 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     $options    = html_writer::tag('tr', html_writer::tag('td', $span));
                 }
 
-                $address = '&nbsp;';
-                $building = '&nbsp;';
-
                 // Get room data.
                 $roomtext = '';
                 $roomdata = $DB->get_record('facetoface_room', array('id' => $session->roomid));
@@ -2328,9 +2318,6 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 }
 
                 $table = html_writer::start_tag('table', array('class' => 'table90 inlinetable'))
-                    .html_writer::start_tag('tr', array('class' => 'f2factivityname'))
-                    .html_writer::tag('td', $htmlactivitynamelink, array('class' => 'f2fsessionnotice', 'colspan' => '2'))
-                    .html_writer::end_tag('tr')
                     .html_writer::start_tag('tr')
                     .html_writer::tag('td', $status, array('class' => 'f2fsessionnotice', 'colspan' => '2'))
                     .html_writer::end_tag('tr')
@@ -2350,13 +2337,9 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     .html_writer::end_tag('table');
             }
         }
-    } else if ($sessions = facetoface_get_sessions($facetofaceid)) {
+    } else if ($sessions = facetoface_get_sessions($facetoface->id)) {
         if ($facetoface->display > 0) {
-            $table = html_writer::start_tag('table', array('class' => 'table90 inlinetable'))
-                .html_writer::start_tag('tr', array('class' => 'f2factivityname'))
-                .html_writer::tag('td', $htmlactivitynamelink, array('class' => 'f2fsessionnotice', 'colspan' => '2'))
-                .html_writer::end_tag('tr');
-
+            $table = html_writer::start_tag('table', array('class' => 'table90 inlinetable'));
             $j=1;
             foreach ($sessions as $session) {
                 if (!facetoface_session_has_capacity($session, $contextmodule, MDL_F2F_STATUS_WAITLISTED) && !$session->allowoverbook) {
@@ -2428,20 +2411,25 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 }
             }
             $table .= html_writer::start_tag('tr')
-                .html_writer::tag('td', $coursemodule->uservisible ? $htmlviewallsessions : $strviewallsessions, array('colspan' => '2'))
+                .html_writer::tag('td', $coursemodule->visible ? $htmlviewallsessions : $strviewallsessions, array('colspan' => '2'))
                 .html_writer::end_tag('tr')
                 .html_writer::end_tag('table');
         } else {
             // Show only name if session display is set to zero.
-            return html_writer::tag('span', $htmlactivitynameonly.$facetoface->name.html_writer::empty_tag('br').$htmlviewallsessions, array('class' => 'f2fsessionnotice f2factivityname f2fonepointfive'));
+            $content = html_writer::tag('span', $htmlviewallsessions, array('class' => 'f2fsessionnotice f2factivityname f2fonepointfive'));
+            $coursemodule->set_content($content);
+            return;
         }
     } else if (has_capability('mod/facetoface:viewemptyactivities', $contextmodule)) {
-        return html_writer::tag('span', $htmlactivitynamelink . html_writer::empty_tag('br') . $htmlviewallsessions, array('class' => 'f2fsessionnotice f2factivityname f2fonepointfive'));
+        $content = html_writer::tag('span', $htmlviewallsessions, array('class' => 'f2fsessionnotice f2factivityname f2fonepointfive'));
+        $coursemodule->set_content($content);
+        return;
     } else {
         // Nothing to display to this user.
+        $coursemodule->set_content('');
+        return;
     }
-
-    return $table;
+    $coursemodule->set_content($table);
 }
 
 

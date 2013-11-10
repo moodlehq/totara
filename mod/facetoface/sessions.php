@@ -274,8 +274,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
     $DB->set_field('facetoface_sessions', 'details', $data->details, array('id' => $session->id));
 
     redirect($returnurl);
-}
-elseif ($session != null) { // Edit mode
+} else if ($session != null) { // Edit mode
     // Set values for the form
     $toform = new stdClass();
     $toform = file_prepare_standard_editor($details, 'details', $editoroptions, $module_context, 'mod_facetoface', 'session', $session->id);
