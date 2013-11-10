@@ -1552,6 +1552,8 @@ function xmldb_main_upgrade($oldversion) {
     }
 
     if ($oldversion < 2012120301.11) {
+        // This upgrade step is re-written under MDL-38228 (see below).
+        /*
         // Retrieve the list of course_sections as a recordset to save memory
         $coursesections = $DB->get_recordset('course_sections', null, 'course, id', 'id, course, sequence');
         foreach ($coursesections as $coursesection) {
@@ -1595,6 +1597,7 @@ function xmldb_main_upgrade($oldversion) {
             }
         }
         $coursesections->close();
+        */
 
         // Main savepoint reached.
         upgrade_main_savepoint(true, 2012120301.11);
@@ -1611,6 +1614,22 @@ function xmldb_main_upgrade($oldversion) {
     }
 
     if ($oldversion < 2012120302.01) {
+        // MDL-38228. Single script to upgrade course_modules instead of 2012120301.11.
+        // It replaces two scripts (now commented out) introduced in MDL-37939 and MDL-38173.
+
+        // This upgrade script fixes the mismatches between DB fields course_modules.section
+        // and course_sections.sequence. It makes sure that each module is included
+        // in the sequence of only one section and that course_modules.section points back to it.
+
+        // This script in included in each major version upgrade process so make sure we don't run it twice.
+        if (empty($CFG->movingmoduleupgradescriptwasrun)) {
+            upgrade_course_modules_sequences();
+
+            // To skip running the same script on the upgrade to the next major release.
+            set_config('movingmoduleupgradescriptwasrun', 1);
+        }
+
+        /*
         // Retrieve the list of course_sections as a recordset to save memory.
         // This is to fix a regression caused by MDL-37939.
         // In this case the upgrade step is fixing records where:
@@ -1667,6 +1686,7 @@ function xmldb_main_upgrade($oldversion) {
             }
         }
         $coursesections->close();
+        */
 
         upgrade_main_savepoint(true, 2012120302.01);
     }
@@ -1777,6 +1797,56 @@ function xmldb_main_upgrade($oldversion) {
         }
         // Main savepoint reached.
         upgrade_main_savepoint(true, 2012120305.08);
+    }
+
+    if ($oldversion < 2012120306.05) {
+        // Fixing possible wrong MIME type for Java Network Launch Protocol (JNLP) files.
+        $select = $DB->sql_like('filename', '?', false);
+        $DB->set_field_select(
+            'files',
+            'mimetype',
+            'application/x-java-jnlp-file',
+            $select,
+            array('%.jnlp')
+        );
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2012120306.05);
+    }
+
+    if ($oldversion < 2012120306.09) {
+        // Find all fileareas that have missing root folder entry and add the root folder entry.
+        if (empty($CFG->filesrootrecordsfixed)) {
+            $sql = "SELECT distinct f1.contextid, f1.component, f1.filearea, f1.itemid
+                FROM {files} f1 left JOIN {files} f2
+                    ON f1.contextid = f2.contextid
+                    AND f1.component = f2.component
+                    AND f1.filearea = f2.filearea
+                    AND f1.itemid = f2.itemid
+                    AND f2.filename = '.'
+                    AND f2.filepath = '/'
+                WHERE (f1.component <> 'user' or f1.filearea <> 'draft')
+                and f2.id is null";
+            $rs = $DB->get_recordset_sql($sql);
+            $defaults = array('filepath' => '/',
+                            'filename' => '.',
+                            'userid' => $USER->id,
+                            'filesize' => 0,
+                            'timecreated' => time(),
+                            'timemodified' => time(),
+                            'contenthash' => sha1(''));
+            foreach ($rs as $r) {
+                $pathhash = sha1("/$r->contextid/$r->component/$r->filearea/$r->itemid".'/.');
+                $DB->insert_record('files', (array)$r + $defaults +
+                        array('pathnamehash' => $pathhash));
+            }
+            $rs->close();
+            // To skip running the same script on the upgrade to the next major release.
+            set_config('filesrootrecordsfixed', 1);
+        }
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2012120306.09);
     }
 
     return true;

@@ -50,3 +50,5 @@
 .ui-mobile-viewport .mymobilecontent { overflow-x: visible; }
 .ui-mobile-viewport #toctree { overflow-x: visible !important; overflow-y: visible !important; }
 .ui-mobile-viewport .yui-layout-doc { overflow: visible; }
+
+#page-mod-scorm-userreport table .c2 { word-wrap:break-word; word-break: break-all;}

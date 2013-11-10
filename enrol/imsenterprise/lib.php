@@ -86,6 +86,7 @@ function cron() {
         $this->logfp = fopen($logtolocation, 'a');
     }
 
+    $fileisnew = false;
     if ( file_exists($filename) ) {
         @set_time_limit(0);
         $starttime = time();
@@ -106,10 +107,8 @@ function cron() {
         if(empty($prev_path)  || ($filename != $prev_path)) {
             $fileisnew = true;
         } elseif(isset($prev_time) && ($filemtime <= $prev_time)) {
-            $fileisnew = false;
             $this->log_line('File modification time is not more recent than last update - skipping processing.');
         } elseif(isset($prev_md5) && ($md5 == $prev_md5)) {
-            $fileisnew = false;
             $this->log_line('File MD5 hash is same as on last update - skipping processing.');
         } else {
             $fileisnew = true; // Let's process it!
@@ -216,7 +215,7 @@ function cron() {
         $this->log_line('File not found: '.$filename);
     }
 
-    if (!empty($mailadmins)) {
+    if (!empty($mailadmins) && $fileisnew) {
         $msg = "An IMS enrolment has been carried out within Moodle.\nTime taken: $timeelapsed seconds.\n\n";
         if(!empty($logtolocation)){
             if($this->logfp){
@@ -233,7 +232,7 @@ function cron() {
 
         $eventdata = new stdClass();
         $eventdata->modulename        = 'moodle';
-        $eventdata->component         = 'imsenterprise';
+        $eventdata->component         = 'enrol_imsenterprise';
         $eventdata->name              = 'imsenterprise_enrolment';
         $eventdata->userfrom          = get_admin();
         $eventdata->userto            = get_admin();
@@ -397,7 +396,7 @@ function process_group_tag($tagcontents) {
                     // Insert default names for teachers/students, from the current language
 
                     // Handle course categorisation (taken from the group.org.orgunit field if present)
-                    if (strlen($group->category)>0) {
+                    if (!empty($group->category)) {
                         // If the category is defined and exists in Moodle, we want to store it in that one
                         if ($catid = $DB->get_field('course_categories', 'id', array('name'=>$group->category))) {
                             $course->category = $catid;
@@ -412,10 +411,10 @@ function process_group_tag($tagcontents) {
                         } else {
                             // If not found and not allowed to create, stick with default
                             $this->log_line('Category '.$group->category.' not found in Moodle database, so using default category instead.');
-                            $course->category = 1;
+                            $course->category = $this->get_default_category_id();
                         }
                     } else {
-                        $course->category = 1;
+                        $course->category = $this->get_default_category_id();
                     }
                     $course->timecreated = time();
                     $course->startdate = time();
@@ -809,6 +808,24 @@ function load_role_mappings() {
     function enrol_imsenterprise_allow_group_member_remove($itemid, $groupid, $userid) {
         return false;
     }
+
+    /**
+     * Get the default category id (often known as 'Miscellaneous'),
+     * statically cached to avoid multiple DB lookups on big imports.
+     *
+     * @return int id of default category.
+     */
+    private function get_default_category_id() {
+        static $defaultcategoryid = null;
+
+        if ($defaultcategoryid === null) {
+            $category = get_course_category();
+            $defaultcategoryid = $category->id;
+        }
+
+        return $defaultcategoryid;
+    }
+
 
 } // end of class
 
