@@ -1052,7 +1052,7 @@ class prog_extension_request_message extends prog_noneventbased_message {
 
         //ensure that $sender is defined and logged in, default to support
         if ($sender == null || ($USER->id != $sender->id)) {
-           $sender == generate_email_supportuser();
+            $sender == generate_email_supportuser();
         }
 
         // send the message to the Manager
@@ -1066,7 +1066,10 @@ class prog_extension_request_message extends prog_noneventbased_message {
             $onaccept = new stdClass();
             $onaccept->action = 'prog_extension';
             $onaccept->text = $this->managermessagedata->accepttext;
-            $onaccept->data = array('userid' => $this->userid, 'extensionid' => $this->extensiondata['extensionid']);
+            $onaccept->data = array();
+            $onaccept->data['userid'] = $this->userid;
+            $onaccept->data['extensionid'] = $this->extensiondata['extensionid'];
+            $onaccept->data['programid'] = $this->programid;
             $onaccept->acceptbutton = $this->managermessagedata->acceptbutton;
             $managerdata->onaccept = $onaccept;
         }
@@ -1074,7 +1077,10 @@ class prog_extension_request_message extends prog_noneventbased_message {
             $onreject = new stdClass();
             $onreject->action = 'prog_extension';
             $onreject->text = $this->managermessagedata->rejecttext;
-            $onreject->data = array('userid' => $this->userid, 'extensionid' => $this->extensiondata['extensionid']);
+            $onreject->data = array();
+            $onreject->data['userid'] = $this->userid;
+            $onreject->data['extensionid'] = $this->extensiondata['extensionid'];
+            $onreject->data['programid'] = $this->programid;
             $onreject->rejectbutton = $this->managermessagedata->rejectbutton;
             $managerdata->onreject = $onreject;
         }

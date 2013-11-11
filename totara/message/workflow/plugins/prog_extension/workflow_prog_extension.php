@@ -40,17 +40,18 @@ class totara_message_workflow_prog_extension extends totara_message_workflow_plu
      * @param object $msg
      */
     function onaccept($eventdata, $msg) {
-        global $CFG;
+        global $CFG, $SITE;
 
         // Load course
         $userid = $eventdata['userid'];
         $extensionid = $eventdata['extensionid'];
+        $programid = $eventdata['programid'];
 
         $extensions = array($extensionid => 1);  // 1 = grant, 2 = deny
 
         // Approve extensions
         if (prog_process_extensions($extensions)) {
-            add_to_log(SITE_ID, 'program', 'grant extension', "view.php?id=$program->id", $program->id);
+            add_to_log($SITE->id, 'program', 'grant extension', "view.php?id=$programid", $programid);
         }
 
         // issue notification that registration has been accepted
@@ -65,18 +66,19 @@ class totara_message_workflow_prog_extension extends totara_message_workflow_plu
      * @param object $msg
      */
     function onreject($eventdata, $msg) {
-        global $CFG;
+        global $CFG, $SITE;
 
         // can manipulate the language by setting $SESSION->lang temporarily
         // Load course
         $userid = $eventdata['userid'];
         $extensionid = $eventdata['extensionid'];
+        $programid = $eventdata['programid'];
 
         $extensions = array($extensionid => 2);  // 1 = grant, 2 = deny
 
         // Decline extensions
         if (prog_process_extensions($extensions)) {
-            add_to_log(SITE_ID, 'program', 'deny extensions', "view.php?id=$program->id", $program->id);
+            add_to_log($SITE->id, 'program', 'deny extensions', "view.php?id=$programid", $programid);
         }
 
         // issue notification that registration has been declined
