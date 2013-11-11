@@ -159,7 +159,7 @@ M.totara_programview = M.totara_programview || {
         totaraDialogs['extension'] = new this.totaraDialog_extension();
 
         // Bind the extension request dialog to the 'Request an extension' link
-        $('.timeallowed a').click(function() {
+        $('a.extrequestlink').click(function() {
             totaraDialogs['extension'].open();
             return false;
         });
@@ -170,7 +170,7 @@ M.totara_programview = M.totara_programview || {
      */
     totara_program_extension_update: function(response) {
         // Get existing text
-        var extensiontext = $('p.timeallowed');
+        var extensiontext = $('a.extrequestlink');
 
         if (response) {
             var new_text = response;
