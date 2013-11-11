@@ -479,10 +479,10 @@ class program_certifications_nonedit_form extends moodleform {
         } else {
             $parts = explode(' ', $certification->activeperiod);
             $mform->addElement('static', 'el2', get_string('editdetailsactive', 'totara_certification'),
-                            $parts[0] . ' ' . strtolower(get_string($parts[1].'s', 'totara_certification')));
+                            $parts[0] . ' ' . mb_strtolower(get_string($parts[1].'s', 'totara_certification'), 'UTF-8'));
             $parts = explode(' ', $certification->windowperiod);
             $mform->addElement('static', 'el3', get_string('editdetailswindow', 'totara_certification'),
-                            $parts[0] . ' ' . strtolower(get_string($parts[1].'s', 'totara_certification')));
+                            $parts[0] . ' ' . mb_strtolower(get_string($parts[1].'s', 'totara_certification'), 'UTF-8'));
             $mform->addElement('static', 'el4', get_string('editdetailsrcopt', 'totara_certification'),
                             $CERTIFRECERT[$certification->recertifydatetype]);
         }
