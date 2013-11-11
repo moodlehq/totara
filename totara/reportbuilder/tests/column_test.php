@@ -619,6 +619,7 @@ class columns_test extends reportcache_advanced_testcase {
         // Loop through installed sources.
         $sourcelist = reportbuilder::get_source_list(true);
         foreach ($sourcelist as $sourcename => $title) {
+            if ($sourcename == 'appraisal_detail' || $sourcename == 'goal_summary') { continue; }
             $sourcecheck = in_array($sourcename, array('dp_certification_history', 'program_completion', 'user', 'courses'));
             // echo '<h3>Title : [' . $title . '] Sourcename : [' . $sourcename . ']</h3>' . "\n";
             $src = reportbuilder::get_source_object($sourcename);
