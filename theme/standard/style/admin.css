@@ -86,8 +86,8 @@
 .path-admin .blockstable .r0 {background-color: #F0F0F0;}
 .path-admin .blockstable .r1 {background-color: #FAFAFA;}
 .path-admin .incompatibleblockstable td.c0 {color: #ff0000;}
-table.flexible  .r0 {background-color: #F0F0F0;}
-table.flexible .r1 {background-color: #FAFAFA;}
+table.flexible .r0 {background-color: #FAFAFA;}
+table.flexible .r1 {background-color: #F0F0F0;}
 #page-admin-report-security-index #timewarning {text-align:center;}
 
 #adminsettings fieldset {background-color: #EEE;border:1px solid #BBB;color: #000;}

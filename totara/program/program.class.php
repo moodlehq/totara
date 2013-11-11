@@ -1283,7 +1283,7 @@ class program {
                 context_program::instance($this->id)->id, 'totara_program', 'summary', 0);
 
         $out = '';
-        $out .= html_writer::start_tag('div', array('class' => 'dp-summary-widget-title'));
+        $out .= html_writer::start_tag('div', array('class' => 'cell'));
         $out .= html_writer::link($url, $this->fullname);
         $out .= html_writer::end_tag('div');
         $out .= html_writer::start_tag('div', array('class' => 'dp-summary-widget-description'));

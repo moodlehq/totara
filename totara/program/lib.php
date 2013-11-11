@@ -225,7 +225,7 @@ function prog_display_required_programs($userid) {
     $table->define_headers($tableheaders);
     $table->define_columns($tablecols);
     $table->define_baseurl($baseurl);
-    $table->set_attribute('class', 'fullwidth');
+    $table->set_attribute('class', 'fullwidth generalbox');
     $table->set_control_variables(array(
         TABLE_VAR_SORT    => 'tsort',
     ));
@@ -301,7 +301,7 @@ function prog_display_certification_programs($userid) {
     $table->define_headers($tableheaders);
     $table->define_columns($tablecols);
     $table->define_baseurl($baseurl);
-    $table->set_attribute('class', 'fullwidth');
+    $table->set_attribute('class', 'fullwidth generalbox');
     $table->set_control_variables(array(
         TABLE_VAR_SORT    => 'tsort',
     ));
