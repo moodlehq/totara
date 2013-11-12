@@ -3,6 +3,44 @@
 
 Totara LMS Changelog
 
+Release 2.5.1 (12th November 2013):
+==================================================
+
+Improvements:
+    T-11456    Improved appearance of heading rows in flexible tables
+    T-11449    Improved message when no file selected for custom fields
+    T-11604    Moved toolbar above the column headers in totara tables
+    T-11581    Only show available databases in Totara Sync external database settings
+
+Bug Fixes:
+    T-11616    Fixed goal review questions in appraisals when using postgreSQL
+    T-11592    Facetoface session info is shown on the course view page again
+    T-11508    Fixed user profile field rules for MSSQL Server
+    T-11610    Fixed failing log inputs during program extension requests
+    T-11315    Added description and type to the my goals page when showing details
+    T-11551    Fixed facetoface signup notification types
+    T-10444    Fixed reminderperiod substitution which was not occurring in face to face notifications
+    T-11588    Excluded suspended users from all user selectors
+    T-11590    Fixed character escaping in feedback360 and appraisals assignments javascript setup
+    T-11574    Fixed error when upgrading via command line
+    T-11575    Added new completion setting fields to course backup/restore
+    T-11558    Deleted users are once again shown on browse list of users page
+    T-11579    Fixed permissions for managing course custom fields
+    T-11567    Fixed javascript error on notification page
+    T-11599    Changed button icon for topics add/remove sections in courses
+    T-11582    Fixed 'Standard Totara Responsive' theme problem when using upload completion records options
+    T-11559    Prevent people requesting 360 feedback from suspended users
+    T-11533    Cleaned up course_modules_completion table when course id deleted
+    T-10832    Fix icon picker to account for slash arguments setting
+    T-11571    Fixed fatal error on request feedback page when javascript is turned off
+    T-11583    Fixed upgrade from Totara 2.4 to Totara 2.5 when a site has external backpacks connected
+    T-11479    Only show delimiter selector on CSV sources in Totara Sync
+    T-11564    Fixed format hint string next to date pickers on audience editing page
+
+API Changes:
+    T-11560    Removed optional $certifpath param from course_set and multi_course_set class constructors
+
+
 Release 2.5.0 (31st October 2013):
 ==================================================
 

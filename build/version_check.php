@@ -84,7 +84,9 @@ if (!isset($TOTARA->version)) {
     if (strpos($TOTARA->version, '+') === false) {
         echo "WARNING: TOTARA->version is not bumped!\n";
     }
-    if (!(version_compare($TOTARA->version, "2.4.0", ">=") && version_compare("2.5.0", $TOTARA->version, ">"))) {
+    // Make sure the version is 2.5.x.
+    // This needs to be updated the the correct range if using the code on other stable branches.
+    if (!(version_compare($TOTARA->version, "2.5.0", ">=") && version_compare($TOTARA->version, "2.6.0", "<"))) {
         echo "ERROR: TOTARA->version is for a different branch!\n";
     }
 }
