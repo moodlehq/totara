@@ -1140,12 +1140,12 @@ class goal extends hierarchy {
                 // Skip the child item.
                 continue;
             }
-            $sql = "SELECT ga.*, g.fullname, mod.fullname as parentname
+            $sql = "SELECT ga.*, g.fullname, mo.fullname as parentname
                     FROM {{$table}} ga
                     LEFT JOIN {goal} g
                         ON g.id = ga.goalid
-                    LEFT JOIN {{$prefix}} mod
-                        ON ga.{$field} = mod.id
+                    LEFT JOIN {{$prefix}} mo
+                        ON ga.{$field} = mo.id
                     WHERE ga.{$field} = ?
                     AND ga.includechildren = 1";
             $parent_assignments = array_merge($parent_assignments, $DB->get_records_sql($sql, array($parent)));
