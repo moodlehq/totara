@@ -809,18 +809,17 @@ function import_certification($importname, $importtime) {
             FROM {{$tablename}} i
             JOIN {user} u ON u.username = i.username
             JOIN {prog} p ON {$shortnameoridnumber}
-            LEFT JOIN {prog_assignment} pa ON pa.programid = p.id
-                                              AND pa.assignmenttype = :assignmenttype2
-                                              AND pa.assignmenttypeid = u.id
             {$sqlwhere}
-            AND pa.id IS NULL";
+            AND NOT EXISTS (SELECT pa.id FROM {prog_user_assignment} pa
+                WHERE pa.programid = p.id AND pa.userid = u.id)";
 
     $assignments = $DB->get_recordset_sql($sql, $params);
     $DB->insert_records_via_batch('prog_assignment', $assignments);
     $assignments->close();
 
     // Now get the records to import.
-    $params = array_merge(array('assignmenttype' => ASSIGNTYPE_INDIVIDUAL), $stdparams);
+    $params = $stdparams;
+    $params = array_merge(array('assignmenttype' => ASSIGNTYPE_INDIVIDUAL, 'assignmenttype2' => ASSIGNTYPE_INDIVIDUAL), $stdparams);
     $sql = "SELECT i.id as importid,
                     i.completiondate,
                     p.id AS progid,
@@ -830,7 +829,6 @@ function import_certification($importname, $importtime) {
                     c.windowperiod,
                     cc.timeexpires,
                     u.id AS userid,
-                    pa.id AS paid,
                     pa.id AS assignmentid,
                     cc.id AS ccid,
                     pc.id AS pcid,
@@ -839,12 +837,13 @@ function import_certification($importname, $importtime) {
             JOIN {prog} p ON {$shortnameoridnumber}
             JOIN {certif} c ON c.id = p.certifid
             JOIN {user} u ON u.username = i.username
-            JOIN {prog_assignment} pa ON pa.programid = p.id
-                                        AND pa.assignmenttype = :assignmenttype
-                                        AND pa.assignmenttypeid = u.id
+            LEFT JOIN {prog_assignment} pa ON pa.programid = p.id
+                                        AND ((pa.assignmenttype = :assignmenttype
+                                            AND pa.assignmenttypeid = u.id)
+                                        OR (pa.assignmenttype != :assignmenttype2))
             LEFT JOIN {certif_completion} cc ON cc.certifid = c.id AND cc.userid = u.id
             LEFT JOIN {prog_completion} pc ON pc.programid = p.id AND pc.userid = u.id AND pc.coursesetid = 0
-            LEFT JOIN {prog_user_assignment} pua ON pua.programid = p.id AND pua.userid = u.id AND pua.assignmentid = pa.id
+            LEFT JOIN {prog_user_assignment} pua ON pua.assignmentid = pa.id AND pua.userid = u.id AND pua.programid = p.id
             {$sqlwhere}
             ORDER BY p.id";
 
@@ -852,6 +851,7 @@ function import_certification($importname, $importtime) {
     $programid = 0;
 
     $programs = $DB->get_recordset_sql($sql, $params);
+
     if ($programs->valid()) {
         foreach ($programs as $program) {
             if (empty($programid) || ($programid != $program->progid) || (($insertcount++ % BATCH_INSERT_MAX_ROW_COUNT) == 0)) {
@@ -926,8 +926,10 @@ function import_certification($importname, $importtime) {
             if (empty($program->ccid)) {
                 $cc[] = $ccdata;
             } else {
-                // Already exists so out into history.
-                $cchistory[] = $ccdata;
+                // Already exists so out into history but don't create duplicates
+                if (!$DB->record_exists('certif_completion_history', array('certifid' => $ccdata->certifid, 'userid' => $ccdata->userid, 'timeexpires' => $ccdata->timeexpires))) {
+                    $cchistory[] = $ccdata;
+                }
             }
 
             // Program completion.
