@@ -36,7 +36,6 @@ require_login();
 $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('standard');
 $PAGE->set_pagetype('my-teammembers');
-$PAGE->blocks->add_region('content');
 $PAGE->set_url(new moodle_url('/my/teammembers.php'));
 
 global $SESSION, $USER;
@@ -66,17 +65,15 @@ $report->include_js();
 
 /* End of defining the report */
 
-$PAGE->set_totara_menu_selected('myteam');
-$PAGE->set_button($report->edit_button());
-$PAGE->set_title($strheading);
-$PAGE->set_heading($strheading);
 $PAGE->navbar->add(get_string('myteam', 'totara_core'));
 $PAGE->navbar->add($strheading);
 
+$editbutton = '';
 if (!isset($USER->editing)) {
     $USER->editing = 0;
 }
 if ($PAGE->user_allowed_editing()) {
+    $editbutton .= $OUTPUT->edit_button($PAGE->url);
     if ($edit == 1 && confirm_sesskey()) {
         $USER->editing = 1;
         $url = new moodle_url($PAGE->url, array('notifyeditingon' => 1));
@@ -88,6 +85,11 @@ if ($PAGE->user_allowed_editing()) {
 } else {
     $USER->editing = 0;
 }
+
+$PAGE->set_totara_menu_selected('myteam');
+$PAGE->set_title($strheading);
+$PAGE->set_heading($strheading);
+$PAGE->set_button($report->edit_button().$editbutton);
 
 $renderer = $PAGE->get_renderer('totara_reportbuilder');
 echo $OUTPUT->header();
@@ -114,12 +116,10 @@ echo html_writer::empty_tag('br');
 
 if ($countfiltered>0) {
     $report->display_table();
-    print $report->edit_button();
     // Export button.
     $renderer->export_select($report->_id, $sid);
 }
 
-echo $OUTPUT->blocks_for_region('content');
 echo $OUTPUT->container_end();
 echo $OUTPUT->footer();
 

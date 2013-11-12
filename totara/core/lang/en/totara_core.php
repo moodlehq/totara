@@ -214,7 +214,6 @@ $string['myrecordoflearning'] = 'My Record of Learning';
 $string['myreports'] = 'My Reports';
 $string['myteam'] = 'My Team';
 $string['myteaminstructionaltext'] = 'Choose a team member from the table on the right.';
-$string['myteamsettings'] = 'My team settings';
 $string['noassessors'] = 'No assessors found';
 $string['none'] = 'None';
 $string['noresultsfor'] = 'No results found for "{$a->query}".';
