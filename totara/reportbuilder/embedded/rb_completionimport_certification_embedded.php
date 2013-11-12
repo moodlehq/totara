@@ -33,8 +33,9 @@ class rb_completionimport_certification_embedded extends rb_base_embedded {
         $timecreated = array_key_exists('timecreated', $data) ? $data['timecreated'] : null;
         $importuserid = array_key_exists('importuserid', $data) ? $data['importuserid'] : null;
 
-        $this->url = new moodle_url('/totara/completionimport/viewreport.php',
-                array('importname' => 'certification', 'timecreated' => $timecreated, 'importuserid' => $importuserid));
+        $url = new moodle_url('/totara/completionimport/viewreport.php',
+            array('importname' => 'certification', 'timecreated' => $timecreated, 'importuserid' => $importuserid));
+        $this->url = $url->out_as_local_url();
         $this->source = 'completionimport_certification'; // Source report not database table
         $this->defaultsortcolumn = 'id';
         $this->shortname = 'completionimport_certification';
