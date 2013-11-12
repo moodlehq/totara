@@ -273,7 +273,7 @@ class question_goals extends reviewrating {
                                   WHERE pg.userid = ?
                                     AND pg.deleted = 0) item
                         ON reviewdata.itemid = item.id
-                       AND reviewdata.scope = item.scope
+                       AND reviewdata.scope = '.$DB->sql_cast_char2int('item.scope').'
                      WHERE reviewdata.'.$this->prefix.'questfieldid = ?
                        AND reviewdata.'.$this->storage->answerfield.' '.$answerssql;
 
