@@ -6,6 +6,9 @@ Totara LMS Changelog
 Release 2.5.1 (12th November 2013):
 ==================================================
 
+Security fixes:
+    Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_2.5.3_release_notes
+
 Improvements:
     T-11456    Improved appearance of heading rows in flexible tables
     T-11449    Improved message when no file selected for custom fields
