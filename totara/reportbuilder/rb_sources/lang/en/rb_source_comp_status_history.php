@@ -22,7 +22,7 @@
  * @subpackage reportbuilder
  */
 
- $string['sourcetitle'] = 'Competency Status History';
+$string['sourcetitle'] = 'Competency Status History';
 
 // Columns.
 $string['compnamecolumn'] = 'Competency Name';
