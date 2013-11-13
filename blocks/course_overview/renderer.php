@@ -199,13 +199,19 @@ class block_course_overview_renderer extends plugin_renderer_base {
      * @param int $total count of hidden courses
      * @return string html
      */
-    public function hidden_courses($total) {
-        if ($total <= 0) {
+    public function hidden_courses($total, $showing) {
+        if ($total <= $showing) {
             return;
         }
+
+        $vars = new stdClass();
+        $vars->showing = $showing;
+        $vars->total = $total;
+        $url = new moodle_url('/totara/plan/record/courses.php', array('status' => 'all'));
+        $vars->link = html_writer::link($url, get_string('here', 'block_course_overview'));
+
         $output = $this->output->box_start('notice');
-        $plural = $total > 1 ? 'plural' : '';
-        $output .= get_string('hiddencoursecount'.$plural, 'block_course_overview', $total);
+        $output .= get_string('showingxofycourses', 'block_course_overview', $vars);
         $output .= $this->output->box_end();
         return $output;
     }
