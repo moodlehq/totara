@@ -36,6 +36,7 @@ $string['forcedefaultmaxcourses'] = 'Force maximum courses';
 $string['forcedefaultmaxcoursesdesc'] = 'If set then user will not be able to change his/her personal setting';
 $string['hiddencoursecount'] = 'You have {$a} hidden course';
 $string['hiddencoursecountplural'] = 'You have {$a} hidden courses';
+$string['showingxofycourses'] = 'Currently showing {$a->showing} of {$a->total} assigned courses. See the rest <a href="{$a->url}">here</a>.';
 $string['message'] = 'message';
 $string['messages'] = 'messages';
 $string['movecourse'] = 'Move course: {$a}';
