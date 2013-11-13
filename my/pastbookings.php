@@ -30,11 +30,13 @@ require_login();
 $userid = optional_param('userid', $USER->id, PARAM_INT); // which user to show
 $sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format','', PARAM_TEXT); // export format
+$edit = optional_param('edit', -1, PARAM_BOOL);
 
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url(new moodle_url('/my/pastbookings.php', array('userid' => $userid, 'format' => $format)));
 $PAGE->set_totara_menu_selected('mybookings');
-$PAGE->set_pagelayout('noblocks');
+$PAGE->set_pagelayout('standard');
+$PAGE->set_pagetype('my-bookings');
 
 if (!$user = $DB->get_record('user', array('id' => $userid))) {
     print_error('error:usernotfound', 'totara_core');
@@ -77,10 +79,30 @@ $fullname = $report->fullname;
 $pagetitle = format_string(get_string('report', 'totara_core').': '.$fullname);
 
 $PAGE->set_title($pagetitle);
-$PAGE->set_button($report->edit_button());
 $PAGE->set_heading('');
 $PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/'));
 $PAGE->navbar->add($strheading);
+
+if (!isset($USER->editing)) {
+    $USER->editing = 0;
+}
+$editbutton = '';
+if ($PAGE->user_allowed_editing()) {
+    $editbutton .= $OUTPUT->edit_button($PAGE->url);
+    if ($edit == 1 && confirm_sesskey()) {
+        $USER->editing = 1;
+        $url = new moodle_url($PAGE->url, array('notifyeditingon' => 1));
+        redirect($url);
+    } else if ($edit == 0 && confirm_sesskey()) {
+        $USER->editing = 0;
+        redirect($PAGE->url);
+    }
+} else {
+    $USER->editing = 0;
+}
+
+$PAGE->set_button($report->edit_button().$editbutton);
+
 echo $OUTPUT->header();
 
 $currenttab = "pastbookings";
