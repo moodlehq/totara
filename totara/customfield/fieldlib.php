@@ -60,7 +60,7 @@ class customfield_base {
     function display_data() {
         // call the static method belonging to this object's class
         // or the one below if not re-defined by child class
-        return $this->display_item_data($this->data, array('prefix' => $this->prefix));
+        return $this->display_item_data($this->data, array('prefix' => $this->prefix, 'itemid' => $this->dataid));
     }
 
 
@@ -351,12 +351,18 @@ function customfield_load_data(&$item, $prefix, $tableprefix) {
         $formfield->edit_load_item_data($item);
         //if an unlocked textfield we also need to prepare the editor fields
         if ($field->datatype == 'textarea' && !$formfield->is_locked()) {
-            //get short form by removing trailing '_editor' from $this->inputname;
-            $shortinputname = substr($formfield->inputname, 0, strlen($formfield->inputname)-7);
+            // Get short form by removing trailing '_editor' from $this->inputname.
+            $shortinputname = substr($formfield->inputname, 0, strlen($formfield->inputname) - 7);
             $formatstr = $shortinputname . 'format';
             $item->$formatstr = FORMAT_HTML;
-            $item = file_prepare_standard_editor($item, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
-                                                  'totara_customfield', $prefix, $item->id);
+            if ($formfield->data == $formfield->field->defaultdata) {
+                $item->$shortinputname = $formfield->field->defaultdata;
+                $item = file_prepare_standard_editor($item, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                'totara_customfield', 'textarea', $formfield->fieldid);
+            } else {
+                $item = file_prepare_standard_editor($item, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                'totara_customfield', $prefix, $formfield->dataid);
+            }
         }
     }
 }

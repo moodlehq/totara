@@ -28,10 +28,14 @@ class customfield_textarea extends customfield_base {
         global $TEXTAREA_OPTIONS;
         $cols = $this->field->param1;
         $rows = $this->field->param2;
-        /// Create the form field
+        // Create the form field.
         if ($this->is_locked()) {
             $context = context_system::instance();
-            $data = file_rewrite_pluginfile_urls($this->data, 'pluginfile.php', $context->id, 'totara_customfield', $this->prefix, $this->itemid);
+            if ($this->data == $this->field->defaultdata) {
+                $data = file_rewrite_pluginfile_urls($this->field->defaultdata, 'pluginfile.php', $context->id, 'totara_customfield', 'textarea', $this->fieldid);
+            } else {
+                $data = file_rewrite_pluginfile_urls($this->data, 'pluginfile.php', $context->id, 'totara_customfield', $this->prefix, $this->dataid);
+            }
             $mform->addElement('static', 'freezedisplay', format_string($this->field->fullname), format_text($data, FORMAT_MOODLE));
         } else {
             $mform->addElement('editor', $this->inputname, format_string($this->field->fullname), array('cols' => $cols, 'rows' => $rows), $TEXTAREA_OPTIONS);
@@ -104,7 +108,6 @@ class customfield_textarea extends customfield_base {
     * Display the data for this field
      */
     static function display_item_data($data, $extradata=array()) {
-        global $OUTPUT;
         if (empty($data)) {
             return $data;
         }
