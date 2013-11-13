@@ -1558,32 +1558,37 @@ class program {
      *
      */
     public function update_exceptions($userid, $assignment, $timedue) {
-        // Changes are being made so old exceptions are no longer
-        // relevant
+        // Changes are being made so old exceptions are no longer relevant.
         prog_exceptions_manager::delete_exceptions_by_assignment($assignment->id, $userid);
-        if ($timedue == COMPLETION_TIME_NOT_SET) {
-            return false;
-        }
         $now = time();
-        $certifpath = get_certification_path_user($this->certifid, $userid);
-        if ($certifpath == CERTIFPATH_UNSET) {
-            $certifpath = CERTIFPATH_CERT;
+
+        if ($this->assigned_to_users_non_required_learning($userid)) {
+            $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_ALREADY_ASSIGNED, $userid, $assignment->id, $now);
+            return true;
         }
-        $total_time_allowed = $this->content->get_total_time_allowance($certifpath);
-        $time_until_duedate = $timedue - $now;
+
+        if ($this->duplicate_course($userid)) {
+            $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_DUPLICATE_COURSE, $userid, $assignment->id, $now);
+            return true;
+        }
 
         if ($timedue == COMPLETION_TIME_UNKNOWN) {
             $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN, $userid, $assignment->id, $now);
             return true;
-        } else if ($time_until_duedate < $total_time_allowed) {
-            $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_TIME_ALLOWANCE, $userid, $assignment->id, $now);
-            return true;
-        } else if ($this->assigned_to_users_non_required_learning($userid)) {
-            $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_ALREADY_ASSIGNED, $userid, $assignment->id, $now);
-            return true;
-        } else if ($this->duplicate_course($userid)) {
-            $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_DUPLICATE_COURSE, $userid, $assignment->id, $now);
-            return true;
+        }
+
+        if ($timedue != COMPLETION_TIME_NOT_SET) {
+            $certifpath = get_certification_path_user($this->certifid, $userid);
+            if ($certifpath == CERTIFPATH_UNSET) {
+                $certifpath = CERTIFPATH_CERT;
+            }
+            $total_time_allowed = $this->content->get_total_time_allowance($certifpath);
+            $time_until_duedate = $timedue - $now;
+
+            if ($time_until_duedate < $total_time_allowed) {
+                $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_TIME_ALLOWANCE, $userid, $assignment->id, $now);
+                return true;
+            }
         }
 
         return false;
