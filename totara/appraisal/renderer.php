@@ -349,7 +349,6 @@ class totara_appraisal_renderer extends plugin_renderer_base {
      * Renders a table containing inactive appraisals list for the management report
      *
      * @param array $appraisals array of appraisal object
-     * @param int $userid User id to show actions according their rights
      * @return string HTML table
      */
     public function report_inactive_table($appraisals = array()) {
@@ -410,6 +409,56 @@ class totara_appraisal_renderer extends plugin_renderer_base {
         $appraisalstable->data = $data;
 
         return html_writer::table($appraisalstable);
+    }
+
+
+    /**
+     * Renders a table containing appraisals for the detail report
+     *
+     * @param int $detailreportid id of the report
+     * @param array $appraisals array of appraisal object
+     * @return string HTML table
+     */
+    public function detail_report_table($detailreportid, $appraisals = array()) {
+        if (empty($appraisals)) {
+            return get_string('noappraisals', 'totara_appraisal');
+        }
+
+        $tableheader = array(get_string('name', 'totara_appraisal'),
+                             get_string('start', 'totara_appraisal'),
+                             get_string('learners', 'totara_appraisal'),
+                             get_string('status', 'totara_appraisal'));
+
+        $table = new html_table();
+        $table->summary = '';
+        $table->head = $tableheader;
+        $table->data = array();
+        $table->attributes = array('class' => 'generaltable');
+
+        $data = array();
+        foreach ($appraisals as $appraisal) {
+            $row = array();
+
+            $detailreporturl = new moodle_url('/totara/reportbuilder/report.php',
+                    array('id' => $detailreportid, 'appraisalid' => $appraisal->id, 'clearfilter' => 1));
+
+            $row[] = html_writer::link($detailreporturl, format_string($appraisal->name));
+
+            if ($appraisal->timestarted) {
+                $row[] = userdate($appraisal->timestarted, get_string('strfdateshortmonth', 'langconfig'));
+            } else {
+                $row[] = get_string('none', 'totara_appraisal');
+            }
+
+            $row[] = $appraisal->lnum;
+
+            $row[] = appraisal::display_status($appraisal->status);
+
+            $data[] = $row;
+        }
+        $table->data = $data;
+
+        return html_writer::table($table);
     }
 
 

@@ -31,7 +31,7 @@ require_once($CFG->dirroot . '/totara/appraisal/lib.php');
 class rb_source_appraisal_detail extends rb_source_appraisal {
     public $base, $joinlist, $columnoption, $filteroptions, $paramoptions;
     public $defaultcolumns, $defaultfilters, $embeddedparams;
-    public $sourcetitle, $shortname, $selectable, $cacheable;
+    public $sourcetitle, $shortname, $scheduleable, $cacheable;
 
     /**
      * Stored during post_config so that it can be used later.
@@ -46,7 +46,7 @@ class rb_source_appraisal_detail extends rb_source_appraisal {
 
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_appraisal_detail');
         $this->shortname = 'appraisal_detail';
-        $this->selectable = false;
+        $this->scheduleable = false;
         $this->cacheable = false;
     }
 
@@ -177,9 +177,24 @@ class rb_source_appraisal_detail extends rb_source_appraisal {
         return array_merge($extendedcolumnoptions, parent::define_columnoptions());
     }
 
+    /**
+     * Set up some extra joins that could not be done in the constructor.
+     *
+     * @param reportbuilder $report
+     * @return object
+     */
     public function post_config(reportbuilder $report) {
-        $this->appraisalid = required_param('appraisalid', PARAM_INT);
+        $this->appraisalid = optional_param('appraisalid', 0, PARAM_INT);
 
+        // If the id was not specified then redirect to the selection page.
+        if (!$this->appraisalid) {
+            $this->set_redirect(new moodle_url('/totara/appraisal/rb_sources/appraisaldetailselector.php',
+                    array('detailreportid' => $report->_id)),
+                    get_string('selectappraisalfordetailreport', 'totara_appraisal'));
+            return;
+        }
+
+        // Configure the appriasal-specific joins.
         $extendedjoinlist = array(
             new rb_join(
                 'rolelearner',

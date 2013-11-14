@@ -29,6 +29,12 @@ require_once($CFG->dirroot . '/user/profile/lib.php');
  */
 abstract class rb_base_source {
 
+    /*
+     * Used in default pre_display_actions function.
+     */
+    private $redirecturl, $redirectmessage;
+
+
 /**
  * Class constructor
  *
@@ -65,6 +71,7 @@ abstract class rb_base_source {
             'grouptype' => 'none',
             'groupid' => null,
             'selectable' => true,
+            'scheduleable' => true,
             'cacheable' => true
         );
         foreach ($defaults as $property => $default) {
@@ -143,6 +150,41 @@ abstract class rb_base_source {
                         throw new ReportBuilderException(get_string('error:columnextranameid', 'totara_reportbuilder', $extravalue), 101);
                     }
                 }
+            }
+        }
+    }
+
+
+    /**
+     * Set redirect url and (optionally) message for use in default pre_display_actions function.
+     *
+     * When pre_display_actions is call it will redirect to the specified url (unless pre_display_actions
+     * is overridden, in which case it performs those actions instead).
+     *
+     * @param mixed $url moodle_url or url string
+     * @param string $message
+     */
+    protected function set_redirect($url, $message = null) {
+        $this->redirecturl = $url;
+        $this->redirectmessage = $message;
+    }
+
+
+    /**
+     * Default pre_display_actions - if redirecturl has been set then redirect to the specified
+     * page, otherwise do nothing.
+     *
+     * This function is called after post_config and before report data is generated. This function is
+     * not called when report data is not generated, such as on report setup pages.
+     * If you want to perform a different action after post_config then override this function and
+     * set your own private variables (e.g. to signal a result from post_config) in your report source.
+     */
+    public function pre_display_actions() {
+        if (isset($this->redirecturl)) { // This indicates that post_config signalled to redirect.
+            if (isset($this->redirectmessage)) {
+                totara_set_notification($this->redirectmessage, $this->redirecturl, array('class' => 'notifymessage'));
+            } else {
+                redirect($this->redirecturl);
             }
         }
     }
@@ -3215,7 +3257,10 @@ abstract class rb_base_source {
      * or by calling the following method on the $report object:
      * {@link $report->set_post_config_restrictions()}    Extra WHERE clause
      *
+     * If post_config fails and needs to redirect or execute some other code then return an object.
+     *
      * @param array $params
+     * @return object
      */
     public function post_config(reportbuilder $report) {
     }

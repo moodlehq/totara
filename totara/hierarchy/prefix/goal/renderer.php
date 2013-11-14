@@ -92,4 +92,45 @@ class totara_goal_renderer extends plugin_renderer_base {
     }
 
 
+    /**
+     * Renders a table containing goal frameworks for the summary report
+     *
+     * @param int $summaryreportid id of the report
+     * @param array $frameworks array of goal frameworks
+     * @return string HTML table
+     */
+    public function summary_report_table($summaryreportid, $frameworks = array()) {
+        if (empty($frameworks)) {
+            return get_string('goalnoframeworks', 'totara_hierarchy');
+        }
+
+        $tableheader = array(get_string('goalframework', 'totara_hierarchy'),
+                             get_string('goalcount', 'totara_hierarchy'));
+
+        $table = new html_table();
+        $table->summary = '';
+        $table->head = $tableheader;
+        $table->data = array();
+        $table->attributes = array('class' => 'generaltable');
+
+        $data = array();
+        foreach ($frameworks as $framework) {
+            $row = array();
+
+            $summaryreporturl = new moodle_url('/totara/reportbuilder/report.php',
+                    array('id' => $summaryreportid, 'goalframeworkid' => $framework->id, 'clearfilter' => 1));
+
+            $row[] = html_writer::link($summaryreporturl, format_string($framework->fullname));
+
+            $goals = goal::get_framework_items($framework->id);
+            $row[] = count($goals);
+
+            $data[] = $row;
+        }
+        $table->data = $data;
+
+        return html_writer::table($table);
+    }
+
+
 }

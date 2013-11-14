@@ -27,7 +27,15 @@ defined('MOODLE_INTERNAL') || die();
 class rb_source_goal_summary extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions, $paramoptions;
     public $defaultcolumns, $defaultfilters, $embeddedparams;
-    public $sourcetitle, $shortname, $selectable, $cacheable;
+    public $sourcetitle, $shortname, $scheduleable, $cacheable;
+
+
+    /**
+     * Stored during post_config so that it can be used later.
+     *
+     * @var int
+     */
+    private $goalframeworkid;
 
 
     public function __construct() {
@@ -41,7 +49,7 @@ class rb_source_goal_summary extends rb_base_source {
         $this->embeddedparams = $this->define_embeddedparams();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_goal_summary');
         $this->shortname = 'goal_summary';
-        $this->selectable = false;
+        $this->scheduleable = false;
         $this->cacheable = false;
 
         parent::__construct();
@@ -124,13 +132,15 @@ class rb_source_goal_summary extends rb_base_source {
     public function post_config(reportbuilder $report) {
         global $DB;
 
-        $goalframeworkid = optional_param('goalframeworkid', 0, PARAM_INT);
+        $this->goalframeworkid = optional_param('goalframeworkid', 0, PARAM_INT);
 
-        if (!$goalframeworkid) {
+        // If the id was not specified then redirect to the selection page.
+        if (!$this->goalframeworkid) {
+            $this->set_redirect(new moodle_url('/totara/hierarchy/rb_sources/goalsummaryselector.php',
+                    array('summaryreportid' => $report->_id)),
+                    get_string('selectgoalframeworkforsummaryreport', 'totara_hierarchy'));
             return;
         }
-
-        $this->goalframeworkid = $goalframeworkid;
 
         $scaleassignment = $DB->get_record('goal_scale_assignments', array('frameworkid' => $this->goalframeworkid));
 
@@ -155,7 +165,7 @@ class rb_source_goal_summary extends rb_base_source {
     public function rb_cols_generator_scalevalues($columnoption, $hidden) {
         global $DB;
 
-        if (empty($this->goalframeworkid)) {
+        if (!$this->goalframeworkid) {
             return array();
         }
 
@@ -223,7 +233,7 @@ class rb_source_goal_summary extends rb_base_source {
 
         $goals = array();
 
-        if (isset($this->goalframeworkid)) {
+        if ($this->goalframeworkid) {
             $goallist = $DB->get_records('goal', array('frameworkid' => $this->goalframeworkid));
             foreach ($goallist as $goal) {
                 $goals[$goal->id] = $goal->fullname;

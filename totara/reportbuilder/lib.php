@@ -264,6 +264,14 @@ class reportbuilder {
             }
         }
 
+        // Determine who is viewing or receiving the report.
+        // Used for access and content restriction checks.
+        if (isset($reportfor)) {
+            $this->reportfor = $reportfor;
+        } else {
+            $this->reportfor = $USER->id;
+        }
+
         // Before we pull in the rest of the data, get the parameters and call the post_config method.
         // This allows the source to configure additional tables and columns based on the parameters.
         $this->_paramoptions = $this->src->paramoptions;
@@ -290,17 +298,20 @@ class reportbuilder {
 
         $this->process_filters();
 
-        // determine who is viewing or receiving the report
-        // used for access and content restriction checks
-        if (isset($reportfor)) {
-            $this->reportfor = $reportfor;
-        } else {
-            $this->reportfor = $USER->id;
-        }
-
         if ($sid) {
             $this->restore_saved_search();
         }
+    }
+
+
+    /**
+     * Shortcut to function in report source.
+     *
+     * This may be called before data is generated for a report (e.g. embedded report page, report.php).
+     * It should not be called when data will not be generated (e.g. report setup/config pages).
+     */
+    public function handle_pre_display_actions() {
+        $this->src->pre_display_actions();
     }
 
 
@@ -4173,10 +4184,10 @@ function reportbuilder_fix_schedule($reportid) {
  *
  * @param boolean showhidden If true include hidden reports
  *
- * @return array Array of report objects
+ * @return array Array of report records
  */
 function reportbuilder_get_reports($showhidden=false) {
-    global $CFG, $reportbuilder_permittedreports;
+    global $reportbuilder_permittedreports;
     if (!isset($reportbuilder_permittedreports) || !is_array($reportbuilder_permittedreports)) {
         $reportbuilder_permittedreports = reportbuilder::get_permitted_reports(null,$showhidden);
     }

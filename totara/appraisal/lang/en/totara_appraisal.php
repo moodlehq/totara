@@ -319,6 +319,7 @@ $string['savechanges'] = 'Save changes';
 $string['savepdfsnapshot'] = 'Save PDF Snapshot';
 $string['saveprogress'] = 'Save progress';
 $string['sameaspreceding'] = 'Same as preceding question';
+$string['selectappraisalfordetailreport'] = 'Select an appraisal to view the report';
 $string['selectquestiontype'] = 'Select type of content...';
 $string['settings'] = 'Settings';
 $string['appraisal_stage_completion'] = 'Stage completion';

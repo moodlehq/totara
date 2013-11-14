@@ -48,6 +48,7 @@ $report = new reportbuilder($id, null, false, $sid);
 if (!$report->is_capable($id)) {
     print_error('nopermission', 'totara_reportbuilder');
 }
+$report->handle_pre_display_actions();
 
 // Embedded reports can only be viewed through their embedded url.
 if ($report->embedded) {

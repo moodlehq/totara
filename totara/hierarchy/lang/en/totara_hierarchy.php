@@ -1186,6 +1186,7 @@ $string['selecteditems'] = 'Selected items';
 $string['selectedx'] = 'Selected {$a}';
 $string['selectframeworks'] = 'Select which frameworks to restore';
 $string['selectgoal'] = 'Select goal';
+$string['selectgoalframeworkforsummaryreport'] = 'Select a goal framework to view the report';
 $string['set'] = 'Set';
 $string['settingsupdated'] = 'Settings updated';
 $string['shortnamedepth'] = 'Depth level short name';

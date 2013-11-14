@@ -123,15 +123,20 @@ class scheduled_reports_add_form extends moodleform {
         $reports = reportbuilder_get_reports();
         $reportselect = array();
         foreach ($reports as $report) {
-            $reportselect[$report->id] = $report->fullname;
+            $reportobject = new reportbuilder($report->id);
+            if ($reportobject->src->scheduleable) {
+                $reportselect[$report->id] = $report->fullname;
+            }
         }
 
-        $mform->addElement('select', 'reportid', null, $reportselect);
-        $mform->addElement('submit', 'submitbutton', get_string('addscheduledreport', 'totara_reportbuilder'));
+        if (!empty($reportselect)) {
+            $mform->addElement('select', 'reportid', null, $reportselect);
+            $mform->addElement('submit', 'submitbutton', get_string('addscheduledreport', 'totara_reportbuilder'));
 
-        $renderer =& $mform->defaultRenderer();
-        $elementtemplate = '<span>{element}</span>';
-        $renderer->setElementTemplate($elementtemplate, 'submitbutton');
-        $renderer->setElementTemplate($elementtemplate, 'reportid');
+            $renderer =& $mform->defaultRenderer();
+            $elementtemplate = '<span>{element}</span>';
+            $renderer->setElementTemplate($elementtemplate, 'submitbutton');
+            $renderer->setElementTemplate($elementtemplate, 'reportid');
+        }
     }
 }
