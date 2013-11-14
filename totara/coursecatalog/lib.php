@@ -178,7 +178,6 @@ function totara_course_cmp_by_count($a, $b) {
 
 /**
  * Returns true or false depending on whether or not this course is visible to a user.
- * This method does not care whether the user is enrolled or not.
  *
  * @param int $courseid
  * @param int $userid

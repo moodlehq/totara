@@ -720,13 +720,20 @@ abstract class rb_base_source {
 
     // convert a course name into a link to that course
     function rb_display_link_course($course, $row, $isexport = false) {
+        global $CFG;
+        require_once($CFG->dirroot . '/cohort/lib.php');
 
         if ($isexport) {
             return format_string($course);
         }
 
         $courseid = $row->course_id;
-        $attr = (isset($row->course_visible) && $row->course_visible == 0) ? array('class' => 'dimmed') : array();
+        if (empty($CFG->audiencevisibility)) {
+            $attr = (isset($row->course_visible) && $row->course_visible == 0) ? array('class' => 'dimmed') : array();
+        } else {
+            $attr = (isset($row->course_audiencevisible) && $row->course_audiencevisible == COHORT_VISIBLE_NONE) ?
+                    array('class' => 'dimmed') : array();
+        }
         $url = new moodle_url('/course/view.php', array('id' => $courseid));
         return html_writer::link($url, $course, $attr);
     }
@@ -734,7 +741,8 @@ abstract class rb_base_source {
     // convert a course name into a link to that course and shows
     // the course icon next to it
     function rb_display_link_course_icon($course, $row, $isexport = false) {
-        global $OUTPUT;
+        global $CFG, $OUTPUT;
+        require_once($CFG->dirroot . '/cohort/lib.php');
 
         if ($isexport) {
             return format_string($course);
@@ -742,7 +750,12 @@ abstract class rb_base_source {
 
         $courseid = $row->course_id;
         $courseicon = !empty($row->course_icon) ? $row->course_icon : 'default';
-        $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? 'dimmed' : '';
+        if (empty($CFG->audiencevisibility)) {
+            $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? 'dimmed' : '';
+        } else {
+            $cssclass = (isset($row->course_audiencevisible) && $row->course_audiencevisible == COHORT_VISIBLE_NONE) ?
+                    'dimmed' : '';
+        }
         $icon = $OUTPUT->pix_icon('/courseicons/'.$courseicon, $course, 'totara_core', array('class' => 'course_icon'));
         $link = $OUTPUT->action_link(
             new moodle_url('/course/view.php', array('id' => $courseid)),
@@ -1631,7 +1644,9 @@ abstract class rb_base_source {
                 'joins' => $join,
                 'displayfunc' => 'link_course',
                 'defaultheading' => get_string('coursename', 'totara_reportbuilder'),
-                'extrafields' => array('course_id' => "$join.id", 'course_visible' => "$join.visible")
+                'extrafields' => array('course_id' => "$join.id",
+                                       'course_visible' => "$join.visible",
+                                       'course_audiencevisible' => "$join.audiencevisible")
             )
         );
         $columnoptions[] = new rb_column_option(
@@ -1646,7 +1661,8 @@ abstract class rb_base_source {
                 'extrafields' => array(
                     'course_id' => "$join.id",
                     'course_icon' => "$join.icon",
-                    'course_visible' => "$join.visible"
+                    'course_visible' => "$join.visible",
+                    'course_audiencevisible' => "$join.audiencevisible"
                 )
             )
         );

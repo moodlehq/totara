@@ -136,10 +136,6 @@ class rb_source_courses extends rb_base_source {
                 'base.id'
             ),
             new rb_param_option(
-                'visible',
-                'base.visible'
-            ),
-            new rb_param_option(
                 'category',
                 'base.category'
             ),
@@ -176,18 +172,7 @@ class rb_source_courses extends rb_base_source {
     }
 
     protected function define_requiredcolumns() {
-        $requiredcolumns = array(
-            /*
-            // array of rb_column objects, e.g:
-            new rb_column(
-                '',         // type
-                '',         // value
-                '',         // heading
-                '',         // field
-                array()     // options
-            )
-            */
-        );
+        $requiredcolumns = array();
         return $requiredcolumns;
     }
 
@@ -230,13 +215,70 @@ class rb_source_courses extends rb_base_source {
         return implode($glue, $out);
     }
 
-    //
-    //
-    // Source specific filter display methods
-    //
-    //
 
+    public function post_config(reportbuilder $report) {
+        global $CFG;
 
+        // ID of the user the report is for.
+        $reportfor = $report->reportfor;
 
-} // end of rb_source_courses class
+        $this->requiredcolumns[] = new rb_column(
+            'base',
+            'visible',
+            '',
+            "base.visible"
+        );
+        $this->requiredcolumns[] = new rb_column(
+            'base',
+            'audiencevisible',
+            '',
+            "base.audiencevisible"
+        );
 
+        // Admins can see all records no matter what the visibility.
+        if (is_siteadmin()) {
+            return;
+        }
+
+        $fieldvisible = $report->get_field('base', 'visible', 'base.visible');
+        $fieldaudvis = $report->get_field('base', 'audiencevisible', 'base.audiencevisible');
+        $fieldbaseid = $report->get_field('base', 'id', 'base.id');
+
+        if (empty($CFG->audiencevisibility)) {
+            // Normal course visibility.
+            $sql = "{$fieldvisible} = :normalvisible";
+            $params = array('normalvisible' => 1);
+            $restrictions = array($sql, $params);
+            $report->set_post_config_restrictions($restrictions);
+        } else {
+            // Audience visibility all.
+            $sqlall = "{$fieldaudvis} = :audvisall";
+            $paramsall = array('audvisall' => COHORT_VISIBLE_ALL);
+
+            // Audience visibility selected.
+            $instancetype = COHORT_ASSN_ITEMTYPE_COURSE;
+            $sqlselected = "({$fieldaudvis} = :audvisaud AND
+                     EXISTS (SELECT 1
+                               FROM {cohort_visibility} cv
+                               JOIN {cohort_members} cm ON cv.cohortid = cm.cohortid
+                              WHERE cv.instanceid = {$fieldbaseid}
+                                AND cv.instancetype = :instancetypeselected
+                                AND cm.userid = :reportforselected))";
+            $paramsselected = array('audvisaud' => COHORT_VISIBLE_AUDIENCE, 'instancetypeselected' => $instancetype,
+                    'reportforselected' => $reportfor);
+
+            // Enrolled users.
+            $sqlenrolled = "EXISTS (SELECT 1
+                                      FROM {user_enrolments} ue
+                                      JOIN {enrol} e ON e.id = ue.enrolid
+                                     WHERE e.courseid = {$fieldbaseid}
+                                       AND ue.userid = :reportforenrolled)";
+            $paramsenrolled = array('reportforenrolled' => $reportfor);
+
+            $restrictions = array("({$sqlall} OR {$sqlselected} OR {$sqlenrolled})",
+                    array_merge($paramsall, $paramsselected, $paramsenrolled));
+            $report->set_post_config_restrictions($restrictions);
+        }
+    }
+
+} // End of rb_source_courses class.

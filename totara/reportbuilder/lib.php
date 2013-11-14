@@ -149,6 +149,7 @@ class reportbuilder {
     private $_joinlist, $_base, $_params, $_sid;
     private $_paramoptions, $_embeddedparams, $_fullcount, $_filteredcount;
     public $src, $grouped, $reportfor, $badcolumns, $embedded;
+    private $_post_config_restrictions;
 
     /**
      * @var bool $cache Cache state for current report
@@ -2378,6 +2379,18 @@ class reportbuilder {
     }
 
     /**
+     * Return SQL snippet for field name depending on report cache settings.
+     *
+     * This is intended to be used during post_config.
+     */
+    public function get_field($type, $value, $field) {
+        if ($this->is_cached()) {
+            return $type . '_' . $value;
+        }
+        return $field;
+    }
+
+    /**
      * Get joins used for query building
      *
      * @param int $filtered reportbuilder::FILTERNONE - for no filter joins,
@@ -2431,7 +2444,7 @@ class reportbuilder {
         unset($contentparams);
 
         if ($filtered === true) {
-            list($sqls, $filterparams) = $this->fetch_sql_filters('', array(), $cache);
+            list($sqls, $filterparams) = $this->fetch_sql_filters();
             if (isset($sqls['where']) && $sqls['where'] != '') {
                 $where[] = $sqls['where'];
             }
@@ -2448,6 +2461,13 @@ class reportbuilder {
             $sqlparams = array_merge($sqlparams, $paramparams);
         }
         unset($paramparams);
+
+        list($postconfigrestrictions, $postconfigparams) = $this->get_post_config_restrictions();
+        if ($postconfigrestrictions != '') {
+            $where[] = $postconfigrestrictions;
+            $sqlparams = array_merge($sqlparams, $postconfigparams);
+        }
+        unset($postconfigparams);
 
         $allgrouped = true;
 
@@ -3972,6 +3992,34 @@ class reportbuilder {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Setter for post_config_restrictions property
+     *
+     * This is an array of the form:
+     *
+     * $restrictions = array(
+     *     "sql_where_snippet",
+     *     array('paramkey' => 'paramvalue')
+     * );
+     *
+     * i.e. it provides both a string of SQL and any parameters used by that string.
+     *
+     * @param array Restrictions to be added to the query WHERE clause.
+     */
+    public function set_post_config_restrictions($restrictions) {
+        $this->_post_config_restrictions = $restrictions;
+    }
+
+    /**
+     * Getter for post_config_restrictions.
+     */
+    public function get_post_config_restrictions() {
+        if (empty($this->_post_config_restrictions)) {
+            return array('', array());
+        }
+        return $this->_post_config_restrictions;
     }
 
 } // End of reportbuilder class
