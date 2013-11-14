@@ -27,7 +27,6 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 
 $goalframeworkid = optional_param('goalframeworkid', 0, PARAM_INT);
-$clearfilters = optional_param('clearfilters', null, PARAM_INT);
 $sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT);
 $debug = optional_param('debug', 0, PARAM_INT);
@@ -61,11 +60,6 @@ if (!$report = reportbuilder_get_embedded_report('goal_summary', $data, false, $
 if ($format != '') {
     $report->export_data($format);
     die;
-}
-
-if (isset($clearfilters)) {
-    $SESSION->reportbuilder[$report->_id] = array();
-    $_POST = array();
 }
 
 if ($canedit) {

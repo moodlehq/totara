@@ -841,9 +841,11 @@ class reportbuilder {
         global $CFG, $SESSION;
         require_once($CFG->dirroot . '/totara/reportbuilder/report_forms.php');
         $mform = new report_builder_search_form($this->get_current_url(), array('fields' => $this->filters));
-        if ($adddata = $mform->get_data(false)) {
-            if (isset($adddata->submitgroup['clearfilter'])) {
-                // clear out any existing data
+        $adddata = $mform->get_data(false);
+        $clearfilterparam = optional_param('clearfilters', 0, PARAM_INT);
+        if ($adddata || $clearfilterparam) {
+            if (isset($adddata->submitgroup['clearfilter']) || $clearfilterparam) {
+                // Clear out any existing filters.
                 $SESSION->reportbuilder[$this->_id] = array();
                 $_POST = array();
             } else {
@@ -1096,8 +1098,8 @@ class reportbuilder {
      * @return string Current URL, minus any spage and ssort parameters
      */
     function get_current_url() {
-        // array of parameters to remove from query string
-        $strip_params = array('spage', 'ssort', 'sid');
+        // Array of parameters to remove from query string.
+        $strip_params = array('spage', 'ssort', 'sid', 'clearfilters');
 
         $url = new moodle_url(qualified_me());
         foreach ($url->params() as $name =>$value) {

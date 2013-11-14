@@ -26,7 +26,6 @@ require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.ph
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 
-$clearfilters = optional_param('clearfilters', null, PARAM_INT);
 $itemandscope = optional_param('itemandscope', null, PARAM_TEXT);
 $userid = optional_param('userid', null, PARAM_INT);
 $sid = optional_param('sid', '0', PARAM_INT);
@@ -60,11 +59,6 @@ if (!$report = reportbuilder_get_embedded_report('goal_status_history', $data, f
 if ($format != '') {
     $report->export_data($format);
     die;
-}
-
-if (isset($clearfilters)) {
-    $SESSION->reportbuilder[$report->_id] = array();
-    $_POST = array();
 }
 
 $PAGE->set_button($report->edit_button());

@@ -26,7 +26,6 @@ require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.ph
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 
-$clearfilters = optional_param('clearfilters', null, PARAM_INT);
 $filtergoalid = optional_param('goalid', null, PARAM_TEXT);
 $sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT);
@@ -49,13 +48,9 @@ if ($format != '') {
     die;
 }
 
-if (isset($clearfilters)) {
-    $SESSION->reportbuilder[$report->_id] = array();
-    $_POST = array();
-    if (isset($filtergoalid)) {
-        $SESSION->reportbuilder[$report->_id]['goal-goalid']['operator'] = 1;
-        $SESSION->reportbuilder[$report->_id]['goal-goalid']['value'] = $filtergoalid;
-    }
+if (isset($filtergoalid)) {
+    $SESSION->reportbuilder[$report->_id]['goal-goalid']['operator'] = 1;
+    $SESSION->reportbuilder[$report->_id]['goal-goalid']['value'] = $filtergoalid;
 }
 
 $PAGE->set_button($report->edit_button());

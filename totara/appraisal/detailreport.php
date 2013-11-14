@@ -28,7 +28,6 @@ require_once($CFG->dirroot . '/totara/appraisal/lib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 
 $appraisalid = optional_param('appraisalid', 0, PARAM_INT);
-$clearfilters = optional_param('clearfilters', null, PARAM_INT);
 $sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT);
 $debug = optional_param('debug', 0, PARAM_INT);
@@ -62,11 +61,6 @@ if (!$report = reportbuilder_get_embedded_report('appraisal_detail', $data, fals
 if ($format != '') {
     $report->export_data($format);
     die;
-}
-
-if (isset($clearfilters)) {
-    $SESSION->reportbuilder[$report->_id] = array();
-    $_POST = array();
 }
 
 $PAGE->set_button($report->edit_button());
