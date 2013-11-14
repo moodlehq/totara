@@ -6869,6 +6869,9 @@ class core_string_manager implements string_manager {
             if ($plugintype === 'mod') {
                 // bloody mod hack
                 $file = $pluginname;
+            } else if ($plugintype == 'rb_source') {
+                // Hack for rb_sources.
+                $file = 'rb_source_' . $pluginname;
             } else {
                 $file = $plugintype . '_' . $pluginname;
             }

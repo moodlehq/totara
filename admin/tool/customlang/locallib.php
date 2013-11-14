@@ -76,6 +76,17 @@ class tool_customlang_utils {
                 } else {
                     $list[$type.'_'.$name] = $type.'_'.$name;
                 }
+                // Check this location for rb_sources
+                $matches = array();
+                if (file_exists("{$location}/{$name}/rb_sources")) {
+                    $sources = scandir("{$location}/{$name}/rb_sources");
+                    foreach ($sources as $file) {
+                        if (!is_dir($file) && preg_match('/^rb_source_(.*?)\.php/', $file, $matches)) {
+                            $sourcename = str_replace('.php', '', $file);
+                            $list[$sourcename] = $sourcename;
+                        }
+                    }
+                }
             }
         }
 
