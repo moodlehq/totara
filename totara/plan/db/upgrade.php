@@ -307,5 +307,27 @@ function xmldb_totara_plan_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2013103000, 'totara', 'plan');
     }
 
+    if ($oldversion < 2013111500) {
+        // Conditionally remove some fields that are no longer used and no longer exist in the install.xml.
+
+        $table = new xmldb_table('dp_plan_evidence');
+        $fields = array('planid', 'type', 'filepath');
+
+        // Can't drop the planid field while this index still exists, so bombs away.
+        $index = new xmldb_index('dpplanevid_pla', XMLDB_INDEX_NOTUNIQUE, array('planid'));
+        if ($dbman->index_exists($table, $index)) {
+            $dbman->drop_index($table, $index);
+        }
+
+        foreach ($fields as $fieldname) {
+            $field = new xmldb_field($fieldname);
+
+            if ($dbman->field_exists($table, $field)) {
+                $dbman->drop_field($table, $field);
+            }
+        }
+        upgrade_plugin_savepoint(true, 2013111500, 'totara', 'plan');
+    }
+
     return true;
 }
