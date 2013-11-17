@@ -29,7 +29,7 @@ require_once($CFG->dirroot.'/totara/hierarchy/prefix/goal/lib.php');
 
 class rb_source_goal_details extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions, $paramoptions;
-    public $defaultcolumns, $defaultfilters, $embeddedparams;
+    public $contentoptions, $defaultcolumns, $defaultfilters, $embeddedparams;
     public $sourcetitle, $shortname, $sourcewhere;
 
 
@@ -39,6 +39,7 @@ class rb_source_goal_details extends rb_base_source {
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
         $this->paramoptions = $this->define_paramoptions();
+        $this->contentoptions = $this->define_contentoptions();
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->embeddedparams = $this->define_embeddedparams();
@@ -179,6 +180,18 @@ class rb_source_goal_details extends rb_base_source {
         );
 
         return $paramoptions;
+    }
+
+
+    protected function define_contentoptions() {
+        $contentoptions = array(
+            new rb_content_option(
+                'user',
+                get_string('user', 'rb_source_goal_details'),
+                'base.userid'
+            ),
+        );
+        return $contentoptions;
     }
 
 

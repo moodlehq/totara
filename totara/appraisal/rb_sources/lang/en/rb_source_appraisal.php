@@ -22,51 +22,37 @@
  * @subpackage reportbuilder
  */
 
-$string['sourcetitle'] = 'Appraisal Status';
-
-
-// Filters.
-$string['statusoverdue'] = 'Overdue';
-$string['statusontarget'] = 'On Target';
-$string['statuscomplete'] = 'Complete';
-$string['statusincomplete'] = 'Incomplete';
-
-
-// Columns.
 $string['appraisalnamecolumn'] = 'Appraisal Name';
 $string['appraisalnameheading'] = 'Appraisal name';
 $string['appraisalstatuscolumn'] = 'Appraisal Status';
 $string['appraisalstatusheading'] = 'Appraisal status';
-$string['appraisaltimestartedcolumn'] = 'Appraisal Time Started';
-$string['appraisaltimestartedheading'] = 'Appraisal started';
 $string['appraisaltimefinishedcolumn'] = 'Appraisal Time Finished';
 $string['appraisaltimefinishedheading'] = 'Appraisal finished';
-
-$string['userappraisaltimecompletedcolumn'] = 'User\'s Appraisal Time Completed';
-$string['userappraisaltimecompletedheading'] = 'Completed';
+$string['appraisaltimestartedcolumn'] = 'Appraisal Time Started';
+$string['appraisaltimestartedheading'] = 'Appraisal started';
+$string['completiondate'] = 'The completion date';
+$string['embeddedactivestagenameheading'] = 'Active stage';
+$string['embeddedmanagerheading'] = 'Manager';
+$string['embeddednameheading'] = 'Name';
+$string['embeddedorganisationheading'] = 'Organisation';
+$string['embeddedpositionheading'] = 'Position';
+$string['embeddedpreviousstagetimecompletedheading'] = 'Previous stage time completed';
+$string['embeddedstatusheading'] = 'Status';
+$string['selectanappraisal'] = 'To view this report, first <a href="{$a}">select an appraisal</a> you want to view.';
+$string['sourcetitle'] = 'Appraisal Status';
+$string['statuscomplete'] = 'Complete';
+$string['statusincomplete'] = 'Incomplete';
+$string['statusontarget'] = 'On Target';
+$string['statusoverdue'] = 'Overdue';
+$string['type_userappraisal'] = 'User\'s Appraisal';
+$string['user'] = 'The user';
 $string['userappraisalactivestagenamecolumn'] = 'User\'s Current Stage';
 $string['userappraisalactivestagenameheading'] = 'Current stage';
 $string['userappraisalactivestagetimeduecolumn'] = 'User\'s Current Stage Due';
 $string['userappraisalactivestagetimedueheading'] = 'Current stage due';
-$string['userappraisalstatuscolumn'] = 'User\'s Appraisal Status';
-$string['userappraisalstatusheading'] = 'Status';
 $string['userappraisalpreviousstagetimecompletedcolumn'] = 'Previous Stage Time Completed';
 $string['userappraisalpreviousstagetimecompletedheading'] = 'Previous stage completed';
-
-
-// Embedded report headings.
-$string['embeddednameheading'] = 'Name';
-$string['embeddedpositionheading'] = 'Position';
-$string['embeddedorganisationheading'] = 'Organisation';
-$string['embeddedmanagerheading'] = 'Manager';
-$string['embeddedactivestagenameheading'] = 'Active stage';
-$string['embeddedpreviousstagetimecompletedheading'] = 'Previous stage time completed';
-$string['embeddedstatusheading'] = 'Status';
-
-
-// Other strings.
-$string['selectanappraisal'] = 'To view this report, first <a href="{$a}">select an appraisal</a> you want to view.';
-
-
-// Column category titles.
-$string['type_userappraisal'] = 'User\'s Appraisal';
+$string['userappraisalstatuscolumn'] = 'User\'s Appraisal Status';
+$string['userappraisalstatusheading'] = 'Status';
+$string['userappraisaltimecompletedcolumn'] = 'User\'s Appraisal Time Completed';
+$string['userappraisaltimecompletedheading'] = 'Completed';

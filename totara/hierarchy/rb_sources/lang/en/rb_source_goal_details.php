@@ -22,28 +22,20 @@
  * @subpackage reportbuilder
  */
 
-$string['sourcetitle'] = 'Goal Status';
-
-
-// Columns.
-$string['goalnamecolumn'] = 'Goal Name';
-$string['goalnameheading'] = 'Goal';
-$string['goalframeworknamecolumn'] = 'Goal Framework Name';
-$string['goalframeworknameheading'] = 'Framework';
-$string['goaluserstatuscolumn'] = 'User\'s Goal Status';
-$string['goaluserstatusheading'] = 'Status';
-$string['goalstatushistorylinkcolumn'] = 'User\'s Goal Status History Link';
-$string['goalstatushistorylinkheading'] = 'Status History';
-
-
-// Embedded column headings.
 $string['embeddedgoalnameheading'] = 'Goal name';
 $string['embeddedmanagerheading'] = 'Manager';
 $string['embeddedorganisationheading'] = 'Organisation';
 $string['embeddedpositionheading'] = 'Position';
 $string['embeddedscalevalueheading'] = 'Status';
 $string['embeddedusernameheading'] = 'Name';
-
-
-// Column types for this source, as strings.
+$string['goalframeworknamecolumn'] = 'Goal Framework Name';
+$string['goalframeworknameheading'] = 'Framework';
+$string['goalnamecolumn'] = 'Goal Name';
+$string['goalnameheading'] = 'Goal';
+$string['goalstatushistorylinkcolumn'] = 'User\'s Goal Status History Link';
+$string['goalstatushistorylinkheading'] = 'Status History';
+$string['goaluserstatuscolumn'] = 'User\'s Goal Status';
+$string['goaluserstatusheading'] = 'Status';
+$string['sourcetitle'] = 'Goal Status';
 $string['type_goal'] = 'Goal';
+$string['user'] = 'The user';

@@ -30,8 +30,8 @@ require_once($CFG->dirroot . '/totara/appraisal/lib.php');
 
 class rb_source_appraisal_detail extends rb_source_appraisal {
     public $base, $joinlist, $columnoption, $filteroptions, $paramoptions;
-    public $defaultcolumns, $defaultfilters, $embeddedparams;
-    public $sourcetitle, $shortname, $scheduleable, $cacheable;
+    public $contentoptions, $defaultcolumns, $defaultfilters, $embeddedparams;
+    public $sourcetitle, $shortname, $cacheable;
 
     /**
      * Stored during post_config so that it can be used later.

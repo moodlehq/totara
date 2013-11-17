@@ -28,7 +28,7 @@ require_once('rb_source_goal_details.php');
 
 class rb_source_goal_status_history extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions, $paramoptions;
-    public $defaultcolumns, $defaultfilters, $embeddedparams;
+    public $contentoptions, $defaultcolumns, $defaultfilters, $embeddedparams;
     public $sourcetitle, $shortname;
 
 
@@ -50,6 +50,7 @@ class rb_source_goal_status_history extends rb_base_source {
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
+        $this->contentoptions = $this->define_contentoptions();
         $this->paramoptions = $this->define_paramoptions();
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_goal_status_history');
@@ -209,6 +210,23 @@ class rb_source_goal_status_history extends rb_base_source {
         );
 
         return $paramoptions;
+    }
+
+
+    protected function define_contentoptions() {
+        $contentoptions = array(
+            new rb_content_option(
+                'user',
+                get_string('user', 'rb_source_goal_status_history'),
+                'base.userid'
+            ),
+            new rb_content_option(
+                'date',
+                get_string('modifieddate', 'rb_source_goal_status_history'),
+                'base.timemodified'
+            ),
+        );
+        return $contentoptions;
     }
 
 

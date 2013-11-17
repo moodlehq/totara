@@ -22,33 +22,26 @@
  * @subpackage reportbuilder
  */
 
-$string['sourcetitle'] = 'Goal Status History';
-
-$string['goalscopecompany'] = 'Company goals';
-$string['goalscopepersonal'] = 'Personal goals';
-
-// Columns.
+$string['embeddedgoalnameheading'] = 'Goal name';
+$string['embeddedscalevalueheading'] = 'Status';
+$string['embeddedtimemodifiedheading'] = 'Time modified';
+$string['embeddedusermodifiedheading'] = 'User modified';
+$string['embeddedusernameheading'] = 'Name';
 $string['goalcompanynamecolumn'] = 'Company Goal';
 $string['goalnamecolumn'] = 'Goal Name';
 $string['goalnameheading'] = 'Goal';
 $string['goalscalevaluecolumn'] = 'User\'s Goal Status';
 $string['goalscalevalueheading'] = 'Status';
 $string['goalscopecolumn'] = 'Goal Type';
+$string['goalscopecompany'] = 'Company goals';
 $string['goalscopeheading'] = 'Goal type';
+$string['goalscopepersonal'] = 'Personal goals';
 $string['goaltimemodifiedcolumn'] = 'User\'s Status Time Modified';
 $string['goaltimemodifiedheading'] = 'Time modified';
 $string['goalusermodifiedcolumn'] = 'User\'s Status Modifed By User';
 $string['goalusermodifiedheading'] = 'Modifed by';
-
-
-// Embedded column headings.
-$string['embeddedgoalnameheading'] = 'Goal name';
-$string['embeddedscalevalueheading'] = 'Status';
-$string['embeddedtimemodifiedheading'] = 'Time modified';
-$string['embeddedusermodifiedheading'] = 'User modified';
-$string['embeddedusernameheading'] = 'Name';
-
-
-// Column types for this source, as strings.
+$string['modifieddate'] = 'The last modified date';
+$string['sourcetitle'] = 'Goal Status History';
 $string['type_history'] = 'Goal status history';
 $string['type_item'] = 'Goal';
+$string['user'] = 'The user';
