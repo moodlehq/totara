@@ -208,7 +208,7 @@ class block_course_overview_renderer extends plugin_renderer_base {
         $vars->showing = $showing;
         $vars->total = $total;
         $url = new moodle_url('/totara/plan/record/courses.php', array('status' => 'all'));
-        $vars->link = html_writer::link($url, get_string('here', 'block_course_overview'));
+        $vars->url = $url->out();
 
         $output = $this->output->box_start('notice');
         $output .= get_string('showingxofycourses', 'block_course_overview', $vars);
