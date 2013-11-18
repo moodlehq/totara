@@ -49,7 +49,6 @@ class rb_source_goal_summary extends rb_base_source {
         $this->embeddedparams = $this->define_embeddedparams();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_goal_summary');
         $this->shortname = 'goal_summary';
-        $this->scheduleable = false;
         $this->cacheable = false;
 
         parent::__construct();
@@ -132,13 +131,15 @@ class rb_source_goal_summary extends rb_base_source {
     public function post_config(reportbuilder $report) {
         global $DB;
 
-        $this->goalframeworkid = optional_param('goalframeworkid', 0, PARAM_INT);
+        $this->goalframeworkid = $report->get_param_value('goalframeworkid');
+
+        $this->set_redirect(new moodle_url('/totara/hierarchy/rb_sources/goalsummaryselector.php',
+                array('summaryreportid' => $report->_id)),
+                get_string('selectgoalframework', 'totara_hierarchy'));
 
         // If the id was not specified then redirect to the selection page.
         if (!$this->goalframeworkid) {
-            $this->set_redirect(new moodle_url('/totara/hierarchy/rb_sources/goalsummaryselector.php',
-                    array('summaryreportid' => $report->_id)),
-                    get_string('selectgoalframeworkforsummaryreport', 'totara_hierarchy'));
+            $this->needs_redirect();
             return;
         }
 

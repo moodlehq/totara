@@ -44,32 +44,40 @@ $returnurl = $CFG->wwwroot . '/totara/reportbuilder/scheduled.php';
 $output = $PAGE->get_renderer('totara_reportbuilder');
 
 if ($id == 0) {
-    $report = new stdClass();
-    $report->id = 0;
-    $report->reportid = $reportid;
-    $report->frequency = null;
-    $report->schedule = null;
-    $report->exporttofilesystem = null;
-}
-else{
-    if (!$report = $DB->get_record('report_builder_schedule', array('id' => $id))) {
+    $schedule = new stdClass();
+    $schedule->id = 0;
+    $schedule->reportid = $reportid;
+    $schedule->frequency = null;
+    $schedule->schedule = null;
+    $schedule->exporttofilesystem = null;
+} else {
+    if (!$schedule = $DB->get_record('report_builder_schedule', array('id' => $id))) {
         print_error('error:invalidreportscheduleid', 'totara_reportbuilder');
     }
 }
 
-// form definition
+$report = new reportbuilder($schedule->reportid);
+
+$savedsearches = $DB->get_records_menu('report_builder_saved',
+        array('reportid' => $schedule->reportid, 'userid' => $USER->id), '', 'id, name');
+if (!isset($report->src->redirecturl)) {
+    $savedsearches[0] = get_string('alldata', 'totara_reportbuilder');
+}
+
+// Form definition.
 $mform = new scheduled_reports_new_form(
     null,
     array(
         'id' => $id,
-        'reportid' => $report->reportid,
-        'frequency' => $report->frequency,
-        'schedule' => $report->schedule,
-        'exporttofilesystem' => $report->exporttofilesystem
+        'report' => $report,
+        'frequency' => $schedule->frequency,
+        'schedule' => $schedule->schedule,
+        'savedsearches' => $savedsearches,
+        'exporttofilesystem' => $schedule->exporttofilesystem
     )
 );
 
-$mform->set_data($report);
+$mform->set_data($schedule);
 
 if ($mform->is_cancelled()) {
     redirect($myreportsurl);

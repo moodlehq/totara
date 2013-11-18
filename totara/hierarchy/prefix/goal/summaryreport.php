@@ -26,18 +26,22 @@ require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.ph
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 
-$goalframeworkid = optional_param('goalframeworkid', 0, PARAM_INT);
 $sid = optional_param('sid', '0', PARAM_INT);
 $format = optional_param('format', '', PARAM_TEXT);
 $debug = optional_param('debug', 0, PARAM_INT);
 
-$url = new moodle_url('/totara/hierarchy/prefix/goal/summaryreport.php', array('goalframeworkid' => $goalframeworkid,
-    'format' => $format, 'debug' => $debug));
+$url = new moodle_url('/totara/hierarchy/prefix/goal/summaryreport.php', array('format' => $format, 'debug' => $debug));
 admin_externalpage_setup('goalreport', '', null, $url);
 
 $systemcontext = context_system::instance();
 require_capability('totara/hierarchy:viewgoalreport', $systemcontext);
 $canedit = has_capability('totara/hierarchy:editgoalreport', $systemcontext);
+
+if (!$report = reportbuilder_get_embedded_report('goal_summary', null, false, $sid)) {
+    print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
+}
+
+$goalframeworkid = $report->get_param_value('goalframeworkid');
 
 if (!$goalframeworkid) {
     echo $OUTPUT->header();
@@ -48,14 +52,6 @@ if (!$goalframeworkid) {
 }
 
 $renderer = $PAGE->get_renderer('totara_reportbuilder');
-
-$data = array(
-    'appraisalid' => $goalframeworkid,
-);
-
-if (!$report = reportbuilder_get_embedded_report('goal_summary', $data, false, $sid)) {
-    print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
-}
 
 if ($format != '') {
     $report->export_data($format);

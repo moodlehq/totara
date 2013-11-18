@@ -98,7 +98,9 @@ $output = $PAGE->get_renderer('totara_reportbuilder');
 
 echo $output->header();
 
-// display heading including filtering stats
+$report->display_redirect_link();
+
+// Display heading including filtering stats.
 if ($graph) {
     echo $output->heading($fullname);
 } else {

@@ -40,12 +40,15 @@ M.totara_reportbuilder_verticaltableheadings = M.totara_reportbuilder_verticalta
         YUI().use('yui2-dom', function(Y) {
             var elements = Y.YUI2.util.Dom.getElementsByClassName('verticaltableheading', 'th');
             // The anchor is where we will render the text to determine its size. We use the first column heading.
-            var anchor = Y.YUI2.util.Dom.getElementsByClassName('c0', 'th')[0].firstChild;
-            for (var i = 0; i < elements.length; i++)
-            {
-                var el = elements[i];
-                el.style.verticalAlign = 'bottom';
-                onCreateElementNsReady(make_svg(el, anchor));
+            var headerrow = Y.YUI2.util.Dom.getElementsByClassName('c0', 'th')[0];
+            if (headerrow) {
+                var anchor = headerrow.firstChild;
+                for (var i = 0; i < elements.length; i++)
+                {
+                    var el = elements[i];
+                    el.style.verticalAlign = 'bottom';
+                    onCreateElementNsReady(make_svg(el, anchor));
+                }
             }
         });
 

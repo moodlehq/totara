@@ -32,7 +32,7 @@ abstract class rb_base_source {
     /*
      * Used in default pre_display_actions function.
      */
-    private $redirecturl, $redirectmessage;
+    public $needsredirect, $redirecturl, $redirectmessage;
 
 
 /**
@@ -171,7 +171,17 @@ abstract class rb_base_source {
 
 
     /**
-     * Default pre_display_actions - if redirecturl has been set then redirect to the specified
+     * Set whether redirect needs to happen in pre_display_actions.
+     *
+     * @param bool $truth true if redirect is needed
+     */
+    protected function needs_redirect($truth = true) {
+        $this->needsredirect = $truth;
+    }
+
+
+    /**
+     * Default pre_display_actions - if needsredirect is true then redirect to the specified
      * page, otherwise do nothing.
      *
      * This function is called after post_config and before report data is generated. This function is
@@ -180,7 +190,7 @@ abstract class rb_base_source {
      * set your own private variables (e.g. to signal a result from post_config) in your report source.
      */
     public function pre_display_actions() {
-        if (isset($this->redirecturl)) { // This indicates that post_config signalled to redirect.
+        if ($this->needsredirect && isset($this->redirecturl)) {
             if (isset($this->redirectmessage)) {
                 totara_set_notification($this->redirectmessage, $this->redirecturl, array('class' => 'notifymessage'));
             } else {

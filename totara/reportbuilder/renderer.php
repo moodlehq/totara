@@ -477,16 +477,20 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
      * Returns a button that when clicked, takes the user to a page where they can
      * save the results of a search for the current report
      *
-     * @param int $reportid
+     * @param reportbuilder $report
      * @return string HTML to display the button
      */
-    public function save_button($reportid) {
+    public function save_button($report) {
 
         $buttonsarray = optional_param_array('submitgroup', null, PARAM_TEXT);
         $search = isset($buttonsarray['addfilter']) ? $buttonsarray['addfilter'] : null;
-        if ($search) {
-            $params = array('id' => $reportid);
-            return $this->output->single_button(new moodle_url('/totara/reportbuilder/save.php', $params), get_string('savesearch', 'totara_reportbuilder'), 'get');
+        // If a report has required url params then scheduled reports require a saved search.
+        // This is because the user needs to be able to save the search with no filters defined.
+        $hasrequiredurlparams = isset($report->src->redirecturl);
+        if ($search || $hasrequiredurlparams) {
+            $params = array('id' => $report->_id);
+            return $this->output->single_button(new moodle_url('/totara/reportbuilder/save.php', $params),
+                    get_string('savesearch', 'totara_reportbuilder'), 'get');
         } else {
             return '';
         }

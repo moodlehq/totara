@@ -38,29 +38,20 @@ require_once($CFG->dirroot . '/calendar/lib.php');
  */
 class scheduled_reports_new_form extends moodleform {
     function definition() {
-        global $REPORT_BUILDER_EXPORT_OPTIONS, $USER, $DB;
-        $CALENDARDAYS = calendar_get_days();
+        global $REPORT_BUILDER_EXPORT_OPTIONS;
 
         $mform =& $this->_form;
         $id = $this->_customdata['id'];
         $frequency = $this->_customdata['frequency'];
         $schedule = $this->_customdata['schedule'];
-        $reportid = $this->_customdata['reportid'];
+        $report = $this->_customdata['report'];
+        $savedsearches = $this->_customdata['savedsearches'];
         $exporttofilesystem = $this->_customdata['exporttofilesystem'];
-
-        $reportname = $DB->get_field('report_builder', 'fullname', array('id' => $reportid));
 
         $mform->addElement('hidden', 'id', $id);
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden', 'reportid', $reportid);
+        $mform->addElement('hidden', 'reportid', $report->_id);
         $mform->setType('reportid', PARAM_INT);
-
-        $savedsearchselect = array();
-        $savedsearchselect[0] = get_string('alldata', 'totara_reportbuilder');
-        $savedsearches = $DB->get_records_select('report_builder_saved', 'reportid = ? AND userid = ?', array($reportid, $USER->id));
-        foreach ($savedsearches as $search) {
-            $savedsearchselect[$search->id] = $search->name;
-        }
 
         $exportoptions = get_config('reportbuilder', 'exportoptions');
 
@@ -78,17 +69,16 @@ class scheduled_reports_new_form extends moodleform {
             $exporttofilesystemenabled = true;
         }
 
-        //Report type options
-        $reports = reportbuilder_get_reports(true);
-        $reportselect = array();
-        foreach ($reports as $report) {
-            $reportselect[$report->id] = $report->fullname;
-        }
-
         $mform->addElement('header', 'general', get_string('scheduledreportsettings', 'totara_reportbuilder'));
 
-        $mform->addElement('static', 'report', get_string('report', 'totara_reportbuilder'), $reportname);
-        $mform->addElement('select', 'savedsearchid', get_string('data', 'totara_reportbuilder'), $savedsearchselect);
+        $mform->addElement('static', 'report', get_string('report', 'totara_reportbuilder'), $report->fullname);
+        if (empty($savedsearches)) {
+            $mform->addElement('static', '', get_string('data', 'totara_reportbuilder'),
+                    html_writer::div(get_string('scheduleneedssavedfilters', 'totara_reportbuilder', $report->report_url()),
+                            'notifyproblem'));
+        } else {
+            $mform->addElement('select', 'savedsearchid', get_string('data', 'totara_reportbuilder'), $savedsearches);
+        }
         $mform->addElement('select', 'format', get_string('export', 'totara_reportbuilder'), $exportformatselect);
 
         if ($exporttofilesystemenabled) {
@@ -109,7 +99,9 @@ class scheduled_reports_new_form extends moodleform {
 
         $mform->addElement('scheduler', 'schedulegroup', get_string('schedule', 'totara_reportbuilder'),
                            array('frequency' => $frequency, 'schedule' => $schedule));
-        $this->add_action_buttons();
+        if (!empty($savedsearches)) {
+            $this->add_action_buttons();
+        }
     }
 }
 

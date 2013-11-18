@@ -46,7 +46,6 @@ class rb_source_appraisal_detail extends rb_source_appraisal {
 
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_appraisal_detail');
         $this->shortname = 'appraisal_detail';
-        $this->scheduleable = false;
         $this->cacheable = false;
     }
 
@@ -184,13 +183,15 @@ class rb_source_appraisal_detail extends rb_source_appraisal {
      * @return object
      */
     public function post_config(reportbuilder $report) {
-        $this->appraisalid = optional_param('appraisalid', 0, PARAM_INT);
+        $this->appraisalid = $report->get_param_value('appraisalid');
+
+        $this->set_redirect(new moodle_url('/totara/appraisal/rb_sources/appraisaldetailselector.php',
+                array('detailreportid' => $report->_id)),
+                get_string('selectappraisal', 'totara_appraisal'));
 
         // If the id was not specified then redirect to the selection page.
         if (!$this->appraisalid) {
-            $this->set_redirect(new moodle_url('/totara/appraisal/rb_sources/appraisaldetailselector.php',
-                    array('detailreportid' => $report->_id)),
-                    get_string('selectappraisalfordetailreport', 'totara_appraisal'));
+            $this->needs_redirect();
             return;
         }
 

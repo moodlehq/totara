@@ -351,6 +351,42 @@ class rb_filter_type {
     }
 
     /**
+     * Saves data
+     *
+     * @param int $data the data to set
+     */
+    function set_data($data) {
+        global $SESSION;
+
+        $fieldname = $this->name;
+
+        $SESSION->reportbuilder[$this->report->_id][$fieldname] = $data;
+    }
+
+    /**
+     * Removes saved data
+     *
+     * By convention, all additional parameters should have suffixes beginning with '_'.
+     * If not (such as the "date" filter type) then this method must be overridden to unset them.
+     */
+    function unset_data() {
+        global $SESSION;
+
+        $fieldname = $this->name;
+        unset($SESSION->reportbuilder[$this->report->_id][$fieldname]);
+
+        // Unset the main parameter.
+        unset($_POST[$fieldname]);
+
+        $fieldname .= '_';
+        foreach ($_POST as $postkey => $unusedpostvalue) {
+            if (strpos($postkey, $fieldname) === 0) {
+                unset($_POST[$postkey]);
+            }
+        }
+    }
+
+    /**
      * Adds controls specific to this filter in the form.
      * @param object $mform a MoodleForm object to setup
      */

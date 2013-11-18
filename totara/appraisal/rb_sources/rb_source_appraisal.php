@@ -264,16 +264,16 @@ class rb_source_appraisal extends rb_base_source {
     /**
      * Filter current stage.
      *
+     * @param reportbuilder $report
      * @return array
      */
-    public function rb_filter_activestagename() {
+    public function rb_filter_activestagename($report) {
         global $CFG;
         require_once($CFG->dirroot . "/totara/appraisal/lib.php");
 
         $stagenames = array();
 
-        // The appraisalid paramoption is not made available to the source by the report builder, so we get it from the url.
-        $appraisalid = optional_param('appraisalid', null, PARAM_INT);
+        $appraisalid = $report->get_param_value('appraisalid');
         if ($appraisalid) {
             $appraisal = new appraisal($appraisalid);
             $stages = appraisal_stage::get_stages($appraisalid);

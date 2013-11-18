@@ -155,6 +155,22 @@ class rb_filter_date extends rb_filter_type {
     }
 
     /**
+     * Removes saved data
+     *
+     * By convention, all additional parameters should have suffixes beginning with '_'.
+     * Date overrides this method because it doesn't follow the convention.
+     */
+    public function unset_data() {
+        parent::unset_data();
+
+        // Date fails to follow the convention of all additional parameters having a suffix beginning with '_',
+        unset($_POST[$this->name.'daysafterchkbox']);
+        unset($_POST[$this->name.'daysafter']);
+        unset($_POST[$this->name.'daysbeforechkbox']);
+        unset($_POST[$this->name.'daysbefore']);
+    }
+
+    /**
      * Retrieves data from the form data
      * @param object $formdata data submited with the form
      * @return mixed array filter data or false when filter not set

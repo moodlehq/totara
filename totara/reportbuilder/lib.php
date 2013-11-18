@@ -273,6 +273,10 @@ class reportbuilder {
             $this->reportfor = $USER->id;
         }
 
+        if ($sid) {
+            $this->restore_saved_search();
+        }
+
         // Before we pull in the rest of the data, get the parameters and call the post_config method.
         // This allows the source to configure additional tables and columns based on the parameters.
         $this->_paramoptions = $this->src->paramoptions;
@@ -298,10 +302,6 @@ class reportbuilder {
         $this->_joinlist = $this->src->joinlist;
 
         $this->process_filters();
-
-        if ($sid) {
-            $this->restore_saved_search();
-        }
     }
 
 
@@ -850,28 +850,24 @@ class reportbuilder {
     }
 
     function process_filters() {
-        global $CFG, $SESSION;
+        global $CFG;
         require_once($CFG->dirroot . '/totara/reportbuilder/report_forms.php');
         $mform = new report_builder_search_form($this->get_current_url(), array('fields' => $this->filters));
         $adddata = $mform->get_data(false);
-        $clearfilterparam = optional_param('clearfilters', 0, PARAM_INT);
-        if ($adddata || $clearfilterparam) {
-            if (isset($adddata->submitgroup['clearfilter']) || $clearfilterparam) {
-                // Clear out any existing filters.
-                $SESSION->reportbuilder[$this->_id] = array();
-                $_POST = array();
-            } else {
-                foreach ($this->filters as $field) {
-                    $fieldname = $field->name;
+        $clearfiltersparam = optional_param('clearfilters', 0, PARAM_INT);
+        if ($adddata || $clearfiltersparam) {
+            foreach ($this->filters as $field) {
+                if (isset($adddata->submitgroup['clearfilter']) || $clearfiltersparam) {
+                    // Clear out any existing filters.
+                    $field->unset_data();
+                } else {
                     $data = $field->check_data($adddata);
                     if ($data === false) {
-                        // unset existing result if field has been set back to "not set" position
-                        if (isset($SESSION->reportbuilder[$this->_id][$fieldname])) {
-                            unset($SESSION->reportbuilder[$this->_id][$fieldname]);
-                        }
-                        continue;
+                        // Unset existing result if field has been set back to "not set" position.
+                        $field->unset_data();
+                    } else {
+                        $field->set_data($data);
                     }
-                    $SESSION->reportbuilder[$this->_id][$fieldname] = $data;
                 }
             }
         }
@@ -1133,6 +1129,10 @@ class reportbuilder {
      * @return array Array of set URL parameters and their values
      */
     function get_current_params($all = false) {
+        global $SESSION;
+
+        $clearfiltersparam = optional_param('clearfilters', 0, PARAM_INT);
+
         $out = array();
         if (empty($this->_paramoptions)) {
             return $out;
@@ -1145,17 +1145,27 @@ class reportbuilder {
                 $var = optional_param($name, null, PARAM_INT);
             }
             if (isset($this->_embeddedparams[$name])) {
-                // embedded params take priority over url params
+                // Embedded params take priority over url params.
                 $res = new rb_param($name, $this->_paramoptions);
                 $res->value = $this->_embeddedparams[$name];
                 $out[] = $res;
             } else if ($all) {
-                //when all parameters required, they are not restricted to particular value
+                // When all parameters required, they are not restricted to particular value.
                 $out[] = new rb_param($name, $this->_paramoptions);
-            } else if (isset($var)) {
-                // this url param exists, add to params to use
+            } else if (isset($var) || $clearfiltersparam) {
+                if (isset($var)) {
+                    // This url param exists, add to params to use.
+                    $res = new rb_param($name, $this->_paramoptions);
+                    $res->value = $var; // Save the value.
+                    $out[] = $res;
+                    $SESSION->reportbuilder[$this->_id][$name] = $var; // And save to session variable.
+                } else {
+                    unset($SESSION->reportbuilder[$this->_id][$name]);
+                }
+            } else if (isset($SESSION->reportbuilder[$this->_id][$name])) {
+                // This param is stored in the session variable.
                 $res = new rb_param($name, $this->_paramoptions);
-                $res->value = $var; // save the value
+                $res->value = $SESSION->reportbuilder[$this->_id][$name];
                 $out[] = $res;
             }
 
@@ -1353,6 +1363,22 @@ class reportbuilder {
             }
         }
         return $permitted_reports;
+    }
+
+
+    /**
+     * Get the value of the specified parameter, or null if not found
+     *
+     * @param string $name name of the parameter
+     * @return mixed the value
+     */
+    public function get_param_value($name) {
+        foreach ($this->_params as $param) {
+            if ($param->name == $name) {
+                return $param->value;
+            }
+        }
+        return null;
     }
 
 
@@ -2755,6 +2781,19 @@ class reportbuilder {
         echo $OUTPUT->container_end();
     }
 
+    /**
+     * If a redirect url has been displayed in the source then output a redirect link.
+     */
+    public function display_redirect_link() {
+        if (isset($this->src->redirecturl)) {
+            if (isset($this->src->redirectmessage)) {
+                $message = '&laquo; ' . $this->src->redirectmessage;
+            } else {
+                $message = '&laquo; ' . get_string('selectitem', 'totara_reportbuilder');
+            }
+            echo html_writer::link($this->src->redirecturl, $message);
+        }
+    }
 
     /**
      * Get column identifiers of columns that should be hidden on page load
@@ -2923,7 +2962,7 @@ class reportbuilder {
         global $PAGE;
         $output = $PAGE->get_renderer('totara_reportbuilder');
 
-        $savedbutton = $output->save_button($this->_id);
+        $savedbutton = $output->save_button($this);
         $savedmenu = $this->view_saved_menu();
 
         // no need to print anything

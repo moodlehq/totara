@@ -118,7 +118,7 @@ class totara_goal_renderer extends plugin_renderer_base {
             $row = array();
 
             $summaryreporturl = new moodle_url('/totara/reportbuilder/report.php',
-                    array('id' => $summaryreportid, 'goalframeworkid' => $framework->id, 'clearfilter' => 1));
+                    array('id' => $summaryreportid, 'goalframeworkid' => $framework->id, 'clearfilters' => 1));
 
             $row[] = html_writer::link($summaryreporturl, format_string($framework->fullname));
 

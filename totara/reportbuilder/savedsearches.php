@@ -58,9 +58,7 @@ if ($d && $confirm) {
     $transaction = $DB->start_delegated_transaction();
 
     $DB->delete_records('report_builder_saved', array('id' => $sid));
-    $sql = "UPDATE {report_builder_schedule} SET savedsearchid = ? WHERE savedsearchid = ?";
-    $params = array(0, $sid);
-    $DB->execute($sql, $params);
+    $DB->delete_records('report_builder_schedule', array('savedsearchid' => $sid));
 
     $transaction->allow_commit();
 

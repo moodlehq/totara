@@ -440,7 +440,7 @@ class totara_appraisal_renderer extends plugin_renderer_base {
             $row = array();
 
             $detailreporturl = new moodle_url('/totara/reportbuilder/report.php',
-                    array('id' => $detailreportid, 'appraisalid' => $appraisal->id, 'clearfilter' => 1));
+                    array('id' => $detailreportid, 'appraisalid' => $appraisal->id, 'clearfilters' => 1));
 
             $row[] = html_writer::link($detailreporturl, format_string($appraisal->name));
 
