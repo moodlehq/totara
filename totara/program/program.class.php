@@ -1077,7 +1077,7 @@ class program {
                     if (!$viewinganothersprogram && totara_get_manager($userid)) {
                         // Show extension request link if it is their assignment and they have a manager to request it from.
                         $url = new moodle_url('/totara/program/view.php', array('id' => $this->id, 'extrequest' => '1'));
-                        $request = ' ' . html_writer::link($url, get_string('requestextension', 'totara_program'), array('class' => 'extrequestlink'));
+                        $request = ' ' . html_writer::link($url, get_string('requestextension', 'totara_program'), array('id' => 'extrequestlink'));
                     }
                 } else {
                     // Show pending text if they have already requested an extension.
