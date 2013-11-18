@@ -373,6 +373,7 @@ abstract class course_set {
         }
 
         // If this divider is inside an OR group
+        $separator = ' ' . get_string('or', 'totara_program') . ' ';
         if ($previous_sets[count($previous_sets)-1]->nextsetoperator == NEXTSETOPERATOR_OR) {
             $sets = array();
 
@@ -397,12 +398,12 @@ abstract class course_set {
                 if (!$user = $DB->get_record('user', array('id' => $userid))) {
                     print_error('error:invaliduser', 'totara_program');
                 }
-                $out .= fullname($user) . ' ' . get_string('youmustcompleteormanager', 'totara_program', implode(' or ', $sets));
+                $out .= fullname($user) . ' ' . get_string('youmustcompleteormanager', 'totara_program', implode($separator, $sets));
             } else {
                 if ($userid) {
-                    $out .= get_string('youmustcompleteorlearner', 'totara_program', implode(' or ', $sets));
+                    $out .= get_string('youmustcompleteorlearner', 'totara_program', implode($separator, $sets));
                 } else {
-                    $out .= get_string('youmustcompleteorviewing', 'totara_program', implode(' or ', $sets));
+                    $out .= get_string('youmustcompleteorviewing', 'totara_program', implode($separator, $sets));
                 }
             }
         } else {
@@ -418,7 +419,7 @@ abstract class course_set {
                     $sets[] = $this->get_course_text($previous_sets[$i]);
                 }
                 $sets = array_reverse($sets);
-                $a->mustcomplete = implode(' or ', $sets);
+                $a->mustcomplete = implode($separator, $sets);
             } else {
                 $a->mustcomplete = $this->get_course_text($previous_sets[count($previous_sets)-1]);
             }
@@ -433,7 +434,7 @@ abstract class course_set {
                         break;
                     }
                 }
-                $a->proceedto = implode(' or ', $sets);
+                $a->proceedto = implode($separator, $sets);
             } else if (isset($next_sets[0])) {
                 $a->proceedto = $this->get_course_text($next_sets[0]);
             }
