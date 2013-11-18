@@ -1002,16 +1002,30 @@ class program {
                 $out .= html_writer::tag('div', $message, array('class' => 'notifymessage'));
         }
 
-        //only show time allowance and extension text if a completion time has been set
-        if ($userassigned && $prog_completion && ($prog_completion->timedue != COMPLETION_TIME_NOT_SET)) {
-            $out .= $this->get_time_allowance_and_extension_text($userid, $viewinganothersprogram);
-        }
-
         // display the start date, due date and progress bar
         if ($userassigned) {
+
+            // Setup the request extension link.
+            $request = '';
+            if ($this->assigned_to_users_required_learning($userid) && $prog_completion->timedue != COMPLETION_TIME_NOT_SET && $prog_completion->timecompleted == 0) {
+                // Only show the extension link if the user is assigned via required learning, and it has a due date and they haven't completed it yet.
+                if (!$extension = $DB->get_record('prog_extension', array('userid' => $userid, 'programid' => $this->id, 'status' => 0))) {
+                    if (!$viewinganothersprogram && totara_get_manager($userid)) {
+                        // Show extension request link if it is their assignment and they have a manager to request it from.
+                        $url = new moodle_url('/totara/program/view.php', array('id' => $this->id, 'extrequest' => '1'));
+                        $request = ' ' . html_writer::link($url, get_string('requestextension', 'totara_program'), array('id' => 'extrequestlink'));
+                    }
+                } else {
+                    // Show pending text if they have already requested an extension.
+                    $request = ' ' . get_string('pendingextension', 'totara_program');
+                }
+            }
+
             if ($prog_completion) {
                 $startdatestr = $this->display_date_as_text($prog_completion->timestarted);
                 $duedatestr = (empty($prog_completion->timedue) || $prog_completion->timedue == COMPLETION_TIME_NOT_SET) ? get_string('duedatenotset', 'totara_program') : $this->display_date_as_text($prog_completion->timedue);
+                $duedatestr .= html_writer::empty_tag('br');
+                $duedatestr .= $request;
                 $out .= html_writer::start_tag('div', array('class' => 'programprogress'));
                 $out .= html_writer::tag('div', get_string('startdate', 'totara_program') . ': ' . $startdatestr, array('class' => 'item'));
                 $out .= html_writer::tag('div', get_string('duedate', 'totara_program').': ' . $duedatestr, array('class' => 'item'));
@@ -1082,54 +1096,6 @@ class program {
             $out .= $OUTPUT->heading(get_string('programends', 'totara_program'), 2);
             $out .= html_writer::tag('div', $this->endnote, array('class' => 'endnote'));
             $out .= html_writer::end_tag('div');
-        }
-
-        return $out;
-    }
-
-    function get_time_allowance_and_extension_text($userid, $viewinganothersprogram) {
-        global $DB;
-
-        $out = '';
-
-        // Get the total time allowed for this program
-        $total_time_allowed = $this->content->get_total_time_allowance();
-
-        // Only display the time allowance if user is assigned to program
-        if ($this->user_is_assigned($userid)) {
-            // Break the time allowed details down into human readable form
-            $timeallowance = program_utilities::duration_explode($total_time_allowed);
-
-            $out .= html_writer::start_tag('p', array('class' => 'timeallowed'));
-            if ($total_time_allowed == 0) {
-                $out .= get_string('allowedtimeforprograminfinity', 'totara_program');
-            } else if ($viewinganothersprogram) {
-                $user = $DB->get_record('user', array('id' => $userid));
-                $timeallowance->fullname = fullname($user);
-                $out .= get_string('allowedtimeforprogramasmanager', 'totara_program', $timeallowance);
-            } else {
-                if ($userid) {
-                    $out .= get_string('allowedtimeforprogramaslearner', 'totara_program', $timeallowance);
-                } else {
-                    $out .= get_string('allowedtimeforprogramviewing', 'totara_program', $timeallowance);
-                }
-            }
-
-            // Only display the 'request an extension' link to assigned learners
-            // (i.e. those users who have this program as part of their required
-            // learning). If there is an existing pending extension show pending text
-            if (!$viewinganothersprogram && $userid && $this->assigned_to_users_required_learning($userid) && totara_get_manager($userid)) {
-                if (!$extension = $DB->get_record('prog_extension', array('userid' => $userid, 'programid' => $this->id, 'status' => 0))) {
-                    // Show extension link
-                    $url = new moodle_url('/totara/program/view.php', array('id' => $this->id, 'extrequest' => '1'));
-                    $out .= html_writer::link($url, get_string('requestextension', 'totara_program'));
-                } else {
-                    // Show pending text
-                    $out .= ' ' . get_string('pendingextension', 'totara_program');
-                }
-            }
-
-            $out .= html_writer::end_tag('p');
         }
 
         return $out;

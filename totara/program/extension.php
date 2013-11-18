@@ -128,7 +128,7 @@ if ($extensionid = $DB->insert_record('prog_extension', $extension)) {
 
     if ($extension_message->send_message($manager, $user)) {
         // Calcuate the new time and print pending extension text
-        echo $program->get_time_allowance_and_extension_text($userid, false);
+        echo get_string('pendingextension', 'totara_program');
     } else {
         @header('HTTP/1.0 404 Not Found');
         echo get_string('extensionrequestnotsent', 'totara_program');
