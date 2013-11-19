@@ -3,6 +3,40 @@
 
 Totara LMS Changelog
 
+Release 2.4.14 (19th November 2013):
+==================================================
+
+Security Fixes:
+    Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_2.4.7_release_notes
+
+Improvements:
+    T-11528    Added room data to facetoface sessions report source
+    T-11105    Allowed local customisations of rb_source files
+    T-11594    Improved hidden courses display in course overview block
+    T-11581    Only show available databases in Totara Sync external database settings
+    T-11566    Made "My Reports" page editable so that blocks can be added
+    T-11604    Moved toolbar above the column headers in totara tables
+
+Bug Fixes:
+    T-10726    Changed page editing to happen via edit button on my team page
+    T-11574    Fixed missing required statement when upgrading via command line
+    T-11540    Fixed display of minimum time required on required learning pages
+    T-11641    Fixed hardcoded string in required learning when program uses "or" coursesets
+    T-11505    Fixed error when inserting more than 1000 records into the cohort_msg_queue table
+    T-11621    Fixed image handling in textarea custom fields
+    T-11546    Fixed exceptions if the user is already assigned to program
+    T-11508    Fixed user profile field rules for MSSQL Server
+    T-11551    Fixed facetoface signup notification types
+    T-10444    Fixed reminderperiod substitution which was not occurring in face to face notifications
+    T-11599    Changed button icon for topics add/remove sections in courses
+    T-10832    Fixed icon picker to account for slash arguments setting
+    T-11564    Fixed format hint string next to date pickers on audience editing page
+    T-11567    Fixed javascript error on notifications page
+    T-11504    Fix errors when sorting certain fields in scorm report on MSSQL
+    T-11532    Made it possible to assign roles in a program context
+    T-5734     Fixed UTF-8 encoding issue in view course component
+
+
 Release 2.4.13 (29th October 2013):
 ==================================================
 
