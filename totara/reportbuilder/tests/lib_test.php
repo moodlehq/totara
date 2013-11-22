@@ -1266,20 +1266,44 @@ class reportbuilderlib_test extends advanced_testcase {
         $this->resetAfterTest(true);
     }
 
-    function test_create_attachment() {
+    function test_reportbuilder_create_attachment() {
         global $CFG;
 
-        $filename = create_attachment(1, 1, 2, 0);
-        $this->assertTrue((bool)file_exists($CFG->dataroot . DIRECTORY_SEPARATOR . $filename));
-        unlink($CFG->dataroot . DIRECTORY_SEPARATOR . $filename);
+        $sched = new stdClass();
+        $sched->id = 1;
+        $sched->reportid = 1;
+        $sched->format = 1;
+        $sched->exporttofilesystem = 0;
+        $sched->savedsearchid = 0;
 
-        $filename = create_attachment(1, 2, 2, 0);
+        $filename = reportbuilder_create_attachment($sched, 2);
         $this->assertTrue((bool)file_exists($CFG->dataroot . DIRECTORY_SEPARATOR . $filename));
         unlink($CFG->dataroot . DIRECTORY_SEPARATOR . $filename);
+        unset($sched);
 
-        $filename = create_attachment(1, 4, 2, 0);
+        $sched = new stdClass();
+        $sched->id = 2;
+        $sched->reportid = 1;
+        $sched->format = 2;
+        $sched->exporttofilesystem = 0;
+        $sched->savedsearchid = 0;
+
+        $filename = reportbuilder_create_attachment($sched, 2); // format 2
         $this->assertTrue((bool)file_exists($CFG->dataroot . DIRECTORY_SEPARATOR . $filename));
         unlink($CFG->dataroot . DIRECTORY_SEPARATOR . $filename);
+        unset($sched);
+
+        $sched = new stdClass();
+        $sched->id = 3;
+        $sched->reportid = 1;
+        $sched->format = 4;
+        $sched->exporttofilesystem = 0;
+        $sched->savedsearchid = 0;
+
+        $filename = reportbuilder_create_attachment($sched, 2); // format 4
+        $this->assertTrue((bool)file_exists($CFG->dataroot . DIRECTORY_SEPARATOR . $filename));
+        unlink($CFG->dataroot . DIRECTORY_SEPARATOR . $filename);
+        unset($sched);
 
         $this->resetAfterTest(true);
     }

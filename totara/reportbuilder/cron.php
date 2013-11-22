@@ -209,7 +209,7 @@ function process_scheduled_reports() {
             }
 
             //Send email
-            if (send_scheduled_report($report)) {
+            if (reportbuilder_send_scheduled_report($report)) {
                 mtrace('Sent email for report ' . $report->id);
             } else if ($exporttofilesystem == REPORT_BUILDER_EXPORT_SAVE) {
                 mtrace('No scheduled report email has been send');

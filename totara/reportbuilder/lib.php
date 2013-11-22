@@ -4472,7 +4472,7 @@ function reportbuilder_generate_cache($reportid) {
  *
  *  @return boolean True if email was successfully sent
  */
-function send_scheduled_report($sched) {
+function reportbuilder_send_scheduled_report($sched) {
     global $CFG, $DB, $REPORT_BUILDER_EXPORT_OPTIONS;
     $export_codes = array_flip($REPORT_BUILDER_EXPORT_OPTIONS);
 
@@ -4493,11 +4493,7 @@ function send_scheduled_report($sched) {
         return false;
     }
 
-    if ($sched->savedsearchid != 0) {
-        $attachment = create_attachment($sched->reportid, $sched->format, $user->id, $sched->exporttofilesystem, $sched->savedsearchid);
-    } else {
-        $attachment = create_attachment($sched->reportid, $sched->format, $user->id, $sched->exporttofilesystem);
-    }
+    $attachment = reportbuilder_create_attachment($sched, $user->id);
 
     switch($sched->format) {
         case REPORT_BUILDER_EXPORT_EXCEL:
@@ -4558,23 +4554,25 @@ function send_scheduled_report($sched) {
 }
 
 /**
- *  Creates an export of a report in specified format (xls, csv or ods)
- *  for adding to email as attachment
+ * Creates an export of a report in specified format (xls, csv or ods)
+ * for adding to email as attachment
  *
- *  @param integer reportid ID of the report to generate attachement for
- *  @param integer format Type of attachment to create
- *  @param integer userid ID of the user the report is for
- *  @param integer exporttofilesystem setting from reportbulider global settings
- *  @param integer sid Saved search ID to use
+ * @param record $sched schedule record
+ * @param integer userid ID of the user the report is for
  *
- *  @return string Filename of the created attachment
+ * @return string Filename of the created attachment
  */
-function create_attachment($reportid, $format, $userid, $exporttofilesystem, $sid = null) {
+function reportbuilder_create_attachment($sched, $userid) {
     global $CFG;
+
+    $reportid = $sched->reportid;
+    $format = $sched->format;
+    $exporttofilesystem = $sched->exporttofilesystem;
+    $sid = $sched->savedsearchid;
+    $scheduleid = $sched->id;
 
     $report = new reportbuilder($reportid, null, false, $sid, $userid);
     $columns = $report->columns;
-    $shortname = $report->shortname;
     $count = $report->get_filtered_count();
     list($sql, $params) = $report->build_query(false, true);
 
@@ -4596,35 +4594,35 @@ function create_attachment($reportid, $format, $userid, $exporttofilesystem, $si
         case REPORT_BUILDER_EXPORT_ODS:
             $filename = $report->download_ods($headings, $sql, $params, $count, $restrictions, $tempfilepathname);
             if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
-                $reportfilepathname = get_directory($report, $userid) . '.ods';
+                $reportfilepathname = reportbuilder_get_export_filename($report, $userid, $scheduleid) . '.ods';
                 $filename = $report->download_ods($headings, $sql, $params, $count, $restrictions, $reportfilepathname);
             }
             break;
         case REPORT_BUILDER_EXPORT_EXCEL:
             $filename = $report->download_xls($headings, $sql, $params, $count, $restrictions, $tempfilepathname);
             if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
-                $reportfilepathname = get_directory($report, $userid) . '.xlsx';
+                $reportfilepathname = reportbuilder_get_export_filename($report, $userid, $scheduleid) . '.xlsx';
                 $filename = $report->download_xls($headings, $sql, $params, $count, $restrictions, $reportfilepathname);
             }
             break;
         case REPORT_BUILDER_EXPORT_CSV:
             $filename = $report->download_csv($headings, $sql, $params, $count, $tempfilepathname);
             if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
-                $reportfilepathname = get_directory($report, $userid) . '.csv';
+                $reportfilepathname = reportbuilder_get_export_filename($report, $userid, $scheduleid) . '.csv';
                 $filename = $report->download_csv($headings, $sql, $params, $count, $reportfilepathname);
             }
             break;
         case REPORT_BUILDER_EXPORT_PDF_PORTRAIT:
             $filename = $report->download_pdf($headings, $sql, $params, $count, $restrictions, true, $tempfilepathname);
             if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
-                $reportfilepathname = get_directory($report, $userid) . '.pdf';
+                $reportfilepathname = reportbuilder_get_export_filename($report, $userid, $scheduleid) . '.pdf';
                 $filename = $report->download_pdf($headings, $sql, $params, $count, $restrictions, true, $reportfilepathname);
             }
             break;
         case REPORT_BUILDER_EXPORT_PDF_LANDSCAPE:
             $filename = $report->download_pdf($headings, $sql, $params, $count, $restrictions, false, $tempfilepathname);
             if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
-                $reportfilepathname = get_directory($report, $userid) . '.pdf';
+                $reportfilepathname = reportbuilder_get_export_filename($report, $userid, $scheduleid) . '.pdf';
                 $filename = $report->download_pdf($headings, $sql, $params, $count, $restrictions, false, $reportfilepathname);
             }
             break;
@@ -4634,18 +4632,20 @@ function create_attachment($reportid, $format, $userid, $exporttofilesystem, $si
 }
 
 /**
- *  Checks if username directory under given path exists
- *  If it does not it creates it and returns fullpath with filename
- *  userdir + report fullname + time created
+ * Checks if username directory under given path exists
+ * If it does not it creates it and returns fullpath with filename
+ * userdir + report fullname + time created + schedule id
  *
- * @param $report
- * @param $userid
+ * @param record $report
+ * @param int $userid
+ * @param int $scheduleid
  *
  * @return string reportfullpathname
  */
-function get_directory($report, $userid) {
+function reportbuilder_get_export_filename($report, $userid, $scheduleid) {
     global $DB;
-    $reportfilename = format_string($report->fullname) . userdate(time(), get_string('datepickerlongyearphpuserdate', 'totara_core'));
+    $reportfilename = format_string($report->fullname) . '_' .
+            userdate(time(), get_string('datepickerlongyearphpuserdate', 'totara_core')) . '_' . $scheduleid;
     $reportfilename = clean_param($reportfilename, PARAM_FILE);
     $username = $DB->get_field('user', 'username', array('id' => $userid));
 
