@@ -1092,6 +1092,7 @@ class core_course_renderer extends plugin_renderer_base {
                 $dimmed = 'dimmed';
             }
         } else {
+            require_once($CFG->dirroot . '/totara/cohort/lib.php');
             if ($course->audiencevisible == COHORT_VISIBLE_NONE) {
                 $dimmed = 'dimmed';
             }
