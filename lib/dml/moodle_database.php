@@ -1568,10 +1568,6 @@ abstract class moodle_database {
         $fields = $values = $params = array();
         $count = 0;
         foreach ($iterator as $item) {
-            if (!$item instanceof stdClass) {
-                throw new dml_exception('batchinsertitemnotanobject');
-            }
-
             // pre-process item using user defined function
             if (isset($processor) && is_callable($processor)) {
                 $pparams = $pextraparams;
@@ -1590,6 +1586,10 @@ abstract class moodle_database {
                     }
                     throw new dml_exception('batchinsertitemfailedvalidation', $validator);
                 }
+            }
+
+            if (!$item instanceof stdClass) {
+                throw new dml_exception('batchinsertitemnotanobject');
             }
 
             // remove 'id' field if it is set
