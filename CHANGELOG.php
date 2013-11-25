@@ -3,6 +3,36 @@
 
 Totara LMS Changelog
 
+Release 2.5.2 (26th November 2013):
+==================================================
+
+API Changes:
+    T-10928    See http://community.totaralms.com/mod/forum/discuss.php?d=3507 for more details
+    T-11651
+
+Improvements:
+    T-11594    Improved hidden courses display in course overview block
+    T-11537    Added an option to enable/disable Totara sync field in bulk user actions
+    T-11634    Added content restriction options to goal and appraisal report sources
+    T-11105    Report builder source files are now available in 'Language customisation'
+    T-11566    Made 'My Reports' and 'My Bookings' pages editable so that blocks can be added
+
+Bug Fixes:
+    T-11606    Added a check to prevent duplicate certification assignments when uploading completion history
+    T-11321    Session info is now included in notification emails when Face-to-face details are updated
+    T-11505    Fixed error when inserting more than 1000 records into the cohort_msg_queue table for MSSQL
+    T-11546    Fixed exceptions if the user is already assigned to program
+    T-11647    Removed confirmation message when signing up for Face-to-face session with 'No email' option
+    T-11636    Fixed undefined variable warning on course view when Audience visibility is enabled
+    T-11621    Fixed image handling in textarea custom fields
+    T-11540    Fixed display of minimum time required on required learning pages
+    T-10726    Changed page editing to happen via edit button on 'My Team' page
+    T-11619    Fixed 'Completion import: Certification status' report URL
+    T-11618    Fixed company goals link redirecting to wrong place on 'My Goals' page
+    T-11620    Fixed use of MySQL reserved word in database query in Goals
+    T-5879     Fixed leading spaces in reportbuilder source language file
+
+
 Release 2.5.1 (12th November 2013):
 ==================================================
 
